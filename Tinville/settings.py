@@ -164,7 +164,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['www.heroku.com', 'www.tinville.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'www.herokuapp.com', 'http://young-island-7486.herokuapp.com/', 'www.tinville.com']
 
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
