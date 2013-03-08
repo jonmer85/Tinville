@@ -164,6 +164,8 @@ LOGGING = {
     }
 }
 
+ALLOWED_HOSTS = ['www.heroku.com', 'www.tinville.com']
+
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
 
