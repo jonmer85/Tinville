@@ -27,15 +27,17 @@ body {
  *Header
  *****************/
 #banner {
-    margin: 0 auto;
-    padding: 2.5em 0 0 0;
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
 }
 /* Banner */
-#banner h1 {
+#banner img {
     font-size: 3.571em;
     line-height: .6;
+    margin-bottom: .5em;
 }
-#banner h1 a:link, #banner h1 a:visited {
+/*#banner h1 a:link, #banner h1 a:visited {
     color: #000305;
     display: block;
     font-weight: bold;
@@ -53,12 +55,12 @@ body {
 #banner h1 strong {
     font-size: 0.36em;
     font-weight: normal;
-}
+}*/
 
 
 /* Main Nav */
 #banner nav {
-    background: #000305;
+    /*background: #000305;
     font-size: 1.143em;
     height: 40px;
     line-height: 30px;
@@ -68,30 +70,42 @@ body {
     width: 800px;
     border-radius: 5px;
     -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -webkit-border-radius: 5px;*/
+    text-align: left;
+    font-size: 12px;
+    line-height: 1;
+    height: 20px;
 }
 
-#banner nav ul {
+.mainNav ul {
     list-style: none;
     margin: 0 auto;
-    width: 800px;
+    padding: 0 0 0 0;
 }
 
-#banner nav li {
+.mainNav li {
     float: left;
     display: inline;
     margin: 0;
+    padding: 0 1em 0 1em;
 }
 
-#banner nav a:link, #banner nav a:visited {
-    color: #fff;
+.mainNav li:first-child {
+    padding: 0 1em 0 0;
+}
+.mainNav li+li {
+    border-left: 1px solid lightgray;
+}
+.mainNav a:link, .mainNav a:visited {
+    /*color: #fff;
     display: inline-block;
     height: 30px;
-    padding: 5px 1.5em;
+    padding: 5px 1.5em;*/
     text-decoration: none;
+    color: black;
 }
 
-#banner nav a:hover, #banner nav a:active, #banner nav .active a:link, #banner nav .active a:visited {
+/*#banner nav a:hover, #banner nav a:active, #banner nav .active a:link, #banner nav .active a:visited {
     background: #C74451;
     color: #fff;
     text-shadow: none !important;
@@ -104,14 +118,48 @@ body {
     border-bottom-left-radius: 5px;
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-bottom-left-radius: 5px;
+}*/
+
+
+#main {
+    border-top: 4px solid darkorange;
+    border-bottom: 4px solid darkorange;
+}
+
+#main #mainContent {
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+    height: auto;
+    ;
 }
 
 
+/* Main Footer */
 
-
-
-
-
+#mainFooter {
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+}
+#mainFooter nav {
+    /*background: #000305;
+    font-size: 1.143em;
+    height: 40px;
+    line-height: 30px;
+    margin: 0 auto 2em auto;
+    padding: 0;
+    text-align: center;
+    width: 800px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;*/
+    margin-top: 2em;
+    text-align: left;
+    font-size: 10px;
+    line-height: 1;
+    height: 15px;
+}
 
 
 
@@ -136,14 +184,14 @@ body {
  * A better looking default horizontal rule
  */
 
-hr {
+/*hr {
     display: block;
     height: 1px;
     border: 0;
     border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0;
-}
+}*/
 
 /*
  * Remove the gap between images and the bottom of their containers: h5bp.com/i/440

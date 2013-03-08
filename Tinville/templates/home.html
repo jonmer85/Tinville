@@ -4,6 +4,10 @@
 
 {% block content %}
     <!-- Add your site or application content here -->
-    <p>{% trans "Hello world! This is Django HTML5 Boilerplate." %}</p>
-    <p>{% trans "Edit 'templates/home.html' to modify this content." %}</p>
+    <section id="main">
+        <div id="mainContent">
+            <img src="{{ STATIC_URL }}img/body.png"/>
+        </div>
+    </section>
+
 {% endblock %}
