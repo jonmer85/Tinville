@@ -2,6 +2,7 @@
 
 import os.path
 
+# HEROKU Change!!!
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -13,14 +14,18 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'Tinville',                      # Or path to database file if using sqlite3.
+        'USER': 'django_login',                      # Not used with sqlite3.
+        'PASSWORD': 'django_login',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+# HEROKU Change!!!
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -129,10 +134,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -166,9 +169,6 @@ LOGGING = {
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
 AWS_STORAGE_BUCKET_NAME = 'Tinville'
 
 DEFAULT_FILE_STORAGE = 'Tinville.Site.s3utils.MediaS3BotoStorage'
@@ -182,6 +182,6 @@ S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
-if DEBUG == False:
+if not DEBUG:
     STATIC_URL = S3_URL + STATIC_DIRECTORY
     MEDIA_URL = S3_URL + MEDIA_DIRECTORY

@@ -29,6 +29,7 @@ body {
 #banner {
     margin-left:auto;
     margin-right:auto;
+    margin-top: 1em;
     width:60%;
 }
 /* Banner */
@@ -36,6 +37,11 @@ body {
     font-size: 3.571em;
     line-height: .6;
     margin-bottom: .5em;
+}
+
+#banner #rightSide {
+    width: 150px;
+    float: right;
 }
 /*#banner h1 a:link, #banner h1 a:visited {
     color: #000305;
@@ -59,7 +65,7 @@ body {
 
 
 /* Main Nav */
-#banner nav {
+#banner #categoryNav {
     /*background: #000305;
     font-size: 1.143em;
     height: 40px;
@@ -105,6 +111,23 @@ body {
     color: black;
 }
 
+
+.accountLinks {
+    float: right;
+    font-size: 10px;
+    line-height: 1;
+    height: 15px;
+
+}
+
+.accountLinks  li {
+    padding: 0 .5em 0 .5em;
+}
+
+.mainNav li:first-child {
+    padding: 0 .5em 0 0;
+}
+
 /*#banner nav a:hover, #banner nav a:active, #banner nav .active a:link, #banner nav .active a:visited {
     background: #C74451;
     color: #fff;
@@ -131,7 +154,10 @@ body {
     margin-right:auto;
     width:60%;
     height: auto;
-    ;
+}
+
+#main #carousel {
+    width: 100%;
 }
 
 
@@ -159,6 +185,11 @@ body {
     font-size: 10px;
     line-height: 1;
     height: 15px;
+}
+
+.mainLinks a:hover, .mainLinks a:active, .mainLinks .active a:link, .mainLinks .active a:visited {
+    color: darkorange;
+    text-shadow: none !important;
 }
 
 
