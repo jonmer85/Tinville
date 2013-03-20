@@ -21,7 +21,15 @@ textarea {
 body {
     font-size: 1em;
     line-height: 1.4;
+    font-family: "MS Sans Serif", Geneva, sans-serif
 }
+
+/*
+ * Tinville Orange : f46430
+ * Tinville Gray : e7e5e6
+ * Bottom Content : cfc1ab
+ *
+ */
 
 /*
  *Header
@@ -145,19 +153,35 @@ body {
 
 
 #main {
-    border-top: 4px solid darkorange;
-    border-bottom: 4px solid darkorange;
+    border-top: 4px solid #f46430;
+    border-bottom: 4px solid #f46430;
 }
 
 #main #mainContent {
     margin-left:auto;
     margin-right:auto;
     width:60%;
-    height: auto;
+    height: 430px;
+    background-color: #e7e5e6;
 }
 
 #main #carousel {
     width: 100%;
+}
+
+/* Bottom Pane/Content */
+#bottomPane {
+    background-color: #e7e5e6;
+    height: 300px;
+}
+
+#bottomPane #bottomContent {
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+    height: inherit;
+    background-color: #cfc1ab;
+
 }
 
 
@@ -188,7 +212,7 @@ body {
 }
 
 .mainLinks a:hover, .mainLinks a:active, .mainLinks .active a:link, .mainLinks .active a:visited {
-    color: darkorange;
+    color: #f46430;
     text-shadow: none !important;
 }
 

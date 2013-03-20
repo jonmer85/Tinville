@@ -1,4 +1,3 @@
-#from django.shortcuts import render_to_response
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -15,6 +14,7 @@ def register(request):
             return HttpResponseRedirect("/")
     else:
         form = UserCreationForm()
+
     return render_to_response("register.html", {
         'form': form}, context_instance=RequestContext(request)
         )

@@ -1,0 +1,32 @@
+#mainContent {
+    overflow: hidden;
+}
+
+
+#logoSection {
+    height: inherit;
+    width: 20%;
+    float: left;
+}
+
+#tinvilleLogo {
+    margin: 50% 10%;
+}
+
+.section {
+    float: left;
+    width: 39%;
+    height: 90%;
+    background-color: white;
+    margin-top: 2%;
+    margin-bottom: 2%
+}
+
+#registerSection {
+
+}
+
+#loginSection {
+    margin-right: 2%
+
+}
