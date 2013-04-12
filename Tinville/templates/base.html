@@ -11,12 +11,13 @@
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     {% block css %}{% endblock %}
 
     <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="{{ STATIC_URL }}js/vendor/bootstrap.min.js"></script>
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -24,60 +25,83 @@
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
-    <header id="banner" class="body">
 
-        <img src="{{ STATIC_URL }}img/tinville1.png" />
+    <div class="container">
+        <header id="banner" class="body">
 
-        <div id="rightSide">
-            <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">
-                <ul>
-                    <li><a href="#">MY ACCOUNT</a></li>
-                    <li><a href="#">LOGIN</a></li>
-                </ul>
-            </nav>
-            <nav class="mainNav mainLinks accountLinks">
-                <ul>
-                    <li><a href="/register">REGISTER</a></li>
-                </ul>
-            </nav>
-        </div>
+            <div class="row">
+                <div class="span2">
+                    <img src="{{ STATIC_URL }}img/tinville1.png" />
+                </div>
 
+                <div class="span2 offset8">
+                    <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">
+                        <ul>
+                            <li><a href="#">MY ACCOUNT</a></li>
+                            <li><a href="#">LOGIN</a></li>
+                        </ul>
+                    </nav>
+                    <nav id="register" class="mainNav mainLinks accountLinks">
+                        <ul>
+                            <li><a href="/register">REGISTER</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="span6">
+                    <nav id="categoryNav" class="mainNav">
+                        <ul>
+                            <li><a href="#">WOMEN</a></li>
+                            <li><a href="#">MEN</a></li>
+                            <li><a href="#">DESIGNERS</a></li>
+                            <li><a href="#">SHOP</a></li>
+                            <li><a href="#">BLOG</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
-        <nav id="categoryNav" class="mainNav">
-            <ul>
-                <li><a href="#">WOMEN</a></li>
-                <li><a href="#">MEN</a></li>
-                <li><a href="#">DESIGNERS</a></li>
-                <li><a href="#">SHOP</a></li>
-                <li><a href="#">BLOG</a></li>
-            </ul>
-        </nav>
-
-    </header>
-
-    {% block content %}
-    {% endblock content %}
+        </header>
+    </div>
+    <hr class="contentBorder" />
+    <div class="container contentDiv">
+        {% block content %}
+        {% endblock content %}
+    </div>
+    <hr class="contentBorder" />
 
     <div id="bottomPane">
-        <div id="bottomContent">
+        <div id="bottomContent" class="container">
             {% block bottomContent %}
             {% endblock bottomContent %}
         </div>
     </div>
 
 
-    <footer id="mainFooter">
-        <nav class="mainNav mainLinks">
-            <ul>
-                <li><a href="#">ABOUT</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">POLICIES</a></li>
-                <li><a href="#">TERMS</a></li>
-                <li><a href="#">CONTACT US</a></li>
-            </ul>
-        </nav>
-    </footer>
+    <div class="container">
+        <footer id="mainFooter">
+            <div class="row">
+                <span class="span4">
+                    <nav class="mainNav mainLinks">
+                        <ul>
+                            <li><a href="#">ABOUT</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">POLICIES</a></li>
+                            <li><a href="#">TERMS</a></li>
+                            <li><a href="#">CONTACT US</a></li>
+                        </ul>
+                    </nav>
+                </span>
+            </div>
+
+        </footer>
+    </div>
+
+
+
+
 
     {% block javascript_library %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
