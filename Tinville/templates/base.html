@@ -14,10 +14,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/mega-menu.css" />
     {% block css %}{% endblock %}
 
-    <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
-    <script src="{{ STATIC_URL }}js/vendor/bootstrap.min.js"></script>
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -34,16 +33,16 @@
                     <img src="{{ STATIC_URL }}img/tinville1.png" />
                 </div>
 
-                <div class="span2 offset8">
+                <div class="span3 offset7">
                     <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">
                         <ul>
-                            <li><a href="#">MY ACCOUNT</a></li>
-                            <li><a href="#">LOGIN</a></li>
+                            <li class="mainNavListItem"><a href="#">MY ACCOUNT</a></li>
+                            <li class="mainNavListItem"><a href="#">LOGIN</a></li>
                         </ul>
                     </nav>
                     <nav id="register" class="mainNav mainLinks accountLinks">
                         <ul>
-                            <li><a href="/register">REGISTER</a></li>
+                            <li class="mainNavListItem"><a href="/register">REGISTER</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -51,13 +50,61 @@
 
             <div class="row">
                 <div class="span6">
-                    <nav id="categoryNav" class="mainNav">
-                        <ul>
-                            <li><a href="#">WOMEN</a></li>
-                            <li><a href="#">MEN</a></li>
-                            <li><a href="#">DESIGNERS</a></li>
-                            <li><a href="#">SHOP</a></li>
-                            <li><a href="#">BLOG</a></li>
+                        <ul id="categoryNav" class="nav nav-pills mainNav">
+                            <li class="dropdown mega-menu-3 mainNavListItem">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN</a>
+                                <ul class="dropdown-menu">
+                                    <li class="one-column">
+                                        <ul>
+                                            <li class="nav-title"><strong>Clothing</strong></li>
+                                            <li><a href="#">Outerwear</a></li>
+                                            <li><a href="#">Jackets & Blazers</a></li>
+                                            <li><a href="#">Shirts</a></li>
+                                            <li><a href="#">Pants</a></li>
+                                            <li><a href="#">Sweaters</a></li>
+                                            <li><a href="#">Suits</a></li>
+                                            <li><a href="#">Dresses</a></li>
+                                            <li><a href="#">Athletic Clothing</a></li>
+                                            <li><a href="#">Intimates</a></li>
+                                            <li><a href="#"><b>All Clothing</b></a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="one-column">
+                                        <ul>
+                                            <li class="nav-title"><strong>Shoes</strong></li>
+                                            <li><a href="#">Boots</a></li>
+                                            <li><a href="#">Heels</a></li>
+                                            <li><a href="#">Flats</a></li>
+                                            <li><a href="#">Booties</a></li>
+                                            <li><a href="#">Wedges</a></li>
+                                            <li><a href="#">Athletic</a></li>
+                                            <li><a href="#">Sandals</a></li>
+                                            <li><a href="#">Loafers</a></li>
+                                            <li><a href="#">Oxfords</a></li>
+                                            <li><a href="#"><strong>All Shoes</strong></a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="one-column">
+                                        <ul>
+                                            <li class="nav-title"><strong>Accessories</strong></li>
+                                            <li><a href="#">Handbags</a></li>
+                                            <li><a href="#">Fine Jewelry</a></li>
+                                            <li><a href="#">Fashion Jewelry</a></li>
+                                            <li><a href="#">Watches</a></li>
+                                            <li><a href="#">Sunglasses</a></li>
+                                            <li><a href="#">Scarves & Wraps</a></li>
+                                            <li><a href="#">Gloves</a></li>
+                                            <li><a href="#">Belts</a></li>
+                                            <li><a href="#">Designer Store</a></li>
+                                            <li><a href="#"><strong>All Accessories</strong></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">MEN</a></li>
+                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">DESIGNERS</a></li>
+                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">SHOP</a></li>
+                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">BLOG</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -83,14 +130,14 @@
     <div class="container">
         <footer id="mainFooter">
             <div class="row">
-                <span class="span4">
+                <span class="span5">
                     <nav class="mainNav mainLinks">
                         <ul>
-                            <li><a href="#">ABOUT</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">POLICIES</a></li>
-                            <li><a href="#">TERMS</a></li>
-                            <li><a href="#">CONTACT US</a></li>
+                            <li class="mainNavListItem"><a href="#">ABOUT</a></li>
+                            <li class="mainNavListItem"><a href="#">FAQ</a></li>
+                            <li class="mainNavListItem"><a href="#">POLICIES</a></li>
+                            <li class="mainNavListItem"><a href="#">TERMS</a></li>
+                            <li class="mainNavListItem"><a href="#">CONTACT US</a></li>
                         </ul>
                     </nav>
                 </span>
@@ -104,8 +151,10 @@
 
 
     {% block javascript_library %}
+        <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+        <script src="{{ STATIC_URL }}js/vendor/bootstrap.min.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
     {% endblock javascript_library %}
