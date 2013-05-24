@@ -15,7 +15,7 @@ class TinvilleUserManager(BaseUserManager):
         if not email:
             raise ValueError('Users must have an email address')
 
-        user = self.create_user(
+        user = self.model(
             email=TinvilleUserManager.normalize_email(email),
             first_name=first_name,
             last_name=last_name

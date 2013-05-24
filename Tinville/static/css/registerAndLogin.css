@@ -30,3 +30,13 @@
     margin-right: 2%
 
 }
+
+.orangeHeading {
+    color: #f46430;
+    font-size: 12px;
+}
+
+.registrationContent {
+    background-color: white;
+    margin: 1%;
+}

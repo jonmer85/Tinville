@@ -88,8 +88,8 @@ class TinvilleUserAdmin(UserAdmin):
             'fields': ('email', 'first_name', 'middle_name', 'last_name', 'other_site_url', 'shop_name', 'is_seller', 'password1', 'password2')}
         ),
     )
-    search_fields = ('email',)
-    ordering = ('email',)
+    search_fields = ('email', 'shop_name')
+    ordering = ('email', 'shop_name')
     filter_horizontal = ()
 
 # Now register the new UserAdmin...

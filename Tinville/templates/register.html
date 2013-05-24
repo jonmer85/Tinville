@@ -9,28 +9,57 @@
 {% block content %}
     <section id="main">
         <div id="mainContent">
-                <div id="logoSection">
-                    <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
-                </div>
+            <div class="row registrationContent">
+{#                <div class="span2">#}
+{#                   <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">#}
+{#                </div>#}
 
 
-                <div id="registerSection" class="section">
-                    <hi>Register Account</hi>
-                    <form action="" method="post">
-                        {{ form.as_p }}
-                        {% csrf_token %}
-                        <input type="submit" value="Create account">
-                    </form>
-                </div>
 
-                <div id="loginSection" class="section">
-                    <hi>Login</hi>
-                    <form action="" method="post">
-                        {{ form.as_p }}
-                        {% csrf_token %}
-                        <input type="submit" value="Login">
-                    </form>
-                </div>
+                <div class="span10">
+                    <div class="row">
+                        <div class="span2">
+                            <img src="{{ STATIC_URL }}img/customer_small_logo.png">
+                        </div>
+                        <div class="span8">
+                            <span class="orangeHeading">New Customers</span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nulla risus, lacinia sit amet lobortis eget, vulputate id diam.
+                               Sed eleifend, ipsum sit amet dignissim cursus, massa ligula mollis mi, sit amet pellentesque tellus nibh sit amet nulla.
+                                Praesent id metus justo.
+                            </p>
+                        </div>
+                    </div>
+
+{#                </div>#}
+{#                    <div class="span4">#}
+{#                        <h3 class="orangeHeading">New Designer</h3>#}
+{#                        <img src="{{ STATIC_URL }}img/designers_small_logo.png">#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+
+
+
+
+
+
+{#                <div id="registerSection" class="section">#}
+{#                    <hi>Register Account</hi>#}
+{#                    <form action="" method="post">#}
+{#                        {{ form.as_p }}#}
+{#                        {% csrf_token %}#}
+{#                        <input type="submit" value="Create account">#}
+{#                    </form>#}
+{#                </div>#}
+{##}
+{#                <div id="loginSection" class="section">#}
+{#                    <hi>Login</hi>#}
+{#                    <form action="" method="post">#}
+{#                        {{ form.as_p }}#}
+{#                        {% csrf_token %}#}
+{#                        <input type="submit" value="Login">#}
+{#                    </form>#}
+{#                </div>#}
 
         </div>
     </section>

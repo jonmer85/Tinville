@@ -23,6 +23,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'Site.TinvilleUser'
+
 # HEROKU Change!!!
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
@@ -136,6 +138,7 @@ INSTALLED_APPS = (
     'storages',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'Tinville.Site',
 )
 
 # A sample logging configuration. The only tangible logging
