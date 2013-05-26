@@ -25,130 +25,135 @@
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-    <div class="container">
-        <header id="banner" class="body">
+    <div class="row-fluid">
+        <div class="span1"></div>
+        <div class="span10">
+            <header id="banner" class="body">
+                <div class="row-fluid">
+                    <div class="span2">
+                        <img src="{{ STATIC_URL }}img/tinville1.png" />
+                    </div>
 
-            <div class="row">
-                <div class="span2">
-                    <img src="{{ STATIC_URL }}img/tinville1.png" />
+                    <div class="span3 offset7">
+                        <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">
+                            <ul>
+                                <li class="mainNavListItem"><a href="#">MY ACCOUNT</a></li>
+                                <li class="mainNavListItem"><a href="#">LOGIN</a></li>
+                            </ul>
+                        </nav>
+                        <nav id="register" class="mainNav mainLinks accountLinks">
+                            <ul>
+                                <li class="mainNavListItem"><a href="/register">REGISTER</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
 
-                <div class="span3 offset7">
-                    <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">
-                        <ul>
-                            <li class="mainNavListItem"><a href="#">MY ACCOUNT</a></li>
-                            <li class="mainNavListItem"><a href="#">LOGIN</a></li>
-                        </ul>
-                    </nav>
-                    <nav id="register" class="mainNav mainLinks accountLinks">
-                        <ul>
-                            <li class="mainNavListItem"><a href="/register">REGISTER</a></li>
-                        </ul>
-                    </nav>
+                <div class="row-fluid">
+                    <div class="span6">
+                            <ul id="categoryNav" class="nav nav-pills mainNav">
+                                <li class="dropdown mega-menu-3 mainNavListItem">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="one-column">
+                                            <ul>
+                                                <li class="nav-title"><strong>Clothing</strong></li>
+                                                <li><a href="#">Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="one-column">
+                                            <ul>
+                                                <li class="nav-title"><strong>Shoes</strong></li>
+                                                <li><a href="#">Boots</a></li>
+                                                <li><a href="#">Heels</a></li>
+                                                <li><a href="#">Flats</a></li>
+                                                <li><a href="#">Booties</a></li>
+                                                <li><a href="#">Wedges</a></li>
+                                                <li><a href="#">Athletic</a></li>
+                                                <li><a href="#">Sandals</a></li>
+                                                <li><a href="#">Loafers</a></li>
+                                                <li><a href="#">Oxfords</a></li>
+                                                <li><a href="#"><strong>All Shoes</strong></a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="one-column">
+                                            <ul>
+                                                <li class="nav-title"><strong>Accessories</strong></li>
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">MEN</a></li>
+                                <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">DESIGNERS</a></li>
+                                <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">SHOP</a></li>
+                                <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">BLOG</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="span6">
-                        <ul id="categoryNav" class="nav nav-pills mainNav">
-                            <li class="dropdown mega-menu-3 mainNavListItem">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN</a>
-                                <ul class="dropdown-menu">
-                                    <li class="one-column">
-                                        <ul>
-                                            <li class="nav-title"><strong>Clothing</strong></li>
-                                            <li><a href="#">Outerwear</a></li>
-                                            <li><a href="#">Jackets & Blazers</a></li>
-                                            <li><a href="#">Shirts</a></li>
-                                            <li><a href="#">Pants</a></li>
-                                            <li><a href="#">Sweaters</a></li>
-                                            <li><a href="#">Suits</a></li>
-                                            <li><a href="#">Dresses</a></li>
-                                            <li><a href="#">Athletic Clothing</a></li>
-                                            <li><a href="#">Intimates</a></li>
-                                            <li><a href="#"><b>All Clothing</b></a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="one-column">
-                                        <ul>
-                                            <li class="nav-title"><strong>Shoes</strong></li>
-                                            <li><a href="#">Boots</a></li>
-                                            <li><a href="#">Heels</a></li>
-                                            <li><a href="#">Flats</a></li>
-                                            <li><a href="#">Booties</a></li>
-                                            <li><a href="#">Wedges</a></li>
-                                            <li><a href="#">Athletic</a></li>
-                                            <li><a href="#">Sandals</a></li>
-                                            <li><a href="#">Loafers</a></li>
-                                            <li><a href="#">Oxfords</a></li>
-                                            <li><a href="#"><strong>All Shoes</strong></a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="one-column">
-                                        <ul>
-                                            <li class="nav-title"><strong>Accessories</strong></li>
-                                            <li><a href="#">Handbags</a></li>
-                                            <li><a href="#">Fine Jewelry</a></li>
-                                            <li><a href="#">Fashion Jewelry</a></li>
-                                            <li><a href="#">Watches</a></li>
-                                            <li><a href="#">Sunglasses</a></li>
-                                            <li><a href="#">Scarves & Wraps</a></li>
-                                            <li><a href="#">Gloves</a></li>
-                                            <li><a href="#">Belts</a></li>
-                                            <li><a href="#">Designer Store</a></li>
-                                            <li><a href="#"><strong>All Accessories</strong></a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">MEN</a></li>
-                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">DESIGNERS</a></li>
-                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">SHOP</a></li>
-                            <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">BLOG</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-
-        </header>
-    </div>
-    <hr class="contentBorder" />
-    <div class="container contentDiv">
-        {% block content %}
-        {% endblock content %}
-    </div>
-    <hr class="contentBorder" />
-
-    <div id="bottomPane">
-        <div id="bottomContent" class="container">
-            {% block bottomContent %}
-            {% endblock bottomContent %}
+            </header>
         </div>
     </div>
+    <hr class="contentBorder" />
+    <div class="row-fluid">
+        <div class="span1"></div>
+        <div class="span10">
+            <div class="contentDiv">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+        <div class="span1"></div>
+    </div>
+    <hr class="contentBorder" />
+    <div class="row-fluid">
+        <div class="span1"></div>
+        <div class="span10">
 
-
-    <div class="container">
-        <footer id="mainFooter">
-            <div class="row">
-                <span class="span5">
-                    <nav class="mainNav mainLinks">
-                        <ul>
-                            <li class="mainNavListItem"><a href="#">ABOUT</a></li>
-                            <li class="mainNavListItem"><a href="#">FAQ</a></li>
-                            <li class="mainNavListItem"><a href="#">POLICIES</a></li>
-                            <li class="mainNavListItem"><a href="#">TERMS</a></li>
-                            <li class="mainNavListItem"><a href="#">CONTACT US</a></li>
-                        </ul>
-                    </nav>
-                </span>
+            <div id="bottomPane">
+                <div id="bottomContent">
+                    {% block bottomContent %}
+                    {% endblock bottomContent %}
+                </div>
             </div>
 
-        </footer>
+            <footer id="mainFooter">
+                <div class="row-fluid">
+                    <span class="span5">
+                        <nav class="mainNav mainLinks">
+                            <ul>
+                                <li class="mainNavListItem"><a href="#">ABOUT</a></li>
+                                <li class="mainNavListItem"><a href="#">FAQ</a></li>
+                                <li class="mainNavListItem"><a href="#">POLICIES</a></li>
+                                <li class="mainNavListItem"><a href="#">TERMS</a></li>
+                                <li class="mainNavListItem"><a href="#">CONTACT US</a></li>
+                            </ul>
+                        </nav>
+                    </span>
+                </div>
+            </footer>
+        </div>
+        <div class="span1"></div>
     </div>
-
-
-
-
 
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
