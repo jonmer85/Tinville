@@ -1,8 +1,3 @@
-#mainContent {
-    overflow: hidden;
-}
-
-
 #logoSection {
     height: inherit;
     width: 20%;
@@ -33,10 +28,59 @@
 
 .orangeHeading {
     color: #f46430;
-    font-size: 12px;
+    font-size: 18px;
+    font-weight: normal;
 }
 
 .registrationContent {
     background-color: white;
-    margin: 1%;
+    height: 430px;
+    width: 100%;
+}
+
+.mainContent {
+    padding: 10px;
+}
+
+.registrationInfoDiv {
+    padding: 0 30px;
+}
+
+.registrationInfoIcon {
+    float: right;
+}
+
+.registrationText {
+    float: left;
+    padding-right: 5px;
+}
+
+.first {
+    border-right: #f46430 dotted medium;
+}
+
+.userType {
+    padding-right: 25px;
+}
+
+.registerButton {
+    float:right;
+    background: #f46430;
+    color: white;
+    vertical-align: bottom;
+}
+
+div.cn {
+  display: table-cell;
+  /*width: 500px;*/
+  /*height: 500px;*/
+  vertical-align: middle;
+  text-align: center;
+}
+
+div.inner {
+  display: inline-block;
+  /*width: 200px;*/
+  /*height: 200px;*/
+  text-align: left;
 }

@@ -5,30 +5,44 @@
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
-{
 {% block content %}
-    <section id="main">
-        <div id="mainContent">
-            <div class="row-fluid registrationContent">
-{#                <div class="span2">#}
-{#                   <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">#}
-{#                </div>#}
 
 
 
-                <div class="span10">
-                    <div class="row-fluid">
-                        <div class="span2">
-                            <img src="{{ STATIC_URL }}img/customer_small_logo.png">
-                        </div>
-                        <div class="span8">
-                            <span class="orangeHeading">New Customers</span>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nulla risus, lacinia sit amet lobortis eget, vulputate id diam.
-                               Sed eleifend, ipsum sit amet dignissim cursus, massa ligula mollis mi, sit amet pellentesque tellus nibh sit amet nulla.
-                                Praesent id metus justo.
-                            </p>
-                        </div>
+        <div class="registrationContent cn">
+            <div class="registrationInfoDiv inner">
+                <div class="span6 first userType">
+                    <div class=span4>
+                        <img class="registrationInfoIcon" src="{{ STATIC_URL }}img/customer_small_logo.png">
                     </div>
+                    <div class="span8 registrationText">
+                        <h2 class="orangeHeading">New Customer</h2>
+                        <p>As a Tinville Customer, you will enjoy all the latest apparel from independent fashion designers that you will
+                           typically not see at your local mall. We use your interests to recommend apparel from designers that produce
+                           exactly what you are looking for!
+                        </p>
+                    </div>
+                    <button class="btn registerButton">Register</button>
+                </div>
+
+                <div class="span6 userType">
+                    <div class=span4>
+                        <img class="registrationInfoIcon" src="{{ STATIC_URL }}img/designers_small_logo.png">
+                    </div>
+                    <div class="span8 registrationText">
+                        <h2 class="orangeHeading">New Designer</h2>
+                        <p>As a Tinville Designer, you have easy to use tools at your disposal to make sure your business is a success without
+                           the fuss and overhead associated with managing your own website or physical boutique.
+                        </p>
+                    </div>
+                    <button class="btn registerButton">Register</button>
+                </div>
+
+
+            </div>
+        </div>
+
+
 
 {#                </div>#}
 {#                    <div class="span4">#}
@@ -36,13 +50,6 @@
 {#                        <img src="{{ STATIC_URL }}img/designers_small_logo.png">#}
 {#                    </div>#}
 {#                </div>#}
-            </div>
-
-
-
-
-
-
 {#                <div id="registerSection" class="section">#}
 {#                    <hi>Register Account</hi>#}
 {#                    <form action="" method="post">#}
@@ -61,8 +68,7 @@
 {#                    </form>#}
 {#                </div>#}
 
-        </div>
-    </section>
+
 
 
 

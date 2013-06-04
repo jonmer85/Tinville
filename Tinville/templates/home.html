@@ -3,11 +3,9 @@
 {% block body_class %}{{ block.super }} home{% endblock %}
 
 {% block content %}
-    <!-- Add your site or application content here -->
-    <section id="main">
-        <div id="mainContent">
-            <img id="carousel" src="{{ STATIC_URL }}img/body.png"/>
-        </div>
-    </section>
+    <img id="carousel" src="{{ STATIC_URL }}img/body.png"/>
+{% endblock %}
 
+{% block bottomContent %}
+    <div id="villageOfShops"></div>
 {% endblock %}

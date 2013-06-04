@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/mega-menu.css" />
     {% block css %}{% endblock %}
 
+
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -50,7 +51,7 @@
                 </div>
 
                 <div class="row-fluid">
-                    <div class="span6">
+                    <div class="span12">
                             <ul id="categoryNav" class="nav nav-pills mainNav">
                                 <li class="dropdown mega-menu-3 mainNavListItem">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN</a>
@@ -117,11 +118,11 @@
     <hr class="contentBorder" />
     <div class="row-fluid">
         <div class="span2"></div>
-        <div class="span8">
-            <div class="contentDiv">
+        <div class="span8 mainContent">
+{#            <div id="mainContent">#}
                 {% block content %}
                 {% endblock content %}
-            </div>
+{#            </div>#}
         </div>
         <div class="span2"></div>
     </div>
@@ -173,6 +174,24 @@
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
+
+
+
+    $(window).resize(function(){                                          // creates a resize function tied to the browser window
+        $('.center_me').css({                                             // creates a css handler for any element with the class 'className'
+            position:'absolute',                                          // positions the element relative to it's ancestor element
+            left: ($(window).width() - $('.className').outerWidth())/2,   // takes the width of the window and subtracts the element's total width divided by 2 and centers horizontally.
+            top: ($(window).height() - $('.className').outerHeight())/2   // takes the height of the window and subtracts the element's total height divided by 2 and centers horizontally.
+        });
+    });
+
+    $(document).ready(function() {
+        $(window).resize(); //executes the function on page load
+    });
+
+
+
+
     </script>
 {% endblock body %}
 </body>
