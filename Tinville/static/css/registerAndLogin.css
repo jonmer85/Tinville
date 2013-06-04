@@ -68,12 +68,7 @@
 .registerButton {
     background: #f46430;
     color: white;
-}
-
-.registerButtonDiv {
-    position: absolute;
-    right:    25px;
-    bottom:   0
+    float: right;
 }
 
 div.cn {
@@ -89,4 +84,10 @@ div.inner {
   /*width: 200px;*/
   /*height: 200px;*/
   text-align: left;
+}
+
+.row-fluid .span6 {
+  display: table-cell;
+  vertical-align: bottom;
+  float: none;
 }
