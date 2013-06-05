@@ -159,7 +159,7 @@ body {
 }*/
 
 .mainContent {
-    height: 450px;
+    /*height: 450px;*/
     background-color: #e7e5e6;
     overflow:auto;
 }
@@ -167,6 +167,11 @@ body {
 #carousel {
     width: 100%;
     height: 100%;
+}
+
+.centerContent {
+    width: 75%;
+    margin: 0 auto;
 }
 
 /* Village of Shops Area */

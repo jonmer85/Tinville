@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/mega-menu.css" />
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
     {% block css %}{% endblock %}
 
 
@@ -26,9 +27,8 @@
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-    <div class="row-fluid">
-        <div class="span2"></div>
-        <div class="span8">
+
+        <div class="container-fluid centerContent">
             <header id="banner" class="body">
                 <div class="row-fluid">
                     <div class="span2">
@@ -113,24 +113,17 @@
                 </div>
             </header>
         </div>
-        <div class="span2"></div>
     </div>
     <hr class="contentBorder" />
-    <div class="row-fluid">
-        <div class="span2"></div>
-        <div class="span8 mainContent">
-{#            <div id="mainContent">#}
-                {% block content %}
-                {% endblock content %}
-{#            </div>#}
+    <div class="container-fluid centerContent">
+        <div class="row-fluid mainContent">
+            {% block content %}
+            {% endblock content %}
         </div>
-        <div class="span2"></div>
     </div>
     <hr class="contentBorder" />
-    <div class="row-fluid">
-        <div class="span2"></div>
-        <div class="span8">
-
+    <div class="container-fluid centerContent">
+        <div class="row-fluid">
             <div id="bottomPane">
                 <div id="bottomContent">
                     {% block bottomContent %}
@@ -154,8 +147,8 @@
                 </div>
             </footer>
         </div>
-        <div class="span2"></div>
     </div>
+
 
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2.min.js"></script>
