@@ -1,20 +1,22 @@
+from Tinville.Site.forms import TinvilleDesignerCreationForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
-from django.contrib.auth.forms import UserCreationForm
 
 def home(request):
     return render_to_response('home.html', {}, context_instance=RequestContext(request))
 
 def register(request):
+    return render_to_response("register.html", {}, context_instance=RequestContext(request))
+
+def register_designer(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = TinvilleDesignerCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             return HttpResponseRedirect("/")
     else:
-        form = UserCreationForm()
+        form = TinvilleDesignerCreationForm()
 
-    return render_to_response("register.html", {
-        'form': form}, context_instance=RequestContext(request)
-        )
+    return render_to_response("register_designer.html", {
+        'form': form}, context_instance=RequestContext(request))

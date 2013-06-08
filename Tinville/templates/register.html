@@ -7,19 +7,17 @@
 {% endblock css %}
 {% block content %}
 
-
-
         <div class="registrationContent cn">
             <div class="registrationInfoDiv inner">
                 <div class="span6 first userType">
-                    <div class=span4>
+                    <div class="span4">
                         <img class="registrationInfoIcon" src="{{ STATIC_URL }}img/customer_small_logo.png">
                     </div>
                     <div class="span8 registrationText">
                         <h2 class="orangeHeading">New Customer</h2>
-                        <p>As a Tinville Customer, you will enjoy all the latest apparel from independent fashion designers that you will
-                           typically not see at your local mall. We use your interests to recommend apparel from designers that produce
-                           exactly what you are looking for!
+                        <p>Welcome to Tinville, The Industry Network Village, Tinville is an online market place where you can explore, discover or keep up with one of a kind
+                            apparel designer; if you are a fashionista or just like unique pieces from designers, Tinville can fulfill your shopping needs. When you sign
+                            up to shop you will have a wide variety of designers to choose from, try, follow and embrace.
                         </p>
                         <p>
                             <button class="btn registerButton">Register</button>
@@ -28,16 +26,17 @@
                 </div>
 
                 <div class="span6 userType">
-                    <div class=span4>
+                    <div class="span4">
                         <img class="registrationInfoIcon" src="{{ STATIC_URL }}img/designers_small_logo.png">
                     </div>
                     <div class="span8 registrationText">
                         <h2 class="orangeHeading">New Designer</h2>
-                        <p>As a Tinville Designer, you have easy to use tools at your disposal to make sure your business is a success without
-                           the fuss and overhead associated with managing your own website or physical boutique.
+                        <p>Tinville, The Industry Network Village is an online market place where apparel designers of all kinds can open a shop as easy as any social
+                            network, and use your already existing online presence to market directly to your consumers. No longer will the success of your brand be
+                            out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand and consumers.
                         </p>
                         <p>
-                            <button class="btn registerButton">Register</button>
+                            <a href="/register_designer"><button class="btn registerButton">Register</button></a>
                         </p>
                     </div>
                 </div>
@@ -45,37 +44,4 @@
 
             </div>
         </div>
-
-
-
-{#                </div>#}
-{#                    <div class="span4">#}
-{#                        <h3 class="orangeHeading">New Designer</h3>#}
-{#                        <img src="{{ STATIC_URL }}img/designers_small_logo.png">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div id="registerSection" class="section">#}
-{#                    <hi>Register Account</hi>#}
-{#                    <form action="" method="post">#}
-{#                        {{ form.as_p }}#}
-{#                        {% csrf_token %}#}
-{#                        <input type="submit" value="Create account">#}
-{#                    </form>#}
-{#                </div>#}
-{##}
-{#                <div id="loginSection" class="section">#}
-{#                    <hi>Login</hi>#}
-{#                    <form action="" method="post">#}
-{#                        {{ form.as_p }}#}
-{#                        {% csrf_token %}#}
-{#                        <input type="submit" value="Login">#}
-{#                    </form>#}
-{#                </div>#}
-
-
-
-
-
-
-
 {% endblock %}

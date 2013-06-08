@@ -5,38 +5,133 @@
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
-{
 {% block content %}
-    <section id="main">
-        <div id="mainContent">
-                <div id="logoSection">
-                    <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
-                </div>
 
 
-                <div id="registerSection" class="section">
-                    <hi>Register Account</hi>
-                    <form action="" method="post">
-                        {{ form.as_p }}
-                        {% csrf_token %}
-                        <input type="submit" value="Create account">
-                    </form>
-                </div>
-
-                <div id="loginSection" class="section">
-                    <hi>Login</hi>
-                    <form action="" method="post">
-                        {{ form.as_p }}
-                        {% csrf_token %}
-                        <input type="submit" value="Login">
-                    </form>
-                </div>
-
+    <div class="row-fluid">
+         <div class="span2 logoSection">
+        <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
         </div>
-    </section>
+        <div class="span10">
+            <div class="registrationContent cn">
+                <div class="registrationInfoDiv inner">
+                    <div class="row-fluid">
+                        <div id="registerNewDesignerPane" class="span6 first registerDesignerPane">
+                            <h1 id="registerNewDesignerHeading" class="orangeHeading">Register New Designer</h1>
+                            <p><img id="registerNewDesignerIcon" src="{{ STATIC_URL }}img/designers_big_logo.png"></p>
+                        </div>
 
-
-
-
+                        <div id= "registerDesignerFormDiv" class="span6 registerDesignerPane">
+                            <form action="/register_designer" method="post">
+                                {{  form.non_field_errors }}
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <div class="fieldWrapper">
+                                        {{ form.first_name.errors }}
+                                        <label for="id_first_name">First name</label>
+                                        {{ form.first_name }}
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="fieldWrapper">
+                                            {{ form.last_name.errors }}
+                                            <label for="id_last_name">Last name</label>
+                                            {{ form.last_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="fieldWrapper">
+                                            {{ form.shop_name.errors }}
+                                            <label for="id_shop_name">Name of shop</label>
+                                            {{ form.shop_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                     <div class="span12">
+                                         <div class="fieldWrapper">
+                                             {{ form.email.errors }}
+                                             <label for="id_email">Email address</label>
+                                             {{ form.email }}
+                                         </div>
+                                     </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="fieldWrapper">
+                                            {{ form.email2.errors }}
+                                            <label for="id_email2_name">Re-enter email address</label>
+                                            {{ form.email2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <div class="fieldWrapper">
+                                        {{ form.password1.errors }}
+                                        <label for="id_password1">Create password</label>
+                                        {{ form.password1 }}
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="fieldWrapper">
+                                            {{ form.password2.errors }}
+                                            <label for="id_password2">Confirm password</label>
+                                            {{ form.password2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p><input type="submit" value="Register" /></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div id="designerInfoAndFashionTypesDiv" class="registrationContent cn">
+                <div class="registrationInfoDiv inner">
+                    <div class= "span6 first designerInfoDiv">
+                        <hi class="orangeHeading">Designers Info:</hi>
+                        <div class="designerInfoSection">
+                            <img class="infoLeft" src="{{ STATIC_URL }}img/question.png">
+                            <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
+                               Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
+                               Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
+                            </p>
+                        </div>
+                        <div class="designerInfoSection">
+                            <img class="infoRight" src="{{ STATIC_URL }}img/question.png">
+                            <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
+                               Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
+                               Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
+                            </p>
+                        </div>
+                        <div class="designerInfoSection">
+                            <img class="infoLeft" src="{{ STATIC_URL }}img/question.png">
+                            <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
+                               Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
+                               Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function() {
+            var setHeight = $("#registerDesignerFormDiv").height();
+            $("#registerNewDesignerPane").height(setHeight);
+        });
+    </script>
+
+{%  endblock %}

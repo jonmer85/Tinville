@@ -1,8 +1,8 @@
-#logoSection {
-    height: inherit;
-    width: 20%;
-    float: left;
-}
+/*#logoSection {*/
+    /*height: inherit;*/
+    /*width: 20%;*/
+    /*float: left;*/
+/*}*/
 
 #tinvilleLogo {
     margin: 50% 10%;
@@ -62,7 +62,8 @@
 .userType {
     padding-right: 25px;
     height: 232px;
-    position: relative;
+    float: right;
+    /*position: relative;*/
 }
 
 .registerButton {
@@ -72,22 +73,82 @@
 }
 
 div.cn {
-  display: table-cell;
-  /*width: 500px;*/
-  /*height: 500px;*/
-  vertical-align: middle;
-  text-align: center;
+    position:relative
 }
 
 div.inner {
-  display: inline-block;
-  /*width: 200px;*/
-  /*height: 200px;*/
-  text-align: left;
+    position:absolute; top:50%; height:20em; margin-top:-10em;
+    width: 95%;
 }
 
 .row-fluid .span6 {
-  display: table-cell;
-  vertical-align: bottom;
-  float: none;
+  /*display: table-cell;*/
+  /*vertical-align: bottom;*/
+  /*float: none;*/
+}
+
+#registerNewDesignerHeading {
+    text-align: center;
+    vertical-align: top;
+    font-size: 1.5em;
+}
+
+#registerNewDesignerIcon {
+    display: block;
+    margin: auto;
+}
+
+.registerDesignerPane {
+    height: 100%
+    /*padding-right: 25px;*/
+    /*height: 232px;*/
+    /*float: right;*/
+
+}
+
+.fieldWrapper input {
+    width: 95%;
+}
+
+/*.fieldWrapper input #id_shop_name,#id_email,#id_email2 {*/
+    /*width: 100%*/
+/*}*/
+
+#registerNewDesignerPane {
+    vertical-align: bottom;
+}
+
+#designerInfoAndFashionTypesDiv {
+    margin-top: 10px;
+}
+
+.infoLeft {
+    float: left;
+    padding-right: 10px;
+}
+
+.infoRight {
+    float: right;
+    padding-left: 10px;
+}
+
+.designerInfoDiv {
+    padding: 0 50px 0 10px;
+}
+
+.designerInfoSection {
+    padding-top: 10px;
+}
+
+.designerInfo {
+    font-size: .75em;
+}
+
+label {
+    font-size: .75em;
+}
+
+input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"] {
+    /*height: 15px;*/
+
 }
