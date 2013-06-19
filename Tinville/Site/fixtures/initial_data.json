@@ -1,0 +1,44 @@
+[
+  {
+    "model": "Site.FashionStyles",
+    "pk": 1,
+    "fields": {
+      "style": "High Fashion"
+    }
+  },
+  {
+    "model": "Site.FashionStyles",
+    "pk": 2,
+    "fields": {
+      "style": "Punk Rock"
+    }
+  },
+  {
+    "model": "Site.FashionStyles",
+    "pk": 3,
+    "fields": {
+      "style": "Select 1"
+    }
+  },
+  {
+    "model": "Site.FashionStyles",
+    "pk": 4,
+    "fields": {
+      "style": "Select 2"
+    }
+  },
+  {
+    "model": "Site.FashionStyles",
+    "pk": 5,
+    "fields": {
+      "style": "Urban Fashion"
+    }
+  },
+  {
+    "model": "Site.FashionStyles",
+    "pk": 6,
+    "fields": {
+      "style": "Select 3"
+    }
+  }
+]

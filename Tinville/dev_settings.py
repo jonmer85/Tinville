@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'Tinville.Site',
+    'crispy_forms',
 )
 
 # A sample logging configuration. The only tangible logging

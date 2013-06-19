@@ -1,4 +1,5 @@
 from Tinville.Site.forms import TinvilleDesignerCreationForm
+from Tinville.Site.models import FashionStyles
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -17,6 +18,7 @@ def register_designer(request):
             return HttpResponseRedirect("/")
     else:
         form = TinvilleDesignerCreationForm()
+        styles = FashionStyles.objects.all()
 
     return render_to_response("register_designer.html", {
-        'form': form}, context_instance=RequestContext(request))
+        'form': form, 'styles': styles}, context_instance=RequestContext(request))

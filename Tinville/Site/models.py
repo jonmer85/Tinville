@@ -5,6 +5,12 @@ from django.contrib.auth.models import (
 
 # Create your models here.
 
+class FashionStyles(models.Model):
+    style = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.style
+
 
 class TinvilleUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
@@ -19,7 +25,7 @@ class TinvilleUserManager(BaseUserManager):
             email=TinvilleUserManager.normalize_email(email),
             first_name=first_name,
             last_name=last_name
-            )
+        )
 
         user.set_password(password)
         user.save(using=self._db)
@@ -34,27 +40,27 @@ class TinvilleUserManager(BaseUserManager):
                                 password=password,
                                 first_name=first_name,
                                 last_name=last_name
-        )
+                                )
         user.is_admin = True
         user.save(using=self._db)
         return user
 
 
 class TinvilleUser(AbstractBaseUser):
-
     email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
     first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+    styles = models.ManyToManyField(FashionStyles)
+
     # Seller/Designer fields
     is_seller = models.BooleanField(default=True)
-    other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083)
+    other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)
     shop_name = models.CharField(verbose_name="Shop name", unique=True, db_index=True, max_length=100)
-
 
     objects = TinvilleUserManager()
 
@@ -90,9 +96,4 @@ class TinvilleUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-
-
-
-
-
 
