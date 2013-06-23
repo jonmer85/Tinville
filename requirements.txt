@@ -1,8 +1,9 @@
-Django==1.5.0
+Django==1.5
 argparse==1.2.1
 boto==2.8.0
 distribute==0.6.31
 dj-database-url==0.2.1
+django-crispy-forms==1.2.8
 django-storages==1.1.6
 psycopg2==2.4.6
 wsgiref==0.1.2
