@@ -1,9 +1,10 @@
+from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.templatetags.crispy_forms_field import css_class
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, ButtonHolder
+from crispy_forms.layout import Layout, Field, Submit, Div, HTML
 
 from Tinville.Site.models import TinvilleUser
 
@@ -13,18 +14,40 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
         super(TinvilleDesignerCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+
+            HTML(
+                """
+                <div class="row">
+                    <div class="span15">
+                        <div id="tinvilleLogoDiv"class="span2">
+                            <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
+                        </div>
+                        <div id="registerDesignerWrapperDiv" class="span13">
+                            <div id="registrationDesignerContainerDiv" class="registrationContent cn">
+                                <div id="registerDesignerDiv" class="registrationInfoDiv inner">
+                                    <div class="row">
+                                        <div id="registerNewDesignerPane" class="span6 first registerDesignerPane">
+                                            <h1 id="registerNewDesignerHeading" class="orangeHeading">Register New Designer</h1>
+                                            <p><img id="registerNewDesignerIcon" src="{{ STATIC_URL }}img/designers_big_logo.png"></p>
+                                        </div>
+                                        <div id= "registerDesignerFormDiv" class="span6 registerDesignerPane">
+                            """
+            ),
             Div(
                 Div(Field('first_name'), css_class="span3"),
                 Div(Field('last_name'), css_class="span3"),
                 css_class="row"
             ),
             Div(
-                Div(Field('shop_name'), css_class="span5"),
+                Div(Field('shop_name', css_class="input-block-level"), css_class="span6"),
                 css_class="row"
             ),
             Div(
-                Div(Field('email'), css_class="span3"),
-                Div(Field('email2'), css_class="span3"),
+                Div(Field('email', css_class="input-block-level"), css_class="span6"),
+                css_class="row"
+            ),
+            Div(
+                Div(Field('email2', css_class="input-block-level"), css_class="span6"),
                 css_class="row"
             ),
             Div(
@@ -32,7 +55,68 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                 Div(Field('password2'), css_class="span3"),
                 css_class="row"
             ),
-            Submit('submit', 'Register')
+            HTML(
+                """
+                         </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="span15">
+                    <div id="designerInfoAndFashionTypesContainerDiv" class="registrationContent cn">
+                        <div id="designerInfoAndFashionTypesDiv" class="registrationInfoDiv inner">
+                            <div class= "span7 first designerInfoDiv">
+                                <hi class="orangeHeading">Designers Info:</hi>
+                                <div class="designerInfoSection">
+                                    <img class="infoLeft" src="{{ STATIC_URL }}img/question.png">
+                                    <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
+                                       Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
+                                       Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
+                                    </p>
+                                </div>
+                                <div class="designerInfoSection">
+                                    <img class="infoRight" src="{{ STATIC_URL }}img/question.png">
+                                    <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
+                                       Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
+                                       Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
+                                    </p>
+                                </div>
+                                <div class="designerInfoSection">
+                                    <img class="infoLeft" src="{{ STATIC_URL }}img/question.png">
+                                    <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
+                                       Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
+                                       Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <h1 id="fashionStylesHeading" class="orangeHeading">Select the Fashion Styles You Are Selling</h1>
+                                <div id="div_id_styles" class="control-group">
+                                    <label class="checkbox inline">
+                                    <input type="checkbox" name="styles" id="id_styles_1" value="1">High Fashion</label>
+                                    <label class="checkbox inline">
+                                    <input type="checkbox" name="styles" id="id_styles_2" value="2">Punk Rock</label>
+                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_3" value="3">Select 1</label>
+                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_4" value="4">Select 2</label>
+                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_5" value="5">Urban Fashion</label>
+                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_6" value="6">Select 3</label>
+                                </div>
+                                """
+            ),
+            Submit('submit', 'Register'),
+            HTML(
+                """
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                """
+            )
         )
 
 
