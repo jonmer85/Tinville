@@ -1,10 +1,11 @@
-from crispy_forms.bootstrap import InlineCheckboxes
-from crispy_forms.templatetags.crispy_forms_field import css_class
+from datetime import datetime
+
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, HTML
+from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
+from crispy_forms.bootstrap import InlineCheckboxes
 
 from Tinville.Site.models import TinvilleUser
 
@@ -36,6 +37,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
             Div(
                 Div(Field('first_name'), css_class="span3"),
                 Div(Field('last_name'), css_class="span3"),
+                Hidden('last_login', datetime.now()),
                 css_class="row"
             ),
             Div(
@@ -51,7 +53,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                 css_class="row"
             ),
             Div(
-                Div(Field('password1'), css_class="span3"),
+                Div(Field('password'), css_class="span3"),
                 Div(Field('password2'), css_class="span3"),
                 css_class="row"
             ),
@@ -95,19 +97,23 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                             </div>
                             <div class="span6">
                                 <h1 id="fashionStylesHeading" class="orangeHeading">Select the Fashion Styles You Are Selling</h1>
-                                <div id="div_id_styles" class="control-group">
-                                    <label class="checkbox inline">
-                                    <input type="checkbox" name="styles" id="id_styles_1" value="1">High Fashion</label>
-                                    <label class="checkbox inline">
-                                    <input type="checkbox" name="styles" id="id_styles_2" value="2">Punk Rock</label>
-                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_3" value="3">Select 1</label>
-                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_4" value="4">Select 2</label>
-                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_5" value="5">Urban Fashion</label>
-                                    <label class="checkbox inline"><input type="checkbox" name="styles" id="id_styles_6" value="6">Select 3</label>
+                                <div id="div_id_styles" class="control-group span6">
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_1" value="1">Retro/Mod</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_2" value="2">Vintage</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_3" value="3">Formal</label>
+                                    <label class="checkbox span1 clear"><input type="checkbox" name="styles" id="id_styles_4" value="4">Casual</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_5" value="5">Trendy</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_6" value="6">Industrial</label>
+                                    <label class="checkbox span1 clear"><input type="checkbox" name="styles" id="id_styles_7" value="7">Boho</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_8" value="8">Punk</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_9" value="9">Lolita</label>
+                                    <label class="checkbox span1 clear"><input type="checkbox" name="styles" id="id_styles_10" value="10">Steampunk</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_11" value="11">Eco</label>
+                                    <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_12" value="12">Accessories</label>
                                 </div>
                                 """
             ),
-            Submit('submit', 'Register'),
+            Submit('submit', 'Register', css_class='registerButton'),
             HTML(
                 """
                             </div>
@@ -122,7 +128,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
 
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     email2 = forms.EmailField(label="Re-enter email address")
@@ -140,9 +146,9 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
 
     def clean_password2(self):
         # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
+        password = self.cleaned_data.get("password")
         password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
+        if password and password2 and password != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
 
@@ -157,7 +163,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(TinvilleDesignerCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        user.set_password(self.cleaned_data["password"])
         user.is_seller = True
         if commit:
             user.save()

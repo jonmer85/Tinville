@@ -179,3 +179,12 @@ input[type="text"], input[type="password"], input[type="datetime"], input[type="
 #fashionStylesHeading {
     margin-top: 0;
 }
+
+/*.checkbox {*/
+    /*margin-left: 0;*/
+    /*margin-right: 0;*/
+/*}*/
+
+.clear {
+    clear: left;
+}
