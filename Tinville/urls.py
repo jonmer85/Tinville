@@ -5,6 +5,7 @@ from django.contrib import admin
 from Tinville.Site.views import home
 from Tinville.Site.views import register
 from Tinville.Site.views import register_designer
+from Tinville.Site.views import faq
 
 admin.autodiscover()
 
@@ -17,6 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^faq$', faq),
 )
 
 if settings.DEBUG:

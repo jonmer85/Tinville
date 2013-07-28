@@ -1,0 +1,44 @@
+#infoPageSection {
+
+}
+
+.orangeTitle {
+    color: #f46430;
+    font-size: 12pt;
+    font-weight: normal;
+    font-family:"Century Gothic";
+}
+
+
+.infoPageContent {
+    background-color: white;
+    height: 690px;
+    width: 100%;
+}
+
+.leftInfoPageContent {
+    background-color: white;
+    height: 500px;
+    width: 30%;
+}
+
+.rightInfoPageContent {
+    background-color: #e7e5e6;
+
+}
+
+.noMarginLeft {
+    margin-left: 10px;
+}
+}
+
+#faqSection {
+
+}
+
+.faqInfo {
+    font-size: 12pt;
+    font-family:"Century Gothic";
+}
+
+
