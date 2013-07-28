@@ -17,10 +17,11 @@ def register_designer(request):
         form = TinvilleDesignerCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
+            form.save_m2m()
             return HttpResponseRedirect("/")
     else:
         form = TinvilleDesignerCreationForm()
-        styles = FashionStyles.objects.all()
+
 
     return render_to_response("register_designer.html", {
-        'form': form, 'styles': styles}, context_instance=RequestContext(request))
+        'form': form}, context_instance=RequestContext(request))

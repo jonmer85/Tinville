@@ -26,12 +26,13 @@ class TinvilleUserAdmin(UserAdmin):
         (None, {'fields': ('email', 'password', 'is_seller')}),
         ('Personal info', {'fields': ('first_name', 'middle_name', 'last_name', 'other_site_url', 'shop_name')}),
         ('Permissions', {'fields': ('is_admin',)}),
-        ('Important dates', {'fields': ('last_login',)}),
+        # ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'middle_name', 'last_name', 'other_site_url', 'shop_name', 'is_seller', 'password1', 'password2')}
+            'fields': ('email', 'first_name', 'middle_name', 'last_name', 'other_site_url', 'shop_name', 'is_seller',
+                       'password', 'password2')}
         ),
     )
     search_fields = ('email', 'shop_name')
