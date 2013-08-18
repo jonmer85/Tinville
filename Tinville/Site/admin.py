@@ -1,5 +1,5 @@
 from Tinville.Site.models import TinvilleUser
-from Tinville.Site.forms import TinvilleDesignerCreationForm, TinvilleUserChangeForm
+from Tinville.Site.forms import TinvilleUserCreationForm, TinvilleUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 class TinvilleUserAdmin(UserAdmin):
     # The forms to add and change user instances
     form = TinvilleUserChangeForm
-    add_form = TinvilleDesignerCreationForm
+    add_form = TinvilleUserCreationForm
 
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin

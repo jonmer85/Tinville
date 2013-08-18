@@ -2,9 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 
-from Tinville.Site.views import home
-from Tinville.Site.views import register
-from Tinville.Site.views import register_designer
+from Tinville.Site.views import home, register, register_designer, register_shopper, register_success
 
 admin.autodiscover()
 
@@ -14,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^$', home),
     url(r'^register$', register),
     url(r'^register_designer$', register_designer),
+    url(r'^register_shopper$', register_shopper),
+    url(r'^register_success/(?P<user_id>\d+)$', register_success),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

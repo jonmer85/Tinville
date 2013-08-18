@@ -9,10 +9,23 @@ from crispy_forms.bootstrap import InlineCheckboxes
 
 from Tinville.Site.models import TinvilleUser
 
-class TinvilleDesignerCreationForm(forms.ModelForm):
+class TinvilleUserCreationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(TinvilleDesignerCreationForm, self).__init__(*args, **kwargs)
+        isDesigner = kwargs.pop('designer', False)
+        super(TinvilleUserCreationForm, self).__init__(*args, **kwargs)
+
+        self.isDesigner = isDesigner
+
+        if isDesigner:
+            userStrings = {'lowerCaseUser': 'designer', 'upperCaseUser': 'Designer',
+                           'fashionInterestHeading': 'Select the Fashion Styles You Are Selling'}
+
+        else:
+            userStrings = {'lowerCaseUser': 'shopper', 'upperCaseUser': 'Shopper',
+                           'fashionInterestHeading': 'Select the Fashion Styles That Interest You'}
+
+
         self.helper = FormHelper()
         self.helper.layout = Layout(
 
@@ -23,16 +36,16 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                         <div id="tinvilleLogoDiv"class="span2">
                             <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
                         </div>
-                        <div id="registerDesignerWrapperDiv" class="span13">
-                            <div id="registrationDesignerContainerDiv" class="registrationContent cn">
-                                <div id="registerDesignerDiv" class="registrationInfoDiv inner">
+                        <div id="registerUserWrapperDiv" class="span13">
+                            <div id="registrationUserContainerDiv" class="registrationContent">
+                                <div id="registerUserDiv" class="registrationInfoDiv">
                                     <div class="row">
-                                        <div id="registerNewDesignerPane" class="span6 first registerDesignerPane">
-                                            <h1 id="registerNewDesignerHeading" class="orangeHeading">Register New Designer</h1>
-                                            <p><img id="registerNewDesignerIcon" src="{{ STATIC_URL }}img/designers_big_logo.png"></p>
+                                        <div id="registerNewUserPane" class="span6 first registerUserPane">
+                                            <h1 id="registerNewUserHeading" class="orangeHeading">Register New %(upperCaseUser)s</h1>
+                                            <p><img id="registerNewUserIcon" src="{{ STATIC_URL }}img/%(lowerCaseUser)s_big_logo.png"></p>
                                         </div>
-                                        <div id= "registerDesignerFormDiv" class="span6 registerDesignerPane">
-                            """
+                                        <div id= "registerUserFormDiv" class="span6 registerUserPane">
+                            """ % userStrings
             ),
             Div(
                 Div(Field('first_name'), css_class="span3"),
@@ -46,10 +59,6 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
             ),
             Div(
                 Div(Field('email', css_class="input-block-level"), css_class="span6"),
-                css_class="row"
-            ),
-            Div(
-                Div(Field('email2', css_class="input-block-level"), css_class="span6"),
                 css_class="row"
             ),
             Div(
@@ -72,7 +81,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                     <div id="designerInfoAndFashionTypesContainerDiv" class="registrationContent cn">
                         <div id="designerInfoAndFashionTypesDiv" class="registrationInfoDiv inner">
                             <div class= "span7 first designerInfoDiv">
-                                <hi class="orangeHeading">Designers Info:</hi>
+                                <hi class="orangeHeading">%(upperCaseUser)s Info:</hi>
                                 <div class="designerInfoSection">
                                     <img class="infoLeft" src="{{ STATIC_URL }}img/question.png">
                                     <p class="designerInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
@@ -96,7 +105,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                                 </div>
                             </div>
                             <div class="span6">
-                                <h1 id="fashionStylesHeading" class="orangeHeading">Select the Fashion Styles You Are Selling</h1>
+                                <h1 id="fashionStylesHeading" class="orangeHeading">%(fashionInterestHeading)s</h1>
                                 <div id="div_id_styles" class="control-group span6">
                                     <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_1" value="1">Retro/Mod</label>
                                     <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_2" value="2">Vintage</label>
@@ -111,7 +120,7 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
                                     <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_11" value="11">Eco</label>
                                     <label class="checkbox span1"><input type="checkbox" name="styles" id="id_styles_12" value="12">Accessories</label>
                                 </div>
-                                """
+                                """ % userStrings
             ),
             Submit('submit', 'Register', css_class='registerButton'),
             HTML(
@@ -131,7 +140,8 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
-    email2 = forms.EmailField(label="Re-enter email address")
+    isDesigner = False
+    userStrings = {}
 
     class Meta:
         model = TinvilleUser
@@ -149,70 +159,19 @@ class TinvilleDesignerCreationForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         password2 = self.cleaned_data.get("password2")
         if password and password2 and password != password2:
-            raise forms.ValidationError("Passwords don't match")
+            raise forms.ValidationError("Passwords do not match")
         return password2
 
-    def clean_email2(self):
-        # Check that the two email addresses match
-        email = self.cleaned_data["email"]
-        email2 = self.cleaned_data["email2"]
-        if email and email2 and email != email2:
-            raise forms.ValidationError("Email addresses don't match")
-        return email2
 
     def save(self, commit=True):
         # Save the provided password in hashed format
-        user = super(TinvilleDesignerCreationForm, self).save(commit=False)
+        user = super(TinvilleUserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
         user.is_seller = True
         if commit:
             user.save()
         return user
 
-
-# class TinvilleDesignerCreationForm(forms.ModelForm):
-#     """A form for creating new users. Includes all the required
-#     fields, plus a repeated password."""
-#     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-#     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-#
-#     email2 = forms.EmailField(label="Re-enter email address")
-#
-#     class Meta:
-#         model = TinvilleUser
-#         fields = ('email',
-#                   'first_name',
-#                   'last_name',
-#                   'middle_name',
-#                   'is_seller',
-#                   'other_site_url',
-#                   'shop_name'
-#                 )
-#
-#     def clean_password2(self):
-#         # Check that the two password entries match
-#         password1 = self.cleaned_data.get("password1")
-#         password2 = self.cleaned_data.get("password2")
-#         if password1 and password2 and password1 != password2:
-#             raise forms.ValidationError("Passwords don't match")
-#         return password2
-#
-#     def clean_email2(self):
-#         # Check that the two email addresses match
-#         email = self.cleaned_data["email"]
-#         email2 = self.cleaned_data["email2"]
-#         if email and email2 and email != email2:
-#             raise forms.ValidationError("Email addresses don't match")
-#         return email2
-#
-#     def save(self, commit=True):
-#         # Save the provided password in hashed format
-#         user = super(TinvilleDesignerCreationForm, self).save(commit=False)
-#         user.set_password(self.cleaned_data["password1"])
-#         user.is_seller = True
-#         if commit:
-#             user.save()
-#         return user
 
 
 class TinvilleUserChangeForm(forms.ModelForm):

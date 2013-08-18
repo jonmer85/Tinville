@@ -53,15 +53,16 @@ class TinvilleUser(AbstractBaseUser):
     middle_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50)
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
     styles = models.ManyToManyField(FashionStyles)
 
     # Seller/Designer fields
-    is_seller = models.BooleanField(default=True)
+    is_seller = models.BooleanField(default=False)
     other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)
     shop_name = models.CharField(verbose_name="Shop name", unique=True, db_index=True, max_length=100)
+    is_approved = models.BooleanField(default=False)
 
     objects = TinvilleUserManager()
 
