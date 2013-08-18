@@ -9,6 +9,8 @@ def home(request):
 
 def register(request):
     return render_to_response("register.html", {}, context_instance=RequestContext(request))
+def faq(request):
+    return render_to_response("faq.html", {}, context_instance=RequestContext(request))
 
 def register_designer(request):
     if request.method == 'POST':
