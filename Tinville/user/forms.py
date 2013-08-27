@@ -5,9 +5,8 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
-from crispy_forms.bootstrap import InlineCheckboxes
 
-from Tinville.Site.models import TinvilleUser
+from Tinville.user.models import TinvilleUser
 
 class TinvilleUserCreationForm(forms.ModelForm):
 
@@ -20,10 +19,12 @@ class TinvilleUserCreationForm(forms.ModelForm):
         if isDesigner:
             userStrings = {'lowerCaseUser': 'designer', 'upperCaseUser': 'Designer',
                            'fashionInterestHeading': 'Select the Fashion Styles You Are Selling'}
+            self.fields['shop_name'].required = True
 
         else:
             userStrings = {'lowerCaseUser': 'shopper', 'upperCaseUser': 'Shopper',
                            'fashionInterestHeading': 'Select the Fashion Styles That Interest You'}
+            self.fields['shop_name'].required = False
 
 
         self.helper = FormHelper()

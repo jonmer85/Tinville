@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
     )
+from autoslug import AutoSlugField
 
 # Create your models here.
 
@@ -49,6 +50,7 @@ class TinvilleUserManager(BaseUserManager):
 
 class TinvilleUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
+    slug = AutoSlugField(populate_from='email', unique=True)
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50)
@@ -61,7 +63,7 @@ class TinvilleUser(AbstractBaseUser):
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
     other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)
-    shop_name = models.CharField(verbose_name="Shop name", unique=True, db_index=True, max_length=100)
+    shop_name = models.CharField(verbose_name="Shop name", unique=True, blank=True, null=True, db_index=True, default=None, max_length=100)
     is_approved = models.BooleanField(default=False)
 
     objects = TinvilleUserManager()
@@ -69,6 +71,13 @@ class TinvilleUser(AbstractBaseUser):
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def save(self, *args, **kwargs):
+
+        if not self.shop_name:
+            self.shop_name = None
+
+        super(TinvilleUser, self).save(self, *args, **kwargs)
 
     def get_full_name(self):
         # The user is identified by their email address
