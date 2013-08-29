@@ -143,7 +143,7 @@ INSTALLED_APPS = (
     'Tinville.Site',
     'Tinville.user',
     'crispy_forms',
-    'braces'
+    'braces',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -189,3 +189,9 @@ AWS_STORAGE_BUCKET_NAME = 'tinville'
 S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
+
+EMAIL_HOST_USER = 'no-reply@tinville.com'
+EMAIL_HOST_PASSWORD = """What'sgoodinthehood"""
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

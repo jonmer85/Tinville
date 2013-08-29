@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}
+{% load i18n %}
+{% block body_class %}{{ block.super }}{% endblock %}
+{% block content %}
+
+
+    {% if messages %}
+        {% for message in messages %}
+            <div{% if message.tags %} class="alert alert-block alert-{{ message.tags }}"{% endif %}>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

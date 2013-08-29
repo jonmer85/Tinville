@@ -1,9 +1,16 @@
-from django.contrib.auth.decorators import login_required
+import datetime
+import random
+import hashlib
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
     )
+from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 from autoslug import AutoSlugField
+
+from Tinville.settings.base import EMAIL_HOST_USER
+
 
 # Create your models here.
 
@@ -55,15 +62,19 @@ class TinvilleUser(AbstractBaseUser):
     middle_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50)
 
-    is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+
+    is_active = models.BooleanField(default=False)
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(auto_now_add=True)
 
     styles = models.ManyToManyField(FashionStyles)
 
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
     other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)
-    shop_name = models.CharField(verbose_name="Shop name", unique=True, blank=True, null=True, db_index=True, default=None, max_length=100)
+    shop_name = models.CharField(verbose_name="Shop name", unique=True, blank=True, null=True, db_index=True,
+                                 default=None, max_length=100)
     is_approved = models.BooleanField(default=False)
 
     objects = TinvilleUserManager()
@@ -72,12 +83,21 @@ class TinvilleUser(AbstractBaseUser):
 
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
+    def generate_activation_information(self):
+
+         # Build the activation key for their account
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+        self.activation_key = hashlib.sha1(salt+self.email).hexdigest()
+        self.key_expires = datetime.datetime.now() + datetime.timedelta(7)  # Give 7 days to confirm
+        self.save()
+
+
     def save(self, *args, **kwargs):
 
         if not self.shop_name:
             self.shop_name = None
 
-        super(TinvilleUser, self).save(self, *args, **kwargs)
+        super(TinvilleUser, self).save(*args, **kwargs)
 
     def get_full_name(self):
         # The user is identified by their email address
@@ -101,6 +121,17 @@ class TinvilleUser(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         #TODO Add permission system for designer pages
         return True
+
+    def send_confirmation_email(self, base_url):
+
+        # Send an email with the confirmation link
+        confirmation_url = reverse('activate-user', kwargs={'activation_key': self.activation_key})
+
+        email_subject = 'Your new Tinville account confirmation'
+        email_body = "Hello %s! Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
+                     " this link within 7 days:\n\n%s" % (self.first_name, base_url+confirmation_url)
+
+        send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 
     @property
     def is_staff(self):

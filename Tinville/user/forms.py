@@ -38,6 +38,14 @@ class TinvilleUserCreationForm(forms.ModelForm):
                             <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
                         </div>
                         <div id="registerUserWrapperDiv" class="span13">
+                            {%% if messages %%}
+                                {%% for message in messages %%}
+                                    <div{%% if message.tags %%} class="alert alert-{{ message.tags }}"{%% endif %%}>
+                                        <a class="close" data-dismiss="alert" href="#">&times;</a>
+                                        {{ message }}
+                                    </div>
+                                {%% endfor %%}
+                            {%% endif %%}
                             <div id="registrationUserContainerDiv" class="registrationContent">
                                 <div id="registerUserDiv" class="registrationInfoDiv">
                                     <div class="row">
