@@ -2,15 +2,6 @@
 
 from .base import *  # Start with base settings
 
-# HEROKU Change!!!
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
-STATIC_URL = S3_URL + STATIC_DIRECTORY
-MEDIA_URL = S3_URL + MEDIA_DIRECTORY
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -21,3 +12,13 @@ DATABASES = {
         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+# HEROKU Change!!!
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+
+STATIC_URL = S3_URL + STATIC_DIRECTORY
+MEDIA_URL = S3_URL + MEDIA_DIRECTORY
+
+
+
