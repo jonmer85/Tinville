@@ -16,7 +16,6 @@ urlpatterns = patterns('',
     url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
 
 
-
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^faq$', faq),

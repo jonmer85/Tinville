@@ -1,5 +1,3 @@
-import datetime
-
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, TemplateView
@@ -30,6 +28,7 @@ class CreateUserView(CreateView):
         return HttpResponseRedirect(self.success_url)
 
 
+
 class CreateDesignerView(CreateUserView):
     template_name = 'register_designer.html'
 
@@ -55,7 +54,7 @@ def get_form_kwargs(self):
 class ActivationView(TemplateView):
     template_name = "notification.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):  #Jon M TODO is this the right place to hook into for this?
         context = super(TemplateView, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated():
             messages.warning(self.request,

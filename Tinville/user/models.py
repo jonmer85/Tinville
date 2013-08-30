@@ -59,7 +59,6 @@ class TinvilleUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
     slug = AutoSlugField(populate_from='email', unique=True)
     first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50)
 
     is_admin = models.BooleanField(default=False)
