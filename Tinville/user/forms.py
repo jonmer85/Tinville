@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
@@ -176,11 +176,10 @@ class TinvilleUserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(TinvilleUserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
-        user.is_seller = True
+        user.is_seller = self.isDesigner
         if commit:
             user.save()
         return user
-
 
 
 class TinvilleUserChangeForm(forms.ModelForm):
@@ -198,5 +197,27 @@ class TinvilleUserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Div(
+                HTML('<legend>Please Sign In</legend>'),
+                Div(
+                    HTML('<a class="close" data-dismiss="alert" href="#">X</a>Incorrect Username or Password!'),
+                    css_class="alert alert-error"),
+                Div(Field('last_name'), css_class="span3"),
+                Hidden('last_login', datetime.now()),
+                css_class="row"
+            ),
+            Field('username', placeholder="Username", css_class='span4'),
+            Field('password', type='password', placeholder="Password", css_class='span4'),
+            Field('remember_me', type='checkbox', value='1', label='Remember Me'),
+            Submit('submit', 'Sign in', css_class='btn btn-info btn-block')
+        )
 
 

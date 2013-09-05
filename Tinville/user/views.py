@@ -43,9 +43,9 @@ class CreateDesignerView(CreateUserView):
 class CreateShopperView(CreateUserView):
     template_name = 'register_shopper.html'
 
-def get_form_kwargs(self):
+    def get_form_kwargs(self):
         # pass "user" keyword argument with the current user to your form
-        kwargs = super(CreateDesignerView, self).get_form_kwargs()
+        kwargs = super(CreateShopperView, self).get_form_kwargs()
         kwargs['designer'] = False
         self.success_url = reverse('create-shopper')
         return kwargs
@@ -54,12 +54,12 @@ def get_form_kwargs(self):
 class ActivationView(TemplateView):
     template_name = "notification.html"
 
-    def get_context_data(self, **kwargs):  #Jon M TODO is this the right place to hook into for this?
-        context = super(TemplateView, self).get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
         if self.request.user.is_authenticated():
             messages.warning(self.request,
                              "Your account already exists and activated. There is no need to activate again.")
-            return context
+            return self.render_to_response(context)
         user = get_object_or_404(TinvilleUser, activation_key=kwargs['activation_key'])
         # introduce again to enforce expiring activation Jon M TODO
         # if user.key_expires < datetime.datetime.utcnow().replace(tzinfo=utc):
@@ -71,5 +71,5 @@ class ActivationView(TemplateView):
         user.save()
         messages.success(self.request,
                              """Thank you for completing the registration process. You are now successfully logged into Tinville!""")
-        return context
+        return self.render_to_response(context)
 

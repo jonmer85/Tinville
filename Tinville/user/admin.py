@@ -14,7 +14,6 @@ class TinvilleUserAdmin(UserAdmin):
     # that reference specific fields on auth.User.
     list_display = ('email',
                     'first_name',
-                    'middle_name',
                     'last_name',
                     'is_admin',
                     'is_seller',
@@ -24,7 +23,7 @@ class TinvilleUserAdmin(UserAdmin):
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'is_seller')}),
-        ('Personal info', {'fields': ('first_name', 'middle_name', 'last_name', 'other_site_url', 'shop_name')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'other_site_url', 'shop_name')}),
         ('Permissions', {'fields': ('is_admin',)}),
         # ('Important dates', {'fields': ('last_login',)}),
     )

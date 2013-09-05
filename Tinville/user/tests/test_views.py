@@ -6,12 +6,9 @@ import pytz
 from Tinville.user.models import TinvilleUser
 from Tinville.settings.base import TIME_ZONE
 
+
 class TestUserViews(TestCase):
 
-
-
-    def setUp(self):
-        pass
 
     def test_get_register_view(self):
         create_url = reverse('register')
@@ -43,25 +40,80 @@ class TestUserViews(TestCase):
         self.assertEqual(user.first_name, first)
         self.assertEqual(user.last_name, last)
         self.assertEqual(user.email, email)
+        self.assertEqual(user.last_login.astimezone(local_tz), local_tz.localize(last_login))
+        self.failIfEqual(user.password, password)  # Should fail since it should be is a hashed password
+        self.assertTrue(user.is_seller)
+        self.assertFalse(user.is_active)
+        self.assertEqual(list(user.styles.all().values_list('id', flat=True)), styles)
+
+    def test_post_create_shopper_view_success(self):
+        first, last, email, shop_name, last_login, password, styles, resp \
+            = self.post_test_user_data(shop_name='', view_name='create-shopper')
+
+        local_tz = pytz.timezone(TIME_ZONE)
+
+        success_url = reverse('create-shopper')
+        self.assertRedirects(resp, success_url, httplib.FOUND, httplib.OK)
+        user = TinvilleUser.objects.get(email=email)
+        self.assertEqual(user.first_name, first)
+        self.assertEqual(user.last_name, last)
+        self.assertEqual(user.email, email)
         self.assertEqual(user.shop_name, shop_name)
         self.assertEqual(user.last_login.astimezone(local_tz), local_tz.localize(last_login))
         self.failIfEqual(user.password, password)  # Should fail since it should be is a hashed password
-        self.assertEqual(user.styles, styles)
+        self.assertFalse(user.is_seller)
+        self.assertFalse(user.is_active)
+        self.assertEqual(list(user.styles.all().values_list('id', flat=True)), styles)
+
+    def test_get_activation_view_designer(self):
+        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+
+        user = TinvilleUser.objects.get(email=email)
+        self.assertTrue(user.is_seller)
+        self.assertFalse(user.is_active)
+
+        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
+        user = TinvilleUser.objects.get(email=email)
+        self.assertTemplateUsed(resp, 'notification.html')
+        self.assertTrue(user.is_active)  # User should now be activated
+        self.assertTrue(user.is_seller)
+        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
+        self.assertContains(resp, 'alert-success')
+
+    def test_get_activation_view_designer_already_authenticated(self):
+        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+
+        user = TinvilleUser.objects.get(email=email)
+        user.is_active = True
+        user.save()
+        success = self.client.login(username=email, password=password)
+        self.assertTrue(success)
+
+        self.assertTrue(user.is_seller)
+        self.assertTrue(user.is_active)
+
+        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
+        self.assertTemplateUsed(resp, 'notification.html')
+        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
+        self.assertContains(resp, 'alert-warning')
 
 
 
-    def test_post_create_designer_view_duplicate_email(self):
-        duplicate_email = 'joe@schmoe.com'
-        TinvilleUser.objects.create_user(duplicate_email, 'joe', 'schmoe', 'test_password')
-        first, last, email, shop_name, last_login, password, styles, resp \
-            = self.post_test_user_data('jon', 'smith', duplicate_email)
 
-        self.assertEqual(resp.status_code, httplib.OK)  # Return the page again with form error
+
+
+
+
+
+
 
     ### Utilities
     def post_test_user_data(self, first=None, last=None, email=None, shop_name=None,
-                            last_login=None, password=None, password2=None, styles=None):
-        create_url = reverse('create-designer')
+                            last_login=None, password=None, password2=None, styles=None,
+                            view_name=None):
+
+        view_name = view_name or 'create-designer'
+        create_url = reverse(view_name)
         first = first or 'Joe'
         last = last or 'Schmoe'
         email = email or 'joe@schmoe.com'
@@ -70,7 +122,7 @@ class TestUserViews(TestCase):
         last_login = last_login or datetime.datetime.now()
         password = password or 'test'
         password2 = password2 or password
-        styles = styles or ('1', '3', '5')
+        styles = styles or [1, 3, 5]
         resp = self.client.post(create_url,
                                 {'first_name': first,
                                  'last_name': last,
