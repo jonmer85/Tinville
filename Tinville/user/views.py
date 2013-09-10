@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, TemplateView
 from django.contrib import messages
+from django.contrib.auth.views import login as auth_view_login
 from django.core.urlresolvers import reverse
 
 from Tinville.user.forms import TinvilleUserCreationForm
@@ -72,4 +73,11 @@ class ActivationView(TemplateView):
         messages.success(self.request,
                              """Thank you for completing the registration process. You are now successfully logged into Tinville!""")
         return self.render_to_response(context)
+
+
+def login(request, *args, **kwargs):
+    if request.method == 'POST':
+        if not request.POST.get('remember_me', None):
+            request.session.set_expiry(0)
+    return auth_view_login(request, *args, **kwargs)
 

@@ -39,14 +39,28 @@
                     <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">
                         <ul>
                             <li class="mainNavListItem"><a href="#">MY ACCOUNT</a></li>
-                            <li class="mainNavListItem"><a href="/login">LOGIN</a></li>
+                            {% if user.is_authenticated %}
+                                <li class="mainNavListItem"><a href="/logout">LOGOUT</a></li>
+                            {% else %}
+                                <li class="mainNavListItem"><a href="/login">LOGIN</a></li>
+                            {% endif %}
                         </ul>
                     </nav>
-                    <nav id="register" class="mainNav mainLinks accountLinks">
+                    <nav id="register" class="mainNav mainLinks accountLinks clear">
                         <ul>
                             <li class="mainNavListItem"><a href="/register">REGISTER</a></li>
                         </ul>
                     </nav>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="loginWelcome">
+                        {% if user.is_authenticated %}
+                            <p>Welcome, {{ user.first_name }}!</p>
+                        {% else %}
+                            <p>Welcome! Please log in or register.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 

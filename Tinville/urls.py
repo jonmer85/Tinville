@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 
 from Tinville.Site.views import faq
-from Tinville.user.views import CreateDesignerView, CreateShopperView, ActivationView, TemplateView
+from Tinville.user.views import CreateDesignerView, CreateShopperView, ActivationView, TemplateView, login
 from Tinville.user.forms import LoginForm
 
 
@@ -16,8 +16,10 @@ urlpatterns = patterns('',
     url(r'^register_shopper$', CreateShopperView.as_view(), name='create-shopper'),
     url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
 
-    url(r'^login$', 'django.contrib.auth.views.login',
-        {'template_name': 'login.html', 'authentication_form': LoginForm}),
+    url(r'^login$', login,
+        {'template_name': 'login.html', 'authentication_form': LoginForm},
+        name='login'),
+    (r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^faq$', faq),

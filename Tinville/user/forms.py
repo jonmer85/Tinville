@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
+from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
@@ -37,7 +38,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
                         <div id="tinvilleLogoDiv"class="span2">
                             <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
                         </div>
-                        <div id="registerUserWrapperDiv" class="span13">
+                        <div id="registerUserWrapperDiv" class="span13 roundedCorners">
                             {%% if messages %%}
                                 {%% for message in messages %%}
                                     <div{%% if message.tags %%} class="alert alert-{{ message.tags }}"{%% endif %%}>
@@ -87,7 +88,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             </div>
             <div class="row">
                 <div class="span15">
-                    <div id="designerInfoAndFashionTypesContainerDiv" class="registrationContent cn">
+                    <div id="designerInfoAndFashionTypesContainerDiv" class="registrationContent cn roundedCorners">
                         <div id="designerInfoAndFashionTypesDiv" class="registrationInfoDiv inner">
                             <div class= "span7 first designerInfoDiv">
                                 <hi class="orangeHeading">%(upperCaseUser)s Info:</hi>
@@ -131,7 +132,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
                                 </div>
                                 """ % userStrings
             ),
-            Submit('submit', 'Register', css_class='registerButton'),
+            Submit('submit', 'Register', css_class='registerButton tinvilleButton'),
             HTML(
                 """
                             </div>
@@ -200,24 +201,34 @@ class TinvilleUserChangeForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
+    remember_me = forms.BooleanField(label="Remember Me", widget=forms.CheckboxInput, initial=True, required=False)
+
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False
+        self.helper.form_id = "loginForm"
         self.helper.layout = Layout(
             Div(
-                HTML('<legend>Please Sign In</legend>'),
                 Div(
-                    HTML('<a class="close" data-dismiss="alert" href="#">X</a>Incorrect Username or Password!'),
-                    css_class="alert alert-error"),
-                Div(Field('last_name'), css_class="span3"),
-                Hidden('last_login', datetime.now()),
+                    Div(
+                        HTML("""<legend>Please Sign In</legend>
+                                """
+                        ),  # Jon M TODO Consolidate messages into a common tag that can be loaded in
+                        Field('username', placeholder="Username", css_class='span4'),
+                        Field('password', type='password', placeholder="Password", css_class='span4'),
+                        Field('remember_me', value='true'),
+                        Hidden('next', value=reverse('home')),
+                        Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton'),
+                        Div(
+                            HTML("""<a href="/register" name="register" id="loginRegisterButton">Don't have an account?</a>"""),
+                            css_class='form-footer'
+                        ),
+
+
+                        css_class="well noBottomMargin"
+                    ),
+                    css_class="span7 offset4"
+                ),
                 css_class="row"
-            ),
-            Field('username', placeholder="Username", css_class='span4'),
-            Field('password', type='password', placeholder="Password", css_class='span4'),
-            Field('remember_me', type='checkbox', value='1', label='Remember Me'),
-            Submit('submit', 'Sign in', css_class='btn btn-info btn-block')
+            )
         )
-
-

@@ -206,9 +206,36 @@ body {
     height: 15px;
 }
 
+#loginWelcome {
+    font-size: 12px;
+    font-weight: bold;
+    float:right;
+    color: #f46430;
+
+}
+
 .mainLinks a:hover, .mainLinks a:active, .mainLinks .active a:link, .mainLinks .active a:visited {
     color: #f46430;
     text-shadow: none !important;
+}
+
+.tinvilleButton {
+}
+
+.noBottomMargin {
+    margin-bottom: 0px;
+}
+
+.form-footer {
+    margin-top: 20px
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.clear {
+    clear: left;
 }
 
 /*
@@ -221,11 +248,40 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(244, 100, 48, 0.6);
 }
 
+.btn-primary {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #f46430;
+  background-image: -moz-linear-gradient(top, #ff9628, #f46430);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9628), to(#f46430));
+  background-image: -webkit-linear-gradient(top, #ff9628, #f46430);
+  background-image: -o-linear-gradient(top, #ff9628, #f46430);
+  background-image: linear-gradient(to bottom, #ff9628, #f46430);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9628', endColorstr='#f46430', GradientType=0);
+  border-color: #f46430 #f46430 #f44b16;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #f46430;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+  color: #ffffff;
+  background-color: #f46430;
+  *background-color: #f44b16;
+}
+
 .container-fluid {
     min-width: 780px;
     /*max-width: 1260px*/
 }
 
+.well {
+    background-color: white;
+}
 
 
 

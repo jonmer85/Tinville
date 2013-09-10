@@ -97,14 +97,24 @@ class TestUserViews(TestCase):
         self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
         self.assertContains(resp, 'alert-warning')
 
+    def test_get_login_success(self):
+        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
 
+        user = TinvilleUser.objects.get(email=email)
+        user.is_active = True
+        user.save()
+        resp = self.client.get(reverse('home'))
+        self.assertNotContains(resp, first)  # Home page contains user's first name when logged in
 
-
-
-
-
-
-
+        resp = self.client.post(reverse('login'),
+                                {'email': email,
+                                 'password': password,
+                                 'remember+me': False,
+                                }
+                        )
+        self.assertRedirects(resp, reverse('home'), status_code=httplib.OK)
+        resp = self.client.get(reverse('home'))
+        self.assertContains(resp, first)  # Home page contains user's first name when logged in
 
 
     ### Utilities
@@ -132,7 +142,8 @@ class TestUserViews(TestCase):
                                  'password2': password2,
                                  'last_login': last_login,
                                  'styles': styles,
-                                })
+                                 }
+                                )
 
         return first, last, email, shop_name, last_login, password, styles, resp
 
