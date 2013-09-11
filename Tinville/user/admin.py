@@ -3,6 +3,7 @@ from Tinville.user.forms import TinvilleUserCreationForm, TinvilleUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.contrib.admin.sites import NotRegistered
 
 class TinvilleUserAdmin(UserAdmin):
     # The forms to add and change user instances
@@ -43,4 +44,7 @@ admin.site.register(TinvilleUser, TinvilleUserAdmin)
 # ... and, since we're not using Django's builtin permissions,
 # unregister the Group model from admin.
 #TODO should we unregister? Group permissions may help
-admin.site.unregister(Group)
+try:
+    admin.site.unregister(Group)
+except NotRegistered:
+    pass
