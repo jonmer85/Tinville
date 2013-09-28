@@ -203,8 +203,36 @@ input[type="text"], input[type="password"], input[type="datetime"], input[type="
     margin-bottom: 0;
 }
 
-#loginRegisterButton {
-    margin-bottom: 10px;
-    margin-left: 300px;
+#loginFormDiv {
+    width: 510px;
+    height: 378px;
+    border-radius: 0;
+    border: none;
+;
 }
+
+#loginRegisterLink {
+    font-size: .75em;
+    margin-bottom: 5px;
+    vertical-align: text-top;
+}
+
+#loginForgetUserOrPasswordText {
+    margin-top: 5px;
+    font-size: .65em;
+}
+
+#rememberLoginLabel {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+#loginFacebookButton {
+    margin-top: 10px;
+}
+
+#loginImage {
+    margin-bottom: 0px;
+}
+
 

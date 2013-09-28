@@ -32,7 +32,7 @@
         <header id="banner" class="body">
             <div class="row">
                 <div class="span2">
-                    <a href="/"><img src="{{ STATIC_URL }}img/tinville1.png" /></a>
+                    <a href="/"><img id="tinvilleTagBanner" src="{{ STATIC_URL }}img/tinville1.png" /></a>
                 </div>
 
                 <div class="span3 offset10">
@@ -40,12 +40,36 @@
                         <ul>
                             <li class="mainNavListItem"><a href="#">MY ACCOUNT</a></li>
                             {% if user.is_authenticated %}
-                                <li class="mainNavListItem"><a href="/logout">LOGOUT</a></li>
+                                <li class="mainNavListItem"><a href="/logout">SIGN OUT</a></li>
                             {% else %}
-                                <li class="mainNavListItem"><a href="/login">LOGIN</a></li>
+                                <li class="mainNavListItem"><a data-toggle="modal" href="#signInModal">SIGN IN</a></li>
                             {% endif %}
                         </ul>
                     </nav>
+
+                    <div class="modal hide" id="signInModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <hr class="contentBorder loginModalBorder"/>
+                    <div id="loginModalOuterDiv">
+                        {%  include "login_form.html" %}
+                    </div>
+
+{#                        <div class="modal-header">#}
+{#                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>#}
+{#                            <h3 id="signInModalLabel"></h3>#}
+{#                        </div>#}
+
+
+
+{#                        <div class="modal-body">#}
+{#                            {% crispy feedback_form feedback_form.helper %}#}
+{#                        </div>#}
+{#                        <div class="modal-footer">#}
+{#                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>#}
+{#                            <button class="btn btn-primary">Submit</button>#}
+{#                        </div>#}
+                    <hr class="contentBorder loginModalBorder"/>
+                    </div>
+
                     <nav id="register" class="mainNav mainLinks accountLinks clear">
                         <ul>
                             <li class="mainNavListItem"><a href="/register">REGISTER</a></li>
@@ -179,10 +203,6 @@
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
-
-
-
-
     </script>
 {% endblock body %}
 </body>

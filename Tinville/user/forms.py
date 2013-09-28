@@ -172,7 +172,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match")
         return password2
 
-
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(TinvilleUserCreationForm, self).save(commit=False)
@@ -211,24 +210,42 @@ class LoginForm(AuthenticationForm):
             Div(
                 Div(
                     Div(
-                        HTML("""<legend>Please Sign In</legend>
+                        HTML("""<img id="loginImage" src="{{ STATIC_URL }}img/login_pic.jpg"/>"""),
+                        css_class="span8 noLeftMargin noRightMargin noBottomMargin"
+                    ),
+                    Div(
+                        HTML("""<legend>Please Sign in
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                </legend>
                                 """
                         ),  # Jon M TODO Consolidate messages into a common tag that can be loaded in
                         Field('username', placeholder="Username", css_class='span4'),
                         Field('password', type='password', placeholder="Password", css_class='span4'),
-                        Field('remember_me', value='true'),
+                        HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox floatLeft">
+                                    <input checked="checked" class="checkboxinput" id="id_remember_me" name="remember_me"
+                                     type="checkbox" value="true">
+                                    Remember Me
+                                </label>"""),
+                        HTML("""<a href="/register" name="register" id="loginRegisterLink">Don't have an
+                                    account?</a>"""),
                         Hidden('next', value=reverse('home')),
-                        Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton'),
                         Div(
-                            HTML("""<a href="/register" name="register" id="loginRegisterButton">Don't have an account?</a>"""),
-                            css_class='form-footer'
+                            Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton'),
+                            css_class="clear"
                         ),
-
-
-                        css_class="well noBottomMargin"
+                        HTML("""<p id="loginForgetUserOrPasswordText">Forgot your <a href="#">username</a> or
+                                    <a href="#">password</a>?"""),
+                        Div(
+                            HTML("""<img src="{{ STATIC_URL }}img/or_login.png"/>""")
+                        ),
+                        Div(
+                            HTML("""<button id="loginFacebookButton" class="btn btn-facebook"><i class="icon-facebook">
+                                        </i> | Sign In with Facebook</button>""")
+                        ),
+                        css_id="loginFormDiv",
+                        css_class="well noLeftMargin noBottomMargin noRightMargin span7"
                     ),
-                    css_class="span7 offset4"
                 ),
-                css_class="row"
+                css_class="row noLeftMargin"
             )
         )
