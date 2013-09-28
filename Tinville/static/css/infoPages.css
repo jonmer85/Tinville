@@ -4,33 +4,52 @@
 
 .orangeTitle {
     color: #f46430;
+    margin-top: 15px;
+    margin-bottom: 0px;
     font-size: 12pt;
     font-weight: normal;
     font-family:"Century Gothic";
 }
 
+.infoPagesInfo {
+    font-size: 12pt;
+    font-family:"Century Gothic";
+}
 
 .infoPageContent {
-    background-color: white;
-    height: 690px;
+    background-color: #e7e5e6;
+    height: 550px;
     width: 100%;
+    border-radius: 8px;
 }
 
 .leftInfoPageContent {
     background-color: white;
-    height: 500px;
-    width: 30%;
+    width: 850px;
+    height: 525px;
+    overflow: auto;
+    #margin: 0 0 10px 20px;
+    border-radius: 8px;
+    padding:25px 25px 25px 25px;
+
 }
 
 .rightInfoPageContent {
     background-color: #e7e5e6;
-
+    height: 100%;
+    width: 250px;
+    margin-top: 40px;
+    margin-right: 0px;
+    margin-left: 15px;
 }
-
+.rightInfoImage {
+    #margin-left: 0px;
+    #margin-right: 0px;
+}
 .noMarginLeft {
     margin-left: 10px;
 }
-}
+
 
 #faqSection {
 
