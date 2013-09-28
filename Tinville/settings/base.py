@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'braces',
     'django.contrib.flatpages',
+
 )
 
 # A sample logging configuration. The only tangible logging
