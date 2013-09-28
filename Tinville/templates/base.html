@@ -172,15 +172,16 @@
                     <span class="span5">
                         <nav class="mainNav mainLinks">
                             <ul>
-                                <li class="mainNavListItem"><a href="#">ABOUT</a></li>
-                                <li class="mainNavListItem" onclick="turnOrange"><a href="/faq">FAQ</a></li>
-                                <li class="mainNavListItem"><a href="#">POLICIES</a></li>
-                                <li class="mainNavListItem"><a href="#">TERMS</a></li>
+                                <li class="mainNavListItem"><a href="{% url 'home_about' %}">ABOUT</a></li>
+                                <li class="mainNavListItem"><a href="{% url 'home_faq' %}">FAQ</a></li>
+                                <li class="mainNavListItem"><a href="{% url 'home_policies' %}">POLICIES</a></li>
+                                <li class="mainNavListItem"><a href="{% url 'home_terms' %}">TERMS</a></li>
                                 <li class="mainNavListItem"><a href="#">CONTACT US</a></li>
                             </ul>
                         </nav>
                     </span>
                 </div>
+                <div class="row"></div>
             </footer>
         </div>
     </div>

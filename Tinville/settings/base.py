@@ -29,7 +29,7 @@ TIME_ZONE = 'America/New_York'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = 2
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -67,6 +67,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("static"),
+    #'/home/senay/Tinville/Tinville/static'
 )
 
 # List of finder classes that know how to find static files in
@@ -134,6 +135,8 @@ INSTALLED_APPS = (
     'Tinville.user',
     'crispy_forms',
     'braces',
+    'django.contrib.flatpages',
+
 )
 
 # A sample logging configuration. The only tangible logging

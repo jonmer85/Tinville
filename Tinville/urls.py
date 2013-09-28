@@ -22,8 +22,16 @@ urlpatterns = patterns('',
     (r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^faq$', faq),
+    )
+
+
+urlpatterns += patterns('django.contrib.flatpages.views',
+    url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
+    url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
+    url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
+    url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
 )
+
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
