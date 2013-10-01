@@ -41,7 +41,7 @@ body {
     /* width:60%; */
 }
 /* Banner */
-#banner img {
+#banner #tinvilleTagBanner {
     font-size: 3.571em;
     line-height: .6;
     margin-bottom: .5em;
@@ -141,6 +141,19 @@ body {
     height: 4px;
     background-color:  #f46430;
     margin: 0 0;
+    border: none;
+}
+
+.loginModalBorder {
+   position:fixed;
+   left:0;
+   right:0;
+   height: 3px;
+}
+
+#loginModalOuterDiv {
+    background-color: #e7e5e6;
+    padding: 15px;
 }
 
 /*#banner nav a:hover, #banner nav a:active, #banner nav .active a:link, #banner nav .active a:visited {
@@ -214,6 +227,13 @@ body {
 
 }
 
+#signInModal {
+    width: 1200px;
+    top: 20%;
+    left: 33%
+}
+
+
 .mainLinks a:hover, .mainLinks a:active, .mainLinks .active a:link, .mainLinks .active a:visited {
     color: #f46430;
     text-shadow: none !important;
@@ -226,6 +246,14 @@ body {
     margin-bottom: 0px;
 }
 
+.noLeftMargin {
+    margin-left: 0px;
+}
+
+.noRightMargin {
+    margin-right: 0px;
+}
+
 .form-footer {
     margin-top: 20px
 }
@@ -234,8 +262,20 @@ body {
     visibility: hidden;
 }
 
+.floatLeft {
+    float: left;
+}
+
 .clear {
-    clear: left;
+    clear: both;
+}
+
+legend {
+    color: #f46430;
+}
+
+a {
+    color: #f46430;
 }
 
 /*

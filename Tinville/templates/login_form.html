@@ -1,19 +1,9 @@
 
-{% extends "base.html" %}
-{% load i18n %}
-{% block body_class %}{{ block.super }} login{% endblock %}
-{% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social-buttons.css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet" />
-{% endblock css %}
-{% block content %}
-
 
     {%  load crispy_forms_tags %}
     <form id="loginForm" action="/login" method="post">
-        {% crispy form %}
+        {% crispy login_form %}
     </form>
-
-
-{% endblock %}

@@ -57,11 +57,11 @@ class ActivationView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        user = get_object_or_404(TinvilleUser, activation_key=kwargs['activation_key'])
         if self.request.user.is_authenticated():
             messages.warning(self.request,
                              "Your account already exists and activated. There is no need to activate again.")
             return self.render_to_response(context)
-        user = get_object_or_404(TinvilleUser, activation_key=kwargs['activation_key'])
         # introduce again to enforce expiring activation Jon M TODO
         # if user.key_expires < datetime.datetime.utcnow().replace(tzinfo=utc):
         #     messages.error(self.request,

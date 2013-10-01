@@ -109,7 +109,7 @@ class TestUserViews(TestCase):
         resp = self.client.post(reverse('login'),
                                 {'email': email,
                                  'password': password,
-                                 'remember+me': False,
+                                 'remember_me': False,
                                 }
                         )
         self.assertRedirects(resp, reverse('home'), status_code=httplib.OK)
