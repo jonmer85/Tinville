@@ -9,4 +9,3 @@ def policies(request):
     return render_to_response("infopages/policies.html", {}, context_instance=RequestContext(request))
 def terms(request):
     return render_to_response("infopages/terms.html", {}, context_instance=RequestContext(request))
-

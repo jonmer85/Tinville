@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 
-from Tinville.Site.views import faq
 from Tinville.user.views import CreateDesignerView, CreateShopperView, ActivationView, TemplateView, login
 from Tinville.user.forms import LoginForm
 

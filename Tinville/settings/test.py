@@ -5,8 +5,8 @@ from .base import *  # Start with base settings
 TEST_RUNNER = "discover_runner.DiscoverRunner"
 TEST_DISCOVER_PATTERN = "test_*"
 
-# HEROKU Change!!!
-DEBUG = True
+
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
