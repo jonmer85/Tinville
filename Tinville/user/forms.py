@@ -214,6 +214,7 @@ class LoginForm(AuthenticationForm):
                         css_class="span8 noLeftMargin noRightMargin noBottomMargin"
                     ),
                     Div(
+                        Div(css_id="message_area"),
                         HTML("""<legend>Please Sign in
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
                                 </legend>

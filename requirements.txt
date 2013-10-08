@@ -9,6 +9,7 @@ django-autoslug==1.7.1
 django-braces==1.2.2
 django-crispy-forms==1.2.8
 django-discover-runner==1.0
+django-mobile==0.3.0
 django-storages==1.1.6
 psycopg2==2.4.6
 pytz==2013b

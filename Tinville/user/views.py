@@ -1,9 +1,13 @@
+import json
+
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.views.generic import CreateView, TemplateView
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
+
 
 from Tinville.user.forms import TinvilleUserCreationForm
 from Tinville.user.models import TinvilleUser
@@ -80,4 +84,17 @@ def login(request, *args, **kwargs):
         if not request.POST.get('remember_me', None):
             request.session.set_expiry(0)
     return auth_view_login(request, *args, **kwargs)
+
+
+def ajax_login(request, *args, **kwargs):
+    form = AuthenticationForm(data=request.POST)
+    logged_in = False
+    data = {}
+
+    if request.is_ajax() and form.is_valid():
+        data = auth_view_login(request, form)
+        logged_in = True
+        return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), mimetype='application/json')
+
+    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 

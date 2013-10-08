@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 
 from Tinville.Site.views import faq
-from Tinville.user.views import CreateDesignerView, CreateShopperView, ActivationView, TemplateView, login
+from Tinville.user.views import CreateDesignerView, CreateShopperView, ActivationView, TemplateView, login, ajax_login
 from Tinville.user.forms import LoginForm
 
 
@@ -19,6 +19,9 @@ urlpatterns = patterns('',
     url(r'^login$', login,
         {'template_name': 'login.html', 'authentication_form': LoginForm},
         name='login'),
+    url(r'^ajax_login$', ajax_login,
+        {'template_name': 'login_form.html', 'authentication_form': LoginForm},
+        name='ajax_login'),
     (r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

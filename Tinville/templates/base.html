@@ -42,7 +42,13 @@
                             {% if user.is_authenticated %}
                                 <li class="mainNavListItem"><a href="/logout">SIGN OUT</a></li>
                             {% else %}
-                                <li class="mainNavListItem"><a data-toggle="modal" href="#signInModal">SIGN IN</a></li>
+                                <li class="mainNavListItem"><a data-toggle="modal"
+                                        {% if flavour == "full" %}
+                                            href="#signInModal">
+                                        {% else %}
+                                            href="/login">
+                                        {% endif %}
+                                        SIGN IN</a></li>
                             {% endif %}
                         </ul>
                     </nav>
@@ -192,6 +198,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap.min.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
     {% endblock javascript_library %}
@@ -204,7 +211,146 @@
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
+
+        // using jQuery
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        function sameOrigin(url) {
+            // test that a given url is a same-origin URL
+            // url could be relative or scheme relative or absolute
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            // Allow absolute or scheme relative URLs to same origin
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                // or any other URL that isn't scheme relative or absolute i.e relative.
+                !(/^(\/\/|http:|https:).*/.test(url));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                    // Send the token to same-origin, relative URLs only.
+                    // Send the token only if the method warrants CSRF protection
+                    // Using the CSRFToken value acquired earlier
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+
+        function apply_form_field_error(fieldname, error) {
+            var input = $("#id_" + fieldname),
+                container = $("#div_id_" + fieldname),
+                error_msg = $("<span />").addClass("help-inline ajax-error").text(error[0]);
+
+            container.addClass("error");
+            error_msg.insertAfter(input);
+        }
+
+        function clear_form_field_errors(form) {
+            $(".ajax-error", $(form)).remove();
+            $(".error", $(form)).removeClass("error");
+        }
+
+        function django_message(msg, level) {
+            var levels = {
+                warning: 'alert',
+                error: 'error',
+                success: 'success',
+                info: 'info'
+            },
+            source = $('#message_template').html(),
+            template = Handlebars.compile(source),
+            context = {
+                'tags': levels[level],
+                'message': msg
+            },
+            html = template(context);
+
+            $("#message_area").append(html);
+        }
+
+        function django_block_message(msg, level) {
+            var source = $("#message_block_template").html(),
+                template = Handlebars.compile(source),
+                context = {level: level, body: msg},
+                html = template(context);
+
+            $("#message_area").append(html);
+        }
+
+        {% if flavour == "full" %}
+        $(document).on("submit", "#loginForm", function(e) {
+            e.preventDefault();
+            var self = $(this),
+                url = self.attr("action"),
+
+                ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        username: self.find("#id_username").val(),
+                        password: self.find("#id_password").val(),
+                        remember_me : self.find('#id_remember_me').val()
+
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        location.reload()
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(index, value) {
+                            if (index === "__all__") {
+                                django_message(value[0], "error");
+                            } else {
+                                apply_form_field_error(index, value);
+                            }
+                        });
+                    }
+                });
+        });
+        {% endif %}
     </script>
+    <script id="message_template" type="text/x-handlebars-template">
+            {% verbatim %}
+            <div class="alert alert-{{tags}} fade in" data-alert="{{tags}}">
+                <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+                {{{message}}}
+            </div>
+            {% endverbatim%}
+        </script>
+
+        <script id="message_block_template" type="text/x-handlebars-template">
+            {% verbatim %}
+            <div class="alert alert-block alert-{{level}} fade in">
+                <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+                {{{body}}}
+            </div>
+            {% endverbatim %}
+        </script>
 {% endblock body %}
 </body>
 </html>
