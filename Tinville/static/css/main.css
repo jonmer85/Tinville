@@ -144,13 +144,6 @@ body {
     border: none;
 }
 
-.loginModalBorder {
-   position:fixed;
-   left:0;
-   right:0;
-   height: 3px;
-}
-
 #loginModalOuterDiv {
     background-color: #e7e5e6;
     padding: 15px;
