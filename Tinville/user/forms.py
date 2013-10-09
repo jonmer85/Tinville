@@ -216,7 +216,9 @@ class LoginForm(AuthenticationForm):
                     ),
                     Div(
                         HTML("""<legend>Please Sign in
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                {% if flavour == "full" %}
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                {% endif %}
                                 </legend>
                                 """
                         ),  # Jon M TODO Consolidate messages into a common tag that can be loaded in
