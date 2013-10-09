@@ -85,6 +85,7 @@ SECRET_KEY = '=5sic^#9yx+r9o5khng_8#!41y=5f8z8218bvpb)mu%p0q0xs3'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'django_mobile.loader.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
@@ -94,6 +95,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
+    'django_mobile.middleware.SetFlavourMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -119,6 +122,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'Tinville.Site.context_processors.include_login_form',
+    'django_mobile.context_processors.flavour',
     )
 
 INSTALLED_APPS = (
@@ -136,7 +140,15 @@ INSTALLED_APPS = (
     'crispy_forms',
     'braces',
     'django.contrib.flatpages',
+    'django_mobile',
+    'django_jenkins'
 
+)  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
+
+# For django-jenkins
+PROJECT_APPS = (
+    'Tinville.Site',
+    'Tinville.user',
 )
 
 # A sample logging configuration. The only tangible logging
