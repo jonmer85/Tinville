@@ -151,6 +151,10 @@ div.inner {
     height: 450px;
 }
 
+#registerButtonParagraph {
+    margin-top: 31px;
+}
+
 .infoLeft {
     float: left;
     padding-right: 10px;
@@ -171,6 +175,11 @@ div.inner {
 
 .designerInfo {
     font-size: .75em;
+}
+
+#registrationInfoSecondDiv {
+    width: 510px;
+    padding-right: 0px;
 }
 
 label {
