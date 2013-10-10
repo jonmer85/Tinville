@@ -67,7 +67,7 @@ class TinvilleUser(AbstractBaseUser):
     activation_key = models.CharField(max_length=40, blank=True)
     key_expires = models.DateTimeField(auto_now_add=True)
 
-    styles = models.ManyToManyField(FashionStyles)
+    styles = models.ManyToManyField(FashionStyles, blank=True, null=True)
 
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
