@@ -146,7 +146,7 @@ body {
 
 #loginModalOuterDiv {
     background-color: #e7e5e6;
-    padding: 15px;
+    padding: 10px;
 }
 
 /*#banner nav a:hover, #banner nav a:active, #banner nav .active a:link, #banner nav .active a:visited {
@@ -224,6 +224,10 @@ body {
     width: 1200px;
     top: 20%;
     left: 33%
+}
+
+#message_area {
+    font-size: .7em;
 }
 
 

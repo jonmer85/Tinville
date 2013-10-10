@@ -206,6 +206,7 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = "loginForm"
+        self.helper.form_show_errors = False
         self.helper.layout = Layout(
             Div(
                 Div(
@@ -214,12 +215,17 @@ class LoginForm(AuthenticationForm):
                         css_class="span8 noLeftMargin noRightMargin noBottomMargin"
                     ),
                     Div(
-                        Div(css_id="message_area"),
                         HTML("""<legend>Please Sign in
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                {% if flavour == "full" %}
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                {% endif %}
                                 </legend>
                                 """
                         ),  # Jon M TODO Consolidate messages into a common tag that can be loaded in
+                        Div(
+                            HTML("""{{ form.non_field_errors }}"""
+                            ),
+                        css_id="message_area"),
                         Field('username', placeholder="Username", css_class='span4'),
                         Field('password', type='password', placeholder="Password", css_class='span4'),
                         HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox floatLeft">
