@@ -5,7 +5,6 @@ from django.contrib import admin
 from Tinville.user.views import CreateDesignerView, CreateShopperView, ActivationView, TemplateView, login, ajax_login
 from Tinville.user.forms import LoginForm
 
-
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -20,7 +19,7 @@ urlpatterns = patterns('',
         name='login'),
     url(r'^ajax_login$', ajax_login,
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
-        name='ajax_login'),
+        name='ajax_logins'),
     (r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
@@ -33,6 +32,7 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
     url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
 )
+
 
 
 if settings.DEBUG:
