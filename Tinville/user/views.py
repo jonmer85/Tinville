@@ -73,7 +73,8 @@ class ActivationView(TemplateView):
         user.is_active = True
         user.save()
         messages.success(self.request,
-                             """Thank you for completing the registration process. You are now successfully logged into Tinville!""")
+                             """Thank you for completing the registration process! You may now sign in to Tinville
+                             with your new user account using the link at the upper right hand corner.""")
         return self.render_to_response(context)
 
 
