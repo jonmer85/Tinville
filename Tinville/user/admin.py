@@ -31,7 +31,7 @@ class TinvilleUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'middle_name', 'last_name', 'other_site_url', 'shop_name', 'is_seller',
+            'fields': ('email', 'first_name', 'last_name', 'other_site_url', 'shop_name', 'is_seller',
                        'password', 'password2')}
         ),
     )
