@@ -214,8 +214,9 @@ body {
 
 #signInModal {
     width: 1200px;
-    top: 20%;
-    left: 33%
+    position: fixed;
+    top: 50%;
+    left: 50%;
 }
 
 #message_area {
