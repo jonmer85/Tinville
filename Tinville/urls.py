@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^register_designer$', CreateDesignerView.as_view(), name='create-designer'),
     url(r'^register_shopper$', CreateShopperView.as_view(), name='create-shopper'),
     url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
+    url(r'^notifications$', TemplateView.as_view(template_name='notification.html'), name='notifications'),
 
     url(r'^login$', login,
         {'template_name': 'login.html', 'authentication_form': LoginForm},

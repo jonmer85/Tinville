@@ -29,7 +29,7 @@ class CreateUserView(CreateView):
             message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
             customer support to correct the address.""" % user.email
         messages.success(self.request, msg)
-
+        self.success_url = reverse('notifications')
         return HttpResponseRedirect(self.success_url)
 
 
@@ -40,7 +40,6 @@ class CreateDesignerView(CreateUserView):
     def get_form_kwargs(self):
         kwargs = super(CreateDesignerView, self).get_form_kwargs()
         kwargs['designer'] = True
-        self.success_url = reverse('create-designer')
         return kwargs
 
 
@@ -52,7 +51,6 @@ class CreateShopperView(CreateUserView):
         # pass "user" keyword argument with the current user to your form
         kwargs = super(CreateShopperView, self).get_form_kwargs()
         kwargs['designer'] = False
-        self.success_url = reverse('create-shopper')
         return kwargs
 
 
