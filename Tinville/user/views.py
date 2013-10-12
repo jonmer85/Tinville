@@ -62,7 +62,7 @@ class ActivationView(TemplateView):
         user = get_object_or_404(TinvilleUser, activation_key=kwargs['activation_key'])
         if self.request.user.is_authenticated() and self.request.user.email == user.email:
             messages.warning(self.request,
-                             "Your account already exists and activated. There is no need to activate again.")
+                             "Your account already exists and is activated. There is no need to activate again.")
             return self.render_to_response(context)
         # introduce again to enforce expiring activation Jon M TODO
         # if user.key_expires < datetime.datetime.utcnow().replace(tzinfo=utc):
