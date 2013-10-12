@@ -171,6 +171,8 @@
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
     {% endblock javascript_library %}
+    {% block javascript %}
+    {% endblock javascript %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
@@ -273,6 +275,7 @@
             $("#message_area").append(html);
         }
 
+        {% if flavour == "full" %}
         $(document).on("submit", "#loginForm", function(e) {
             e.preventDefault();
             var self = $(this),
@@ -303,8 +306,9 @@
                     }
                 });
         });
+        {% endif %}
 
-        $("#signInModal").css(
+        $("#signInModal").modal('show').css(
         {
             'margin-top': function () {
                 return -($(this).height() / 2);
@@ -332,9 +336,6 @@
             </div>
             {% endverbatim %}
         </script>
-
-    {% block javascript %}
-    {% endblock javascript %}
 {% endblock body %}
 </body>
 </html>
