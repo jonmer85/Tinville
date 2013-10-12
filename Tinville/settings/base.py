@@ -147,9 +147,8 @@ INSTALLED_APPS = (
 
 # For django-jenkins
 PROJECT_APPS = (
-    'Tinville'
-   # 'Tinville.Site',
-   # 'Tinville.user'
+   'Tinville.Site',
+   'Tinville.user'
 )
 
 
