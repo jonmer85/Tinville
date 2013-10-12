@@ -97,6 +97,31 @@ class TestUserViews(TestCase):
         self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
         self.assertContains(resp, 'alert-warning')
 
+    def test_get_activation_view_while_another_user_is_signed_in(self):
+        # Create a designer, log them in
+        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        user = TinvilleUser.objects.get(email=email)
+        user.is_active = True
+        user.save()
+        success = self.client.login(username=email, password=password)
+        self.assertTrue(success)
+
+        # Now create another user and activate them, it should still activate even if the other user has a logged in
+        # session
+        first2, last2, email2, shop_name2, last_login2, password2, styles2, resp2 = \
+            self.post_test_user_data(email="joe2@schmoe.com", shop_name="SchmoeShop")
+        user = TinvilleUser.objects.get(email=email2)
+        self.assertTrue(user.is_seller)
+        self.assertFalse(user.is_active)
+
+        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
+        self.assertTemplateUsed(resp, 'notification.html')
+        user = TinvilleUser.objects.get(email=email2)
+        self.assertTrue(user.is_active)  # User should now be activated
+        self.assertTrue(user.is_seller)
+        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
+        self.assertContains(resp, 'alert-success')
+
     def test_get_login_success(self):
         first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
 
