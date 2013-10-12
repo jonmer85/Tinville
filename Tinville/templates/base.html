@@ -171,8 +171,6 @@
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
     {% endblock javascript_library %}
-    {% block javascript %}
-    {% endblock javascript %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
@@ -308,7 +306,7 @@
         });
         {% endif %}
 
-        $("#signInModal").modal('show').css(
+        $("#signInModal").css(
         {
             'margin-top': function () {
                 return -($(this).height() / 2);
@@ -336,6 +334,9 @@
             </div>
             {% endverbatim %}
         </script>
+
+    {% block javascript %}
+    {% endblock javascript %}
 {% endblock body %}
 </body>
 </html>
