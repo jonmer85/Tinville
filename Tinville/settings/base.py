@@ -148,14 +148,9 @@ INSTALLED_APPS = (
 # For django-jenkins
 PROJECT_APPS = (
     'Tinville.Site',
-    'Tinville.user',
+    'Tinville.user'
 )
 
-JENKINS_TASKS = (
-    'django_jenkins.tasks.with_coverage',
-    'django_jenkins.tasks.django_tests',   # select one django or
-    'django_jenkins.tasks.run_pylint'
-)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
