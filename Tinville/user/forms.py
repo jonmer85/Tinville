@@ -36,7 +36,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 <div class="row">
                     <div class="span15">
                         <div id="tinvilleLogoDiv"class="span2">
-                            <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_register_logo.png">
+                            <img id="tinvilleLogo" src="{{ STATIC_URL }}img/tinville_logo.png">
                         </div>
                         <div id="registerUserWrapperDiv" class="span13 roundedCorners">
                             {%% if messages %%}
