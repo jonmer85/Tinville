@@ -147,9 +147,10 @@ INSTALLED_APPS = (
 
 # For django-jenkins
 PROJECT_APPS = (
-    'Tinville.Site',
-    'Tinville.user',
+   'Tinville.Site',
+   'Tinville.user'
 )
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
