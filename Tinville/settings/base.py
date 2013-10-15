@@ -141,12 +141,13 @@ INSTALLED_APPS = (
     'braces',
     'django.contrib.flatpages',
     'django_mobile',
-    'django_jenkins'
+    'django_jenkins',
+    'discover_jenkins'
 
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
 # For django-jenkins
-PROJECT_APPS = (
+TEST_PROJECT_APPS = (
    'Tinville.Site',
    'Tinville.user'
 )
