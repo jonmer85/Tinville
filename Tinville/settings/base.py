@@ -151,6 +151,12 @@ PROJECT_APPS = (
    'Tinville.user'
 )
 
+JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pylint',
+    'django_jenkins.tasks.with_coverage',
+    'django_jenkins.tasks.django_tests',
+)
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
