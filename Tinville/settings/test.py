@@ -3,6 +3,7 @@
 from .base import *  # Start with base settings
 
 TEST_RUNNER = "discover_runner.DiscoverRunner"
+JENKINS_TEST_RUNNER = "django_jenkins.runner.CITestSuiteRunner"
 TEST_DISCOVER_PATTERN = "test_*"
 
 
