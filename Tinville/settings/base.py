@@ -152,6 +152,7 @@ TEST_PROJECT_APPS = (
    'Tinville.user'
 )
 
+# These are used by jenkins to know which tasks to run
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',
     'django_jenkins.tasks.with_coverage'
