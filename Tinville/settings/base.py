@@ -146,7 +146,7 @@ INSTALLED_APPS = (
 
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
-# For django-jenkins
+# For django-jenkins, For that CM/SQA guy Jeff
 TEST_PROJECT_APPS = (
    'Tinville.Site',
    'Tinville.user'
