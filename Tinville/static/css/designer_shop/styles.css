@@ -1,0 +1,84 @@
+.imageContainer {
+    border: solid;
+    height: 175px;
+
+    border-radius: 10px;
+}
+
+#shopLogoDiv {
+    float: left;
+    width: 175px;
+    position: relative;
+    z-index: 2;
+
+}
+
+#shopBannerDiv {
+    width: 970px;
+    float: right;
+    position: relative;
+    z-index: 2;
+}
+
+.backgroundDiv  {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+#tinvilleGrayBackgroundDiv {
+    background-color: #e7e5e6;
+    top: 187px;
+    height: 120px;
+}
+
+#designerColorBackgroundDiv {
+    margin-top: 20px;
+    background-color: lightblue;
+    top: 310px;
+    height: 60px;
+}
+
+#shopContentTabs {
+    margin-top: 220px;
+    margin-bottom: 0;
+    border-bottom: none;
+
+}
+
+#shopContentTabs > .active > a,
+#shopContentTabs > .active > a:hover,
+#shopContentTabs > .active > a:focus {
+    background-color: #e7e5e6;
+    border-radius: 10px 20px 0 0;;
+}
+
+#shopContentTabs > li {
+    background-color: royalblue;
+    border-radius: 10px 20px 0 0;
+}
+
+#shopContentTabs li > a {
+    color: white;
+    font-weight: 100;
+    font-size: .9em;
+    text-shadow: black 0.1em 0.1em 0.2em
+}
+
+#shopContentDiv {
+    background-color: #e7e5e6;
+    min-height: 230px;
+    border-radius: 15px;
+}
+
+.shopImg {
+    height: inherit;
+    width: inherit;
+}
+
+.mainContent {
+    background-color: white;
+    padding-top: 4px;
+    min-height: 500px;
+}

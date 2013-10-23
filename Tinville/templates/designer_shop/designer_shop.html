@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body_class %}{{ block.super }} home{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <div id="shopperHeadingContainer">
+        <div id="shopLogoDiv" class="imageContainer" >
+            <img class="shopImg" src="{{ STATIC_URL }}img/designer_shop/NAUTICA 2.png">
+        </div>
+        <div id="shopBannerDiv" class="imageContainer">
+            <img class="shopImg" src="{{ STATIC_URL }}img/designer_shop/NAUTICA BAN.png">
+        </div>
+        <div id="tinvilleGrayBackgroundDiv" class="backgroundDiv"></div>
+        <div id="designerColorBackgroundDiv" class="backgroundDiv"></div>
+    </div>
+
+    <ul class ="nav nav-tabs" id="shopContentTabs">
+        <li><a href="#about">ABOUT</a></li>
+        <li class="active"><a href="#specials">SPECIALS</a></li>
+        <li><a href="#news">NEWS</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+    </ul>
+
+    <div class="tab-content" id="shopContentDiv">
+        <div class="tab-pane active" id="specials">Specials</div>
+        <div class="tab-pane" id="about">About</div>
+        <div class="tab-pane" id="news">News</div>
+        <div class="tab-pane" id="contact">Contact</div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block bottomContent %}
+    <div id="villageOfShops"></div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $('#shopContentTabs a:last').tab('show');
+        })
+
+        $('#shopContentTabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    </script>
+{% endblock %}
