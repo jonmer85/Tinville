@@ -125,14 +125,14 @@
             </div>
         </header>
     </div>
-    <hr class="contentBorder" />
+    <hr class="contentBorder line" />
     <div class="container">
         <div class="row mainContent">
             {% block content %}
             {% endblock content %}
         </div>
     </div>
-    <hr class="contentBorder" />
+    <hr class="contentBorder line" />
     <div class="container">
         <div class="row">
             <div id="bottomPane">
@@ -315,6 +315,28 @@
                 return -($(this).width() / 2);
             }
         })
+
+        $(window).scroll(function() {
+            line();
+        })
+        $(window).resize(function() {
+            line()
+        })
+
+        function line()
+        {
+            var myWidth = $(window).width();
+            var defaultWidth = 1200;
+            if(myWidth < defaultWidth) {
+                myWidth = defaultWidth;
+            }
+           $(".line").css(
+            {
+                'width': function () {
+                    return myWidth + "px";
+                }
+            })
+        }
 
     </script>
     <script id="message_template" type="text/x-handlebars-template">
