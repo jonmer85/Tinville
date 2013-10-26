@@ -137,12 +137,14 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'Tinville.Site',
     'Tinville.user',
+    'Tinville.designer_shop',
     'crispy_forms',
     'braces',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
-    'discover_jenkins'
+    'discover_jenkins',
+    'PIL'
 
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
