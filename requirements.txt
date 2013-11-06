@@ -16,6 +16,7 @@ django-discover-runner==1.0
 django-jenkins==0.14.1
 django-mobile==0.3.0
 django-storages==1.1.6
+django-selenium==0.9.6
 gunicorn==0.17.4
 logilab-common==0.60.0
 psycopg2==2.4.6
