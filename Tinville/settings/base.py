@@ -151,7 +151,8 @@ INSTALLED_APPS = (
 # For django-jenkins, For that CM/SQA guy Jeff
 TEST_PROJECT_APPS = (
    'Tinville.Site',
-   'Tinville.user'
+   'Tinville.user',
+   'Tinville.design_shop'
 )
 
 # These are used by jenkins to know which tasks to run
