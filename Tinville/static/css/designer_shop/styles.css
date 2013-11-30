@@ -41,40 +41,72 @@
 }
 
 #shopContentTabs {
-    margin-top: 220px;
     margin-bottom: 0;
     border-bottom: none;
+    float: left;
+    margin-top: 21px;
+    width: 730px;
 
 }
 
 #shopContentTabs > .active > a,
 #shopContentTabs > .active > a:hover,
 #shopContentTabs > .active > a:focus {
-    background-color: #e7e5e6;
-    border-radius: 10px 20px 0 0;;
+    /*background-color: #e7e5e6;*/
+    /*border-radius: 10px 20px 0 0;;*/
 }
 
 #shopContentTabs > li {
-    background-color: royalblue;
-    border-radius: 10px 20px 0 0;
+    /*background-color: royalblue;*/
+    /*border-radius: 10px 20px 0 0;*/
 }
 
 #shopContentTabs li > a {
-    color: white;
-    font-weight: 100;
-    font-size: .9em;
-    text-shadow: black 0.1em 0.1em 0.2em
+    color: royalblue;
+
+    /*color: white;*/
+    /*font-weight: 100;*/
+    /*font-size: .9em;*/
+    /*text-shadow: black 0.1em 0.1em 0.2em*/
 }
 
 #shopContentDiv {
     background-color: #e7e5e6;
     min-height: 230px;
     border-radius: 15px;
+    width: 968px;
+}
+
+.shopPaneOuterDiv {
+    padding: 30px;
+
+}
+
+.shopPaneInnerDiv {
+    background-color: white;
+    min-height: 230px;
+    border-radius: 15px;
+    width: 900px;
+
 }
 
 .shopImg {
     height: inherit;
     width: inherit;
+}
+
+#shopNav {
+    border: solid thin #e7e5e6;
+    border-radius: 10px;
+    width: 177px;
+    margin: 57px 28px 0px 0px;
+    float: left;
+    min-height: 500px;
+}
+
+#shopNav h2 {
+    font-size: .7em;
+
 }
 
 .mainContent {

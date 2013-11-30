@@ -18,19 +18,50 @@
         <div id="designerColorBackgroundDiv" class="backgroundDiv"></div>
     </div>
 
-    <ul class ="nav nav-tabs" id="shopContentTabs">
-        <li><a href="#about">ABOUT</a></li>
-        <li class="active"><a href="#specials">SPECIALS</a></li>
-        <li><a href="#news">NEWS</a></li>
-        <li><a href="#contact">CONTACT</a></li>
-    </ul>
+    <section id="shopNav">
+        <nav>
+            <h2>
+                CATEGORIES
+                <p>Short Sleeve Shirts<span class="itemCount"></span></p>
+                <p>3/4 Sleeve Shirts<span class="itemCount"></span></p>
 
-    <div class="tab-content" id="shopContentDiv">
-        <div class="tab-pane active" id="specials">Specials</div>
-        <div class="tab-pane" id="about">About</div>
-        <div class="tab-pane" id="news">News</div>
-        <div class="tab-pane" id="contact">Contact</div>
-    </div>
+            </h2>
+
+        </nav>
+    </section>
+
+
+    <section>
+        <ul class ="nav nav-tabs" id="shopContentTabs">
+            <li><a href="#about">ABOUT</a></li>
+            <li class="active"><a href="#specials">SPECIALS</a></li>
+            <li><a href="#news">NEWS</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+
+        <div class="tab-content" id="shopContentDiv">
+            <div class="tab-pane active shopPaneOuterDiv" id="specials">
+                Specials
+                <div class="shopPaneInnerDiv"></div>
+            </div>
+
+            <div class="tab-pane shopPaneOuterDiv" id="about">
+                About
+                <div class="shopPaneInnerDiv"></div>
+            </div>
+            <div class="tab-pane shopPaneOuterDiv" id="news">
+                News
+                <div class="shopPaneInnerDiv"></div>
+            </div>
+            <div class="tab-pane shopPaneOuterDiv" id="contact">
+                Contact
+                <div class="shopPaneInnerDiv"></div>
+            </div>
+        </div>
+    </section>
+
+
+
 
 
 
@@ -42,9 +73,6 @@
 
 {% block javascript %}
     <script>
-        $(function () {
-            $('#shopContentTabs a:last').tab('show');
-        })
 
         $('#shopContentTabs a').click(function (e) {
             e.preventDefault();
