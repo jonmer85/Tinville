@@ -35,8 +35,21 @@ body {
  *Header
  *****************/
 
+.navbar-text {
+    font-size: 2em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 #navSearch {
-    margin-right: 15px;
+    font-size: 2.8em;
+    margin-right: 5%;
+    margin-top: 12px;
+}
+
+#signInButton {
+    margin-right: 5%;
+    margin-top: 10px;
 }
 /*#banner {*/
     /*margin-left:auto;*/

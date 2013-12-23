@@ -12,13 +12,12 @@
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0" />#}
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main2.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/mega-menu.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/mega-menu-responsive.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
     {% block css %}{% endblock %}
 
@@ -30,9 +29,146 @@
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
+    <nav class="navbar yamm navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
 
 
-    <header class="container">
+                <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Tinville</a>
+                <i id="navSearch" class="fa fa-search fa-3x navbar-text visible-xs pull-right"></i>
+                <a id="signInButton" href="/login" class="navbar-link navbar-text visible-xs pull-right">SIGN IN</a>
+
+{#                <a href="/login" class="navbar-link navbar-text col-xs-2 col-xs-offset-5 visible-xs">Sign In</a>#}
+{#                <i id="navSearch" class="fa fa-search fa-3x navbar-text col-xs-1 visible-xs"></i>#}
+            </div>
+
+                <div id="navbar-collapse-1" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown yamm-fw">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="yamm-content">
+                                        <div class="row">
+                                            <ul class="col-sm-2 list-unstyled">
+                                                <li><p><strong>Clothing</strong></p></li>
+                                                <li><a href="#">Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                            </ul>
+                                            <ul class="col-sm-2 list-unstyled">
+                                                <li><p><strong>Shoes</strong></p></li>
+                                                <li><a href="#">Boots</a></li>
+                                                    <li><a href="#">Heels</a></li>
+                                                    <li><a href="#">Flats</a></li>
+                                                    <li><a href="#">Booties</a></li>
+                                                    <li><a href="#">Wedges</a></li>
+                                                    <li><a href="#">Athletic</a></li>
+                                                    <li><a href="#">Sandals</a></li>
+                                                    <li><a href="#">Loafers</a></li>
+                                                    <li><a href="#">Oxfords</a></li>
+                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                            </ul>
+                                            <ul class="col-sm-2 list-unstyled">
+                                                <li><p><strong>Accessories</strong></p></li>
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                            </ul>
+
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown yamm-fw">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="yamm-content">
+                                        <div class="row">
+                                            <ul class="col-sm-2 list-unstyled">
+                                                <li><p><strong>Clothing</strong></p></li>
+                                                <li><a href="#">Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                            </ul>
+                                            <ul class="col-sm-2 list-unstyled">
+                                                <li><p><strong>Shoes</strong></p></li>
+                                                <li><a href="#">Boots</a></li>
+                                                    <li><a href="#">Heels</a></li>
+                                                    <li><a href="#">Flats</a></li>
+                                                    <li><a href="#">Booties</a></li>
+                                                    <li><a href="#">Wedges</a></li>
+                                                    <li><a href="#">Athletic</a></li>
+                                                    <li><a href="#">Sandals</a></li>
+                                                    <li><a href="#">Loafers</a></li>
+                                                    <li><a href="#">Oxfords</a></li>
+                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                            </ul>
+                                            <ul class="col-sm-2 list-unstyled">
+                                                <li><p><strong>Accessories</strong></p></li>
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown yamm-fw">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="caret"></b></a>
+                        </li>
+                        <li class="dropdown yamm-fw">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="caret"></b></a>
+                        </li>
+                        <li class="dropdown yamm-fw">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="caret"></b></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+{#    <header class="container">#}
 {#        <header id="banner" class="body">#}
 {#            <div class="row">#}
 {#                <div class="span2">#}
@@ -66,136 +202,137 @@
 {#                </div>#}
 {#            </div>#}
 
-            <div class="navbar navbar-default navbar-fixed-top">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <div class="row">
-                           <div class="navbar-brand col-xs-2">Tinville</div>
-                            <a href="/login" class="navbar-link navbar-text col-xs-2">Login</a>
-                            <i id="navSearch" class="fa fa-search fa-3x navbar-text col-xs-2"></i>
 
-
-                            <a class="navbar-toggle navbar-btn" data-toggle="collapse" data-target=".navHeaderCollapse">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </a>
-
-                            <div class="nav-collapse collapse navHeaderCollapse">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="dropdown mega-menu-3 transition mainNavListItem">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN <b class="caret"></b> </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="one-column">
-                                                <ul>
-                                                    <li class="nav-title"><strong>Clothing</strong></li>
-                                                    <li><a href="#">Outerwear</a></li>
-                                                    <li><a href="#">Jackets & Blazers</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">Pants</a></li>
-                                                    <li><a href="#">Sweaters</a></li>
-                                                    <li><a href="#">Suits</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Athletic Clothing</a></li>
-                                                    <li><a href="#">Intimates</a></li>
-                                                    <li><a href="#"><b>All Clothing</b></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="one-column">
-                                                <ul>
-                                                    <li class="nav-title"><strong>Shoes</strong></li>
-                                                    <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="one-column">
-                                                <ul>
-                                                    <li class="nav-title"><strong>Accessories</strong></li>
-                                                    <li><a href="#">Handbags</a></li>
-                                                    <li><a href="#">Fine Jewelry</a></li>
-                                                    <li><a href="#">Fashion Jewelry</a></li>
-                                                    <li><a href="#">Watches</a></li>
-                                                    <li><a href="#">Sunglasses</a></li>
-                                                    <li><a href="#">Scarves & Wraps</a></li>
-                                                    <li><a href="#">Gloves</a></li>
-                                                    <li><a href="#">Belts</a></li>
-                                                    <li><a href="#">Designer Store</a></li>
-                                                    <li><a href="#"><strong>All Accessories</strong></a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                   <li class="dropdown mega-menu-3 transition mainNavListItem">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">MEN <b class="caret"></b> </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="one-column">
-                                                <ul>
-                                                    <li class="nav-title"><strong>Clothing</strong></li>
-                                                    <li><a href="#">Outerwear</a></li>
-                                                    <li><a href="#">Jackets & Blazers</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">Pants</a></li>
-                                                    <li><a href="#">Sweaters</a></li>
-                                                    <li><a href="#">Suits</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Athletic Clothing</a></li>
-                                                    <li><a href="#">Intimates</a></li>
-                                                    <li><a href="#"><b>All Clothing</b></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="one-column">
-                                                <ul>
-                                                    <li class="nav-title"><strong>Shoes</strong></li>
-                                                    <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="one-column">
-                                                <ul>
-                                                    <li class="nav-title"><strong>Accessories</strong></li>
-                                                    <li><a href="#">Handbags</a></li>
-                                                    <li><a href="#">Fine Jewelry</a></li>
-                                                    <li><a href="#">Fashion Jewelry</a></li>
-                                                    <li><a href="#">Watches</a></li>
-                                                    <li><a href="#">Sunglasses</a></li>
-                                                    <li><a href="#">Scarves & Wraps</a></li>
-                                                    <li><a href="#">Gloves</a></li>
-                                                    <li><a href="#">Belts</a></li>
-                                                    <li><a href="#">Designer Store</a></li>
-                                                    <li><a href="#"><strong>All Accessories</strong></a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">DESIGNERS</a></li>
-                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">SHOP</a></li>
-                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">BLOG</a></li>
-                                </ul>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </header>
+{#            <div class="navbar navbar-default navbar-fixed-top">#}
+{#                <div class="navbar-inner">#}
+{#                    <div class="container">#}
+{#                        <div class="row">#}
+{#                           <div class="navbar-brand col-xs-2">Tinville</div>#}
+{#                            <a href="/login" class="navbar-link navbar-text col-xs-2 col-xs-offset-5 visible-xs">Sign In</a>#}
+{#                            <i id="navSearch" class="fa fa-search fa-3x navbar-text col-xs-1 visible-xs"></i>#}
+{##}
+{##}
+{#                            <a class="navbar-toggle navbar-btn" data-toggle="collapse" data-target=".navHeaderCollapse">#}
+{#                                <span class="icon-bar"></span>#}
+{#                                <span class="icon-bar"></span>#}
+{#                                <span class="icon-bar"></span>#}
+{#                            </a>#}
+{##}
+{#                            <div class="nav-collapse collapse navHeaderCollapse">#}
+{#                                <ul class="nav navbar-nav navbar-right">#}
+{#                                    <li class="dropdown mega-menu-3 transition mainNavListItem">#}
+{#                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN <b class="caret"></b> </a>#}
+{#                                        <ul class="dropdown-menu">#}
+{#                                            <li class="one-column">#}
+{#                                                <ul>#}
+{#                                                    <li class="nav-title"><strong>Clothing</strong></li>#}
+{#                                                    <li><a href="#">Outerwear</a></li>#}
+{#                                                    <li><a href="#">Jackets & Blazers</a></li>#}
+{#                                                    <li><a href="#">Shirts</a></li>#}
+{#                                                    <li><a href="#">Pants</a></li>#}
+{#                                                    <li><a href="#">Sweaters</a></li>#}
+{#                                                    <li><a href="#">Suits</a></li>#}
+{#                                                    <li><a href="#">Dresses</a></li>#}
+{#                                                    <li><a href="#">Athletic Clothing</a></li>#}
+{#                                                    <li><a href="#">Intimates</a></li>#}
+{#                                                    <li><a href="#"><b>All Clothing</b></a></li>#}
+{#                                                </ul>#}
+{#                                            </li>#}
+{#                                            <li class="one-column">#}
+{#                                                <ul>#}
+{#                                                    <li class="nav-title"><strong>Shoes</strong></li>#}
+{#                                                    <li><a href="#">Boots</a></li>#}
+{#                                                    <li><a href="#">Heels</a></li>#}
+{#                                                    <li><a href="#">Flats</a></li>#}
+{#                                                    <li><a href="#">Booties</a></li>#}
+{#                                                    <li><a href="#">Wedges</a></li>#}
+{#                                                    <li><a href="#">Athletic</a></li>#}
+{#                                                    <li><a href="#">Sandals</a></li>#}
+{#                                                    <li><a href="#">Loafers</a></li>#}
+{#                                                    <li><a href="#">Oxfords</a></li>#}
+{#                                                    <li><a href="#"><strong>All Shoes</strong></a></li>#}
+{#                                                </ul>#}
+{#                                            </li>#}
+{#                                            <li class="one-column">#}
+{#                                                <ul>#}
+{#                                                    <li class="nav-title"><strong>Accessories</strong></li>#}
+{#                                                    <li><a href="#">Handbags</a></li>#}
+{#                                                    <li><a href="#">Fine Jewelry</a></li>#}
+{#                                                    <li><a href="#">Fashion Jewelry</a></li>#}
+{#                                                    <li><a href="#">Watches</a></li>#}
+{#                                                    <li><a href="#">Sunglasses</a></li>#}
+{#                                                    <li><a href="#">Scarves & Wraps</a></li>#}
+{#                                                    <li><a href="#">Gloves</a></li>#}
+{#                                                    <li><a href="#">Belts</a></li>#}
+{#                                                    <li><a href="#">Designer Store</a></li>#}
+{#                                                    <li><a href="#"><strong>All Accessories</strong></a></li>#}
+{#                                                </ul>#}
+{#                                            </li>#}
+{#                                        </ul>#}
+{#                                    </li>#}
+{#                                   <li class="dropdown mega-menu-3 transition mainNavListItem">#}
+{#                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">MEN <b class="caret"></b> </a>#}
+{#                                        <ul class="dropdown-menu">#}
+{#                                            <li class="one-column">#}
+{#                                                <ul>#}
+{#                                                    <li class="nav-title"><strong>Clothing</strong></li>#}
+{#                                                    <li><a href="#">Outerwear</a></li>#}
+{#                                                    <li><a href="#">Jackets & Blazers</a></li>#}
+{#                                                    <li><a href="#">Shirts</a></li>#}
+{#                                                    <li><a href="#">Pants</a></li>#}
+{#                                                    <li><a href="#">Sweaters</a></li>#}
+{#                                                    <li><a href="#">Suits</a></li>#}
+{#                                                    <li><a href="#">Dresses</a></li>#}
+{#                                                    <li><a href="#">Athletic Clothing</a></li>#}
+{#                                                    <li><a href="#">Intimates</a></li>#}
+{#                                                    <li><a href="#"><b>All Clothing</b></a></li>#}
+{#                                                </ul>#}
+{#                                            </li>#}
+{#                                            <li class="one-column">#}
+{#                                                <ul>#}
+{#                                                    <li class="nav-title"><strong>Shoes</strong></li>#}
+{#                                                    <li><a href="#">Boots</a></li>#}
+{#                                                    <li><a href="#">Heels</a></li>#}
+{#                                                    <li><a href="#">Flats</a></li>#}
+{#                                                    <li><a href="#">Booties</a></li>#}
+{#                                                    <li><a href="#">Wedges</a></li>#}
+{#                                                    <li><a href="#">Athletic</a></li>#}
+{#                                                    <li><a href="#">Sandals</a></li>#}
+{#                                                    <li><a href="#">Loafers</a></li>#}
+{#                                                    <li><a href="#">Oxfords</a></li>#}
+{#                                                    <li><a href="#"><strong>All Shoes</strong></a></li>#}
+{#                                                </ul>#}
+{#                                            </li>#}
+{#                                            <li class="one-column">#}
+{#                                                <ul>#}
+{#                                                    <li class="nav-title"><strong>Accessories</strong></li>#}
+{#                                                    <li><a href="#">Handbags</a></li>#}
+{#                                                    <li><a href="#">Fine Jewelry</a></li>#}
+{#                                                    <li><a href="#">Fashion Jewelry</a></li>#}
+{#                                                    <li><a href="#">Watches</a></li>#}
+{#                                                    <li><a href="#">Sunglasses</a></li>#}
+{#                                                    <li><a href="#">Scarves & Wraps</a></li>#}
+{#                                                    <li><a href="#">Gloves</a></li>#}
+{#                                                    <li><a href="#">Belts</a></li>#}
+{#                                                    <li><a href="#">Designer Store</a></li>#}
+{#                                                    <li><a href="#"><strong>All Accessories</strong></a></li>#}
+{#                                                </ul>#}
+{#                                            </li>#}
+{#                                        </ul>#}
+{#                                    </li>#}
+{##}
+{#                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">DESIGNERS</a></li>#}
+{#                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">SHOP</a></li>#}
+{#                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">BLOG</a></li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{##}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </header>#}
 
     <hr class="contentBorder line" />
     <div class="container">
@@ -238,7 +375,7 @@
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
