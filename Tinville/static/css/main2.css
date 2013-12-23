@@ -35,10 +35,19 @@ body {
  *Header
  *****************/
 
+@media (min-width: 768px) {
+  .navbar-nav {
+    float: right;
+  }
+}
+
 .navbar-text {
     font-size: 2em;
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+#navHeader {
 }
 
 #navSearch {
@@ -50,6 +59,22 @@ body {
 #signInButton {
     margin-right: 5%;
     margin-top: 10px;
+}
+
+#tinvilleTagBanner {
+    position: fixed;
+    top: 10px;
+    left: 5%;
+    z-index: 1;
+    height: 10%;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.full-screen {
+    width: 100%;
 }
 /*#banner {*/
     /*margin-left:auto;*/
