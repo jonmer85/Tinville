@@ -42,7 +42,7 @@ body {
 }
 
 body {
-    overflow-x: hidden;
+    overflow-x: hidden; /* Used to fix horizontal scroll on width: 100% */
 }
 
 .navbar-text {
