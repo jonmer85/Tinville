@@ -41,6 +41,10 @@ body {
   }
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .navbar-text {
     font-size: 2em;
     margin-top: 5px;
