@@ -214,9 +214,17 @@ class LoginForm(AuthenticationForm):
                 HTML("""{{ form.non_field_errors }}"""
                 ),
             css_id="message_area"),
-            Field('username', placeholder="Username", css_class='col-xs-12'),
-            Field('password', type='password', placeholder="Password", css_class='span4'),
-            HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox floatLeft">
+            Field('username', placeholder="Email", css_class='col-xs-12 loginField'),
+            Field('password', type='password', placeholder="Password", css_class='col-xs-12 loginField'),
+            Div(
+                HTML("""<button id="loginFacebookButton" class="btn btn-facebook loginField col-xs-5 loginField">
+                            <i class="icon-facebook">
+                            </i> | Sign In with Facebook</button>""")
+            ),
+            Div(
+                Submit('submit', 'Sign in', css_class='btn btn-primary loginField tinvilleButton col-xs-2 col-xs-offset-5')
+            ),
+            HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox loginField pull-right">
                         <input checked="checked" class="checkboxinput" id="id_remember_me" name="remember_me"
                          type="checkbox" value="true">
                         Remember Me
@@ -224,17 +232,7 @@ class LoginForm(AuthenticationForm):
             HTML("""<a href="/register" name="register" id="loginRegisterLink">Don't have an
                         account?</a>"""),
             Hidden('next', value=reverse('home')),
-            Div(
-                Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton'),
-                css_class="clear"
-            ),
+
             HTML("""<p id="loginForgetUserOrPasswordText">Forgot your <a href="#">username</a> or
-                        <a href="#">password</a>?"""),
-            Div(
-                HTML("""<img src="{{ STATIC_URL }}img/or_login.png"/>""")
-            ),
-            Div(
-                HTML("""<button id="loginFacebookButton" class="btn btn-facebook"><i class="icon-facebook">
-                            </i> | Sign In with Facebook</button>""")
-            )
+                        <a href="#">password</a>?""")
         )
