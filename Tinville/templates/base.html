@@ -41,10 +41,21 @@
                     <span class="icon-bar"></span>
                 </button>
                 <i id="navSearch" class="fa fa-search fa-3x navbar-text visible-xs pull-right"></i>
-                <a id="signInButton" href="/login" class="navbar-link navbar-text visible-xs pull-right">SIGN IN</a>
+                <ul id="signInButton" class="nav pull-right">
+                  <li class="dropdown yamm-fw" id="menuLogin">
+                    <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right" href="#" data-toggle="dropdown" id="navLogin">SIGN IN</a>
+                    <ul id="loginPopupForm" class="dropdown-menu" style="padding:17px;">
+                        <li>
+                            <div class="yamm-content">
+                                <div class="row">
+                                    {%  include "login_form.html" %}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                  </li>
+                </ul>
 
-{#                <a href="/login" class="navbar-link navbar-text col-xs-2 col-xs-offset-5 visible-xs">Sign In</a>#}
-{#                <i id="navSearch" class="fa fa-search fa-3x navbar-text col-xs-1 visible-xs"></i>#}
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse">
