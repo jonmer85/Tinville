@@ -1,14 +1,35 @@
 #infoPageSection {
 
 }
+ul.infoList {
+    list-style-type:none;
+    padding-left: 1%;
+    padding-top: 2%;
+    color: black;
+    font-size: small;
+}
+
+.orangeBanner{
+    background-color:#f46430;
+    padding-left: 5%;
+    color: #ffffff;
+    font-size: xx-large;
+    font-weight: normal;
+}
+.orangeLine{
+    background-color:#f46430;
+    padding-left: 5%;
+    color: #ffffff;
+    height: 2px;
+
+}
 
 .orangeTitle {
     color: #f46430;
-    margin-top: 15px;
-    margin-bottom: 0px;
-    font-size: 12pt;
+    padding-left: 2%;
+    font-size: x-large;
     font-weight: normal;
-    font-family:"Century Gothic";
+
 }
 
 .infoPagesInfo {
@@ -17,11 +38,9 @@
 }
 
 .infoPageContent {
-    background-color: #e7e5e6;
-    height: 538px;
-    width: 100%;
+    background-color: #ffffff;
     border-radius: 4px;
-    margin-top: 5px;
+
 }
 
 .leftInfoPageContent {
