@@ -232,12 +232,10 @@ input[type="text"], input[type="password"], input[type="datetime"], input[type="
 }
 
 #rememberLoginLabel {
-    width: 150px;
-    margin-bottom: 10px;
+
 }
 
 #loginFacebookButton {
-    margin-top: 10px;
 }
 
 #loginImage {

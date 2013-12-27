@@ -7,23 +7,43 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
-
-
-        <div class="infoPageContent cn">
-
-                    <div class="span10 leftInfoPageContent">
-                        <p id=>{{ flatpage.content }}</p>
-
-
-
-                    </div>
-
-                    <div class="span4 rightInfoPageContent" >
-                        <img class= "rightInfoImage" src="{{ STATIC_URL }}img/infopageimg/{{ flatpage.title }}.png/">
-
-
-                    </div>
+{{ block.super }}
+    <img id="carousel" class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
+    <div class="container" style="height: 2px"></div>
+    <div class="container">
+        <div class="row">
+            <div class="container orangeBanner">{{ flatpage.title }}</div>
         </div>
+        <div class="row">
+            <div class="hidden-xs hidden-sm col-md-1"></div>
+            <ul class="infoList hidden-xs hidden-sm col-md-3">
+                <li class=""><a href="{% url 'home_about' %}">ABOUT</a></li>
+                <li class=""><a href="{% url 'home_faq' %}">FAQ</a></li>
+                <li class=""><a href="{% url 'home_policies' %}">POLICIES</a></li>
+                <li class=""><a href="{% url 'home_terms' %}">TERMS</a></li>
+                <li class=""><a href="#">CONTACT US</a></li>
+            </ul>
+            <div class="col-xs-12 col-sm-12 col-md-8 orangeTitle" style="padding-top: 2%">{{ flatpage.title }}</div>
+            <div class="col-xs-12 col-sm-12 col-md-8 orangeLine"></div>
+            <div class="col-xs-12 col-sm-12 col-md-8 infoPageContent">{{ flatpage.content }}</div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+        <!--
+                    <div class="span4 rightInfoPageContent" >
+                        <img class= "rightInfoImage hidden-xs" src="{{ STATIC_URL }}img/infopageimg/{{ flatpage.title }}.png/">
+                    </div>
+        -->
+
 
 
 {% endblock %}
