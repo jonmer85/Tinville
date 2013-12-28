@@ -14,20 +14,23 @@
         <div class="row">
             <div class="container orangeBanner">{{ flatpage.title }}</div>
         </div>
-        <div class="row">
-            <div class="hidden-xs hidden-sm col-md-1"></div>
-            <ul class="infoList hidden-xs hidden-sm col-md-3">
-                <li class=""><a href="{% url 'home_about' %}">ABOUT</a></li>
-                <li class=""><a href="{% url 'home_faq' %}">FAQ</a></li>
-                <li class=""><a href="{% url 'home_policies' %}">POLICIES</a></li>
-                <li class=""><a href="{% url 'home_terms' %}">TERMS</a></li>
-                <li class=""><a href="#">CONTACT US</a></li>
-            </ul>
-            <div class="col-xs-12 col-sm-12 col-md-8 orangeTitle" style="padding-top: 2%">{{ flatpage.title }}</div>
-            <div class="col-xs-12 col-sm-12 col-md-8 orangeLine"></div>
+        <div class="row" style="padding-top: 5%">
+            <div class="hidden-xs hidden-sm col-md-2">
+                <nav class="nav-sidebar">
+                    <ul class="nav">
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_about' %}">About Us</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_faq' %}">FAQ</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_policies' %}">Policies</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_terms' %}">Terms</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="#">CONTACT US</a></li>
+                    </ul>
+                </nav>
+            </div>
             <div class="col-xs-12 col-sm-12 col-md-8 infoPageContent">{{ flatpage.content }}</div>
 
         </div>
+
+
     </div>
 
 
