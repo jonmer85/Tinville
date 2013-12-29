@@ -144,8 +144,8 @@ INSTALLED_APPS = (
     'django_mobile',
     'django_jenkins',
     'discover_jenkins',
-    'PIL'
-
+    'PIL',
+    'lettuce.django',
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
 # For django-jenkins, For that CM/SQA guy Jeff
