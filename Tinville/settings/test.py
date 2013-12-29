@@ -20,8 +20,9 @@ DATABASES = {
     },
 }
 
-
-
+LETTUCE_APPS = (
+    'Tinville.designer_shop',
+)
 
 
 ########## TEST SETTINGS
