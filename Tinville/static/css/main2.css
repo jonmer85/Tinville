@@ -122,6 +122,10 @@ body {
     font-weight: normal;
 }
 
+.registerInfoButton {
+    padding: 1%;
+}
+
 
 /*#banner {*/
     /*margin-left:auto;*/
