@@ -15,17 +15,18 @@
             <div class="container orangeBanner">{{ flatpage.title }}</div>
         </div>
         <div class="row" style="padding-top: 5%">
-            <div class="hidden-xs hidden-sm col-md-2">
+            <div class="hidden-xs hidden-sm col-md-2" id="Navigation">
                 <nav class="nav-sidebar">
                     <ul class="nav">
-                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_about' %}">About Us</a></li>
-                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_faq' %}">FAQ</a></li>
-                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_policies' %}">Policies</a></li>
-                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_terms' %}">Terms</a></li>
-                        <li class=""><a data-target="#" data-toggle="pill" href="#">CONTACT US</a></li>
+                        <li onclick="myFunction()" class="" id="about"><a href="/about" >About Us</a></li>
+                        <li onclick="myFunction()" class="" id="faq"><a href="/faq">FAQ</a></li>
+                        <li class="" id="pol"><a href="/policies">Policies</a></li>
+                        <li class="" id="terms"><a href="/terms">Terms</a></li>
+                        <li class="" id="contact"><a href="#">CONTACT US</a></li>
                     </ul>
                 </nav>
             </div>
+
             <div class="col-xs-12 col-sm-12 col-md-8 infoPageContent">{{ flatpage.content }}</div>
 
         </div>
@@ -35,18 +36,21 @@
 
 
 
+<script>
+function myFunction()
+{
+
+    $("#about").removeClass("active");
+    $("#faq").removeClass("active");
+    $("#pol").removeClass("active");
+    $("#terms").removeClass("active");
+    $("#contact").removeClass("active");
 
 
 
+    $("#faq" ).addClass("active");
+}
 
-
-
-        <!--
-                    <div class="span4 rightInfoPageContent" >
-                        <img class= "rightInfoImage hidden-xs" src="{{ STATIC_URL }}img/infopageimg/{{ flatpage.title }}.png/">
-                    </div>
-        -->
-
-
+</script>
 
 {% endblock %}

@@ -38,66 +38,21 @@ ul.infoList {
 
 }
 
-.infoPagesInfo {
-    #font-size: 12pt;
-    #font-family:"Century Gothic";
-}
 
 .infoPageContent {
     background-color: #ffffff;
     border-radius: 4px;
     font-size: small;
     padding-right: 2%;
+    font-family:"Arial,sans-serif";
 }
 
-.leftInfoPageContent {
-    background-color: white;
-    width: 883px;
-    height: 528px;
-    overflow-y: auto;
-    border-radius: 4px;
-    padding:3px 20px 3px 12px;
-    #font-size: 11pt;
-    #font-weight: normal;
-    #font-family:"Century Gothic";
-    margin-left: 0px;
-
-}
-
-
-
-
-.rightInfoPageContent {
-    background-color: #e7e5e6;
-    height: 100%;
-    width: 250px;
-    #margin-top: 40px;
-    margin-right: 0px;
-    margin-left: 15px;
-}
-.rightInfoImage {
-    #margin-left: 0px;
-    #margin-right: 0px;
-}
-.noMarginLeft {
-    margin-left: 10px;
-}
-
-
-#faqSection {
-
-}
-
-.faqInfo {
-    font-size: 12pt;
-    font-family:"Century Gothic";
-}
 
 .nav-sidebar {
     width: 100%;
-    padding: 8px 0;
+    /*padding: 8px 0;*/
     font-size: medium;
-
+    font-family:"Arial,sans-serif";
     /*border-right: 1px solid #ddd;*/
 }
 .nav-sidebar a {
