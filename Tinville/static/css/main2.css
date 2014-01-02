@@ -319,6 +319,7 @@ body {
 #mainFooterListItem:first-child {
     color: #CBD3D5;
     margin-bottom: .5em;
+    font-weight: bold;
 }
 
 #tinvilleFooterListItemPrimary {
