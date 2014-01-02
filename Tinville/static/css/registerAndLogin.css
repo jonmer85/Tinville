@@ -49,7 +49,7 @@
 }
 
 .mainContent {
-    padding: 10px;
+    /*padding: 10px;*/
 }
 
 .registrationInfoDiv {
@@ -57,11 +57,10 @@
 }
 
 .registrationInfoIcon {
-    float: left;
     padding-right: 10px
 }
 
-.registrationText {
+.registrationInfoIcon {
     float: left;
     padding-right: 5px;
 }
@@ -173,8 +172,9 @@ div.inner {
     padding-top: 10px;
 }
 
-.designerInfo {
-    font-size: .75em;
+.userInfo {
+    font-size: 1.5em;
+    text-align: left;
 }
 
 #registrationInfoSecondDiv {

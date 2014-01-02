@@ -205,9 +205,9 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = "loginForm"
         self.helper.form_show_errors = False
         self.helper.form_show_labels = False
+        self.helper.form_class = "loginForm"
         self.helper.layout = Layout(
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
             Div(
@@ -217,22 +217,18 @@ class LoginForm(AuthenticationForm):
             Field('username', placeholder="Email", css_class='col-xs-12 loginField'),
             Field('password', type='password', placeholder="Password", css_class='col-xs-12 loginField'),
             Div(
-                HTML("""<button id="loginFacebookButton" class="btn btn-facebook loginField col-xs-5 loginField">
-                            <i class="icon-facebook">
-                            </i> | Sign In with Facebook</button>""")
+                HTML("""<a id="loginFacebookButton" class="btn loginField btn-social col-xs-6 btn-facebook">
+                            <i class="fa fa-facebook"></i> Sign in with Facebook
+                        </a""")
             ),
             Div(
-                Submit('submit', 'Sign in', css_class='btn btn-primary loginField tinvilleButton col-xs-2 col-xs-offset-5')
+                Submit('submit', 'Sign in', css_class='btn btn-primary pull-right col-xs-4 loginField tinvilleButton')
             ),
-            HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox loginField pull-right">
+            HTML("""<a href="#" id="loginForgotPasswordLink" class="loginField pull-left col-xs-6">Forgot password?</a>"""),
+
+            HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox loginField pull-right col-xs-3">
                         <input checked="checked" class="checkboxinput" id="id_remember_me" name="remember_me"
                          type="checkbox" value="true">
                         Remember Me
-                    </label>"""),
-            HTML("""<a href="/register" name="register" id="loginRegisterLink">Don't have an
-                        account?</a>"""),
-            Hidden('next', value=reverse('home')),
-
-            HTML("""<p id="loginForgetUserOrPasswordText">Forgot your <a href="#">username</a> or
-                        <a href="#">password</a>?""")
+                    </label>""")
         )

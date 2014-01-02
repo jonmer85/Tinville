@@ -46,7 +46,7 @@ body {
     overflow-x: hidden; /* Used to fix horizontal scroll on width: 100% */
 }
 
-.navbar-text {
+.xs-navbar-text {
     font-size: 2em;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -68,10 +68,10 @@ body {
 
 #tinvilleTagBanner {
     position: absolute;
-    top: 10px;
+    top: 20px;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 10%;
+    height: 75px;
 }
 
 .navbar {
@@ -82,8 +82,22 @@ body {
     width: 100%;
 }
 
-#loginPopupForm {
+@media (min-width: 768px) {
+  .loginPopupForm {
+    left: auto !important;
+    width: 65%;
+  }
+}
+
+@media (min-width: 992px) {
+  .loginPopupForm {
+    width: 40%;
+  }
+}
+
+.loginPopupForm {
     background-color: #5B595A;
+    /*opacity: .95;*/
 
 }
 
@@ -91,6 +105,27 @@ body {
     height: 3em;
     margin-top: 30px;
 }
+
+#loginForgotPasswordLink {
+    padding-left: 0;
+    clear: both;
+}
+
+#loginFacebookButton {
+    /*min-width: 50%;*/
+}
+
+#rememberLoginLabel {
+    padding-right: 0;
+    font-size: .85em;
+    color: white;
+    font-weight: normal;
+}
+
+.registerInfoButton {
+    padding: 1%;
+}
+
 
 /*#banner {*/
     /*margin-left:auto;*/

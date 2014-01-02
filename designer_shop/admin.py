@@ -1,4 +1,4 @@
-from Tinville.designer_shop.models import Shop
+from designer_shop.models import Shop
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group

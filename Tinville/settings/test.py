@@ -21,7 +21,7 @@ DATABASES = {
 }
 
 LETTUCE_APPS = (
-    'Tinville.designer_shop',
+    'designer_shop',
 )
 
 
