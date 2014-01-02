@@ -371,31 +371,50 @@
         {% block content %}
         {% endblock content %}
     </div>
-    <div class="container">
+{#The footer HTML is below.. Links still needed to completed#}
+    <div id="footerContainer" class="container col-xs-12">
         <div class="row">
-            <div id="bottomPane">
-                <div id="bottomContent">
-                    {% block bottomContent %}
-                    {% endblock bottomContent %}
-                </div>
-            </div>
-
-            <footer id="mainFooter">
-                <div class="row">
-                    <span class="span5">
-                        <nav class="mainNav mainLinks">
-                            <ul>
-                                <li class="mainNavListItem"><a href="{% url 'home_about' %}">ABOUT</a></li>
-                                <li class="mainNavListItem"><a href="{% url 'home_faq' %}">FAQ</a></li>
-                                <li class="mainNavListItem"><a href="{% url 'home_policies' %}">POLICIES</a></li>
-                                <li class="mainNavListItem"><a href="{% url 'home_terms' %}">TERMS</a></li>
-                                <li class="mainNavListItem"><a href="#">CONTACT US</a></li>
-                            </ul>
+            {# <footer id="mainFooter"> #}
+                <div id="footerRow" class="row">
+                        <nav id="footerNavRight" class="col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
+                            <dl class="list-unstyled">
+                                <li Id="mainFooterListItem">INFORMATION</li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Customer Service</a></li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+                            </dl>
                         </nav>
-                    </span>
+                        <nav id="footerNavRight" class="footer-nav col-xs-12 col-sm-2">
+                            <dl class="list-unstyled">
+                                <li Id="mainFooterListItem">WHY BUY FROM US</li>
+                                <li Id="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Secure Shopping</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Group Sales</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Designers</a></li>
+                                <li Id="mainFooterListItem"><a href="#">The Network</a></li>
+                            </dl>
+                        </nav>
+                        <nav class="footer-nav col-xs-12 col-sm-2">
+                            <dl class="list-unstyled">
+                                <li Id="mainFooterListItem">MY ACCOUNT</li>
+                                <li Id="mainFooterListItem"><a href="#" class="footerLink">Sign In</a></li>
+                                <li Id="mainFooterListItem"><a href="#" class="footerLink">View Cart</a></li>
+                                <li Id="mainFooterListItem"><a href="#" class="footerLink">Help</a></li>
+                            </dl>
+                        </nav>
+                        <nav id="footerNavLeft" class="footer-nav col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-1">
+                            <dl class="list-unstyled">
+                                <li Id="tinvilleFooterListItemPrimary">© TINVILLE.COM</li>
+                                <li Id="tinvilleFooterListItemChild">2011-2013</li>
+                                <li Id="tinvilleFooterListItemPrimary">CONTACT US</li>
+                                <li Id="tinvilleFooterListItemChild">support@tinville.com</li>
+                                <li Id="tinvilleFooterListItemPrimary">FOLLOW US ON:</li>
+                            </dl>
+                        </nav>
                 </div>
-                <div class="row"></div>
-            </footer>
+            {# </footer> #}
         </div>
     </div>
 
