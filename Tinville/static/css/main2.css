@@ -330,16 +330,16 @@ body {
     margin-bottom: .5em;
 }
 
-.footerLink a:link {
+#footerRow a:link {
     color: #CBD3D5;
 }
-.footerLink a:visited {
+#footerRow a:visited {
     color: #CBD3D5;
 }
-.footerLink a:hover {
+#footerRow a:hover {
     color: #CBD3D5;
 }
-.footerLink a:active {
+#footerRow a:active {
     color: #CBD3D5;
 }
 
