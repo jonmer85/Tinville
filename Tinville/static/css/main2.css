@@ -287,7 +287,61 @@ body {
 /* Main Footer */
 
 
-/*#mainFooter {*/
+/* #mainFooter {
+    background-color: #5B595A;
+}*/
+
+/*The CSS below is for the footer -Jeff Bowman*/
+
+@media (max-width: 768px) {
+  .footer-nav {
+      text-align: center;;
+  }
+}
+
+#footerContainer {
+    background-color: #5B595A;
+}
+
+#footerRow {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#footerNavRight {
+    border-right: 1px ridge #616161;
+}
+
+#footerNavLeft {
+    border-left: 1px ridge #616161;
+}
+
+#mainFooterListItem:first-child {
+    color: #CBD3D5;
+    margin-bottom: .5em;
+}
+
+#tinvilleFooterListItemPrimary {
+    color: #CBD3D5;
+}
+
+#tinvilleFooterListItemChild {
+    color: #686868;
+    margin-bottom: .5em;
+}
+
+.footerLink a:link {
+    color: #CBD3D5;
+}
+.footerLink a:visited {
+    color: #CBD3D5;
+}
+.footerLink a:hover {
+    color: #CBD3D5;
+}
+.footerLink a:active {
+    color: #CBD3D5;
+}
 
 /*}*/
 /*#mainFooter nav {*/
@@ -641,6 +695,7 @@ textarea {
     a,
     a:visited {
         text-decoration: underline;
+
     }
 
     a[href]:after {
