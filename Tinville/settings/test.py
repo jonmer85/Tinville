@@ -20,8 +20,9 @@ DATABASES = {
     },
 }
 
-
-
+LETTUCE_APPS = (
+    'designer_shop',
+)
 
 
 ########## TEST SETTINGS

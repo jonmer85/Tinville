@@ -135,17 +135,19 @@ INSTALLED_APPS = (
     'storages',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'Tinville.Site',
-    'Tinville.user',
-    'Tinville.designer_shop',
     'crispy_forms',
     'braces',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
     'discover_jenkins',
-    'PIL'
+    'PIL',
+    'lettuce.django',
 
+    # Actual Tinville business logic
+    'Tinville.Site',
+    'Tinville.user',
+    'designer_shop',
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
 # For django-jenkins, For that CM/SQA guy Jeff

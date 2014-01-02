@@ -46,7 +46,7 @@ body {
     overflow-x: hidden; /* Used to fix horizontal scroll on width: 100% */
 }
 
-.navbar-text {
+.xs-navbar-text {
     font-size: 2em;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -68,10 +68,10 @@ body {
 
 #tinvilleTagBanner {
     position: absolute;
-    top: 10px;
+    top: 20px;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 10%;
+    height: 75px;
 }
 
 .navbar {
@@ -82,8 +82,22 @@ body {
     width: 100%;
 }
 
-#loginPopupForm {
+@media (min-width: 768px) {
+  .loginPopupForm {
+    left: auto !important;
+    width: 65%;
+  }
+}
+
+@media (min-width: 992px) {
+  .loginPopupForm {
+    width: 40%;
+  }
+}
+
+.loginPopupForm {
     background-color: #5B595A;
+    /*opacity: .95;*/
 
 }
 
@@ -91,6 +105,27 @@ body {
     height: 3em;
     margin-top: 30px;
 }
+
+#loginForgotPasswordLink {
+    padding-left: 0;
+    clear: both;
+}
+
+#loginFacebookButton {
+    /*min-width: 50%;*/
+}
+
+#rememberLoginLabel {
+    padding-right: 0;
+    font-size: .85em;
+    color: white;
+    font-weight: normal;
+}
+
+.registerInfoButton {
+    padding: 1%;
+}
+
 
 /*#banner {*/
     /*margin-left:auto;*/
@@ -252,7 +287,61 @@ body {
 /* Main Footer */
 
 
-/*#mainFooter {*/
+/* #mainFooter {
+    background-color: #5B595A;
+}*/
+
+/*The CSS below is for the footer -Jeff Bowman*/
+
+@media (max-width: 768px) {
+  .footer-nav {
+      text-align: center;;
+  }
+}
+
+#footerContainer {
+    background-color: #5B595A;
+}
+
+#footerRow {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#footerNavRight {
+    border-right: 1px ridge #616161;
+}
+
+#footerNavLeft {
+    border-left: 1px ridge #616161;
+}
+
+#mainFooterListItem:first-child {
+    color: #CBD3D5;
+    margin-bottom: .5em;
+}
+
+#tinvilleFooterListItemPrimary {
+    color: #CBD3D5;
+}
+
+#tinvilleFooterListItemChild {
+    color: #686868;
+    margin-bottom: .5em;
+}
+
+.footerLink a:link {
+    color: #CBD3D5;
+}
+.footerLink a:visited {
+    color: #CBD3D5;
+}
+.footerLink a:hover {
+    color: #CBD3D5;
+}
+.footerLink a:active {
+    color: #CBD3D5;
+}
 
 /*}*/
 /*#mainFooter nav {*/
@@ -606,6 +695,7 @@ textarea {
     a,
     a:visited {
         text-decoration: underline;
+
     }
 
     a[href]:after {
