@@ -295,7 +295,8 @@ body {
 
 @media (max-width: 768px) {
   .footer-nav {
-      text-align: center;;
+      text-align: center;
+      font-size: 16px;
   }
 }
 
@@ -308,12 +309,14 @@ body {
     margin-bottom: 1em;
 }
 
-#footerNavRight {
-    border-right: 1px ridge #616161;
-}
+@media (min-width: 768px) {
+    #footerNavRight {
+        border-right: 1px ridge #616161;
+    }
 
-#footerNavLeft {
-    border-left: 1px ridge #616161;
+    #footerNavLeft {
+        border-left: 1px ridge #616161;
+    }
 }
 
 #mainFooterListItem:first-child {
