@@ -15,14 +15,18 @@
             <div class="container orangeBanner">{{ flatpage.title }}</div>
         </div>
         <div class="row" style="padding-top: 5%">
-            <div class="hidden-xs hidden-sm col-md-2" id="Navigation">
+            <div class="hidden-xs hidden-sm col-md-2 col-md-offset-1" id="Navigation">
                 <nav class="nav-sidebar">
                     <ul class="nav">
-                        <li onclick="myFunction()" class="" id="about"><a href="/about" >About Us</a></li>
-                        <li onclick="myFunction()" class="" id="faq"><a href="/faq">FAQ</a></li>
-                        <li class="" id="pol"><a href="/policies">Policies</a></li>
-                        <li class="" id="terms"><a href="/terms">Terms</a></li>
-                        <li class="" id="contact"><a href="#">CONTACT US</a></li>
+                        <li class="" id="About"><a href="/about">About Us</a></li>
+                        <li class="" id="FAQ"><a href="/faq">FAQ</a></li>
+                        <li class="" id="Policies"><a href="/policies">Policies</a></li>
+                        <li class="" id="Terms"><a href="/terms">Terms</a></li>
+                        <!--<li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_about' %}">About Us</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_faq' %}">FAQ</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_policies' %}">Policies</a></li>
+                        <li class=""><a data-target="#" data-toggle="pill" href="{% url 'home_terms' %}">Terms</a></li>
+-->
                     </ul>
                 </nav>
             </div>
@@ -31,25 +35,19 @@
 
         </div>
 
-
     </div>
 
 
 
 <script>
-function myFunction()
-{
-
-    $("#about").removeClass("active");
-    $("#faq").removeClass("active");
-    $("#pol").removeClass("active");
-    $("#terms").removeClass("active");
-    $("#contact").removeClass("active");
 
 
+$(window).load(function() {
 
-    $("#faq" ).addClass("active");
-}
+
+    $("#{{ flatpage.title }}").addClass("active");
+});
+
 
 </script>
 
