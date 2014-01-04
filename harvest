@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python manage.py harvest --settings=Tinville.settings.test
+python manage.py harvest --settings=Tinville.settings.test $1
