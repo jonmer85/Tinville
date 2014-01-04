@@ -338,7 +338,7 @@ body {
 @media (max-width: 768px) {
   .footer-nav {
       text-align: center;
-      font-size: 16px;
+      font-size: 1.75em;
   }
 }
 
