@@ -46,10 +46,52 @@ body {
     overflow-x: hidden; /* Used to fix horizontal scroll on width: 100% */
 }
 
+@media (min-width: 768px) {
+  .navdropstyle {
+    left: auto !important;
+    width: 65%;
+  }
+}
+
+@media (min-width: 992px) {
+  .navdropstyle {
+    width: 40%;
+  }
+}
+
+.navdropstyle {
+    background-color: #e7e7e7;
+    border: 2px solid #c2c2c2;
+    margin-top: -1px;
+    /*opacity: .95;*/
+}
+
+.navdropSize{
+  left: auto;
+  right: auto;
+}
+
+.navdropTopTextStyle {
+  color: #000000;
+}
+
 .xs-navbar-text {
     font-size: 2em;
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.navbarLinkStyle a:visited {
+    color: #000000;
+}
+
+.navbarLinkStyle a:link {
+    color: #000000;
+}
+
+.navbarLinkStyle a:hover{
+    color: #f46430;
+    text-decoration: none;
 }
 
 #navHeader {
@@ -101,7 +143,7 @@ body {
 
 }
 
-.loginField {
+.formField {
     height: 3em;
     margin-top: 30px;
 }
@@ -305,7 +347,7 @@ body {
 }
 
 #footerRow {
-    margin-top: 1em;
+    margin-top: 2em;
     margin-bottom: 1em;
 }
 
