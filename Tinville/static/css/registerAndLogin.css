@@ -1,29 +1,16 @@
-#tinvilleLogo {
-    margin-top: 130px;
-    margin-left: 5px;
+
+
+@media (min-width: 992px) {
+
+  .userInfoText {
+      float: left;
+  }
 }
 
-#tinvilleLogoDiv {
-    margin-left: 0px;
-    display: inline-block;
-}
-
-.section {
-    float: left;
-    width: 39%;
-    height: 90%;
-    background-color: white;
-    margin-top: 2%;
-    margin-bottom: 2%
-}
-
-#registerSection {
-
-}
-
-#loginSection {
-    margin-right: 2%
-
+@media (max-width: 767px) {
+    .userInfoText {
+        text-align: center;
+    }
 }
 
 .orangeHeading {
@@ -33,213 +20,19 @@
 }
 
 
-.registrationContent {
-    background-color: white;
-    min-height: 400px;
-    width: 100%;
-}
-
-.roundedCorners {
-    border-radius: 4px;
-}
-
-#registrationUserContainerDiv {
-    min-height: 300px;
-    background-color: white;
-}
-
-.mainContent {
-    padding: 10px;
-}
-
-.registrationInfoDiv {
-    padding: 0 30px;
-}
-
-.registrationInfoIcon {
-    float: left;
-    padding-right: 10px
-}
-
-.registrationText {
-    float: left;
-    padding-right: 5px;
-}
-
-.first {
-    border-right: #f46430 dotted medium;
-}
-
-.userType {
-    padding-right: 25px;
-    height: 232px;
-    /*float: right;*/
-    /*position: relative;*/
-}
-
-.registerButton {
-    float: right;
-}
-
 .loginForm {
     margin-bottom: 0px;
 }
 
-div.cn {
-    position:relative
-}
 
-div.inner {
-    position:absolute; top:50%; height:20em; margin-top:-10em;
-    width: 95%;
-}
-
-
-#registerNewUserHeading {
-    text-align: center;
-    vertical-align: top;
+.userInfo {
     font-size: 1.5em;
+    text-align: left;
 }
 
-#registerNewUserIcon {
-    display: block;
-    margin: auto;
-}
-
-.registerUserPane {
-    height: 100%;
-    margin-left: 0;
-    margin-top: 0px;
-    /*padding-right: 25px;*/
-    /*height: 232px;*/
-    /*float: right;*/
-
-}
-
-#registerUserWrapperDiv {
-    margin-left: 20px;
-    background-color: #ffffff;
-}
-
-#registerUserDiv {
-    /*top: 45%;*/
-    margin-top: 50px;
-}
-
-#designerInfoAndFashionTypesDiv {
-    top: 45%;
-}
-
-#registerUserFormDiv {
-    margin-left: 40px;
-}
-
-.fieldWrapper input {
-    width: 95%;
-}
-
-/*.fieldWrapper input #id_shop_name,#id_email,#id_email2 {*/
-    /*width: 100%*/
-/*}*/
-
-#registerNewUserPane {
-    vertical-align: bottom;
-}
-
-#designerInfoAndFashionTypesContainerDiv {
-    margin-top: 10px;
-    height: 450px;
-}
-
-#registerButtonParagraph {
-    margin-top: 32px;
-}
-
-.infoLeft {
-    float: left;
-    padding-right: 10px;
-}
-
-.infoRight {
-    float: right;
-    padding-left: 10px;
-}
-
-.designerInfoDiv {
-    padding: 0 50px 0 10px;
-}
-
-.designerInfoSection {
-    padding-top: 10px;
-}
-
-.designerInfo {
-    font-size: .75em;
-}
-
-#registrationInfoSecondDiv {
-    width: 510px;
-    padding-right: 0px;
-}
-
-label {
-    font-size: .75em;
-}
-
-input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"] {
-    /*height: 15px;*/
-
-}
-
-.control-group {
-    margin-bottom: 0;
-}
-
-#fashionStylesHeading {
-    margin-top: 0;
-}
-
-/*.checkbox {*/
-    /*margin-left: 0;*/
-    /*margin-right: 0;*/
-/*}*/
-
-#registerForm {
-    margin-bottom: 0;
-}
-
-#loginForm {
-    margin-bottom: 0;
-}
-
-#loginFormDiv {
-    width: 522px;
-    min-height: 378px;
-    border-radius: 0;
-    border: none;
-;
-}
-
-#loginRegisterLink {
-    font-size: .75em;
-    margin-bottom: 5px;
-    vertical-align: text-top;
-}
-
-#loginForgetUserOrPasswordText {
-    margin-top: 5px;
-    font-size: .65em;
-}
-
-#rememberLoginLabel {
-
-}
-
-#loginFacebookButton {
-}
-
-#loginImage {
-    margin-bottom: 0px;
+.registerField {
+    height: 4em;
+    margin-top: 20px;
 }
 
 

@@ -12,17 +12,18 @@
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-{#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main2.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
-{#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
     {% block css %}{% endblock %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+    </script>
 
 
-</head>
+
+    </head>
 
 <body class="{% block body_class %}{% endblock %}">
 {% block body %}
@@ -40,33 +41,38 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <i id="navSearch" class="fa fa-search fa-3x navbar-text visible-xs pull-right"></i>
-                <ul id="signInButton" class="nav pull-right">
-                  <li class="dropdown yamm-fw" id="menuLogin">
-                    <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right" href="#" data-toggle="dropdown" id="navLogin">SIGN IN</a>
-                    <ul id="loginPopupForm" class="dropdown-menu" style="padding:17px;">
-                        <li>
-                            <div class="yamm-content">
-                                <div class="row">
-                                    {%  include "login_form.html" %}
+                <i id="navSearch" class="fa fa-search fa-3x navbar-text xs-navbar-text visible-xs pull-right"></i>
+                {% if not user.is_authenticated %}
+                    <ul id="signInButton" class="nav pull-right">
+                      <li class="dropdown yamm-fw" id="xs-menuLogin" >
+                        <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin">SIGN IN</a>
+                        <ul class="dropdown-menu loginPopupForm">
+                            <li>
+                                <div class="yamm-content">
+                                    <div class="row">
+                                        {%  include "login_form.html" with form_name="xs-Login" %}
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        </ul>
+                      </li>
                     </ul>
-                  </li>
-                </ul>
+                {% else %}
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout">SIGN OUT</a>
+                {% endif %}
 
             </div>
 
-                <div id="navbar-collapse-1" class="navbar-collapse collapse">
+                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
+
                     <ul class="nav navbar-nav">
-                        <li class="dropdown yamm-fw">
+                        <li class="dropdown navdropSize">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navdropstyle">
                                 <li>
-                                    <div class="yamm-content">
+                                    <div class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <ul class="col-sm-2 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled">
                                                 <li><p><strong>Clothing</strong></p></li>
                                                 <li><a href="#">Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
@@ -79,7 +85,7 @@
                                                 <li><a href="#">Intimates</a></li>
                                                 <li><a href="#"><b>All Clothing</b></a></li>
                                             </ul>
-                                            <ul class="col-sm-2 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled ">
                                                 <li><p><strong>Shoes</strong></p></li>
                                                 <li><a href="#">Boots</a></li>
                                                     <li><a href="#">Heels</a></li>
@@ -92,7 +98,7 @@
                                                     <li><a href="#">Oxfords</a></li>
                                                     <li><a href="#"><strong>All Shoes</strong></a></li>
                                             </ul>
-                                            <ul class="col-sm-2 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled">
                                                 <li><p><strong>Accessories</strong></p></li>
                                                 <li><a href="#">Handbags</a></li>
                                                 <li><a href="#">Fine Jewelry</a></li>
@@ -112,13 +118,13 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown yamm-fw">
+                        <li class="dropdown navdropSize">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navdropstyle">
                                 <li>
-                                    <div class="yamm-content">
+                                    <div  class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <ul class="col-sm-2 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled">
                                                 <li><p><strong>Clothing</strong></p></li>
                                                 <li><a href="#">Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
@@ -131,7 +137,7 @@
                                                 <li><a href="#">Intimates</a></li>
                                                 <li><a href="#"><b>All Clothing</b></a></li>
                                             </ul>
-                                            <ul class="col-sm-2 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled">
                                                 <li><p><strong>Shoes</strong></p></li>
                                                 <li><a href="#">Boots</a></li>
                                                     <li><a href="#">Heels</a></li>
@@ -144,7 +150,7 @@
                                                     <li><a href="#">Oxfords</a></li>
                                                     <li><a href="#"><strong>All Shoes</strong></a></li>
                                             </ul>
-                                            <ul class="col-sm-2 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled">
                                                 <li><p><strong>Accessories</strong></p></li>
                                                 <li><a href="#">Handbags</a></li>
                                                 <li><a href="#">Fine Jewelry</a></li>
@@ -172,6 +178,23 @@
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="caret"></b></a>
                         </li>
 
+                        {% if user.is_authenticated %}
+                            <a href="#" class="pull-right navbar-link">{{ user.first_name|upper }}'S ACCOUNT</a>
+                            <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+                        {% else %}
+                            <li class="dropdown yamm-fw" id="lg-menuLogin" >
+                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
+                                <ul class="dropdown-menu loginPopupForm">
+                                    <li>
+                                        <div class="yamm-content">
+                                            {%  include "login_form.html" with form_name="md-Login" %}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+
+
                     </ul>
                 </div>
             </div>
@@ -179,201 +202,56 @@
     </nav>
 
 
-{#    <header class="container">#}
-{#        <header id="banner" class="body">#}
-{#            <div class="row">#}
-{#                <div class="span2">#}
-{#                    <a href="/"><img id="tinvilleTagBanner" src="{{ STATIC_URL }}img/tinville1.png" /></a>#}
-{#                </div>#}
-{##}
-{#                <div class="span3 offset10">#}
-{#                    <nav id="accountAndLogin" class="mainNav mainLinks accountLinks">#}
-{#                        <ul>#}
-{#                            {% if user.is_authenticated %}#}
-{#                                <li class="mainNavListItem"><a href="#">{{ user.first_name|upper }}'S ACCOUNT</a></li>#}
-{#                                <li class="mainNavListItem"><a href="/logout">SIGN OUT</a></li>#}
-{#                            {% else %}#}
-{#                                <li class="mainNavListItem"><a data-toggle="modal"#}
-{#                                        {% if flavour == "full" %}#}
-{#                                            href="#signInModal">#}
-{#                                        {% else %}#}
-{#                                            href="/login">#}
-{#                                        {% endif %}#}
-{#                                        SIGN IN</a></li>#}
-{#                                <li class="mainNavListItem"><a href="/register">REGISTER</a></li>#}
-{#                            {% endif %}#}
-{#                        </ul>#}
-{#                    </nav>#}
-{##}
-{#                    <div class="modal hide" id="signInModal" tabindex="-1" role="dialog" aria-hidden="true">#}
-{#                    <div id="loginModalOuterDiv">#}
-{#                        {%  include "login_form.html" %}#}
-{#                    </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-
-
-{#            <div class="navbar navbar-default navbar-fixed-top">#}
-{#                <div class="navbar-inner">#}
-{#                    <div class="container">#}
-{#                        <div class="row">#}
-{#                           <div class="navbar-brand col-xs-2">Tinville</div>#}
-{#                            <a href="/login" class="navbar-link navbar-text col-xs-2 col-xs-offset-5 visible-xs">Sign In</a>#}
-{#                            <i id="navSearch" class="fa fa-search fa-3x navbar-text col-xs-1 visible-xs"></i>#}
-{##}
-{##}
-{#                            <a class="navbar-toggle navbar-btn" data-toggle="collapse" data-target=".navHeaderCollapse">#}
-{#                                <span class="icon-bar"></span>#}
-{#                                <span class="icon-bar"></span>#}
-{#                                <span class="icon-bar"></span>#}
-{#                            </a>#}
-{##}
-{#                            <div class="nav-collapse collapse navHeaderCollapse">#}
-{#                                <ul class="nav navbar-nav navbar-right">#}
-{#                                    <li class="dropdown mega-menu-3 transition mainNavListItem">#}
-{#                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">WOMEN <b class="caret"></b> </a>#}
-{#                                        <ul class="dropdown-menu">#}
-{#                                            <li class="one-column">#}
-{#                                                <ul>#}
-{#                                                    <li class="nav-title"><strong>Clothing</strong></li>#}
-{#                                                    <li><a href="#">Outerwear</a></li>#}
-{#                                                    <li><a href="#">Jackets & Blazers</a></li>#}
-{#                                                    <li><a href="#">Shirts</a></li>#}
-{#                                                    <li><a href="#">Pants</a></li>#}
-{#                                                    <li><a href="#">Sweaters</a></li>#}
-{#                                                    <li><a href="#">Suits</a></li>#}
-{#                                                    <li><a href="#">Dresses</a></li>#}
-{#                                                    <li><a href="#">Athletic Clothing</a></li>#}
-{#                                                    <li><a href="#">Intimates</a></li>#}
-{#                                                    <li><a href="#"><b>All Clothing</b></a></li>#}
-{#                                                </ul>#}
-{#                                            </li>#}
-{#                                            <li class="one-column">#}
-{#                                                <ul>#}
-{#                                                    <li class="nav-title"><strong>Shoes</strong></li>#}
-{#                                                    <li><a href="#">Boots</a></li>#}
-{#                                                    <li><a href="#">Heels</a></li>#}
-{#                                                    <li><a href="#">Flats</a></li>#}
-{#                                                    <li><a href="#">Booties</a></li>#}
-{#                                                    <li><a href="#">Wedges</a></li>#}
-{#                                                    <li><a href="#">Athletic</a></li>#}
-{#                                                    <li><a href="#">Sandals</a></li>#}
-{#                                                    <li><a href="#">Loafers</a></li>#}
-{#                                                    <li><a href="#">Oxfords</a></li>#}
-{#                                                    <li><a href="#"><strong>All Shoes</strong></a></li>#}
-{#                                                </ul>#}
-{#                                            </li>#}
-{#                                            <li class="one-column">#}
-{#                                                <ul>#}
-{#                                                    <li class="nav-title"><strong>Accessories</strong></li>#}
-{#                                                    <li><a href="#">Handbags</a></li>#}
-{#                                                    <li><a href="#">Fine Jewelry</a></li>#}
-{#                                                    <li><a href="#">Fashion Jewelry</a></li>#}
-{#                                                    <li><a href="#">Watches</a></li>#}
-{#                                                    <li><a href="#">Sunglasses</a></li>#}
-{#                                                    <li><a href="#">Scarves & Wraps</a></li>#}
-{#                                                    <li><a href="#">Gloves</a></li>#}
-{#                                                    <li><a href="#">Belts</a></li>#}
-{#                                                    <li><a href="#">Designer Store</a></li>#}
-{#                                                    <li><a href="#"><strong>All Accessories</strong></a></li>#}
-{#                                                </ul>#}
-{#                                            </li>#}
-{#                                        </ul>#}
-{#                                    </li>#}
-{#                                   <li class="dropdown mega-menu-3 transition mainNavListItem">#}
-{#                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">MEN <b class="caret"></b> </a>#}
-{#                                        <ul class="dropdown-menu">#}
-{#                                            <li class="one-column">#}
-{#                                                <ul>#}
-{#                                                    <li class="nav-title"><strong>Clothing</strong></li>#}
-{#                                                    <li><a href="#">Outerwear</a></li>#}
-{#                                                    <li><a href="#">Jackets & Blazers</a></li>#}
-{#                                                    <li><a href="#">Shirts</a></li>#}
-{#                                                    <li><a href="#">Pants</a></li>#}
-{#                                                    <li><a href="#">Sweaters</a></li>#}
-{#                                                    <li><a href="#">Suits</a></li>#}
-{#                                                    <li><a href="#">Dresses</a></li>#}
-{#                                                    <li><a href="#">Athletic Clothing</a></li>#}
-{#                                                    <li><a href="#">Intimates</a></li>#}
-{#                                                    <li><a href="#"><b>All Clothing</b></a></li>#}
-{#                                                </ul>#}
-{#                                            </li>#}
-{#                                            <li class="one-column">#}
-{#                                                <ul>#}
-{#                                                    <li class="nav-title"><strong>Shoes</strong></li>#}
-{#                                                    <li><a href="#">Boots</a></li>#}
-{#                                                    <li><a href="#">Heels</a></li>#}
-{#                                                    <li><a href="#">Flats</a></li>#}
-{#                                                    <li><a href="#">Booties</a></li>#}
-{#                                                    <li><a href="#">Wedges</a></li>#}
-{#                                                    <li><a href="#">Athletic</a></li>#}
-{#                                                    <li><a href="#">Sandals</a></li>#}
-{#                                                    <li><a href="#">Loafers</a></li>#}
-{#                                                    <li><a href="#">Oxfords</a></li>#}
-{#                                                    <li><a href="#"><strong>All Shoes</strong></a></li>#}
-{#                                                </ul>#}
-{#                                            </li>#}
-{#                                            <li class="one-column">#}
-{#                                                <ul>#}
-{#                                                    <li class="nav-title"><strong>Accessories</strong></li>#}
-{#                                                    <li><a href="#">Handbags</a></li>#}
-{#                                                    <li><a href="#">Fine Jewelry</a></li>#}
-{#                                                    <li><a href="#">Fashion Jewelry</a></li>#}
-{#                                                    <li><a href="#">Watches</a></li>#}
-{#                                                    <li><a href="#">Sunglasses</a></li>#}
-{#                                                    <li><a href="#">Scarves & Wraps</a></li>#}
-{#                                                    <li><a href="#">Gloves</a></li>#}
-{#                                                    <li><a href="#">Belts</a></li>#}
-{#                                                    <li><a href="#">Designer Store</a></li>#}
-{#                                                    <li><a href="#"><strong>All Accessories</strong></a></li>#}
-{#                                                </ul>#}
-{#                                            </li>#}
-{#                                        </ul>#}
-{#                                    </li>#}
-{##}
-{#                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">DESIGNERS</a></li>#}
-{#                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">SHOP</a></li>#}
-{#                                    <li class="dropdown mega-menu-3 mainNavListItem"><a href="#">BLOG</a></li>#}
-{#                                </ul>#}
-{#                            </div>#}
-{##}
-{#                        </div>#}
-{##}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </header>#}
-
     <div class="row mainContent">
         {% block content %}
         {% endblock content %}
     </div>
-    <div class="container">
+{#The footer HTML is below.. Links still needed to completed#}
+    <div id="footerContainer" class="container col-xs-12">
         <div class="row">
-            <div id="bottomPane">
-                <div id="bottomContent">
-                    {% block bottomContent %}
-                    {% endblock bottomContent %}
-                </div>
-            </div>
-
-            <footer id="mainFooter">
-                <div class="row">
-                    <span class="span5">
-                        <nav class="mainNav mainLinks">
-                            <ul>
-                                <li class="mainNavListItem"><a href="{% url 'home_about' %}">ABOUT</a></li>
-                                <li class="mainNavListItem"><a href="{% url 'home_faq' %}">FAQ</a></li>
-                                <li class="mainNavListItem"><a href="{% url 'home_policies' %}">POLICIES</a></li>
-                                <li class="mainNavListItem"><a href="{% url 'home_terms' %}">TERMS</a></li>
-                                <li class="mainNavListItem"><a href="#">CONTACT US</a></li>
-                            </ul>
+            {# <footer id="mainFooter"> #}
+                <div id="footerRow" class="row">
+                        <nav id="footerNavRight" class="col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
+                            <dl class="list-unstyled">
+                                <li Id="mainFooterListItem">INFORMATION</li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Customer Service</a></li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
+                                <li Id="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+                            </dl>
                         </nav>
-                    </span>
+                        <nav id="footerNavRight" class="footer-nav col-xs-12 col-sm-2">
+                            <dl class="list-unstyled">
+                                <li Id="mainFooterListItem">WHY BUY FROM US</li>
+                                <li Id="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Secure Shopping</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Group Sales</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Designers</a></li>
+                                <li Id="mainFooterListItem"><a href="#">The Network</a></li>
+                            </dl>
+                        </nav>
+                        <nav class="footer-nav col-xs-12 col-sm-2">
+                            <dl class="list-unstyled">
+                                <li Id="mainFooterListItem">MY ACCOUNT</li>
+                                <li Id="mainFooterListItem"><a href="#">Sign In</a></li>
+                                <li Id="mainFooterListItem"><a href="#">View Cart</a></li>
+                                <li Id="mainFooterListItem"><a href="#">Help</a></li>
+                            </dl>
+                        </nav>
+                        <nav id="footerNavLeft" class="footer-nav col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-1">
+                            <dl class="list-unstyled">
+                                <li Id="tinvilleFooterListItemPrimary">© TINVILLE.COM</li>
+                                <li Id="tinvilleFooterListItemChild">2011-2013</li>
+                                <li Id="tinvilleFooterListItemPrimary">CONTACT US</li>
+                                <li Id="tinvilleFooterListItemChild">
+                                     <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
+                                </li>
+                                <li Id="tinvilleFooterListItemPrimary">FOLLOW US ON:</li>
+                            </dl>
+                        </nav>
                 </div>
-                <div class="row"></div>
-            </footer>
+            {# </footer> #}
         </div>
     </div>
 
@@ -458,10 +336,10 @@
             $(".error", $(form)).removeClass("error");
         }
 
-        function django_message(msg, level) {
+        function django_message(msg, level, messageElement) {
             var levels = {
                 warning: 'alert',
-                error: 'error',
+                error: 'danger',
                 success: 'success',
                 info: 'info'
             },
@@ -473,24 +351,24 @@
             },
             html = template(context);
 
-            $("#message_area").append(html);
+            messageElement.append(html);
         }
 
-        function clear_django_messages() {
-            $("#message_area").empty();
+        function clear_django_messages(messageElement) {
+            messageElement.empty();
         }
 
-        function django_block_message(msg, level) {
+        function django_block_message(msg, level, messageElement) {
             var source = $("#message_block_template").html(),
                 template = Handlebars.compile(source),
                 context = {level: level, body: msg},
                 html = template(context);
 
-            $("#message_area").append(html);
+            messageElement.append(html);
         }
 
-        {% if flavour == "full" %}
-        $(document).on("submit", "#loginForm", function(e) {
+{#        {% if flavour == "full" %}#}
+        $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
             var self = $(this),
                 url = self.attr("action"),
@@ -501,18 +379,18 @@
                     data: {
                         username: self.find("#id_username").val(),
                         password: self.find("#id_password").val(),
-                        remember_me : self.find('#id_remember_me').val()
+                        remember_me : self.find("#id_remember_me").val()
 
                     },
                     success: function(data, textStatus, jqXHR) {
                         location.reload()
                     },
                     error: function(data, textStatus, jqXHR) {
-                        clear_django_messages();
+                        clear_django_messages(self.find("#message_area"));
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
-                                django_message(value[0], "error");
+                                django_message(value[0], "error", self.find("#message_area"));
                             } else {
                                 apply_form_field_error(index, value);
                             }
@@ -520,39 +398,18 @@
                     }
                 });
         });
-        {% endif %}
+{#        {% endif %}#}
 
-        $("#signInModal").css(
-        {
-            'margin-top': function () {
-                return -($(this).height() / 2);
-            },
-            'margin-left': function () {
-                return -($(this).width() / 2);
-            }
-        })
+{#        $("#signInModal").css(#}
+{#        {#}
+{#            'margin-top': function () {#}
+{#                return -($(this).height() / 2);#}
+{#            },#}
+{#            'margin-left': function () {#}
+{#                return -($(this).width() / 2);#}
+{#            }#}
+{#        })#}
 
-        $(window).scroll(function() {
-            line();
-        })
-        $(window).resize(function() {
-            line()
-        })
-
-        function line()
-        {
-            var myWidth = $(window).width();
-            var defaultWidth = 1200;
-            if(myWidth < defaultWidth) {
-                myWidth = defaultWidth;
-            }
-           $(".line").css(
-            {
-                'width': function () {
-                    return myWidth + "px";
-                }
-            })
-        }
 
     </script>
     <script id="message_template" type="text/x-handlebars-template">
