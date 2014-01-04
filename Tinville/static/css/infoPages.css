@@ -42,7 +42,7 @@ ul.infoList {
 .infoPageContent {
     background-color: #ffffff;
     border-radius: 4px;
-    font-size: small;
+    font-size: 1.5em;
     padding-right: 2%;
     font-family:"Arial,sans-serif";
 }
