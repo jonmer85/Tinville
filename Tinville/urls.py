@@ -23,6 +23,7 @@ urlpatterns = patterns('',
         name='ajax_logins'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^testshop$', TemplateView.as_view(template_name='designer_shop/designer_shop.html'), name='testshop'),
+    url(r'^(?P<name>\w+)/$', 'designer_shop.views.shopper'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     )

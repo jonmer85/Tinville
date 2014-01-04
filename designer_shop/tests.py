@@ -1,16 +1,14 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from designer_shop.models import Shop
+from designer_shop.views import *
 from django.test import TestCase
+from lxml import html
 
+class ModelTest(TestCase):
+    def test_get_absolute_url(self):
+        self.assertEqual('/foo/', Shop.objects.create(name='foo').get_absolute_url())
+        self.assertEqual('/foo_bar/', Shop.objects.create(name='foo bar').get_absolute_url())
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class ViewTest(TestCase):
+    def test_shopper(self):
+        Shop.objects.create(name='foo', banner="foo").save
+        assert html.fromstring(self.client.get('/foo/').content).cssselect('img.shopBanner')[0].attrib['src']
