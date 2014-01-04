@@ -9,13 +9,15 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
 
 
-from Tinville.user.forms import TinvilleUserCreationForm
+from Tinville.user.forms import TinvilleShopperCreationForm, TinvilleDesignerCreationForm
 from Tinville.user.models import TinvilleUser
 
 
 class CreateUserView(CreateView):
     model = TinvilleUser
-    form_class = TinvilleUserCreationForm
+    template_name = 'register.html'
+    form_class = TinvilleShopperCreationForm
+    second_form_class = TinvilleDesignerCreationForm
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
@@ -33,25 +35,34 @@ class CreateUserView(CreateView):
         return HttpResponseRedirect(self.success_url)
 
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateUserView, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(request=self.request)
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(request=self.request)
+        return context
 
-class CreateDesignerView(CreateUserView):
-    template_name = 'register_designer.html'
+    # def get_object(self):
+    #     return get_object_or_404(TinvilleUser, pk=self.request.session['value_here'])
 
-    def get_form_kwargs(self):
-        kwargs = super(CreateDesignerView, self).get_form_kwargs()
-        kwargs['designer'] = True
-        return kwargs
+    def form_invalid(self, **kwargs):
+        return self.render_to_response(self.get_context_data(**kwargs))
 
+    def post(self, request, *args, **kwargs):
+        if 'form' in request.POST:
+            form_class = self.get_form_class()
+            form_name = 'form'
+        else:
+            form_class = self.second_form_class
+            form_name = 'form2'
 
+        form = self.get_form(form_class)
 
-class CreateShopperView(CreateUserView):
-    template_name = 'register_shopper.html'
-
-    def get_form_kwargs(self):
-        # pass "user" keyword argument with the current user to your form
-        kwargs = super(CreateShopperView, self).get_form_kwargs()
-        kwargs['designer'] = False
-        return kwargs
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(**{form_name: form})
 
 
 class ActivationView(TemplateView):

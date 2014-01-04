@@ -3,6 +3,7 @@
 {% load i18n %}
 {% block body_class %}{{ block.super }} register{% endblock %}
 {% block css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
@@ -10,73 +11,57 @@
     <img class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
     <div class="container">
         <div class="panel-group" id="accordion">
-          <div class="panel panel-default">
-            <button class="registerInfoButton" data-toggle="collapse" data-parent="#accordion" data-target="#collapseShopperForm">
-              <img class="pull-left col-xs-2 registrationInfoIcon" src="{{ STATIC_URL }}img/shopper_small_logo.png" />
-              <div class="col-xs-10">
-                <h1 class="orangeHeading pull-left">Customer Registration</h1>
-                <p class="userInfo pull-left">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
-                  Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
-                  Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
-                </p>
-              </div>
-            </button>
-          </div>
+            <div class="panel panel-default">
+                <button class="registerInfoButton" data-toggle="collapse" data-parent="#accordion" data-target="#collapseShopperForm">
+                    <div class="col-xs-12 col-md-2">
+                        <img class="pull-left col-xs-4 col-xs-offset-4 registrationInfoIcon" src="{{ STATIC_URL }}img/shopper_small_logo.png" />
+                    </div>
+                    <div class="col-xs-12 col-md-10">
+                        <div class="col-xs-12">
+                            <h1 class="orangeHeading userInfoText">Customer Registration</h1>
+                            <p class="userInfo userInfoText">
+                              Tinville is an online market place where you can explore, discover or keep up with one of a kind.
+                              apparel designer; if you are a fashionista or just like unique pieces from designers, Tinville can fulfill your shopping needs. When you sign
+                              up to shop you will have a wide variety of designers to choose from, try, follow and embrace.
+                            </p>
+                        </div>
+                    </div>
+
+                </button>
+            </div>
           <div id="collapseShopperForm" class="panel-collapse collapse in">
             <div class="panel-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                {%  load crispy_forms_tags %}
+                <form id="shopperRegistrationForm" action="/register_shopper" method="post">
+                    {% crispy form %}
+                </form>
             </div>
           </div>
           <div class="panel panel-default">
             <button class="registerInfoButton" data-toggle="collapse" data-parent="#accordion" data-target="#collapseDesignerForm">
-              <img class="pull-left col-xs-2 registrationInfoIcon" src="{{ STATIC_URL }}img/designer_small_logo.png" />
-              <div class="col-xs-10">
-                <h1 class="orangeHeading pull-left">Designer Registration</h1>
-                <p class="userInfo pull-left">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed iaculis quis risus congue hendrerit. Suspendisse venenatis sed lacus vel semper.
-                  Phasellus tristique lectus a eros interdum tempus. Cras vestibulum tellus eu risus iaculis euismod. Nunc sed nibh ac massa suscipit ultrices.
-                  Suspendisse sed gravida risus. Sed a nibh at orci rutrum lobortis in euismod ipsum. Duis consequat euismod dignissim. Proin sed lacus lectus.
-                </p>
-              </div>
+                <div class="col-xs-12 col-md-2">
+                    <img class="pull-left col-xs-4 col-xs-offset-4 registrationInfoIcon" src="{{ STATIC_URL }}img/designer_small_logo.png" />
+                </div>
+                <div class="col-xs-12 col-md-10">
+                    <div class="col-xs-12">
+                        <h1 class="orangeHeading userInfoText">Designer Registration</h1>
+                        <p class="userInfo userInfoText">
+                            Tinville, The Industry Network Village is an online market place where apparel designers of all kinds can open a shop as easy as any social
+                            network, and use your already existing online presence to market directly to your consumers. No longer will the success of your brand be
+                            out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand and consumers.
+                        </p>
+                    </div>
+                </div>
             </button>
           </div>
           <div id="collapseDesignerForm" class="panel-collapse collapse">
             <div class="panel-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                {%  load crispy_forms_tags %}
+                <form id="designerRegistrationForm" action="/register_designer" method="post">
+                    {% crispy form2 %}
+                </form>
             </div>
           </div>
         </div>
-
     </div>
-
-{#        <div class="registrationContent cn roundedCorners">#}
-{#            <div class="registrationInfoDiv inner">#}
-{#                <div class="row">#}
-{#                    <div class="span7 first userType">#}
-{#                        <img class="registrationInfoIcon" src="{{ STATIC_URL }}img/shopper_small_logo.png">#}
-{#                        <h2 class="orangeHeading">New Shopper</h2>#}
-{#                        <p>Welcome to Tinville, The Industry Network Village, Tinville is an online market place where you can explore, discover or keep up with one of a kind#}
-{#                            apparel designer; if you are a fashionista or just like unique pieces from designers, Tinville can fulfill your shopping needs. When you sign#}
-{#                            up to shop you will have a wide variety of designers to choose from, try, follow and embrace.#}
-{#                        </p>#}
-{#                        <p id="registerButtonParagraph">#}
-{#                            <a href="/register_shopper"><button class="btn registerButton tinvilleButton">Register</button></a>#}
-{#                        </p>#}
-{#                    </div>#}
-{##}
-{#                    <div class="span6 userType" id="registrationInfoSecondDiv">#}
-{#                        <img class="registrationInfoIcon" src="{{ STATIC_URL }}img/designer_small_logo.png">#}
-{#                        <h2 class="orangeHeading">New Designer</h2>#}
-{#                        <p>Tinville, The Industry Network Village is an online market place where apparel designers of all kinds can open a shop as easy as any social#}
-{#                            network, and use your already existing online presence to market directly to your consumers. No longer will the success of your brand be#}
-{#                            out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand and consumers.#}
-{#                        </p>#}
-{#                        <p>#}
-{#                            <a href="/register_designer"><button class="btn registerButton tinvilleButton">Register</button></a>#}
-{#                        </p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
 {% endblock %}
