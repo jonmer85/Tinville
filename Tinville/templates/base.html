@@ -373,10 +373,10 @@
         {% block content %}
         {% endblock content %}
     </div>
+
 {#The footer HTML is below.. Links still needed to completed#}
     <div id="footerContainer" class="container col-xs-12">
         <div class="row">
-            {# <footer id="mainFooter"> #}
                 <div id="footerRow" class="row">
                         <nav id="footerNavRight" class="col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
                             <dl class="list-unstyled">
@@ -405,10 +405,9 @@
                                     {% if user.is_authenticated %}
                                         <a href="/logout">Sign Out</a>
                                     {% else %}
-                                      <a href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
+                                        <a id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
                                     {% endif %}
                                 </li>
-{#                                <li Id="mainFooterListItem"><a href="#">Sign In</a></li>#}
                                 <li Id="mainFooterListItem"><a href="#">View Cart</a></li>
                                 <li Id="mainFooterListItem"><a href="#">Help</a></li>
                             </dl>
@@ -425,7 +424,6 @@
                             </dl>
                         </nav>
                 </div>
-            {# </footer> #}
         </div>
     </div>
 
@@ -540,7 +538,9 @@
 
             messageElement.append(html);
         }
-
+        $("#goToTopOfPage").click(function(){
+             $('html, body').animate({ scrollTop: 0 }, 'slow');
+        })
 {#        {% if flavour == "full" %}#}
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
