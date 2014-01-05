@@ -3,7 +3,7 @@
 from .base import *  # Start with base settings
 
 TEST_RUNNER = 'discover_jenkins.runner.DiscoverCIRunner'
-TEST_DISCOVER_PATTERN = "test_*"
+TEST_DISCOVER_PATTERN = "test*"
 
 
 DEBUG = False
