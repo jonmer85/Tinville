@@ -184,11 +184,19 @@ body {
 }
 
 .formField {
-    height: 1.5em;
+    height: 2em;
     margin-top: 10px;
-    font-size: 1.25em;
-
+    font-size: medium;
+    border-radius: 4px;
 }
+
+@media (min-width: 768px) {
+  .formField {
+    height: 2em;
+    font-size: small;
+  }
+}
+
 .loginForgot {
     font-size: .85em;
     height: .85em;
