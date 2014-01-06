@@ -183,6 +183,10 @@ body {
 
 }
 
+.messageError {
+    margin-top: 10%;
+}
+
 .formField {
     height: 2em;
     margin-top: 10px;
