@@ -140,21 +140,40 @@ class LoginForm(AuthenticationForm):
                 HTML("""{{ form.non_field_errors }}"""
                 ),
             css_id="message_area"),
-            Field('username', placeholder="Email", css_class='col-xs-12 formField'),
-            Field('password', type='password', placeholder="Password", css_class='col-xs-12 formField'),
             Div(
-                HTML("""<a id="loginFacebookButton" class="btn formField btn-social col-xs-6 btn-facebook">
-                            <i class="fa fa-facebook"></i> Sign in with Facebook
+                HTML("""<a id="loginFacebookButton" class="btn col-xs-10 col-xs-offset-1 btn-facebook">
+                            <i class="icon-facebook"></i> | Sign in with Facebook
                         </a""")
             ),
-            Div(
-                Submit('submit', 'Sign in', css_class='btn btn-primary pull-right col-xs-4 formField tinvilleButton')
-            ),
-            HTML("""<a href="#" id="loginForgotPasswordLink" class="formField pull-left col-xs-6">Forgot password?</a>"""),
 
-            HTML("""<label for="id_remember_me" id="rememberLoginLabel" class="checkbox formField pull-right col-xs-3">
-                        <input checked="checked" class="checkboxinput" id="id_remember_me" name="remember_me"
+            #HTML ("""<strong class="line-thru col-xs-10 col-xs-offset-1">or</strong>"""),
+            HTML("""<div class="loginFormLine col-xs-10 col-xs-offset-1"></div>"""),
+            #HTML("""<div class="col-xs-1 formField"> or </div>"""),
+            #HTML("""<div class="loginFormLine col-xs-3 col-xs-offset-1"></div>"""),
+
+            Field('username', placeholder="Email", css_class='col-xs-10 col-xs-offset-1 formField'),
+            Field('password', type='password', placeholder="Password", css_class='col-xs-10 col-xs-offset-1 formField'),
+
+            HTML("""<div for="id_remember_me" id="rememberLoginLabel" class=" checkbox  col-xs-10 col-xs-offset-1">
+                        <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
                          type="checkbox" value="true">
-                        Remember Me
-                    </label>""")
+                        Remember Me </input>
+                    </div>"""),
+            Div(
+                Submit('submit', 'Sign in', css_class='btn btn-primary col-xs-10 col-xs-offset-1 tinvilleButton')
+            ),
+            HTML("""<div class="formField col-xs-10 col-xs-offset-1 pull-left loginForgot">
+                    <p>Forgot
+                    <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
+                     or
+                    <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
+                    </div>"""),
+
+
+            HTML("""<div class="formField col-xs-10 col-xs-offset-1 pull-left loginRegister">
+                    <p>Don't have an Account?
+                    <a href="#" id="loginRegisterLink" class=" ">Register</a></p>
+                    </div>""")
+
+
         )
