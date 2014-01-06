@@ -147,7 +147,7 @@ class LoginForm(AuthenticationForm):
             ),
 
             #HTML ("""<strong class="line-thru col-xs-10 col-xs-offset-1">or</strong>"""),
-            HTML("""<img class="col-xs-10 col-xs-offset-1" src="{{ STATIC_URL }}img/or_login.png" style=" margin-top: 5%; "/>"""),
+            HTML("""<img class="col-xs-10 col-xs-offset-1" src="{{ STATIC_URL }}img/or_login.gif" style=" margin-top: 5%; "/>"""),
             #HTML("""<div class="col-xs-1 formField"> or </div>"""),
             #HTML("""<div class="loginFormLine col-xs-3 col-xs-offset-1"></div>"""),
 
