@@ -184,7 +184,7 @@
                         {% else %}
                             <li class="dropdown yamm-fw pull-right" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
-                                <ul class="dropdown-menu loginPopupForm">
+                                <ul id="logInDropDown" class="dropdown-menu loginPopupForm">
                                     <li>
                                             {%  include "login_form.html" with form_name="md-Login" %}
                                     </li>
@@ -204,53 +204,115 @@
         {% block content %}
         {% endblock content %}
     </div>
+
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container col-xs-12">
+    <div id="footerContainer" class="container col-sm-12 hidden-xs">
         <div class="row">
-            {# <footer id="mainFooter"> #}
-                <div id="footerRow" class="row">
-                        <nav id="footerNavRight" class="col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
+                <div class="row footerRow">
+                        <nav id="footerNavRight" class="col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
                             <dl class="list-unstyled">
-                                <li Id="mainFooterListItem">INFORMATION</li>
-                                <li Id="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
-                                <li Id="mainFooterListItem"><a href="#">Customer Service</a></li>
-                                <li Id="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                                <li Id="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                                <li Id="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+                                <li class="mainFooterListItem">INFORMATION</li>
+                                <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
+                                <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
+                                <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
+                                <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
+                                <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                             </dl>
                         </nav>
-                        <nav id="footerNavRight" class="footer-nav col-xs-12 col-sm-2">
+                        <nav id="footerNavRight" class="footer-nav col-sm-2">
                             <dl class="list-unstyled">
-                                <li Id="mainFooterListItem">WHY BUY FROM US</li>
-                                <li Id="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
-                                <li Id="mainFooterListItem"><a href="#">Secure Shopping</a></li>
-                                <li Id="mainFooterListItem"><a href="#">Group Sales</a></li>
-                                <li Id="mainFooterListItem"><a href="#">Designers</a></li>
-                                <li Id="mainFooterListItem"><a href="#">The Network</a></li>
+                                <li class="mainFooterListItem">WHY BUY FROM US</li>
+                                <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
+                                <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>
+                                <li class="mainFooterListItem"><a href="#">Group Sales</a></li>
+                                <li class="mainFooterListItem"><a href="#">Designers</a></li>
+                                <li class="mainFooterListItem"><a href="#">The Network</a></li>
                             </dl>
                         </nav>
-                        <nav class="footer-nav col-xs-12 col-sm-2">
+                        <nav class="footer-nav col-sm-2">
                             <dl class="list-unstyled">
-                                <li Id="mainFooterListItem">MY ACCOUNT</li>
-                                <li Id="mainFooterListItem"><a href="#">Sign In</a></li>
-                                <li Id="mainFooterListItem"><a href="#">View Cart</a></li>
-                                <li Id="mainFooterListItem"><a href="#">Help</a></li>
+                                <li class="mainFooterListItem">MY ACCOUNT</li>
+                                <li class="mainFooterListItem">
+                                    {% if user.is_authenticated %}
+                                        <a href="/logout">Sign Out</a>
+                                    {% else %}
+                                        <a id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
+                                    {% endif %}
+                                </li>
+                                <li class="mainFooterListItem"><a href="#">View Cart</a></li>
+                                <li class="mainFooterListItem"><a href="#">Help</a></li>
                             </dl>
                         </nav>
-                        <nav id="footerNavLeft" class="footer-nav col-xs-12 col-sm-2 col-sm-offset-1 col-lg-offset-1">
+                        <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-1 col-lg-offset-1">
                             <dl class="list-unstyled">
-                                <li Id="tinvilleFooterListItemPrimary">© TINVILLE.COM</li>
-                                <li Id="tinvilleFooterListItemChild">2011-2013</li>
-                                <li Id="tinvilleFooterListItemPrimary">CONTACT US</li>
-                                <li Id="tinvilleFooterListItemChild">
+                                <li id="tinvilleFooterListItemPrimary">© TINVILLE.COM</li>
+                                <li id="tinvilleFooterListItemChild">2011-2013</li>
+                                <li id="tinvilleFooterListItemPrimary">CONTACT US</li>
+                                <li id="tinvilleFooterListItemChild">
                                      <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                                 </li>
                                 <li Id="tinvilleFooterListItemPrimary">FOLLOW US ON:</li>
                             </dl>
                         </nav>
                 </div>
-            {# </footer> #}
         </div>
+    </div>
+
+    <div id="footerContainer" class="container hidden-sm hidden-md hidden-lg footerRow footer-nav">
+        <div class="panel-group footerRow">
+            <div class="footerPanelTitle footerSectionTitle" data-toggle="collapse" href="#collapseInformation">
+                <h4 id="tinvilleXSFooterHeaders">Information</h4>
+            </div>
+            <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
+                <dl class="list-unstyled">
+                    <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
+                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+                </dl>
+            </div>
+            <div class="footerPanelTitle footerSectionTitle" data-toggle="collapse" href="#collapseWhyBuyFromUs">
+                <h4 id="tinvilleXSFooterHeaders">Why Buy From Us</h4>
+            </div>
+            <div id="collapseWhyBuyFromUs" class="panel-collapse collapse footerPanelPadding">
+                <dl class="list-unstyled">
+                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
+                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>
+                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>
+                    <li class="mainFooterListItem"><a href="#">Designers</a></li>
+                    <li class="mainFooterListItem"><a href="#">The Network</a></li>
+                </dl>
+            </div>
+            <div class="footerPanelTitle footerSectionTitle" data-toggle="collapse" href="#collapseMyAccount">
+                <h4 id="tinvilleXSFooterHeaders">My Account</h4></h4>
+            </div>
+            <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
+                <dl class="list-unstyled listPadding">
+                    <li class="mainFooterListItem">
+                        {% if user.is_authenticated %}
+                            <a href="/logout">Sign Out</a>
+                        {% else %}
+                            <a id="goToTopOfPage" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a>
+                        {% endif %}
+                    </li>
+                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>
+                    <li class="mainFooterListItem"><a href="#">Help</a></li>
+                </dl>
+            </div>
+                <div>
+            <dl class="list-unstyled listPadding">
+                <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
+                <li id="tinvilleFooterListItemChild">2011-2013</li>
+                <li id="tinvilleFooterListItemPrimary">Contact Us</li>
+                <li id="tinvilleFooterListItemChild">
+                    <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
+                </li>
+                <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+            </dl>
+        </div>
+        </div>
+
     </div>
 
 
@@ -364,7 +426,9 @@
 
             messageElement.append(html);
         }
-
+        $("#goToTopOfPage").click(function(){
+             $('html, body').animate({ scrollTop: 0 }, 'slow');
+        })
 {#        {% if flavour == "full" %}#}
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
