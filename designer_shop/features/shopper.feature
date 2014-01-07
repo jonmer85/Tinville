@@ -4,7 +4,8 @@ Feature: Designer Shop
   As a customer
   I want to view a designer's shop
 
-  Scenario: Banner
+  Scenario: Elements
     Given a designer shop
 	When the shop is visited
 	Then the banner for the shop is displayed
+	And the logo for the shop is displayed
