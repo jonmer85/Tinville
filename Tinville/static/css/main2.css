@@ -360,11 +360,11 @@ body {
 
 @media (min-width: 768px) {
     #footerNavRight {
-        border-right: 1px ridge #616161;
+        border-right: 1px solid #616161;
     }
 
     #footerNavLeft {
-        border-left: 1px ridge #616161;
+        border-left: 1px solid #616161;
     }
 }
 
@@ -390,7 +390,7 @@ body {
     #tinvilleFooterListItemPrimary:first-child {
         color: #CBD3D5;
         padding-top: 1em;
-        border-top: 1px ridge #616161;
+        border-top: 1px solid #616161;
     }
 }
 
