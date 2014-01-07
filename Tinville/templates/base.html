@@ -48,11 +48,11 @@
                         <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin">SIGN IN</a>
                         <ul class="dropdown-menu loginPopupForm">
                             <li>
-                                <div class="yamm-content">
+                                <!--<div class="yamm-content"> -->
                                     <div class="row">
                                         {%  include "login_form.html" with form_name="xs-Login" %}
                                     </div>
-                                </div>
+                                <!--</div> -->
                             </li>
                         </ul>
                       </li>
@@ -182,13 +182,11 @@
                             <a href="#" class="pull-right navbar-link">{{ user.first_name|upper }}'S ACCOUNT</a>
                             <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
                         {% else %}
-                            <li class="dropdown yamm-fw" id="lg-menuLogin" >
+                            <li class="dropdown yamm-fw pull-right" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
                                 <ul id="logInDropDown" class="dropdown-menu loginPopupForm">
                                     <li>
-                                        <div class="yamm-content">
                                             {%  include "login_form.html" with form_name="md-Login" %}
-                                        </div>
                                     </li>
                                 </ul>
                             </li>

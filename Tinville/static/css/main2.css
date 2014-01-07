@@ -108,6 +108,42 @@ body {
     margin-top: 0;
 }
 
+.loginFormLine {
+    padding-bottom: 4%;
+    border-top: 1px ridge #f46430;
+    margin-top: 5%;
+    top: 49%;
+}
+
+
+ @media (min-width: 768px) {
+   .loginFormLine {
+    padding-bottom: 5%;
+       margin-top: 7%;
+   }
+ }
+
+ @media (min-width: 992px) {
+   .loginFormLine {
+    padding-bottom: 3%;
+    margin-top: 7%;
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #tinvilleTagBanner {
     position: absolute;
     top: 20px;
@@ -127,41 +163,81 @@ body {
 @media (min-width: 768px) {
   .loginPopupForm {
     left: auto !important;
-    width: 65%;
+    width: 35%;
   }
 }
 
 @media (min-width: 992px) {
   .loginPopupForm {
-    width: 40%;
+    width: 20%;
   }
 }
 
 .loginPopupForm {
-    background-color: #5B595A;
+    background-color: #E7E7E7;
+    padding-top: 2%;
+    padding-bottom: 1%;
+    border-radius: 8px;
+    font-size: small;
     /*opacity: .95;*/
 
 }
 
-.formField {
-    height: 3em;
-    margin-top: 30px;
+.messageError {
+    margin-top: 10%;
 }
 
+.formField {
+    height: 2em;
+    margin-top: 10px;
+    font-size: medium;
+    border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .formField {
+    height: 2em;
+    font-size: small;
+  }
+}
+
+.loginForgot {
+    font-size: .85em;
+    height: .85em;
+}
 #loginForgotPasswordLink {
     padding-left: 0;
     clear: both;
+
+}
+
+#loginForgotUsernameLink {
+    padding-left: 0;
+    clear: both;
+
+}
+
+#loginRegisterLink {
+    padding-left: 0;
+    clear: both;
+
+}
+
+.loginRegister {
+    font-size: .85em;
+    height: .85em;
+    margin-bottom: 5%;
 }
 
 #loginFacebookButton {
     /*min-width: 50%;*/
+    margin-top: 10%;
 }
 
 #rememberLoginLabel {
     padding-right: 0;
     font-size: .85em;
-    color: white;
-    font-weight: normal;
+    padding-top: 2px;
 }
 
 .registerInfoButton {
