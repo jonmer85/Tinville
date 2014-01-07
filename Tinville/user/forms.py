@@ -72,13 +72,13 @@ class TinvilleShopperCreationForm(TinvilleUserCreationForm):
 
         self.helper.layout = Layout(
             Div(
-                Field('first_name', placeholder="First name", css_class="col-xs-12 formField registerField"),
-                Field('last_name', placeholder="Last name", css_class="col-xs-12 formField registerField"),
+                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField"),
+                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField"),
                 Hidden('last_login', datetime.now()),
-                Field('email', placeholder="Email", css_class="col-xs-12 formField registerField"),
-                Field('password', placeholder="Password", css_class="col-xs-12 formField registerField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-12 formField registerField"),
-                Submit('submit', 'Register', css_class='registerButton tinvilleButton registerField formField pull-right')
+                Field('email', placeholder="Email", css_class="col-xs-12 registerField"),
+                Field('password', placeholder="Password", css_class="col-xs-5 registerField"),
+                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField"),
+                Submit('submit', 'Register', css_class='tinvilleButton pull-right registerField registerButton')
             )
         )
 
@@ -99,8 +99,8 @@ class TinvilleDesignerCreationForm(TinvilleUserCreationForm):
                 Field('shop_name', placeholder="Shop name", css_class="col-xs-12 registerField"),
                 Field('email', placeholder="Email", css_class="col-xs-12 registerField"),
                 Field('password', placeholder="Password", css_class="col-xs-5 registerField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField"),
-                Submit('submit', 'Register', css_class='tinvilleButton registerField pull-right')
+                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerFieldw"),
+                Submit('submit', 'Register', css_class='tinvilleButton registerField pull-right registerButton')
             )
         )
 
