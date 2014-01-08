@@ -15,3 +15,8 @@ class Shop(models.Model):
 
     def get_absolute_url(self):
         return "/%s/" % self.name.replace(' ', '_')
+
+class Item(models.Model):
+    shop = models.ForeignKey(Shop)
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to=MEDIA_URL)

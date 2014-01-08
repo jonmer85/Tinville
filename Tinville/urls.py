@@ -22,10 +22,10 @@ urlpatterns = patterns('',
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
         name='ajax_logins'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
-    url(r'^(?P<name>\w+)/$', 'designer_shop.views.shopper'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    )
+    url(r'^(?P<name>\w+)/$', 'designer_shop.views.shopper'),
+)
 
 
 urlpatterns += patterns('django.contrib.flatpages.views',
