@@ -7,7 +7,14 @@ from Tinville.user.forms import LoginForm
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns('django.contrib.flatpages.views',
+    url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
+    url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
+    url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
+    url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
+)
+
+urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^register$', CreateUserView.as_view(), name='register'),
     url(r'^register_designer$', CreateUserView.as_view(), name='create-designer'),
@@ -24,17 +31,9 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<name>\w+)/$', 'designer_shop.views.shopper'),
 )
-
-
-urlpatterns += patterns('django.contrib.flatpages.views',
-    url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
-    url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
-    url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
-    url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
-)
-
 
 
 if settings.DEBUG:
