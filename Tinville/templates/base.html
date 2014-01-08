@@ -177,8 +177,14 @@
                         </li>
 
                         {% if user.is_authenticated %}
-                            <a href="#" class="pull-right navbar-link">{{ user.first_name|upper }}'S ACCOUNT</a>
-                            <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+                            <li class="dropdown yamm-fw pull-right">
+                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">{{ user.first_name|upper }}'S ACCOUNT</a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown pull-right">
+                                        <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+                                    </li>
+                                </ul>
+                            </li>
                         {% else %}
                             <li class="dropdown yamm-fw pull-right" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
