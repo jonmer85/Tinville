@@ -2,6 +2,10 @@
 <img src="{{shop.banner.url}}" class="shopBanner" />
 <ul class="shopItems">
   {% for item in shop.item_set.all %}
-    <li class="shopItem"><img /><span class="name">{{item.name}}</span></li>
+    <li class="shopItem">
+	  <img src="{{item.image.url}}" />
+	  <span class="name">{{item.name}}</span>
+	  <span class="price">${{item.price}}</span>
+	</li>
   {% endfor %}
 </ul>

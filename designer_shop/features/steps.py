@@ -42,7 +42,7 @@ def assert_selector_contains(selector, attrib, string):
 @step(u'And (\d+) shop items')
 def and_n_shop_items(step, n):
     for i in range(int(n)):
-        world.shop.item_set.create(name='itemname', image='itemimage')
+        world.shop.item_set.create(name='itemname', image='itemimage', price='3.42')
 
 @step(u'Then there should be (\d+) items displayed')
 def then_there_should_be_n_items_displayed(step, n):
@@ -63,4 +63,8 @@ def and_every_item_should_have_an_image(step):
 
 @step(u'And every item should have a price')
 def and_every_item_should_have_a_price(step):
-    assert False, 'This step must be implemented'
+    selector_found = False
+    for item in world.dom.cssselect('.shopItems .shopItem .price'):
+        assert_equals('$3.42', item.text)
+        selector_found = True
+    assert_true(selector_found, 'No elements found')

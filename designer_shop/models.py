@@ -20,3 +20,4 @@ class Item(models.Model):
     shop = models.ForeignKey(Shop)
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to=MEDIA_URL)
+    price = models.DecimalField(max_digits=8, decimal_places=2)

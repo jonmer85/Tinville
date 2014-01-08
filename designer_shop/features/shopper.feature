@@ -11,7 +11,6 @@ Feature: Designer Shop
 	And the logo for the shop is displayed
 	And the items for the shop are displayed
 
-  @wip
   Scenario: Shop Items
     Given a designer shop
 	And 3 shop items
