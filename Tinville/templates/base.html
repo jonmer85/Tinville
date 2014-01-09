@@ -178,11 +178,21 @@
 
                         {% if user.is_authenticated %}
                             <li class="dropdown yamm-fw pull-right">
-                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">{{ user.first_name|upper }}'S ACCOUNT</a>
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown pull-right">
-                                        <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
-                                    </li>
+                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">{{ user.first_name|upper }} <b class="caret"></b></a>
+                                <ul class="dropdown-menu navdropstyle" style=" width: 5%; ">
+                                    <div  class="yamm-content navbarLinkStyle">
+                                        <div class="row">
+                                            <ul class="col-sm-12 list-unstyled">
+
+                                               <li class="">
+                                                    <a href="#" class="">My Account</a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="/logout" class="">SIGN OUT</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </ul>
                             </li>
                         {% else %}
@@ -390,7 +400,7 @@
         function apply_form_field_error(fieldname, error) {
             var input = $("#id_" + fieldname),
                 container = $("#div_id_" + fieldname),
-                error_msg = $("<span />").addClass("help-inline ajax-error").text(error[0]);
+                error_msg = $("<span />").addClass("help-inline ajax-error col-sx-10 col-xs-offset-1").text(error[0]);
 
             container.addClass("error");
             error_msg.insertAfter(input);
@@ -454,6 +464,7 @@
                     },
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
+                        clear_form_field_errors(".loginPopupForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {

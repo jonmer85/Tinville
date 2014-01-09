@@ -99,7 +99,7 @@ class TinvilleDesignerCreationForm(TinvilleUserCreationForm):
                 Field('shop_name', placeholder="Shop name", css_class="col-xs-12 registerField"),
                 Field('email', placeholder="Email", css_class="col-xs-12 registerField"),
                 Field('password', placeholder="Password", css_class="col-xs-5 registerField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerFieldw"),
+                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField"),
                 Submit('submit', 'Register', css_class='tinvilleButton registerField pull-right registerButton')
             )
         )
@@ -139,7 +139,7 @@ class LoginForm(AuthenticationForm):
             Div(
                 HTML("""{{ form.non_field_errors }}"""
                 ),
-            css_id="message_area", css_class='messageError'),
+            css_id="message_area", css_class='messageError col-xs-10 col-xs-offset-1'),
             Div(
                 HTML("""<a id="loginFacebookButton" class="btn col-xs-10 col-xs-offset-1 btn-facebook">
                             <i class="icon-facebook"></i> | Sign in with Facebook
