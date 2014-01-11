@@ -29,7 +29,6 @@
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
     <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
-
     <nav class="navbar yamm navbar-default" role="navigation">
         <div class="row">
             <div id="navHeader" class="navbar-header">
@@ -64,13 +63,109 @@
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
 
                     <ul class="nav navbar-nav">
-                        <li class="dropdown navdropSize">
+                        <li id="dropMobile" class="dropdown navdropSize mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="caret"></b></a>
-                            <ul class="dropdown-menu navdropstyle">
+                            <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                                <li>
+                                    <div id="nonMobileContent" class="yamm-content navbarLinkStyle ">
+                                        <div class="row">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li><p><strong>Clothing</strong></p></li>
+                                                <li><a href="#" >Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                            </ul>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li><p><strong>Shoes</strong></p></li>
+                                                <li><a href="#">Boots</a></li>
+                                                    <li><a href="#">Heels</a></li>
+                                                    <li><a href="#">Flats</a></li>
+                                                    <li><a href="#">Booties</a></li>
+                                                    <li><a href="#">Wedges</a></li>
+                                                    <li><a href="#">Athletic</a></li>
+                                                    <li><a href="#">Sandals</a></li>
+                                                    <li><a href="#">Loafers</a></li>
+                                                    <li><a href="#">Oxfords</a></li>
+                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                            </ul>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div  id="mobileContent" class="yamm-content navbarLinkStyle">
+                                        <div class="row">
+                                            <button id="mobileCbtn"><b>Clothing</b></button>
+                                            <button id="mobileSbtn"><b>Shoes</b></button>
+                                            <button id="mobileAbtn"><b>Accessories</b></button>
+
+                                            <ul id="mobileCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                            </ul>
+                                            <ul id="mobileScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Boots</a></li>
+                                                    <li><a href="#">Heels</a></li>
+                                                    <li><a href="#">Flats</a></li>
+                                                    <li><a href="#">Booties</a></li>
+                                                    <li><a href="#">Wedges</a></li>
+                                                    <li><a href="#">Athletic</a></li>
+                                                    <li><a href="#">Sandals</a></li>
+                                                    <li><a href="#">Loafers</a></li>
+                                                    <li><a href="#">Oxfords</a></li>
+                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                            </ul>
+                                            <ul id="mobileAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown navdropSize mobileDropBtnStyle">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
+                            <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <ul class="col-sm-4 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Clothing</strong></p></li>
                                                 <li><a href="#">Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
@@ -83,7 +178,7 @@
                                                 <li><a href="#">Intimates</a></li>
                                                 <li><a href="#"><b>All Clothing</b></a></li>
                                             </ul>
-                                            <ul class="col-sm-4 list-unstyled ">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Shoes</strong></p></li>
                                                 <li><a href="#">Boots</a></li>
                                                     <li><a href="#">Heels</a></li>
@@ -96,59 +191,7 @@
                                                     <li><a href="#">Oxfords</a></li>
                                                     <li><a href="#"><strong>All Shoes</strong></a></li>
                                             </ul>
-                                            <ul class="col-sm-4 list-unstyled">
-                                                <li><p><strong>Accessories</strong></p></li>
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
-                                            </ul>
-
-
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown navdropSize">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
-                            <ul class="dropdown-menu navdropstyle">
-                                <li>
-                                    <div  class="yamm-content navbarLinkStyle">
-                                        <div class="row">
-                                            <ul class="col-sm-4 list-unstyled">
-                                                <li><p><strong>Clothing</strong></p></li>
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
-                                                <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
-                                            </ul>
-                                            <ul class="col-sm-4 list-unstyled">
-                                                <li><p><strong>Shoes</strong></p></li>
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
-                                            </ul>
-                                            <ul class="col-sm-4 list-unstyled">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Accessories</strong></p></li>
                                                 <li><a href="#">Handbags</a></li>
                                                 <li><a href="#">Fine Jewelry</a></li>
@@ -166,13 +209,13 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown yamm-fw">
+                        <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="caret"></b></a>
                         </li>
-                        <li class="dropdown yamm-fw">
+                        <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="caret"></b></a>
                         </li>
-                        <li class="dropdown yamm-fw">
+                        <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="caret"></b></a>
                         </li>
 
@@ -441,9 +484,7 @@
 
             messageElement.append(html);
         }
-        $("#goToTopOfPage").click(function(){
-             $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+
 {#        {% if flavour == "full" %}#}
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
