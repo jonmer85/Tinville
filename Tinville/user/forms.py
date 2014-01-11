@@ -34,14 +34,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = TinvilleUser
-        # fields = ('email',
-        #           'first_name',
-        #           'last_name',
-        #           'middle_name',
-        #           'is_seller',
-        #           'other_site_url',
-        #           'shop_name'
-        #         )
 
     def clean_password2(self):
         # Check that the two password entries match
