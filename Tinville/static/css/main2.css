@@ -165,13 +165,13 @@ body {
 @media (min-width: 768px) {
   .loginPopupForm {
     left: auto !important;
-    width: 35%;
+    width: 232px;
   }
 }
 
 @media (min-width: 992px) {
   .loginPopupForm {
-    width: 20%;
+    width: 232px;
   }
 }
 
@@ -181,6 +181,7 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
+
     /*opacity: .95;*/
 
 }
