@@ -78,23 +78,7 @@
                     out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand \
                     and consumers."
 
-            var checkMode = function () {
-
-                if ($(window).width() < 768) {
-                    return 'xs';
-                }
-                else if ($(window).width() >= 768 && $(window).width() < 992) {
-                    return 'sm';
-                }
-                else if ($(window).width() >= 992 && $(window).width() < 1200) {
-                    return 'md';
-                }
-                else {
-                    return 'lg';
-                }
-            };
-
-            var compareMode = function () {
+            var adjustDetailsText = function () {
                 if (mode !== checkMode()) {
                     mode = checkMode();
 
@@ -108,10 +92,10 @@
             };
 
             $(window).on('resize', function () {
-                compareMode()
+                adjustDetailsText()
             });
 
-            compareMode();
+            adjustDetailsText();
 
         });
 
