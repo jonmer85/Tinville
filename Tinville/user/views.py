@@ -15,11 +15,16 @@ from Tinville.user.forms import TinvilleShopperCreationForm, TinvilleDesignerCre
 from Tinville.user.models import TinvilleUser
 
 def register(request):
+
     if request.method == 'POST':
       if 'shopperForm' in request.POST:
-        form = TinvilleShopperCreationForm(request.POST)
+        shopperForm = TinvilleShopperCreationForm(request.POST)
+        designerForm = TinvilleDesignerCreationForm()
+        form = shopperForm
       else:
-        form = TinvilleDesignerCreationForm(request.POST)
+        designerForm = TinvilleDesignerCreationForm(request.POST)
+        shopperForm = TinvilleShopperCreationForm()
+        form = designerForm
 
       if form.is_valid():
         #create initial entry for User object

@@ -121,27 +121,27 @@ class TestUserViews(TestCase):
         self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
         self.assertContains(resp, 'alert-warning')  # Should be a warning since user is activated already
 
-    # @unittest.skip("broken due to responsive redesign")
-    # def test_get_login_success(self):
-    #     first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
-    #
-    #     user = TinvilleUser.objects.get(email=email)
-    #     user.is_active = True
-    #     user.save()
-    #     resp = self.client.get(reverse('home'))
-    #     self.assertNotContains(resp, first)  # Home page contains user's first name when logged in
-    #
-    #     resp = self.client.post(reverse('login'),
-    #                             {'username': email,
-    #                              'password': password,
-    #                              'remember_me': False,
-    #                             }
-    #                     )
-    #     # self.assertRedirects(resp, reverse('home'), status_code=httplib.OK)   Jon M TBD - For some reason this fails...
-    #     self.assertEqual(resp['Location'], 'http://testserver' + reverse('home'))
-    #     self.assertEqual(resp.status_code, httplib.FOUND)
-    #     resp = self.client.get(reverse('home'))
-    #     self.assertContains(resp, 'JOE')  # Home page contains user's first name when logged in
+    @unittest.skip("broken due to responsive redesign")
+    def test_get_login_success(self):
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
+
+        user = TinvilleUser.objects.get(email=email)
+        user.is_active = True
+        user.save()
+        resp = self.client.get(reverse('home'))
+        self.assertNotContains(resp, first)  # Home page contains user's first name when logged in
+
+        resp = self.client.post(reverse('login'),
+                                {'username': email,
+                                 'password': password,
+                                 'remember_me': False,
+                                }
+                        )
+        # self.assertRedirects(resp, reverse('home'), status_code=httplib.OK)   Jon M TBD - For some reason this fails...
+        self.assertEqual(resp['Location'], 'http://testserver' + reverse('home'))
+        self.assertEqual(resp.status_code, httplib.FOUND)
+        resp = self.client.get(reverse('home'))
+        self.assertContains(resp, 'JOE')  # Home page contains user's first name when logged in
 
 
     ### Utilities

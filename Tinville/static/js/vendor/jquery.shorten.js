@@ -21,7 +21,7 @@
 
     "use strict";
 	    if ($(this).data('jquery.shorten')){
-	    	return false;
+//	    	return false; Jon M - Removed this since we always want to shorten an element, even if it was shortened before
 		}
 		$(this).data('jquery.shorten', true);
 		
