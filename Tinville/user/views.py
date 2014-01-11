@@ -7,10 +7,40 @@ from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
+from django.shortcuts import render
 
 
 from Tinville.user.forms import TinvilleShopperCreationForm, TinvilleDesignerCreationForm
 from Tinville.user.models import TinvilleUser
+
+def register(request):
+    if request.method == 'POST':
+      if 'shopperForm' in request.POST:
+        form = TinvilleShopperCreationForm(request.POST)
+      else:
+        form = TinvilleDesignerCreationForm(request.POST)
+
+      if form.is_valid():
+        #create initial entry for User object
+        user = form.save()
+        user.generate_activation_information()
+        user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
+        # Can't do super() here because it would save the instance again
+        msg = """An e-mail has been sent to %s. Please check your mail and click on the confirmation link in the
+            message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
+            customer support to correct the address.""" % user.email
+        messages.success(request, msg)
+        success_url = reverse('notifications')
+        return HttpResponseRedirect(success_url)
+
+    else:
+      shopperForm = TinvilleShopperCreationForm()
+      designerForm = TinvilleDesignerCreationForm()
+    c = {
+      'shopperForm':shopperForm,
+      'designerForm':designerForm,
+    }
+    return render(request, 'register.html', c)
 
 
 class CreateUserView(CreateView):
@@ -37,10 +67,10 @@ class CreateUserView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateUserView, self).get_context_data(**kwargs)
-        if 'form' not in context:
-            context['form'] = self.form_class(request=self.request)
-        if 'form2' not in context:
-            context['form2'] = self.second_form_class(request=self.request)
+        if 'shopperForm' not in context:
+            context['shopperForm'] = self.form_class(request=self.request, prefix="shopperForm")
+        if 'designerForm' not in context:
+            context['designerForm'] = self.second_form_class(request=self.request, prefix="designerForm")
         return context
 
     # def get_object(self):
@@ -50,19 +80,25 @@ class CreateUserView(CreateView):
         return self.render_to_response(self.get_context_data(**kwargs))
 
     def post(self, request, *args, **kwargs):
-        if 'form' in request.POST:
+
+        if 'shopperForm' in request.POST:
             form_class = self.get_form_class()
-            form_name = 'form'
+            form_name = 'shopperForm'
+            form = self.form_class(request.POST)
         else:
             form_class = self.second_form_class
-            form_name = 'form2'
+            form_name = 'designerForm'
+            form = self.form_class(request.POST)
 
-        form = self.get_form(form_class)
 
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(**{form_name: form})
+
+
+
+
 
 
 class ActivationView(TemplateView):

@@ -72,13 +72,13 @@ class TinvilleShopperCreationForm(TinvilleUserCreationForm):
 
         self.helper.layout = Layout(
             Div(
-                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField"),
-                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField"),
+                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField inputField"),
+                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
                 Hidden('last_login', datetime.now()),
-                Field('email', placeholder="Email", css_class="col-xs-12 registerField"),
-                Field('password', placeholder="Password", css_class="col-xs-5 registerField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField"),
-                Submit('submit', 'Register', css_class='tinvilleButton pull-right registerField registerButton')
+                Field('email', placeholder="Email", css_class="col-xs-12 registerField inputField"),
+                Field('password', placeholder="Password", css_class="col-xs-5 registerField inputField"),
+                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
+                Submit('shopperForm', 'Register', css_class='tinvilleButton pull-right registerField registerButton')
             )
         )
 
@@ -93,14 +93,14 @@ class TinvilleDesignerCreationForm(TinvilleUserCreationForm):
 
         self.helper.layout = Layout(
             Div(
-                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField"),
-                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField"),
+                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField inputField"),
+                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
                 Hidden('last_login', datetime.now()),
-                Field('shop_name', placeholder="Shop name", css_class="col-xs-12 registerField"),
-                Field('email', placeholder="Email", css_class="col-xs-12 registerField"),
-                Field('password', placeholder="Password", css_class="col-xs-5 registerField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerFieldw"),
-                Submit('submit', 'Register', css_class='tinvilleButton registerField pull-right registerButton')
+                Field('shop_name', placeholder="Shop name", css_class="col-xs-12 registerField inputField"),
+                Field('email', placeholder="Email", css_class="col-xs-12 registerField inputField"),
+                Field('password', placeholder="Password", css_class="col-xs-5 registerField inputField"),
+                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
+                Submit('designerForm', 'Register', css_class='tinvilleButton registerField pull-right registerButton')
             )
         )
 
@@ -172,7 +172,7 @@ class LoginForm(AuthenticationForm):
 
             HTML("""<div class="formField col-xs-10 col-xs-offset-1 pull-left loginRegister">
                     <p>Don't have an Account?
-                    <a href="#" id="loginRegisterLink" class=" ">Register</a></p>
+                    <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>
                     </div>""")
 
 

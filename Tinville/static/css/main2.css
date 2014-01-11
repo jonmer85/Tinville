@@ -194,6 +194,10 @@ body {
     border-radius: 4px;
 }
 
+.inputField {
+    border-radius: 4px;
+}
+
 @media (min-width: 768px) {
   .formField {
     height: 2em;
