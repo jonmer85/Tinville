@@ -14,6 +14,7 @@ from django.shortcuts import render
 from Tinville.user.forms import TinvilleShopperCreationForm, TinvilleDesignerCreationForm
 from Tinville.user.models import TinvilleUser
 
+
 def register(request):
 
     if request.method == 'POST':

@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 
-from Tinville.user.views import CreateUserView, ActivationView, TemplateView, ajax_login, register
+from Tinville.user.views import ActivationView, TemplateView, ajax_login, register
 from Tinville.user.forms import LoginForm, TinvilleShopperCreationForm, TinvilleDesignerCreationForm
 
 admin.autodiscover()
