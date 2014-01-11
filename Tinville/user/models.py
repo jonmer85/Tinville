@@ -67,8 +67,6 @@ class TinvilleUser(AbstractBaseUser):
     activation_key = models.CharField(max_length=40, blank=True)
     key_expires = models.DateTimeField(auto_now_add=True)
 
-    styles = models.ManyToManyField(FashionStyles, blank=True, null=True)
-
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
     other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)

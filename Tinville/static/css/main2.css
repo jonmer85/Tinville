@@ -46,6 +46,8 @@ body {
     overflow-x: hidden; /* Used to fix horizontal scroll on width: 100% */
 }
 
+
+
 @media (min-width: 768px) {
   .navdropstyle {
     left: auto !important;
@@ -175,7 +177,7 @@ body {
 
 .loginPopupForm {
     background-color: #E7E7E7;
-    padding-top: 2%;
+    padding-top: 0%;
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
@@ -191,6 +193,10 @@ body {
     height: 2em;
     margin-top: 10px;
     font-size: medium;
+    border-radius: 4px;
+}
+
+.inputField {
     border-radius: 4px;
 }
 
@@ -231,7 +237,7 @@ body {
 
 #loginFacebookButton {
     /*min-width: 50%;*/
-    margin-top: 10%;
+    margin-top: 1%;
 }
 
 #rememberLoginLabel {

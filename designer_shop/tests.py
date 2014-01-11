@@ -12,13 +12,13 @@ class ModelTest(TestCase):
 
     def test_shop_items(self):
         shop = Shop.objects.create(name='foo')
-        shop.item_set.create(name='foo', image='bar')
+        shop.item_set.create(name='foo', image='bar', price='2.34')
         self.assertEqual(1, shop.item_set.count())
 
 class ViewTest(TestCase):
     def setUp(self):
         self.shop = Shop.objects.create(name='foo', banner='bar', logo='baz')
-        self.shop.item_set.create(name='foo')
+        self.shop.item_set.create(name='foo', image='image_bar', price='1.23')
         self.content = html.fromstring(shopper(HttpRequest(), 'foo').content)
 
     def test_banner(self):
@@ -37,7 +37,16 @@ class ViewTest(TestCase):
         )
 
     def test_item_image(self):
-        self.assertEqual(len(self.content.cssselect('.shopItems .shopItem img')), 1)
+        self.assertRegexpMatches(
+            self.content.cssselect('.shopItems .shopItem img')[0].attrib['src'],
+            re.compile(".*image_bar.*"),
+        )
+
+    def test_item_price(self):
+        self.assertEqual(
+            self.content.cssselect('.shopItems .shopItem .price')[0].text,
+            '$1.23',
+        )
 
     def assertSelectorContains(self, selector, attrib, string):
         self.assertRegexpMatches(

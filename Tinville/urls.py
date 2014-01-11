@@ -2,8 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 
-from Tinville.user.views import CreateUserView, ActivationView, TemplateView, login, ajax_login
-from Tinville.user.forms import LoginForm
+from Tinville.user.views import CreateUserView, ActivationView, TemplateView, login, ajax_login, register
+from Tinville.user.forms import LoginForm, TinvilleShopperCreationForm, TinvilleDesignerCreationForm
 
 admin.autodiscover()
 
@@ -16,9 +16,7 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 
 urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^register$', CreateUserView.as_view(), name='register'),
-    url(r'^register_designer$', CreateUserView.as_view(), name='create-designer'),
-    url(r'^register_shopper$', CreateUserView.as_view(), name='create-shopper'),
+    url(r'^register$', 'Tinville.user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
     url(r'^notifications$', TemplateView.as_view(template_name='notification.html'), name='notifications'),
 

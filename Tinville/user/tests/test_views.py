@@ -12,26 +12,14 @@ class TestUserViews(TestCase):
 
 
     def test_get_register_view(self):
-        create_url = reverse('register')
+        create_url = reverse('Tinville.user.views.register')
         resp = self.client.get(create_url)
         self.assertEqual(resp.status_code, httplib.OK)
         self.assertTemplateUsed(resp, 'register.html')
 
-    def test_get_create_shopper_view(self):
-        create_url = reverse('create-shopper')
-        resp = self.client.get(create_url)
-        self.assertEqual(resp.status_code, httplib.OK)
-        self.assertTemplateUsed(resp, 'register_shopper.html')
-
-
-    def test_get_create_designer_view(self):
-        create_url = reverse('create-designer')
-        resp = self.client.get(create_url)
-        self.assertEqual(resp.status_code, httplib.OK)
-        self.assertTemplateUsed(resp, 'register_designer.html')
 
     def test_post_create_designer_view_success(self):
-        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
 
         local_tz = pytz.timezone(TIME_ZONE)
 
@@ -45,11 +33,10 @@ class TestUserViews(TestCase):
         self.failIfEqual(user.password, password)  # Should fail since it should be is a hashed password
         self.assertTrue(user.is_seller)
         self.assertFalse(user.is_active)
-        self.assertEqual(list(user.styles.all().values_list('id', flat=True)), styles)
 
     def test_post_create_shopper_view_success(self):
-        first, last, email, shop_name, last_login, password, styles, resp \
-            = self.post_test_user_data(shop_name='', view_name='create-shopper')
+        first, last, email, shop_name, last_login, password, resp \
+            = self.post_test_user_data(shop_name='')
 
         local_tz = pytz.timezone(TIME_ZONE)
 
@@ -64,10 +51,9 @@ class TestUserViews(TestCase):
         self.failIfEqual(user.password, password)  # Should fail since it should be is a hashed password
         self.assertFalse(user.is_seller)
         self.assertFalse(user.is_active)
-        self.assertEqual(list(user.styles.all().values_list('id', flat=True)), styles)
 
     def test_get_activation_view_designer(self):
-        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
 
         user = TinvilleUser.objects.get(email=email)
         self.assertTrue(user.is_seller)
@@ -82,7 +68,7 @@ class TestUserViews(TestCase):
         self.assertContains(resp, 'alert-success')
 
     def test_get_activation_view_designer_already_authenticated(self):
-        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
 
         user = TinvilleUser.objects.get(email=email)
         user.is_active = True
@@ -100,7 +86,7 @@ class TestUserViews(TestCase):
 
     def test_get_activation_view_while_another_user_is_signed_in(self):  # Defect #60
         # Create a designer, log them in
-        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
         user = TinvilleUser.objects.get(email=email)
         user.is_active = True
         user.save()
@@ -109,8 +95,8 @@ class TestUserViews(TestCase):
 
         # Now create another user and activate them, it should still activate even if the other user has a logged in
         # session
-        first2, last2, email2, shop_name2, last_login2, password2, styles2, resp2 = \
-            self.post_test_user_data(email="joe2@schmoe.com", shop_name="SchmoeShop")
+        first2, last2, email2, shop_name2, last_login2, password2, resp2 = \
+            self.post_test_user_data(email="joe2@schmoe.com", shop_name="SchmoeShop", submitName='designerForm')
         user = TinvilleUser.objects.get(email=email2)
         self.assertTrue(user.is_seller)
         self.assertFalse(user.is_active)
@@ -125,7 +111,7 @@ class TestUserViews(TestCase):
 
     def test_get_activation_after_activated_already(self):  # Defect #61
         # Create a designer and activate them
-        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
         user = TinvilleUser.objects.get(email=email)
         user.is_active = True
         user.save()
@@ -137,7 +123,7 @@ class TestUserViews(TestCase):
 
     @unittest.skip("broken due to responsive redesign")
     def test_get_login_success(self):
-        first, last, email, shop_name, last_login, password, styles, resp = self.post_test_user_data()
+        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
 
         user = TinvilleUser.objects.get(email=email)
         user.is_active = True
@@ -160,11 +146,9 @@ class TestUserViews(TestCase):
 
     ### Utilities
     def post_test_user_data(self, first=None, last=None, email=None, shop_name=None,
-                            last_login=None, password=None, password2=None, styles=None,
-                            view_name=None):
+                            last_login=None, password=None, password2=None, submitName='shopperForm'):
 
-        view_name = view_name or 'create-designer'
-        create_url = reverse(view_name)
+        create_url = reverse('Tinville.user.views.register')
         first = first or 'Joe'
         last = last or 'Schmoe'
         email = email or 'joe@schmoe.com'
@@ -173,7 +157,6 @@ class TestUserViews(TestCase):
         last_login = last_login or datetime.datetime.now()
         password = password or 'test'
         password2 = password2 or password
-        styles = styles or [1, 3, 5]
         resp = self.client.post(create_url,
                                 {'first_name': first,
                                  'last_name': last,
@@ -182,10 +165,10 @@ class TestUserViews(TestCase):
                                  'password': password,
                                  'password2': password2,
                                  'last_login': last_login,
-                                 'styles': styles,
+                                 submitName: '',
                                  }
                                 )
 
-        return first, last, email, shop_name, last_login, password, styles, resp
+        return first, last, email, shop_name, last_login, password, resp
 
 
