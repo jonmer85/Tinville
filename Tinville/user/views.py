@@ -125,13 +125,6 @@ class ActivationView(TemplateView):
         return self.render_to_response(context)
 
 
-# def login(request, *args, **kwargs):
-#     if request.method == 'POST':
-#         if not request.POST.get('remember_me', None):
-#             request.session.set_expiry(0)
-#     return auth_view_login(request, *args, **kwargs)
-
-
 def ajax_login(request, *args, **kwargs):
     form = AuthenticationForm(data=request.POST)
     logged_in = False

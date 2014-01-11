@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 
-from Tinville.user.views import CreateUserView, ActivationView, TemplateView, login, ajax_login, register
+from Tinville.user.views import CreateUserView, ActivationView, TemplateView, ajax_login, register
 from Tinville.user.forms import LoginForm, TinvilleShopperCreationForm, TinvilleDesignerCreationForm
 
 admin.autodiscover()
@@ -19,10 +19,6 @@ urlpatterns += patterns('',
     url(r'^register$', 'Tinville.user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
     url(r'^notifications$', TemplateView.as_view(template_name='notification.html'), name='notifications'),
-
-    url(r'^login$', login,
-        {'template_name': 'login.html', 'authentication_form': LoginForm},
-        name='login'),
     url(r'^ajax_login$', ajax_login,
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
         name='ajax_logins'),
