@@ -6,6 +6,7 @@ from django.views.generic import CreateView, TemplateView
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
 from django.contrib.auth.forms import AuthenticationForm
+from Tinville.user.forms import LoginForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
@@ -126,11 +127,17 @@ class ActivationView(TemplateView):
 
 
 def ajax_login(request, *args, **kwargs):
-    form = AuthenticationForm(data=request.POST)
+    ud_dict = {'username':str(request.POST['username']).lower()}
+
+    request.POST = request.POST.copy()
+    request.POST.update(ud_dict)
+
+    form = LoginForm(data=request.POST)
     logged_in = False
     data = {}
 
     if request.is_ajax() and form.is_valid():
+
         data = auth_view_login(request, form)
         logged_in = True
         return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), mimetype='application/json')

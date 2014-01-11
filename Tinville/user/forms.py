@@ -60,6 +60,9 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+    def clean_email(self):
+        return self.cleaned_data['email'].lower()
+
 
 class TinvilleShopperCreationForm(TinvilleUserCreationForm):
 
@@ -177,3 +180,6 @@ class LoginForm(AuthenticationForm):
 
 
         )
+
+    def clean_username(self):
+            return self.cleaned_data['username'].lower()
