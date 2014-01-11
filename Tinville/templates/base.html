@@ -31,7 +31,7 @@
     <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
 
     <nav class="navbar yamm navbar-default" role="navigation">
-        <div class="container">
+        <div class="row">
             <div id="navHeader" class="navbar-header">
 
                 <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
@@ -177,8 +177,24 @@
                         </li>
 
                         {% if user.is_authenticated %}
-                            <a href="#" class="pull-right navbar-link">{{ user.first_name|upper }}'S ACCOUNT</a>
-                            <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+                            <li class="dropdown yamm-fw pull-right">
+                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">{{ user.first_name|upper }} <b class="caret"></b></a>
+                                <ul class="dropdown-menu navdropstyle" style=" width: 5%; ">
+                                    <div  class="yamm-content navbarLinkStyle">
+                                        <div class="row">
+                                            <ul class="col-sm-12 list-unstyled">
+
+                                               <li class="">
+                                                    <a href="#" class="">My Account</a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="/logout" class="">SIGN OUT</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </li>
                         {% else %}
                             <li class="dropdown yamm-fw pull-right" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -204,7 +220,7 @@
     </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container col-sm-12 hidden-xs">
+    <div id="footerContainer" class="row col-sm-12 hidden-xs">
         <div class="row">
                 <div class="row footerRow">
                         <nav id="footerNavRight" class="col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
@@ -256,7 +272,7 @@
         </div>
     </div>
 
-    <div id="footerContainer" class="container hidden-sm hidden-md hidden-lg footerRow footer-nav">
+    <div id="footerContainer" class="row hidden-sm hidden-md hidden-lg footerRow footer-nav">
         <div class="panel-group footerRow">
             <div class="footerPanelTitle footerSectionTitle" data-toggle="collapse" href="#collapseInformation">
                 <h4 id="tinvilleXSFooterHeaders">Information</h4>
@@ -384,7 +400,7 @@
         function apply_form_field_error(fieldname, error) {
             var input = $("#id_" + fieldname),
                 container = $("#div_id_" + fieldname),
-                error_msg = $("<span />").addClass("help-inline ajax-error").text(error[0]);
+                error_msg = $("<span />").addClass("help-inline ajax-error col-sx-10 col-xs-offset-1").text(error[0]);
 
             container.addClass("error");
             error_msg.insertAfter(input);
@@ -448,6 +464,7 @@
                     },
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
+                        clear_form_field_errors(".loginPopupForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {

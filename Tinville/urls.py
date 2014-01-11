@@ -31,12 +31,7 @@ urlpatterns += patterns('',
     url(r'^admin/', include(admin.site.urls)),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<name>\w+)/$', 'designer_shop.views.shopper'),
-
-    )
-
-
-
-
+)
 
 
 if settings.DEBUG:
