@@ -15,6 +15,8 @@ class ModelTest(TestCase):
         shop.item_set.create(name='foo', image='bar', price='2.34')
         self.assertEqual(1, shop.item_set.count())
 
+
+
 class ViewTest(TestCase):
     def setUp(self):
         self.shop = Shop.objects.create(name='foo', banner='bar', logo='baz')
@@ -22,37 +24,35 @@ class ViewTest(TestCase):
         self.content = html.fromstring(shopper(HttpRequest(), 'foo').content)
 
     def test_banner(self):
-        self.assertSelectorContains('img.shopBanner', 'src', 'bar')
-
-    def test_logo(self):
-        self.assertSelectorContains('img.shopLogo', 'src', 'baz')
+        self.assertFirstSelectorContains('img.shopBanner', 'src', 'bar')
 
     def test_navbar(self):
-        self.assertEqual(len(self.content.cssselect('.navbar')), 1)
-        self.assertSelectorContains('.navbar', 'class', 'navbar')
+        self.assertSelectorExists('.navbar')
 
     def test_items(self):
-        self.assertEquals('shopItems', self.content.cssselect('.shopItems')[0].attrib['class'])
+        self.assertSelectorExists('.shopItems')
 
     def test_item_name(self):
-        self.assertEquals(
-            self.content.cssselect('.shopItems .shopItem .name')[0].text,
+        self.assertFirstSelectorTextEquals(
+            '.shopItems .shopItem .name',
             self.shop.item_set.all()[0].name,
         )
 
     def test_item_image(self):
-        self.assertRegexpMatches(
-            self.content.cssselect('.shopItems .shopItem img')[0].attrib['src'],
-            re.compile(".*image_bar.*"),
-        )
+        self.assertFirstSelectorContains('.shopItems .shopItem img', 'src', 'image_bar')
 
     def test_item_price(self):
-        self.assertEqual(
-            self.content.cssselect('.shopItems .shopItem .price')[0].text,
-            '$1.23',
-        )
+        self.assertFirstSelectorTextEquals('.shopItems .shopItem .price', '$1.23')
 
-    def assertSelectorContains(self, selector, attrib, string):
+
+
+    def assertSelectorExists(self, selector):
+        self.assertGreater(len(self.content.cssselect(selector)), 0)
+
+    def assertFirstSelectorTextEquals(self, selector, text):
+        self.assertEqual(self.content.cssselect(selector)[0].text, text)
+
+    def assertFirstSelectorContains(self, selector, attrib, string):
         self.assertRegexpMatches(
             self.content.cssselect(selector)[0].attrib[attrib],
             re.compile(".*" + string + ".*"),

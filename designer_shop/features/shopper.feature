@@ -8,7 +8,6 @@ Feature: Designer Shop
 	Given a designer shop
 	When the shop is visited
 	Then the banner for the shop is displayed
-	And the logo for the shop is displayed
 	And the items for the shop are displayed
 	And the Tinville header is displayed
 
