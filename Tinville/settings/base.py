@@ -140,7 +140,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
-    'discover_jenkins',
+    # 'discover_jenkins1',
     'PIL',
     'lettuce.django',
 
