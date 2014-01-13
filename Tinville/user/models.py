@@ -135,6 +135,3 @@ class TinvilleUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-
-    def clean_email(self):
-        return self.cleaned_data['email'].lower()

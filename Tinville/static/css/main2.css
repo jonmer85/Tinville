@@ -13,7 +13,7 @@
 html,
 button,
 input,
-select,
+seleat,
 textarea {
     color: #222;
 }
@@ -35,6 +35,34 @@ body {
 /*
  *Header
  *****************/
+
+@media(max-width: 767px){
+    .mobileDropItemStyle > li{
+        border-bottom: 1px solid #e7e7e7;
+        padding-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    .mobileDropListStyle{
+        border-bottom: 1px solid #000000;
+        padding-bottom: 5px;
+
+    }
+
+    .mobileDropBtnStyle{
+        text-align: center;
+    }
+
+    .mobileNeighborMenu{
+        display: inline-block;
+    }
+}
+
+:disabled {
+    color: #6b849a;
+    text-shadow: 1px 1px #ffffff;
+    cursor: default;
+}
 
 @media (min-width: 768px) {
   .navbar-nav {
@@ -154,6 +182,22 @@ body {
     height: 75px;
 }
 
+
+@media(max-width: 767px){
+    #tinvilleTagBanner {
+    position: absolute;
+    top: 20px;
+    left: 5%;
+    z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
+    height: 75px;
+}
+
+   /* #carousel{
+    height: 812px;
+    length: 2632px;
+    } resizing home girl image for mobile*/
+}
+
 .navbar {
     margin-bottom: 0;
 }
@@ -247,10 +291,6 @@ body {
     padding-top: 2px;
 }
 
-.registerInfoButton {
-    padding: 1%;
-}
-
 
 /*#banner {*/
     /*margin-left:auto;*/
@@ -285,7 +325,6 @@ body {
 /*}*/
 
 /*#banner h1 strong {*/
-    /*font-size: 0.36em;*/
     /*font-weight: normal;*/
 /*}*/
 

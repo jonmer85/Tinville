@@ -18,13 +18,13 @@ class TinvilleUserCreationForm(forms.ModelForm):
         super(TinvilleUserCreationForm, self).__init__(*args, **kwargs)
 
         self.isDesigner = False
-
         self.fields['shop_name'].required = False
 
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
-
+        self.helper.form_class = 'form-horizontal'
+        self.helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
 
 
     """A form for creating new users. Includes all the required
@@ -34,14 +34,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = TinvilleUser
-        # fields = ('email',
-        #           'first_name',
-        #           'last_name',
-        #           'middle_name',
-        #           'is_seller',
-        #           'other_site_url',
-        #           'shop_name'
-        #         )
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -60,6 +52,9 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+    def clean_email(self):
+        return self.cleaned_data['email'].lower()
+
 
 class TinvilleShopperCreationForm(TinvilleUserCreationForm):
 
@@ -68,17 +63,20 @@ class TinvilleShopperCreationForm(TinvilleUserCreationForm):
 
         self.isDesigner = False
 
+
         self.fields['shop_name'].required = False
 
         self.helper.layout = Layout(
             Div(
-                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField inputField"),
-                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
+                Field('first_name', placeholder="First name"),
+                Field('last_name', placeholder="Last name"),
                 Hidden('last_login', datetime.now()),
-                Field('email', placeholder="Email", css_class="col-xs-12 registerField inputField"),
-                Field('password', placeholder="Password", css_class="col-xs-5 registerField inputField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
-                Submit('shopperForm', 'Register', css_class='tinvilleButton pull-right registerField registerButton')
+                Field('email', placeholder="Email"),
+                Field('password', placeholder="Password"),
+                Field('password2', placeholder="Confirm password"),
+                Div(css_class='clearfix'),
+                Submit('shopperForm', 'Register', css_class='pull-right tinvilleButton registerButton')
+
             )
         )
 
@@ -93,14 +91,15 @@ class TinvilleDesignerCreationForm(TinvilleUserCreationForm):
 
         self.helper.layout = Layout(
             Div(
-                Field('first_name', placeholder="First name", css_class="col-xs-5 registerField inputField"),
-                Field('last_name', placeholder="Last name", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
+                Field('first_name', placeholder="First name"),
+                Field('last_name', placeholder="Last name"),
                 Hidden('last_login', datetime.now()),
-                Field('shop_name', placeholder="Shop name", css_class="col-xs-12 registerField inputField"),
-                Field('email', placeholder="Email", css_class="col-xs-12 registerField inputField"),
-                Field('password', placeholder="Password", css_class="col-xs-5 registerField inputField"),
-                Field('password2', placeholder="Confirm password", css_class="col-xs-5 col-xs-offset-2 registerField inputField"),
-                Submit('designerForm', 'Register', css_class='tinvilleButton registerField pull-right registerButton')
+                Field('shop_name', placeholder="Shop name"),
+                Field('email', placeholder="Email"),
+                Field('password', placeholder="Password"),
+                Field('password2', placeholder="Confirm password"),
+                Div(css_class='clearfix'),
+                Submit('designerForm', 'Register', css_class='pull-right tinvilleButton registerButton')
             )
         )
 
@@ -177,3 +176,6 @@ class LoginForm(AuthenticationForm):
 
 
         )
+
+    def clean_username(self):
+            return self.cleaned_data['username'].lower()

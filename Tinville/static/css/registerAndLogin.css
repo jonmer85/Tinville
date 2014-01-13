@@ -35,12 +35,38 @@
     margin-top: 20px;
 }
 
-.registerButton {
-    height: 3em;
-}
-
 .userRegistrationForm {
     padding: 5%;
+    padding-top: 0;
+}
+
+.registerInfoButton {
+    padding: 1%;
+    width: 100%;
+}
+
+.registerButton {
+    /*position: relative;*/
+    /*right: 19%;*/
+}
+
+/* Bootstrap overrides */
+
+.controls {
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+
+    .form-group, .registerButton {
+        /*max-width: 60%;*/
+        /*margin: 0 auto;*/
+        /*margin-bottom: 15px;*/
+    }
 }
 
 
