@@ -33,6 +33,10 @@ def then_the_logo_for_the_shop_is_displayed(step):
 def and_the_items_for_the_shop_are_displayed(step):
     assert_equals('shopItems', world.dom.cssselect('.shopItems')[0].attrib['class'])
 
+@step(u'And the Tinville header is displayed')
+def and_the_tinville_header_is_displayed(step):
+    assert_equals(1, len(world.dom.cssselect('.navbar')))
+
 def assert_selector_contains(selector, attrib, string):
     assert_regexp_matches(
         world.dom.cssselect(selector)[0].attrib[attrib],

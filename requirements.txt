@@ -14,6 +14,7 @@ django-braces==1.2.2
 django-crispy-forms==1.4.0
 django-discover-jenkins==0.1.1
 django-discover-runner==1.0
+django-fixture-media==0.1.4
 django-jenkins==0.14.1
 django-mobile==0.3.0
 django-selenium==0.9.6

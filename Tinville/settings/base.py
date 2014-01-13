@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'discover_jenkins',
     'PIL',
     'lettuce.django',
+    'fixture_media',
 
     # Actual Tinville business logic
     'Tinville.Site',
@@ -195,16 +196,6 @@ LOGGING = {
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
 
-AWS_STORAGE_BUCKET_NAME = 'Tinville'
-
-DEFAULT_FILE_STORAGE = 'Tinville.Site.s3utils.MediaS3BotoStorage'
-STATICFILES_STORAGE = 'Tinville.Site.s3utils.StaticS3BotoStorage'
-
-AWS_ACCESS_KEY_ID = 'AKIAJJLBU23GKJZH6SQA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'tinville'
-
-S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 

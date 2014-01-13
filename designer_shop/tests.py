@@ -27,6 +27,10 @@ class ViewTest(TestCase):
     def test_logo(self):
         self.assertSelectorContains('img.shopLogo', 'src', 'baz')
 
+    def test_navbar(self):
+        self.assertEqual(len(self.content.cssselect('.navbar')), 1)
+        self.assertSelectorContains('.navbar', 'class', 'navbar')
+
     def test_items(self):
         self.assertEquals('shopItems', self.content.cssselect('.shopItems')[0].attrib['class'])
 

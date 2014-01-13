@@ -1,11 +1,20 @@
-<img src="{{shop.logo.url}}" class="shopLogo" />
-<img src="{{shop.banner.url}}" class="shopBanner" />
-<ul class="shopItems">
-  {% for item in shop.item_set.all %}
-    <li class="shopItem">
-	  <img src="{{item.image.url}}" />
-	  <span class="name">{{item.name}}</span>
-	  <span class="price">${{item.price}}</span>
-	</li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+	<img src="{{shop.logo.url}}" class="shopLogo" />
+	<img src="{{shop.banner.url}}" class="shopBanner" />
+	<div class="shopItems row">
+	  {% for item in shop.item_set.all %}
+		<div class="col-sm-2 col-md-2">
+		  <div class="thumbnail shopItem">
+			<img src="{{item.image.url}}" />
+			<div class="caption">
+			  <span class="name">{{item.name}}</span>
+			  <span class="price">${{item.price}}</span>
+			</div>
+		  </div>
+		</div>
+	  {% endfor %}
+	</div>
+{% endblock %}

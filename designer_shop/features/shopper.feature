@@ -10,6 +10,7 @@ Feature: Designer Shop
 	Then the banner for the shop is displayed
 	And the logo for the shop is displayed
 	And the items for the shop are displayed
+	And the Tinville header is displayed
 
   Scenario: Shop Items
     Given a designer shop

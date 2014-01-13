@@ -1,0 +1,51 @@
+[
+    {
+        "model": "designer_shop.Shop",
+        "pk": 1,
+        "fields": {
+            "name": "Demo",
+            "banner": "images/banner.png",
+            "logo": "images/logo.png"
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 1,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 1",
+            "image": "images/shoe1.jpg",
+            "price": 1.23
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 2,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 2",
+            "image": "images/shoe2.jpg",
+            "price": 2.34
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 3,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 3",
+            "image": "images/shoe3.jpg",
+            "price": 3.45
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 4,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 4",
+            "image": "images/shoe4.jpg",
+            "price": 4.56
+        }
+    }
+]
