@@ -1,0 +1,41 @@
+{% extends "teaser_base.html" %}
+{% load i18n %}
+{% block body_class %}{{ block.super }} home{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <img id="carousel" class="img-responsive full-screen" src="{{ STATIC_URL }}img/home-girl-hat.jpg"/>
+    <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <div class="row">
+        <p id="tinvilleDescription" class="col-md-4 col-md-offset-2">
+            Tinville, The Industry Network Village is an online market place where apparel designers of all
+            kinds can open a shop as easy as any social network, and use your already existing online
+            presence to market directly to your consumers. No longer will the success of your brand be
+            out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand
+            and consumers.
+        </p>
+    </div>
+    <div class="row">
+        <div class="thumbnail center well well-small text-center col-md-6 col-md-offset-3">
+            <h2>Mailing List</h2>
+
+            <p>Subscribe to our mailing list and stay tuned. We promise we won't spam you!</p>
+
+            <form action="" method="post">
+                <div class="input-group input-group-lg">
+                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                  <input type="text" class="form-control" placeholder="your@email.com">
+                </div>
+                <br />
+                <input type="submit" value="Subscribe Now!" class="btn tinvilleButton btn-large" />
+          </form>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block bottomContent %}
+    <div id="villageOfShops"></div>
+{% endblock %}
