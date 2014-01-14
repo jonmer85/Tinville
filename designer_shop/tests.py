@@ -8,7 +8,7 @@ import re
 class ModelTest(TestCase):
     def test_get_absolute_url(self):
         self.assertEqual('/foo/', Shop.objects.create(name='foo').get_absolute_url())
-        self.assertEqual('/foo_bar/', Shop.objects.create(name='foo bar').get_absolute_url())
+        self.assertEqual('/foo-bar/', Shop.objects.create(name='foo bar').get_absolute_url())
 
     def test_shop_items(self):
         shop = Shop.objects.create(name='foo')
