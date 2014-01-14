@@ -140,7 +140,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
-    'discover_jenkins',
+    # 'discover_jenkins1',
     'PIL',
     'lettuce.django',
     'fixture_media',
@@ -152,17 +152,20 @@ INSTALLED_APPS = (
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
 # For django-jenkins, For that CM/SQA guy Jeff
-TEST_PROJECT_APPS = (
+PROJECT_APPS = (
    'Tinville.Site',
    'Tinville.user',
-   'Tinville.design_shop'
+   'designer_shop'
 )
 
 # These are used by jenkins to know which tasks to run
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',
-    'django_jenkins.tasks.with_coverage'
+    'django_jenkins.tasks.with_coverage',
+    'django_jenkins.tasks.lettuce_tests',
 )
+
+
 
 
 # A sample logging configuration. The only tangible logging
