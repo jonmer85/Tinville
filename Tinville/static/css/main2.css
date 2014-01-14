@@ -13,7 +13,7 @@
 html,
 button,
 input,
-seleat,
+select,
 textarea {
     color: #222;
 }
@@ -204,6 +204,10 @@ body {
 
 .full-screen {
     width: 100%;
+}
+
+.row-full-screen {
+    margin-right: 0;
 }
 
 @media (min-width: 768px) {
