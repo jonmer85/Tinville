@@ -14,7 +14,6 @@ django-braces==1.2.2
 django-crispy-forms==1.4.0
 django-fixture-media==0.1.4
 -e git://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins
-django-jenkins==0.14.1
 django-mobile==0.3.0
 django-selenium==0.9.6
 django-storages==1.1.6
