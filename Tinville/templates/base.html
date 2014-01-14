@@ -482,6 +482,9 @@
                 }
          }
 
+        $("#goToTopOfPage").click(function(){
+             $('html, body').animate({ scrollTop: 0 }, 'slow');
+        })
         $(window).resize(function(){
              var mode = checkMode();
 
