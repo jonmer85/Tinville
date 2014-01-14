@@ -15,6 +15,10 @@ class ModelTest(TestCase):
         shop.item_set.create(name='foo', image='bar', price='2.34')
         self.assertEqual(1, shop.item_set.count())
 
+    def test_slug(self):
+        shop = Shop.objects.create(name='foo bar')
+        self.assertEqual(shop.slug, 'foo-bar')
+
 
 
 class ViewTest(TestCase):

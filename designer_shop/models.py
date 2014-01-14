@@ -1,5 +1,6 @@
 from Tinville.settings.base import MEDIA_URL
 from django.db import models
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -7,6 +8,7 @@ from django.db import models
 class Shop(models.Model):
     name = models.CharField(verbose_name="Shop name", unique=True, blank=False, null=False, db_index=True,
                             default=None, max_length=100)
+    slug = models.SlugField()
     banner = models.ImageField(upload_to=MEDIA_URL)
     logo = models.ImageField(upload_to=MEDIA_URL)
 
@@ -15,6 +17,10 @@ class Shop(models.Model):
 
     def get_absolute_url(self):
         return "/%s/" % self.name.replace(' ', '_')
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Shop, self).save(*args, **kwargs)
 
 class Item(models.Model):
     shop = models.ForeignKey(Shop)
