@@ -245,12 +245,13 @@
         </div>
     </nav>
 
-    <div class="row mainContent">
+    <div class="row">
         {% block content %}
         {% endblock content %}
     </div>
+
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="row col-sm-12">
+    <div id="footerContainer" class="row row-full-screen">
         <div class="row footerRow hidden-xs">
             <nav id="footerNavRight" class="col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
                 <dl class="list-unstyled">
@@ -482,6 +483,9 @@
                 }
          }
 
+        $("#goToTopOfPage").click(function(){
+             $('html, body').animate({ scrollTop: 0 }, 'slow');
+        })
         $(window).resize(function(){
              var mode = checkMode();
 
