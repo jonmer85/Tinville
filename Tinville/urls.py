@@ -26,7 +26,7 @@ urlpatterns += patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'^(?P<name>\w+)/$', 'designer_shop.views.shopper'),
+    url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )
 
 

@@ -48,6 +48,9 @@ class ViewTest(TestCase):
     def test_item_price(self):
         self.assertFirstSelectorTextEquals('.shopItems .shopItem .price', '$1.23')
 
+    def test_slug_lookup(self):
+        slug_shop = Shop.objects.create(name='foo bar', banner='bar', logo='baz')
+        shopper(HttpRequest(), 'foo-bar')
 
 
     def assertSelectorExists(self, selector):

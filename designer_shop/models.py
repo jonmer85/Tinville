@@ -16,7 +16,7 @@ class Shop(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/%s/" % self.name.replace(' ', '_')
+        return "/%s/" % self.slug
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
