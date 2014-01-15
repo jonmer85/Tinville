@@ -64,10 +64,10 @@ body {
 
 #tinvilleTagBanner {
     position: relative;
-    top: -100px;
-    left: 10%;
+    top: -70px;
+    left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 250px;
+    height: 200px;
 }
 
 #tinvilleDescription {
@@ -79,7 +79,7 @@ body {
 @media(max-width: 767px){
     #tinvilleTagBanner {
     position: absolute;
-    top: 20px;
+    top: 1%;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
     height: 75px;
@@ -97,6 +97,10 @@ body {
 
 .full-screen {
     width: 100%;
+}
+
+.row-full-screen {
+    margin-right: 0;
 }
 
 
@@ -234,7 +238,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(244, 100, 48, 0.6);
 }
 
-.btn-primary {
+.btn-primary, .btn {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #f46430;
