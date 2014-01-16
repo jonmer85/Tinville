@@ -1,4 +1,4 @@
-from Tinville.user.forms import LoginForm
+from user.forms import LoginForm
 
 
 def include_login_form(request):

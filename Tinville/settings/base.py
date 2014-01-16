@@ -146,14 +146,14 @@ INSTALLED_APPS = (
 
     # Actual Tinville business logic
     'Tinville.Site',
-    'Tinville.user',
+    'user',
     'designer_shop',
 )  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
 
 # For django-jenkins, For that CM/SQA guy Jeff
 PROJECT_APPS = (
    'Tinville.Site',
-   'Tinville.user',
+   'user',
    'designer_shop'
 )
 
