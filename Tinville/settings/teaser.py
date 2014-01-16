@@ -3,14 +3,14 @@
 from .base import *  # Start with base settings
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_DIR, 'db.sqlite3'), # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'd8r1jlreha6qkl',
+    'HOST': 'ec2-107-20-191-205.compute-1.amazonaws.com',
+    'PORT': 5432,
+    'USER': 'jugdlwmcsppefe',
+    'PASSWORD': 'dzRZWVVHkXPEjWllfKkg428ao3'
+  }
 }
 
 DEBUG = True
