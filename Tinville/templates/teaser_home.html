@@ -8,19 +8,43 @@
 
     <div class="container">
         <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville_logo.png" /></a>
-        <p id="tinvilleDescription" class="col-sm-7 col-sm-offset-1">
-            Tinville, The Industry Network Village is an online market place where apparel designers of all
-            kinds can open a shop as easy as any social network, and use your already existing online
-            presence to market directly to your consumers. No longer will the success of your brand be
-            out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand
-            and consumers.
-        </p>
+        <div id="tinvilleDescription" class="col-sm-8 col-sm-offset-1">
+            <p>
+                Hello everyone and welcome to Tinville! well... our soon to be, currently under construction site, or
+                as we like to to think of it, our "awaiting perfection site.”
+            </p>
+            </br>
+            <p>
+                You see, Tinville is a marketplace where designers, whether established or just starting off, can sell
+                their one of a kind items to the world. For example, if you're looking for that perfect dress that no one
+                else will be wearing to the party Tinville will have it. If you're looking for a wardrobe change for the
+                start of the semester Tinville can help, while if you're looking for a site for a village made out of tin
+                or simply looking to by dolphins on the black market, Tinville wont have it. Got it? Pretty cool huh?
+            </p>
+            </br>
+            <p>
+                <b>Enough about us, tell us about you!</b>
+            </p>
+            </br>
+            <p>
+                Are you a designer looking to sell your items? Or do you simply want us to put up some of your fabulous
+                item on one of our social media outlets for free? Email <a href="mailto:cristina.pimentel@tinville.com">
+                cristina.pimentel@tinville.com</a> and tell us about your stuff! We love our designers and want to
+                help anyway we can. And c’mon, free advertising who doesn’t want that... the answer is no one.
+            </p>
+            </br>
+            <p>
+                However, if you are ready to start shopping and want awesome deals now!!!!!...... you are going to have
+                to wait. Just till summer. Meanwhile check us out on one of our social media pages posted in the
+                links below! Don't forget to sign up to our mailing list below for exclusive information on our exciting
+                marketplace. We <strong>PROMISE</strong> not to fill your spam folder with junk e-mail! :)
+            </p>
+            </br>
+        </div>
     </div>
     <div class="container">
-        <div class="thumbnail center well well-small text-center">
-            <h2>Mailing List</h2>
-
-            <p>Subscribe to our mailing list and stay tuned. We promise we won't spam you!</p>
+        <div class="thumbnail center well well-small text-center col-md-8 col-md-offset-2">
+            <h3>Join our mailing list to stay tuned.</h3>
 
             <form action="/" method="post"> {% csrf_token %}
                 {% if messages %}
@@ -34,10 +58,9 @@
                 <div class="input-group input-group-lg">
                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                   <input type="text" id="id_email" name="email" class="form-control" placeholder="your@email.com">
-{#                    {{ form.as_ul }}#}
                 </div>
                 <br />
-                <input type="submit" value="Subscribe Now!" class="btn tinvilleButton btn-large" />
+                <input type="submit" value="Join" class="btn tinvilleButton btn-large" />
             </form>
         </div>
 

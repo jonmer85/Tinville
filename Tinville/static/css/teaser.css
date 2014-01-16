@@ -67,12 +67,12 @@ body {
     top: -70px;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 200px;
+    height: 170px;
 }
 
 #tinvilleDescription {
     margin-top: 3%;
-    font-size: 1.8em;
+    font-size: 1.5em;
 }
 
 
