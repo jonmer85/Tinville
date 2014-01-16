@@ -125,6 +125,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django_mobile.context_processors.flavour',
     )
 
+# Actual Tinville business logic
+# django-jenkins needs it defined in this variable
+PROJECT_APPS = (
+   'Tinville.Site',
+   'user',
+   'designer_shop'
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,19 +151,8 @@ INSTALLED_APPS = (
     'PIL',
     'lettuce.django',
     'fixture_media',
+) + PROJECT_APPS
 
-    # Actual Tinville business logic
-    'Tinville.Site',
-    'user',
-    'designer_shop',
-)  # NOTE: REMEMBER TO ADD NEW TINVILLE APPS TO JENKINS PROJECT_APPS BELOW!!
-
-# For django-jenkins, For that CM/SQA guy Jeff
-PROJECT_APPS = (
-   'Tinville.Site',
-   'user',
-   'designer_shop'
-)
 
 # These are used by jenkins to know which tasks to run
 JENKINS_TASKS = (
