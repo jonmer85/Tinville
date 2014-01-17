@@ -33,8 +33,15 @@ body {
  */
 
 
+
+html {
+  /* Used to fix horizontal scroll on width: 100% */
+  width: auto !important;
+  overflow-x: hidden !important;
+}
 body {
-    overflow-x: hidden; /* Used to fix horizontal scroll on width: 100% */
+  width: auto !important;
+  overflow-x: hidden !important;
 }
 
 #mainContent {
