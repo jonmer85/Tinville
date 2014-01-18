@@ -128,7 +128,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Actual Tinville business logic
 # django-jenkins needs it defined in this variable
 PROJECT_APPS = (
-   'Tinville.Site',
    'user',
    'designer_shop',
    'common'
