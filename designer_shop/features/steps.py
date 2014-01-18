@@ -4,7 +4,7 @@ from common.lettuce_utils import *
 
 from django.test.client import Client
 from lettuce import *
-from lettuce.django import django_url
+import lettuce.django
 from lxml import html
 from nose.tools import *
 
@@ -23,7 +23,7 @@ def and_n_shop_items(step, n):
 
 @step(u'When the shop is visited')
 def when_the_shop_is_visited(step):
-    response = world.browser.get(django_url(world.shop.get_absolute_url()))
+    response = world.browser.get(lettuce.django.get_server().url(world.shop.get_absolute_url()))
     assert_equals(200, response.status_code)
     world.dom = html.fromstring(response.content)
 
