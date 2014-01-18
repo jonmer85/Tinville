@@ -2,10 +2,9 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
-from django.contrib.auth.forms import AuthenticationForm
 from user.forms import LoginForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render

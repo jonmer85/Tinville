@@ -121,7 +121,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
-    'user.context_processors.include_login_form',
     'django_mobile.context_processors.flavour',
     )
 
