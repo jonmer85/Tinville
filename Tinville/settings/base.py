@@ -130,7 +130,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 PROJECT_APPS = (
    'Tinville.Site',
    'user',
-   'designer_shop'
+   'designer_shop',
+   'common'
 )
 
 INSTALLED_APPS = (
