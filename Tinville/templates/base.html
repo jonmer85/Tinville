@@ -222,8 +222,21 @@
                         </li>
 
                         {% if user.is_authenticated %}
-                            <a href="#" class="pull-right navbar-link">{{ user.first_name|upper }}'S ACCOUNT</a>
-                            <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+                            <li class="dropdown yamm-fw" id="lg-menuLogin" >
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>
+                                <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>
+                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>
+                                </ul>
+                            </li>
+
+
+
+
+
+
+
+
                         {% else %}
                             <li class="dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -569,6 +582,7 @@
                     },
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
+                        clear_form_field_errors(".loginPopupForm")
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {

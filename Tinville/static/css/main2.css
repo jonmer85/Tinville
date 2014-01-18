@@ -213,13 +213,13 @@ body {
 @media (min-width: 768px) {
   .loginPopupForm {
     left: auto !important;
-    width: 232px;
+    width: 250px;
   }
 }
 
 @media (min-width: 992px) {
   .loginPopupForm {
-    width: 232px;
+    /*width: 232px;*/
   }
 }
 
@@ -229,7 +229,7 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-
+    /*width: 250px;*/
     /*opacity: .95;*/
 
 }
