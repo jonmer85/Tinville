@@ -41,11 +41,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <i id="navSearch" class="fa fa-search fa-3x navbar-text xs-navbar-text visible-xs pull-right"></i>
+                <i id="navSearch" class="fa fa-search fa-3 navbar-text xs-navbar-text visible-xs pull-right"></i>
                 {% if not user.is_authenticated %}
                     <ul id="signInButton" class="nav pull-right">
                       <li class="dropdown yamm-fw" id="xs-menuLogin" >
-                        <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin">SIGN IN</a>
+                        <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
                         <ul class="dropdown-menu loginPopupForm">
                             <li>
                                 <div class="yamm-content">
@@ -58,7 +58,7 @@
                       </li>
                     </ul>
                 {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout">SIGN OUT</a>
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
 
             </div>
@@ -223,7 +223,7 @@
                         </li>
 
                         {% if user.is_authenticated %}
-                            <li class="dropdown yamm-fw" id="lg-menuLogin" >
+                            <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>
                                 <ul id="genderContent" class="dropdown-menu navdropstyle ">
                                     <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>
@@ -577,6 +577,12 @@
                  e.stopPropagation();
              });
         });
+
+{#        this is for the highlight the selected infopages#}
+        $(window).load(function() {
+            $("#{{ flatpage.title }}").addClass("active");
+        });
+
 
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
