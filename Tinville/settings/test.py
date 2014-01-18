@@ -18,6 +18,7 @@ DATABASES = {
 
 LETTUCE_APPS = (
     'designer_shop',
+    'user',
 )
 
 

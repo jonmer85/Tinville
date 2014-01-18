@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from designer_shop.models import Shop
+from common.lettuce_utils import *
+
 from django.test.client import Client
 from lettuce import *
 from lettuce.django import django_url
 from lxml import html
 from nose.tools import *
-import re
 
 @before.all
 def set_browser():
@@ -54,30 +55,3 @@ def and_every_item_should_have_an_image(step):
 def and_every_item_should_have_a_price(step):
     assert_text_of_every_selector('.shopItems .shopItem .price', '$3.42')
 
-
-
-def assert_selector_exists(selector):
-    assert_greater(world.dom.cssselect('.shopItems'), 0)
-
-def assert_number_of_selectors(selector, n):
-    assert_equals(len(world.dom.cssselect(selector)), n)
-
-def assert_text_of_every_selector(selector, text):
-    selector_found = False
-    for item in world.dom.cssselect(selector):
-        assert_equals(item.text, text)
-        selector_found = True
-    assert_true(selector_found, 'No elements found')
-
-def assert_every_selector_contains(selector, attrib, string):
-    selector_found = False
-    for item in world.dom.cssselect(selector):
-        assert_regexp_matches(item.attrib[attrib], re.compile('.*' + string + '.*'))
-        selector_found = True
-    assert_true(selector_found, 'No elements found')
-
-def assert_selector_contains(selector, attrib, string):
-    assert_regexp_matches(
-        world.dom.cssselect(selector)[0].attrib[attrib],
-        re.compile(".*" + string + ".*"),
-    )
