@@ -24,6 +24,16 @@ body {
     font-family: "MS Sans Serif", Geneva, sans-serif
 }
 
+html {
+  /* Used to fix horizontal scroll on width: 100% */
+  width: auto !important;
+  overflow-x: hidden !important;
+}
+body {
+  width: auto !important;
+  overflow-x: hidden !important;
+}
+
 /*
  * Tinville Orange : f46430
  * Tinville Gray : e7e5e6
