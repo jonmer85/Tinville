@@ -6,13 +6,13 @@ from django.views.generic import CreateView, TemplateView
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
 from django.contrib.auth.forms import AuthenticationForm
-from Tinville.user.forms import LoginForm
+from user.forms import LoginForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
 
-from Tinville.user.forms import TinvilleShopperCreationForm, TinvilleDesignerCreationForm
-from Tinville.user.models import TinvilleUser
+from user.forms import TinvilleShopperCreationForm, TinvilleDesignerCreationForm
+from user.models import TinvilleUser
 
 
 def register(request):

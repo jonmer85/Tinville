@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
     )
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
+from django.utils.timezone import utc
 from autoslug import AutoSlugField
 
 from Tinville.settings.base import EMAIL_HOST_USER
@@ -85,7 +86,7 @@ class TinvilleUser(AbstractBaseUser):
          # Build the activation key for their account
         salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
         self.activation_key = hashlib.sha1(salt+self.email).hexdigest()
-        self.key_expires = datetime.datetime.now() + datetime.timedelta(7)  # Give 7 days to confirm
+        self.key_expires = datetime.datetime.utcnow().replace(tzinfo=utc) + datetime.timedelta(7)  # Give 7 days to confirm
         self.save()
 
 

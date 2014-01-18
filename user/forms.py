@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
 
-from Tinville.user.models import TinvilleUser
+from user.models import TinvilleUser
 
 class TinvilleUserCreationForm(forms.ModelForm):
 

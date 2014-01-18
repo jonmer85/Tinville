@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Tinville</title>
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinville1.png">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
@@ -115,9 +116,9 @@
 
                                     <div  id="mobileContent" class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <button id="mobileCbtn"><b>Clothing</b></button>
-                                            <button id="mobileSbtn"><b>Shoes</b></button>
-                                            <button id="mobileAbtn"><b>Accessories</b></button>
+                                            <button id="mobileCbtn" class="whhg-tshirt"><b></b></button>
+                                            <button id="mobileSbtn" class="whhg-shoebox"><b></b></button>
+                                            <button id="mobileAbtn" class="whhg-purse"><b></b></button>
 
                                             <ul id="mobileCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Outerwear</a></li>
@@ -501,9 +502,13 @@
         $(window).resize(function(){
              var mode = checkMode();
 
-            if(mode == 'xs' || 'sm'){
+            if(mode == 'xs'){
                 $("#nonMobileContent").css("display","none");
                 $("#mobileContent").css("display","");
+            }
+            if(mode =='sm'){
+                $("#nonMobileContent").css("display","");
+                $("#mobileContent").css("display","none");
             }
             if(mode =='md'){
                 $("#nonMobileContent").css("display","");
@@ -513,29 +518,36 @@
                 $("#nonMobileContent").css("display","");
                 $("#mobileContent").css("display","none");
             }
-            $("#mobileCbtn").on( 'click', function() {
+            $("#mobileCbtn").on( 'click', function(e) {
                 $("#mobileCcontent").css("display","");
                 $("#mobileScontent").css("display","none");
                 $("#mobileAcontent").css("display","none");
+                e.stopPropagation();
              });
-             $("#mobileSbtn").on( 'click', function() {
+             $("#mobileSbtn").on( 'click', function(e) {
                 $("#mobileCcontent").css("display","none");
                 $("#mobileScontent").css("display","");
                 $("#mobileAcontent").css("display","none");
+                 e.stopPropagation();
              });
-             $("#mobileAbtn").on( 'click', function() {
+             $("#mobileAbtn").on( 'click', function(e) {
                 $("#mobileCcontent").css("display","none");
                 $("#mobileScontent").css("display","none");
                 $("#mobileAcontent").css("display","");
+                 e.stopPropagation();
              });
         });
 
          $(window).load(function(){
              var mode = checkMode();
 
-            if(mode == 'xs' || 'sm'){
+            if(mode == 'xs'){
                 $("#nonMobileContent").css("display","none");
                 $("#mobileContent").css("display","");
+            }
+            if(mode =='sm'){
+                $("#nonMobileContent").css("display","");
+                $("#mobileContent").css("display","none");
             }
             if(mode =='md'){
                 $("#nonMobileContent").css("display","");
@@ -546,20 +558,23 @@
                 $("#mobileContent").css("display","none");
             }
 
-             $("#mobileCbtn").on( 'click', function() {
+             $("#mobileCbtn").on( 'click', function(e) {
                 $("#mobileCcontent").css("display","");
                 $("#mobileScontent").css("display","none");
                 $("#mobileAcontent").css("display","none");
+                e.stopPropagation();
              });
-             $("#mobileSbtn").on( 'click', function() {
+             $("#mobileSbtn").on( 'click', function(e) {
                 $("#mobileCcontent").css("display","none");
                 $("#mobileScontent").css("display","");
                 $("#mobileAcontent").css("display","none");
+                 e.stopPropagation();
              });
-             $("#mobileAbtn").on( 'click', function() {
+             $("#mobileAbtn").on( 'click', function(e) {
                 $("#mobileCcontent").css("display","none");
                 $("#mobileScontent").css("display","none");
                 $("#mobileAcontent").css("display","");
+                 e.stopPropagation();
              });
         });
 

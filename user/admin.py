@@ -1,5 +1,5 @@
-from Tinville.user.models import TinvilleUser
-from Tinville.user.forms import TinvilleUserCreationForm, TinvilleUserChangeForm
+from user.models import TinvilleUser
+from user.forms import TinvilleUserCreationForm, TinvilleUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group

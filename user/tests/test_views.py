@@ -4,7 +4,7 @@ from django.utils import unittest
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 import pytz
-from Tinville.user.models import TinvilleUser
+from user.models import TinvilleUser
 from Tinville.settings.base import TIME_ZONE
 
 
@@ -12,7 +12,7 @@ class TestUserViews(TestCase):
 
 
     def test_get_register_view(self):
-        create_url = reverse('Tinville.user.views.register')
+        create_url = reverse('user.views.register')
         resp = self.client.get(create_url)
         self.assertEqual(resp.status_code, httplib.OK)
         self.assertTemplateUsed(resp, 'register.html')
@@ -125,7 +125,7 @@ class TestUserViews(TestCase):
     def post_test_user_data(self, first=None, last=None, email=None, shop_name=None,
                             last_login=None, password=None, password2=None, submitName='shopperForm'):
 
-        create_url = reverse('Tinville.user.views.register')
+        create_url = reverse('user.views.register')
         first = first or 'Joe'
         last = last or 'Schmoe'
         email = email or 'joe@schmoe.com'

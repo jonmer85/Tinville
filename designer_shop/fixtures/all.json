@@ -4,6 +4,7 @@
         "pk": 1,
         "fields": {
             "name": "Demo",
+			"slug": "Demo",
             "banner": "images/banner.png",
             "logo": "images/logo.png"
         }

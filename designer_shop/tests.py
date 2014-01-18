@@ -8,12 +8,16 @@ import re
 class ModelTest(TestCase):
     def test_get_absolute_url(self):
         self.assertEqual('/foo/', Shop.objects.create(name='foo').get_absolute_url())
-        self.assertEqual('/foo_bar/', Shop.objects.create(name='foo bar').get_absolute_url())
+        self.assertEqual('/foo-bar/', Shop.objects.create(name='foo bar').get_absolute_url())
 
     def test_shop_items(self):
         shop = Shop.objects.create(name='foo')
         shop.item_set.create(name='foo', image='bar', price='2.34')
         self.assertEqual(1, shop.item_set.count())
+
+    def test_slug(self):
+        shop = Shop.objects.create(name='foo bar')
+        self.assertEqual(shop.slug, 'foo-bar')
 
 
 
@@ -44,6 +48,9 @@ class ViewTest(TestCase):
     def test_item_price(self):
         self.assertFirstSelectorTextEquals('.shopItems .shopItem .price', '$1.23')
 
+    def test_slug_lookup(self):
+        slug_shop = Shop.objects.create(name='foo bar', banner='bar', logo='baz')
+        shopper(HttpRequest(), 'foo-bar')
 
 
     def assertSelectorExists(self, selector):
