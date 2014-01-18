@@ -15,7 +15,7 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 )
 
 urlpatterns += patterns('',
-    url(r'^$', TemplateView.as_view(template_name='home.html'), {'login_form': LoginForm}, name='home'),
+    url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^register$', 'user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
     url(r'^notifications$', TemplateView.as_view(template_name='notification.html'), name='notifications'),

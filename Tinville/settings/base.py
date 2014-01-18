@@ -122,6 +122,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'django_mobile.context_processors.flavour',
+    'user.context_processors.include_login_form'
     )
 
 # Actual Tinville business logic
