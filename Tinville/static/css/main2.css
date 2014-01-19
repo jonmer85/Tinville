@@ -491,7 +491,7 @@ body {
   .footerRow {
     margin-top: 1em;
     margin-bottom: 1em;
-}
+    }
 }
 
 @media (min-width: 768px) {
@@ -510,6 +510,11 @@ body {
        margin-bottom: .5em;
        color: #CBD3D5;
     }
+}
+
+.footerButton {
+    padding: 1%;
+    width: 100%;
 }
 
 #tinvilleXSFooterHeaders {
