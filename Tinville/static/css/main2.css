@@ -89,7 +89,7 @@ body {
 @media (min-width: 768px) {
   .navdropstyle {
     left: auto !important;
-    width: 65%;
+    width: auto;
   }
 }
 
