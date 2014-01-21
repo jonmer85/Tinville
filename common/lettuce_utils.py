@@ -1,6 +1,7 @@
 from lettuce import *
 
 from nose.tools import *
+import lettuce.django
 
 import re
 

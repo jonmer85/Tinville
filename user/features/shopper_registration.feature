@@ -5,7 +5,7 @@ Feature: Shopper Registration
   So that I may purchase apparel from designer shops
 
   @wip
-  Scenario:
-    When I register as a shopper
+  Scenario: Login redirect
+    When I register for a shopper account with email "foo@bar.com" and password "foobar"
 	And I log in
 	Then I should be redirected to the home page

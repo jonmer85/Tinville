@@ -151,6 +151,7 @@ INSTALLED_APPS = (
     'PIL',
     'lettuce.django',
     'fixture_media',
+    'django_extensions',
 ) + PROJECT_APPS
 
 
