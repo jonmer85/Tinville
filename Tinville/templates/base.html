@@ -720,7 +720,11 @@
 
                     },
                     success: function(data, textStatus, jqXHR) {
-                        location.reload()
+						if (location.pathname == "/notifications") {
+							location.href = "/";
+						} else {
+							location.reload();
+						}
                     },
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));

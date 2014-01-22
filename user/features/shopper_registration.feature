@@ -7,5 +7,5 @@ Feature: Shopper Registration
   @wip
   Scenario: Login redirect
     When I register for a shopper account with email "foo@bar.com" and password "foobar"
-	And I log in
+	And I sign in
 	Then I should be redirected to the home page
