@@ -62,7 +62,7 @@ def and_i_sign_in(step):
     login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
     login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
     login_menu.find_element_by_name("submit").click()
-    time.sleep(0.25)# wait for the ajax call
+    wait_for_ajax_to_complete()
 
 @step(u'Then I should be redirected to the home page')
 def then_i_should_be_redirected_to_the_home_page(step):

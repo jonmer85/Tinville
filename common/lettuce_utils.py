@@ -1,10 +1,18 @@
 from lettuce import *
-
 from nose.tools import *
 import lettuce.django
-
 import re
+from selenium.webdriver.support.ui import WebDriverWait
 
+
+def wait_for_ajax_to_complete():
+    WebDriverWait(world.firefox, 10).until(ajax_complete,  "Timeout waiting for page to load")
+
+def ajax_complete(driver):
+    try:
+        return 0 == driver.execute_script("return jQuery.active")
+    except WebDriverException:
+        pass
 
 def assert_selector_exists(selector):
     assert_greater(world.dom.cssselect(selector), 0)
