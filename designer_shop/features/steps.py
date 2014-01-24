@@ -1,16 +1,8 @@
 # -*- coding: utf-8 -*-
 from designer_shop.models import Shop
 from common.lettuce_utils import *
-
-from django.test.client import Client
-from lettuce import *
-from lettuce.django import django_url
-from lxml import html
-from nose.tools import *
-
-@before.all
-def set_browser():
-    world.browser = Client()
+from lettuce import step
+import lettuce.django
 
 @step(u'Given a designer shop')
 def given_a_designer_shop(step):
@@ -23,9 +15,7 @@ def and_n_shop_items(step, n):
 
 @step(u'When the shop is visited')
 def when_the_shop_is_visited(step):
-    response = world.browser.get(django_url(world.shop.get_absolute_url()))
-    assert_equals(200, response.status_code)
-    world.dom = html.fromstring(response.content)
+    world.browser.get(lettuce.django.get_server().url(world.shop.get_absolute_url()))
 
 @step(u'Then the banner for the shop is displayed')
 def then_the_banner_for_the_shop_is_displayed(step):
@@ -33,11 +23,11 @@ def then_the_banner_for_the_shop_is_displayed(step):
 
 @step(u'And the items for the shop are displayed')
 def and_the_items_for_the_shop_are_displayed(step):
-    assert_selector_exists('.shopItems')
+    assert_class_exists('shopItems')
 
 @step(u'And the Tinville header is displayed')
 def and_the_tinville_header_is_displayed(step):
-    assert_selector_exists('.navbar')
+    assert_class_exists('navbar')
 
 @step(u'Then there should be (\d+) items displayed')
 def then_there_should_be_n_items_displayed(step, n):

@@ -1,60 +1,56 @@
 # -*- coding: utf-8 -*-
 from common.lettuce_utils import *
-from django.test.client import Client
-from lettuce import *
-from lettuce.django import django_url
-from lxml import html
-from nose.tools import *
+from lettuce import step
+from nose.tools import assert_equals
+from user.models import TinvilleUser
+import lettuce.django
 
-@before.all
-def set_browser():
-    world.browser = Client()
-
-@step(u'I access the URL "(,*)"')
-def access_url(step, url):
-    response = world.browser.get(url)
-    assert_equals(200, response.status_code)
-    world.dom = html.fromstring(response.content)
+@step(u'I access the registration page')
+def access_registration_url(step):
+    world.browser.get(lettuce.django.get_server().url('/register'))
 
 @step(u'I see information to register as a designer')
 def see_information_to_register_as_a_designer(step):
-    designerInfo = world.dom.cssselect('#viewDesignerDetails')[0]
-    assert designerInfo.text.length > 0
+    assert_text_exists_in_first_element('#viewDesignerDetails', 'Designer info not found')
 
+@step(u'Or to register as a shopper')
+def see_information_to_register_as_a_designer(step):
+    assert_text_exists_in_first_element('#viewShopperDetails', 'Shopper info not found')
 
+@step(u'all registration forms are initially collapsed')
+def all_registration_forms_are_initially_collapsed(step):
+    assert_class_does_not_exist('in')
 
-# @step(u'When the shop is visited')
-# def when_the_shop_is_visited(step):
-#     response = world.browser.get(django_url(world.shop.get_absolute_url()))
-#     assert_equals(200, response.status_code)
-#     world.dom = html.fromstring(response.content)
-#
-# @step(u'Then the banner for the shop is displayed')
-# def then_the_banner_for_the_shop_is_displayed(step):
-#     assert_selector_contains('img.shopBanner', 'src', 'bar')
-#
-# @step(u'And the items for the shop are displayed')
-# def and_the_items_for_the_shop_are_displayed(step):
-#     assert_selector_exists('.shopItems')
-#
-# @step(u'And the Tinville header is displayed')
-# def and_the_tinville_header_is_displayed(step):
-#     assert_selector_exists('.navbar')
-#
-# @step(u'Then there should be (\d+) items displayed')
-# def then_there_should_be_n_items_displayed(step, n):
-#     assert_number_of_selectors('.shopItems .shopItem', int(n))
-#
-# @step(u'And every item should have a name')
-# def and_every_item_should_have_a_name(step):
-#     assert_text_of_every_selector('.shopItems .shopItem .name', 'itemname')
-#
-# @step(u'And every item should have an image')
-# def and_every_item_should_have_an_image(step):
-#     assert_every_selector_contains('.shopItems .shopItem img', 'src', 'itemimage')
-#
-# @step(u'And every item should have a price')
-# def and_every_item_should_have_a_price(step):
-#     assert_text_of_every_selector('.shopItems .shopItem .price', '$3.42')
+@step(u'When I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
+def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
+    access_registration_url(step)
+    world.user_info = {
+        "email": email,
+        "password": password,
+    }
+    world.browser.find_element_by_id("shopperInfoButton").click()
+    form = world.browser.find_element_by_id("shopperRegistrationForm")
+    form.find_element_by_name("first_name").send_keys("John")
+    form.find_element_by_name("last_name").send_keys("Doe")
+    form.find_element_by_name("email").send_keys(email)
+    form.find_element_by_name("password").send_keys(password)
+    form.find_element_by_name("password2").send_keys(password)
+    form.find_element_by_name("shopperForm").click()
+    user = TinvilleUser.objects.get(email=email)
+    user.is_active = True
+    user.save()
+
+@step(u'(?:When|And) I sign in')
+def and_i_sign_in(step):
+    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu.find_element_by_link_text("SIGN IN").click()
+    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
+    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
+    login_menu.find_element_by_name("submit").click()
+    wait_for_ajax_to_complete()
+
+@step(u'Then I should be redirected to the home page')
+def then_i_should_be_redirected_to_the_home_page(step):
+    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
 
 
