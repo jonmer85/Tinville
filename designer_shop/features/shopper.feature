@@ -12,7 +12,7 @@ Feature: Designer Shop
 	And the Tinville header is displayed
 
   Scenario: Shop Items
-    Given a designer shop
+	Given a designer shop
 	And 3 shop items
 	When the shop is visited
 	Then there should be 3 items displayed
