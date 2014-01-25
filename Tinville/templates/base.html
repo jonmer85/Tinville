@@ -68,7 +68,7 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown navdropSize mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b class="caret"></b></a>
-                            <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                            <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
@@ -158,14 +158,13 @@
                                             </ul>
                                         </div>
                                     </div>
-
                                 </li>
                             </ul>
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
-                            <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                            <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
@@ -272,7 +271,7 @@
                         {% if user.is_authenticated %}
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>
-                                <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                                <ul class="dropdown-menu navdropstyle ">
                                     <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>
                                     <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>
                                 </ul>
