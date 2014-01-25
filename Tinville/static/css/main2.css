@@ -148,10 +148,23 @@ body {
 }
 
 #navSearch {
-    font-size: 2.8em;
+    font-size: 2em;
     margin-right: 5%;
-    margin-top: 12px;
+    /*margin-top: 12px;*/
 }
+
+#navLogin {
+    font-size: 2em;
+    margin-right: 5%;
+    /*margin-top: 12px;*/
+}
+
+#navLogout {
+    font-size: 2em;
+    margin-right: 5%;
+    /*margin-top: 12px;*/
+}
+
 
 #signInButton {
     margin-right: 0;

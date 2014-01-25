@@ -133,7 +133,6 @@ class LoginForm(AuthenticationForm):
         self.helper.form_show_errors = False
         self.helper.form_show_labels = False
         self.helper.form_class = 'loginPopupForm'
-        # self.helper.field_class = 'col-xs-12'
 
         self.helper.layout = Layout(
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
@@ -165,58 +164,6 @@ class LoginForm(AuthenticationForm):
 
             )
         )
-
-        #
-        #
-        #
-        #
-        #
-        #
-        #
-        #
-        #
-        #
-        #     Div(
-        #         HTML("""{{ form.non_field_errors }}"""
-        #         ),
-        #     css_id="message_area", css_class='messageError'),
-        #     Div(
-        #         HTML("""<a id="loginFacebookButton" class="btn btn-facebook">
-        #                     <i class="icon-facebook"></i> | Sign in with Facebook
-        #                 </a""")
-        #     ),
-        #
-        #     #HTML ("""<strong class="line-thru col-xs-10 col-xs-offset-1">or</strong>"""),
-        #     HTML("""<img class="" src="{{ STATIC_URL }}img/or_login.gif" style=" margin-top: 5%; "/>"""),
-        #     #HTML("""<div class="col-xs-1 formField"> or </div>"""),
-        #     #HTML("""<div class="loginFormLine col-xs-3 col-xs-offset-1"></div>"""),
-        #
-        #     Field('username', placeholder="Email", css_class='formField'),
-        #     Field('password', type='password', placeholder="Password", css_class='formField'),
-        #
-        #     HTML("""<div for="id_remember_me" id="rememberLoginLabel" class=" checkbox">
-        #                 <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
-        #                  type="checkbox" value="true">
-        #                 Remember Me </input>
-        #             </div>"""),
-        #     Div(
-        #         Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton')
-        #     ),
-        #     HTML("""<div class="formField pull-left loginForgot">
-        #             <p>Forgot
-        #             <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
-        #              or
-        #             <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
-        #             </div>"""),
-        #
-        #
-        #     HTML("""<div class="formField pull-left loginRegister">
-        #             <p>Don't have an Account?
-        #             <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>
-        #             </div>""")
-        #
-        #
-        # )
 
     def clean_username(self):
             return self.cleaned_data['username'].lower()

@@ -41,7 +41,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <i id="navSearch" class="fa fa-search fa-3 navbar-text xs-navbar-text visible-xs pull-right"></i>
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
                 {% if not user.is_authenticated %}
                     <ul id="signInButton" class="nav pull-right">
                       <li class="dropdown yamm-fw" id="xs-menuLogin" >
@@ -58,7 +58,7 @@
                       </li>
                     </ul>
                 {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout"><i class="fa fa-sign-out fa-4"></i></a>
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
 
             </div>
@@ -277,14 +277,6 @@
                                     <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>
                                 </ul>
                             </li>
-
-
-
-
-
-
-
-
                         {% else %}
                             <li class="dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -720,11 +712,15 @@
 
                     },
                     success: function(data, textStatus, jqXHR) {
-                        location.reload()
+						if (location.pathname == "/notifications") {
+							location.href = "/";
+						} else {
+							location.reload();
+						}
                     },
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
-                        clear_form_field_errors(".loginPopupForm")
+                        clear_form_field_errors(".loginPopupForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {

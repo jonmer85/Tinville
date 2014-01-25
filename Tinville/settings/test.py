@@ -1,6 +1,7 @@
 # Django settings for Tinville project.
 
 from .base import *  # Start with base settings
+from tempfile import NamedTemporaryFile
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -8,7 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
+        "NAME": NamedTemporaryFile().name,
         "USER": "",
         "PASSWORD": "",
         "HOST": "",
