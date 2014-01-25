@@ -68,6 +68,16 @@ body {
     }
 }
 
+.contentButton{
+    width: 30%;
+    height: 50px;
+}
+
+.contentIcon{
+    width: 24px;
+    height: 24px;
+}
+
 :disabled {
     color: #6b849a;
     text-shadow: 1px 1px #ffffff;
