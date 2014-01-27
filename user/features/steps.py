@@ -9,18 +9,6 @@ import lettuce.django
 def access_registration_url(step):
     world.browser.get(lettuce.django.get_server().url('/register'))
 
-@step(u'I see information to register as a designer')
-def see_information_to_register_as_a_designer(step):
-    assert_text_exists_in_first_element('#viewDesignerDetails', 'Designer info not found')
-
-@step(u'Or to register as a shopper')
-def see_information_to_register_as_a_designer(step):
-    assert_text_exists_in_first_element('#viewShopperDetails', 'Shopper info not found')
-
-@step(u'all registration forms are initially collapsed')
-def all_registration_forms_are_initially_collapsed(step):
-    assert_class_does_not_exist('in')
-
 @step(u'When I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
     access_registration_url(step)
@@ -28,14 +16,11 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
         "email": email,
         "password": password,
     }
-    world.browser.find_element_by_id("shopperInfoButton").click()
-    form = world.browser.find_element_by_id("shopperRegistrationForm")
-    form.find_element_by_name("first_name").send_keys("John")
-    form.find_element_by_name("last_name").send_keys("Doe")
+    form = world.browser.find_element_by_id("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
     form.find_element_by_name("password2").send_keys(password)
-    form.find_element_by_name("shopperForm").click()
+    form.submit()
     user = TinvilleUser.objects.get(email=email)
     user.is_active = True
     user.save()

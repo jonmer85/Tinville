@@ -3,108 +3,17 @@
 {% load i18n %}
 {% block body_class %}{{ block.super }} register{% endblock %}
 {% block css %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
-
-    <img class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
-    <div class="container">
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <button id="shopperInfoButton" class="registerInfoButton" data-toggle="collapse" data-parent="#accordion" data-target="#collapseShopperForm">
-                    <div class="col-xs-12 col-md-2">
-                        <img class="pull-left col-md-12 col-md-offset-0 col-xs-4 col-xs-offset-4 registrationInfoIcon" src="{{ STATIC_URL }}img/shopper_small_logo.png" />
-                    </div>
-                    <div class="col-xs-12 col-md-10">
-                        <div id="shopperInfoDiv" class="col-xs-12">
-                            <h1 class="orangeHeading userInfoText">Register as a Shopper...</h1>
-
-                            <p id="viewShopperDetails" class="userInfo userInfoText"></p>
-
-                        </div>
-                    </div>
-                </button>
-            </div>
-          <div id="collapseShopperForm" class="panel-collapse collapse">
-            <div class="panel-body">
-                {%  load crispy_forms_tags %}
-                <form id="shopperRegistrationForm" class="userRegistrationForm" action="/register" method="post">
-                    {% crispy shopperForm %}
-                </form>
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <button id="designerInfoButton" class="registerInfoButton" data-toggle="collapse" data-parent="#accordion" data-target="#collapseDesignerForm">
-                <div class="col-xs-12 col-md-2">
-                    <img class="pull-left col-md-12 col-md-offset-0 col-xs-4 col-xs-offset-4 registrationInfoIcon" src="{{ STATIC_URL }}img/designer_small_logo.png" />
-                </div>
-                <div class="col-xs-12 col-md-10">
-                    <div class="col-xs-12">
-                        <h1 class="orangeHeading userInfoText">Register as a Designer...</h1>
-                        <p id="viewDesignerDetails" class="userInfo userInfoText"></p>
-                    </div>
-                </div>
-            </button>
-          </div>
-          <div id="collapseDesignerForm" class="panel-collapse collapse">
-            <div class="panel-body">
-                {%  load crispy_forms_tags %}
-                <form id="designerRegistrationForm" class="userRegistrationForm" action="/register" method="post">
-                    {% crispy designerForm %}
-                </form>
-            </div>
-          </div>
-        </div>
-    </div>
-{% endblock %}
-{% block javascript %}
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            var mode;
-
-            var shopperDetails =
-                     "Tinville is an online market place where you can explore, discover or keep up with one of a kind. \
-                      apparel designers; if you are a fashionista or just like unique pieces from designers, \
-                      Tinville can fulfill your shopping needs. When you sign up to shop you will have a wide \
-                      variety of designers to choose from, try, follow and embrace."
-
-            var designerDetails =
-                    "Tinville, The Industry Network Village is an online market place where apparel designers of all \
-                    kinds can open a shop as easy as any social network, and use your already existing online \
-                    presence to market directly to your consumers. No longer will the success of your brand be \
-                    out of reach. When you open up a shop at Tinville, we help bridge the gap between your brand \
-                    and consumers."
-
-            var adjustDetailsText = function () {
-                if (mode !== checkMode()) {
-                    mode = checkMode();
-
-                    $('#viewShopperDetails').text(shopperDetails);
-                    $('#viewDesignerDetails').text(designerDetails);
-
-                    if(mode == 'xs' || mode == 'sm') {
-                        $('.userInfo').shorten();
-                    }
-                }
-            };
-
-            $(window).on('resize', function () {
-                adjustDetailsText()
-            });
-
-            adjustDetailsText();
-
-        });
-
-        $('#shopperInfoButton').on( "click", function() {
-            $('#collapseDesignerForm').collapse('hide');
-        })
-
-        $('#designerInfoButton').on( "click", function() {
-            $('#collapseShopperForm').collapse('hide');
-        })
-    </script>
+	<img class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
+	<div class="container">
+		<div class="panel-body">
+			{%  load crispy_forms_tags %}
+			<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
+				{% crispy form %}
+			</form>
+		</div>
+	</div>
 {% endblock %}

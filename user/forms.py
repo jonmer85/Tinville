@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
+from crispy_forms.bootstrap import AppendedText
 
 from user.models import TinvilleUser
 
@@ -17,7 +18,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
         super(TinvilleUserCreationForm, self).__init__(*args, **kwargs)
 
-        self.isDesigner = False
         self.fields['shop_name'].required = False
 
 
@@ -26,6 +26,18 @@ class TinvilleUserCreationForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
 
+        self.fields['shop_name'].required = False
+
+        self.helper.layout = Layout(
+            Div(
+                Hidden('last_login', datetime.now()),
+                Field('email', placeholder="Email"),
+                Field('password', placeholder="Password"),
+                Field('password2', placeholder="Confirm password"),
+                Field('is_seller', template="apply_for_shop.html"),
+                Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
+            )
+        )
 
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -47,65 +59,12 @@ class TinvilleUserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(TinvilleUserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
-        user.is_seller = self.isDesigner
         if commit:
             user.save()
         return user
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
-
-
-class TinvilleShopperCreationForm(TinvilleUserCreationForm):
-
-    def __init__(self, *args, **kwargs):
-        super(TinvilleShopperCreationForm, self).__init__(*args, **kwargs)
-
-        self.isDesigner = False
-
-
-        self.fields['shop_name'].required = False
-
-        self.helper.layout = Layout(
-            Div(
-                Field('first_name', placeholder="First name"),
-                Field('last_name', placeholder="Last name"),
-                Hidden('last_login', datetime.now()),
-                Field('email', placeholder="Email"),
-                Field('password', placeholder="Password"),
-                Field('password2', placeholder="Confirm password"),
-                Div(css_class='clearfix'),
-                Submit('shopperForm', 'Register', css_class='pull-right tinvilleButton registerButton')
-
-            )
-        )
-
-class TinvilleDesignerCreationForm(TinvilleUserCreationForm):
-
-    def __init__(self, *args, **kwargs):
-        super(TinvilleDesignerCreationForm, self).__init__(*args, **kwargs)
-
-        self.isDesigner = True
-
-        self.fields['shop_name'].required = True
-
-        self.helper.layout = Layout(
-            Div(
-                Field('first_name', placeholder="First name"),
-                Field('last_name', placeholder="Last name"),
-                Hidden('last_login', datetime.now()),
-                Field('shop_name', placeholder="Shop name"),
-                Field('email', placeholder="Email"),
-                Field('password', placeholder="Password"),
-                Field('password2', placeholder="Confirm password"),
-                Div(css_class='clearfix'),
-                Submit('designerForm', 'Register', css_class='pull-right tinvilleButton registerButton')
-            )
-        )
-
-
-
-
 
 class TinvilleUserChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on

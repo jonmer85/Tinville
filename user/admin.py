@@ -14,8 +14,6 @@ class TinvilleUserAdmin(UserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('email',
-                    'first_name',
-                    'last_name',
                     'is_admin',
                     'is_seller',
                     'other_site_url',
@@ -24,14 +22,14 @@ class TinvilleUserAdmin(UserAdmin):
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'is_seller')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'other_site_url', 'shop_name')}),
+        ('Personal info', {'fields': ('other_site_url', 'shop_name')}),
         ('Permissions', {'fields': ('is_admin',)}),
         # ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'other_site_url', 'shop_name', 'is_seller',
+            'fields': ('email', 'other_site_url', 'shop_name', 'is_seller',
                        'password', 'password2')}
         ),
     )

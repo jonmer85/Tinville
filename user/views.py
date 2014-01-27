@@ -10,23 +10,15 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
 
-from user.forms import TinvilleShopperCreationForm, TinvilleDesignerCreationForm
+from user.forms import TinvilleUserCreationForm
 from user.models import TinvilleUser
 
 
 def register(request):
 
-    if request.method == 'POST':
-      if 'shopperForm' in request.POST:
-        shopperForm = TinvilleShopperCreationForm(request.POST)
-        designerForm = TinvilleDesignerCreationForm()
-        form = shopperForm
-      else:
-        designerForm = TinvilleDesignerCreationForm(request.POST)
-        shopperForm = TinvilleShopperCreationForm()
-        form = designerForm
+    form = TinvilleUserCreationForm(request.POST)
 
-      if form.is_valid():
+    if form.is_valid():
         #create initial entry for User object
         user = form.save()
         user.generate_activation_information()
@@ -40,11 +32,9 @@ def register(request):
         return HttpResponseRedirect(success_url)
 
     else:
-      shopperForm = TinvilleShopperCreationForm()
-      designerForm = TinvilleDesignerCreationForm()
+      form = TinvilleUserCreationForm()
     c = {
-      'shopperForm':shopperForm,
-      'designerForm':designerForm,
+      'form':form,
     }
     return render(request, 'register.html', c)
 

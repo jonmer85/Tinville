@@ -24,6 +24,9 @@ def dom():
 def assert_class_exists(klass):
     world.browser.find_element_by_class_name(klass)
 
+def assert_id_exists(id):
+    world.browser.find_element_by_id(id)
+
 def assert_class_does_not_exist(klass):
     try:
         world.browser.find_element_by_class_name(klass)

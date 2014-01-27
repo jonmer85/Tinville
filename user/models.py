@@ -23,7 +23,7 @@ class FashionStyles(models.Model):
 
 
 class TinvilleUserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None):
+    def create_user(self, email, password=None):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -33,23 +33,19 @@ class TinvilleUserManager(BaseUserManager):
 
         user = self.model(
             email=TinvilleUserManager.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, password):
+    def create_superuser(self, email, password):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
         user = self.create_user(email,
                                 password=password,
-                                first_name=first_name,
-                                last_name=last_name
                                 )
         user.is_admin = True
         user.save(using=self._db)
@@ -59,8 +55,6 @@ class TinvilleUserManager(BaseUserManager):
 class TinvilleUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
     slug = AutoSlugField(populate_from='email', unique=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
 
     is_admin = models.BooleanField(default=False)
 
@@ -79,8 +73,6 @@ class TinvilleUser(AbstractBaseUser):
 
     USERNAME_FIELD = "email"
 
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
     def generate_activation_information(self):
 
          # Build the activation key for their account
@@ -96,14 +88,6 @@ class TinvilleUser(AbstractBaseUser):
             self.shop_name = None
 
         super(TinvilleUser, self).save(*args, **kwargs)
-
-    def get_full_name(self):
-        # The user is identified by their email address
-        return self.first_name + self.last_name
-
-    def get_short_name(self):
-        # The user is identified by their email address
-        return self.first_name
 
     def __unicode__(self):
         return self.email
@@ -127,7 +111,7 @@ class TinvilleUser(AbstractBaseUser):
 
         email_subject = 'Your new Tinville account confirmation'
         email_body = "Hello %s! Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
-                     " this link within 7 days:\n\n%s" % (self.first_name, base_url+confirmation_url)
+                     " this link within 7 days:\n\n%s" % (self.email, base_url+confirmation_url)
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 
