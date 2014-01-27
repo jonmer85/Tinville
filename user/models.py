@@ -10,8 +10,6 @@ from django.core.mail import send_mail
 from django.utils.timezone import utc
 from autoslug import AutoSlugField
 
-import designer_shop.models
-
 from Tinville.settings.base import EMAIL_HOST_USER
 
 
@@ -22,6 +20,37 @@ class FashionStyles(models.Model):
 
     def __unicode__(self):
         return self.style
+
+
+class TinvilleUserManager(BaseUserManager):
+    def create_user(self, email, password=None):
+        """
+        Creates and saves a User with the given email, date of
+        birth and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=TinvilleUserManager.normalize_email(email),
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password):
+        """
+        Creates and saves a superuser with the given email, date of
+        birth and password.
+        """
+        user = self.create_user(email,
+                                password=password,
+                                )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
 
 class TinvilleUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
@@ -40,7 +69,7 @@ class TinvilleUser(AbstractBaseUser):
                                  default=None, max_length=100)
     is_approved = models.BooleanField(default=False)
 
-    objects = BaseUserManager()
+    objects = TinvilleUserManager()
 
     USERNAME_FIELD = "email"
 
