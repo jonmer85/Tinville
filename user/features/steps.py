@@ -26,18 +26,19 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
     user.save()
 
 @step(u'When I register for a shop named "([^"]*)"')
-def when_i_register_for_a_shop_named_group1(step, group1):
+def when_i_register_for_a_shop(step, shop_name):
     access_registration_url(step)
     world.user_info = {
-        "email": "joe@Schmoe.com",
+        "email": "joe@schmoe.com",
         "password": "test",
+        "shop_name": shop_name,
     }
     form = world.browser.find_element_by_id("registrationForm")
     form.find_element_by_name("email").send_keys(world.user_info['email'])
     form.find_element_by_name("password").send_keys(world.user_info['password'])
     form.find_element_by_name("password2").send_keys(world.user_info['password'])
-    assert False, 'Click apply for shop'
-    assert False, 'Fill in shop name'
+    form.find_element_by_name("is_seller").click()
+    form.find_element_by_name("shop_name").send_keys(shop_name)
     form.submit()
     user = TinvilleUser.objects.get(email=world.user_info['email'])
     user.is_active = True
@@ -57,5 +58,5 @@ def then_i_should_be_redirected_to_the_home_page(step):
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
 
 @step(u'Then I can visit my shop at "([^"]*)"')
-def then_i_can_visit_my_shop_at_group1(step, group1):
-    assert False, 'This step must be implemented'
+def then_i_can_visit_my_shop_at_group1(step, url):
+    world.browser.get(lettuce.django.get_server().url(url))

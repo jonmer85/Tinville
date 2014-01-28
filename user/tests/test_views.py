@@ -32,6 +32,10 @@ class RegistrationTest(TestCase):
     def test_is_seller(self):
         self.assertTrue(self.post_request_user(is_seller=True).is_seller)
 
+    def test_shop_name(self):
+        user = self.post_request_user(is_seller=True, shop_name='foo')
+        self.assertEqual(user.shop.name, 'foo')
+
     def test_is_shopper(self):
         self.assertFalse(self.post_request_user(is_seller=False).is_seller)
 
@@ -46,13 +50,14 @@ class RegistrationTest(TestCase):
         return response
 
     def post_request_user(self, email='joe@schmoe.com', last_login=datetime.datetime.now(),
-                          password='test', is_seller=False):
+                          password='test', is_seller=False, shop_name=None):
         self.client.post(self.registration_url, {
             'email': email,
             'password': password,
             'password2': password,
             'last_login': last_login,
             'is_seller': is_seller,
+            'shop_name': shop_name,
         })
         return TinvilleUser.objects.get(email=email)
 

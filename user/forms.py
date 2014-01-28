@@ -9,6 +9,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
 from crispy_forms.bootstrap import AppendedText
 
 from user.models import TinvilleUser
+from designer_shop.models import Shop
 
 class TinvilleUserCreationForm(forms.ModelForm):
 
@@ -35,6 +36,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 Field('password', placeholder="Password"),
                 Field('password2', placeholder="Confirm password"),
                 Field('is_seller', template="apply_for_shop.html"),
+                Field('shop_name', placeholder="Shop name"),
                 Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
             )
         )
@@ -59,8 +61,13 @@ class TinvilleUserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(TinvilleUserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
+
         if commit:
             user.save()
+
+        if user.is_seller:
+            user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+
         return user
 
     def clean_email(self):
