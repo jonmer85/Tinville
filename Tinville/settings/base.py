@@ -93,8 +93,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
@@ -107,11 +109,13 @@ ROOT_URLCONF = 'Tinville.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'Tinville.wsgi.application'
 
+from oscar import OSCAR_MAIN_TEMPLATE_DIR
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
+    OSCAR_MAIN_TEMPLATE_DIR,
 
 )
 
@@ -123,7 +127,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'django_mobile.context_processors.flavour',
-    'user.context_processors.include_login_form'
+    'user.context_processors.include_login_form',
+    'oscar.apps.search.context_processors.search_form',
+    'oscar.apps.promotions.context_processors.promotions',
+    'oscar.apps.checkout.context_processors.checkout',
+    'oscar.apps.customer.notifications.context_processors.notifications',
+    'oscar.core.context_processors.metadata',
     )
 
 # Actual Tinville business logic
@@ -153,7 +162,8 @@ INSTALLED_APPS = (
     'lettuce.django',
     'fixture_media',
     'django_extensions',
-) + PROJECT_APPS
+    'compressor'
+) + get_core_apps() + PROJECT_APPS
 
 
 # These are used by jenkins to know which tasks to run
