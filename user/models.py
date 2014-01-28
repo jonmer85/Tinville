@@ -26,7 +26,6 @@ class FashionStyles(models.Model):
     def __unicode__(self):
         return self.style
 
-
 class TinvilleUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
     slug = AutoSlugField(populate_from='email', unique=True)
@@ -43,6 +42,8 @@ class TinvilleUser(AbstractBaseUser):
     shop_name = models.CharField(verbose_name="Shop name", unique=True, blank=True, null=True, db_index=True,
                                  default=None, max_length=100)
     is_approved = models.BooleanField(default=False)
+
+    objects = BaseUserManager()
 
     USERNAME_FIELD = "email"
 
