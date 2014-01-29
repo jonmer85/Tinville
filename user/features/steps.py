@@ -4,6 +4,7 @@ from lettuce import step
 from nose.tools import assert_equals
 from user.models import TinvilleUser
 import lettuce.django
+from selenium.common.exceptions import ElementNotVisibleException 
 
 @step(u'I access the registration page')
 def access_registration_url(step):
@@ -60,5 +61,8 @@ def then_i_can_visit_my_shop(step, url):
 
 @step(u"Then I can't fill in the shop name")
 def then_i_can_t_fill_in_the_shop_name(step):
-    form = world.browser.find_element_by_name("shop_name").send_keys("foo")
-    assert False, "Could fill in shop name"
+    try:
+        form = world.browser.find_element_by_name("shop_name").send_keys("foo")
+        assert False, "Could fill in shop name"
+    except ElementNotVisibleException:
+        pass

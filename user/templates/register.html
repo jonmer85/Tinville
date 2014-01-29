@@ -17,3 +17,13 @@
 		</div>
 	</div>
 {% endblock %}
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#shop_fields").slideToggle(0);
+			$("#id_is_seller").on("click", function () {
+				$("#shop_fields").slideToggle();
+			});
+		});
+	</script>
+{% endblock %}

@@ -38,7 +38,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 Field('is_seller', template="apply_for_shop.html"),
                 Div(
                     Field('shop_name', placeholder="Shop name"),
-                    name="shop_fields",
+                    id="shop_fields",
                 ),
                 Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
             )
