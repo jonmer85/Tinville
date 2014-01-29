@@ -57,3 +57,8 @@ def then_i_should_be_redirected_to_the_home_page(step):
 def then_i_can_visit_my_shop(step, url):
     world.browser.get(lettuce.django.get_server().url(url))
     assert_not_equals(world.browser.title, 'Server Error', world.browser.page_source)
+
+@step(u"Then I can't fill in the shop name")
+def then_i_can_t_fill_in_the_shop_name(step):
+    form = world.browser.find_element_by_name("shop_name").send_keys("foo")
+    assert False, "Could fill in shop name"
