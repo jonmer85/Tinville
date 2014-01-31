@@ -36,7 +36,10 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 Field('password', placeholder="Password"),
                 Field('password2', placeholder="Confirm password"),
                 Field('is_seller', template="apply_for_shop.html"),
-                Field('shop_name', placeholder="Shop name"),
+                Div(
+                    Field('shop_name', placeholder="Shop name"),
+                    id="shop_fields",
+                ),
                 Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
             )
         )
