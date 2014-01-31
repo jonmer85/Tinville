@@ -57,3 +57,8 @@ def then_i_should_be_redirected_to_the_home_page(step):
 def then_i_can_visit_my_shop(step, url):
     world.browser.get(lettuce.django.get_server().url(url))
     assert_not_equals(world.browser.title, 'Server Error', world.browser.page_source)
+
+@step(u'I should see a confirmation notification')
+def i_should_see_a_confirmation_notification(step):
+    assert_class_exists('alert-success')
+
