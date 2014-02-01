@@ -3,6 +3,7 @@ import datetime
 from django.utils import unittest
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.forms import ValidationError
 import pytz
 from user.models import TinvilleUser
 from Tinville.settings.base import TIME_ZONE
@@ -18,13 +19,6 @@ class RegistrationTest(TestCase):
 
     def test_email(self):
         self.assertEqual(self.post_request_user(email='john@schmoe.com').email, 'john@schmoe.com')
-
-    def test_last_login(self):
-        last_login = datetime.datetime.now()
-        self.assertEqual(
-            self.post_request_user(last_login=last_login).last_login,
-            pytz.timezone(TIME_ZONE).localize(last_login),
-        )
 
     def test_password_hashed(self):
         self.failIfEqual(self.post_request_user(password='foo'), 'foo')

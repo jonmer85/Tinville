@@ -12,45 +12,29 @@ from user.models import TinvilleUser
 from designer_shop.models import Shop
 
 class TinvilleUserCreationForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-
-        request = kwargs.pop("request", None)
-
-        super(TinvilleUserCreationForm, self).__init__(*args, **kwargs)
-
-        self.fields['shop_name'].required = False
-
-
-        self.helper = FormHelper()
-        self.helper.form_show_labels = False
-        self.helper.form_class = 'form-horizontal'
-        self.helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
-
-        self.fields['shop_name'].required = False
-
-        self.helper.layout = Layout(
-            Div(
-                Hidden('last_login', datetime.now()),
-                Field('email', placeholder="Email"),
-                Field('password', placeholder="Password"),
-                Field('password2', placeholder="Confirm password"),
-                Field('is_seller', template="apply_for_shop.html"),
-                Div(
-                    Field('shop_name', placeholder="Shop name"),
-                    id="shop_fields",
-                ),
-                Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
-            )
-        )
-
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
+    helper = FormHelper()
+    helper.form_show_labels = False
+    helper.form_class = 'form-horizontal'
+    helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
+    
+    helper.layout = Layout(
+        Field('email', placeholder="Email"),
+        Field('password', placeholder="Password"),
+        Field('password2', placeholder="Confirm password"),
+        Field('is_seller', template="apply_for_shop.html", required=False),
+        Div(
+            Field('shop_name', placeholder="Shop name"),
+            id="shop_fields",
+        ),
+        Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
+    )
+
     class Meta:
         model = TinvilleUser
+        fields = ['email', 'password', 'is_seller', 'shop_name']
 
     def clean_password2(self):
         # Check that the two password entries match
