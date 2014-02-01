@@ -1,16 +1,10 @@
 
-{% extends "base.html" %}
-{% load i18n %}
-{% block body_class %}{{ block.super }}{% endblock %}
-{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div{% if message.tags %} class="alert alert-block alert-{{ message.tags }} alert-dismissable"{% endif %}>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
-
-    {% if messages %}
-        {% for message in messages %}
-            <div{% if message.tags %} class="alert alert-block alert-{{ message.tags }}"{% endif %}>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-{% endblock %}

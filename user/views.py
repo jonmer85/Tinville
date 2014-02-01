@@ -28,7 +28,7 @@ def register(request):
             message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
             customer support to correct the address.""" % user.email
         messages.success(request, msg)
-        success_url = reverse('notifications')
+        success_url = reverse('home')
         return HttpResponseRedirect(success_url)
 
     else:

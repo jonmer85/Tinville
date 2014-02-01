@@ -59,9 +59,10 @@ def then_i_can_visit_my_shop(step, url):
     world.browser.get(lettuce.django.get_server().url(url))
     assert_not_equals(world.browser.title, 'Server Error', world.browser.page_source)
 
-@step(u'I should see a confirmation notification')
-def i_should_see_a_confirmation_notification(step):
+@step(u'I should see a confirmation notification prompting me to activate the account via email instructions to "([^"]*)"')
+def i_should_see_a_confirmation_notification(step, email):
     assert_class_exists('alert-success')
+    assert_selector_contains_text('div.alert-success', email)
 
 
 @step(u"Then I can't fill in the shop name")

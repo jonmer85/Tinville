@@ -46,6 +46,13 @@ def assert_text_of_every_selector(selector, text):
         selector_found = True
     assert_true(selector_found, 'No elements found for ' + selector)
 
+def assert_selector_contains_text(selector, text):
+    assert_regexp_matches(
+        dom().cssselect(selector)[0].text_content(),
+        re.compile(".*" + text + ".*"),
+    )
+
+
 
 def assert_every_selector_contains(selector, attrib, string):
     selector_found = False
