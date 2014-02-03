@@ -24,7 +24,10 @@ class CreateMailingListItemView(CreateView):
         return super(CreateMailingListItemView, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "This email address is already in our list or invalid")
+        if form.errors["email"][0] == "Mailing list item with this Email address already exists.":
+            messages.error(self.request, "This email address is already in our list")
+        else:
+            messages.error(self.request, form.errors["email"][0])
         return super(CreateMailingListItemView, self).form_invalid(form)
 
 
