@@ -693,6 +693,9 @@
 {#        this is for the highlight the selected infopages#}
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
+            {% if messages %}
+                $('#messagesModal').modal()
+            {% endif %}
         });
 
 
