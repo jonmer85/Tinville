@@ -4,13 +4,13 @@ from lettuce import step
 from nose.tools import assert_equals
 from user.models import TinvilleUser
 import lettuce.django
-from selenium.common.exceptions import ElementNotVisibleException 
+from selenium.common.exceptions import * 
 
 @step(u'I access the registration page')
 def access_registration_url(step):
     world.browser.get(lettuce.django.get_server().url('/register'))
 
-@step(u'When I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
+@step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
     form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form)
@@ -37,7 +37,7 @@ def fill_in_user_form(email, password):
 
 def submit_form_and_activate_user(form):
     form.submit()
-    user = TinvilleUser.objects.get(email=world.user_info['email'])
+    user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
     user.is_active = True
     user.save()
 
@@ -67,8 +67,21 @@ def i_should_see_a_confirmation_notification(step, email):
 
 @step(u"Then I can't fill in the shop name")
 def then_i_can_t_fill_in_the_shop_name(step):
-    try:
-        form = world.browser.find_element_by_name("shop_name").send_keys("foo")
-        assert False, "Could fill in shop name"
-    except ElementNotVisibleException:
-        pass
+    assert_raises(
+        ElementNotVisibleException,
+        world.browser.find_element_by_name("shop_name").send_keys,
+        "foo",
+    )
+
+@step(u'Then I should not see validation errors')
+def then_i_should_not_see_validation_errors(step):
+    assert_raises(
+        NoSuchElementException,
+        world.browser.find_element_by_class_name,
+        "has-error",
+    )
+
+@step(u'Then I should get a validation error on email address')
+def then_i_should_get_a_validation_error_on_email_address(step):
+    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register'))
+    assert_class_exists('has-error')
