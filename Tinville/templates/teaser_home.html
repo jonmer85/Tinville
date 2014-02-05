@@ -47,14 +47,6 @@
             <h3>Join our mailing list to stay tuned.</h3>
 
             <form action="/" method="post"> {% csrf_token %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert{% if message.tags %} alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}" data-dismiss="alert">
-                          <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                          {{ message|safe }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
                 <div class="input-group input-group-lg">
                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                   <input type="text" id="id_email" name="email" class="form-control" placeholder="your@email.com">
