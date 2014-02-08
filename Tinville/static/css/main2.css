@@ -253,7 +253,7 @@ body {
 @media (min-width: 992px) {
   .loginPopupForm 
   {
-      margin-right: 2em ;
+      margin-right: 10% ;
     /*width: 232px;*/
   }
 }
@@ -261,7 +261,7 @@ body {
 @media (max-width: 992px) {
   .loginPopupForm 
   {
-      margin-right: 3.9em ;
+      margin-right: 5% ;
     /*width: 232px;*/
   }
 }
