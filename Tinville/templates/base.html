@@ -270,11 +270,12 @@
 
                         {% if user.is_authenticated %}
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>
-                                <ul class="dropdown-menu navdropstyle ">
-                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>
-                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>
-                                </ul>
+                                <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+{#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
+{#                                <ul class="dropdown-menu navdropstyle ">#}
+{#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
+{#                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>#}
+{#                                </ul>#}
                             </li>
                         {% else %}
                             <li class="dropdown yamm-fw" id="lg-menuLogin" >
