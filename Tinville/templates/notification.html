@@ -1,10 +1,21 @@
 
 {% if messages %}
-    {% for message in messages %}
-        <div{% if message.tags %} class="alert alert-block alert-{{ message.tags }} alert-dismissable"{% endif %}>
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ message }}
+    <div id="messagesModal" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">A message for you...</h4>
+          </div>
+          <div class="modal-body">
+              {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-block alert-{{ message.tags }} alert-dismissable"{% endif %}>
+                    {{ message }}
+                </div>
+              {% endfor %}
+          </div>
         </div>
-    {% endfor %}
+      </div>
+    </div>
 {% endif %}
 

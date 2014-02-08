@@ -15,22 +15,21 @@ from user.models import TinvilleUser
 
 
 def register(request):
+    if request.method == 'POST':
+        form = TinvilleUserCreationForm(request.POST)
 
-    form = TinvilleUserCreationForm(request.POST)
-
-    if form.is_valid():
-        #create initial entry for User object
-        user = form.save()
-        user.generate_activation_information()
-        user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
-        # Can't do super() here because it would save the instance again
-        msg = """An e-mail has been sent to %s. Please check your mail and click on the confirmation link in the
-            message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
-            customer support to correct the address.""" % user.email
-        messages.success(request, msg)
-        success_url = reverse('home')
-        return HttpResponseRedirect(success_url)
-
+        if form.is_valid():
+            #create initial entry for User object
+            user = form.save()
+            user.generate_activation_information()
+            user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
+            # Can't do super() here because it would save the instance again
+            msg = """An e-mail has been sent to %s. Please check your mail and click on the confirmation link in the
+                message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
+                customer support to correct the address.""" % user.email
+            messages.success(request, msg)
+            success_url = reverse('home')
+            return HttpResponseRedirect(success_url)
     else:
       form = TinvilleUserCreationForm()
     c = {
