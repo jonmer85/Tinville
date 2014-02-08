@@ -21,7 +21,22 @@ textarea {
 body {
     font-size: 1em;
     line-height: 1.4;
-    font-family: "MS Sans Serif", Geneva, sans-serif
+    font-family: 'Cabin Condensed', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Cabin Condensed", sans-serif;
 }
 
 /*
@@ -42,10 +57,6 @@ html {
 body {
   width: auto !important;
   overflow-x: hidden !important;
-}
-
-#mainContent {
-    margin-top: 5%;
 }
 
 
@@ -85,11 +96,16 @@ body {
 
 @media(max-width: 767px){
     #tinvilleTagBanner {
-    position: absolute;
-    top: 1%;
-    left: 5%;
-    z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 75px;
+        position: absolute;
+        top: 1%;
+        left: 5%;
+        z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
+        height: 75px;
+    }
+
+    #mainContent {
+        margin-top: 5%;
+    }
 }
 
    /* #carousel{
