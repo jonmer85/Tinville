@@ -251,11 +251,20 @@ body {
 }
 
 @media (min-width: 992px) {
-  .loginPopupForm {
+  .loginPopupForm 
+  {
+      margin-right: 2em ;
     /*width: 232px;*/
   }
 }
 
+@media (max-width: 992px) {
+  .loginPopupForm 
+  {
+      margin-right: 3.9em ;
+    /*width: 232px;*/
+  }
+}
 .loginPopupForm {
     background-color: #E7E7E7;
     padding-top: 0%;
