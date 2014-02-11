@@ -275,6 +275,11 @@ body {
     /*opacity: .95;*/
 
 }
+.alignField {
+
+    padding-right: 0%;
+    padding-left: 0%;
+}
 
 .messageError {
     margin-top: 10%;
