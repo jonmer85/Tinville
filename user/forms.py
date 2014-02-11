@@ -99,11 +99,11 @@ class LoginForm(AuthenticationForm):
                 Div(css_class='clearfix'),
                 Div(
                     Field('username', placeholder="Email"),
-                    css_class= "col-xs-12 alignField",
+                    css_class="alignField",
                 ),
                 Div(
                     Field('password', type='password', placeholder="Password"),
-                    css_class= "col-xs-12 alignField",
+                    css_class="alignField",
                 ),
 
 
