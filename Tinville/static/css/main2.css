@@ -267,7 +267,7 @@ body {
 
 @media (min-width: 768px) {
   .loginPopupForm {
-    left: inherit !important;
+    left: auto !important;
     width: 250px;
     margin-right: 4% ;
     
