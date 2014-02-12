@@ -243,35 +243,59 @@ body {
     /*margin-right: 0;*/
 /*}*/
 
+/**
+  * Tommy Leedberg - 2/11/2014 - Defect #152
+  *
+  * Summary: 
+  *      Updating the login popupform to align it with the
+  *      sign-in button.
+  * Solution:
+  *     Added margins to keep the loginPopupForm aligned with the sign-in button
+  *         0px-767px    : width set to 100% no margins needed
+  *         768px-991px  : right-margin of 4%
+  *         992px-1200px : right-margin of 3%
+  *         1200px+      : right-margin of 2%
+  */
+
+@media (max-width: 767px)
+{
+    .loginPopupForm
+    {
+        width: 100%
+    }
+}
+
 @media (min-width: 768px) {
   .loginPopupForm {
-    left: auto !important;
+    left: inherit !important;
     width: 250px;
+    margin-right: 4% ;
+    
   }
 }
 
 @media (min-width: 992px) {
   .loginPopupForm 
   {
-      margin-right: 2.54% ;
-    /*width: 232px;*/
+      margin-right: 3% ;
   }
 }
 
-@media (max-width: 992px) {
-  .loginPopupForm 
-  {
-      margin-right: 4% ;
-    /*width: 232px;*/
-  }
+@media( min-width: 1200px)
+{
+    .loginPopupForm
+    {
+        margin-right: 2.5% ;
+    }
 }
+
 .loginPopupForm {
     background-color: #E7E7E7;
     padding-top: 0%;
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    /*width: 250px;*/
+    /*width: 250px;;
     /*opacity: .95;*/
 
 }
