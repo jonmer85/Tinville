@@ -86,6 +86,7 @@ class LoginForm(AuthenticationForm):
         self.helper.form_show_errors = False
         self.helper.form_show_labels = False
         self.helper.form_class = 'loginPopupForm'
+        # self.helper.field_class = 'test'
 
         self.helper.layout = Layout(
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
@@ -95,8 +96,17 @@ class LoginForm(AuthenticationForm):
                             <i class="icon-facebook"></i> | Sign in with Facebook
                         </a""")),
                 HTML("""<img class="col-xs-12" src="{{ STATIC_URL }}img/or_login.gif" style=" margin-top: 5%; margin-bottom: 5%; "/>"""),
-                Field('username', placeholder="Email"),
-                Field('password', type='password', placeholder="Password"),
+                Div(css_class='clearfix'),
+                Div(
+                    Field('username', placeholder="Email"),
+                    css_class="alignField",
+                ),
+                Div(
+                    Field('password', type='password', placeholder="Password"),
+                    css_class="alignField",
+                ),
+
+
                 HTML("""<div for="id_remember_me" id="rememberLoginLabel" class=" checkbox">
                         <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
                          type="checkbox" value="true">
