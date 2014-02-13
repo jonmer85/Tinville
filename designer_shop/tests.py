@@ -1,4 +1,5 @@
 from designer_shop.models import Shop
+from user.models import TinvilleUser
 from designer_shop.views import *
 from django.http import HttpRequest
 from django.test import TestCase
@@ -6,24 +7,26 @@ from lxml import html
 import re
 
 class ModelTest(TestCase):
+    def setUp(self):
+        self.user = TinvilleUser.objects.create(email="foo@bar.com")
+        self.shop = Shop.objects.create(user=self.user, name='foo bar')
+
     def test_get_absolute_url(self):
-        self.assertEqual('/foo/', Shop.objects.create(name='foo').get_absolute_url())
-        self.assertEqual('/foo-bar/', Shop.objects.create(name='foo bar').get_absolute_url())
+        self.assertEqual('/foo-bar/', self.shop.get_absolute_url())
 
     def test_shop_items(self):
-        shop = Shop.objects.create(name='foo')
-        shop.item_set.create(name='foo', image='bar', price='2.34')
-        self.assertEqual(1, shop.item_set.count())
+        self.shop.item_set.create(name='foo', image='bar', price='2.34')
+        self.assertEqual(1, self.shop.item_set.count())
 
     def test_slug(self):
-        shop = Shop.objects.create(name='foo bar')
-        self.assertEqual(shop.slug, 'foo-bar')
+        self.assertEqual(self.shop.slug, 'foo-bar')
 
 
 
 class ViewTest(TestCase):
     def setUp(self):
-        self.shop = Shop.objects.create(name='foo', banner='bar', logo='baz')
+        self.user = TinvilleUser.objects.create(email="foo@bar.com")
+        self.shop = Shop.objects.create(user=self.user, name='foo', banner='bar', logo='baz')
         self.shop.item_set.create(name='foo', image='image_bar', price='1.23')
         self.content = html.fromstring(shopper(HttpRequest(), 'foo').content)
 
@@ -49,7 +52,8 @@ class ViewTest(TestCase):
         self.assertFirstSelectorTextEquals('.shopItems .shopItem .price', '$1.23')
 
     def test_slug_lookup(self):
-        slug_shop = Shop.objects.create(name='foo bar', banner='bar', logo='baz')
+        self.shop.name = 'foo bar'
+        self.shop.save()
         shopper(HttpRequest(), 'foo-bar')
 
 

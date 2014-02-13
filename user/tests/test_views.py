@@ -3,149 +3,84 @@ import datetime
 from django.utils import unittest
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.forms import ValidationError
 import pytz
 from user.models import TinvilleUser
 from Tinville.settings.base import TIME_ZONE
+import re
 
 
-class TestUserViews(TestCase):
-
+class RegistrationTest(TestCase):
+    def setUp(self):
+        self.registration_url = reverse('user.views.register')
 
     def test_get_register_view(self):
-        create_url = reverse('user.views.register')
-        resp = self.client.get(create_url)
-        self.assertEqual(resp.status_code, httplib.OK)
-        self.assertTemplateUsed(resp, 'register.html')
+        self.assertTemplateUsed(self.get_request(), 'register.html')
 
+    def test_email(self):
+        self.assertEqual(self.post_request_user(email='john@schmoe.com').email, 'john@schmoe.com')
 
-    def test_post_create_designer_view_success(self):
-        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
+    def test_password_hashed(self):
+        self.failIfEqual(self.post_request_user(password='foo'), 'foo')
 
-        local_tz = pytz.timezone(TIME_ZONE)
+    def test_is_seller(self):
+        self.assertTrue(self.post_request_user(is_seller=True).is_seller)
 
-        success_url = reverse('notifications')
-        self.assertRedirects(resp, success_url, httplib.FOUND, httplib.OK)
-        user = TinvilleUser.objects.get(email=email)
-        self.assertEqual(user.first_name, first)
-        self.assertEqual(user.last_name, last)
-        self.assertEqual(user.email, email)
-        self.assertEqual(user.last_login.astimezone(local_tz), local_tz.localize(last_login))
-        self.failIfEqual(user.password, password)  # Should fail since it should be is a hashed password
-        self.assertTrue(user.is_seller)
-        self.assertFalse(user.is_active)
+    def test_shop_name(self):
+        user = self.post_request_user(is_seller=True, shop_name='foo')
+        self.assertEqual(user.shop.name, 'foo')
 
-    def test_post_create_shopper_view_success(self):
-        first, last, email, shop_name, last_login, password, resp \
-            = self.post_test_user_data(shop_name='')
-
-        local_tz = pytz.timezone(TIME_ZONE)
-
-        success_url = reverse('notifications')
-        self.assertRedirects(resp, success_url, httplib.FOUND, httplib.OK)
-        user = TinvilleUser.objects.get(email=email)
-        self.assertEqual(user.first_name, first)
-        self.assertEqual(user.last_name, last)
-        self.assertEqual(user.email, email)
-        self.assertEqual(user.shop_name, shop_name)
-        self.assertEqual(user.last_login.astimezone(local_tz), local_tz.localize(last_login))
-        self.failIfEqual(user.password, password)  # Should fail since it should be is a hashed password
-        self.assertFalse(user.is_seller)
-        self.assertFalse(user.is_active)
-
-    def test_get_activation_view_designer(self):
-        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
-
-        user = TinvilleUser.objects.get(email=email)
-        self.assertTrue(user.is_seller)
-        self.assertFalse(user.is_active)
-
-        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
-        user = TinvilleUser.objects.get(email=email)
-        self.assertTemplateUsed(resp, 'notification.html')
-        self.assertTrue(user.is_active)  # User should now be activated
-        self.assertTrue(user.is_seller)
-        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
-        self.assertContains(resp, 'alert-success')
-
-    def test_get_activation_view_designer_already_authenticated(self):
-        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
-
-        user = TinvilleUser.objects.get(email=email)
-        user.is_active = True
-        user.save()
-        success = self.client.login(username=email, password=password)
-        self.assertTrue(success)
-
-        self.assertTrue(user.is_seller)
-        self.assertTrue(user.is_active)
-
-        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
-        self.assertTemplateUsed(resp, 'notification.html')
-        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
-        self.assertContains(resp, 'alert-warning')
-
-    def test_get_activation_view_while_another_user_is_signed_in(self):  # Defect #60
-        # Create a designer, log them in
-        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
-        user = TinvilleUser.objects.get(email=email)
-        user.is_active = True
-        user.save()
-        success = self.client.login(username=email, password=password)
-        self.assertTrue(success)
-
-        # Now create another user and activate them, it should still activate even if the other user has a logged in
-        # session
-        first2, last2, email2, shop_name2, last_login2, password2, resp2 = \
-            self.post_test_user_data(email="joe2@schmoe.com", shop_name="SchmoeShop", submitName='designerForm')
-        user = TinvilleUser.objects.get(email=email2)
-        self.assertTrue(user.is_seller)
-        self.assertFalse(user.is_active)
-
-        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
-        self.assertTemplateUsed(resp, 'notification.html')
-        user = TinvilleUser.objects.get(email=email2)
-        self.assertTrue(user.is_active)  # User should now be activated
-        self.assertTrue(user.is_seller)
-        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
-        self.assertContains(resp, 'alert-success')
-
-    def test_get_activation_after_activated_already(self):  # Defect #61
-        # Create a designer and activate them
-        first, last, email, shop_name, last_login, password, resp = self.post_test_user_data(submitName='designerForm')
-        user = TinvilleUser.objects.get(email=email)
-        user.is_active = True
-        user.save()
-
-        resp = self.client.get(reverse('activate-user', kwargs={'activation_key': user.activation_key}))
-        self.assertTemplateUsed(resp, 'notification.html')
-        self.assertEqual(resp.cookies['messages'].value, '')  # Messages should be cleared when rendered by template
-        self.assertContains(resp, 'alert-warning')  # Should be a warning since user is activated already
+    def test_is_shopper(self):
+        self.assertFalse(self.post_request_user(is_seller=False).is_seller)
 
     ### Utilities
-    def post_test_user_data(self, first=None, last=None, email=None, shop_name=None,
-                            last_login=None, password=None, password2=None, submitName='shopperForm'):
+    def get_request(self):
+        response = self.client.get(self.registration_url, {
+            'email': 'joe@schmoe.com',
+            'password': 'test',
+            'password2': 'test',
+        })
+        self.assertEqual(response.status_code, httplib.OK)
+        return response
 
-        create_url = reverse('user.views.register')
-        first = first or 'Joe'
-        last = last or 'Schmoe'
-        email = email or 'joe@schmoe.com'
-        shop_name = shop_name or 'SchmoeVille'
+    def post_request_user(self, email='joe@schmoe.com', last_login=datetime.datetime.now(),
+                          password='test', is_seller=False, shop_name=None):
+        self.client.post(self.registration_url, {
+            'email': email,
+            'password': password,
+            'password2': password,
+            'last_login': last_login,
+            'is_seller': is_seller,
+            'shop_name': shop_name,
+        })
+        return TinvilleUser.objects.get(email=email)
 
-        last_login = last_login or datetime.datetime.now()
-        password = password or 'test'
-        password2 = password2 or password
-        resp = self.client.post(create_url,
-                                {'first_name': first,
-                                 'last_name': last,
-                                 'shop_name': shop_name,
-                                 'email': email,
-                                 'password': password,
-                                 'password2': password2,
-                                 'last_login': last_login,
-                                 submitName: '',
-                                 }
-                                )
+def ActivationTest(TestCase):
+    def setUp(self):
+        self.user = TinvilleUser.objects.create()
 
-        return first, last, email, shop_name, last_login, password, resp
+    def test_unconfirmed(self):
+        self.assertFalse(self.user.is_active)
 
+    def test_confirmed(self):
+        self.client.get(reverse('activate-user', kwargs={'activation_key': self.user.activation_key}))
+        self.assertTrue(TinvilleUser.objects.get(id=self.user.id).is_active)
 
+    def test_already_registered_warning(self):
+        self.user.is_active = True
+        self.user.save()
+        response = self.client.get(reverse('activate-user', kwargs={'activation_key': self.user.activation_key}))
+        self.assertRegexpMatches(
+            response.content,
+            re.compile(".*Your account already exists and is activated.*"),
+        )
+
+    def test_other_user_logged_in(self):
+        other_user = TinvilleUser.objects.create(
+            is_active=True,
+            email='joe@schmoe.com',
+            password='test',
+        )
+        self.client.login(username=other_user.email, password='test')
+        self.client.get(reverse('activate-user', kwargs={'activation_key': self.user.activation_key}))
+        self.assertTrue(TinvilleUser.objects.get(id=self.user.id).is_active)

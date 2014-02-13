@@ -20,7 +20,7 @@ textarea {
 
 body {
     font-size: 1em;
-    line-height: 1.4;
+    line-height: 1.9;
     font-family: "MS Sans Serif", Geneva, sans-serif
 }
 
@@ -68,6 +68,16 @@ body {
     }
 }
 
+.contentButton{
+    width: 30%;
+    height: 50px;
+}
+
+.contentIcon{
+    width: 24px;
+    height: 24px;
+}
+
 :disabled {
     color: #6b849a;
     text-shadow: 1px 1px #ffffff;
@@ -95,7 +105,7 @@ body {
 
 @media (min-width: 992px) {
   .navdropstyle {
-    width: 40%;
+    width: auto;
   }
 }
 
@@ -138,10 +148,23 @@ body {
 }
 
 #navSearch {
-    font-size: 2.8em;
+    font-size: 2em;
     margin-right: 5%;
-    margin-top: 12px;
+    /*margin-top: 12px;*/
 }
+
+#navLogin {
+    font-size: 2em;
+    margin-right: 5%;
+    /*margin-top: 12px;*/
+}
+
+#navLogout {
+    font-size: 2em;
+    margin-right: 5%;
+    /*margin-top: 12px;*/
+}
+
 
 #signInButton {
     margin-right: 0;
@@ -220,17 +243,50 @@ body {
     /*margin-right: 0;*/
 /*}*/
 
+/**
+  * Tommy Leedberg - 2/11/2014 - Defect #152
+  *
+  * Summary: 
+  *      Updating the login popupform to align it with the
+  *      sign-in button.
+  * Solution:
+  *     Added margins to keep the loginPopupForm aligned with the sign-in button
+  *         0px-767px    : width set to 100% no margins needed
+  *         768px-991px  : right-margin of 4%
+  *         992px-1200px : right-margin of 3%
+  *         1200px+      : right-margin of 2%
+  */
+
+@media (max-width: 767px)
+{
+    .loginPopupForm
+    {
+        width: 100%
+    }
+}
+
 @media (min-width: 768px) {
   .loginPopupForm {
     left: auto !important;
     width: 250px;
+    margin-right: 4% ;
+    
   }
 }
 
 @media (min-width: 992px) {
-  .loginPopupForm {
-    /*width: 232px;*/
+  .loginPopupForm 
+  {
+      margin-right: 3% ;
   }
+}
+
+@media( min-width: 1200px)
+{
+    .loginPopupForm
+    {
+        margin-right: 2.5% ;
+    }
 }
 
 .loginPopupForm {
@@ -239,9 +295,14 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    /*width: 250px;*/
+    /*width: 250px;;
     /*opacity: .95;*/
 
+}
+.alignField {
+
+    padding-right: 0%;
+    padding-left: 0%;
 }
 
 .messageError {
