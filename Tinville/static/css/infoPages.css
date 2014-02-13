@@ -15,10 +15,12 @@ ul.infoList {
 }
 
 .orangeBanner{
-    background-color:#f46430;
+    /*background-color:#f46430;*/
     padding-left: 5%;
-    color: #ffffff;
-    font-size: xx-large;
+    /*color: #ffffff;*/
+    /*border-bottom: 1px solid #ddd;*/
+    color:#f46430;
+    font-size: x-large;
     font-weight: normal;
     border-radius: 4px;
 }
@@ -38,6 +40,13 @@ ul.infoList {
 
 }
 
+/*.test {*/
+    /*padding: 0px 25px 0px 25px;*/
+/*}*/
+
+/*.testa {*/
+    /*padding: 1px 1px 1px 10px;*/
+/*}*/
 
 .infoPageContent {
     background-color: #ffffff;
@@ -50,6 +59,7 @@ ul.infoList {
 
 .nav-sidebar {
     width: 100%;
+    padding: 0px 25px 0px 25px;
     /*padding: 8px 0;*/
     font-size: medium;
     font-family:"Arial,sans-serif";
@@ -64,6 +74,7 @@ ul.infoList {
     -webkit-border-radius: 4px 4px 4px 4px;
     -moz-border-radius: 4px 4px 4px 4px;
     border-radius: 4px 4px 4px 4px;
+    padding: 1px 1px 1px 10px;
 }
 .nav-sidebar .active a {
     cursor: default;

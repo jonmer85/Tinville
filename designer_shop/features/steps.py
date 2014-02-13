@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from designer_shop.models import Shop
+from user.models import TinvilleUser
 from common.lettuce_utils import *
 from lettuce import step
 import lettuce.django
 
 @step(u'Given a designer shop')
 def given_a_designer_shop(step):
-    world.shop = Shop.objects.create(name='foo', banner='bar', logo='baz')
+    world.user = TinvilleUser.objects.create(email="foo@bar.com")
+    world.shop = Shop.objects.create(user=world.user, name='foo', banner='bar', logo='baz')
 
 @step(u'And (\d+) shop items')
 def and_n_shop_items(step, n):

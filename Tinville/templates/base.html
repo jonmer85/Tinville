@@ -41,14 +41,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <i id="navSearch" class="fa fa-search fa-3 navbar-text xs-navbar-text visible-xs pull-right"></i>
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
                 {% if not user.is_authenticated %}
                     <ul id="signInButton" class="nav pull-right">
                       <li class="dropdown yamm-fw" id="xs-menuLogin" >
                         <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
                         <ul class="dropdown-menu loginPopupForm">
                             <li>
-                                <div class="yamm-content">
+                                <div class="yamm-content" style="padding-top: 2px">
                                     <div class="row">
                                         {%  include "login_form.html" with form_name="xs-Login" %}
                                     </div>
@@ -58,7 +58,7 @@
                       </li>
                     </ul>
                 {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout"><i class="fa fa-sign-out fa-4"></i></a>
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
 
             </div>
@@ -67,8 +67,8 @@
 
                     <ul class="nav navbar-nav">
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="caret"></b></a>
-                            <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b class="caret"></b></a>
+                            <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
@@ -83,7 +83,7 @@
                                                 <li><a href="#">Dresses</a></li>
                                                 <li><a href="#">Athletic Clothing</a></li>
                                                 <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                                <li><a href="#"><b>All</b></a></li>
                                             </ul>
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Shoes</strong></p></li>
@@ -96,7 +96,7 @@
                                                     <li><a href="#">Sandals</a></li>
                                                     <li><a href="#">Loafers</a></li>
                                                     <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                                    <li><a href="#"><strong>All</strong></a></li>
                                             </ul>
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>
@@ -109,16 +109,16 @@
                                                 <li><a href="#">Gloves</a></li>
                                                 <li><a href="#">Belts</a></li>
                                                 <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                                <li><a href="#"><strong>All</strong></a></li>
                                             </ul>
                                         </div>
                                     </div>
 
                                     <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <button id="mobileWomensCbtn" class="whhg-tshirt"><b></b></button>
-                                            <button id="mobileWomensSbtn" class="whhg-shoebox"><b></b></button>
-                                            <button id="mobileWomensAbtn" class="whhg-purse"><b></b></button>
+                                            <button id="mobileWomensCbtn" class="contentButton"><b><i class="whhg-tshirt"></i></b></button>
+                                            <button id="mobileWomensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
+                                            <button id="mobileWomensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
 
                                             <ul id="mobileWomensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Outerwear</a></li>
@@ -130,7 +130,7 @@
                                                 <li><a href="#">Dresses</a></li>
                                                 <li><a href="#">Athletic Clothing</a></li>
                                                 <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                                <li><a href="#"><b>All</b></a></li>
                                             </ul>
                                             <ul id="mobileWomensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Boots</a></li>
@@ -142,7 +142,7 @@
                                                     <li><a href="#">Sandals</a></li>
                                                     <li><a href="#">Loafers</a></li>
                                                     <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                                    <li><a href="#"><strong>All</strong></a></li>
                                             </ul>
                                             <ul id="mobileWomensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Handbags</a></li>
@@ -154,18 +154,17 @@
                                                 <li><a href="#">Gloves</a></li>
                                                 <li><a href="#">Belts</a></li>
                                                 <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                                <li><a href="#"><strong>All</strong></a></li>
                                             </ul>
                                         </div>
                                     </div>
-
                                 </li>
                             </ul>
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
-                            <ul id="genderContent" class="dropdown-menu navdropstyle ">
+                            <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
@@ -180,7 +179,7 @@
                                                 <li><a href="#">Dresses</a></li>
                                                 <li><a href="#">Athletic Clothing</a></li>
                                                 <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
+                                                <li><a href="#"><b>All</b></a></li>
                                             </ul>
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Shoes</strong></p></li>
@@ -193,7 +192,7 @@
                                                     <li><a href="#">Sandals</a></li>
                                                     <li><a href="#">Loafers</a></li>
                                                     <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
+                                                    <li><a href="#"><strong>All</strong></a></li>
                                             </ul>
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>
@@ -206,16 +205,16 @@
                                                 <li><a href="#">Gloves</a></li>
                                                 <li><a href="#">Belts</a></li>
                                                 <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                                <li><a href="#"><strong>All</strong></a></li>
                                             </ul>
                                         </div>
                                     </div>
 
                                     <div  id="mobileMenContent" class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <button id="mobileMensCbtn" class="whhg-tshirt"><b></b></button>
-                                            <button id="mobileMensSbtn" class="whhg-shoebox"><b></b></button>
-                                            <button id="mobileMensAbtn" class="whhg-purse"><b></b></button>
+                                            <button id="mobileMensCbtn" class="contentButton"><b><i class="whhg-tshirt contentIcon"></i></b></button>
+                                            <button id="mobileMensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
+                                            <button id="mobileMensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
 
                                             <ul id="mobileMensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Outerwear</a></li>
@@ -271,26 +270,19 @@
 
                         {% if user.is_authenticated %}
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>
-                                <ul id="genderContent" class="dropdown-menu navdropstyle ">
-                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>
-                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>
-                                </ul>
+                                <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+{#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
+{#                                <ul class="dropdown-menu navdropstyle ">#}
+{#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
+{#                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>#}
+{#                                </ul>#}
                             </li>
-
-
-
-
-
-
-
-
                         {% else %}
                             <li class="dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
                                 <ul class="dropdown-menu loginPopupForm">
                                     <li>
-                                        <div class="yamm-content">
+                                        <div class="yamm-content" style="padding-top: 2px">
                                             {%  include "login_form.html" with form_name="md-Login" %}
                                         </div>
                                     </li>
@@ -529,10 +521,10 @@
 
        function checkMode() {
 
-                if ($(window).width() < 768) {
+                if ($(window).width() < 753) {
                     return 'xs';
                 }
-                else if ($(window).width() >= 768 && $(window).width() < 992) {
+                else if ($(window).width() >= 753 && $(window).width() < 992) {
                     return 'sm';
                 }
                 else if ($(window).width() >= 992 && $(window).width() < 1200) {
@@ -702,6 +694,9 @@
 {#        this is for the highlight the selected infopages#}
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
+            {% if messages %}
+                $('#messagesModal').modal()
+            {% endif %}
         });
 
 
@@ -728,7 +723,7 @@
                     },
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
-                        clear_form_field_errors(".loginPopupForm")
+                        clear_form_field_errors(".loginPopupForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {

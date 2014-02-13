@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 
 from user.views import ActivationView, TemplateView, ajax_login, register
-from user.forms import LoginForm, TinvilleShopperCreationForm, TinvilleDesignerCreationForm
+from user.forms import LoginForm
 
 admin.autodiscover()
 

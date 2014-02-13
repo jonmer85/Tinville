@@ -2,7 +2,9 @@
 {% load i18n %}
 
 {% block content %}
-  <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen" />
+  {% if shop.banner %}
+    <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen" />
+  {% endif %}
   <div class="container">
 	<div class="shopItems row">
 	  {% for item in shop.item_set.all %}
