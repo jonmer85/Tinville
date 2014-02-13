@@ -91,7 +91,7 @@ class LoginForm(AuthenticationForm):
         self.helper.layout = Layout(
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
             Div(
-                Div(HTML("""{{ form.non_field_errors }}"""), css_id='message_area', css_class='messageError'),
+                Div(HTML("""{{ form.non_field_errors }}"""), css_class='messageError message_area'),
                 Div(HTML("""<a id="loginFacebookButton" class="btn btn-facebook col-xs-12">
                             <i class="icon-facebook"></i> | Sign in with Facebook
                         </a""")),
