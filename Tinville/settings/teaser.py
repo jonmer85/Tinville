@@ -23,7 +23,7 @@ ADMINS = (
 DEFAULT_FILE_STORAGE = 'Tinville.Site.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'Tinville.Site.s3utils.StaticS3BotoStorage'
 
-AWS_STORAGE_BUCKET_NAME = 'Tinville'
+AWS_STORAGE_BUCKET_NAME = 'tinville'
 S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
