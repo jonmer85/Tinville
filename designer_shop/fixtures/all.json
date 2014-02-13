@@ -5,6 +5,7 @@
         "fields": {
             "name": "Demo",
 			"slug": "Demo",
+            "user": 1,
             "banner": "images/banner.png",
             "logo": "images/logo.png"
         }
