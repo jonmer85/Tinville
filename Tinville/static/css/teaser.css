@@ -19,7 +19,7 @@ textarea {
 }
 
 body {
-    font-size: 1em;
+    font-size: 1.3em;
     line-height: 1.4;
     font-family: 'Cabin Condensed', sans-serif;
 }
@@ -90,7 +90,7 @@ body {
 
 #tinvilleDescription {
     margin-top: 3%;
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 
 
@@ -141,6 +141,10 @@ body {
     height: 2em;
     font-size: small;
   }
+}
+
+.socialNetworksRow {
+    margin-bottom: 10px;
 }
 
 
