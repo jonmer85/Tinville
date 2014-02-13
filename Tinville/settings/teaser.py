@@ -15,3 +15,7 @@ DATABASES = {
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+
+ADMINS = (
+    ('Jon Meran', 'jon.meran@tinville.com'),
+)
