@@ -194,7 +194,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', '.herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
 
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
