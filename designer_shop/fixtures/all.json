@@ -48,5 +48,45 @@
             "image": "images/shoe4.jpg",
             "price": 4.56
         }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 5,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 5",
+            "image": "images/shoe1.jpg",
+            "price": 1.45
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 6,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 6",
+            "image": "images/shoe2.jpg",
+            "price": 2.34
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 7,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 7",
+            "image": "images/shoe3.jpg",
+            "price": 3.4
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 8,
+        "fields": {
+            "shop": 1,
+            "name": "shoe 8",
+            "image": "images/shoe4.jpg",
+            "price": 4.56
+        }
     }
 ]
