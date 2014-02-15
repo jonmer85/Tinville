@@ -8,14 +8,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Tinville</title>
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinville1.png">
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-{#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/teaser.css" />
 
     {% block css %}{% endblock %}
@@ -29,7 +29,25 @@
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-
+    {% if messages %}
+    <div id="messagesModal" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">A message for you...</h4>
+          </div>
+          <div class="modal-body">
+              {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-block alert-{{ message.tags }} alert-dismissable"{% endif %}>
+                    {{ message }}
+                </div>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
     <div id="mainContent" class="">
         {% if messages %}
             <div id="messagesModal" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -56,18 +74,6 @@
 {#The footer HTML is below.. Links still needed to completed#}
     <div id="footerContainer" class="row row-full-screen">
         <div class="row footerRow hidden-xs">
-            <a href="http://www.facebook.com/Tinville1" target="_blank" class="col-xs-1 col-xs-offset-4">
-                <img src="{{ STATIC_URL }}img/social/facebook-variation.png" />
-            </a>
-            <a href="http://www.twitter.com/Tinville1" target="_blank" class="col-xs-1">
-                <img src="{{ STATIC_URL }}img/social/twitter-variation.png" />
-            </a>
-            <a href="http://www.pinterest.com/Tinville1" target="_blank" class="col-xs-1">
-                <img src="{{ STATIC_URL }}img/social/pinterest.png" />
-            </a>
-            <a href="http://www.instagram.com/Tinville" target="_blank" class="col-xs-1">
-                <img src="{{ STATIC_URL }}img/social/instagram-variation.png" />
-            </a>
             <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-9 col-lg-offset-9">
                 <dl class="list-unstyled">
 
@@ -81,21 +87,6 @@
             </nav>
         </div>
         <div class="panel-group footerRow hidden-sm hidden-md hidden-lg footerRow footer-nav">
-            <div class="row">
-                <a href="http://www.facebook.com/Tinville1" target="_blank" class="col-xs-1 col-xs-offset-2">
-                    <img src="{{ STATIC_URL }}img/social/facebook-variation.png" />
-                </a>
-                <a href="http://www.twitter.com/Tinville1" target="_blank" class="col-xs-1 col-xs-offset-1">
-                    <img src="{{ STATIC_URL }}img/social/twitter-variation.png" />
-                </a>
-                <a href="http://www.pinterest.com/Tinville1" target="_blank" class="col-xs-1 col-xs-offset-1">
-                    <img src="{{ STATIC_URL }}img/social/pinterest.png" />
-                </a>
-                <a href="http://www.instagram.com/Tinville" target="_blank" class="col-xs-1 col-xs-offset-1">
-                    <img src="{{ STATIC_URL }}img/social/instagram-variation.png" />
-                </a>
-            </div>
-
             <div CLASS="clearfix">
                 <dl class="list-unstyled listPadding">
                     <li id="tinvilleFooterListItemPrimary">Contact Us</li>
@@ -103,7 +94,7 @@
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
                     <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2013</li>
+                    <li id="tinvilleFooterListItemChild">2011-2014</li>
                 </dl>
             </div>
         </div>
@@ -116,7 +107,6 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-        <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
     {% endblock javascript_library %}
@@ -131,236 +121,13 @@
       ga('create', 'UA-47214215-1', 'tinville-teaser.herokuapp.com');
       ga('send', 'pageview');
 
-    </script>
-    <script>
-        // using jQuery
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        var csrftoken = getCookie('csrftoken');
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        function sameOrigin(url) {
-            // test that a given url is a same-origin URL
-            // url could be relative or scheme relative or absolute
-            var host = document.location.host; // host + port
-            var protocol = document.location.protocol;
-            var sr_origin = '//' + host;
-            var origin = protocol + sr_origin;
-            // Allow absolute or scheme relative URLs to same origin
-            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-                // or any other URL that isn't scheme relative or absolute i.e relative.
-                !(/^(\/\/|http:|https:).*/.test(url));
-        }
-
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                    // Send the token to same-origin, relative URLs only.
-                    // Send the token only if the method warrants CSRF protection
-                    // Using the CSRFToken value acquired earlier
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
+        $(window).load(function() {
+            {% if messages %}
+                $('#messagesModal').modal()
+            {% endif %}
         });
-
-
-
-        function apply_form_field_error(fieldname, error) {
-            var input = $("#id_" + fieldname),
-                container = $("#div_id_" + fieldname),
-                error_msg = $("<span />").addClass("help-inline ajax-error").text(error[0]);
-
-            container.addClass("error");
-            error_msg.insertAfter(input);
-        }
-
-        function clear_form_field_errors(form) {
-            $(".ajax-error", $(form)).remove();
-            $(".error", $(form)).removeClass("error");
-        }
-
-        function django_message(msg, level, messageElement) {
-            var levels = {
-                warning: 'alert',
-                error: 'danger',
-                success: 'success',
-                info: 'info'
-            },
-            source = $('#message_template').html(),
-            template = Handlebars.compile(source),
-            context = {
-                'tags': levels[level],
-                'message': msg
-            },
-            html = template(context);
-
-            messageElement.append(html);
-        }
-
-        function clear_django_messages(messageElement) {
-            messageElement.empty();
-        }
-
-        function django_block_message(msg, level, messageElement) {
-            var source = $("#message_block_template").html(),
-                template = Handlebars.compile(source),
-                context = {level: level, body: msg},
-                html = template(context);
-
-            messageElement.append(html);
-        }
-
-       function checkMode() {
-
-                if ($(window).width() < 768) {
-                    return 'xs';
-                }
-                else if ($(window).width() >= 768 && $(window).width() < 992) {
-                    return 'sm';
-                }
-                else if ($(window).width() >= 992 && $(window).width() < 1200) {
-                    return 'md';
-                }
-                else {
-                    return 'lg';
-                }
-         }
-
-        $(window).resize(function(){
-             var mode = checkMode();
-
-            if(mode == 'xs' || 'sm'){
-                $("#nonMobileContent").css("display","none");
-                $("#mobileContent").css("display","");
-            }
-            if(mode =='md'){
-                $("#nonMobileContent").css("display","");
-                $("#mobileContent").css("display","none");
-            }
-            if(mode =='lg'){
-                $("#nonMobileContent").css("display","");
-                $("#mobileContent").css("display","none");
-            }
-            $("#mobileCbtn").on( 'click', function() {
-                $("#mobileCcontent").css("display","");
-                $("#mobileScontent").css("display","none");
-                $("#mobileAcontent").css("display","none");
-             });
-             $("#mobileSbtn").on( 'click', function() {
-                $("#mobileCcontent").css("display","none");
-                $("#mobileScontent").css("display","");
-                $("#mobileAcontent").css("display","none");
-             });
-             $("#mobileAbtn").on( 'click', function() {
-                $("#mobileCcontent").css("display","none");
-                $("#mobileScontent").css("display","none");
-                $("#mobileAcontent").css("display","");
-             });
-        });
-
-         $(window).load(function(){
-             var mode = checkMode();
-
-            if(mode == 'xs' || 'sm'){
-                $("#nonMobileContent").css("display","none");
-                $("#mobileContent").css("display","");
-            }
-            if(mode =='md'){
-                $("#nonMobileContent").css("display","");
-                $("#mobileContent").css("display","none");
-            }
-            if(mode =='lg'){
-                $("#nonMobileContent").css("display","");
-                $("#mobileContent").css("display","none");
-            }
-
-             $("#mobileCbtn").on( 'click', function() {
-                $("#mobileCcontent").css("display","");
-                $("#mobileScontent").css("display","none");
-                $("#mobileAcontent").css("display","none");
-             });
-             $("#mobileSbtn").on( 'click', function() {
-                $("#mobileCcontent").css("display","none");
-                $("#mobileScontent").css("display","");
-                $("#mobileAcontent").css("display","none");
-             });
-             $("#mobileAbtn").on( 'click', function() {
-                $("#mobileCcontent").css("display","none");
-                $("#mobileScontent").css("display","none");
-                $("#mobileAcontent").css("display","");
-             });
-
-             $("#messagesModal").modal()
-        });
-
-        $(document).on("submit", ".loginForm", function(e) {
-            e.preventDefault();
-            var self = $(this),
-                url = self.attr("action"),
-
-                ajax_req = $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {
-                        username: self.find("#id_username").val(),
-                        password: self.find("#id_password").val(),
-                        remember_me : self.find("#id_remember_me").val()
-
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        location.reload()
-                    },
-                    error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#message_area"));
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function(index, value) {
-                            if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#message_area"));
-                            } else {
-                                apply_form_field_error(index, value);
-                            }
-                        });
-                    }
-                });
-        });
-
-
 
     </script>
-    <script id="message_template" type="text/x-handlebars-template">
-            {% verbatim %}
-            <div class="alert alert-{{tags}} fade in" data-alert="{{tags}}">
-                <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
-                {{{message}}}
-            </div>
-            {% endverbatim%}
-        </script>
-
-        <script id="message_block_template" type="text/x-handlebars-template">
-            {% verbatim %}
-            <div class="alert alert-block alert-{{level}} fade in">
-                <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
-                {{{body}}}
-            </div>
-            {% endverbatim %}
-        </script>
 
     {% block javascript %}
     {% endblock javascript %}

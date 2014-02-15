@@ -23,18 +23,43 @@
         </div>
     </div>
     <div class="container">
-        <div class="thumbnail center well well-small text-center col-md-8 col-md-offset-2">
-            <h4>We are still laying out the foundation of Tinville but we can keep you in the loop by entering
-                your email address below.</h4>
+        <div class="row">
+            <div class="thumbnail center well well-small text-center col-md-8 col-md-offset-2">
+                <h4>We're still laying out the foundation of Tinville but we'll keep you in the loop by entering
+                    your email address below</h4>
 
-            <form action="/" method="post"> {% csrf_token %}
-                <div class="input-group input-group-lg">
-                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                  <input type="text" id="id_email" name="email" class="form-control" placeholder="your@email.com">
-                </div>
-                <br />
-                <input type="submit" value="Join" class="btn tinvilleButton btn-large" />
-            </form>
+                <form action="/" method="post"> {% csrf_token %}
+                    <div class="input-group input-group-lg">
+                      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                      <input type="text" id="id_email" name="email" class="form-control" placeholder="your@email.com">
+                    </div>
+                    <br />
+                    <input type="submit" value="Join" class="btn tinvilleButton btn-large" />
+                </form>
+            </div>
+        </div>
+
+        <div class="row socialNetworksRow">
+            <div class="col-xs-1 col-xs-offset-2 container">
+                <a href="http://www.facebook.com/Tinville1" target="_blank" >
+                    <img src="{{ STATIC_URL }}img/social/facebook-variation.png" />
+                </a>
+            </div>
+            <div class="col-xs-1 col-xs-offset-1 container">
+                <a href="http://www.twitter.com/Tinville1" target="_blank" class="col-xs-1 col-xs-offset-1">
+                    <img src="{{ STATIC_URL }}img/social/twitter-variation.png" />
+                </a>
+            </div>
+            <div class="col-xs-1 col-xs-offset-1 container">
+                <a href="http://www.pinterest.com/Tinville1" target="_blank" class="col-xs-1 col-xs-offset-1">
+                    <img src="{{ STATIC_URL }}img/social/pinterest.png" />
+                </a>
+            </div>
+            <div class="col-xs-1 col-xs-offset-1 container">
+                <a href="http://www.instagram.com/Tinville" target="_blank" class="col-xs-1 col-xs-offset-1">
+                    <img src="{{ STATIC_URL }}img/social/instagram-variation.png" />
+                </a>
+            </div>
         </div>
 
     </div>
