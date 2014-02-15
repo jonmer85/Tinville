@@ -20,12 +20,12 @@ class CreateMailingListItemView(CreateView):
             ip = self.request.META.get("REMOTE_ADDR", "")
         form.instance.ip_address = ip
 
-        messages.success(self.request, "Thank for for signing up to our mailing list!")
+        messages.success(self.request, "Thank you for signing up for our mailing list!")
         return super(CreateMailingListItemView, self).form_valid(form)
 
     def form_invalid(self, form):
         if form.errors["email"][0] == "Mailing list item with this Email address already exists.":
-            messages.error(self.request, "This email address is already in our list")
+            messages.success(self.request, "This email address is already in our list")
         else:
             messages.error(self.request, form.errors["email"][0])
         return super(CreateMailingListItemView, self).form_invalid(form)
