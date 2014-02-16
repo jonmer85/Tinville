@@ -145,6 +145,11 @@ body {
 
 .socialNetworksRow {
     margin-bottom: 10px;
+    margin-left: 0;
+}
+
+.socialMediaImage {
+    padding-left: 0;
 }
 
 
