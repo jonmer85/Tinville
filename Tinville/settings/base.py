@@ -97,7 +97,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
@@ -142,9 +141,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Actual Tinville business logic
 # django-jenkins needs it defined in this variable
 PROJECT_APPS = [
-   'user',
-   'designer_shop',
-   'common'
+    'user',
+    'designer_shop',
+    'common'
 ]
 
 INSTALLED_APPS = [
