@@ -4,6 +4,9 @@ import os.path
 
 from unipath import Path
 
+from oscar import get_core_apps
+from oscar.defaults import *
+
 # HEROKU Change!!!
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -18,6 +21,7 @@ MANAGERS = ADMINS
 AUTH_USER_MODEL = 'user.TinvilleUser'
 
 PROJECT_DIR = Path(__file__).ancestor(2)
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -137,13 +141,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Actual Tinville business logic
 # django-jenkins needs it defined in this variable
-PROJECT_APPS = (
+PROJECT_APPS = [
    'user',
    'designer_shop',
    'common'
-)
+]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -163,7 +167,7 @@ INSTALLED_APPS = (
     'fixture_media',
     'django_extensions',
     'compressor'
-) + get_core_apps() + PROJECT_APPS
+] + PROJECT_APPS + get_core_apps()
 
 
 # These are used by jenkins to know which tasks to run
@@ -203,6 +207,13 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+# For django-oscar search
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
 }
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
