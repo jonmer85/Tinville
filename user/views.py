@@ -2,13 +2,12 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
 from user.forms import LoginForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-
 
 from user.forms import TinvilleUserCreationForm
 from user.models import TinvilleUser
@@ -31,35 +30,35 @@ def register(request):
             success_url = reverse('home')
             return HttpResponseRedirect(success_url)
     else:
-      form = TinvilleUserCreationForm()
+        form = TinvilleUserCreationForm()
     c = {
-      'form':form,
+        'form': form,
     }
     return render(request, 'register.html', c)
 
 
-class ActivationView(TemplateView):
-    template_name = "notification.html"
+def activation(request, **kwargs):
+    if request.method == 'GET':
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
         user = get_object_or_404(TinvilleUser, activation_key=kwargs['activation_key'])
-        if user.is_active or (self.request.user.is_authenticated() and self.request.user.email == user.email):
-            messages.warning(self.request,
+        if user.is_active or (request.user.is_authenticated() and request.user.email == user.email):
+            messages.warning(request,
                              "Your account already exists and is activated. There is no need to activate again.")
-            return self.render_to_response(context)
+        else:
+          #  return super(ActivationView, self).get_redirect_url(*args, **kwargs)
         # introduce again to enforce expiring activation Jon M TODO
         # if user.key_expires < datetime.datetime.utcnow().replace(tzinfo=utc):
         #     messages.error(self.request,
         #                      """Your have exceeded the time period for activation.
         #                      Please contact Tinville customer support so that your account may be activated.""")
         #     return context
-        user.is_active = True
-        user.save()
-        messages.success(self.request,
+            user.is_active = True
+            user.save()
+            messages.success(request,
                              """Thank you for completing the registration process! You may now sign in to Tinville
                              with your new user account using the link at the upper right hand corner.""")
-        return self.render_to_response(context)
+    success_url = reverse('home')
+    return HttpResponseRedirect(success_url)
 
 
 def ajax_login(request, *args, **kwargs):

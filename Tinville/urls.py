@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
-
-from user.views import ActivationView, TemplateView, ajax_login, register
+from django.views.generic.base import RedirectView, TemplateView
+from user.views import ActivationView, ajax_login, register
 from user.forms import LoginForm
 
 admin.autodiscover()
@@ -17,8 +17,7 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^register$', 'user.views.register'),
-    url(r'^activate/(?P<activation_key>\w+)$', ActivationView.as_view(), name='activate-user'),
-    url(r'^notifications$', TemplateView.as_view(template_name='notification.html'), name='notifications'),
+    url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
         name='ajax_logins'),
