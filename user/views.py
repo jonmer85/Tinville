@@ -2,7 +2,6 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-from django.views.generic.base import RedirectView
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
 from user.forms import LoginForm
