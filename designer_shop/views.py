@@ -9,3 +9,6 @@ def shopper(request, slug):
         'shop': get_object_or_404(Shop, slug__exact=slug),
         'productCreationForm': ProductCreationForm,
     })
+
+def shopeditor(request):
+    return render(request, 'designer_shop/shopeditor.html')

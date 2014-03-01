@@ -28,7 +28,9 @@ class ViewTest(TestCase):
         self.user = TinvilleUser.objects.create(email="foo@bar.com")
         self.shop = Shop.objects.create(user=self.user, name='foo', banner='bar', logo='baz')
         self.shop.item_set.create(name='foo', image='image_bar', price='1.23')
-        self.content = html.fromstring(shopper(HttpRequest(), 'foo').content)
+        self.httprequest = HttpRequest()
+        self.httprequest.user = self.user
+        self.content = html.fromstring(shopper(self.httprequest, 'foo').content)
 
     def test_banner(self):
         self.assertFirstSelectorContains('img.shopBanner', 'src', 'bar')
@@ -54,7 +56,7 @@ class ViewTest(TestCase):
     def test_slug_lookup(self):
         self.shop.name = 'foo bar'
         self.shop.save()
-        shopper(HttpRequest(), 'foo-bar')
+        shopper(self.httprequest, 'foo-bar')
 
 
     def assertSelectorExists(self, selector):
