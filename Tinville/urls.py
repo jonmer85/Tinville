@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
-from user.views import ActivationView, ajax_login, register
+from user.views import ajax_login, register
 from user.forms import LoginForm
 
 admin.autodiscover()
