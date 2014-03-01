@@ -24,6 +24,7 @@ urlpatterns += patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^shopeditor/test/$', 'designer_shop.views.shopeditor'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )
