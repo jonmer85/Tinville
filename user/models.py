@@ -67,9 +67,6 @@ class TinvilleUser(AbstractBaseUser):
 
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
-    other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)
-    shop_name = models.CharField(verbose_name="Shop name", unique=True, blank=True, null=True, db_index=True,
-                                 default=None, max_length=100)
     is_approved = models.BooleanField(default=False)
 
     objects = TinvilleUserManager()
@@ -85,9 +82,6 @@ class TinvilleUser(AbstractBaseUser):
         self.save()
 
     def save(self, *args, **kwargs):
-
-        if not self.shop_name:
-            self.shop_name = None
 
         super(TinvilleUser, self).save(*args, **kwargs)
 

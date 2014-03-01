@@ -25,16 +25,12 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Field('password', placeholder="Password"),
         Field('password2', placeholder="Confirm password"),
         Field('is_seller', template="apply_for_shop.html", required=False),
-        Div(
-            Field('shop_name', placeholder="Shop name"),
-            id="shop_fields",
-        ),
         Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
     )
 
     class Meta:
         model = TinvilleUser
-        fields = ['email', 'password', 'is_seller', 'shop_name']
+        fields = ['email', 'password', 'is_seller']
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -53,7 +49,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
 
         if user.is_seller:
-            user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+            user.shop = Shop.objects.create(user=user)
 
         return user
 

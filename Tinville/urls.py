@@ -5,6 +5,10 @@ from django.contrib import admin
 from user.views import ActivationView, TemplateView, ajax_login, register
 from user.forms import LoginForm
 
+# from oscar.app import application
+
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('django.contrib.flatpages.views',
@@ -25,10 +29,10 @@ urlpatterns += patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    # url(r'', include(application.urls)),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )
-
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
