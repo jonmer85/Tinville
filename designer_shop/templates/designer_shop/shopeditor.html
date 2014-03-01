@@ -12,7 +12,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     Shop Editor
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="glyphicon glyphicon-chevron-down pull-right "></a>
+                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             </div>
             <div id="collapseOne" class="row panel-collapse collapse in">
@@ -53,10 +53,16 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block javascript %}
+
 <script>
-$('collapseOne').click(function() {
-    $("h4").toggleClass('glyphicon-chevron-down');
-    $("h4").toggleClass('glyphicon-chevron-up');
+$("#minMaxIcon").click(function() {
+   $(this).toggleClass("glyphicon glyphicon-chevron-up pull-right");
+   $(this).toggleClass("glyphicon glyphicon-chevron-down pull-right");
 });
+
 </script>
+
 {% endblock %}
