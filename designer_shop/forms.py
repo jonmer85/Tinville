@@ -12,7 +12,6 @@ class ProductCreationForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_show_labels = False
     helper.form_class = 'form-horizontal'
-    # helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
 
     helper.layout = Layout(
         Field('title', placeholder="Title"),
