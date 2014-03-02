@@ -2,9 +2,34 @@
 {% load i18n %}
 
 {% block content %}
+    <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>
+{#    need to add something if a designer does not have a banner#}
+{#    this will be decribed at a later time#}
   {% if shop.banner %}
     <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen" />
   {% endif %}
+
+{#  This section is the info banner for a shop  #}
+  <div class="container infoBanner full-screen"></div>
+  <div class="container full-screen ">
+     <select class="filterTabs  col-sm-2 col-sm-offset-3"  id="filterTab1"  data-style="btn-success">
+        <option>Mustard</option>
+        <option>Ketchup</option>
+        <option>Relish</option>
+      </select>
+
+      <select class="filterTabs  col-sm-2"  data-style="btn-primary">
+        <option>Mustard</option>
+        <option>Ketchup</option>
+        <option>Relish</option>
+      </select>
+      <select class="filterTabs  col-sm-2"  data-style="btn-primary">
+        <option>Mustard</option>
+        <option>Ketchup</option>
+        <option>Relish</option>
+      </select>
+  </div>
+
   <div class="container">
 	<div class="shopItems row">
 	  {% for item in shop.item_set.all %}
@@ -21,3 +46,11 @@
 	</div>
   </div>
 {% endblock %}
+
+{% block javascript %}
+    <script>
+        $("#tinvilleTagBanner").remove();
+    </script>
+
+{% endblock %}
+
