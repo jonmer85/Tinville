@@ -44,7 +44,8 @@
                             Insert About form here.
                         </div>
                         <div class="tab-pane" id="addItems">
-                            Insert Add Items form here.
+                                {%  load crispy_forms_tags %}
+                                {% crispy productCreationForm %}
                         </div>
                     </div>
                 </div>
