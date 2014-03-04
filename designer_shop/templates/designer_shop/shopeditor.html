@@ -7,19 +7,19 @@
 {% block content %}
 {{ block.super }}
 <div id="shopEditor">
-    <div class="row shopEditorRow col-sm-12 panel-group navbar-fixed-bottom editorWindow" id="accordion">
-        <div class="panel panel-default">
+    <div class="editorWindow row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
+        <div class="cornerRadius panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    Shop Editor
+                    <b>Shop Editor</b>
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             </div>
             <div id="collapseOne" class="row panel-collapse collapse in">
-                <div class="col-sm-3 panel-body">
-                    <ul class="nav nav-pills nav-stacked editorColumn">
+                <div class="container col-sm-3 panel-body">
+                    <ul class="nav nav-pills nav-stacked">
                         <li class="active">
-                            <a href="#banner" data-toggle="pill">Banner</a>
+                            <a class="editorLinkButton" href="#banner" data-toggle="pill">Banner</a>
                         </li>
                         <li>
                             <a href="#logo" data-toggle="pill">Logo</a>
@@ -58,6 +58,7 @@
 {% block javascript %}
 
 <script>
+
 $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon glyphicon-chevron-up pull-right");
    $(this).toggleClass("glyphicon glyphicon-chevron-down pull-right");
