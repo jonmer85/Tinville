@@ -117,7 +117,7 @@
 /* Shop Editor CSS */
 
 .editorWindow {
-    max-height: 35%;
+    /*max-height: 35%;*/
     padding-right: 0px;
     padding-left: 0px;
     margin-right: -15px;
@@ -128,6 +128,11 @@
     border-bottom-left-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
 }
+
+.editorPanel {
+    overflow: auto !important;
+}
+
 
 /*.li.active {*/
     /*background-color: #f46430 !important;*/
