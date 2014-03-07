@@ -19,7 +19,7 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
 def when_i_register_for_a_shop(step, shop_name):
     form = fill_in_user_form(email="joe@schmoe.com", password="test")
     world.user_info['shop_name'] = shop_name
-    form.find_element_by_name("is_seller").click()
+    form.find_element_by_id("designer").click()
     form.find_element_by_name("shop_name").send_keys(shop_name)
     submit_form_and_activate_user(form)
 
