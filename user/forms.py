@@ -24,7 +24,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Field('email', placeholder="Email"),
         Field('password', placeholder="Password"),
         Field('password2', placeholder="Confirm password"),
-        Field('is_seller', template="apply_for_shop.html", required=False),
         Div(
             Field('shop_name', placeholder="Shop name"),
             id="shop_fields",
@@ -34,7 +33,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = TinvilleUser
-        fields = ['email', 'password', 'is_seller', 'shop_name']
+        fields = ['email', 'password', 'shop_name']
 
     def clean_password2(self):
         # Check that the two password entries match
