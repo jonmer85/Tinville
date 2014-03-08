@@ -120,8 +120,8 @@ class TinvilleUser(AbstractBaseUser):
         confirmation_url = reverse('activate-user', kwargs={'activation_key': self.activation_key})
 
         email_subject = 'Your new Tinville account confirmation'
-        email_body = "Hello %s! Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
-                     " this link within 7 days:\n\n%s" % (self.email, base_url+confirmation_url)
+        email_body = "Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
+                     " this link within 7 days:\n\n%s" % (base_url+confirmation_url)
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 
