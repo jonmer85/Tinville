@@ -12,7 +12,8 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <b>Shop Editor</b>
-                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="glyphicon glyphicon-chevron-down pull-right"></a>
+                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-small pull-right hidden-xs"></a>
+                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             <div id="collapseOne" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
@@ -91,17 +92,35 @@
 
 <script>
 
-$("#minMaxIcon").click(function() {
-   $(this).toggleClass("glyphicon glyphicon-chevron-up pull-right");
-   $(this).toggleClass("glyphicon glyphicon-chevron-down pull-right");
+$("#resizeIcon").click(function() {
+   $(this).toggleClass("glyphicon-resize-full");
+   $(this).toggleClass("glyphicon-resize-small");
+   resizeEditor();
 });
 
-$( window ).resize(function() {
+$("#minMaxIcon").click(function() {
+   $(this).toggleClass("glyphicon-chevron-up");
+   $(this).toggleClass("glyphicon-chevron-down");
+
+   $("#resizeIcon").toggleClass("hidden");
+});
+
+$(window).resize(function() {
+   resizeEditor();
+}).resize();
+
+function resizeEditor () {
+    var editorHeight;
+    editorHeight = 0.35;
     var maxHeight;
-    maxHeight = $(window).height()*0.35;
+    if ($("#resizeIcon").hasClass("glyphicon-resize-full")==true)
+    {
+        editorHeight = 0.75;
+    }
+    maxHeight = $(window).height()*editorHeight;
     $("#optionPanel").height(maxHeight-60);
     $("#formPanel").height(maxHeight-60);
-}).resize();
+}
 
 </script>
 

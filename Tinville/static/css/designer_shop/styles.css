@@ -133,6 +133,11 @@
     overflow: auto !important;
 }
 
+.editorControlButton {
+    margin-left: .15em !important;
+    margin-right: .15em !important;
+}
+
 
 /*.li.active {*/
     /*background-color: #f46430 !important;*/
