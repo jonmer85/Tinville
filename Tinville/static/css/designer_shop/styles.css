@@ -1,14 +1,44 @@
+.shopColor {
+    /*background-color: #802152;*/
+    color: #802152;
+}
+.shopBackgroundColor {
+    background-color: #802152;
+    /*color: #802152;*/
+}
+.shopBorderColor {
+    /*background-color: #802152;*/
+    border-color: #802152;
+}
+
+#tinyTinvillelogo {
+    position: absolute;
+    top: -10px;
+    left: 5%;
+    z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
+
+}
+
+
+@media(max-width: 767px){
+    #tinyTinvillelogo {
+    position: absolute;
+    top: -10px;
+    left: 5%;
+    z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
+
+    }
+}
 
 
 .infoBanner {
     height: 15px;
-    background-color: #802152;
+
 }
 
 /*Change the color after the shop color is picked*/
 .infoBannerText {
     color: white;
-    background-color: #802152;
     /*border-right: 2px ridge white;*/
     margin-top: 5px;
 
@@ -24,10 +54,10 @@
 
 .filterTabs {
     height: 25px;
-    /*margin-left: 5%;*/
+    /*margin-left: 2px;*/
     margin-top: 2%;
     margin-bottom: 2%;
-    /*margin-right: 5%;*/
+    margin-right: 2%;
 }
 #shopLogoDiv {
     float: left;

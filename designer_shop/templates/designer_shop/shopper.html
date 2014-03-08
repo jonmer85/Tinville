@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock css %}
 
 {% block content %}
     <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>
@@ -10,41 +13,70 @@
   {% endif %}
 
 {#  This section is the info banner for a shop  #}
-  <div class="container infoBanner full-screen"></div>
-  <div class="container full-screen ">
-     <select class="filterTabs  col-sm-2 col-sm-offset-3"  id="filterTab1"  data-style="btn-success">
-        <option>Mustard</option>
-        <option>Ketchup</option>
-        <option>Relish</option>
-      </select>
-
-      <select class="filterTabs  col-sm-2"  data-style="btn-primary">
-        <option>Mustard</option>
-        <option>Ketchup</option>
-        <option>Relish</option>
-      </select>
-      <select class="filterTabs  col-sm-2"  data-style="btn-primary">
-        <option>Mustard</option>
-        <option>Ketchup</option>
-        <option>Relish</option>
-      </select>
-  </div>
+  <div class="container infoBanner full-screen shopBackgroundColor"></div>
 
   <div class="container">
+     <select class="filterTabs col-xs-4 col-xs-offset-1 col-sm-4 col-sm-offset-2 col-md-2"  id="filterTab1"  name="Filter1">
+        <option>View All</option>
+        <option>Women</option>
+        <option>Men</option>
+        <option>Kids</option>
+      </select>
+
+      <select class="filterTabs col-xs-4 col-sm-4 col-md-2" >
+        <option>View All Types</option>
+        <option>Dresses</option>
+        <option>Pants</option>
+        <option>Shoes</option>
+      </select>
+      <select class="filterTabs col-xs-4 col-sm-4 col-md-2">
+        <option>All Prices</option>
+        <option>$0-$50</option>
+        <option>$50-$100</option>
+      </select>
+  </div>
+
+<div class="container">
 	<div class="shopItems row">
+    <div class="carousel-inner">
 	  {% for item in shop.item_set.all %}
-		<div class="col-sm-2 col-md-2">
-		  <div class="thumbnail shopItem">
-			<img src="{{item.image.url}}" class="img-responsive" />
-			<div class="caption">
-			  <span class="name">{{item.name}}</span>
-			  <span class="price">${{item.price}}</span>
-			</div>
-		  </div>
-		</div>
-	  {% endfor %}
+
+
+            <div class="item">
+
+                <img src="{{item.image.url}}" class="img-responsive" />
+
+
+            </div>
+            <div class="item active left">
+               <img src="{{item.image.url}}" class="img-responsive" />
+            </div>
+            <div class="item next left">
+               <img src="{{item.image.url}}" class="img-responsive" />
+            </div>
+
+        {% endfor %}
+    </div>
 	</div>
   </div>
+
+
+
+{#  <div class="container">#}
+{#	<div class="shopItems row">#}
+{#	  {% for item in shop.item_set.all %}#}
+{#		<div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">#}
+{#		  <div class="thumbnail shopItem shopBorderColor">#}
+{#			<img src="{{item.image.url}}" class="img-responsive" />#}
+{#			<div class="caption">#}
+{#			  <span class="name shopColor">{{item.name}}</span>#}
+{#			  <span class="price shopColor">${{item.price}}</span>#}
+{#			</div>#}
+{#		  </div>#}
+{#		</div>#}
+{#	  {% endfor %}#}
+{#	</div>#}
+{#  </div>#}
 {% endblock %}
 
 {% block javascript %}
