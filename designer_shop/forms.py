@@ -14,9 +14,14 @@ class ProductCreationForm(forms.ModelForm):
     # helper.form_class = 'form-horizontal'
 
     helper.layout = Layout(
-        Field('title', placeholder="Title"),
-        Field('description', placeholder="Description"),
-        Submit('productCreationForm', 'Create', css_class='tinvilleButton')
+        Div(
+            Field('title', placeholder="Title"),
+            Field('description', placeholder="Description"),
+            Field('product_class', placeholder="Product Class"),
+            Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
+            css_class="container"
+        )
+
     )
 
     class Meta:
