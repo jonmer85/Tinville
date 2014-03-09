@@ -7,19 +7,18 @@
 {% block content %}
 {{ block.super }}
 <div id="shopEditor">
-    <div class="row shopEditorRow col-sm-12 panel-group navbar-fixed-bottom editorWindow" id="accordion">
-        <div class="panel panel-default">
+    <div id ="shopEditorWindow" class="editorWindow row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
+        <div class="cornerRadius panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    Shop Editor
+                    <b>Shop Editor</b>
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
-            </div>
             <div id="collapseOne" class="row panel-collapse collapse in">
-                <div class="col-sm-3 panel-body">
-                    <ul class="nav nav-pills nav-stacked editorColumn">
+                <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
+                    <ul class="nav nav-pills nav-stacked">
                         <li class="active">
-                            <a href="#banner" data-toggle="pill">Banner</a>
+                            <a class="editorLinkButton" href="#banner" data-toggle="pill">Banner</a>
                         </li>
                         <li>
                             <a href="#logo" data-toggle="pill">Logo</a>
@@ -30,12 +29,45 @@
                         <li>
                             <a href="#addItems" data-toggle="pill">Add Items</a>
                         </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                        </li>
                     </ul>
                 </div>
-                <div class="col-sm-9 panel-body">
-                    <div class="tab-content">
+                <div id="formPanel" class="editorPanel container col-sm-9 panel-body">
+                    <div class="tab-content editorPanel">
                         <div class="tab-pane active" id="banner">
-                            Insert Banner form here.
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
+                            <p> Insert Banner form here.</p>
                         </div>
                         <div class="tab-pane" id="logo">
                             Insert Logo form here.
@@ -44,7 +76,8 @@
                             Insert About form here.
                         </div>
                         <div class="tab-pane" id="addItems">
-                            Insert Add Items form here.
+                                {%  load crispy_forms_tags %}
+                                {% crispy productCreationForm %}
                         </div>
                     </div>
                 </div>
@@ -58,10 +91,18 @@
 {% block javascript %}
 
 <script>
+
 $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon glyphicon-chevron-up pull-right");
    $(this).toggleClass("glyphicon glyphicon-chevron-down pull-right");
 });
+
+$( window ).resize(function() {
+    var maxHeight;
+    maxHeight = $(window).height()*0.35;
+    $("#optionPanel").height(maxHeight-60);
+    $("#formPanel").height(maxHeight-60);
+}).resize();
 
 </script>
 

@@ -52,7 +52,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
 
         if user.is_seller:
-            user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+            user.shop = Shop.objects.create(user=user)
 
         return user
 
