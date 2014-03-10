@@ -14,6 +14,7 @@ from designer_shop.models import Shop
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    shop_name = forms.CharField(label='Shop name', required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -24,13 +25,16 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Field('email', placeholder="Email"),
         Field('password', placeholder="Password"),
         Field('password2', placeholder="Confirm password"),
-        Field('is_seller', template="apply_for_shop.html", required=False),
+        Div(
+            Field('shop_name', placeholder="Shop name"),
+            id="shop_fields",
+        ),
         Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
     )
 
     class Meta:
         model = TinvilleUser
-        fields = ['email', 'password', 'is_seller']
+        fields = ['email', 'password']
 
     def clean_password2(self):
         # Check that the two password entries match
