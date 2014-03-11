@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from common.lettuce_utils import *
+import cssselect
 from lettuce import step
 from nose.tools import assert_equals
 from user.models import TinvilleUser
@@ -9,6 +10,10 @@ from selenium.common.exceptions import *
 @step(u'I access the registration page')
 def access_registration_url(step):
     world.browser.get(lettuce.django.get_server().url('/register'))
+
+@step(u'I access the home page')
+def access_registration_url(step):
+    world.browser.get(lettuce.django.get_server().url('/'))
 
 @step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
@@ -43,12 +48,24 @@ def submit_form_and_activate_user(form):
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
-    login_menu = world.browser.find_element_by_id("lg-menuLogin")
-    login_menu.find_element_by_link_text("SIGN IN").click()
-    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
-    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
-    login_menu.find_element_by_name("submit").click()
-    wait_for_ajax_to_complete()
+    sign_in()
+
+
+@step(u'When I fill in the login screen with email "([^"]*)" and password "([^"]*)"')
+def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
+    world.user_info = {
+        "email": email,
+        "password": password,
+    }
+    sign_in()
+
+
+
+@step(u'Then I should see an error telling me that the email is required')
+def then_i_should_see_an_error_telling_me_that_email_is_required(step):
+    assert_selector_does_exist("#lg-menuLogin #div_id_username.has-error")
+
+
 
 @step(u'Then I should be redirected to the home page')
 def then_i_should_be_redirected_to_the_home_page(step):
@@ -85,3 +102,16 @@ def then_i_should_not_see_validation_errors(step):
 def then_i_should_get_a_validation_error_on_email_address(step):
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register'))
     assert_class_exists('has-error')
+
+
+# Utilities
+
+def sign_in():
+    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu.find_element_by_link_text("SIGN IN").click()
+    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
+    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
+    login_menu.find_element_by_name("submit").click()
+    wait_for_ajax_to_complete()
+
+
