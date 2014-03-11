@@ -151,6 +151,15 @@ body {
     width: 100%;
 }
 
+.socialMediaColumn {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.socialMediaImage {
+    padding-left: 0;
+}
+
 
 /* Main Footer */
 
