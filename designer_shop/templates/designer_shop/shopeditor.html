@@ -12,12 +12,13 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <b>Shop Editor</b>
-                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-small pull-right hidden-xs"></a>
+                    <a id="resizeIcon" href="#" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
+
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             <div id="collapseOne" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
-                    <ul class="nav nav-pills nav-stacked">
+                    <ul id="optionContent" class="nav nav-pills nav-stacked">
                         <li class="active">
                             <a class="editorLinkButton" href="#banner" data-toggle="pill">Banner</a>
                         </li>
@@ -50,35 +51,56 @@
                         </li>
                     </ul>
                 </div>
-                <div id="formPanel" class="editorPanel container col-sm-9 panel-body">
-                    <div class="tab-content editorPanel">
-                        <div class="tab-pane active" id="banner">
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
-                            <p> Insert Banner form here.</p>
+                <div class="container col-sm-9">
+                    <div id="formPanel" class="editorPanel container col-sm-12 panel-body">
+                        <div id="formContent" class="tab-content panel-content">
+                            <div class="tab-pane active" id="banner">
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                                <p> Insert Banner form here.</p>
+                            </div>
+                            <div class="tab-pane" id="logo">
+                                Insert Logo form here.
+                            </div>
+                            <div class="tab-pane" id="about">
+                                Insert About form here.
+                            </div>
+                            <div class="tab-pane" id="addItems">
+                                Insert Add Items form here.
+                            </div>
                         </div>
-                        <div class="tab-pane" id="logo">
-                            Insert Logo form here.
-                        </div>
-                        <div class="tab-pane" id="about">
-                            Insert About form here.
-                        </div>
-                        <div class="tab-pane" id="addItems">
-                            Insert Add Items form here.
-                        </div>
+                    </div>
+                    <div id="buttonContainer" class="container col-sm-12 pull-right">
+                            <button class="btn btn-primary tinvilleButton pull-right">Submit</button>
                     </div>
                 </div>
             </div>
@@ -101,7 +123,6 @@ $("#resizeIcon").click(function() {
 $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-up");
    $(this).toggleClass("glyphicon-chevron-down");
-
    $("#resizeIcon").toggleClass("hidden");
 });
 
@@ -111,16 +132,40 @@ $(window).resize(function() {
 
 function resizeEditor () {
     var editorHeight;
-    editorHeight = 0.35;
     var maxHeight;
-    if ($("#resizeIcon").hasClass("glyphicon-resize-full")==true)
+    var buttonHeight;
+    editorHeight = 0.35;
+
+    if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
     {
         editorHeight = 0.75;
     }
+
+    if (checkMode() == 'xs')
+    {
+        editorHeight = 0.35;
+    }
+
+
+    buttonHeight = $("#buttonContainer").height();
     maxHeight = $(window).height()*editorHeight;
-    $("#optionPanel").height(maxHeight-60);
-    $("#formPanel").height(maxHeight-60);
+    $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
+    $("#formPanel").animate({height:maxHeight-60},300);
+    $("#optionContent").height(maxHeight-60+buttonHeight-15);
+    $("#formContent").height(maxHeight-60-15);
 }
+
+$(function(){
+    $("#optionContent").slimScroll({
+        height: 'auto'
+    });
+}).resize();
+
+$(function(){
+    $("#formContent").slimScroll({
+       height: 'auto'
+    });
+}).resize();
 
 </script>
 
