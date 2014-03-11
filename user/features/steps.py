@@ -12,7 +12,7 @@ def access_registration_url(step):
     world.browser.get(lettuce.django.get_server().url('/register'))
 
 @step(u'I access the home page')
-def access_registration_url(step):
+def access_home_url(step):
     world.browser.get(lettuce.django.get_server().url('/'))
 
 @step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
