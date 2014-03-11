@@ -116,13 +116,24 @@
 }
 /* Shop Editor CSS */
 
-.editorWindow {
-    /*max-height: 35%;*/
+#shopEditorWindow {
     padding-right: 0px;
     padding-left: 0px;
-    margin-right: -15px;
     margin-left: 0px;
+
 }
+
+@media (max-width: 768px) {
+    #shopEditorWindow {
+        margin-right: 0px;
+    }
+}
+
+#formPanel {
+    padding-right: 0;
+    padding-left: 0;
+}
+
 
 .cornerRadius {
     border-bottom-left-radius: 0px !important;
@@ -130,16 +141,9 @@
 }
 
 .editorPanel {
-    overflow: auto !important;
+    overflow: hidden;
 }
 
-.editorControlButton {
-    margin-left: .15em !important;
-    margin-right: .15em !important;
+#resizeIcon {
+    margin-left: .3em;
 }
-
-
-/*.li.active {*/
-    /*background-color: #f46430 !important;*/
-    /*color: #e7e5e6 !important;*/
-/*}*/
