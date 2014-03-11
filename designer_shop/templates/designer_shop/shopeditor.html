@@ -95,19 +95,11 @@
                                 Insert About form here.
                             </div>
                             <div class="tab-pane" id="addItems">
-                                Insert Add Items form here.
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="logo">
-                            Insert Logo form here.
-                        </div>
-                        <div class="tab-pane" id="about">
-                            Insert About form here.
-                        </div>
-                        <div class="tab-pane" id="addItems">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
+                            </div>
                         </div>
+
                     </div>
                     <div id="buttonContainer" class="container col-sm-12 pull-right">
                             <button class="btn btn-primary tinvilleButton pull-right">Submit</button>
@@ -153,7 +145,7 @@ function resizeEditor () {
 
     if (checkMode() == 'xs')
     {
-        editorHeight = 0.35;
+        editorHeight = 0.45;
     }
 
 
