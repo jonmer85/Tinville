@@ -475,12 +475,14 @@
 
 
 
-        function apply_form_field_error(fieldname, error) {
-            var input = $("#id_" + fieldname),
-                container = $("#div_id_" + fieldname),
-                error_msg = $("<span />").addClass("help-inline ajax-error").text(error[0]);
+        function apply_form_field_error(form_id, fieldname, error) {
+            var form = $("#" + form_id)
+                input = form.find("#id_" + fieldname),
+                container = form.find("#div_id_" + fieldname),
+                error_msg = $("<span />").addClass("help-block ajax-error");
 
-            container.addClass("error");
+            $(error_msg).append("<strong>" + error[0] + "</strong>")
+            container.addClass("has-error");
             error_msg.insertAfter(input);
         }
 
@@ -723,14 +725,14 @@
 						}
                     },
                     error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#message_area"));
+                        clear_django_messages(self.find(".message_area"));
                         clear_form_field_errors(".loginPopupForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#message_area"));
+                                django_message(value[0], "error", self.find(".message_area"));
                             } else {
-                                apply_form_field_error(index, value);
+                                apply_form_field_error(self[0].id, index, value);
                             }
                         });
                     }

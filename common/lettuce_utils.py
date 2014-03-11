@@ -34,6 +34,21 @@ def assert_class_does_not_exist(klass):
     except NoSuchElementException:
         pass
 
+def assert_selector_does_exist(selector):
+    try:
+        world.browser.find_element_by_css_selector(selector)
+        pass
+    except NoSuchElementException:
+        assert False, 'Expect ' + selector + ' to exist'
+
+def assert_selector_does_not_exist(selector):
+    try:
+        world.browser.find_element_by_css_selector(selector)
+        assert False, 'Did not expect ' + selector + ' to exist'
+    except NoSuchElementException:
+        pass
+
+
 
 def assert_number_of_selectors(selector, n):
     assert_equals(len(dom().cssselect(selector)), n)
