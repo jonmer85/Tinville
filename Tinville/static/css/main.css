@@ -224,7 +224,7 @@ body {
 
 }
 
-#message_area {
+.message_area {
     font-size: .7em;
 }
 

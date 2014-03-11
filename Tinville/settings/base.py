@@ -166,7 +166,7 @@ INSTALLED_APPS = [
     'fixture_media',
     'django_extensions',
     'compressor'
-] + PROJECT_APPS + get_core_apps()
+] + get_core_apps() + PROJECT_APPS
 
 
 # These are used by jenkins to know which tasks to run

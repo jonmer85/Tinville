@@ -5,6 +5,10 @@ from django.views.generic.base import RedirectView, TemplateView
 from user.views import ajax_login, register
 from user.forms import LoginForm
 
+# from oscar.app import application
+
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('django.contrib.flatpages.views',
@@ -28,7 +32,6 @@ urlpatterns += patterns('',
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )
-
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns

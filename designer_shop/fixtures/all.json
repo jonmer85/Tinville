@@ -1,12 +1,27 @@
 [
     {
+        "model": "user.TinvilleUser",
+        "pk": 1,
+        "fields": {
+            "email": "demo@user.com",
+			"slug": "demo_user_com",
+            "is_admin": false,
+            "is_active": true,
+            "is_seller": true,
+            "is_approved": true,
+            "key_expires": "2020-02-02"
+        }
+    },
+
+    {
         "model": "designer_shop.Shop",
         "pk": 1,
         "fields": {
             "name": "Demo",
 			"slug": "Demo",
             "banner": "images/banner.png",
-            "logo": "images/logo.png"
+            "logo": "images/logo.png",
+            "user": 1
         }
     },
     {

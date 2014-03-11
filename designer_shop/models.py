@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 
 
 class Shop(models.Model):
-    user = models.OneToOneField('user.TinvilleUser')
+    user = models.ForeignKey('user.TinvilleUser')
     name = models.CharField(verbose_name="Shop name", unique=True, blank=False, null=False, db_index=True,
                             default=None, max_length=100)
     slug = models.SlugField()

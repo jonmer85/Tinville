@@ -14,6 +14,7 @@ from designer_shop.models import Shop
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    shop_name = forms.CharField(label='Shop name', required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -24,7 +25,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Field('email', placeholder="Email"),
         Field('password', placeholder="Password"),
         Field('password2', placeholder="Confirm password"),
-        Field('is_seller', template="apply_for_shop.html", required=False),
         Div(
             Field('shop_name', placeholder="Shop name"),
             id="shop_fields",
@@ -34,7 +34,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = TinvilleUser
-        fields = ['email', 'password', 'is_seller', 'shop_name']
+        fields = ['email', 'password']
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -53,7 +53,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
 
         if user.is_seller:
-            user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+            user.shop = Shop.objects.create(user=user)
 
         return user
 
@@ -86,13 +86,13 @@ class LoginForm(AuthenticationForm):
         self.helper.form_show_errors = False
         self.helper.form_show_labels = False
         self.helper.form_class = 'loginPopupForm'
-        # self.helper.field_class = 'col-xs-12'
+        # self.helper.field_class = 'test'
 
         self.helper.layout = Layout(
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
             Div(
-                Div(HTML("""{{ form.non_field_errors }}"""), css_id='message_area', css_class='messageError'),
-                Div(HTML("""<a id="loginFacebookButton" class="btn btn-facebook col-xs-12 alignField">
+                Div(HTML("""{{ form.non_field_errors }}"""), css_class='messageError message_area'),
+                Div(HTML("""<a id="loginFacebookButton" class="btn btn-facebook col-xs-12">
                             <i class="icon-facebook"></i> | Sign in with Facebook
                         </a""")),
                 HTML("""<img class="col-xs-12" src="{{ STATIC_URL }}img/or_login.gif" style=" margin-top: 5%; margin-bottom: 5%; "/>"""),
