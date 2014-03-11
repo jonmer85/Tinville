@@ -97,7 +97,7 @@ body {
 @media(max-width: 767px){
     #tinvilleTagBanner {
         position: absolute;
-        top: 1%;
+        top: 0.5%;
         left: 5%;
         z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
         height: 75px;
@@ -145,6 +145,10 @@ body {
 
 .socialNetworksRow {
     margin-bottom: 10px;
+}
+
+.banner img {
+    width: 100%;
 }
 
 

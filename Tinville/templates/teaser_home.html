@@ -4,7 +4,14 @@
 
 {% block content %}
     {{ block.super }}
-    <img id="carousel" class="img-responsive full-screen" src="{{ STATIC_URL }}img/home-girl-hat.jpg"/>
+    <span data-picture class="banner">
+        <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+        <span data-src="{{ STATIC_URL }}img/banner-lg.jpg" data-media="(min-width: 768px)"></span>
+        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+        <noscript>
+            <img src="{{ STATIC_URL }}img/banner-xs.jpg">
+        </noscript>
+    </span>
 
     <div class="container">
         <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville_logo.png" /></a>
