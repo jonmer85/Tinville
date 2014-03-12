@@ -12,10 +12,9 @@
 		<div class="well">
 			{%  load crispy_forms_tags %}
 			<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
-				<h5>Please Select Customer or Designer</h5>
 				<div class="btn-group">
-					<button id="shopper" type="button" class="btn btn-default active"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"></button>
-					<button id="designer" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/designer_big_logo.png"></button>
+					<button id="shopper" type="button" class="btn btn-default active"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"><h5><b>Customer</b></h5></button>
+					<button id="designer" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/designer_big_logo.png"><h5><b>Designer</b></h5></button>
 				</div>
 				{% crispy form %}
 			</form>
