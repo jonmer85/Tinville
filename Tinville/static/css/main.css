@@ -368,7 +368,7 @@ body {
 	width: 150px;
 }
 
-#shopper:hover, #designer:hover {
+.userType :hover {
 	background-color: white;
 	border-color: rgb(204, 204, 204);
 }
