@@ -8,7 +8,6 @@ Feature: Designer Registration
 	When I register for a shop named "foo"
 	Then I can visit my shop at "/foo/"
 
-  @pending
   Scenario: Shop name unavailable without applying for shop
     When I access the registration page
 	Then I can't fill in the shop name

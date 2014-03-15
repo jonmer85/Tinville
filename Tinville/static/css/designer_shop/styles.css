@@ -114,3 +114,36 @@
     padding-top: 4px;
     min-height: 500px;
 }
+/* Shop Editor CSS */
+
+#shopEditorWindow {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+
+}
+
+@media (max-width: 768px) {
+    #shopEditorWindow {
+        margin-right: 0px;
+    }
+}
+
+#formPanel {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+
+.cornerRadius {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.editorPanel {
+    overflow: hidden;
+}
+
+#resizeIcon {
+    margin-left: .3em;
+}

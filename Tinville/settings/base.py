@@ -4,6 +4,9 @@ import os.path
 
 from unipath import Path
 
+from oscar import get_core_apps
+from oscar.defaults import *
+
 # HEROKU Change!!!
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -18,6 +21,7 @@ MANAGERS = ADMINS
 AUTH_USER_MODEL = 'user.TinvilleUser'
 
 PROJECT_DIR = Path(__file__).ancestor(2)
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -95,8 +99,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
+    'oscar.apps.basket.middleware.BasketMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -106,11 +112,13 @@ ROOT_URLCONF = 'Tinville.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'Tinville.wsgi.application'
 
+from oscar import OSCAR_MAIN_TEMPLATE_DIR
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
+    OSCAR_MAIN_TEMPLATE_DIR,
 
 )
 
@@ -122,18 +130,23 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'django_mobile.context_processors.flavour',
-    'user.context_processors.include_login_form'
+    'user.context_processors.include_login_form',
+    'oscar.apps.search.context_processors.search_form',
+    'oscar.apps.promotions.context_processors.promotions',
+    'oscar.apps.checkout.context_processors.checkout',
+    'oscar.apps.customer.notifications.context_processors.notifications',
+    'oscar.core.context_processors.metadata',
     )
 
 # Actual Tinville business logic
 # django-jenkins needs it defined in this variable
-PROJECT_APPS = (
-   'user',
-   'designer_shop',
-   'common'
-)
+PROJECT_APPS = [
+    'user',
+    'designer_shop',
+    'common'
+]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -152,7 +165,8 @@ INSTALLED_APPS = (
     'lettuce.django',
     'fixture_media',
     'django_extensions',
-) + PROJECT_APPS
+    'compressor'
+] + get_core_apps() + PROJECT_APPS
 
 
 # These are used by jenkins to know which tasks to run
@@ -192,6 +206,13 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+# For django-oscar search
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
 }
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']

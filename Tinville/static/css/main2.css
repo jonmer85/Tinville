@@ -19,9 +19,24 @@ textarea {
 }
 
 body {
-    font-size: 1em;
-    line-height: 1.9;
-    font-family: "MS Sans Serif", Geneva, sans-serif
+    font-size: 1.3em;
+    line-height: 1.4;
+    font-family: 'Cabin Condensed', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Cabin Condensed", sans-serif;
 }
 
 html {
@@ -354,7 +369,6 @@ body {
     font-size: .85em;
     padding-top: 2px;
 }
-
 
 /*#banner {*/
     /*margin-left:auto;*/

@@ -14,6 +14,7 @@ from designer_shop.models import Shop
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    shop_name = forms.CharField(label='Shop name', required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -24,7 +25,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Field('email', placeholder="Email"),
         Field('password', placeholder="Password"),
         Field('password2', placeholder="Confirm password"),
-        Field('is_seller', template="apply_for_shop.html", required=False),
         Div(
             Field('shop_name', placeholder="Shop name"),
             id="shop_fields",
@@ -34,7 +34,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = TinvilleUser
-        fields = ['email', 'password', 'is_seller', 'shop_name']
+        fields = ['email', 'password']
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -53,7 +53,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
 
         if user.is_seller:
-            user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+            user.shop = Shop.objects.create(user=user)
 
         return user
 

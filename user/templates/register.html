@@ -7,11 +7,16 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
-	<img class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
-	<div class="container">
-		<div class="panel-body">
+	<div class="container text-center">
+		<h3>Register With Us</h3>
+		<div class="well">
 			{%  load crispy_forms_tags %}
 			<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
+				<h5>Please Select Customer or Designer</h5>
+				<div class="btn-group">
+					<button id="shopper" type="button" class="btn btn-default active"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"></button>
+					<button id="designer" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/designer_big_logo.png"></button>
+				</div>
 				{% crispy form %}
 			</form>
 		</div>
@@ -20,9 +25,18 @@
 {% block javascript %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$("#shop_fields").slideToggle(0);
-			$("#id_is_seller").on("click", function () {
-				$("#shop_fields").slideToggle();
+			$("#shop_fields").slideUp(0);
+
+			$("#shopper").on("click", function () {
+				$("#shopper").addClass("active");
+				$("#designer").removeClass("active");
+				$("#shop_fields").slideUp();
+			});
+
+			$("#designer").on("click", function () {
+				$("#designer").addClass("active");
+				$("#shopper").removeClass("active");
+				$("#shop_fields").slideDown();
 			});
 		});
 	</script>
