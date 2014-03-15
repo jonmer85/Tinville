@@ -11,13 +11,13 @@
 		<h3>Register With Us</h3>
 			<div class="row">
 				<div class="well col-sm-8 col-sm-offset-2">
-					<div class="btn-group">
-						<button id="shopper" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"><h4>Customer</h4></button>
-						<button id="designer" type="button" class="btn btn-inverse"><img src="{{ STATIC_URL }}img/designer_big_logo.png"><h4>Designer</h4></button>
-					</div>
-					<hr>
-					{%  load crispy_forms_tags %}
 					<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
+						<div class="btn-group">
+							<button id="shopper" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"><h4>Customer</h4></button>
+							<button id="designer" type="button" class="btn btn-inverse"><img src="{{ STATIC_URL }}img/designer_big_logo.png"><h4>Designer</h4></button>
+						</div>
+						<hr>
+						{% load crispy_forms_tags %}
 						{% crispy form %}
 					</form>
 				</div>

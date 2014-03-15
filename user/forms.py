@@ -13,7 +13,6 @@ from designer_shop.models import Shop
 
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
     shop_name = forms.CharField(label='Shop name', required=False)
 
     helper = FormHelper()
@@ -22,7 +21,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
     helper.layout = Layout(
         Field('email', placeholder="Email"),
         Field('password', placeholder="Password"),
-        Field('password2', placeholder="Confirm password"),
         Div(
             Field('shop_name', placeholder="Shop name"),
             id="shop_fields",
@@ -33,14 +31,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
     class Meta:
         model = TinvilleUser
         fields = ['email', 'password']
-
-    def clean_password2(self):
-        # Check that the two password entries match
-        password = self.cleaned_data.get("password")
-        password2 = self.cleaned_data.get("password2")
-        if password and password2 and password != password2:
-            raise forms.ValidationError("Passwords do not match")
-        return password2
 
     def save(self, commit=True):
         # Save the provided password in hashed format
