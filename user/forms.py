@@ -18,8 +18,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     helper = FormHelper()
     helper.form_show_labels = False
-    helper.form_class = 'form-horizontal'
-    helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
     
     helper.layout = Layout(
         Field('email', placeholder="Email"),
@@ -29,7 +27,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             Field('shop_name', placeholder="Shop name"),
             id="shop_fields",
         ),
-        Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
+        Submit('userForm', 'Register')
     )
 
     class Meta:
