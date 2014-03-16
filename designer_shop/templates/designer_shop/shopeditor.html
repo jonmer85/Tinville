@@ -9,18 +9,18 @@
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div class="cornerRadius panel panel-default">
-            <div class="panel-heading">
+            <div id="shopEditorTitle" class="panel-heading">
                 <h4 class="panel-title">
                     <b>Shop Editor</b>
                     <a id="resizeIcon" href="#" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
-
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             <div id="collapseOne" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked">
                         <li class="active">
-                            <a class="editorLinkButton" href="#banner" data-toggle="pill">Banner</a>
+                            <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
                         <li>
                             <a href="#logo" data-toggle="pill">Logo</a>
@@ -55,38 +55,38 @@
                     <div id="formPanel" class="editorPanel panel-body">
                         <div id="formContent" class="tab-content panel-content">
                             <div class="tab-pane active" id="banner">
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
+                                <p> 1 Insert Banner form here.</p>
+                                <p> 2 Insert Banner form here.</p>
+                                <p> 3 Insert Banner form here.</p>
+                                <p> 4 Insert Banner form here.</p>
+                                <p> 5 Insert Banner form here.</p>
+                                <p> 6 Insert Banner form here.</p>
+                                <p> 7 Insert Banner form here.</p>
+                                <p> 8 Insert Banner form here.</p>
+                                <p> 9 Insert Banner form here.</p>
+                                <p> 10 Insert Banner form here.</p>
+                                <p> 11 Insert Banner form here.</p>
+                                <p> 12 Insert Banner form here.</p>
+                                <p> 13 Insert Banner form here.</p>
+                                <p> 14 Insert Banner form here.</p>
+                                <p> 15 Insert Banner form here.</p>
+                                <p> 16 Insert Banner form here.</p>
+                                <p> 17 Insert Banner form here.</p>
+                                <p> 18 Insert Banner form here.</p>
+                                <p> 19 Insert Banner form here.</p>
+                                <p> 20 Insert Banner form here.</p>
+                                <p> 21 Insert Banner form here.</p>
+                                <p> 22 Insert Banner form here.</p>
+                                <p> 23 Insert Banner form here.</p>
+                                <p> 24 Insert Banner form here.</p>
+                                <p> 25 Insert Banner form here.</p>
+                                <p> 26 Insert Banner form here.</p>
+                                <p> 27 Insert Banner form here.</p>
+                                <p> 28 Insert Banner form here.</p>
+                                <p> 29 Insert Banner form here.</p>
+                                <p> 30 Insert Banner form here.</p>
+                                <p> 31 Insert Banner form here.</p>
+                                <p> 32 Insert Banner form here.</p>
                             </div>
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
@@ -132,29 +132,67 @@ $(window).resize(function() {
    resizeEditor();
 }).resize();
 
-function resizeEditor () {
+$("#optionsXS").click(function() {
+    var editorHeight;
+    var maxFormPanelHeight;
+    var maxOptionHeight;
+    var optionPanelHeight;
+    maxOptionHeight = $(window).height()*.4 ;
+    editorHeight = 0.85
+    maxFormPanelHeight = $(window).height()*editorHeight;
+    if ($("#optionContent").height()==0)
+    {
+           $("#optionPanel").animate({height: maxOptionHeight}, 300);
+           $("#optionContent").animate({height: maxOptionHeight}, 300);
+           $("#formContent").animate({height: maxFormPanelHeight-maxOptionHeight-60-15}, 300);
+           $("#formPanel").animate({height: maxFormPanelHeight-maxOptionHeight-60}, 300);
+    }
+    else
+    {
+        resizeEditor();
+    }
+});
+
+$("#optionContent").click(function (){
+    $("#optionsXS").text($(".active:first").text()+" (click here for editor options)");
+})
+
+
+function resizeEditor() {
+    var maxFormHeight;
+    var editorPanelHeight;
+    var buttonHeight;
+    var optionPanelHeight;
     var editorHeight;
     var maxHeight;
-    var buttonHeight;
-    editorHeight = 0.35;
 
-    if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
-    {
-        editorHeight = 0.75;
-    }
+    buttonHeight = $("#buttonContainer").height();
 
     if (checkMode() == 'xs')
     {
-        editorHeight = 0.45;
+        optionPanelHeight = $("#optionsXS").height()+20;
+        editorHeight = 0.85
+
+        maxFormHeight = $(window).height()*editorHeight-optionPanelHeight;
+        $("#optionPanel").animate({height:optionPanelHeight} ,300);
+        $("#formPanel").animate({height:maxFormHeight},300);
+        $("#optionContent").height(0);
+        $("#formContent").height(maxFormHeight-15);
     }
+    else
+    {
+        editorPanelHeight = 0.35;
+        if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
+        {
+        editorPanelHeight = 0.75;
+        }
 
-
-    buttonHeight = $("#buttonContainer").height();
-    maxHeight = $(window).height()*editorHeight;
-    $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
-    $("#formPanel").animate({height:maxHeight-60},300);
-    $("#optionContent").height(maxHeight-60+buttonHeight-15);
-    $("#formContent").height(maxHeight-60-15);
+        maxHeight = $(window).height()*editorPanelHeight;
+        $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
+        $("#formPanel").animate({height:maxHeight-60},300);
+        $("#optionContent").height(maxHeight-60+buttonHeight-15);
+        $("#formContent").height(maxHeight-60-15);
+    }
 }
 
 $(function(){
