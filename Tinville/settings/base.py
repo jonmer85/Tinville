@@ -165,7 +165,8 @@ INSTALLED_APPS = [
     'lettuce.django',
     'fixture_media',
     'django_extensions',
-    'compressor'
+    'compressor',
+    'tinymce'
 ] + get_core_apps() + PROJECT_APPS
 
 
@@ -229,3 +230,18 @@ EMAIL_USE_TLS = True
 LOGIN_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "advanced",
+    'menubar': True,
+    'statusbar': False,
+    'width': "100%",
+    'height': "300px",
+    'plugins': "spellchecker,paste,searchreplace,advimage",  
+    'theme_advanced_buttons1': "bold,italic,underline,separator,bullist,separator,outdent,indent,separator,undo,redo,image",
+    'cleaup_on_startup': True,
+    'theme_advanced_path': False
+    
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_PASTE = True

@@ -5,6 +5,9 @@ from oscar.core.loading import get_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div
 
+from designer_shop.models import RichTextField
+
+
 
 
 class ProductCreationForm(forms.ModelForm):
@@ -27,6 +30,24 @@ class ProductCreationForm(forms.ModelForm):
     class Meta:
         model = get_model('catalogue', 'Product')
         fields = ['title', 'description']
+
+class AboutBoxForm( forms.ModelForm ):
+    
+    helper = FormHelper()
+    helper.form_show_labels = False
+    
+    helper.layout = Layout(
+        Div(
+            Field('aboutContent', placeholder="Enter Text Here"),
+            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
+            css_class="container"
+        )
+
+    )    
+    
+    class Meta:
+            model = RichTextField
+            fields = ['aboutContent']
 
     # def clean_password2(self):
     #     # Check that the two password entries match
