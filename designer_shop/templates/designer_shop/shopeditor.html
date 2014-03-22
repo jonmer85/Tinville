@@ -9,13 +9,13 @@
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div class="cornerRadius panel panel-default">
-            <div id="shopEditorTitle" class="panel-heading">
-                <h4 class="panel-title">
+            <div id="shopEditorHeading" class="panel-heading">
+                <h4 id="shopEditorTitle" class="panel-title">
                     <b>Shop Editor</b>
                     <a id="resizeIcon" href="#" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
-                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
+                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
-            <div id="collapseOne" class="row panel-collapse collapse in">
+            <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked">
@@ -128,24 +128,36 @@ $("#minMaxIcon").click(function() {
    $("#resizeIcon").toggleClass("hidden");
 });
 
+var loaded
+loaded = false
 $(window).resize(function() {
-   resizeEditor();
-}).resize();
+   if (loaded == true) {
+    resizeEditor();
+   }
+});
+
+$(window).load(function() {
+    loaded = true;
+    resizeEditor();
+});
 
 $("#optionsXS").click(function() {
-    var editorHeight;
-    var maxFormPanelHeight;
-    var maxOptionHeight;
-    var optionPanelHeight;
-    maxOptionHeight = $(window).height()*.4 ;
-    editorHeight = 0.85
-    maxFormPanelHeight = $(window).height()*editorHeight;
-    if ($("#optionContent").height()==0)
+
+    var currentFormPanelHeight;
+    currentFormPanelHeight = $("#formPanel").height();
+
+    if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-           $("#optionPanel").animate({height: maxOptionHeight}, 300);
-           $("#optionContent").animate({height: maxOptionHeight}, 300);
-           $("#formContent").animate({height: maxFormPanelHeight-maxOptionHeight-60-15}, 300);
-           $("#formPanel").animate({height: maxFormPanelHeight-maxOptionHeight-60}, 300);
+        $("#optionPanel").animate({height: $("#optionContent").outerHeight()},
+        {
+            duration: 300, step: function(now)
+            {
+
+{#                find out why window moves down a little bit#}
+                $("#formPanel").height(currentFormPanelHeight-now+$("#shopEditorTitle").outerHeight()+parseInt($("#shopEditorHeading").css('padding-top'))+parseInt($("#shopEditorHeading").css('padding-bottom')));
+                $("#formContent").height($("#formPanel").outerHeight())
+            }
+        });
     }
     else
     {
@@ -153,10 +165,10 @@ $("#optionsXS").click(function() {
     }
 });
 
-$("#optionContent").click(function (){
-    $("#optionsXS").text($(".active:first").text()+" (click here for editor options)");
+$("#optionContent li").click(function (){
+    $("#optionsXS").text($(this).text()+" (click here for editor options)");
+    resizeEditor();
 })
-
 
 function resizeEditor() {
     var maxFormHeight;
@@ -170,28 +182,29 @@ function resizeEditor() {
 
     if (checkMode() == 'xs')
     {
-        optionPanelHeight = $("#optionsXS").height()+20;
-        editorHeight = 0.85
-
-        maxFormHeight = $(window).height()*editorHeight-optionPanelHeight;
-        $("#optionPanel").animate({height:optionPanelHeight} ,300);
-        $("#formPanel").animate({height:maxFormHeight},300);
-        $("#optionContent").height(0);
-        $("#formContent").height(maxFormHeight-15);
+        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
+        $("#formPanel").css({'padding-top' : '10px', 'padding-bottom' : '0px'});
+        optionPanelHeight = $("#optionsXS").outerHeight();
+        editorHeight = 0.85;
+        maxFormHeight = $(window).height()*editorHeight;
+        $("#optionPanel").animate({height:optionPanelHeight},300);
+        $("#formPanel").animate({height:maxFormHeight-optionPanelHeight},300);
+        $("#formContent").animate({height: maxFormHeight-optionPanelHeight}, 300);
     }
     else
     {
+        $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
+        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
         editorPanelHeight = 0.35;
         if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
         {
         editorPanelHeight = 0.75;
         }
-
         maxHeight = $(window).height()*editorPanelHeight;
         $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
         $("#formPanel").animate({height:maxHeight-60},300);
-        $("#optionContent").height(maxHeight-60+buttonHeight-15);
-        $("#formContent").height(maxHeight-60-15);
+        $("#optionContent").animate({height: maxHeight-60+buttonHeight-15});
+        $("#formContent").animate({height: maxHeight-60-15});
     }
 }
 
