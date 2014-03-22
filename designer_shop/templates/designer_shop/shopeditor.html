@@ -8,7 +8,7 @@
 {{ block.super }}
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
-        <div class="cornerRadius panel panel-default">
+        <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
                 <h4 id="shopEditorTitle" class="panel-title">
                     <b>Shop Editor</b>
@@ -145,17 +145,20 @@ $("#optionsXS").click(function() {
 
     var currentFormPanelHeight;
     currentFormPanelHeight = $("#formPanel").height();
-
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
         $("#optionPanel").animate({height: $("#optionContent").outerHeight()},
         {
             duration: 300, step: function(now)
             {
+                $("#formPanel").height(currentFormPanelHeight-now+$("#shopEditorTitle").outerHeight()+
+                        parseInt($("#cornerRadius").css('border-top-width'))+
+                        parseInt($("#shopEditorHeading").css('padding-top'))+
+                        parseInt($("#shopEditorHeading").css('padding-bottom')));
 
-{#                find out why window moves down a little bit#}
-                $("#formPanel").height(currentFormPanelHeight-now+$("#shopEditorTitle").outerHeight()+parseInt($("#shopEditorHeading").css('padding-top'))+parseInt($("#shopEditorHeading").css('padding-bottom')));
-                $("#formContent").height($("#formPanel").outerHeight())
+                $("#formContent").height($("#formPanel").outerHeight()-
+                        parseInt($("#formPanel").css('border-top-width'))-
+                        parseInt($("#formPanel").css('padding-top')));
             }
         });
     }
@@ -183,13 +186,25 @@ function resizeEditor() {
     if (checkMode() == 'xs')
     {
         $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        $("#formPanel").css({'padding-top' : '10px', 'padding-bottom' : '0px'});
+        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '0px'});
+
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.85;
-        maxFormHeight = $(window).height()*editorHeight;
+        maxFormHeight = Math.round($(window).height()*editorHeight);
         $("#optionPanel").animate({height:optionPanelHeight},300);
-        $("#formPanel").animate({height:maxFormHeight-optionPanelHeight},300);
-        $("#formContent").animate({height: maxFormHeight-optionPanelHeight}, 300);
+        $("#optionContent").animate({height: $("#optionContent").parent().height() });
+        $("#formPanel").animate({
+            height:maxFormHeight-optionPanelHeight+
+            parseInt($("#shopEditorHeading").css('padding-top'))+
+            parseInt($("#shopEditorHeading").css('padding-bottom'))},
+        {
+            duration: 300, step: function(now)
+            {
+                $("#formContent").height(now-
+                parseInt($("#formPanel").css('border-top-width'))-
+                parseInt($("#formPanel").css('padding-top')));
+            }
+        });
     }
     else
     {
