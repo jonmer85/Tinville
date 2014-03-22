@@ -9,16 +9,19 @@
 {% block content %}
 	<div class="container text-center">
 		<h3>Register With Us</h3>
-		<div class="well">
-			{%  load crispy_forms_tags %}
-			<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
-				<h5>Please Select Customer or Designer</h5>
-				<div class="btn-group">
-					<button id="shopper" type="button" class="btn btn-default active"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"></button>
-					<button id="designer" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/designer_big_logo.png"></button>
+			<div class="row">
+				<div class="well col-sm-8 col-sm-offset-2">
+					<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
+						<div class="btn-group userType">
+							<button id="shopper" type="button" class="btn btn-default"><img src="{{ STATIC_URL }}img/shopper_big_logo.png"><h4>Customer</h4></button>
+							<button id="designer" type="button" class="btn btn-inverse"><img src="{{ STATIC_URL }}img/designer_big_logo.png"><h4>Designer</h4></button>
+						</div>
+						<hr>
+						{% load crispy_forms_tags %}
+						{% crispy form %}
+					</form>
 				</div>
-				{% crispy form %}
-			</form>
+			</div>
 		</div>
 	</div>
 {% endblock %}
@@ -28,14 +31,14 @@
 			$("#shop_fields").slideUp(0);
 
 			$("#shopper").on("click", function () {
-				$("#shopper").addClass("active");
-				$("#designer").removeClass("active");
+				$("#shopper").addClass("btn-default").removeClass("btn-inverse");
+				$("#designer").addClass("btn-inverse").removeClass("btn-default");
 				$("#shop_fields").slideUp();
 			});
 
 			$("#designer").on("click", function () {
-				$("#designer").addClass("active");
-				$("#shopper").removeClass("active");
+				$("#designer").addClass("btn-default").removeClass("btn-inverse");
+				$("#shopper").addClass("btn-inverse").removeClass("btn-default");
 				$("#shop_fields").slideDown();
 			});
 		});
