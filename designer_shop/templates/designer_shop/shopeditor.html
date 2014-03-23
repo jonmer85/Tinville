@@ -29,25 +29,25 @@
                             <a href="#about" data-toggle="pill">About</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 1</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 2</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 3</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 4</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 5</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 6</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 7</a>
                         </li>
                     </ul>
                 </div>
@@ -143,10 +143,23 @@ $(window).load(function() {
 
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
+    var maxFormHeight;
     currentFormPanelHeight = $("#formPanel").height();
+    maxFormHeight = $(window).height()*.90
+    if ($("#optionContent").outerHeight() > maxFormHeight) {
+        $("#optionContent").height(maxFormHeight-
+                $("#shopEditorTitle").outerHeight()-
+                $("#optionsXS").outerHeight()-
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#shopEditorHeading").css('padding-top'))-
+                parseInt($("#shopEditorHeading").css('padding-bottom'))-
+                parseInt($("#formPanel").css('border-top-width'))-
+                parseInt($("#formPanel").css('padding-top')));
+    }
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-        $("#optionPanel").animate({height: $("#optionContent").outerHeight()},
+        $("#optionPanel").animate({height: $("#optionContent").outerHeight()+$("#optionsXS").outerHeight()},
         {
             duration: 300, step: function(now)
             {
@@ -188,12 +201,12 @@ function resizeEditor() {
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '0px'});
 
         optionPanelHeight = $("#optionsXS").outerHeight();
-        editorHeight = 0.85;
+        editorHeight = 0.90;
         maxFormHeight = Math.round($(window).height()*editorHeight);
         $("#optionPanel").animate({height:optionPanelHeight},300);
         $("#optionContent").animate({height: $("#optionContent").parent().height() });
         $("#formPanel").animate({
-            height:maxFormHeight-optionPanelHeight+
+            height:maxFormHeight-optionPanelHeight-$("#shopEditorTitle").outerHeight()-$("#optionsXS").outerHeight()-$("#buttonContainer").outerHeight()+
             parseInt($("#shopEditorHeading").css('padding-top'))+
             parseInt($("#shopEditorHeading").css('padding-bottom'))},
         {
