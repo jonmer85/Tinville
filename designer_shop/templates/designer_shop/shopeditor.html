@@ -127,15 +127,12 @@ $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-down");
    $("#resizeIcon").toggleClass("hidden");
 });
-;
-var currentSize;
+
 var loaded;
 loaded = false;
-currentSize = 0
 $(window).resize(function() {
    if (loaded == true) {
            resizeEditor();
-           currentSize = currentSize + 1;
    }
 });
 
@@ -145,7 +142,6 @@ $(window).load(function() {
 });
 
 $("#optionsXS").click(function() {
-    alert (currentSize);
     var currentFormPanelHeight;
     currentFormPanelHeight = $("#formPanel").height();
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
