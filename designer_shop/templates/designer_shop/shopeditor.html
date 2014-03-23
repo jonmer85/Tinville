@@ -146,7 +146,16 @@ $("#optionsXS").click(function() {
     var maxFormHeight;
     currentFormPanelHeight = $("#formPanel").height();
     maxFormHeight = $(window).height()*.90
-    if ($("#optionContent").outerHeight() > maxFormHeight) {
+    if ($("#optionContent").outerHeight() > maxFormHeight-
+                $("#shopEditorTitle").outerHeight()-
+                $("#optionsXS").outerHeight()-
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#shopEditorHeading").css('padding-top'))-
+                parseInt($("#shopEditorHeading").css('padding-bottom'))-
+                parseInt($("#formPanel").css('border-top-width'))-
+                parseInt($("#formPanel").css('padding-top')))
+    {
         $("#optionContent").height(maxFormHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#optionsXS").outerHeight()-
