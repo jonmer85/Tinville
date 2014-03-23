@@ -8,19 +8,19 @@
 {{ block.super }}
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
-        <div class="cornerRadius panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
+        <div id="cornerRadius" class="cornerRadius panel panel-default">
+            <div id="shopEditorHeading" class="panel-heading">
+                <h4 id="shopEditorTitle" class="panel-title">
                     <b>Shop Editor</b>
-                    <a id="resizeIcon" href="#" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
-
-                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
+                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
+                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
-            <div id="collapseOne" class="row panel-collapse collapse in">
+            <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked">
                         <li class="active">
-                            <a class="editorLinkButton" href="#banner" data-toggle="pill">Banner</a>
+                            <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
                         <li>
                             <a href="#logo" data-toggle="pill">Logo</a>
@@ -55,38 +55,38 @@
                     <div id="formPanel" class="editorPanel panel-body">
                         <div id="formContent" class="tab-content panel-content">
                             <div class="tab-pane active" id="banner">
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
-                                <p> Insert Banner form here.</p>
+                                <p> 1 Insert Banner form here.</p>
+                                <p> 2 Insert Banner form here.</p>
+                                <p> 3 Insert Banner form here.</p>
+                                <p> 4 Insert Banner form here.</p>
+                                <p> 5 Insert Banner form here.</p>
+                                <p> 6 Insert Banner form here.</p>
+                                <p> 7 Insert Banner form here.</p>
+                                <p> 8 Insert Banner form here.</p>
+                                <p> 9 Insert Banner form here.</p>
+                                <p> 10 Insert Banner form here.</p>
+                                <p> 11 Insert Banner form here.</p>
+                                <p> 12 Insert Banner form here.</p>
+                                <p> 13 Insert Banner form here.</p>
+                                <p> 14 Insert Banner form here.</p>
+                                <p> 15 Insert Banner form here.</p>
+                                <p> 16 Insert Banner form here.</p>
+                                <p> 17 Insert Banner form here.</p>
+                                <p> 18 Insert Banner form here.</p>
+                                <p> 19 Insert Banner form here.</p>
+                                <p> 20 Insert Banner form here.</p>
+                                <p> 21 Insert Banner form here.</p>
+                                <p> 22 Insert Banner form here.</p>
+                                <p> 23 Insert Banner form here.</p>
+                                <p> 24 Insert Banner form here.</p>
+                                <p> 25 Insert Banner form here.</p>
+                                <p> 26 Insert Banner form here.</p>
+                                <p> 27 Insert Banner form here.</p>
+                                <p> 28 Insert Banner form here.</p>
+                                <p> 29 Insert Banner form here.</p>
+                                <p> 30 Insert Banner form here.</p>
+                                <p> 31 Insert Banner form here.</p>
+                                <p> 32 Insert Banner form here.</p>
                             </div>
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
@@ -127,34 +127,103 @@ $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-down");
    $("#resizeIcon").toggleClass("hidden");
 });
-
+;
+var currentSize;
+var loaded;
+loaded = false;
+currentSize = 0
 $(window).resize(function() {
-   resizeEditor();
-}).resize();
+   if (loaded == true) {
+           resizeEditor();
+           currentSize = currentSize + 1;
+   }
+});
 
-function resizeEditor () {
+$(window).load(function() {
+    loaded=true;
+    resizeEditor();
+});
+
+$("#optionsXS").click(function() {
+    alert (currentSize);
+    var currentFormPanelHeight;
+    currentFormPanelHeight = $("#formPanel").height();
+    if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
+    {
+        $("#optionPanel").animate({height: $("#optionContent").outerHeight()},
+        {
+            duration: 300, step: function(now)
+            {
+                $("#formPanel").height(currentFormPanelHeight-now+$("#shopEditorTitle").outerHeight()+
+                        parseInt($("#cornerRadius").css('border-top-width'))+
+                        parseInt($("#shopEditorHeading").css('padding-top'))+
+                        parseInt($("#shopEditorHeading").css('padding-bottom')));
+
+                $("#formContent").height($("#formPanel").outerHeight()-
+                        parseInt($("#formPanel").css('border-top-width'))-
+                        parseInt($("#formPanel").css('padding-top')));
+            }
+        });
+    }
+    else
+    {
+        resizeEditor();
+    }
+});
+
+$("#optionContent li").click(function (){
+    $("#optionsXS").text($(this).text()+" (click here for editor options)");
+    resizeEditor();
+})
+
+function resizeEditor() {
+    var maxFormHeight;
+    var editorPanelHeight;
+    var buttonHeight;
+    var optionPanelHeight;
     var editorHeight;
     var maxHeight;
-    var buttonHeight;
-    editorHeight = 0.35;
 
-    if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
-    {
-        editorHeight = 0.75;
-    }
+    buttonHeight = $("#buttonContainer").height();
 
     if (checkMode() == 'xs')
     {
-        editorHeight = 0.45;
+        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
+        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '0px'});
+
+        optionPanelHeight = $("#optionsXS").outerHeight();
+        editorHeight = 0.85;
+        maxFormHeight = Math.round($(window).height()*editorHeight);
+        $("#optionPanel").animate({height:optionPanelHeight},300);
+        $("#optionContent").animate({height: $("#optionContent").parent().height() });
+        $("#formPanel").animate({
+            height:maxFormHeight-optionPanelHeight+
+            parseInt($("#shopEditorHeading").css('padding-top'))+
+            parseInt($("#shopEditorHeading").css('padding-bottom'))},
+        {
+            duration: 300, step: function(now)
+            {
+                $("#formContent").height(now-
+                parseInt($("#formPanel").css('border-top-width'))-
+                parseInt($("#formPanel").css('padding-top')));
+            }
+        });
     }
-
-
-    buttonHeight = $("#buttonContainer").height();
-    maxHeight = $(window).height()*editorHeight;
-    $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
-    $("#formPanel").animate({height:maxHeight-60},300);
-    $("#optionContent").height(maxHeight-60+buttonHeight-15);
-    $("#formContent").height(maxHeight-60-15);
+    else
+    {
+        $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
+        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
+        editorPanelHeight = 0.35;
+        if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
+        {
+        editorPanelHeight = 0.75;
+        }
+        maxHeight = $(window).height()*editorPanelHeight;
+        $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
+        $("#formPanel").animate({height:maxHeight-60},300);
+        $("#optionContent").animate({height: maxHeight-60+buttonHeight-15});
+        $("#formContent").animate({height: maxHeight-60-15});
+    }
 }
 
 $(function(){
