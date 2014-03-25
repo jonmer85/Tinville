@@ -168,7 +168,7 @@ $("#optionsXS").click(function() {
     }
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-        $("#optionPanel").animate({height: $("#optionContent").outerHeight()+$("#optionsXS").outerHeight()},
+        $("#optionPanel").transition({height: $("#optionContent").outerHeight()+$("#optionsXS").outerHeight()},
         {
             duration: 300, step: function(now)
             {
@@ -212,9 +212,9 @@ function resizeEditor() {
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
         maxFormHeight = Math.round($(window).height()*editorHeight);
-        $("#optionPanel").animate({height:optionPanelHeight},300);
-        $("#optionContent").animate({height: $("#optionContent").parent().height() });
-        $("#formPanel").animate({
+        $("#optionPanel").transition({height:optionPanelHeight},300);
+        $("#optionContent").transition({height: $("#optionContent").parent().height() });
+        $("#formPanel").transition({
             height:maxFormHeight-optionPanelHeight-$("#shopEditorTitle").outerHeight()-$("#optionsXS").outerHeight()-$("#buttonContainer").outerHeight()+
             parseInt($("#shopEditorHeading").css('padding-top'))+
             parseInt($("#shopEditorHeading").css('padding-bottom'))},
@@ -237,10 +237,10 @@ function resizeEditor() {
         editorPanelHeight = 0.75;
         }
         maxHeight = $(window).height()*editorPanelHeight;
-        $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
-        $("#formPanel").animate({height:maxHeight-60},300);
-        $("#optionContent").animate({height: maxHeight-60+buttonHeight-15});
-        $("#formContent").animate({height: maxHeight-60-15});
+        $("#optionPanel").transition({height:maxHeight-60+buttonHeight},300);
+        $("#formPanel").transition({height:maxHeight-60},300);
+        $("#optionContent").transition({height: maxHeight-60+buttonHeight-15});
+        $("#formContent").transition({height: maxHeight-60-15});
     }
 }
 
