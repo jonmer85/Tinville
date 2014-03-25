@@ -220,7 +220,6 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '0px'});
-
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
         maxFormHeight = Math.round($(window).height()*editorHeight);
@@ -235,8 +234,7 @@ function resizeEditor() {
         $("#formPanel").transition({height:formTransitionHeight}, 300)
         $("#formContent").transition({height: formTransitionHeight-
                 parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-top'))
-        }, 300);
+                parseInt($("#formPanel").css('padding-top'))}, 300);
     }
     else
     {
