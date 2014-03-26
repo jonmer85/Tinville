@@ -150,8 +150,9 @@ $("#optionsXS").click(function() {
     currentFormPanelHeight = $("#formPanel").outerHeight();
     currentFormContentHeight = $("#formContent").outerHeight();
     maxFormHeight = $(window).height()*.90
-{#    shopEditorWindowHeight = $("#shopEditorWindow").position.top;#}
-{#    $("#shopEditorWindow").css({top: shopEditorWindowHeight });#}
+    shopEditorWindowHeight = $("#shopEditorWindow").position().top;
+{#    $("#shopEditorWindow").css({top: shopEditorWindowHeight});#}
+
     if ($("#optionContent").outerHeight() > maxFormHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#optionsXS").outerHeight()-
@@ -193,6 +194,7 @@ $("#optionsXS").click(function() {
                         parseInt($("#shopEditorHeading").css('padding-top'))+
                         parseInt($("#shopEditorHeading").css('padding-bottom'))-
                         parseInt($("#formPanel").css('border-top-width'))}, 300);
+{#    , function(){$("#shopEditorWindow").css({top: "auto"})});#}
     }
     else
     {
@@ -243,7 +245,7 @@ function resizeEditor() {
         editorPanelHeight = 0.35;
         if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
         {
-        editorPanelHeight = 0.75;
+            editorPanelHeight = 0.75;
         }
         maxHeight = $(window).height()*editorPanelHeight;
         $("#optionPanel").transition({height:maxHeight-60+buttonHeight},300);
