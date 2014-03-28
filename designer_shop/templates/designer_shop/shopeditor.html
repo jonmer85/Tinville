@@ -97,6 +97,8 @@
                             <div class="tab-pane" id="addItems">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
+
+
                             </div>
                         </div>
 
@@ -115,6 +117,16 @@
 {% block javascript %}
 
 <script>
+
+$("#id_productVariation").change(function() {
+    var selectedValue = $("#id_productVariation option:selected");
+    if (selectedValue[0].value == "1"){
+        //Sizes handler
+
+
+    }
+
+});
 
 $("#resizeIcon").click(function() {
    $(this).toggleClass("glyphicon-resize-full");
