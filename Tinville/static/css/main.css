@@ -19,9 +19,9 @@ textarea {
 }
 
 body {
-    font-size: 1.3em;
-    line-height: 1.4;
-    font-family: 'Cabin Condensed', sans-serif;
+    font-size: 1em;
+    line-height: 1.9;
+    font-family: "MS Sans Serif", Geneva, sans-serif;
 }
 
 h1,
@@ -43,10 +43,12 @@ html {
   /* Used to fix horizontal scroll on width: 100% */
   width: auto !important;
   overflow-x: hidden !important;
+  height: 100% ; //TommyLe - 2/15/2014 - Defect #143 - Adjusting height of html and body to 100%
 }
 body {
   width: auto !important;
   overflow-x: hidden !important;
+  height: 100% ; //TommyLe - 2/15/2014 - Defect #143 - Adjusting height of html and body to 100%
 }
 
 /*
