@@ -152,6 +152,13 @@
         }
     },
     {
+        "model": "catalogue.AttributeOptionGroup",
+        "pk": 2,
+        "fields": {
+			"name": "color_set"
+        }
+    },
+    {
         "model": "catalogue.AttributeOption",
         "pk": 1,
         "fields": {
@@ -208,6 +215,46 @@
         }
     },
     {
+        "model": "catalogue.AttributeOption",
+        "pk": 8,
+        "fields": {
+			"group": 2,
+            "option": "red"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 9,
+        "fields": {
+			"group": 2,
+            "option": "blue"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 10,
+        "fields": {
+			"group": 2,
+            "option": "green"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 11,
+        "fields": {
+			"group": 2,
+            "option": "black"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 12,
+        "fields": {
+			"group": 2,
+            "option": "white"
+        }
+    },
+    {
         "model": "catalogue.ProductAttribute",
         "pk": 1,
         "fields": {
@@ -246,6 +293,17 @@
 			"name": "size_number",
             "code": "size_number",
             "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 5,
+        "fields": {
+            "product_class": 1,
+			"name": "color",
+            "code": "color",
+            "type": "option",
+            "option_group": 2
         }
     }
 ]

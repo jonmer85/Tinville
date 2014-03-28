@@ -19,6 +19,15 @@ class ProductCreationForm(forms.ModelForm):
                                          choices=SIZE_TYPES_AND_EMPTY,
                                          initial='0')
 
+    sizeSetSelection = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                              objects.filter(group=1))
+
+    colorSelection = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                              objects.filter(group=2))
+
+    quantityField = forms.IntegerField()
+
+
     def __init__(self, *args, **kwargs):
         super(ProductCreationForm, self).__init__(*args, **kwargs)
         # password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -38,47 +47,19 @@ class ProductCreationForm(forms.ModelForm):
                          Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
                              Div(
-                                 Div(HTML("""<a class="accordion-toggle" href="#collapse1" data-toggle="collapse" data-parent="#accordion2">Expand</a>"""),
+                                 Div(
+                                     'sizeSetSelection',
                                      css_class="accordion-heading"
                                     ),
                                  Div(
                                      Div(
-                                         HTML("""<table class="table" id="sizegrid1">
-                                                      <thead>
-                                                            <tr>
-                                                                <td><b>ID</b></td>
-                                                                <td><b>Name</b></td>
-                                                                <td><b>Description</b><b></b></td>
-                                                                <td><b>Color</b></td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Banana</td>
-                                                                <td>Bright and bent</td>
-                                                                <td>Yellow</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td>Apple</td>
-                                                                <td>Kind of round</td>
-                                                                <td>Red</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>3</td>
-                                                                <td>Orange</td>
-                                                                <td>Round</td>
-                                                                <td>Orange</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                              """
-
-                                             ),
-                                         css_class="accordion-inner"
+                                         Div(
+                                             'colorSelection',
+                                             'quantityField'
+                                            ),
+                                            css_class="accordion-inner container"
                                          ),
-                                         css_class="accordion-body collapse in", css_id="collapse1"
+                                         css_class="accordion-body collapse", css_id="collapse1"
                                      ),
                                  css_class="accordion-group"
                                 ),
@@ -95,39 +76,36 @@ class ProductCreationForm(forms.ModelForm):
         model = get_model('catalogue', 'Product')
         # fields = ['title', 'description', 'product_class']
 
-                                #             <div class="accordion" id="accordion3">
-                                #                 <div class="accordion-group">
-                                #                     <div class="accordion-heading"><a class="accordion-toggle" href="#collapse2" data-toggle="collapse" data-parent="#accordion3">Vegetable</a></div>
-                                #                     <div class="accordion-body collapse" id="collapse2">
-                                #                         <div class="accordion-inner">
-                                #                             <table class="table" id="veggiegrid">
-                                #                                 <thead>
-                                #                                 <tr>
-                                #                                     <td><b>ID</b></td>
-                                #                                     <td><b>Name</b></td>
-                                #                                     <td><b>Description</b><b></b></td>
-                                #                                     <td><b>Color</b></td>
-                                #                                 </tr>
-                                #                                 </thead>
-                                #                                 <tbody>
-                                #                                 <tr>
-                                #                                     <td>1</td>
-                                #                                     <td>Pumpkin</td>
-                                #                                     <td>Odd shaped</td>
-                                #                                     <td>Orange</td>
-                                #                                 </tr>
-                                #                                 <tr>
-                                #                                     <td>2</td>
-                                #                                     <td>Celery</td>
-                                #                                     <td>Narrow and thin</td>
-                                #                                     <td>Green</td>
-                                #                                 </tr>
-                                #                                 </tbody>
-                                #                             </table>
-                                #                         </div>
-                                #                     </div>
-                                #                 </div>
-                                #             </div>
-                                #         </div>
-                                #     </div>
-                                # </div>
+                               #HTML("""<table class="table" id="sizegrid1">
+                                         #              <thead>
+                                         #                    <tr>
+                                         #                        <td><b>ID</b></td>
+                                         #                        <td><b>Name</b></td>
+                                         #                        <td><b>Description</b><b></b></td>
+                                         #                        <td><b>Color</b></td>
+                                         #                    </tr>
+                                         #                </thead>
+                                         #                <tbody>
+                                         #                    <tr>
+                                         #                        <td>1</td>
+                                         #                        <td>Banana</td>
+                                         #                        <td>Bright and bent</td>
+                                         #                        <td>Yellow</td>
+                                         #                    </tr>
+                                         #                    <tr>
+                                         #                        <td>2</td>
+                                         #                        <td>Apple</td>
+                                         #                        <td>Kind of round</td>
+                                         #                        <td>Red</td>
+                                         #                    </tr>
+                                         #                    <tr>
+                                         #                        <td>3</td>
+                                         #                        <td>Orange</td>
+                                         #                        <td>Round</td>
+                                         #                        <td>Orange</td>
+                                         #                    </tr>
+                                         #                </tbody>
+                                         #            </table>
+                                         #      """
+                                         #
+                                         #     ),

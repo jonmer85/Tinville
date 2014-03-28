@@ -118,15 +118,29 @@
 
 <script>
 
-$("#id_productVariation").change(function() {
-    var selectedValue = $("#id_productVariation option:selected");
+$("#id_sizeVariation").change(function() {
+    var selectedValue = $("#id_sizeVariation option:selected");
     if (selectedValue[0].value == "1"){
-        //Sizes handler
+        //sizeVariation handler
 
 
     }
 
 });
+
+$("#id_sizeSetSelection").change(function() {
+    var selectedValue = $("#id_sizeSetSelection option:selected");
+    if (selectedValue[0].value != "0") {
+        $("#collapse1").collapse('show');
+    }
+    else {
+        $("#collapse1").collapse('hide')
+
+    }
+
+});
+
+collapse1
 
 $("#resizeIcon").click(function() {
    $(this).toggleClass("glyphicon-resize-full");
