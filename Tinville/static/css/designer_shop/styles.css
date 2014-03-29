@@ -1,14 +1,14 @@
 .shopColor {
     /*background-color: #802152;*/
-    color: #802152;
+    color: #990099;
 }
 .shopBackgroundColor {
-    background-color: #802152;
+    background-color: #990099;
     /*color: #802152;*/
 }
 .shopBorderColor {
     /*background-color: #802152;*/
-    border-color: #802152;
+    /*border-color: #990099;*/
 }
 
 #tinyTinvillelogo {
@@ -187,8 +187,3 @@
     overflow: auto !important;
 }
 
-
-/*.li.active {*/
-    /*background-color: #f46430 !important;*/
-    /*color: #e7e5e6 !important;*/
-/*}*/
