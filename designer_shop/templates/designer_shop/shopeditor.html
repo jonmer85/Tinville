@@ -126,6 +126,12 @@ $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-up");
    $(this).toggleClass("glyphicon-chevron-down");
    $("#resizeIcon").toggleClass("hidden");
+
+{#    alert ($(this).hasClass("glyphicon-chevron-down"));#}
+{#    if ($(this).hasClass("glyphicon-chevron-down")==true) {#}
+{#        alert("hi");#}
+{#        resizeEditor();#}
+{#    }#}
 });
 
 var loaded;
@@ -146,13 +152,9 @@ $("#optionsXS").click(function() {
     var currentFormContentHeight;
     var maxFormHeight;
     var transitionHeight;
-    var shopEditorWindowHeight;
     currentFormPanelHeight = $("#formPanel").outerHeight();
     currentFormContentHeight = $("#formContent").outerHeight();
-    maxFormHeight = $(window).height()*.90
-    shopEditorWindowHeight = $("#shopEditorWindow").position().top;
-{#    $("#shopEditorWindow").css({top: shopEditorWindowHeight});#}
-
+    maxFormHeight = $(window).height()*0.90
     if ($("#optionContent").outerHeight() > maxFormHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#optionsXS").outerHeight()-
@@ -178,7 +180,7 @@ $("#optionsXS").click(function() {
     }
     else
     {
-    transitionHeight = $("#optionContent").outerHeight();
+        transitionHeight = $("#optionContent").outerHeight();
     }
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
@@ -194,7 +196,6 @@ $("#optionsXS").click(function() {
                         parseInt($("#shopEditorHeading").css('padding-top'))+
                         parseInt($("#shopEditorHeading").css('padding-bottom'))-
                         parseInt($("#formPanel").css('border-top-width'))}, 300);
-{#    , function(){$("#shopEditorWindow").css({top: "auto"})});#}
     }
     else
     {
