@@ -120,8 +120,6 @@ $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
     if (selectedValue[0].value == "1"){
         //sizeVariation handler
-
-
     }
 
 });
@@ -240,7 +238,7 @@ function resizeEditor() {
     if (checkMode() == 'xs')
     {
         $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '0px'});
+        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '10px'});
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
         maxFormHeight = Math.round($(window).height()*editorHeight);
@@ -266,8 +264,8 @@ function resizeEditor() {
         maxHeight = $(window).height()*editorPanelHeight;
         $("#optionPanel").transition({height:maxHeight-60+buttonHeight},300);
         $("#formPanel").transition({height:maxHeight-60},300);
-        $("#optionContent").transition({height: maxHeight-60+buttonHeight-15},300);
-        $("#formContent").transition({height: maxHeight-60-15},300);
+        $("#optionContent").transition({height: maxHeight-60+buttonHeight},300);
+        $("#formContent").transition({height: maxHeight-60},300);
     }
 }
 
