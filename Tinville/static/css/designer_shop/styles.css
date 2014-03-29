@@ -106,7 +106,6 @@
 
 #shopNav h2 {
     font-size: .7em;
-
 }
 
 .mainContent {
@@ -134,8 +133,6 @@
 }
 
 #cornerRadius {
-    /*border-bottom-left-radius: 0px !important;*/
-    /*border-bottom-right-radius: 0px !important;*/
     border-radius: 0px !important;
 }
 
@@ -173,10 +170,12 @@
 }
 @media (max-width: 768px) {
     .nav-pills {
-        font-size: 14px;
+        font-size: 1.5em;
+        font-weight: bold;
     }
     #optionsXS {
-        font-size: 14px;
+        font-size: 1.5em;
+        font-weight: bolder;
     }
 }
 
@@ -205,17 +204,23 @@
 }
 
 .nav-pills>li>a {
-   color: #5B595A;
+    color: #5B595A;
 }
 
 .nav-pills>li.active>a:hover {
-  background-color: #f44b16;
+    background-color: #f44b16;
 }
 
 .nav-pills>li>a {
-   color: #5B595A;
+    color: #5B595A;
 }
 
 .nav-pills>li>a:hover {
-   background-color: #e7e5e6;
+    background-color: #e7e5e6;
+}
+
+@media (max-width: 768px) {
+    .nav-pills>li>a {
+        text-align: center;
+    }
 }
