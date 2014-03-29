@@ -210,18 +210,18 @@ $("#optionsXS").click(function() {
     }
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-        $("#optionPanel").transition({height: transitionHeight}, 300);
+        $("#optionPanel").transition({height: transitionHeight},{duration: 300});
         $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight+
                         $("#shopEditorTitle").outerHeight()+
                         parseInt($("#cornerRadius").css('border-top-width'))+
                         parseInt($("#cornerRadius").css('border-bottom-width'))+
                         parseInt($("#shopEditorHeading").css('padding-top'))+
-                        parseInt($("#shopEditorHeading").css('padding-bottom'))}, 300);
+                        parseInt($("#shopEditorHeading").css('padding-bottom'))},{duration: 300});
         $("#formContent").transition({height: currentFormContentHeight-transitionHeight+
                         $("#shopEditorTitle").outerHeight()+
                         parseInt($("#shopEditorHeading").css('padding-top'))+
                         parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                        parseInt($("#formPanel").css('border-top-width'))}, 300);
+                        parseInt($("#formPanel").css('border-top-width'))}, {duration: 300});
     }
     else
     {
@@ -258,12 +258,12 @@ function resizeEditor() {
                 $("#buttonContainer").outerHeight()+
                 parseInt($("#shopEditorHeading").css('padding-top'))+
                 parseInt($("#shopEditorHeading").css('padding-bottom'));
-        $("#optionPanel").transition({height:optionPanelHeight},300);
-        $("#optionContent").transition({height: $("#optionContent").parent().height()},300);
-        $("#formPanel").transition({height:formTransitionHeight}, 300)
+        $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
+        $("#optionContent").transition({height: $("#optionContent").parent().height()},{duration: 300});
+        $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
         $("#formContent").transition({height: formTransitionHeight-
                 parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-top'))}, 300);
+                parseInt($("#formPanel").css('padding-top'))}, {duration: 300});
     }
     else
     {
