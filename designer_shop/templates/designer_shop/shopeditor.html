@@ -231,8 +231,8 @@ function resizeEditor() {
 
     if (checkMode() == 'xs')
     {
-        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '10px'});
+        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
+        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
         maxFormHeight = $(window).height()*editorHeight;
