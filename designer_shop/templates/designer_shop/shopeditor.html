@@ -180,7 +180,7 @@ $("#optionsXS").click(function() {
     var maxFormHeight;
     var transitionHeight;
     currentFormPanelHeight = $("#secondColumn").outerHeight();
-    maxFormHeight = $(window).height()*0.90;
+    maxFormHeight = Math.round($(window).height()*0.90);
     if ($("#optionContent").outerHeight() > maxFormHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#optionsXS").outerHeight()-
@@ -235,7 +235,7 @@ function resizeEditor() {
         $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
-        maxFormHeight = $(window).height()*editorHeight;
+        maxFormHeight = Math.round($(window).height()*editorHeight);
         formTransitionHeight = maxFormHeight-optionPanelHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#buttonContainer").outerHeight()-
