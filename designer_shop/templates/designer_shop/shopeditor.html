@@ -51,7 +51,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="container col-sm-9">
+                <div id="secondColumn" class="container col-sm-9">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
                             <div class="tab-pane active" id="banner">
@@ -168,14 +168,19 @@ $(window).load(function() {
     resizeEditor();
 });
 
+$("#optionContent li").click(function (){
+    $("#optionsXS").text($(this).text()+" (click here for editor options)");
+    resizeEditor();
+})
+
+
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
     var currentFormContentHeight;
     var maxFormHeight;
     var transitionHeight;
-    currentFormPanelHeight = $("#formPanel").outerHeight();
-    currentFormContentHeight = $("#formContent").outerHeight();
-    maxFormHeight = $(window).height()*0.90
+    currentFormPanelHeight = $("#secondColumn").outerHeight();
+    maxFormHeight = $(window).height()*0.90;
     if ($("#optionContent").outerHeight() > maxFormHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#optionsXS").outerHeight()-
@@ -184,7 +189,7 @@ $("#optionsXS").click(function() {
                 parseInt($("#cornerRadius").css('border-bottom-width'))-
                 parseInt($("#shopEditorHeading").css('padding-bottom'))-
                 parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-top')))
+                parseInt($("#formPanel").css('padding-bottom')))
     {
         $("#optionContent").height(maxFormHeight-
                 $("#optionsXS").outerHeight()-
@@ -194,7 +199,7 @@ $("#optionsXS").click(function() {
                 parseInt($("#cornerRadius").css('border-bottom-width'))-
                 parseInt($("#shopEditorHeading").css('padding-bottom'))-
                 parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-top')));
+                parseInt($("#formPanel").css('padding-bottom')));
                 transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
     }
     else
@@ -204,25 +209,14 @@ $("#optionsXS").click(function() {
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
         $("#optionPanel").transition({height: transitionHeight},{duration: 300});
-
-        $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight+
-                        $("#shopEditorTitle").outerHeight()+
-                        parseInt($("#cornerRadius").css('border-top-width'))+
-                        parseInt($("#cornerRadius").css('border-bottom-width'))},{duration: 300});
-        $("#formContent").transition({height: currentFormContentHeight-transitionHeight+
-                        $("#shopEditorTitle").outerHeight()+
-                        parseInt($("#formPanel").css('border-top-width'))}, {duration: 300});
+        $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight},{duration: 300});
+        $("#formContent").transition({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
     }
     else
     {
         resizeEditor();
     }
 });
-
-$("#optionContent li").click(function (){
-    $("#optionsXS").text($(this).text()+" (click here for editor options)");
-    resizeEditor();
-})
 
 function resizeEditor() {
     var maxFormHeight;
@@ -233,7 +227,7 @@ function resizeEditor() {
     var maxHeight;
     var formTransitionHeight;
 
-    buttonHeight = $("#buttonContainer").height();
+    buttonHeight = $("#buttonContainer").outerHeight();
 
     if (checkMode() == 'xs')
     {
@@ -241,16 +235,16 @@ function resizeEditor() {
         $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '10px'});
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
-        maxFormHeight = Math.round($(window).height()*editorHeight);
+        maxFormHeight = $(window).height()*editorHeight;
         formTransitionHeight = maxFormHeight-optionPanelHeight-
                 $("#shopEditorTitle").outerHeight()-
-                $("#buttonContainer").outerHeight()
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#cornerRadius").css('border-bottom-width'));
         $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
-        $("#optionContent").transition({height: $("#optionContent").parent().height()},{duration: 300});
+        $("#optionContent").transition({height: $("#optionContent").parent().outerHeight()},{duration: 300});
         $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
-        $("#formContent").transition({height: formTransitionHeight-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-top'))}, {duration: 300});
+        $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
     }
     else
     {
