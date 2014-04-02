@@ -137,7 +137,7 @@
 }
 
 #shopEditorTitle{
-    border-bottom: 1px solid #e7e5e6;
+    /*border-bottom: 1px solid #e7e5e6;*/
     padding: 10px;
     background: linear-gradient(#F5F5F5, #D1D1D1);
 }
