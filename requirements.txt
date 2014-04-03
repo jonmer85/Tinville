@@ -1,3 +1,5 @@
+--allow-all-external
+--allow-unverified PIL
 -e git://github.com/gabrielfalcao/lettuce.git@6e7a5566f13f01192d65b1fc010659d88a27a546#egg=lettuce
 -e git://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins
 -e git://github.com/maraujop/django-crispy-forms@d096de1a365d14761deb7f5ef3ba09bfaf57fd5d#egg=django-crispy-forms

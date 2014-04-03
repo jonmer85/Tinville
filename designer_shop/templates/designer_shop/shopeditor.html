@@ -16,9 +16,9 @@
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             <div id="editorPanels" class="row panel-collapse collapse in">
-                <div id="optionPanel" class="container col-sm-3 panel-body editorPanel">
+                <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
-                    <ul id="optionContent" class="nav nav-pills nav-stacked">
+                    <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
                             <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
@@ -29,31 +29,31 @@
                             <a href="#about" data-toggle="pill">About</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 1</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 2</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 3</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 4</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 5</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 6</a>
                         </li>
                         <li>
-                            <a href="#addItems" data-toggle="pill">Add Items</a>
+                            <a href="#addItems" data-toggle="pill">Add Items 7</a>
                         </li>
                     </ul>
                 </div>
-                <div class="container col-sm-9">
-                    <div id="formPanel" class="editorPanel panel-body">
-                        <div id="formContent" class="tab-content panel-content">
+                <div id="secondColumn" class="container col-sm-9">
+                    <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
+                        <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
                             <div class="tab-pane active" id="banner">
                                 <p> 1 Insert Banner form here.</p>
                                 <p> 2 Insert Banner form here.</p>
@@ -97,8 +97,6 @@
                             <div class="tab-pane" id="addItems">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
-
-
                             </div>
                         </div>
 
@@ -122,8 +120,6 @@ $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
     if (selectedValue[0].value == "1"){
         //sizeVariation handler
-
-
     }
 
 });
@@ -140,7 +136,6 @@ $("#id_sizeSetSelection").change(function() {
 
 });
 
-collapse1
 
 $("#resizeIcon").click(function() {
    $(this).toggleClass("glyphicon-resize-full");
@@ -152,13 +147,19 @@ $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-up");
    $(this).toggleClass("glyphicon-chevron-down");
    $("#resizeIcon").toggleClass("hidden");
+
+{#    alert ($(this).hasClass("glyphicon-chevron-down"));#}
+{#    if ($(this).hasClass("glyphicon-chevron-down")==true) {#}
+{#        alert("hi");#}
+{#        resizeEditor();#}
+{#    }#}
 });
 
-var loaded
-loaded = false
+var loaded;
+loaded = false;
 $(window).resize(function() {
    if (loaded == true) {
-    resizeEditor();
+           resizeEditor();
    }
 });
 
@@ -167,37 +168,55 @@ $(window).load(function() {
     resizeEditor();
 });
 
-$("#optionsXS").click(function() {
+$("#optionContent li").click(function (){
+    $("#optionsXS").text($(this).text()+" (click here for editor options)");
+    resizeEditor();
+})
 
+
+$("#optionsXS").click(function() {
     var currentFormPanelHeight;
-    currentFormPanelHeight = $("#formPanel").height();
+    var currentFormContentHeight;
+    var maxFormHeight;
+    var transitionHeight;
+    currentFormPanelHeight = $("#secondColumn").outerHeight();
+    maxFormHeight = Math.round($(window).height()*0.90);
+    if ($("#optionContent").outerHeight() > maxFormHeight-
+                $("#shopEditorTitle").outerHeight()-
+                $("#optionsXS").outerHeight()-
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#cornerRadius").css('border-bottom-width'))-
+                parseInt($("#shopEditorHeading").css('padding-bottom'))-
+                parseInt($("#formPanel").css('border-top-width'))-
+                parseInt($("#formPanel").css('padding-bottom')))
+    {
+        $("#optionContent").height(maxFormHeight-
+                $("#optionsXS").outerHeight()-
+                $("#shopEditorTitle").outerHeight()-
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#cornerRadius").css('border-bottom-width'))-
+                parseInt($("#shopEditorHeading").css('padding-bottom'))-
+                parseInt($("#formPanel").css('border-top-width'))-
+                parseInt($("#formPanel").css('padding-bottom')));
+                transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
+    }
+    else
+    {
+        transitionHeight = $("#optionContent").outerHeight();
+    }
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-        $("#optionPanel").animate({height: $("#optionContent").outerHeight()},
-        {
-            duration: 300, step: function(now)
-            {
-                $("#formPanel").height(currentFormPanelHeight-now+$("#shopEditorTitle").outerHeight()+
-                        parseInt($("#cornerRadius").css('border-top-width'))+
-                        parseInt($("#shopEditorHeading").css('padding-top'))+
-                        parseInt($("#shopEditorHeading").css('padding-bottom')));
-
-                $("#formContent").height($("#formPanel").outerHeight()-
-                        parseInt($("#formPanel").css('border-top-width'))-
-                        parseInt($("#formPanel").css('padding-top')));
-            }
-        });
+        $("#optionPanel").transition({height: transitionHeight},{duration: 300});
+        $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight},{duration: 300});
+        $("#formContent").transition({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
     }
     else
     {
         resizeEditor();
     }
 });
-
-$("#optionContent li").click(function (){
-    $("#optionsXS").text($(this).text()+" (click here for editor options)");
-    resizeEditor();
-})
 
 function resizeEditor() {
     var maxFormHeight;
@@ -206,31 +225,26 @@ function resizeEditor() {
     var optionPanelHeight;
     var editorHeight;
     var maxHeight;
+    var formTransitionHeight;
 
-    buttonHeight = $("#buttonContainer").height();
+    buttonHeight = $("#buttonContainer").outerHeight();
 
     if (checkMode() == 'xs')
     {
-        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '0px'});
-
+        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
+        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
         optionPanelHeight = $("#optionsXS").outerHeight();
-        editorHeight = 0.85;
+        editorHeight = 0.90;
         maxFormHeight = Math.round($(window).height()*editorHeight);
-        $("#optionPanel").animate({height:optionPanelHeight},300);
-        $("#optionContent").animate({height: $("#optionContent").parent().height() });
-        $("#formPanel").animate({
-            height:maxFormHeight-optionPanelHeight+
-            parseInt($("#shopEditorHeading").css('padding-top'))+
-            parseInt($("#shopEditorHeading").css('padding-bottom'))},
-        {
-            duration: 300, step: function(now)
-            {
-                $("#formContent").height(now-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-top')));
-            }
-        });
+        formTransitionHeight = maxFormHeight-optionPanelHeight-
+                $("#shopEditorTitle").outerHeight()-
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#cornerRadius").css('border-bottom-width'));
+        $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
+        $("#optionContent").transition({height: $("#optionContent").parent().outerHeight()},{duration: 300});
+        $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
+        $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
     }
     else
     {
@@ -239,13 +253,13 @@ function resizeEditor() {
         editorPanelHeight = 0.35;
         if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
         {
-        editorPanelHeight = 0.75;
+            editorPanelHeight = 0.75;
         }
         maxHeight = $(window).height()*editorPanelHeight;
-        $("#optionPanel").animate({height:maxHeight-60+buttonHeight},300);
-        $("#formPanel").animate({height:maxHeight-60},300);
-        $("#optionContent").animate({height: maxHeight-60+buttonHeight-15});
-        $("#formContent").animate({height: maxHeight-60-15});
+        $("#optionPanel").transition({height:maxHeight-60+buttonHeight},300);
+        $("#formPanel").transition({height:maxHeight-60},300);
+        $("#optionContent").transition({height: maxHeight-60+buttonHeight},300);
+        $("#formContent").transition({height: maxHeight-60},300);
     }
 }
 
