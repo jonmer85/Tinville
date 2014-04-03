@@ -30,3 +30,9 @@ S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
+
+EXTERNAL_FILES = {
+    'CABIN_CONDENSED': "http://fonts.googleapis.com/css?family=Cabin+Condensed",
+    'JQUERY': "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js",
+    'FIXURL': "http://linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js",
+}

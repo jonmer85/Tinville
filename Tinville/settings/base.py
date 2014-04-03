@@ -229,3 +229,9 @@ EMAIL_USE_TLS = True
 LOGIN_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+EXTERNAL_FILES = {
+    'CABIN_CONDENSED': STATIC_URL + "external/cabin-condensed.css",
+    'JQUERY': STATIC_URL + "external/jquery.min.js",
+    'FIXURL': STATIC_URL + "external/fixurl.js",
+}    
