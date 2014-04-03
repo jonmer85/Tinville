@@ -103,5 +103,207 @@
             "image": "images/shoe4.jpg",
             "price": 4.56
         }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 1,
+        "fields": {
+            "name": "Tops",
+			"slug": "tops",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 2,
+        "fields": {
+            "name": "Bottoms",
+			"slug": "bottoms",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 3,
+        "fields": {
+            "name": "Dresses",
+			"slug": "dresses",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 4,
+        "fields": {
+            "name": "Accessories",
+			"slug": "accessories",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.AttributeOptionGroup",
+        "pk": 1,
+        "fields": {
+			"name": "size_set"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOptionGroup",
+        "pk": 2,
+        "fields": {
+			"name": "color_set"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 1,
+        "fields": {
+			"group": 1,
+            "option": "xxs"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 2,
+        "fields": {
+			"group": 1,
+            "option": "xs"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 3,
+        "fields": {
+			"group": 1,
+            "option": "sm"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 4,
+        "fields": {
+			"group": 1,
+            "option": "md"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 5,
+        "fields": {
+			"group": 1,
+            "option": "lg"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 6,
+        "fields": {
+			"group": 1,
+            "option": "xl"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 7,
+        "fields": {
+			"group": 1,
+            "option": "xxl"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 8,
+        "fields": {
+			"group": 2,
+            "option": "red"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 9,
+        "fields": {
+			"group": 2,
+            "option": "blue"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 10,
+        "fields": {
+			"group": 2,
+            "option": "green"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 11,
+        "fields": {
+			"group": 2,
+            "option": "black"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 12,
+        "fields": {
+			"group": 2,
+            "option": "white"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 1,
+        "fields": {
+            "product_class": 1,
+			"name": "size_set",
+            "code": "size_set",
+            "type": "option",
+            "option_group": 1
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 2,
+        "fields": {
+            "product_class": 1,
+			"name": "size_dimension_x",
+            "code": "size_dimension_x",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 3,
+        "fields": {
+            "product_class": 1,
+			"name": "size_dimension_y",
+            "code": "size_dimension_y",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 4,
+        "fields": {
+            "product_class": 1,
+			"name": "size_number",
+            "code": "size_number",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 5,
+        "fields": {
+            "product_class": 1,
+			"name": "color",
+            "code": "color",
+            "type": "option",
+            "option_group": 2
+        }
     }
 ]
