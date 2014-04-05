@@ -24,9 +24,8 @@ def shopabout(request):
         if form.is_valid():
             
             currentshop = Shop.objects.get( name = "Demo" )
-            currentshop.aboutContent = form.aboutContent
+            currentshop.aboutContent = form.cleaned_data[ "aboutContent" ]
             currentshop.save()
-            
-            success_url = reverse('home')
-            return HttpResponseRedirect(success_url)
+        
+            return shopeditor(request)
         

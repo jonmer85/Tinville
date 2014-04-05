@@ -85,16 +85,13 @@ class AboutBoxForm( forms.Form ):
     
     helper = FormHelper()
     helper.form_show_labels = False
-    helper.form_action = "shopeditor/test/about"
     
     helper.layout = Layout(
         Div(
             Field('aboutContent', placeholder="Enter Text Here"),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
-        ))
-        
- 
+        )) 
 
     # def clean_password2(self):
     #     # Check that the two password entries match
