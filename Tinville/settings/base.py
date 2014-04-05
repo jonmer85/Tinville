@@ -235,10 +235,10 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme': "advanced",
     'menubar': True,
     'statusbar': False,
-    'width': "100%",
-    'height': "300px",
+    'width': "75%",
+    'height': "250px",
     'plugins': "spellchecker,paste,searchreplace,advimage",  
-    'theme_advanced_buttons1': "bold,italic,underline,separator,bullist,separator,outdent,indent,separator,undo,redo,image",
+    'theme_advanced_buttons1': "bold,italic,underline,separator,bullist,separator,outdent,indent,separator,undo,redo",
     'cleaup_on_startup': True,
     'theme_advanced_path': False
     

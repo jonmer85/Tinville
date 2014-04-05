@@ -12,7 +12,8 @@ class Shop(models.Model):
                             default=None, max_length=100)
     slug = models.SlugField()
     banner = models.ImageField(upload_to=MEDIA_URL)
-    logo = models.ImageField(upload_to=MEDIA_URL)
+    logo = models.ImageField(upload_to=MEDIA_URL )
+    aboutContent = HTMLField()
 
     def __unicode__(self):
         return self.name
@@ -30,6 +31,4 @@ class Item(models.Model):
     image = models.ImageField(upload_to=MEDIA_URL)
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
-class RichTextField( models.Model ):
-    
-        aboutContent = HTMLField()
+

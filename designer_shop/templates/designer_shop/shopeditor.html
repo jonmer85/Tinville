@@ -92,10 +92,10 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
-                            <div class="tab-pane" id="about">
+                            <form class="tab-pane" id="about" action="test_about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
-                            </div>
+                            </form>
                             <div class="tab-pane" id="addItems">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
