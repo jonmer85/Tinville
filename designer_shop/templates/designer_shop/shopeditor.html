@@ -118,29 +118,65 @@
 
 <script>
 
+var sizeSetSelectionCounter = 0;
+var colorAndSizeRowCounter = 0;
+
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
-    if (selectedValue[0].value == "1"){
-        //sizeVariation handler
+    var sizesFieldSet = $("#sizesFieldSet");
+    if (selectedValue[0].value == "1") {
+        //Size set
+        sizesFieldSet.removeClass("hidden");
+
+        addNewSizeSetRow();
+        //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+        sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
+
+            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+            colorsAndQuantities.collapse('show');
+
+            $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(colorsAndQuantities).attr('id', function(i, id) {
+                    return id + (++colorAndSizeRowCounter);
+                });
+
+            var selectedValue = $("option:selected", this);
+            var sizesFieldSet = $("#sizesFieldSet");
+            if (selectedValue[0].value != "0") {
+                //Add a new size set row
+                addNewSizeSetRow();
+
+            }
+        })
+        //Color event handling (Add a new color/quantity row for more color/quantity selection)
+        sizesFieldSet.on("change", ".row-color-quantity", function(e) {
+
+            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+            colorsAndQuantities.collapse('show');
+
+            $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(colorsAndQuantities).attr('id', function(i, id) {
+                    return id + (++colorAndSizeRowCounter);
+                });
+
+            var selectedValue = $("option:selected", this);
+            var sizesFieldSet = $("#sizesFieldSet");
+            if (selectedValue[0].value != "0") {
+                //Add a new size set row
+                addNewSizeSetRow();
+
+            }
+        })
 
 
     }
 
-});
+})
 
-$("#id_sizeSetSelection").change(function() {
-    var selectedValue = $("#id_sizeSetSelection option:selected");
-    if (selectedValue[0].value != "0") {
-        $("#collapse1").collapse('show');
-    }
-    else {
-        $("#collapse1").collapse('hide')
+var addNewSizeSetRow = function() {
+    $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo(sizesFieldSet).attr('id', function(i, id) {
+        return id + (++sizeSetSelectionCounter);
+    });
 
-    }
-
-});
-
-collapse1
+}
 
 $("#resizeIcon").click(function() {
    $(this).toggleClass("glyphicon-resize-full");

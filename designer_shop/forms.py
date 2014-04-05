@@ -42,29 +42,37 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
                          Field('product_class', placeholder='Product Class')
-                         ),
+                ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
-                             Div(
-                                 Div(
-                                     'sizeSetSelection',
-                                     css_class="accordion-heading"
-                                    ),
-                                 Div(
-                                     Div(
-                                         Div(
-                                             'colorSelection',
-                                             'quantityField'
-                                            ),
-                                            css_class="accordion-inner container"
-                                         ),
-                                         css_class="accordion-body collapse", css_id="collapse1"
-                                     ),
-                                 css_class="accordion-group"
-                                ),
-                             css_class="accordion", css_id="accordion2"
+                             Fieldset('Sizes',
+                                      Div(
+                                          Div(
+                                              Field('sizeSetSelection', css_class="sizeSetSelection"),
+                                              css_class="accordion-heading"
+                                          ),
+                                          Div(
+                                              Div(
+                                                  Div(
+                                                      Div(Field('colorSelection', placeholder="Choose a color"),
+                                                          css_class="col-xs-2 col-xs-offset-8"
+                                                      ),
+                                                      Div(Field('quantityField', placeholder="Choose a quantity"),
+                                                          css_class="col-xs-2"
+                                                      ),
+                                                      css_class="row hidden row-color-quantity", css_id="rowColorQuantityTemplate"
+                                                  ),
+                                                  css_class="accordion-inner"
+                                              ),
+                                              css_class="accordion-body collapse collapse-colors-quantity"
+                                          ),
+                                          css_class="accordion-group hidden", css_id="sizeSetSelectionTemplate"
+                                      ),
+                                    css_id="sizesFieldSet", css_class="hidden"
+                                 ),
                              ),
+                             css_class="accordion", css_id="accordion2"
                          ),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
                 css_class="container"
