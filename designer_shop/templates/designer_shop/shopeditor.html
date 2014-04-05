@@ -137,9 +137,7 @@ $("#id_sizeVariation").change(function() {
             var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
             colorsAndQuantities.collapse('show');
 
-            $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(colorsAndQuantities).attr('id', function(i, id) {
-                    return id + (++colorAndSizeRowCounter);
-                });
+            addNewColorAndQuantityRow(colorsAndQuantities);
 
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
@@ -152,18 +150,12 @@ $("#id_sizeVariation").change(function() {
         //Color event handling (Add a new color/quantity row for more color/quantity selection)
         sizesFieldSet.on("change", ".row-color-quantity", function(e) {
 
-            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
-            colorsAndQuantities.collapse('show');
-
-            $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(colorsAndQuantities).attr('id', function(i, id) {
-                    return id + (++colorAndSizeRowCounter);
-                });
-
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
             if (selectedValue[0].value != "0") {
-                //Add a new size set row
-                addNewSizeSetRow();
+
+                var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+                addNewColorAndQuantityRow(colorsAndQuantities);
 
             }
         })
@@ -174,8 +166,15 @@ $("#id_sizeVariation").change(function() {
 })
 
 var addNewSizeSetRow = function() {
-    $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo(sizesFieldSet).attr('id', function(i, id) {
+    $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo("#sizesFieldSet").attr('id', function(i, id) {
         return id + (++sizeSetSelectionCounter);
+    });
+
+}
+
+var addNewColorAndQuantityRow = function(appendTo) {
+    $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(appendTo).attr('id', function(i, id) {
+        return id + (++colorAndSizeRowCounter);
     });
 
 }
