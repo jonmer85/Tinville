@@ -3,6 +3,7 @@
 {% block body_class %}{{ block.super }} about{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script> 
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -91,9 +92,10 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
-                            <div class="tab-pane" id="about">
-                                Insert About form here.
-                            </div>
+                            <form class="tab-pane" id="about" action="test_about" method="post">
+                                 {%  load crispy_forms_tags %}
+                                 {% crispy aboutBoxForm %}
+                            </form>
                             <div class="tab-pane" id="addItems">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}

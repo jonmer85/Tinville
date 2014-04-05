@@ -30,6 +30,7 @@ django-mobile==0.3.0
 django-oscar==0.6.1
 django-selenium==0.9.6
 django-storages==1.1.6
+django-tinymce==1.5.2
 django-treebeard==2.0b2
 extras==0.0.3
 fuzzywuzzy==0.2
