@@ -1,5 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 
+from django.views.generic import CreateView
+
+from oscar.core.loading import get_model
+
 from designer_shop.models import Shop
 from designer_shop.forms import ProductCreationForm, AboutBoxForm
 
