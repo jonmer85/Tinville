@@ -237,8 +237,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'statusbar': False,
     'width': "75%",
     'height': "250px",
-    'plugins': "spellchecker,paste,searchreplace,advimage",  
-    'theme_advanced_buttons1': "bold,italic,underline,separator,bullist,separator,outdent,indent,separator,undo,redo",
+    'font-size': '22',
+    'plugins': "spellchecker, paste, searchreplace, advimage",  
+    'theme_advanced_buttons1': "fontsizeselect, separator, bold, italic, underline, separator, bullist, separator, outdent, indent, separator, undo, redo, separator, link",
     'cleaup_on_startup': True,
     'theme_advanced_path': False
     
