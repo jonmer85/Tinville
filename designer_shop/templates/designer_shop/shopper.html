@@ -16,20 +16,20 @@
   <div class="container infoBanner full-screen shopBackgroundColor"></div>
 
   <div class="container">
-     <select class="filterTabs col-xs-4 col-xs-offset-1 col-sm-4 col-sm-offset-2 col-md-2"  id="filterTab1"  name="Filter1">
+     <select class="select form-control filterTabs col-xs-1 col-xs-offset-1"  id="filterTab1"  name="Filter1">
         <option>View All</option>
         <option>Women</option>
         <option>Men</option>
         <option>Kids</option>
       </select>
 
-      <select class="filterTabs col-xs-4 col-sm-4 col-md-2" >
+      <select class="select form-control filterTabs col-xs-1  col-xs-offset-1" >
         <option>View All Types</option>
         <option>Dresses</option>
         <option>Pants</option>
         <option>Shoes</option>
       </select>
-      <select class="filterTabs col-xs-4 col-sm-4 col-md-2">
+      <select class="select form-control filterTabs col-xs-1  col-xs-offset-1">
         <option>All Prices</option>
         <option>$0-$50</option>
         <option>$50-$100</option>
@@ -38,31 +38,10 @@
 
   <div class="container">
     <div class="row">
-        <div class="" id="scrollWindow">
-            <div class="shopItems" id="gallery">
-                <ul>
-                  {% for item in shop.item_set.all %}
-                      <div class="thumbnail shopItem shopBorderColor">
-                        <li>
-                            <img src="{{item.image.url}}" class="" alt="" draggable="false"/>
-                              <div class="caption">
-                                  <span class="name shopColor">{{item.name}}</span>
-                                  <span class="price shopColor">${{item.price}}</span>
-                              </div>
-                        </li>
-                      </div>
-                  {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-
-
-
-      <div class=" hidden-xs hidden-sm hidden-md hidden-lg">
+      <div class=" ">
         <div class="shopItems row">
           {% for item in shop.item_set.all %}
-            <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+            <div class="col-xs-offset-1 col-xs-5 col-sm-4 col-md-2 col-lg-2">
               <div class="thumbnail shopItem shopBorderColor">
                 <img src="{{item.image.url}}" class="img-responsive" />
                 <div class="caption">
@@ -82,7 +61,7 @@
     <script>
         $("#tinvilleTagBanner").remove();
 
-    $(function() {
+$(function() {
       $("#gallery").dragend({
         borderBetweenPages: 5,
         onDrag: function( activeElement, gesture, overscroll ) {
@@ -92,20 +71,20 @@
             deltaX = deltaX / 5;
           }
 
-          $(activeElement).prev().find("img").css("margin-left", deltaX + 16 );
+          $(activeElement).prev().find("img").css("margin-left", deltaX + 160 );
           $(activeElement).find("img").css("margin-left", deltaX);
-          $(activeElement).next().find("img").css("margin-left", deltaX - 16 );
+          $(activeElement).next().find("img").css("margin-left", deltaX - 160 );
         },
         onDragEnd: function( activeElement ) {
           $(activeElement).prev().find("img").animate({
-            "margin-left": 16
-          }, 30);
+            "margin-left": 160
+          }, 300);
           $(activeElement).find("img").animate({
             "margin-left": 0
-          }, 30);
+          }, 300);
           $(activeElement).next().find("img").animate({
-            "margin-left": - 16
-          }, 30);
+            "margin-left": - 160
+          }, 300);
         }
       });
 
@@ -116,24 +95,7 @@
           return false;
         }
       });
-    $(window).resize("dragstart", function(event) {
-      if (event.target.nodeName.toUpperCase() == "IMG") {
-        return false;
-      }
-      });
-    }).resize();
-
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-219062-10']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-
+    });
     </script>
 
 {% endblock %}
