@@ -3,6 +3,7 @@
 {% block body_class %}{{ block.super }} about{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script> 
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -91,9 +92,10 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
-                            <div class="tab-pane" id="about">
-                                Insert About form here.
-                            </div>
+                            <form class="tab-pane" id="about" action="test_about" method="post">
+                                 {%  load crispy_forms_tags %}
+                                 {% crispy aboutBoxForm %}
+                            </form>
                             <div class="tab-pane" id="addItems">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
@@ -116,23 +118,59 @@
 
 <script>
 
+var sizeSetSelectionCounter = 0;
+var colorAndSizeRowCounter = 0;
+
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
-    if (selectedValue[0].value == "1"){
-        //sizeVariation handler
+    var sizesFieldSet = $("#sizesFieldSet");
+    if (selectedValue[0].value == "1") {
+        //Size set
+        sizesFieldSet.removeClass("hidden");
+
+        addNewSizeSetRow();
+        //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+        sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
+
+            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+            colorsAndQuantities.collapse('show');
+
+            addNewColorAndQuantityRow(colorsAndQuantities);
+
+            var selectedValue = $("option:selected", this);
+            var sizesFieldSet = $("#sizesFieldSet");
+            if (selectedValue[0].value != "0") {
+                //Add a new size set row
+                addNewSizeSetRow();
+            }
+        })
+        //Color event handling (Add a new color/quantity row for more color/quantity selection)
+        sizesFieldSet.on("change", ".row-color-quantity", function(e) {
+
+            var selectedValue = $("option:selected", this);
+            var sizesFieldSet = $("#sizesFieldSet");
+            if (selectedValue[0].value != "0") {
+
+                var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+                addNewColorAndQuantityRow(colorsAndQuantities);
+            }
+        })
     }
 });
 
-$("#id_sizeSetSelection").change(function() {
-    var selectedValue = $("#id_sizeSetSelection option:selected");
-    if (selectedValue[0].value != "0") {
-        $("#collapse1").collapse('show');
-    }
-    else {
-        $("#collapse1").collapse('hide')
-    }
-});
+var addNewSizeSetRow = function() {
+    $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo("#sizesFieldSet").attr('id', function(i, id) {
+        return id + (++sizeSetSelectionCounter);
+    });
 
+}
+
+var addNewColorAndQuantityRow = function(appendTo) {
+    $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(appendTo).attr('id', function(i, id) {
+        return id + (++colorAndSizeRowCounter);
+    });
+
+}
 
 $("#resizeIcon").click(function() {
    $(this).toggleClass("glyphicon-resize-full");
@@ -146,6 +184,8 @@ $("#minMaxIcon").click(function() {
    $("#resizeIcon").toggleClass("hidden");
 });
 
+
+var windowsize = ""
 $(window).resize(function() {
     resizeEditor();
 });
@@ -157,7 +197,7 @@ $(window).load(function() {
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
     resizeEditor();
-})
+});
 
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;

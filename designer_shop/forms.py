@@ -5,6 +5,9 @@ from oscar.core.loading import get_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 
+from tinymce.widgets import TinyMCE
+
+
 SIZE_TYPES = [
     ('1', "Set (eg. Small, Medium, Large)"),
     ('2', "Dimensions (eg. Length X Width)"),
@@ -42,29 +45,37 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
                          Field('product_class', placeholder='Product Class')
-                         ),
+                ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
-                             Div(
-                                 Div(
-                                     'sizeSetSelection',
-                                     css_class="accordion-heading"
-                                    ),
-                                 Div(
-                                     Div(
-                                         Div(
-                                             'colorSelection',
-                                             'quantityField'
-                                            ),
-                                            css_class="accordion-inner container"
-                                         ),
-                                         css_class="accordion-body collapse", css_id="collapse1"
-                                     ),
-                                 css_class="accordion-group"
-                                ),
-                             css_class="accordion", css_id="accordion2"
+                             Fieldset('Sizes',
+                                      Div(
+                                          Div(
+                                              Field('sizeSetSelection', css_class="sizeSetSelection"),
+                                              css_class="accordion-heading"
+                                          ),
+                                          Div(
+                                              Div(
+                                                  Div(
+                                                      Div(Field('colorSelection', placeholder="Choose a color"),
+                                                          css_class="col-xs-2 col-xs-offset-8"
+                                                      ),
+                                                      Div(Field('quantityField', placeholder="Choose a quantity"),
+                                                          css_class="col-xs-2"
+                                                      ),
+                                                      css_class="row hidden row-color-quantity", css_id="rowColorQuantityTemplate"
+                                                  ),
+                                                  css_class="accordion-inner"
+                                              ),
+                                              css_class="accordion-body collapse collapse-colors-quantity"
+                                          ),
+                                          css_class="accordion-group hidden", css_id="sizeSetSelectionTemplate"
+                                      ),
+                                    css_id="sizesFieldSet", css_class="hidden"
+                                 ),
                              ),
+                             css_class="accordion", css_id="accordion2"
                          ),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
                 css_class="container"
@@ -76,6 +87,43 @@ class ProductCreationForm(forms.ModelForm):
         model = get_model('catalogue', 'Product')
         # fields = ['title', 'description', 'product_class']
 
+class AboutBoxForm( forms.Form ):
+    
+    aboutContent = forms.CharField( widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    
+    helper = FormHelper()
+    helper.form_show_labels = False
+    
+    helper.layout = Layout(
+        Div(
+            Field('aboutContent', placeholder="Enter Text Here"),
+            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
+            css_class="container"
+        )) 
+
+    # def clean_password2(self):
+    #     # Check that the two password entries match
+    #     password = self.cleaned_data.get("password")
+    #     password2 = self.cleaned_data.get("passwosrd2")
+    #     if password and password2 and password != password2:
+    #         raise forms.ValidationError("Passwords do not match")
+    #     return password2
+    #
+    # def save(self, commit=True):
+    #     # Save the provided password in hashed format
+    #     user = super(TinvilleUserCreationForm, self).save(commit=False)
+    #     user.set_password(self.cleaned_data["password"])
+    #
+    #     if commit:
+    #         user.save()
+    #
+    #     if user.is_seller:
+    #         user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+    #
+    #     return user
+    #
+    # def clean_email(self):
+    #     return self.cleaned_data['email'].lower()
                                #HTML("""<table class="table" id="sizegrid1">
                                          #              <thead>
                                          #                    <tr>

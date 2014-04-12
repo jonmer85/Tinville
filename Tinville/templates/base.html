@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 {% load i18n %}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -17,12 +17,13 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
 
     {% block css %}{% endblock %}
+    {{ form.media }}
 
 
 </head>
@@ -59,7 +60,7 @@
                       </li>
                     </ul>
                 {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout><i class="fa fa-sign-out fa-4"></i></a>
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
 
             </div>
