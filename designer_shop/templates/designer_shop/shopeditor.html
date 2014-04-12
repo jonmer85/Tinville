@@ -17,7 +17,7 @@
                 </h4>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
-                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
                             <a href="#banner" data-toggle="pill">Banner</a>
@@ -116,6 +116,9 @@
 
 <script>
 
+
+
+
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
     if (selectedValue[0].value == "1"){
@@ -133,7 +136,6 @@ $("#id_sizeSetSelection").change(function() {
         $("#collapse1").collapse('hide')
 
     }
-
 });
 
 
@@ -155,16 +157,28 @@ $("#minMaxIcon").click(function() {
 {#    }#}
 });
 
-var loaded;
-loaded = false;
+{#var windowResize={#}
+{#    width:0,#}
+{#    init:function() {#}
+{#        this.width=$(window).width();#}
+{#    },#}
+{#    checkResize:function(callback) {#}
+{#        if( this.width!=$(window).width() ) {#}
+{#            callback.apply();#}
+{#        }#}
+{#    }#}
+{#};#}
+{#windowResize.init();#}
+var windowsize = ""
 $(window).resize(function() {
-   if (loaded == true) {
-           resizeEditor();
-   }
+{#    windowResize.checkResize( function() {#}
+            resizeEditor();
+            windowsize = windowsize + ": " + $(window).height() + "h" + ", " + $(window).width() + "w"
+{#    });#}
 });
-
+var loaded = 0
 $(window).load(function() {
-    loaded=true;
+    loaded = loaded + 1
     resizeEditor();
 });
 
@@ -173,39 +187,26 @@ $("#optionContent li").click(function (){
     resizeEditor();
 })
 
-
 $("#optionsXS").click(function() {
+    alert (windowsize);
+    alert (loaded);
     var currentFormPanelHeight;
     var currentFormContentHeight;
     var maxFormHeight;
     var transitionHeight;
     currentFormPanelHeight = $("#secondColumn").outerHeight();
     maxFormHeight = Math.round($(window).height()*0.90);
-    if ($("#optionContent").outerHeight() > maxFormHeight-
-                $("#shopEditorTitle").outerHeight()-
-                $("#optionsXS").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'))-
-                parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-bottom')))
-    {
-        $("#optionContent").height(maxFormHeight-
-                $("#optionsXS").outerHeight()-
-                $("#shopEditorTitle").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'))-
-                parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-bottom')));
-                transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
-    }
-    else
-    {
-        transitionHeight = $("#optionContent").outerHeight();
-    }
+    $("#optionContent").height(maxFormHeight-
+            $("#optionsXS").outerHeight()-
+            $("#shopEditorTitle").outerHeight()-
+            $("#buttonContainer").outerHeight()-
+            parseInt($("#cornerRadius").css('border-top-width'))-
+            parseInt($("#cornerRadius").css('border-bottom-width'))-
+            parseInt($("#shopEditorHeading").css('padding-bottom'))-
+            parseInt($("#formPanel").css('border-top-width'))-
+            parseInt($("#formPanel").css('padding-bottom')));
+            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
+
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
         $("#optionPanel").transition({height: transitionHeight},{duration: 300});
@@ -267,13 +268,13 @@ $(function(){
     $("#optionContent").slimScroll({
         height: 'auto'
     });
-}).resize();
+});
 
 $(function(){
     $("#formContent").slimScroll({
        height: 'auto'
     });
-}).resize();
+});
 
 </script>
 
