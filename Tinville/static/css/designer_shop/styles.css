@@ -225,6 +225,11 @@
     background-color: #e7e5e6;
 }
 
+#optionsXS {
+    color: #5B595A;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .nav-pills>li>a {
         text-align: center;
