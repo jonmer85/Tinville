@@ -157,28 +157,26 @@ $("#minMaxIcon").click(function() {
 {#    }#}
 });
 
-{#var windowResize={#}
-{#    width:0,#}
-{#    init:function() {#}
-{#        this.width=$(window).width();#}
-{#    },#}
-{#    checkResize:function(callback) {#}
-{#        if( this.width!=$(window).width() ) {#}
-{#            callback.apply();#}
-{#        }#}
-{#    }#}
-{#};#}
-{#windowResize.init();#}
-var windowsize = ""
+var windowResize={
+    height:0,
+    init:function() {
+        this.height=$(window).height();
+    },
+    checkResize:function(callback) {
+        if( this.height!=$(window).height() ) {
+            callback.apply();
+        }
+    }
+};
+
+windowResize.init();
 $(window).resize(function() {
-{#    windowResize.checkResize( function() {#}
+    windowResize.checkResize( function() {
             resizeEditor();
-            windowsize = windowsize + ": " + $(window).height() + "h" + ", " + $(window).width() + "w"
-{#    });#}
+    });
 });
-var loaded = 0
+
 $(window).load(function() {
-    loaded = loaded + 1
     resizeEditor();
 });
 
@@ -188,8 +186,6 @@ $("#optionContent li").click(function (){
 })
 
 $("#optionsXS").click(function() {
-    alert (windowsize);
-    alert (loaded);
     var currentFormPanelHeight;
     var currentFormContentHeight;
     var maxFormHeight;
