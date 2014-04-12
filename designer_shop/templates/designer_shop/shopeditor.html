@@ -157,23 +157,8 @@ $("#minMaxIcon").click(function() {
 {#    }#}
 });
 
-var windowResize={
-    height:0,
-    init:function() {
-        this.height=$(window).height();
-    },
-    checkResize:function(callback) {
-        if( this.height!=$(window).height() ) {
-            callback.apply();
-        }
-    }
-};
-
-windowResize.init();
 $(window).resize(function() {
-    windowResize.checkResize( function() {
             resizeEditor();
-    });
 });
 
 $(window).load(function() {
