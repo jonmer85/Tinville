@@ -18,7 +18,7 @@
                 </h4>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
-                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
                             <a href="#banner" data-toggle="pill">Banner</a>
@@ -144,7 +144,6 @@ $("#id_sizeVariation").change(function() {
             if (selectedValue[0].value != "0") {
                 //Add a new size set row
                 addNewSizeSetRow();
-
             }
         })
         //Color event handling (Add a new color/quantity row for more color/quantity selection)
@@ -159,11 +158,8 @@ $("#id_sizeVariation").change(function() {
 
             }
         })
-
-
     }
-
-})
+});
 
 var addNewSizeSetRow = function() {
     $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo("#sizesFieldSet").attr('id', function(i, id) {
@@ -189,32 +185,22 @@ $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-up");
    $(this).toggleClass("glyphicon-chevron-down");
    $("#resizeIcon").toggleClass("hidden");
-
-{#    alert ($(this).hasClass("glyphicon-chevron-down"));#}
-{#    if ($(this).hasClass("glyphicon-chevron-down")==true) {#}
-{#        alert("hi");#}
-{#        resizeEditor();#}
-{#    }#}
 });
 
-var loaded;
-loaded = false;
+
+var windowsize = ""
 $(window).resize(function() {
-   if (loaded == true) {
-           resizeEditor();
-   }
+    resizeEditor();
 });
 
 $(window).load(function() {
-    loaded=true;
     resizeEditor();
 });
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
     resizeEditor();
-})
-
+});
 
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
@@ -223,31 +209,17 @@ $("#optionsXS").click(function() {
     var transitionHeight;
     currentFormPanelHeight = $("#secondColumn").outerHeight();
     maxFormHeight = Math.round($(window).height()*0.90);
-    if ($("#optionContent").outerHeight() > maxFormHeight-
-                $("#shopEditorTitle").outerHeight()-
-                $("#optionsXS").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'))-
-                parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-bottom')))
-    {
-        $("#optionContent").height(maxFormHeight-
-                $("#optionsXS").outerHeight()-
-                $("#shopEditorTitle").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'))-
-                parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-bottom')));
-                transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
-    }
-    else
-    {
-        transitionHeight = $("#optionContent").outerHeight();
-    }
+    $("#optionContent").height(maxFormHeight-
+            $("#optionsXS").outerHeight()-
+            $("#shopEditorTitle").outerHeight()-
+            $("#buttonContainer").outerHeight()-
+            parseInt($("#cornerRadius").css('border-top-width'))-
+            parseInt($("#cornerRadius").css('border-bottom-width'))-
+            parseInt($("#shopEditorHeading").css('padding-bottom'))-
+            parseInt($("#formPanel").css('border-top-width'))-
+            parseInt($("#formPanel").css('padding-bottom')));
+            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
+
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
         $("#optionPanel").transition({height: transitionHeight},{duration: 300});
@@ -309,13 +281,13 @@ $(function(){
     $("#optionContent").slimScroll({
         height: 'auto'
     });
-}).resize();
+});
 
 $(function(){
     $("#formContent").slimScroll({
        height: 'auto'
     });
-}).resize();
+});
 
 </script>
 
