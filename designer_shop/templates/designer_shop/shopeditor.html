@@ -135,7 +135,9 @@ $("#id_sizeVariation").change(function() {
             var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
             colorsAndQuantities.collapse('show');
 
-            addNewColorAndQuantityRow(colorsAndQuantities);
+            var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+
+            addNewColorAndQuantityRow(colorsAndQuantitiesTable);
 
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
@@ -146,14 +148,14 @@ $("#id_sizeVariation").change(function() {
             }
         })
         //Color event handling (Add a new color/quantity row for more color/quantity selection)
-        sizesFieldSet.on("change", ".row-color-quantity", function(e) {
+        sizesFieldSet.on("change", ".row-color", function(e) {
 
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
             if (selectedValue[0].value != "0") {
 
-                var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
-                addNewColorAndQuantityRow(colorsAndQuantities);
+                var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable);
 
             }
         })

@@ -28,4 +28,3 @@ def shopabout(request):
             currentshop.save()
         
             return shopeditor(request)
-        

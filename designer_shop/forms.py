@@ -57,17 +57,40 @@ class ProductCreationForm(forms.ModelForm):
                                           ),
                                           Div(
                                               Div(
-                                                  Div(
-                                                      Div(Field('colorSelection', placeholder="Choose a color"),
-                                                          css_class="col-xs-2 col-xs-offset-8"
+                                                  HTML("""<table class="table table-striped table-hover">
+                                                      <thead>
+                                                            <tr>
+                                                                <td class="col-xs-8"><b>Color</b></td>
+                                                                <td class="col-xs-4"><b>Quantity</b></td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="hidden row-color-quantity" id="rowColorQuantityTemplate">
+                                                                <td>"""),
+                                                  Div(Field('colorSelection', placeholder="Choose a color"),
+                                                          css_class="row-color"
                                                       ),
-                                                      Div(Field('quantityField', placeholder="Choose a quantity"),
-                                                          css_class="col-xs-2"
+                                                  HTML("""</td>
+                                                     <td>"""),
+                                                  Div(Field('quantityField', placeholder="Choose a quantity"),
+                                                          css_class=""
                                                       ),
-                                                      css_class="row hidden row-color-quantity", css_id="rowColorQuantityTemplate"
-                                                  ),
-                                                  css_class="accordion-inner"
-                                              ),
+                                                  HTML("""
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    """
+                                                  ), css_class="accordion-inner table-responsive"
+                                             ),
+
+                                                  # Div(
+                                                  #
+                                                  #
+                                                  #     css_class="row hidden row-color-quantity", css_id="rowColorQuantityTemplate"
+                                                  # ),
+                                              #     css_class="accordion-inner table-responsive"
+                                              # ),
                                               css_class="accordion-body collapse collapse-colors-quantity"
                                           ),
                                           css_class="accordion-group hidden", css_id="sizeSetSelectionTemplate"
