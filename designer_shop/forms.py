@@ -35,9 +35,11 @@ class ProductCreationForm(forms.ModelForm):
         super(ProductCreationForm, self).__init__(*args, **kwargs)
         # password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
+
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         # helper.form_class = 'form-horizontal'
+
 
         self.helper.layout = Layout(
             Div(
@@ -83,14 +85,6 @@ class ProductCreationForm(forms.ModelForm):
                                                     """
                                                   ), css_class="accordion-inner table-responsive"
                                              ),
-
-                                                  # Div(
-                                                  #
-                                                  #
-                                                  #     css_class="row hidden row-color-quantity", css_id="rowColorQuantityTemplate"
-                                                  # ),
-                                              #     css_class="accordion-inner table-responsive"
-                                              # ),
                                               css_class="accordion-body collapse collapse-colors-quantity"
                                           ),
                                           css_class="accordion-group hidden", css_id="sizeSetSelectionTemplate"
@@ -105,6 +99,7 @@ class ProductCreationForm(forms.ModelForm):
             )
 
         )
+        self.fields['description'].widget = TinyMCE()
 
     class Meta:
         model = get_model('catalogue', 'Product')
