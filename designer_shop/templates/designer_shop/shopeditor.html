@@ -1,9 +1,7 @@
-{% extends "home.html" %}
+{% extends "designer_shop/shopper.html" %}
 {% load i18n %}
-{% block body_class %}{{ block.super }} about{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script> 
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -92,7 +90,7 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
-                            <form class="tab-pane" id="about" action="test_about" method="post">
+                            <form class="tab-pane" id="about" action="edit/about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
@@ -113,6 +111,11 @@
 </div>
 
 {% endblock %}
+
+{% block javascript_library %}
+    {{ block.super }}
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
+{% endblock javascript_library %}
 
 {% block javascript %}
 

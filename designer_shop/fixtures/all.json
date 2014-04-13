@@ -21,7 +21,8 @@
 			"slug": "Demo",
             "banner": "images/banner.png",
             "logo": "images/logo.png",
-            "user": 1
+            "user": 1,
+            "aboutContent": "<p><b>Some bold sample about text here</b></p>"
         }
     },
     {

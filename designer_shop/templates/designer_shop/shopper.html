@@ -5,7 +5,11 @@
   {% if shop.banner %}
     <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen" />
   {% endif %}
+
   <div class="container">
+  {% if shop.aboutContent %}
+    {{ shop.aboutContent | safe }}
+  {% endif %}
 	<div class="shopItems row">
 	  {% for item in shop.item_set.all %}
 		<div class="col-sm-2 col-md-2">

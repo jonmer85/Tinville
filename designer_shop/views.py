@@ -1,8 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
-from django.views.generic import CreateView
-
-from oscar.core.loading import get_model
 
 from designer_shop.models import Shop
 from designer_shop.forms import ProductCreationForm, AboutBoxForm
@@ -12,19 +9,25 @@ def shopper(request, slug):
         'shop': get_object_or_404(Shop, slug__exact=slug)
     })
 
-def shopeditor(request):
-    return render(request, 'designer_shop/shopeditor.html',
-                  {'productCreationForm': ProductCreationForm, 'aboutBoxForm': AboutBoxForm})
+def shopeditor(request, slug):
+    shop = get_object_or_404(Shop, slug__exact=slug)
+    return render(request, 'designer_shop/shopeditor.html', {
+        'shop': shop,
+        'productCreationForm': ProductCreationForm,
+        'aboutBoxForm': AboutBoxForm(initial=
+                                     {
+                                         "aboutContent": shop.aboutContent
+                                     })
+    })
 
-def shopabout(request):
+def shopabout(request, slug):
     
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
 
         if form.is_valid():
-            
-            currentshop = Shop.objects.get( name = "Demo" )
-            currentshop.aboutContent = form.cleaned_data[ "aboutContent" ]
-            currentshop.save()
+            currentshop = Shop.objects.get(slug = slug)
+            currentshop.aboutContent = form.cleaned_data["aboutContent"]
+            currentshop.save(update_fields=["aboutContent"])
         
-            return shopeditor(request)
+            return redirect("designer_shop.views.shopeditor", slug)
