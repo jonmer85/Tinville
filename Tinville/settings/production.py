@@ -17,5 +17,11 @@ DATABASES = {
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
 
+AWS_ACCESS_KEY_ID = 'AKIAJJLBU23GKJZH6SQA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'tinville'
+
+S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
