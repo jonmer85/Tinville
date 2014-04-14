@@ -239,6 +239,3 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_PASTE = True
-
-DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
-STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
