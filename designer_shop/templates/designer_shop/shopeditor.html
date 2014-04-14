@@ -2,6 +2,7 @@
 {% load i18n %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>s
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -111,11 +112,6 @@
 </div>
 
 {% endblock %}
-
-{% block javascript_library %}
-    {{ block.super }}
-    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
-{% endblock javascript_library %}
 
 {% block javascript %}
 
