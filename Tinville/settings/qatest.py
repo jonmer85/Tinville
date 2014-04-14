@@ -16,3 +16,6 @@ DATABASES = {
     'PASSWORD': 'jqnzeIdyhXy9mmfYa6cwleCONg'
   }
 }
+
+STATIC_URL = S3_URL + "/static-testing/"
+MEDIA_URL = S3_URL + "/media-testing/"

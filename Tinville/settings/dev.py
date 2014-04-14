@@ -16,3 +16,6 @@ DATABASES = {
     'PASSWORD': 'kNzd6vhVm7ZeHke961oiIkeZno'
   }
 }
+
+STATIC_URL = S3_URL + "/static-dev/"
+MEDIA_URL = S3_URL + "/media-dev/"
