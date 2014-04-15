@@ -10,8 +10,6 @@ from django.core.mail import send_mail
 from django.utils.timezone import utc
 from autoslug import AutoSlugField
 
-import designer_shop.models
-
 from Tinville.settings.base import EMAIL_HOST_USER
 
 

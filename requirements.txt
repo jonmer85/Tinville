@@ -1,3 +1,5 @@
+--allow-all-external
+--allow-unverified PIL
 -e git://github.com/gabrielfalcao/lettuce.git@6e7a5566f13f01192d65b1fc010659d88a27a546#egg=lettuce
 -e git://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins
 -e git://github.com/maraujop/django-crispy-forms@d096de1a365d14761deb7f5ef3ba09bfaf57fd5d#egg=django-crispy-forms
@@ -29,6 +31,7 @@ django-mobile==0.3.0
 django-oscar==0.6.1
 django-selenium==0.9.6
 django-storages==1.1.6
+django-tinymce==1.5.2
 django-treebeard==2.0b2
 extras==0.0.3
 fuzzywuzzy==0.2

@@ -27,8 +27,7 @@ class TinvilleUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'is_seller',
-                       'password', 'password2')}
+            'fields': ('email', 'password')}
         ),
     )
     search_fields = ('email',)

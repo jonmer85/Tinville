@@ -1,7 +1,7 @@
-from Tinville.settings.base import MEDIA_URL
+from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.db import models
+from tinymce.models import HTMLField
 from color_utils.widgets import BootstrapColorPicker
 
 # Create your models here.
@@ -12,8 +12,9 @@ class Shop(models.Model):
     name = models.CharField(verbose_name="Shop name", unique=True, blank=False, null=False, db_index=True,
                             default=None, max_length=100)
     slug = models.SlugField()
-    banner = models.ImageField(upload_to=MEDIA_URL)
-    logo = models.ImageField(upload_to=MEDIA_URL)
+    banner = models.ImageField(upload_to=settings.MEDIA_URL)
+    logo = models.ImageField(upload_to=settings.MEDIA_URL)
+    aboutContent = HTMLField()
     color = models.CharField(default='ffffff', max_length=6)
 
     def __unicode__(self):
@@ -29,5 +30,7 @@ class Shop(models.Model):
 class Item(models.Model):
     shop = models.ForeignKey(Shop)
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to=MEDIA_URL)
+    image = models.ImageField(upload_to=settings.MEDIA_URL)
     price = models.DecimalField(max_digits=8, decimal_places=2)
+
+

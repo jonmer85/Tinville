@@ -16,7 +16,6 @@ urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
     url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
     url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
-    url(r'^shop/$', 'flatpage', kwargs={'url': '/color/'}, name='shop_color'),
 )
 
 urlpatterns += patterns('',
@@ -30,8 +29,11 @@ urlpatterns += patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^shopeditor/test/$', 'designer_shop.views.shopeditor'),
-    url(r'^shopeditor/test_color/$', 'designer_shop.views.postcolor'),
+    url(r'^tinymce/', include( 'tinymce.urls')),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
+    url(r'^(?P<slug>\w+)/edit$', 'designer_shop.views.shopeditor'),
+    url(r'^(?P<slug>\w+)/edit/about$', 'designer_shop.views.shopabout'),
+    url(r'^(?P<slug>\w+)/edit/color$', 'designer_shop.views.postcolor'),
     url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )
 
