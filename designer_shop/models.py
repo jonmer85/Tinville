@@ -1,6 +1,8 @@
 from Tinville.settings.base import MEDIA_URL
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.db import models
+from color_utils.widgets import BootstrapColorPicker
 
 # Create your models here.
 
@@ -12,6 +14,7 @@ class Shop(models.Model):
     slug = models.SlugField()
     banner = models.ImageField(upload_to=MEDIA_URL)
     logo = models.ImageField(upload_to=MEDIA_URL)
+    color = models.CharField(default='ffffff', max_length=6)
 
     def __unicode__(self):
         return self.name

@@ -21,6 +21,7 @@
 			"slug": "Demo",
             "banner": "images/banner.png",
             "logo": "images/logo.png",
+            "color": "ffffff",
             "user": 1
         }
     },

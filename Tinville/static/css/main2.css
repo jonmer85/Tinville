@@ -159,6 +159,73 @@ body {
     text-decoration: none;
 }
 
+<<<<<<< Updated upstream
+=======
+/*Start navbar*/
+.mobileMenu {
+    position: fixed;
+    height: 100%;
+    width: 80%;
+    top: 0px;
+    left: 0px;
+    background-color: #e64a1c;
+    overflow: hidden;
+
+    -webkit-transform: translate(-100%, 0%);
+    -webkit-transition: all 1s ease;
+}
+
+.mobileMenu h2{
+    padding: 20px 0px;
+    columns: #e64a1c;
+    text-align: center;
+}
+
+.mobileMenu a {
+    display: block;
+    padding: 20px 80px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.43);
+}
+
+nav a:hover{
+    color: #CCCCCC;
+
+}
+
+/*END navbar*/
+.slidingContent {
+    -webkit-transition: all 1s ease;
+
+    width: 100%;
+    height: 100%;
+    background-color: #f3efe0;
+    text-align: center;
+    margin-left: .5%;
+}
+
+.menu-toggle{
+    display: block;
+    text-decoration: none;
+    margin-top: 20px;
+    font-size: 18px;
+    float: right;
+}
+
+.menu-toggle:hover{
+    color:#262626;
+    font-size: 19px;
+    text-decoration: none;
+}
+
+.menuButtonStyle{
+    float: right;
+    display: none;
+}
+
+>>>>>>> Stashed changes
 #navHeader {
 }
 
@@ -258,59 +325,35 @@ body {
     /*margin-right: 0;*/
 /*}*/
 
-/**
-  * Tommy Leedberg - 2/11/2014 - Defect #152
-  *
-  * Summary: 
-  *      Updating the login popupform to align it with the
-  *      sign-in button.
-  * Solution:
-  *     Added margins to keep the loginPopupForm aligned with the sign-in button
-  *         0px-767px    : width set to 100% no margins needed
-  *         768px-991px  : right-margin of 4%
-  *         992px-1200px : right-margin of 3%
-  *         1200px+      : right-margin of 2%
-  */
-
-@media (max-width: 767px)
-{
-    .loginPopupForm
-    {
-        width: 100%
-    }
-}
-
 @media (min-width: 768px) {
   .loginPopupForm {
     left: auto !important;
     width: 250px;
-    margin-right: 4% ;
-    
   }
 }
 
 @media (min-width: 992px) {
   .loginPopupForm 
   {
-      margin-right: 3% ;
+      margin-right: 2.54% ;
+    /*width: 232px;*/
   }
 }
 
-@media( min-width: 1200px)
-{
-    .loginPopupForm
-    {
-        margin-right: 2.5% ;
-    }
+@media (max-width: 992px) {
+  .loginPopupForm 
+  {
+      margin-right: 4% ;
+    /*width: 232px;*/
+  }
 }
-
 .loginPopupForm {
     background-color: #E7E7E7;
     padding-top: 0%;
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    /*width: 250px;;
+    /*width: 250px;*/
     /*opacity: .95;*/
 
 }

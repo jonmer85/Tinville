@@ -4,19 +4,24 @@ from oscar.core.loading import get_model
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div
-
-
+from designer_shop.models import Shop
+from color_utils import widgets
 
 class ProductCreationForm(forms.ModelForm):
 
     helper = FormHelper()
     helper.form_show_labels = False
-    helper.form_class = 'form-horizontal'
+    # helper.form_class = 'form-horizontal'
 
     helper.layout = Layout(
-        Field('title', placeholder="Title"),
-        Field('description', placeholder="Description"),
-        Submit('productCreationForm', 'Create', css_class='tinvilleButton')
+        Div(
+            Field('title', placeholder="Title"),
+            Field('description', placeholder="Description"),
+            Field('product_class', placeholder="Product Class"),
+            Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
+            css_class="container"
+        )
+
     )
 
     class Meta:
@@ -46,3 +51,30 @@ class ProductCreationForm(forms.ModelForm):
     #
     # def clean_email(self):
     #     return self.cleaned_data['email'].lower()
+
+
+class DesignerShopColorPicker(forms.Form):
+    helper = FormHelper()
+    helper.form_show_labels = False
+    # helper.form_class = 'form-horizontal'
+    colorField = forms.CharField(widget=widgets.FarbtasticColorPicker)
+
+    helper.layout = Layout(
+        Div(
+            'colorField',
+            Submit('designerShopColorPicker', 'Create', css_class='tinvilleButton'),
+            css_class="container"
+        )
+    )
+
+
+    #self.helper.layout = Layout(
+    #DIV(HTML("""<h2>Color Picker</h2>
+     #        Choose Color: <input type="color" name="color1" id="color1" /><br /><br />
+      #       <input type="button" onClick="processData('color1')" value="Submit" />"""),))
+
+    #function processData(c1) {
+	#   var color1 = document.getElementById(c1).value;
+	#   alert(color1);
+	#   // end the values to server storage
+    #}

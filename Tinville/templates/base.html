@@ -20,6 +20,7 @@
     <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main2.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
 
     {% block css %}{% endblock %}
@@ -38,10 +39,28 @@
             <div id="navHeader" class="navbar-header">
 
                 <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
+    <!--<div class="mobileMenu">
+    <h2></h2>
+    <h2></h2>
+    <h2></h2>
+        <nav>
+            <a href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
+            <a href="#">Login</a>
+            <a href="#">Men</a>
+            <a href="#">Women</a>
+        </nav>
+    </div>!-->
+
+    <nav class="yamm navbar-default nonMobileMenu" role="navigation">
+        <div class="container ">
+            <div class="navbar-header">
+
+                <button id ="sidebarButton" type="button" class="navbar-toggle menu-toggle visible-xs">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
                 <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
                 {% if not user.is_authenticated %}
                     <ul id="signInButton" class="nav pull-right">
@@ -75,7 +94,7 @@
                                         <div class="row">
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Clothing</strong></p></li>
-                                                <li><a href="#" >Outerwear</a></li>
+                                                <li><a href="{% url 'shop_color'%}" >Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
                                                 <li><a href="#">Shirts</a></li>
                                                 <li><a href="#">Pants</a></li>
@@ -115,50 +134,7 @@
                                         </div>
                                     </div>
 
-                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle">
-                                        <div class="row">
-                                            <button id="mobileWomensCbtn" class="contentButton"><b><i class="whhg-tshirt"></i></b></button>
-                                            <button id="mobileWomensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
-                                            <button id="mobileWomensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
 
-                                            <ul id="mobileWomensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
-                                                <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All</b></a></li>
-                                            </ul>
-                                            <ul id="mobileWomensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All</strong></a></li>
-                                            </ul>
-                                            <ul id="mobileWomensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All</strong></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </li>
                             </ul>
                         </li>
@@ -211,50 +187,7 @@
                                         </div>
                                     </div>
 
-                                    <div  id="mobileMenContent" class="yamm-content navbarLinkStyle">
-                                        <div class="row">
-                                            <button id="mobileMensCbtn" class="contentButton"><b><i class="whhg-tshirt contentIcon"></i></b></button>
-                                            <button id="mobileMensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
-                                            <button id="mobileMensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
 
-                                            <ul id="mobileMensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
-                                                <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
-                                            </ul>
-                                            <ul id="mobileMensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
-                                            </ul>
-                                            <ul id="mobileMensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
 
                                 </li>
                             </ul>
@@ -409,10 +342,11 @@
 
 
     {% block javascript_library %}
+
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>
-        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+
+{#        <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>#}
+{#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>

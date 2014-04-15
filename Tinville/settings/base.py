@@ -165,7 +165,7 @@ INSTALLED_APPS = [
     'lettuce.django',
     'fixture_media',
     'django_extensions',
-    'compressor'
+    'compressor',
 ] + get_core_apps() + PROJECT_APPS
 
 
