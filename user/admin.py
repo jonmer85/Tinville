@@ -16,26 +16,22 @@ class TinvilleUserAdmin(UserAdmin):
     list_display = ('email',
                     'is_admin',
                     'is_seller',
-                    'other_site_url',
-                    'shop_name',
                     'is_active'
                     )
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'is_seller')}),
-        ('Personal info', {'fields': ('other_site_url', 'shop_name')}),
         ('Permissions', {'fields': ('is_admin', 'is_active')}),
         # ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'other_site_url', 'shop_name', 'is_seller',
-                       'password', 'password2')}
+            'fields': ('email', 'password')}
         ),
     )
-    search_fields = ('email', 'shop_name')
-    ordering = ('email', 'shop_name')
+    search_fields = ('email',)
+    ordering = ('email',)
     filter_horizontal = ()
 
 # Now register the new UserAdmin...
