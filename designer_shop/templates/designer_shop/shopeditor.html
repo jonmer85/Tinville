@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>s
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -186,8 +186,6 @@ $("#minMaxIcon").click(function() {
    $("#resizeIcon").toggleClass("hidden");
 });
 
-
-var windowsize = ""
 $(window).resize(function() {
     resizeEditor();
 });
@@ -203,7 +201,6 @@ $("#optionContent li").click(function (){
 
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
-    var currentFormContentHeight;
     var maxFormHeight;
     var transitionHeight;
     currentFormPanelHeight = $("#secondColumn").outerHeight();
@@ -255,7 +252,7 @@ function resizeEditor() {
                 parseInt($("#cornerRadius").css('border-top-width'))-
                 parseInt($("#cornerRadius").css('border-bottom-width'));
         $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
-        $("#optionContent").transition({height: $("#optionContent").parent().outerHeight()},{duration: 300});
+        $("#optionContent").transition({height: optionPanelHeight},{duration: 300});
         $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
         $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
     }
