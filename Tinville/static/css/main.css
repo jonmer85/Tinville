@@ -19,9 +19,13 @@ textarea {
 }
 
 body {
-    font-size: 1em;
-    line-height: 1.9;
-    font-family: "MS Sans Serif", Geneva, sans-serif;
+    font-size: 1.3em;
+    line-height: 1.4;
+    font-family: "Cabin Condensed", sans-serif;
+}
+
+.well {
+	border-color: white;
 }
 
 h1,
