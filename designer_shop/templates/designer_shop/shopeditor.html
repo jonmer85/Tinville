@@ -27,6 +27,9 @@
                             <a href="#logo" data-toggle="pill">Logo</a>
                         </li>
                         <li>
+                            <a href="#color" data-toggle="pill">Color</a>
+                        </li>
+                        <li>
                             <a href="#about" data-toggle="pill">About</a>
                         </li>
                         <li>
@@ -92,6 +95,10 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
+                            <form class="tab-pane" id="color" action="/edit/test_color/" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy designerShopColorPicker %}
+                            </form>
                             <form class="tab-pane" id="about" action="edit/about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}

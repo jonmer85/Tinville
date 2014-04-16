@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 from tinymce.models import HTMLField
-from color_utils.widgets import BootstrapColorPicker
 
 # Create your models here.
 
