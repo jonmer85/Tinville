@@ -3,6 +3,7 @@
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
     <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -24,6 +25,9 @@
                         </li>
                         <li>
                             <a href="#logo" data-toggle="pill">Logo</a>
+                        </li>
+                        <li>
+                            <a href="#color" data-toggle="pill">Color</a>
                         </li>
                         <li>
                             <a href="#about" data-toggle="pill">About</a>
@@ -91,6 +95,10 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
+                            <form class="tab-pane" id="color" action="/edit/test_color/" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy designerShopColorPicker %}
+                            </form>
                             <form class="tab-pane" id="about" action="edit/about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
@@ -112,6 +120,12 @@
 </div>
 
 {% endblock %}
+
+{% block javascript_library %}l
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+
+{% endblock javascript_library %}
 
 {% block javascript %}
 

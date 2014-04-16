@@ -11,6 +11,7 @@ from crispy_forms.bootstrap import AppendedText
 from user.models import TinvilleUser
 from designer_shop.models import Shop
 
+
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     shop_name = forms.CharField(label='Shop name', required=False)
@@ -47,6 +48,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
+
 
 class TinvilleUserChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on
