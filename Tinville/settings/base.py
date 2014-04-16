@@ -4,6 +4,9 @@ import os.path
 
 from unipath import Path
 
+from oscar import get_core_apps
+from oscar.defaults import *
+
 # HEROKU Change!!!
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -18,6 +21,7 @@ MANAGERS = ADMINS
 AUTH_USER_MODEL = 'user.TinvilleUser'
 
 PROJECT_DIR = Path(__file__).ancestor(2)
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -46,10 +50,6 @@ USE_TZ = True
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = PROJECT_DIR.child("media")
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -57,9 +57,6 @@ MEDIA_URL = '/media/'
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = ""
 
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -95,8 +92,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
+    'oscar.apps.basket.middleware.BasketMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -106,11 +105,13 @@ ROOT_URLCONF = 'Tinville.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'Tinville.wsgi.application'
 
+from oscar import OSCAR_MAIN_TEMPLATE_DIR
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
+    OSCAR_MAIN_TEMPLATE_DIR,
 
 )
 
@@ -122,18 +123,23 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'django_mobile.context_processors.flavour',
-    'user.context_processors.include_login_form'
+    'user.context_processors.include_login_form',
+    'oscar.apps.search.context_processors.search_form',
+    'oscar.apps.promotions.context_processors.promotions',
+    'oscar.apps.checkout.context_processors.checkout',
+    'oscar.apps.customer.notifications.context_processors.notifications',
+    'oscar.core.context_processors.metadata',
     )
 
 # Actual Tinville business logic
 # django-jenkins needs it defined in this variable
-PROJECT_APPS = (
-   'user',
-   'designer_shop',
-   'common'
-)
+PROJECT_APPS = [
+    'user',
+    'designer_shop',
+    'common'
+]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -152,7 +158,9 @@ INSTALLED_APPS = (
     'lettuce.django',
     'fixture_media',
     'django_extensions',
-) + PROJECT_APPS
+    'compressor',
+    'tinymce'
+] + get_core_apps() + PROJECT_APPS
 
 
 # These are used by jenkins to know which tasks to run
@@ -194,6 +202,13 @@ LOGGING = {
     }
 }
 
+# For django-oscar search
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
 
 STATIC_DIRECTORY = '/static/'
@@ -208,3 +223,19 @@ EMAIL_USE_TLS = True
 LOGIN_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "advanced",
+    'menubar': True,
+    'statusbar': False,
+    'width': "75%",
+    'height': "250px",
+    'font-size': '22',
+    'plugins': "spellchecker, paste, searchreplace, advimage",  
+    'theme_advanced_buttons1': "fontsizeselect, separator, bold, italic, underline, separator, bullist, separator, outdent, indent, separator, undo, redo, separator, link",
+    'cleaup_on_startup': True,
+    'theme_advanced_path': False
+    
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_PASTE = True

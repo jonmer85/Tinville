@@ -1,0 +1,304 @@
+{% extends "designer_shop/shopper.html" %}
+{% load i18n %}
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
+{% endblock css %}
+{% block content %}
+{{ block.super }}
+<div id="shopEditor">
+    <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
+        <div id="cornerRadius" class="cornerRadius panel panel-default">
+            <div id="shopEditorHeading" class="panel-heading">
+                <h4 id="shopEditorTitle" class="panel-title">
+                    <b>Shop Editor</b>
+                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
+                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
+                </h4>
+            <div id="editorPanels" class="row panel-collapse collapse in">
+                <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
+                    <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
+                        <li class="active">
+                            <a href="#banner" data-toggle="pill">Banner</a>
+                        </li>
+                        <li>
+                            <a href="#logo" data-toggle="pill">Logo</a>
+                        </li>
+                        <li>
+                            <a href="#color" data-toggle="pill">Color</a>
+                        </li>
+                        <li>
+                            <a href="#about" data-toggle="pill">About</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 1</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 2</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 3</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 4</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 5</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 6</a>
+                        </li>
+                        <li>
+                            <a href="#addItems" data-toggle="pill">Add Items 7</a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="secondColumn" class="container col-sm-9">
+                    <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
+                        <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
+                            <div class="tab-pane active" id="banner">
+                                <p> 1 Insert Banner form here.</p>
+                                <p> 2 Insert Banner form here.</p>
+                                <p> 3 Insert Banner form here.</p>
+                                <p> 4 Insert Banner form here.</p>
+                                <p> 5 Insert Banner form here.</p>
+                                <p> 6 Insert Banner form here.</p>
+                                <p> 7 Insert Banner form here.</p>
+                                <p> 8 Insert Banner form here.</p>
+                                <p> 9 Insert Banner form here.</p>
+                                <p> 10 Insert Banner form here.</p>
+                                <p> 11 Insert Banner form here.</p>
+                                <p> 12 Insert Banner form here.</p>
+                                <p> 13 Insert Banner form here.</p>
+                                <p> 14 Insert Banner form here.</p>
+                                <p> 15 Insert Banner form here.</p>
+                                <p> 16 Insert Banner form here.</p>
+                                <p> 17 Insert Banner form here.</p>
+                                <p> 18 Insert Banner form here.</p>
+                                <p> 19 Insert Banner form here.</p>
+                                <p> 20 Insert Banner form here.</p>
+                                <p> 21 Insert Banner form here.</p>
+                                <p> 22 Insert Banner form here.</p>
+                                <p> 23 Insert Banner form here.</p>
+                                <p> 24 Insert Banner form here.</p>
+                                <p> 25 Insert Banner form here.</p>
+                                <p> 26 Insert Banner form here.</p>
+                                <p> 27 Insert Banner form here.</p>
+                                <p> 28 Insert Banner form here.</p>
+                                <p> 29 Insert Banner form here.</p>
+                                <p> 30 Insert Banner form here.</p>
+                                <p> 31 Insert Banner form here.</p>
+                                <p> 32 Insert Banner form here.</p>
+                            </div>
+                            <div class="tab-pane" id="logo">
+                                Insert Logo form here.
+                            </div>
+                            <form class="tab-pane" id="color" action="/edit/test_color/" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy designerShopColorPicker %}
+                            </form>
+                            <form class="tab-pane" id="about" action="edit/about" method="post">
+                                 {%  load crispy_forms_tags %}
+                                 {% crispy aboutBoxForm %}
+                            </form>
+                            <div class="tab-pane" id="addItems">
+                                {%  load crispy_forms_tags %}
+                                {% crispy productCreationForm %}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="buttonContainer" class="container col-sm-12 pull-right">
+                            <button class="btn btn-primary tinvilleButton pull-right">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript_library %}l
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+
+{% endblock javascript_library %}
+
+{% block javascript %}
+
+<script>
+
+var sizeSetSelectionCounter = 0;
+var colorAndSizeRowCounter = 0;
+
+$("#id_sizeVariation").change(function() {
+    var selectedValue = $("#id_sizeVariation option:selected");
+    var sizesFieldSet = $("#sizesFieldSet");
+    if (selectedValue[0].value == "1") {
+        //Size set
+        sizesFieldSet.removeClass("hidden");
+
+        addNewSizeSetRow();
+        //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+        sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
+
+            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+            colorsAndQuantities.collapse('show');
+
+            var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+
+            addNewColorAndQuantityRow(colorsAndQuantitiesTable);
+
+            var selectedValue = $("option:selected", this);
+            var sizesFieldSet = $("#sizesFieldSet");
+            if (selectedValue[0].value != "0") {
+                //Add a new size set row
+                addNewSizeSetRow();
+            }
+        })
+        //Color event handling (Add a new color/quantity row for more color/quantity selection)
+        sizesFieldSet.on("change", ".row-color", function(e) {
+
+            var selectedValue = $("option:selected", this);
+            var sizesFieldSet = $("#sizesFieldSet");
+            if (selectedValue[0].value != "0") {
+
+                var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable);
+
+            }
+        })
+    }
+});
+
+var addNewSizeSetRow = function() {
+    $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo("#sizesFieldSet").attr('id', function(i, id) {
+        return id + (++sizeSetSelectionCounter);
+    });
+
+}
+
+var addNewColorAndQuantityRow = function(appendTo) {
+    $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(appendTo).attr('id', function(i, id) {
+        return id + (++colorAndSizeRowCounter);
+    });
+
+}
+
+$("#resizeIcon").click(function() {
+   $(this).toggleClass("glyphicon-resize-full");
+   $(this).toggleClass("glyphicon-resize-small");
+   resizeEditor();
+});
+
+$("#minMaxIcon").click(function() {
+   $(this).toggleClass("glyphicon-chevron-up");
+   $(this).toggleClass("glyphicon-chevron-down");
+   $("#resizeIcon").toggleClass("hidden");
+});
+
+$(window).resize(function() {
+    resizeEditor();
+});
+
+$(window).load(function() {
+    resizeEditor();
+});
+
+$("#optionContent li").click(function (){
+    $("#optionsXS").text($(this).text()+" (click here for editor options)");
+    resizeEditor();
+});
+
+$("#optionsXS").click(function() {
+    var currentFormPanelHeight;
+    var maxFormHeight;
+    var transitionHeight;
+    currentFormPanelHeight = $("#secondColumn").outerHeight();
+    maxFormHeight = Math.round($(window).height()*0.90);
+    $("#optionContent").height(maxFormHeight-
+            $("#optionsXS").outerHeight()-
+            $("#shopEditorTitle").outerHeight()-
+            $("#buttonContainer").outerHeight()-
+            parseInt($("#cornerRadius").css('border-top-width'))-
+            parseInt($("#cornerRadius").css('border-bottom-width'))-
+            parseInt($("#shopEditorHeading").css('padding-bottom'))-
+            parseInt($("#formPanel").css('border-top-width'))-
+            parseInt($("#formPanel").css('padding-bottom')));
+            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
+
+    if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
+    {
+        $("#optionPanel").transition({height: transitionHeight},{duration: 300});
+        $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight},{duration: 300});
+        $("#formContent").transition({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
+    }
+    else
+    {
+        resizeEditor();
+    }
+});
+
+function resizeEditor() {
+    var maxFormHeight;
+    var editorPanelHeight;
+    var buttonHeight;
+    var optionPanelHeight;
+    var editorHeight;
+    var maxHeight;
+    var formTransitionHeight;
+
+    buttonHeight = $("#buttonContainer").outerHeight();
+
+    if (checkMode() == 'xs')
+    {
+        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
+        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
+        optionPanelHeight = $("#optionsXS").outerHeight();
+        editorHeight = 0.90;
+        maxFormHeight = Math.round($(window).height()*editorHeight);
+        formTransitionHeight = maxFormHeight-optionPanelHeight-
+                $("#shopEditorTitle").outerHeight()-
+                $("#buttonContainer").outerHeight()-
+                parseInt($("#cornerRadius").css('border-top-width'))-
+                parseInt($("#cornerRadius").css('border-bottom-width'));
+        $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
+        $("#optionContent").transition({height: optionPanelHeight},{duration: 300});
+        $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
+        $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
+    }
+    else
+    {
+        $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
+        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
+        editorPanelHeight = 0.35;
+        if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
+        {
+            editorPanelHeight = 0.75;
+        }
+        maxHeight = $(window).height()*editorPanelHeight;
+        $("#optionPanel").transition({height:maxHeight-60+buttonHeight},300);
+        $("#formPanel").transition({height:maxHeight-60},300);
+        $("#optionContent").transition({height: maxHeight-60+buttonHeight},300);
+        $("#formContent").transition({height: maxHeight-60},300);
+    }
+}
+
+$(function(){
+    $("#optionContent").slimScroll({
+        height: 'auto'
+    });
+});
+
+$(function(){
+    $("#formContent").slimScroll({
+       height: 'auto'
+    });
+});
+
+</script>
+
+{% endblock %}
