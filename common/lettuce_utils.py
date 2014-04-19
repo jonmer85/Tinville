@@ -4,9 +4,7 @@ import lettuce.django
 import re
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
-from selenium import webdriver
 from lxml import html
-import time
 
 
 def wait_for_ajax_to_complete():
