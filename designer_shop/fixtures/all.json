@@ -19,8 +19,8 @@
         "fields": {
             "name": "Demo",
 			"slug": "Demo",
-            "banner": "images/banner.png",
-            "logo": "images/logo.png",
+            "banner": "images/banner.jpg",
+            "logo": "images/logo.jpg",
             "user": 1,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>"
         }

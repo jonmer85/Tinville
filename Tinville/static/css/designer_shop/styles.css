@@ -57,17 +57,24 @@
     /*margin-left: 2px;*/
     margin-top: 2%;
     margin-bottom: 2%;
-    width : 30%;
+    /*width : 30%;*/
     margin-right: 2%;
     padding: 0px 12px;
 }
 
-@media(max-width: 767px){
-    .filterTabs {
-        width : 80%;
-    }
+.shopItems {
+    padding: 6%;
 }
 
+@media (min-width: 768px) {
+     .shopItems {
+       padding: 2%;
+    }
+}
+select.filterTabs option.option2
+{
+    background-color: #007700;
+}
 #shopLogoDiv {
     float: left;
     width: 175px;
@@ -209,65 +216,7 @@
     overflow: hidden;
 }
 
-    #gallery {
-      list-style: none;
-      /*width: 50%;*/
-      height: 350px;
-      /*background: #111;*/
-      cursor: hand;
-      cursor: -moz-grab;
-      cursor: -webkit-grab;
-      cursor: grab;
-    }
 
-    #gallery li {
-      /*border-right: 5px solid #111;*/
-    }
-
-    .shopItem {
-      /*height: 482px;*/
-        width: auto;
-        padding: 5px;
-    }
-
-    #gallery li:last-child  {
-      border: 0;
-    }
-
-    #gallery .shopitem img {
-      display: block;
-      /*height: 482px;*/
-      -webkit-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-      -webkit-user-drag: none;
-              user-drag: none;
-
-    }
-
-    #dragend {
-      position: absolute;
-      bottom: 50px;
-      right: 50px;
-      background: #345;
-      padding: 18px;
-      color: #fff;
-      border-radius: 3px;
-      /*width: 150px;*/
-      font-size: 15px;
-    }
-
-    #dragend h1 {
-      font-size: 15px;
-      font-weight: normal;
-      margin-bottom: 12px;
-    }
-
-    #dragend a {
-      text-decoration: underline;
-      color: #fff
-    }
 #resizeIcon {
     margin-left: .3em;
 }

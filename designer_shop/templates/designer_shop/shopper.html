@@ -19,25 +19,30 @@
   {% if shop.aboutContent %}
     {{ shop.aboutContent | safe }}
   {% endif %}
-	
-     <select class="select form-control filterTabs col-xs-1 col-xs-offset-1"  id="filterTab1"  name="Filter1">
-        <option>View All</option>
-        <option>Women</option>
-        <option>Men</option>
-        <option>Kids</option>
+  <div><a href="{{ shop.get_absolute_url }}edit" >Edit</a></div>
+	<div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+     <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
+        <option class="option2">View All</option>
+        <option class="">Women</option>
+        <option class="">Men</option>
+        <option class="">Kids</option>
       </select>
-
-      <select class="select form-control filterTabs col-xs-1  col-xs-offset-1" >
+    </div>
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+      <select class="select form-control filterTabs " >
         <option>View All Types</option>
         <option>Dresses</option>
         <option>Pants</option>
         <option>Shoes</option>
       </select>
-      <select class="select form-control filterTabs col-xs-1  col-xs-offset-1">
+      </div>
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+      <select class="select form-control filterTabs">
         <option>All Prices</option>
         <option>$0-$50</option>
         <option>$50-$100</option>
       </select>
+  </div>
   </div>
 
   <div class="container">
@@ -45,7 +50,7 @@
       <div class=" ">
         <div class="shopItems row">
           {% for item in shop.item_set.all %}
-            <div class="col-xs-offset-1 col-xs-5 col-sm-4 col-md-2 col-lg-2">
+            <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
               <div class="thumbnail shopItem shopBorderColor">
                 <img src="{{item.image.url}}" class="img-responsive" />
                 <div class="caption">
@@ -62,44 +67,20 @@
 {% endblock %}
 
 {% block javascript %}
+    {{ block.super }}
     <script>
-        $("#tinvilleTagBanner").remove();
 
-$(function() {
-      $("#gallery").dragend({
-        borderBetweenPages: 5,
-        onDrag: function( activeElement, gesture, overscroll ) {
-          var deltaX = parseInt( - gesture.deltaX / 2 );
+    function colourFunction() {
+        var myselect = document.getElementById("select1"),
+        colour = myselect.options[myselect.selectedIndex].className;
+        myselect.className = "option2";
+        myselect.blur();
+    }
+    function currentEdit() {
+        return document.URL+ "\edit.html";
+    }
+    $("#tinvilleTagBanner").remove();
 
-          if ( overscroll ) {
-            deltaX = deltaX / 5;
-          }
-
-          $(activeElement).prev().find("img").css("margin-left", deltaX + 160 );
-          $(activeElement).find("img").css("margin-left", deltaX);
-          $(activeElement).next().find("img").css("margin-left", deltaX - 160 );
-        },
-        onDragEnd: function( activeElement ) {
-          $(activeElement).prev().find("img").animate({
-            "margin-left": 160
-          }, 300);
-          $(activeElement).find("img").animate({
-            "margin-left": 0
-          }, 300);
-          $(activeElement).next().find("img").animate({
-            "margin-left": - 160
-          }, 300);
-        }
-      });
-
-      $("#scrollWindow").fadeIn();
-
-      $(document).on("dragstart", function(event) {
-        if (event.target.nodeName.toUpperCase() == "IMG") {
-          return false;
-        }
-      });
-    });
     </script>
 
 {% endblock %}
