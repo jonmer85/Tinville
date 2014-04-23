@@ -14,7 +14,7 @@ SIZE_TYPES = [
     ('3', "Number (eg. Dress size)")
 ]
 
-SIZE_TYPES_AND_EMPTY = [('0', '*Choose a size type*')] + SIZE_TYPES
+SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
 class ProductCreationForm(forms.ModelForm):
 
@@ -23,21 +23,22 @@ class ProductCreationForm(forms.ModelForm):
                                          initial='0')
 
     sizeSetSelection = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                              objects.filter(group=1))
+                                              objects.filter(group=1), empty_label="Choose a size...")
 
     colorSelection = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                              objects.filter(group=2))
+                                              objects.filter(group=2), empty_label="Choose a color...")
+
+    product_class = forms.ModelChoiceField(queryset=get_model('catalogue', 'ProductClass').objects.all(),
+                                           empty_label="What are you selling?")
 
     quantityField = forms.IntegerField()
 
 
     def __init__(self, *args, **kwargs):
         super(ProductCreationForm, self).__init__(*args, **kwargs)
-        # password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
-        # helper.form_class = 'form-horizontal'
 
         self.helper.layout = Layout(
             Div(
@@ -57,18 +58,33 @@ class ProductCreationForm(forms.ModelForm):
                                           ),
                                           Div(
                                               Div(
-                                                  Div(
-                                                      Div(Field('colorSelection', placeholder="Choose a color"),
-                                                          css_class="col-xs-2 col-xs-offset-8"
+                                                  HTML("""<table class="table">
+                                                      <thead>
+                                                            <tr>
+                                                                <td class="col-xs-8"><b>Color</b></td>
+                                                                <td class="col-xs-4"><b>Quantity</b></td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="hidden row-color-quantity" id="rowColorQuantityTemplate">
+                                                                <td>"""),
+                                                  Div(Field('colorSelection', placeholder="Choose a color"),
+                                                          css_class="row-color"
                                                       ),
-                                                      Div(Field('quantityField', placeholder="Choose a quantity"),
-                                                          css_class="col-xs-2"
+                                                  HTML("""</td>
+                                                     <td>"""),
+                                                  Div(Field('quantityField', placeholder="Choose a quantity"),
+                                                          css_class=""
                                                       ),
-                                                      css_class="row hidden row-color-quantity", css_id="rowColorQuantityTemplate"
-                                                  ),
-                                                  css_class="accordion-inner"
-                                              ),
-                                              css_class="accordion-body collapse collapse-colors-quantity"
+                                                  HTML("""
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    """
+                                                  ), css_class="accordion-inner table-responsive"
+                                             ),
+                                              css_class="accordion-body collapse collapse-colors-quantity col-xs-8 col-xs-offset-4"
                                           ),
                                           css_class="accordion-group hidden", css_id="sizeSetSelectionTemplate"
                                       ),
@@ -82,6 +98,7 @@ class ProductCreationForm(forms.ModelForm):
             )
 
         )
+        self.fields['description'].widget = TinyMCE()
 
     class Meta:
         model = get_model('catalogue', 'Product')
@@ -99,61 +116,4 @@ class AboutBoxForm( forms.Form ):
             Field('aboutContent', placeholder="Enter Text Here"),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
-        )) 
-
-    # def clean_password2(self):
-    #     # Check that the two password entries match
-    #     password = self.cleaned_data.get("password")
-    #     password2 = self.cleaned_data.get("passwosrd2")
-    #     if password and password2 and password != password2:
-    #         raise forms.ValidationError("Passwords do not match")
-    #     return password2
-    #
-    # def save(self, commit=True):
-    #     # Save the provided password in hashed format
-    #     user = super(TinvilleUserCreationForm, self).save(commit=False)
-    #     user.set_password(self.cleaned_data["password"])
-    #
-    #     if commit:
-    #         user.save()
-    #
-    #     if user.is_seller:
-    #         user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
-    #
-    #     return user
-    #
-    # def clean_email(self):
-    #     return self.cleaned_data['email'].lower()
-                               #HTML("""<table class="table" id="sizegrid1">
-                                         #              <thead>
-                                         #                    <tr>
-                                         #                        <td><b>ID</b></td>
-                                         #                        <td><b>Name</b></td>
-                                         #                        <td><b>Description</b><b></b></td>
-                                         #                        <td><b>Color</b></td>
-                                         #                    </tr>
-                                         #                </thead>
-                                         #                <tbody>
-                                         #                    <tr>
-                                         #                        <td>1</td>
-                                         #                        <td>Banana</td>
-                                         #                        <td>Bright and bent</td>
-                                         #                        <td>Yellow</td>
-                                         #                    </tr>
-                                         #                    <tr>
-                                         #                        <td>2</td>
-                                         #                        <td>Apple</td>
-                                         #                        <td>Kind of round</td>
-                                         #                        <td>Red</td>
-                                         #                    </tr>
-                                         #                    <tr>
-                                         #                        <td>3</td>
-                                         #                        <td>Orange</td>
-                                         #                        <td>Round</td>
-                                         #                        <td>Orange</td>
-                                         #                    </tr>
-                                         #                </tbody>
-                                         #            </table>
-                                         #      """
-                                         #
-                                         #     ),
+        ))

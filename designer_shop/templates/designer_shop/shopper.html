@@ -16,6 +16,10 @@
   <div class="container infoBanner full-screen shopBackgroundColor"></div>
 
   <div class="container">
+  {% if shop.aboutContent %}
+    {{ shop.aboutContent | safe }}
+  {% endif %}
+	
      <select class="select form-control filterTabs col-xs-1 col-xs-offset-1"  id="filterTab1"  name="Filter1">
         <option>View All</option>
         <option>Women</option>

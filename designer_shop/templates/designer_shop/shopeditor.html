@@ -1,9 +1,8 @@
-{% extends "home.html" %}
+{% extends "designer_shop/shopper.html" %}
 {% load i18n %}
-{% block body_class %}{{ block.super }} about{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script> 
+    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -18,7 +17,7 @@
                 </h4>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
-                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading">Options</a>
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
                             <a href="#banner" data-toggle="pill">Banner</a>
@@ -92,7 +91,7 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
-                            <form class="tab-pane" id="about" action="test_about" method="post">
+                            <form class="tab-pane" id="about" action="edit/about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
@@ -135,33 +134,31 @@ $("#id_sizeVariation").change(function() {
             var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
             colorsAndQuantities.collapse('show');
 
-            addNewColorAndQuantityRow(colorsAndQuantities);
+            var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+
+            addNewColorAndQuantityRow(colorsAndQuantitiesTable);
 
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
             if (selectedValue[0].value != "0") {
                 //Add a new size set row
                 addNewSizeSetRow();
-
             }
         })
         //Color event handling (Add a new color/quantity row for more color/quantity selection)
-        sizesFieldSet.on("change", ".row-color-quantity", function(e) {
+        sizesFieldSet.on("change", ".row-color", function(e) {
 
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
             if (selectedValue[0].value != "0") {
 
-                var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
-                addNewColorAndQuantityRow(colorsAndQuantities);
+                var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable);
 
             }
         })
-
-
     }
-
-})
+});
 
 var addNewSizeSetRow = function() {
     $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo("#sizesFieldSet").attr('id', function(i, id) {
@@ -187,65 +184,38 @@ $("#minMaxIcon").click(function() {
    $(this).toggleClass("glyphicon-chevron-up");
    $(this).toggleClass("glyphicon-chevron-down");
    $("#resizeIcon").toggleClass("hidden");
-
-{#    alert ($(this).hasClass("glyphicon-chevron-down"));#}
-{#    if ($(this).hasClass("glyphicon-chevron-down")==true) {#}
-{#        alert("hi");#}
-{#        resizeEditor();#}
-{#    }#}
 });
 
-var loaded;
-loaded = false;
 $(window).resize(function() {
-   if (loaded == true) {
-           resizeEditor();
-   }
+    resizeEditor();
 });
 
 $(window).load(function() {
-    loaded=true;
     resizeEditor();
 });
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
     resizeEditor();
-})
-
+});
 
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
-    var currentFormContentHeight;
     var maxFormHeight;
     var transitionHeight;
     currentFormPanelHeight = $("#secondColumn").outerHeight();
     maxFormHeight = Math.round($(window).height()*0.90);
-    if ($("#optionContent").outerHeight() > maxFormHeight-
-                $("#shopEditorTitle").outerHeight()-
-                $("#optionsXS").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'))-
-                parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-bottom')))
-    {
-        $("#optionContent").height(maxFormHeight-
-                $("#optionsXS").outerHeight()-
-                $("#shopEditorTitle").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'))-
-                parseInt($("#shopEditorHeading").css('padding-bottom'))-
-                parseInt($("#formPanel").css('border-top-width'))-
-                parseInt($("#formPanel").css('padding-bottom')));
-                transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
-    }
-    else
-    {
-        transitionHeight = $("#optionContent").outerHeight();
-    }
+    $("#optionContent").height(maxFormHeight-
+            $("#optionsXS").outerHeight()-
+            $("#shopEditorTitle").outerHeight()-
+            $("#buttonContainer").outerHeight()-
+            parseInt($("#cornerRadius").css('border-top-width'))-
+            parseInt($("#cornerRadius").css('border-bottom-width'))-
+            parseInt($("#shopEditorHeading").css('padding-bottom'))-
+            parseInt($("#formPanel").css('border-top-width'))-
+            parseInt($("#formPanel").css('padding-bottom')));
+            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
+
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
         $("#optionPanel").transition({height: transitionHeight},{duration: 300});
@@ -282,7 +252,7 @@ function resizeEditor() {
                 parseInt($("#cornerRadius").css('border-top-width'))-
                 parseInt($("#cornerRadius").css('border-bottom-width'));
         $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
-        $("#optionContent").transition({height: $("#optionContent").parent().outerHeight()},{duration: 300});
+        $("#optionContent").transition({height: optionPanelHeight},{duration: 300});
         $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
         $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
     }
@@ -307,13 +277,13 @@ $(function(){
     $("#optionContent").slimScroll({
         height: 'auto'
     });
-}).resize();
+});
 
 $(function(){
     $("#formContent").slimScroll({
        height: 'auto'
     });
-}).resize();
+});
 
 </script>
 
