@@ -5,3 +5,5 @@ db.sqlite3
 .idea/*
 media/
 reports/
+*.DS_Store
+/nbproject/private/

@@ -10,8 +10,6 @@ from django.core.mail import send_mail
 from django.utils.timezone import utc
 from autoslug import AutoSlugField
 
-import designer_shop.models
-
 from Tinville.settings.base import EMAIL_HOST_USER
 
 
@@ -67,9 +65,6 @@ class TinvilleUser(AbstractBaseUser):
 
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
-    other_site_url = models.URLField(verbose_name='Other Site URL', max_length=2083, blank=True)
-    shop_name = models.CharField(verbose_name="Shop name", unique=True, blank=True, null=True, db_index=True,
-                                 default=None, max_length=100)
     is_approved = models.BooleanField(default=False)
 
     objects = TinvilleUserManager()
@@ -85,9 +80,6 @@ class TinvilleUser(AbstractBaseUser):
         self.save()
 
     def save(self, *args, **kwargs):
-
-        if not self.shop_name:
-            self.shop_name = None
 
         super(TinvilleUser, self).save(*args, **kwargs)
 
@@ -120,8 +112,8 @@ class TinvilleUser(AbstractBaseUser):
         confirmation_url = reverse('activate-user', kwargs={'activation_key': self.activation_key})
 
         email_subject = 'Your new Tinville account confirmation'
-        email_body = "Hello %s! Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
-                     " this link within 7 days:\n\n%s" % (self.email, base_url+confirmation_url)
+        email_body = "Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
+                     " this link within 7 days:\n\n%s" % (base_url+confirmation_url)
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 

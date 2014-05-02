@@ -11,38 +11,27 @@ from crispy_forms.bootstrap import AppendedText
 from user.models import TinvilleUser
 from designer_shop.models import Shop
 
+
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    shop_name = forms.CharField(label='Shop name', required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
-    helper.form_class = 'form-horizontal'
-    helper.field_class = 'col-xs-12 col-sm-8 col-sm-offset-2'
     
     helper.layout = Layout(
         Field('email', placeholder="Email"),
         Field('password', placeholder="Password"),
-        Field('password2', placeholder="Confirm password"),
-        Field('is_seller', template="apply_for_shop.html", required=False),
         Div(
             Field('shop_name', placeholder="Shop name"),
             id="shop_fields",
         ),
-        Submit('userForm', 'Register', css_class='tinvilleButton registerButton')
+        Submit('userForm', 'Register')
     )
 
     class Meta:
         model = TinvilleUser
-        fields = ['email', 'password', 'is_seller', 'shop_name']
-
-    def clean_password2(self):
-        # Check that the two password entries match
-        password = self.cleaned_data.get("password")
-        password2 = self.cleaned_data.get("password2")
-        if password and password2 and password != password2:
-            raise forms.ValidationError("Passwords do not match")
-        return password2
+        fields = ['email', 'password']
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -53,12 +42,13 @@ class TinvilleUserCreationForm(forms.ModelForm):
             user.save()
 
         if user.is_seller:
-            user.shop = Shop.objects.create(user=user, name=self.cleaned_data['shop_name'])
+            user.shop = Shop.objects.create(user=user)
 
         return user
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
+
 
 class TinvilleUserChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on
