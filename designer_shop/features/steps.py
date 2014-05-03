@@ -6,6 +6,7 @@ from lettuce import step
 from django.core.management import call_command
 import lettuce.django
 import time
+import math
 
 @before.each_scenario
 def load_all_fixtures(scenario):
@@ -84,8 +85,9 @@ def and_a_global_submit_button(step):
 
 @step(u'And the shop editor is 35% of the window size by default')
 def and_the_shop_editor_is_35(step):
+    time.sleep(1)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.35)
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.35)) <= 1
 
 @step(u'Given a shop editor')
 def give_a_shop_editor(step):
@@ -112,13 +114,21 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-up').click()
     time.sleep(0.4)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.35)
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.35)) <= 1
 
 @step(u'And selecting the double arrows should increase the size of the shop editor to 75% of window size')
 def and_selecting_the_double_arrows_should_increase_the_size_of_the_shop_editor_to_seventyfive_of_window_size(step):
-    time.sleep(1)
+    assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-full')
+    world.browser.find_element_by_css_selector("#resizeIcon.glyphicon-resize-full").click()
+    time.sleep(0.4)
+    shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.75)) <= 1
 
 @step(u'And selecting the double inward arrows should decrease the size of the shop editor to 35% of window size again')
 def and_selecting_the_double_inward_arrows_should_decrease_the_size_to_thirtyfive_of_window_size(step):
-    time.sleep(1)
+    assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-small')
+    world.browser.find_element_by_css_selector("#resizeIcon.glyphicon-resize-small").click()
+    time.sleep(0.4)
+    shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.35)) <= 1
 
