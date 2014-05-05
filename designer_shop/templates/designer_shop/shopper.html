@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
@@ -16,33 +17,41 @@
   <div class="container infoBanner full-screen shopBackgroundColor"></div>
 
   <div class="container">
-  {% if shop.aboutContent %}
-    {{ shop.aboutContent | safe }}
-  {% endif %}
-  <div><a href="{{ shop.get_absolute_url }}edit" >Edit</a></div>
-	<div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-     <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
-        <option class="option2">View All</option>
-        <option class="">Women</option>
-        <option class="">Men</option>
-        <option class="">Kids</option>
-      </select>
-    </div>
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-      <select class="select form-control filterTabs " >
-        <option>View All Types</option>
-        <option>Dresses</option>
-        <option>Pants</option>
-        <option>Shoes</option>
-      </select>
+      {% if shop.aboutContent %}
+        {{ shop.aboutContent | safe }}
+      {% endif %}
+
+      {% if user.email == shop.user.email%}
+        <div id="editLink">
+            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+        </div>
+      {% endif %}
+
+      <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+         <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
+            <option class="option2">View All</option>
+            <option class="">Women</option>
+            <option class="">Men</option>
+            <option class="">Kids</option>
+          </select>
       </div>
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-      <select class="select form-control filterTabs">
-        <option>All Prices</option>
-        <option>$0-$50</option>
-        <option>$50-$100</option>
-      </select>
-  </div>
+
+      <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+          <select class="select form-control filterTabs " >
+            <option>View All Types</option>
+            <option>Dresses</option>
+            <option>Pants</option>
+            <option>Shoes</option>
+          </select>
+      </div>
+
+      <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+          <select class="select form-control filterTabs">
+            <option>All Prices</option>
+            <option>$0-$50</option>
+            <option>$50-$100</option>
+          </select>
+      </div>
   </div>
 
   <div class="container">
@@ -75,9 +84,6 @@
         colour = myselect.options[myselect.selectedIndex].className;
         myselect.className = "option2";
         myselect.blur();
-    }
-    function currentEdit() {
-        return document.URL+ "\edit.html";
     }
     $("#tinvilleTagBanner").remove();
 

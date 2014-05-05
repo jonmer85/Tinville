@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "email": "demo@user.com",
-			"slug": "demo_user_com",
+			"slug": "demousercom",
             "is_admin": false,
             "is_active": true,
             "is_seller": true,
