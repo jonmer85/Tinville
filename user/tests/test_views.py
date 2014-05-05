@@ -23,13 +23,6 @@ class RegistrationTest(TestCase):
     def test_password_hashed(self):
         self.failIfEqual(self.post_request_user(password='foo'), 'foo')
 
-    def test_is_seller(self):
-        self.assertTrue(self.post_request_user(is_seller=True).is_seller)
-
-    def test_shop_name(self):
-        user = self.post_request_user(is_seller=True, shop_name='foo')
-        self.assertEqual(user.shop.name, 'foo')
-
     def test_is_shopper(self):
         self.assertFalse(self.post_request_user(is_seller=False).is_seller)
 
@@ -38,7 +31,6 @@ class RegistrationTest(TestCase):
         response = self.client.get(self.registration_url, {
             'email': 'joe@schmoe.com',
             'password': 'test',
-            'password2': 'test',
         })
         self.assertEqual(response.status_code, httplib.OK)
         return response
@@ -48,7 +40,6 @@ class RegistrationTest(TestCase):
         self.client.post(self.registration_url, {
             'email': email,
             'password': password,
-            'password2': password,
             'last_login': last_login,
             'is_seller': is_seller,
             'shop_name': shop_name,
