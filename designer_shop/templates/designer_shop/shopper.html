@@ -18,6 +18,10 @@
 
   <div class="container">
       {% if shop.aboutContent %}
+          <div id="aboutLink">
+            <a class="whhg-batman aboutIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+{#          <button type="button" class="whhg-batman aboutIcon btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{ shop.aboutContent | safe }}">BIO</button>#}
+        </div>
         {{ shop.aboutContent | safe }}
       {% endif %}
 
@@ -86,7 +90,7 @@
         myselect.blur();
     }
     $("#tinvilleTagBanner").remove();
-
+    $("#aboutLink").popover('show')
     </script>
 
 {% endblock %}
