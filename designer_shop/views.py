@@ -33,15 +33,14 @@ def shopabout(request, slug):
         
             return redirect("designer_shop.views.shopeditor", slug)
         
-def postcolor(request):
+def postcolor(request, slug):
+
     if request.method == 'POST':
         form = DesignerShopColorPicker(request.POST)
+
         if form.is_valid():
-            #create initial entry for User object
-            currentShop = Shop.objects.get(name="Demo")
-            color = form.cleaned_data['color']
-            currentShop.color = color
-            currentShop.save()
+            currentShop = Shop.objects.get(slug=slug)
+            currentShop.color = form.cleaned_data["color"]
+            currentShop.save(update_fields=["color"])
 
-
-    return shopeditor(request)
+            return redirect("designer_shop.views.shopeditor", slug)

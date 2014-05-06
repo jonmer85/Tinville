@@ -114,21 +114,20 @@ class AboutBoxForm( forms.Form ):
     
     helper.layout = Layout(
         Div(
-            Field('aboutContent', placeholder="Enter Text Here"),
+            Fieldset('aboutContent', placeholder="Enter Text Here"),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))
     
 class DesignerShopColorPicker(forms.Form):
+
+    color = forms.CharField(widget=widgets.FarbtasticColorPicker)
     helper = FormHelper()
     helper.form_show_labels = False
-    # helper.form_class = 'form-horizontal'
-    colorField = forms.CharField(widget=widgets.FarbtasticColorPicker)
 
     helper.layout = Layout(
         Div(
-            'colorField',
+            Field('color'),
             Submit('designerShopColorPicker', 'Create', css_class='tinvilleButton'),
             css_class="container"
-        )
-    )
+        ))
