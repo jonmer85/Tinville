@@ -306,5 +306,187 @@
             "type": "option",
             "option_group": 2
         }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 1,
+        "fields": {
+            "path": "0001",
+            "depth": 1,
+            "numchild": 2,
+            "name": "Women",
+            "slug": "women",
+            "full_name": "Women"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 2,
+        "fields": {
+            "path": "0002",
+            "depth": 1,
+            "numchild": 2,
+            "name": "Men",
+            "slug": "men",
+            "full_name": "Men"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 3,
+        "fields": {
+            "path": "00010001",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Clothing",
+            "slug": "women/clothing",
+            "full_name": "Women > Clothing"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 4,
+        "fields": {
+            "path": "00010002",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Shoes",
+            "slug": "women/shoes",
+            "full_name": "Women > Shoes"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 5,
+        "fields": {
+            "path": "000100010001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Jackets",
+            "slug": "women/clothing/jackets",
+            "full_name": "Women > Clothing > Jackets"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 6,
+        "fields": {
+            "path": "000100010002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Dresses",
+            "slug": "women/clothing/dresses",
+            "full_name": "Women > Clothing > Dresses"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 7,
+        "fields": {
+            "path": "000100020001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Boots",
+            "slug": "women/shoes/boots",
+            "full_name": "Women > Shoes > Boots"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 8,
+        "fields": {
+            "path": "000100020002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Heels",
+            "slug": "women/shoes/heels",
+            "full_name": "Women > Shoes > Heels"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 9,
+        "fields": {
+            "path": "00020001",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Clothing",
+            "slug": "men/clothing",
+            "full_name": "Men > Clothing"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 10,
+        "fields": {
+            "path": "00020002",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Shoes",
+            "slug": "men/shoes",
+            "full_name": "Men > Shoes"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 11,
+        "fields": {
+            "path": "000200010001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Jackets",
+            "slug": "Men/clothing/jackets",
+            "full_name": "Men > Clothing > Jackets"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 12,
+        "fields": {
+            "path": "000200010002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Suits",
+            "slug": "Men/clothing/suits",
+            "full_name": "Men > Clothing > Suits"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 13,
+        "fields": {
+            "path": "000200020001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Boots",
+            "slug": "Men/shoes/boots",
+            "full_name": "Men > Shoes > Boots"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 14,
+        "fields": {
+            "path": "000200020002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Sneakers",
+            "slug": "Men/shoes/sneakers",
+            "full_name": "Men > Shoes > Sneakers"
+
+        }
     }
 ]

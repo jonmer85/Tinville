@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 
+from oscar.core.loading import get_model
+from oscar.apps.catalogue.categories import create_from_breadcrumbs
 from designer_shop.models import Shop
 from designer_shop.forms import ProductCreationForm, AboutBoxForm
 
 def shopper(request, slug):
     return render(request, 'designer_shop/shopper.html', {
-        'shop': get_object_or_404(Shop, slug__exact=slug)
+        'shop': get_object_or_404(Shop, slug__exact=slug),
+        'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
 def shopeditor(request, slug):
