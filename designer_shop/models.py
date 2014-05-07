@@ -14,6 +14,7 @@ class Shop(models.Model):
     banner = models.ImageField(upload_to=settings.MEDIA_URL)
     logo = models.ImageField(upload_to=settings.MEDIA_URL)
     aboutContent = HTMLField()
+    color = models.CharField(default='ffffff', max_length=6)
 
     def __unicode__(self):
         return self.name
