@@ -1,12 +1,28 @@
 [
     {
+        "model": "user.TinvilleUser",
+        "pk": 1,
+        "fields": {
+            "email": "demo@user.com",
+			"slug": "demousercom",
+            "is_admin": false,
+            "is_active": true,
+            "is_seller": true,
+            "is_approved": true,
+            "key_expires": "2020-02-02"
+        }
+    },
+
+    {
         "model": "designer_shop.Shop",
         "pk": 1,
         "fields": {
             "name": "Demo",
 			"slug": "Demo",
-            "banner": "images/banner.png",
-            "logo": "images/logo.png"
+            "banner": "images/banner.jpg",
+            "logo": "images/logo.jpg",
+            "user": 1,
+            "color": "ffffff"
         }
     },
     {
@@ -14,9 +30,9 @@
         "pk": 1,
         "fields": {
             "shop": 1,
-            "name": "shoe 1",
-            "image": "images/shoe1.jpg",
-            "price": 1.23
+            "name": "Dress 1",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -24,9 +40,9 @@
         "pk": 2,
         "fields": {
             "shop": 1,
-            "name": "shoe 2",
-            "image": "images/shoe2.jpg",
-            "price": 2.34
+            "name": "Dress 2",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -34,9 +50,9 @@
         "pk": 3,
         "fields": {
             "shop": 1,
-            "name": "shoe 3",
-            "image": "images/shoe3.jpg",
-            "price": 3.45
+            "name": "Dress 3",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -44,9 +60,251 @@
         "pk": 4,
         "fields": {
             "shop": 1,
-            "name": "shoe 4",
-            "image": "images/shoe4.jpg",
-            "price": 4.56
+            "name": "Dress 4",
+            "image": "images/item.jpg",
+            "price": 120.99
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 5,
+        "fields": {
+            "shop": 1,
+            "name": "Dress 5",
+            "image": "images/item.jpg",
+            "price": 120.99
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 6,
+        "fields": {
+            "shop": 1,
+            "name": "Dress 6",
+            "image": "images/item.jpg",
+            "price": 120.99
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 7,
+        "fields": {
+            "shop": 1,
+            "name": "Dress 7",
+            "image": "images/item.jpg",
+            "price": 120.99
+        }
+    },
+    {
+        "model": "designer_shop.Item",
+        "pk": 8,
+        "fields": {
+            "shop": 1,
+            "name": "Dress 8",
+            "image": "images/item.jpg",
+            "price": 120.99
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 1,
+        "fields": {
+            "name": "Tops",
+			"slug": "tops",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 2,
+        "fields": {
+            "name": "Bottoms",
+			"slug": "bottoms",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 3,
+        "fields": {
+            "name": "Dresses",
+			"slug": "dresses",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.ProductClass",
+        "pk": 4,
+        "fields": {
+            "name": "Accessories",
+			"slug": "accessories",
+            "requires_shipping": true,
+            "track_stock": true
+        }
+    },
+    {
+        "model": "catalogue.AttributeOptionGroup",
+        "pk": 1,
+        "fields": {
+			"name": "size_set"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOptionGroup",
+        "pk": 2,
+        "fields": {
+			"name": "color_set"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 1,
+        "fields": {
+			"group": 1,
+            "option": "xxs"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 2,
+        "fields": {
+			"group": 1,
+            "option": "xs"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 3,
+        "fields": {
+			"group": 1,
+            "option": "sm"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 4,
+        "fields": {
+			"group": 1,
+            "option": "md"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 5,
+        "fields": {
+			"group": 1,
+            "option": "lg"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 6,
+        "fields": {
+			"group": 1,
+            "option": "xl"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 7,
+        "fields": {
+			"group": 1,
+            "option": "xxl"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 8,
+        "fields": {
+			"group": 2,
+            "option": "red"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 9,
+        "fields": {
+			"group": 2,
+            "option": "blue"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 10,
+        "fields": {
+			"group": 2,
+            "option": "green"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 11,
+        "fields": {
+			"group": 2,
+            "option": "black"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 12,
+        "fields": {
+			"group": 2,
+            "option": "white"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 1,
+        "fields": {
+            "product_class": 1,
+			"name": "size_set",
+            "code": "size_set",
+            "type": "option",
+            "option_group": 1
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 2,
+        "fields": {
+            "product_class": 1,
+			"name": "size_dimension_x",
+            "code": "size_dimension_x",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 3,
+        "fields": {
+            "product_class": 1,
+			"name": "size_dimension_y",
+            "code": "size_dimension_y",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 4,
+        "fields": {
+            "product_class": 1,
+			"name": "size_number",
+            "code": "size_number",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 5,
+        "fields": {
+            "product_class": 1,
+			"name": "color",
+            "code": "color",
+            "type": "option",
+            "option_group": 2
         }
     }
 ]

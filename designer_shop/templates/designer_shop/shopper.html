@@ -1,23 +1,97 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock css %}
 
 {% block content %}
+    <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>
+{#    need to add something if a designer does not have a banner#}
+{#    this will be decribed at a later time#}
   {% if shop.banner %}
     <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen" />
   {% endif %}
+
+{#  This section is the info banner for a shop  #}
+  <div class="container infoBanner full-screen shopBackgroundColor"></div>
+
   <div class="container">
-	<div class="shopItems row">
-	  {% for item in shop.item_set.all %}
-		<div class="col-sm-2 col-md-2">
-		  <div class="thumbnail shopItem">
-			<img src="{{item.image.url}}" class="img-responsive" />
-			<div class="caption">
-			  <span class="name">{{item.name}}</span>
-			  <span class="price">${{item.price}}</span>
-			</div>
-		  </div>
-		</div>
-	  {% endfor %}
-	</div>
+      {% if shop.aboutContent %}
+          <div id="aboutLink">
+            <a class="whhg-batman aboutIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+{#          <button type="button" class="whhg-batman aboutIcon btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{ shop.aboutContent | safe }}">BIO</button>#}
+        </div>
+        {{ shop.aboutContent | safe }}
+      {% endif %}
+
+      {% if user.email == shop.user.email%}
+        <div id="editLink">
+            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+        </div>
+      {% endif %}
+
+      <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+         <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
+            <option class="option2">View All</option>
+            <option class="">Women</option>
+            <option class="">Men</option>
+            <option class="">Kids</option>
+          </select>
+      </div>
+
+      <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+          <select class="select form-control filterTabs " >
+            <option>View All Types</option>
+            <option>Dresses</option>
+            <option>Pants</option>
+            <option>Shoes</option>
+          </select>
+      </div>
+
+      <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+          <select class="select form-control filterTabs">
+            <option>All Prices</option>
+            <option>$0-$50</option>
+            <option>$50-$100</option>
+          </select>
+      </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class=" ">
+        <div class="shopItems row">
+          {% for item in shop.item_set.all %}
+            <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+              <div class="thumbnail shopItem shopBorderColor">
+                <img src="{{item.image.url}}" class="img-responsive" />
+                <div class="caption">
+                  <span class="name shopColor">{{item.name}}</span>
+                  <span class="price shopColor">${{item.price}}</span>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+
+    function colourFunction() {
+        var myselect = document.getElementById("select1"),
+        colour = myselect.options[myselect.selectedIndex].className;
+        myselect.className = "option2";
+        myselect.blur();
+    }
+    $("#tinvilleTagBanner").remove();
+    $("#aboutLink").popover('show')
+    </script>
+
+{% endblock %}
+

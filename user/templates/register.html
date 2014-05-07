@@ -7,22 +7,39 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
-	<img class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
-	<div class="container">
-		<div class="panel-body">
-			{%  load crispy_forms_tags %}
-			<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
-				{% crispy form %}
-			</form>
+	<div class="container text-center">
+		<h3>Register With Us</h3>
+			<div class="row">
+				<div class="well col-sm-8 col-sm-offset-2">
+					<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
+						<div class="btn-group userType">
+							<button id="shopper" type="button" class="btn btn-default col-xs-6"><img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"><h4>Customer</h4></button>
+							<button id="designer" type="button" class="btn btn-inverse col-xs-6"><img class="img-responsive" src="{{ STATIC_URL }}img/designer_big_logo.png"><h4>Designer</h4></button>
+						</div>
+						<hr>
+						{% load crispy_forms_tags %}
+						{% crispy form %}
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
 {% block javascript %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$("#shop_fields").slideToggle(0);
-			$("#id_is_seller").on("click", function () {
-				$("#shop_fields").slideToggle();
+			$("#shop_fields").slideUp(0);
+
+			$("#shopper").on("click", function () {
+				$("#shopper").addClass("btn-default").removeClass("btn-inverse");
+				$("#designer").addClass("btn-inverse").removeClass("btn-default");
+				$("#shop_fields").slideUp();
+			});
+
+			$("#designer").on("click", function () {
+				$("#designer").addClass("btn-default").removeClass("btn-inverse");
+				$("#shopper").addClass("btn-inverse").removeClass("btn-default");
+				$("#shop_fields").slideDown();
 			});
 		});
 	</script>
