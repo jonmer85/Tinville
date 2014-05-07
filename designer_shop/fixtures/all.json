@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "email": "demo@user.com",
-			"slug": "demo_user_com",
+			"slug": "demousercom",
             "is_admin": false,
             "is_active": true,
             "is_seller": true,
@@ -19,8 +19,8 @@
         "fields": {
             "name": "Demo",
 			"slug": "Demo",
-            "banner": "images/banner.png",
-            "logo": "images/logo.png",
+            "banner": "images/banner.jpg",
+            "logo": "images/logo.jpg",
             "user": 1,
             "color": "ffffff"
         }
@@ -30,9 +30,9 @@
         "pk": 1,
         "fields": {
             "shop": 1,
-            "name": "shoe 1",
-            "image": "images/shoe1.jpg",
-            "price": 1.23
+            "name": "Dress 1",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -40,9 +40,9 @@
         "pk": 2,
         "fields": {
             "shop": 1,
-            "name": "shoe 2",
-            "image": "images/shoe2.jpg",
-            "price": 2.34
+            "name": "Dress 2",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -50,9 +50,9 @@
         "pk": 3,
         "fields": {
             "shop": 1,
-            "name": "shoe 3",
-            "image": "images/shoe3.jpg",
-            "price": 3.45
+            "name": "Dress 3",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -60,9 +60,9 @@
         "pk": 4,
         "fields": {
             "shop": 1,
-            "name": "shoe 4",
-            "image": "images/shoe4.jpg",
-            "price": 4.56
+            "name": "Dress 4",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -70,9 +70,9 @@
         "pk": 5,
         "fields": {
             "shop": 1,
-            "name": "shoe 5",
-            "image": "images/shoe1.jpg",
-            "price": 1.45
+            "name": "Dress 5",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -80,9 +80,9 @@
         "pk": 6,
         "fields": {
             "shop": 1,
-            "name": "shoe 6",
-            "image": "images/shoe2.jpg",
-            "price": 2.34
+            "name": "Dress 6",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -90,9 +90,9 @@
         "pk": 7,
         "fields": {
             "shop": 1,
-            "name": "shoe 7",
-            "image": "images/shoe3.jpg",
-            "price": 3.4
+            "name": "Dress 7",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {
@@ -100,9 +100,9 @@
         "pk": 8,
         "fields": {
             "shop": 1,
-            "name": "shoe 8",
-            "image": "images/shoe4.jpg",
-            "price": 4.56
+            "name": "Dress 8",
+            "image": "images/item.jpg",
+            "price": 120.99
         }
     },
     {

@@ -128,7 +128,7 @@
 {% endblock javascript_library %}
 
 {% block javascript %}
-
+    {{ block.super }}
 <script>
 
 var sizeSetSelectionCounter = 0;
@@ -221,8 +221,8 @@ $("#optionsXS").click(function() {
     maxFormHeight = Math.round($(window).height()*0.90);
     $("#optionContent").height(maxFormHeight-
             $("#optionsXS").outerHeight()-
-            $("#shopEditorTitle").outerHeight()-
             $("#buttonContainer").outerHeight()-
+            $("#shopEditorTitle").outerHeight()-
             parseInt($("#cornerRadius").css('border-top-width'))-
             parseInt($("#cornerRadius").css('border-bottom-width'))-
             parseInt($("#shopEditorHeading").css('padding-bottom'))-
@@ -250,6 +250,7 @@ function resizeEditor() {
     var editorHeight;
     var maxHeight;
     var formTransitionHeight;
+    var excess
 
     buttonHeight = $("#buttonContainer").outerHeight();
 
@@ -259,7 +260,7 @@ function resizeEditor() {
         $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
         optionPanelHeight = $("#optionsXS").outerHeight();
         editorHeight = 0.90;
-        maxFormHeight = Math.round($(window).height()*editorHeight);
+        maxFormHeight = $(window).height()*editorHeight;
         formTransitionHeight = maxFormHeight-optionPanelHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#buttonContainer").outerHeight()-
@@ -279,11 +280,15 @@ function resizeEditor() {
         {
             editorPanelHeight = 0.75;
         }
+        excess =  $("#shopEditorTitle").outerHeight()+
+                parseInt($("#cornerRadius").css('border-top-width'))+
+                parseInt($("#cornerRadius").css('border-bottom-width'))+
+                parseInt($("#shopEditorHeading").css('padding-bottom'));
         maxHeight = $(window).height()*editorPanelHeight;
-        $("#optionPanel").transition({height:maxHeight-60+buttonHeight},300);
-        $("#formPanel").transition({height:maxHeight-60},300);
-        $("#optionContent").transition({height: maxHeight-60+buttonHeight},300);
-        $("#formContent").transition({height: maxHeight-60},300);
+        $("#optionPanel").transition({height:maxHeight-excess},300);
+        $("#formPanel").transition({height:maxHeight-excess-buttonHeight},300);
+        $("#optionContent").transition({height: maxHeight-excess},300);
+        $("#formContent").transition({height: maxHeight-excess-buttonHeight},300);
     }
 }
 
