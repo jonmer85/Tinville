@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" hash="3132151396">
-    <data-source source="LOCAL" name="Django default" product="PostgreSQL" version="9.1.9" jdbc-version="3.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.1 JDBC3 (build 901)" uuid="a5cf9dc1-36b5-4f26-8d39-40ba82f05b62">
-      <identifier-quote-string>&quot;</identifier-quote-string>
+    <data-source source="LOCAL" name="Django default" uuid="a5cf9dc1-36b5-4f26-8d39-40ba82f05b62">
+      <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:Tinville</jdbc-url>
       <user-name>django_login</user-name>
@@ -16,7 +16,8 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="Django default" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="dbdae554-b0b1-4d31-8967-c367a239a67d">
+    <data-source source="LOCAL" name="Django default" uuid="dbdae554-b0b1-4d31-8967-c367a239a67d">
+      <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql:</jdbc-url>
       <libraries>
