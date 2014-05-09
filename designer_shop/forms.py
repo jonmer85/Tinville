@@ -8,14 +8,11 @@ from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 
+from . import models
 
-SIZE_TYPES = [
-    ('1', "Set (eg. Small, Medium, Large)"),
-    ('2', "Dimensions (eg. Length X Width)"),
-    ('3', "Number (eg. Dress size)")
-]
 
-SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
+
+SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + models.SIZE_TYPES
 
 class ProductCreationForm(forms.ModelForm):
 
@@ -26,7 +23,7 @@ class ProductCreationForm(forms.ModelForm):
     sizeSetSelection = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                               objects.filter(group=1), empty_label="Choose a size...")
 
-    colorSelection = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+    colorSelection0 = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                               objects.filter(group=2), empty_label="Choose a color...")
 
     product_class = forms.ModelChoiceField(queryset=get_model('catalogue', 'ProductClass').objects.all(),
@@ -51,49 +48,8 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
-                             Fieldset('Sizes',
-                                      Div(
-                                          Div(
-                                              Field('sizeSetSelection', css_class="sizeSetSelection"),
-                                              css_class="accordion-heading"
-                                          ),
-                                          Div(
-                                              Div(
-                                                  HTML("""<table class="table">
-                                                      <thead>
-                                                            <tr>
-                                                                <td class="col-xs-8"><b>Color</b></td>
-                                                                <td class="col-xs-4"><b>Quantity</b></td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr class="hidden row-color-quantity" id="rowColorQuantityTemplate">
-                                                                <td>"""),
-                                                  Div(Field('colorSelection', placeholder="Choose a color"),
-                                                          css_class="row-color"
-                                                      ),
-                                                  HTML("""</td>
-                                                     <td>"""),
-                                                  Div(Field('quantityField', placeholder="Choose a quantity"),
-                                                          css_class=""
-                                                      ),
-                                                  HTML("""
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    """
-                                                  ), css_class="accordion-inner table-responsive"
-                                             ),
-                                              css_class="accordion-body collapse collapse-colors-quantity col-xs-8 col-xs-offset-4"
-                                          ),
-                                          css_class="accordion-group hidden", css_id="sizeSetSelectionTemplate"
-                                      ),
-                                    css_id="sizesFieldSet", css_class="hidden"
-                                 ),
-                             ),
-                             css_class="accordion", css_id="accordion2"
-                         ),
+                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
+                         ,css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
                 css_class="container"
             )

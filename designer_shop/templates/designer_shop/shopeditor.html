@@ -103,10 +103,11 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <div class="tab-pane" id="addItems">
+                            <form class="tab-pane" id="addItems" action="edit/create_product" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
-                            </div>
+                            </form>
+                        </div>
                         </div>
 
                     </div>
@@ -131,8 +132,65 @@
     {{ block.super }}
 <script>
 
-var sizeSetSelectionCounter = 0;
-var colorAndSizeRowCounter = 0;
+var htmlSTring = "<div>\
+  This is a string.\
+</div>";
+
+var sizeSetTemplate = "" +
+"<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
+        "<div class='controls'>" +
+            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+                "<option value='' selected='selected'>Choose a size...</option>" +
+                "<option value='1'>xxs</option>} +" +
+                "<option value='2'>xs</option>" +
+                "<option value='3'>sm</option>" +
+                "<option value='4'>md</option>" +
+                "<option value='5'>lg</option>" +
+                "<option value='6'>xl</option>" +
+                "<option value='7'>xxl</option>" +
+            "</select>" +
+        "</div>" +
+    "</div>" +
+"</div>" +
+"<div class='accordion-body collapse collapse-colors-quantity col-xs-8 col-xs-offset-4'>" +
+    "<div class='accordion-inner table-responsive'>" +
+        "<table class='table'>" +
+            "<thead>" +
+                "<tr>" +
+                    "<td class='col-xs-8'><b>Color</b></td>" +
+                    "<td class='col-xs-4'><b>Quantity</b></td>" +
+                "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "</tbody>" +
+        "</table>" +
+    "</div>" +
+"</div>"
+
+var rowColorQuantityTemplate = "" +
+"<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
+    "<td>" +
+        "<div class='row-color >" +
+            "<div id='div_id_colorSelection' class='form-group'>" +
+                "<div class='controls'>" +
+                    "<select class='select form-control' id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
+                        "<option value='' selected='selected'>Choose a color...</option>" +
+                    "</select>" +
+                "</div>" +
+            "</div>" +
+        "</div>" +
+    "</td>" +
+    "<td>" +
+        "<div id='div_id_quantityField' class='form-group'>" +
+            "<div class='controls'>" +
+                "<input class='numberinput form-control' id='id_quantityField' name='quantityField' type='number'>" +
+            "</div>" +
+        "</div>" +
+    "</tr>" +
+"</tr>"
+
+
 
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
@@ -145,12 +203,10 @@ $("#id_sizeVariation").change(function() {
         //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
         sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
 
+            addNewColorAndQuantityRow($(this).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+
             var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
             colorsAndQuantities.collapse('show');
-
-            var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
-
-            addNewColorAndQuantityRow(colorsAndQuantitiesTable);
 
             var selectedValue = $("option:selected", this);
             var sizesFieldSet = $("#sizesFieldSet");
@@ -167,25 +223,89 @@ $("#id_sizeVariation").change(function() {
             if (selectedValue[0].value != "0") {
 
                 var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
-                addNewColorAndQuantityRow(colorsAndQuantitiesTable);
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(".sizeSetSelectionTemplate").attr("id") + "_", colorsAndQuantitiesTable);
 
             }
         })
     }
 });
 
-var addNewSizeSetRow = function() {
-    $("#sizeSetSelectionTemplate").clone().removeClass("hidden").appendTo("#sizesFieldSet").attr('id', function(i, id) {
-        return id + (++sizeSetSelectionCounter);
+function addNewSizeSetRow() {
+
+    $("#sizesFieldSet").append(sizeSetTemplate);
+
+    var $newSizeSetSelection = $("#sizeSetSelectionTemplate");
+
+    // Get the number at the end of the ID, increment it, and replace the old id
+    var counter = GetNewCounter($newSizeSetSelection, "sizeSetSelectionTemplate", 0);
+    appendSuffixToAttribute($newSizeSetSelection, "id", counter);
+
+    // Find all elements in $clone that have an ID, and iterate using each()
+    var prefix = $newSizeSetSelection[0].id + "_";
+    $newSizeSetSelection.find('[id]').each(function() {
+         //Perform the same replace as above
+        var $th = $(this);
+        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str; });
+        $th.attr('id', newID);
+    });
+
+    // Find all elements in $clone that have a name, and iterate using each()
+    $newSizeSetSelection.find('[name]').each(function() {
+         //Perform the same replace as above
+        var $th = $(this);
+        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
+        $th.attr('name', newName);
     });
 
 }
 
-var addNewColorAndQuantityRow = function(appendTo) {
-    $("#rowColorQuantityTemplate").clone().removeClass("hidden").appendTo(appendTo).attr('id', function(i, id) {
-        return id + (++colorAndSizeRowCounter);
+function addNewColorAndQuantityRow(prefix, appendTo) {
+
+    $(appendTo).append(rowColorQuantityTemplate);
+
+    var $newColorQuantityRow = $("#rowColorQuantityTemplate");
+
+    // Get the number at the end of the ID, increment it, and replace the old id
+    var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
+    appendSuffixToAttribute($newColorQuantityRow, "id", counter);
+
+
+    // Find all elements in $clone that have an ID, and iterate using each()
+    $newColorQuantityRow.find('[id]').each(function() {
+        //Perform the same replace as above
+        var $th = $(this);
+        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
+        $th.attr('id', newID);
     });
 
+    // Find all elements in $clone that have a name, and iterate using each()
+    $newColorQuantityRow.find('[name]').each(function() {
+         //Perform the same replace as above
+        var $th = $(this);
+        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
+        $th.attr('name', newName);
+    });
+}
+
+function GetNewCounter($element, classFromPrevious, initial){
+    var counter = initial;
+    var numberAtEndOfId;
+    if($element.prev().hasClass(classFromPrevious))
+    {
+        if(numberAtEndOfId = $element.prev().attr('id').match(/(\d+)$/))
+        {
+            counter = parseInt(numberAtEndOfId[0], 10) + 1;
+        }
+    }
+    return counter;
+}
+
+function appendSuffixToAttribute(element, attr, suffix){
+    element.attr(attr, element.attr(attr) + suffix);
+}
+
+function appendPrefixToAttribute(element, attr, prefix){
+    element.attr(attr, prefix + element.attr(attr));
 }
 
 $("#resizeIcon").click(function() {
