@@ -33,6 +33,7 @@ class ProductCreationForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
+        sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -56,6 +57,16 @@ class ProductCreationForm(forms.ModelForm):
 
         )
         self.fields['description'].widget = TinyMCE()
+
+        for i, size in enumerate(sizes):
+            self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+                = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                              objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["size"])
+            for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                              objects.filter(group=2), empty_label="Choose a color...",
+                                         initial=sizes[i]["colorsAndQuantities"][j]["color"])
 
     class Meta:
         model = get_model('catalogue', 'Product')
