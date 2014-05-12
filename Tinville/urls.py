@@ -34,6 +34,7 @@ urlpatterns += patterns('',
     url(r'^(?P<slug>\w+)/edit$', 'designer_shop.views.shopeditor'),
     url(r'^(?P<slug>\w+)/edit/about$', 'designer_shop.views.shopabout'),
     url(r'^(?P<slug>\w+)/edit/color$', 'designer_shop.views.postcolor'),
+    url(r'^(?P<slug>\w+)/edit/create_product$', 'designer_shop.views.create_product'),
     url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )
 

@@ -32,4 +32,14 @@ class Item(models.Model):
     image = models.ImageField(upload_to=settings.MEDIA_URL)
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
+SIZE_SET = "1"
+SIZE_DIM = "2"
+SIZE_NUM = "3"
+
+SIZE_TYPES = [
+    (SIZE_SET, "Set (eg. Small, Medium, Large)"),
+    (SIZE_DIM, "Dimensions (eg. Length X Width)"),
+    (SIZE_NUM, "Number (eg. Dress size)")
+]
+
 
