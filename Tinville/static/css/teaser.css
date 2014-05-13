@@ -79,32 +79,38 @@ body {
     text-decoration: none;
 }
 
-
-#tinvilleTagBanner {
+@media(min-width: 768px){
+  #tinvilleTagBanner {
     position: relative;
-    top: -70px;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 170px;
+    max-height: 170px;
+    margin-top: 5px;
+    margin-bottom: 5px
+  }
 }
 
 #tinvilleDescription {
-    margin-top: 3%;
     font-size: 1.3em;
 }
 
 
 @media(max-width: 767px){
-    #tinvilleTagBanner {
+    #tinvilleTagBannerXS {
         position: absolute;
+        float: right !important;
+        right: 5%;
         top: 0.5%;
-        left: 5%;
         z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
         height: 75px;
     }
 
     #mainContent {
         margin-top: 5%;
+    }
+
+    #tinvilleDescription {
+        margin-top: 2%;
     }
 }
 
@@ -566,4 +572,71 @@ textarea {
     h3 {
         page-break-after: avoid;
     }
+}
+
+/* columns of same height styles */
+.container-xs-height {
+    display:table;
+    padding-left:0px;
+    padding-right:0px;
+}
+.row-xs-height {
+    display:table-row;
+}
+.col-xs-height {
+    display:table-cell;
+    float:none;
+}
+@media (min-width: 768px) {
+    .container-sm-height {
+        display:table;
+        padding-left:0px;
+        padding-right:0px;
+    }
+    .row-sm-height {
+        display:table-row;
+    }
+    .col-sm-height {
+        display:table-cell;
+        float:none;
+    }
+}
+@media (min-width: 992px) {
+    .container-md-height {
+        display:table;
+        padding-left:0px;
+        padding-right:0px;
+    }
+    .row-md-height {
+        display:table-row;
+    }
+    .col-md-height {
+        display:table-cell;
+        float:none;
+    }
+}
+@media (min-width: 1200px) {
+    .container-lg-height {
+        display:table;
+        padding-left:0px;
+        padding-right:0px;
+    }
+    .row-lg-height {
+        display:table-row;
+    }
+    .col-lg-height {
+        display:table-cell;
+        float:none;
+    }
+}
+
+/* vertical alignment styles */
+.col-top {
+    vertical-align:top;
+}
+.col-middle {
+    vertical-align:middle;
+}
+.col-bottom {
+    vertical-align:bottom;
 }
