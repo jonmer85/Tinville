@@ -194,7 +194,7 @@ LOGGING = {
     }
 }
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'tinville-teaser.herokuapp.com', '*.tinville.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'tinville-teaser.herokuapp.com', 'www.tinville.com']
 
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
