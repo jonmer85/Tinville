@@ -584,8 +584,8 @@ textarea {
     display:table-row;
 }
 .col-xs-height {
-    display:table-cell;
-    float:none;
+    display:table-cell !important;
+    float:none !important;
 }
 @media (min-width: 768px) {
     .container-sm-height {
