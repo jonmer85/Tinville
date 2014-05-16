@@ -119,13 +119,13 @@ class AboutBoxForm(forms.Form):
 
 class DesignerShopColorPicker(forms.Form):
 
-    color = forms.CharField(widget=widgets.FarbtasticColorPicker)
+    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#000000")
     helper = FormHelper()
     helper.form_show_labels = False
 
     helper.layout = Layout(
         Div(
             Field('color'),
-            Submit('designerShopColorPicker', 'Create', css_class='tinvilleButton'),
+            Submit('designerShopColorPicker', 'Create', css_class='tinvilleButton', css_id="shopColorPicker"),
             css_class="container"
         ))

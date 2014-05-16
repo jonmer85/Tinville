@@ -93,13 +93,10 @@
     background: #990099;
     /*width: 48px;*/
     position: fixed;
-    top: 20%;
+    top: 30%;
     /*z-index: -1;*/
-    right: 80%;
+    right: 85%;
     border-radius: 8px;
-}
-
-#aboutLink a {
     display: block;
     text-indent: 3px;
     /*height: 48px;*/
@@ -110,9 +107,15 @@
 
 .aboutIcon {
     margin-right: 3px;
-    font-size: xx-large;
+    font-size: -webkit-xxx-large;
     color: white;
+}
 
+
+@media (max-width: 768px) {
+    .aboutIcon {
+        font-size: -webkit-x-large;
+    }
 }
 
 .shopItems {
