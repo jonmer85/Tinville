@@ -33,7 +33,6 @@ def postcolor(request, slug):
         form = DesignerShopColorPicker(request.POST)
 
         if form.is_valid():
-
             currentShop.color = form.cleaned_data["color"]
             currentShop.save(update_fields=["color"])
 
@@ -46,11 +45,10 @@ def create_product(request, slug):
         sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
 
         form = ProductCreationForm(request.POST, sizes=sizes)
+        if form.is_valid():
+            canonicalProduct = form.save(currentShop)
+
         return renderShopEditor(request, currentShop, productCreationForm=form)
-
-
-
-
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
