@@ -1,6 +1,6 @@
 from storages.backends.s3boto import S3BotoStorage
 
-class StaticRootS3BotoStorage(S3BotoStorage):
+class StaticS3BotoStorage(S3BotoStorage):
     """
     Storage for static files.
     """
@@ -10,7 +10,7 @@ class StaticRootS3BotoStorage(S3BotoStorage):
         super(StaticRootS3BotoStorage, self).__init__(*args, **kwargs)
 
 
-class MediaRootS3BotoStorage(S3BotoStorage):
+class MediaS3BotoStorage(S3BotoStorage):
     """
     Storage for uploaded media files.
     """
