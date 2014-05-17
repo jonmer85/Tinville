@@ -124,7 +124,7 @@ def and_selecting_the_double_arrows_should_increase_the_size_of_the_shop_editor_
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.75)) <= 1
 
-@step(u'And selecting the double inward arrows should demcrease the size of the shop editor to 35% of window size again')
+@step(u'And selecting the double inward arrows should decrease the size of the shop editor to 35% of window size again')
 def and_selecting_the_double_inward_arrows_should_decrease_the_size_to_thirtyfive_of_window_size(step):
     assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-small')
     world.browser.find_element_by_css_selector("#resizeIcon.glyphicon-resize-small").click()
