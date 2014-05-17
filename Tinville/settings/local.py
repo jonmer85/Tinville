@@ -5,6 +5,7 @@ from .base import *  # Start with base settings
 # HEROKU Change!!!
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_DEBUG = DEBUG
 
 DATABASES = {
     'default': {

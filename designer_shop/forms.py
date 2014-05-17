@@ -49,7 +49,7 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
-                css_class="container"
+                css_class="container col-sm-12"
             )
 
         )
@@ -73,6 +73,7 @@ class ProductCreationForm(forms.ModelForm):
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
         canonicalProduct.save()
+        canonicalProductId = canonicalProduct.id
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
         productImage.save()

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load thumbnail %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
@@ -82,16 +83,29 @@
     <div class="row">
       <div class=" ">
         <div class="shopItems row">
-          {% for item in shop.item_set.all %}
-            <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
-              <div class="thumbnail shopItem shopBorderColor">
-                <img src="{{item.image.url}}" class="img-responsive" />
-                <div class="caption">
-                  <span class="name shopColor">{{item.name}}</span>
-                  <span class="price shopColor">${{item.price}}</span>
-                </div>
-              </div>
-            </div>
+          {% for product in products %}
+            {% if product.is_top_level %}
+              <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                  <div class="thumbnail shopItem shopBorderColor">
+                    {% if product.primary_image and product.primary_image.original.url %}
+                        {% with image=product.primary_image %}
+                            {% thumbnail image.original "150x120" upscale=False as thumb %}
+                            <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
+                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description=" class="img-responsive"
+                                    {% if image.caption %}{{ image.caption }}{% endif %}">
+                            </a>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                  </div>
+                  <div class="caption">
+                      <span class="name shopColor">{{product.get_title}}</span>
+{#                      <span class="price shopColor">${{product.min_variant_price_excl_tax}}</span>#}
+                   </div>
+               </div>
+            {% endif %}
           {% endfor %}
         </div>
       </div>

@@ -175,7 +175,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'compressor',
     'tinymce',
-    'fixture_media'
+    'sorl.thumbnail'
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
