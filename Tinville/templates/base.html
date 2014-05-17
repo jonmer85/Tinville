@@ -749,6 +749,16 @@
         });
 
 
+     $("a.dropdown-toggle.hidden-xs").click(function() {
+         $("#id_username.textinput.textInput").val("");
+         $("#id_password.textinput.textInput").val("");
+     });
+
+    $("#navLogin").click(function()
+    {
+        $("#id_username.textinput.textInput").val("");
+        $("#id_password.textinput.textInput").val("");
+    });
 
     </script>
     <script id="message_template" type="text/x-handlebars-template">
