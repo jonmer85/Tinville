@@ -7,7 +7,7 @@ class StaticS3BotoStorage(S3BotoStorage):
 
     def __init__(self, *args, **kwargs):
         kwargs['location'] = 'static'
-        super(StaticRootS3BotoStorage, self).__init__(*args, **kwargs)
+        super(StaticS3BotoStorage, self).__init__(*args, **kwargs)
 
 
 class MediaS3BotoStorage(S3BotoStorage):
@@ -17,4 +17,4 @@ class MediaS3BotoStorage(S3BotoStorage):
 
     def __init__(self, *args, **kwargs):
         kwargs['location'] = 'media'
-        super(MediaRootS3BotoStorage, self).__init__(*args, **kwargs)
+        super(MediaS3BotoStorage, self).__init__(*args, **kwargs)
