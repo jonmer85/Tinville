@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
 from user.views import ajax_login, register
 from user.forms import LoginForm
-
+# from designer_shop.views import ajax_color
+# from designer_shop.forms import DesignerShopColorPicker
 # from oscar.app import application
 
 
@@ -33,7 +34,11 @@ urlpatterns += patterns('',
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<slug>\w+)/edit$', 'designer_shop.views.shopeditor'),
     url(r'^(?P<slug>\w+)/edit/about$', 'designer_shop.views.shopabout'),
-    url(r'^(?P<slug>\w+)/edit/color$', 'designer_shop.views.postcolor'),
+    # url(r'^(?P<slug>\w+)/edit/color$', 'designer_shop.views.postcolor'),
+    # url(r'^(?P<slug>\w+)/ajax_color', 'designer_shop.views.ajax_color'),
+    url(r'^(?P<slug>\w+)/edit/ajax_color$', 'designer_shop.views.ajax_color',
+        'designer_shop.forms.DesignerShopColorPicker',
+        name='ajax_colors'),
     url(r'^(?P<slug>\w+)/edit/create_product$', 'designer_shop.views.create_product'),
     url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
 )

@@ -72,7 +72,8 @@ class ProductCreationForm(forms.ModelForm):
         model = get_model('catalogue', 'Product')
         # fields = ['title', 'description', 'product_class']
 
-class AboutBoxForm( forms.Form ):
+
+class AboutBoxForm(forms.Form):
     
     aboutContent = forms.CharField( widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
     
@@ -85,7 +86,8 @@ class AboutBoxForm( forms.Form ):
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))
-    
+
+
 class DesignerShopColorPicker(forms.Form):
 
     color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#000000")

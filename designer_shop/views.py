@@ -1,15 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 
-
-# from oscar.core.loading import get_model
+from oscar.core.loading import get_model
 from designer_shop.models import Shop
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
 
+
 def shopper(request, slug):
+    model_class = get_model('catalogue', 'Category')
+    categories = model_class.objects.all()
     return render(request, 'designer_shop/shopper.html', {
         'shop': get_object_or_404(Shop, slug__exact=slug),
-        # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
+        'categories': categories
+        # 'categories': get_model('catalogue', 'AbstrastCategory').objects.all()
     })
+
 
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
@@ -23,29 +28,29 @@ def shopeditor(request, slug):
                                      })
     })
 
+
 def shopabout(request, slug):
     
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
-        currentshop = Shop.objects.get(slug = slug)
+        currentshop = Shop.objects.get(slug=slug)
         if form.is_valid():
             currentshop.aboutContent = form.cleaned_data["aboutContent"]
             currentshop.save(update_fields=["aboutContent"])
         
         return renderShopEditor(request, currentshop, aboutForm=form)
 
-def postcolor(request, slug):
 
-    if request.method == 'POST':
-        currentShop = Shop.objects.get(slug=slug)
-        form = DesignerShopColorPicker(request.POST)
+def ajax_color(request, slug):
+    currentShop = Shop.objects.get(slug=slug)
+    form = DesignerShopColorPicker(request.POST)
 
-        if form.is_valid():
+    if request.is_ajax() and form.is_valid():
+        currentShop.color = form.cleaned_data["color"]
+        currentShop.save(update_fields=["color"])
 
-            currentShop.color = form.cleaned_data["color"]
-            currentShop.save(update_fields=["color"])
+    return renderShopEditor(request, currentShop, colorPickerForm=form)
 
-        return renderShopEditor(request, currentShop, colorPickerForm=form)
 
 def create_product(request, slug):
     if request.method == 'POST':
@@ -55,9 +60,6 @@ def create_product(request, slug):
 
         form = ProductCreationForm(request.POST, sizes=sizes)
         return renderShopEditor(request, currentShop, productCreationForm=form)
-
-
-
 
 
 def get_sizes_colors_and_quantities(sizeType, post):
