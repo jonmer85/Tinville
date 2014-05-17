@@ -142,13 +142,9 @@ var sizeSetTemplate = "" +
         "<div class='controls'>" +
             "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
                 "<option value='' selected='selected'>Choose a size...</option>" +
-                "<option value='1'>xxs</option>} +" +
-                "<option value='2'>xs</option>" +
-                "<option value='3'>sm</option>" +
-                "<option value='4'>md</option>" +
-                "<option value='5'>lg</option>" +
-                "<option value='6'>xl</option>" +
-                "<option value='7'>xxl</option>" +
+                "{% for sizeSet in sizeSetOptions %}" +
+                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                "{% endfor %}" +
             "</select>" +
         "</div>" +
     "</div>" +

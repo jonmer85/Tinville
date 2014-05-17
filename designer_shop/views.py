@@ -88,7 +88,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                      {
                                          "aboutContent": shop.aboutContent
                                      }),
-        'colors': get_model('catalogue', 'AttributeOption').objects.filter(group=2)
+        'colors': get_model('catalogue', 'AttributeOption').objects.filter(group=2),
+        'sizeSetOptions': get_model('catalogue', 'AttributeOption').objects.filter(group=1)
     })
 
 
