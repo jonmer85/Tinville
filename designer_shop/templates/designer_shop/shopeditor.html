@@ -103,7 +103,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane" id="addItems" action="edit/create_product" method="post">
+                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" action="edit/create_product" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
