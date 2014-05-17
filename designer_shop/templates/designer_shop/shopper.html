@@ -19,11 +19,28 @@
   <div class="container">
       {% if shop.aboutContent %}
           <div id="aboutLink">
-            <a class="whhg-batman aboutIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+            <div class="whhg-batman aboutIcon"> </div>
 {#          <button type="button" class="whhg-batman aboutIcon btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{ shop.aboutContent | safe }}">BIO</button>#}
-        </div>
-        {{ shop.aboutContent | safe }}
+          </div>
+
+
+
       {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+              {{ shop }} Bio
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+          <div class="panel-body">
+            {{ shop.aboutContent | safe }}
+          </div>
+        </div>
+    </div>
 
       {% if user.email == shop.user.email%}
         <div id="editLink">
@@ -37,6 +54,9 @@
             <option class="">Women</option>
             <option class="">Men</option>
             <option class="">Kids</option>
+              {% for item in shop.item_set.all %}
+
+             {% endfor %}
           </select>
       </div>
 
@@ -83,14 +103,18 @@
     {{ block.super }}
     <script>
 
+
+
     function colourFunction() {
         var myselect = document.getElementById("select1"),
         colour = myselect.options[myselect.selectedIndex].className;
         myselect.className = "option2";
         myselect.blur();
     }
+
     $("#tinvilleTagBanner").remove();
-    $("#aboutLink").popover('show')
+    $("#aboutLink").css("background", "{{ shop.aboutContent }}")
+
     </script>
 
 {% endblock %}

@@ -103,7 +103,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane" id="addItems" action="edit/create_product" method="post">
+                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" action="edit/create_product" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
@@ -176,6 +176,9 @@ var rowColorQuantityTemplate = "" +
                 "<div class='controls'>" +
                     "<select class='select form-control' id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
                         "<option value='' selected='selected'>Choose a color...</option>" +
+                        "{% for color in colors %}" +
+                        "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
+                        "{% endfor %}" +
                     "</select>" +
                 "</div>" +
             "</div>" +
@@ -203,7 +206,7 @@ $("#id_sizeVariation").change(function() {
         //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
         sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
 
-            addNewColorAndQuantityRow($(this).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+            addNewColorAndQuantityRow($(this).parents(".sizeSetSelectionTemplate").attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
 
             var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
             colorsAndQuantities.collapse('show');
@@ -267,6 +270,7 @@ function addNewColorAndQuantityRow(prefix, appendTo) {
 
     // Get the number at the end of the ID, increment it, and replace the old id
     var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
+    prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
     appendSuffixToAttribute($newColorQuantityRow, "id", counter);
 
 
@@ -304,7 +308,7 @@ function appendSuffixToAttribute(element, attr, suffix){
     element.attr(attr, element.attr(attr) + suffix);
 }
 
-function appendPrefixToAttribute(element, attr, prefix){
+function prependPrefixToAttribute(element, attr, prefix){
     element.attr(attr, prefix + element.attr(attr));
 }
 
