@@ -135,6 +135,6 @@ class DesignerShopColorPicker(forms.Form):
     helper.layout = Layout(
         Div(
             Field('color'),
-            Submit('designerShopColorPicker', 'Create', css_class='tinvilleButton', css_id="shopColorPicker"),
+            Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
             css_class="container"
         ))

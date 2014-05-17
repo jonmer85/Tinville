@@ -83,7 +83,10 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
     return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
-        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker,
+        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
+                                     {
+                                         "color": shop.color
+                                     }),
         'aboutBoxForm': aboutForm or AboutBoxForm(initial=
                                      {
                                          "aboutContent": shop.aboutContent
