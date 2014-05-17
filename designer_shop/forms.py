@@ -73,6 +73,7 @@ class ProductCreationForm(forms.ModelForm):
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
         canonicalProduct.save()
+        canonicalProductId = canonicalProduct.id
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
         productImage.save()
@@ -121,7 +122,7 @@ class AboutBoxForm(forms.Form):
 
     helper.layout = Layout(
         Div(
-            Fieldset('aboutContent', placeholder="Enter Text Here"),
+            Field('aboutContent', placeholder="Enter Text Here"),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))

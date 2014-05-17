@@ -170,13 +170,12 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
-    'PIL',
     'lettuce.django',
     'fixture_media',
     'django_extensions',
     'compressor',
     'tinymce',
-    'fixture_media'
+    'sorl.thumbnail'
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 

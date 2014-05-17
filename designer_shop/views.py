@@ -1,13 +1,20 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
+from catalogue.models import Product
+
+from common.utils import get_list_or_empty
+
+AttributeOption = get_model('catalogue', 'AttributeOption')
 
 def shopper(request, slug):
+    shop = get_object_or_404(Shop, slug__exact=slug)
     return render(request, 'designer_shop/shopper.html', {
-        'shop': get_object_or_404(Shop, slug__exact=slug)
+        'shop': shop,
+        'products': get_list_or_empty(Product, shop=shop.id)
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
@@ -16,14 +23,12 @@ def shopeditor(request, slug):
     return renderShopEditor(request, shop)
 
 def shopabout(request, slug):
-    
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
         currentshop = Shop.objects.get(slug = slug)
         if form.is_valid():
             currentshop.aboutContent = form.cleaned_data["aboutContent"]
             currentshop.save(update_fields=["aboutContent"])
-        
         return renderShopEditor(request, currentshop, aboutForm=form)
 
 def postcolor(request, slug):
@@ -88,8 +93,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                      {
                                          "aboutContent": shop.aboutContent
                                      }),
-        'colors': get_model('catalogue', 'AttributeOption').objects.filter(group=2),
-        'sizeSetOptions': get_model('catalogue', 'AttributeOption').objects.filter(group=1)
+        'colors': AttributeOption.objects.filter(group=2),
+        'sizeSetOptions': AttributeOption.objects.filter(group=1)
     })
 
 
