@@ -170,7 +170,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
-    'lettuce.django',
     'fixture_media',
     'django_extensions',
     'compressor',

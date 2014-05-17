@@ -115,7 +115,7 @@ class ProductCreationForm(forms.ModelForm):
 
 class AboutBoxForm(forms.Form):
 
-    aboutContent = forms.CharField( widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    aboutContent = forms.CharField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -136,6 +136,6 @@ class DesignerShopColorPicker(forms.Form):
     helper.layout = Layout(
         Div(
             Field('color'),
-            Submit('designerShopColorPicker', 'Create', css_class='tinvilleButton', css_id="shopColorPicker"),
+            Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
             css_class="container"
         ))
