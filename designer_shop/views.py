@@ -1,27 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 
-# from oscar.core.loading import get_model
-from designer_shop.models import Shop
+from oscar.core.loading import get_model
+from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
 
 def shopper(request, slug):
     return render(request, 'designer_shop/shopper.html', {
-        'shop': get_object_or_404(Shop, slug__exact=slug),
+        'shop': get_object_or_404(Shop, slug__exact=slug)
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
-    return render(request, 'designer_shop/shopeditor.html', {
-        'shop': shop,
-        'productCreationForm': ProductCreationForm,
-        'designerShopColorPicker': DesignerShopColorPicker,
-        'aboutBoxForm': AboutBoxForm(initial=
-                                     {
-                                         "aboutContent": shop.aboutContent
-                                     })
-    })
+    return renderShopEditor(request, shop)
 
 def shopabout(request, slug):
     
@@ -52,7 +44,7 @@ def create_product(request, slug):
         sizeVariationType = request.POST["sizeVariation"]
         sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
 
-        form = ProductCreationForm(request.POST, sizes=sizes)
+        form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
         if form.is_valid():
             canonicalProduct = form.save(currentShop)
 

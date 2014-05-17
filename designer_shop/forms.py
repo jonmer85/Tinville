@@ -1,4 +1,5 @@
 from django import forms
+from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
 
@@ -21,6 +22,8 @@ class ProductCreationForm(forms.ModelForm):
     product_class = forms.ModelChoiceField(queryset=get_model('catalogue', 'ProductClass').objects.all(),
                                            empty_label="What are you selling?")
 
+    product_image = forms.ImageField(required=False)
+
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -34,6 +37,10 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
                          Field('product_class', placeholder='Product Class')
+                ),
+                Fieldset('Images',
+                         'product_image',
+                         HTML("""{% if form.product_image.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.product_image.value }}">{% endif %}""", ),
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -66,7 +73,9 @@ class ProductCreationForm(forms.ModelForm):
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
         canonicalProduct.save()
-        canonicalProductId = canonicalProduct.id
+        productImage = ProductImage(product=canonicalProduct)
+        productImage.original = self.cleaned_data['product_image']
+        productImage.save()
 
         i = 0
         while True:

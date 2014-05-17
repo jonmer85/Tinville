@@ -175,7 +175,8 @@ INSTALLED_APPS = [
     'fixture_media',
     'django_extensions',
     'compressor',
-    'tinymce'
+    'tinymce',
+    'fixture_media'
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
