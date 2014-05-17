@@ -136,19 +136,7 @@ var htmlSTring = "<div>\
   This is a string.\
 </div>";
 
-var sizeSetTemplate = "" +
-"<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
-    "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-        "<div class='controls'>" +
-            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
-                "<option value='' selected='selected'>Choose a size...</option>" +
-                "{% for sizeSet in sizeSetOptions %}" +
-                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
-                "{% endfor %}" +
-            "</select>" +
-        "</div>" +
-    "</div>" +
-"</div>" +
+var colorQuantityTableHead = "" +
 "<div class='accordion-body collapse collapse-colors-quantity col-xs-8 col-xs-offset-4'>" +
     "<div class='accordion-inner table-responsive'>" +
         "<table class='table'>" +
@@ -163,6 +151,32 @@ var sizeSetTemplate = "" +
         "</table>" +
     "</div>" +
 "</div>"
+
+var sizeSetTemplate = "" +
+"<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
+        "<div class='controls'>" +
+            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+                "<option value='' selected='selected'>Choose a size...</option>" +
+                "{% for sizeSet in sizeSetOptions %}" +
+                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                "{% endfor %}" +
+            "</select>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
+
+var sizeDimensionTemplate = "" +
+"<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
+        "<div class='controls'>" +
+            "<input class='sizeDimensionSelection numberinput form-control' id='id_sizeDimensionSelection' name='quantityField' type='number' placeholder = 'Type a width'>" +
+            "<input class='sizeDimensionSelection numberinput form-control' id='id_sizeDimensionSelection' name='quantityField' type='number' placeholder = 'Type a length'>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
 
 var rowColorQuantityTemplate = "" +
 "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
@@ -194,38 +208,83 @@ var rowColorQuantityTemplate = "" +
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
-    if (selectedValue[0].value == "1") {
-        //Size set
-        sizesFieldSet.removeClass("hidden");
+    switch (selectedValue[0].value) {
+        case "1":
+            //Size set
+            sizesFieldSet.removeClass("hidden");
 
-        addNewSizeSetRow();
-        //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-        sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
+            addNewSizeSetRow();
+            //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+            sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
 
-            addNewColorAndQuantityRow($(this).parents(".sizeSetSelectionTemplate").attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+                if($(this).closest('.accordion-group').next().length == "0") {
+                    addNewColorAndQuantityRow($(this).parents(".sizeSetSelectionTemplate").attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+                }
 
-            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
-            colorsAndQuantities.collapse('show');
+                var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+                colorsAndQuantities.collapse('show');
 
-            var selectedValue = $("option:selected", this);
-            var sizesFieldSet = $("#sizesFieldSet");
-            if (selectedValue[0].value != "0") {
-                //Add a new size set row
-                addNewSizeSetRow();
-            }
-        })
-        //Color event handling (Add a new color/quantity row for more color/quantity selection)
-        sizesFieldSet.on("change", ".row-color", function(e) {
+                var selectedValue = $("option:selected", this);
+                var sizesFieldSet = $("#sizesFieldSet");
+                if (selectedValue[0].value != "0") {
+                    if($(this).closest('.accordion-group').next().length == "0") {
+                        //Add a new size set row
+                        addNewSizeSetRow();
+                    }
+                }
+            })
+            //Color event handling (Add a new color/quantity row for more color/quantity selection)
+            sizesFieldSet.on("change", ".row-color", function(e) {
 
-            var selectedValue = $("option:selected", this);
-            var sizesFieldSet = $("#sizesFieldSet");
-            if (selectedValue[0].value != "0") {
+                var selectedValue = $("option:selected", this);
+                var sizesFieldSet = $("#sizesFieldSet");
+                if (selectedValue[0].value != 0) {
 
-                var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
-                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(".sizeSetSelectionTemplate").attr("id") + "_", colorsAndQuantitiesTable);
+                    var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+                    if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
+                        addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(".sizeSetSelectionTemplate").attr("id") + "_", colorsAndQuantitiesTable);
+                    }
+                }
+            })
+            break;
 
-            }
-        })
+        case "2":
+           //Size set
+            sizesFieldSet.removeClass("hidden");
+
+            addNewSizeDimensionRow();
+            //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+            sizesFieldSet.on("change", ".sizeDimensionSelection", function(e) {
+
+                addNewColorAndQuantityRow($(this).parents(".sizeDimensionSelectionTemplate").attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+
+                var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+                colorsAndQuantities.collapse('show');
+
+                var selectedValue = $("option:selected", this);
+                var sizesFieldSet = $("#sizesFieldSet");
+                if (selectedValue[0].value != "0") {
+                    //Add a new size set row
+                    addNewSizeDimensionRow();
+                }
+            })
+            //Color event handling (Add a new color/quantity row for more color/quantity selection)
+            sizesFieldSet.on("change", ".row-color", function(e) {
+
+                var selectedValue = $("option:selected", this);
+                var sizesFieldSet = $("#sizesFieldSet");
+                if (selectedValue[0].value != "0") {
+
+                    var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+                    addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(".sizeDimensionSelectionTemplate").attr("id") + "_", colorsAndQuantitiesTable);
+
+                }
+            })
+            break;
+
+        case "3":
+            alert("WHAT NUMBER ARE YOU!?")
+            break;
     }
 });
 
@@ -250,6 +309,34 @@ function addNewSizeSetRow() {
 
     // Find all elements in $clone that have a name, and iterate using each()
     $newSizeSetSelection.find('[name]').each(function() {
+         //Perform the same replace as above
+        var $th = $(this);
+        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
+        $th.attr('name', newName);
+    });
+
+}
+
+function addNewSizeDimensionRow() {
+  $("#sizesFieldSet").append(sizeDimensionTemplate);
+
+    var $newSizeDimensionSelection = $("#sizeDimensionSelectionTemplate");
+
+    // Get the number at the end of the ID, increment it, and replace the old id
+    var counter = GetNewCounter($newSizeDimensionSelection, "sizeDimensionSelectionTemplate", 0);
+    appendSuffixToAttribute($newSizeDimensionSelection, "id", counter);
+
+    // Find all elements in $clone that have an ID, and iterate using each()
+    var prefix = $newSizeDimensionSelection[0].id + "_";
+    $newSizeDimensionSelection.find('[id]').each(function() {
+         //Perform the same replace as above
+        var $th = $(this);
+        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str; });
+        $th.attr('id', newID);
+    });
+
+    // Find all elements in $clone that have a name, and iterate using each()
+    $newSizeDimensionSelection.find('[name]').each(function() {
          //Perform the same replace as above
         var $th = $(this);
         var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
