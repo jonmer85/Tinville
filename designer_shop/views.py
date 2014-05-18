@@ -1,43 +1,41 @@
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 
-from oscar.core.loading import get_model
-from designer_shop.models import Shop
-from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
 
+from oscar.core.loading import get_model
+from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
+from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
+from catalogue.models import Product
+
+from common.utils import get_list_or_empty
+
+AttributeOption = get_model('catalogue', 'AttributeOption')
 
 def shopper(request, slug):
     model_class = get_model('catalogue', 'Category')
     categories = model_class.objects.all()
+    shop = get_object_or_404(Shop, slug__exact=slug)
     return render(request, 'designer_shop/shopper.html', {
-        'shop': get_object_or_404(Shop, slug__exact=slug),
-        'categories': categories
         # 'categories': get_model('catalogue', 'AbstrastCategory').objects.all()
+        'shop': shop,
+        'categories': categories,
+        'products': get_list_or_empty(Product, shop=shop.id)
+        # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
-
 
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
-    return render(request, 'designer_shop/shopeditor.html', {
-        'shop': shop,
-        'productCreationForm': ProductCreationForm,
-        'designerShopColorPicker': DesignerShopColorPicker,
-        'aboutBoxForm': AboutBoxForm(initial=
-                                     {
-                                         "aboutContent": shop.aboutContent
-                                     })
-    })
+    return renderShopEditor(request, shop)
 
 
 def shopabout(request, slug):
-    
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
         currentshop = Shop.objects.get(slug=slug)
         if form.is_valid():
             currentshop.aboutContent = form.cleaned_data["aboutContent"]
             currentshop.save(update_fields=["aboutContent"])
-        
         return renderShopEditor(request, currentshop, aboutForm=form)
 
 
@@ -58,7 +56,10 @@ def create_product(request, slug):
         sizeVariationType = request.POST["sizeVariation"]
         sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
 
-        form = ProductCreationForm(request.POST, sizes=sizes)
+        form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+        if form.is_valid():
+            canonicalProduct = form.save(currentShop)
+
         return renderShopEditor(request, currentShop, productCreationForm=form)
 
 
@@ -95,12 +96,16 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
     return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
-        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker,
+        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
+                                     {
+                                         "color": shop.color
+                                     }),
         'aboutBoxForm': aboutForm or AboutBoxForm(initial=
                                      {
                                          "aboutContent": shop.aboutContent
                                      }),
-        'colors': get_model('catalogue', 'AttributeOption').objects.filter(group=2)
+        'colors': AttributeOption.objects.filter(group=2),
+        'sizeSetOptions': AttributeOption.objects.filter(group=1)
     })
 
 

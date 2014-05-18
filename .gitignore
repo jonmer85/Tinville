@@ -3,6 +3,11 @@ venv
 db.sqlite3
 *~
 .idea/*
+Tinville/.idea/*
+Tinville/media/*
+Tinville/static/js/tiny_mce/langs/*
+Tinville/static/js/tiny_mce/plugins/*
+Tinville/static/js/tiny_mce/themes/*
 reports/
 *.DS_Store
 /nbproject/private/

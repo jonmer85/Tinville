@@ -167,16 +167,16 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'crispy_forms',
     'braces',
+    'PIL',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
-    'PIL',
-    'lettuce.django',
     'fixture_media',
     'django_extensions',
     'compressor',
-    'tinymce'
-] + get_core_apps() + PROJECT_APPS
+    'tinymce',
+    'sorl.thumbnail'
+] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
 # These are used by jenkins to know which tasks to run
@@ -225,7 +225,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'tinville.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'www.tinville.com']
 
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
