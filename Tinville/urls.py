@@ -36,7 +36,6 @@ urlpatterns += patterns('',
     # url(r'^(?P<slug>\w+)/edit/color$', 'designer_shop.views.postcolor'),
     # url(r'^(?P<slug>\w+)/ajax_color', 'designer_shop.views.ajax_color'),
     url(r'^(?P<slug>\w+)/edit/ajax_color$', 'designer_shop.views.ajax_color',
-        'designer_shop.forms.DesignerShopColorPicker',
         name='ajax_colors'),
     url(r'^(?P<slug>\w+)/edit/create_product$', 'designer_shop.views.create_product'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!

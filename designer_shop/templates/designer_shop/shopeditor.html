@@ -130,6 +130,37 @@
 
 {% block javascript %}
     {{ block.super }}
+    <script>
+    $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                    // Send the token to same-origin, relative URLs only.
+                    // Send the token only if the method warrants CSRF protection
+                    // Using the CSRFToken value acquired earlier
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(document).on("submit", "#color", function(e) {
+            e.preventDefault();
+            var self = $(this),
+                url = self.attr("action"),
+
+                ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        color: self.find("#id_color").val()
+                    },
+                    success: function(data, textStatus, jqXHR) {
+							location.reload();
+					}
+                });
+        });
+
+</script>
+
 <script>
 
 var htmlSTring = "<div>\
