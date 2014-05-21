@@ -8,6 +8,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
+from django.core.validators import RegexValidator
 
 from . import models
 
@@ -128,7 +129,13 @@ class AboutBoxForm(forms.Form):
 
 class DesignerShopColorPicker(forms.Form):
 
-    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#000000")
+    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#ffffff", max_length=7, min_length = 6,
+                             validators=[
+        RegexValidator(
+            regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+            message='Invalid hex code',
+        ),])
+
     helper = FormHelper()
     helper.form_show_labels = False
 
