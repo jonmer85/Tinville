@@ -95,7 +95,7 @@
                             <div class="tab-pane" id="logo">
                                 Insert Logo form here.
                             </div>
-                            <form class="tab-pane" id="color" action="edit/color" method="post">
+                            <form class="tab-pane" id="color" action="edit/ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
@@ -112,7 +112,8 @@
 
                     </div>
                     <div id="buttonContainer" class="container col-sm-12 pull-right">
-                            <button class="btn btn-primary tinvilleButton pull-right">Submit</button>
+                            <div id="message_area"></div>
+                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right">Submit</button>
                     </div>
                 </div>
             </div>
@@ -130,6 +131,43 @@
 
 {% block javascript %}
     {{ block.super }}
+    <script>
+
+    $( "#editorButton" ).click(function() {
+        $( "#color" ).click();
+    });
+
+        $(document).on("submit", "#color", function(e) {
+            e.preventDefault();
+            var self = $(this),
+                url = self.attr("action"),
+
+                ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        color: self.find("#id_color").val()
+                    },
+                    success: function(data, textStatus, jqXHR) {
+							location.reload();
+					},
+                    error: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#message_area"));
+                        clear_form_field_errors(".colorForm");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(index, value) {
+                            if (index === "__all__") {
+                                django_message(value[0], "error", self.find("#message_area"));
+                            } else {
+                                apply_form_field_error(self[0].id, index, value);
+                            }
+                        });
+                    }
+                });
+        });
+
+</script>
+
 <script>
 
 var htmlSTring = "<div>\

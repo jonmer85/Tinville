@@ -7,6 +7,8 @@
 {% endblock css %}
 
 {% block content %}
+    {{ block.super }}
+
     <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>
 {#    need to add something if a designer does not have a banner#}
 {#    this will be decribed at a later time#}
@@ -52,11 +54,10 @@
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
          <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
             <option class="option2">View All</option>
-            <option class="">Women</option>
-            <option class="">Men</option>
-            <option class="">Kids</option>
-              {% for item in shop.item_set.all %}
-
+              {% for category in categories %}
+                {% if category.depth == 1 %}
+                    <option class="">{{ category.name }}</option>
+                {% endif %}
              {% endfor %}
           </select>
       </div>
@@ -64,9 +65,11 @@
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
           <select class="select form-control filterTabs " >
             <option>View All Types</option>
-            <option>Dresses</option>
-            <option>Pants</option>
-            <option>Shoes</option>
+            {% for category in categories %}
+                {% if category.depth == 3 %}
+                    <option class="">{{ category.name }}</option>
+                {% endif %}
+             {% endfor %}
           </select>
       </div>
 
@@ -119,15 +122,19 @@
 
 
 
-    function colourFunction() {
-        var myselect = document.getElementById("select1"),
-        colour = myselect.options[myselect.selectedIndex].className;
-        myselect.className = "option2";
-        myselect.blur();
-    }
+{#    function colourFunction() {#}
+{#        var myselect = document.getElementById("select1"),#}
+{#        colour = myselect.options[myselect.selectedIndex].className;#}
+{#        myselect.className = "option2";#}
+{#        myselect.blur();#}
+{#    }#}
 
     $("#tinvilleTagBanner").remove();
-    $("#aboutLink").css("background", "{{ shop.aboutContent }}")
+    $("#aboutLink").css("background", "{{ shop.color }}");
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    $("#editLink").css("background", "{{ shop.color }}");
+
 
     </script>
 

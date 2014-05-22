@@ -132,7 +132,7 @@ class DesignerShopColorPicker(forms.Form):
     color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#000000")
     helper = FormHelper()
     helper.form_show_labels = False
-
+    helper.form_class = 'colorForm'
     helper.layout = Layout(
         Div(
             Field('color'),

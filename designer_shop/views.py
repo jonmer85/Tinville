@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 
 
 from oscar.core.loading import get_model
@@ -11,9 +13,13 @@ from common.utils import get_list_or_empty
 AttributeOption = get_model('catalogue', 'AttributeOption')
 
 def shopper(request, slug):
+    model_class = get_model('catalogue', 'Category')
+    categories = model_class.objects.all()
     shop = get_object_or_404(Shop, slug__exact=slug)
     return render(request, 'designer_shop/shopper.html', {
+        # 'categories': get_model('catalogue', 'AbstrastCategory').objects.all()
         'shop': shop,
+        'categories': categories,
         'products': get_list_or_empty(Product, shop=shop.id)
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
@@ -21,6 +27,7 @@ def shopper(request, slug):
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
     return renderShopEditor(request, shop)
+
 
 def shopabout(request, slug):
     if request.method == 'POST':
@@ -31,17 +38,21 @@ def shopabout(request, slug):
             currentshop.save(update_fields=["aboutContent"])
         return renderShopEditor(request, currentshop, aboutForm=form)
 
-def postcolor(request, slug):
 
-    if request.method == 'POST':
-        currentShop = Shop.objects.get(slug=slug)
-        form = DesignerShopColorPicker(request.POST)
+def ajax_color(request, slug):
+    currentShop = Shop.objects.get(slug=slug)
+    form = DesignerShopColorPicker(request.POST)
 
-        if form.is_valid():
-            currentShop.color = form.cleaned_data["color"]
-            currentShop.save(update_fields=["color"])
+    if request.is_ajax() and form.is_valid():
+        currentShop.color = form.cleaned_data["color"]
+        currentShop.save(update_fields=["color"])
 
-        return renderShopEditor(request, currentShop, colorPickerForm=form)
+    return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+
+    # return renderShopEditor(request, currentShop, colorPickerForm=form)
+    # return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+
+
 
 def create_product(request, slug):
     if request.method == 'POST':
@@ -54,6 +65,7 @@ def create_product(request, slug):
             canonicalProduct = form.save(currentShop)
 
         return renderShopEditor(request, currentShop, productCreationForm=form)
+
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
