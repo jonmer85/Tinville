@@ -1,5 +1,5 @@
 from django import forms
-from oscar.apps.catalogue.models import ProductImage, LogoImage, BannerImage
+from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
 
@@ -180,14 +180,3 @@ class LogoUploadForm( forms.Form ):
             Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))
-
-    def save(self, shop):
-        tempLogo = super(LogoUploadForm, self).save(commit=False)
-        if not tempLogo.upc:
-            tempLogo.upc = None
-        tempLogo.shop = shop
-        tempLogo.save()
-        canonicalProductId = tempLogo.id
-        logoImage = LogoImage(product=tempLogo)
-        logoImage.original = self.cleaned_data['logo']
-        logoImage.save()
