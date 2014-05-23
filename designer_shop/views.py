@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
-from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
+from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, LogoUploadForm
 from catalogue.models import Product
 
 from common.utils import get_list_or_empty
@@ -88,10 +88,12 @@ def get_sizes_colors_and_quantities(sizeType, post):
         return sizes
 
 
-def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None):
+def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None, bannerUploadForm=None):
     return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
+        'bannerUploadForm': BannerUploadForm,
+        'logoUploadForm': LogoUploadForm,
         'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
                                      {
                                          "color": shop.color
@@ -104,5 +106,32 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'sizeSetOptions': AttributeOption.objects.filter(group=1)
     })
 
+def uploadbanner( request, slug ):
 
+    if request.method == 'POST':
+
+        form = BannerUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            currentShop = Shop.objects.get(slug=slug)
+            currentShop.banner = form.cleaned_data["banner"]
+            currentShop.save(update_fields=["banner"])
+
+    return renderShopEditor(request, currentShop, bannerUploadForm=form)
+
+
+def uploadlogo( request, slug ):
+
+    if request.method == 'POST':
+
+        form = LogoUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            currentShop = Shop.objects.get(slug=slug)
+            currentShop.logo = form.cleaned_data["logo"]
+            currentShop.save(update_fields=["logo"])
+
+    return renderShopEditor(request, currentShop, logoUploadForm=form)
 

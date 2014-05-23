@@ -31,6 +31,8 @@ urlpatterns += patterns('',
     url(r'^shopeditor/test/$', 'designer_shop.views.shopeditor'),
     url(r'^tinymce/', include( 'tinymce.urls')),
     url(r'^(?P<slug>\w+)/edit$', 'designer_shop.views.shopeditor'),
+    url(r'^(?P<slug>\w+)/edit/banner$', 'designer_shop.views.uploadbanner'),
+    url(r'^(?P<slug>\w+)/edit/logo$', 'designer_shop.views.uploadlogo'),
     url(r'^(?P<slug>\w+)/edit/about$', 'designer_shop.views.shopabout'),
     url(r'^(?P<slug>\w+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
