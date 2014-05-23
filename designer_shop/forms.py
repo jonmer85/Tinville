@@ -1,3 +1,4 @@
+import uuid
 from django import forms
 from oscar.apps.catalogue.models import ProductImage
 
@@ -8,6 +9,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
+from django.core.validators import RegexValidator
 
 from . import models
 
@@ -24,6 +26,8 @@ class ProductCreationForm(forms.ModelForm):
 
     product_image = forms.ImageField(required=False)
 
+    price = forms.DecimalField(decimal_places=2, max_digits=12)
+
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -36,7 +40,8 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('General',
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
-                         Field('product_class', placeholder='Product Class')
+                         Field('product_class', placeholder='Product Class'),
+                         Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
                          'product_image',
@@ -96,6 +101,16 @@ class ProductCreationForm(forms.ModelForm):
                         setattr(variantProduct.attr, 'size_set', sizeSet)
                         setattr(variantProduct.attr, 'color', color)
                         variantProduct.save()
+
+                        partner = get_partner_from_shop(shop)
+
+                        stockRecord \
+                            = get_model('partner', 'StockRecord')(product=variantProduct,
+                                                                    price_excl_tax=self.cleaned_data['price'],
+                                                                    num_in_stock=quantity, partner=partner)
+                        # Hack to ensure unique SKU. We should look into how real SKUs should work TODO
+                        stockRecord.partner_sku = uuid.uuid4()
+                        stockRecord.save()
                     else:
                         break
                     j += 1
@@ -113,6 +128,20 @@ class ProductCreationForm(forms.ModelForm):
                    'attributes', 'categories', 'shop')
         # fields = ['title', 'description', 'product_class']
 
+def get_partner_from_shop(shop):
+    Partner = get_model('partner', 'Partner')
+    shop_owner = shop.user
+
+    if Partner.objects.filter(users__id=shop_owner.id).exists():
+        return Partner.objects.filter(users__id=shop_owner.id)[0]
+    else:
+        partner = Partner(name=shop_owner.email, code=shop_owner.slug)
+        partner.save()
+        partner.users.add(shop_owner)
+        return partner
+
+
+
 class AboutBoxForm(forms.Form):
 
     aboutContent = forms.CharField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
@@ -129,10 +158,16 @@ class AboutBoxForm(forms.Form):
 
 class DesignerShopColorPicker(forms.Form):
 
-    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#000000")
+    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#ffffff", max_length=7, min_length = 6,
+                             validators=[
+        RegexValidator(
+            regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+            message='Invalid hex code',
+        ),])
+
     helper = FormHelper()
     helper.form_show_labels = False
-
+    helper.form_class = 'colorForm'
     helper.layout = Layout(
         Div(
             Field('color'),

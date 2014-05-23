@@ -12,7 +12,6 @@
             "key_expires": "2020-02-02"
         }
     },
-
     {
         "model": "designer_shop.Shop",
         "pk": 1,
@@ -22,6 +21,7 @@
             "banner": "images/banner.jpg",
             "logo": "images/logo.jpg",
             "user": 1,
+            "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "ffffff"
         }
     },
