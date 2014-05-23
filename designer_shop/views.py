@@ -118,22 +118,28 @@ def uploadbanner( request, slug ):
 
     if request.method == 'POST':
 
-        form = BannerUploadForm( request.POST, request.FILES )
-        currentShop = Shop.objects.get(slug=slug)
-        currentShop.banner = request.POST["banner"]
-        currentShop.save(update_fields=["banner"])
+        form = BannerUploadForm(request.POST, request.FILES)
 
-        return renderShopEditor(request, currentShop, bannerUploadForm=form)
+        if form.is_valid():
+
+            currentShop = Shop.objects.get(slug=slug)
+            currentShop.banner = form.cleaned_data["banner"]
+            currentShop.save()
+
+    return renderShopEditor(request, currentShop, bannerUploadForm=form)
 
 
 def uploadlogo( request, slug ):
 
     if request.method == 'POST':
 
-        form = LogoUploadForm( request.POST, request.FILES )
-        currentShop = Shop.objects.get(slug=slug)
-        currentShop.logo = form.cleaned_data["logo"]
-        currentShop.save(update_fields=["logo"])
+        form = LogoUploadForm(request.POST, request.FILES)
 
-        return renderShopEditor(request, currentShop, logoUploadForm=form)
+        if form.is_valid():
+
+            currentShop = Shop.objects.get(slug=slug)
+            currentShop.logo = form.cleaned_data["logo"]
+            currentShop.save()
+
+    return renderShopEditor(request, currentShop, logoUploadForm=form)
 
