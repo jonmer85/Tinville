@@ -11,8 +11,8 @@ class Shop(models.Model):
     name = models.CharField(verbose_name="Shop name", unique=True, blank=False, null=False, db_index=True,
                             default=None, max_length=100)
     slug = models.SlugField()
-    banner = models.ImageField(upload_to=settings.MEDIA_URL)
-    logo = models.ImageField(upload_to=settings.MEDIA_URL)
+    banner = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename))
+    logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename))
     aboutContent = HTMLField()
     color = models.CharField(default='#ffffff', max_length=7,
         validators=[RegexValidator(

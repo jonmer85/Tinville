@@ -40,43 +40,14 @@
                 <div id="secondColumn" class="container col-sm-9">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <div class="tab-pane active" id="banner">
-                                <p> 1 Insert Banner form here.</p>
-                                <p> 2 Insert Banner form here.</p>
-                                <p> 3 Insert Banner form here.</p>
-                                <p> 4 Insert Banner form here.</p>
-                                <p> 5 Insert Banner form here.</p>
-                                <p> 6 Insert Banner form here.</p>
-                                <p> 7 Insert Banner form here.</p>
-                                <p> 8 Insert Banner form here.</p>
-                                <p> 9 Insert Banner form here.</p>
-                                <p> 10 Insert Banner form here.</p>
-                                <p> 11 Insert Banner form here.</p>
-                                <p> 12 Insert Banner form here.</p>
-                                <p> 13 Insert Banner form here.</p>
-                                <p> 14 Insert Banner form here.</p>
-                                <p> 15 Insert Banner form here.</p>
-                                <p> 16 Insert Banner form here.</p>
-                                <p> 17 Insert Banner form here.</p>
-                                <p> 18 Insert Banner form here.</p>
-                                <p> 19 Insert Banner form here.</p>
-                                <p> 20 Insert Banner form here.</p>
-                                <p> 21 Insert Banner form here.</p>
-                                <p> 22 Insert Banner form here.</p>
-                                <p> 23 Insert Banner form here.</p>
-                                <p> 24 Insert Banner form here.</p>
-                                <p> 25 Insert Banner form here.</p>
-                                <p> 26 Insert Banner form here.</p>
-                                <p> 27 Insert Banner form here.</p>
-                                <p> 28 Insert Banner form here.</p>
-                                <p> 29 Insert Banner form here.</p>
-                                <p> 30 Insert Banner form here.</p>
-                                <p> 31 Insert Banner form here.</p>
-                                <p> 32 Insert Banner form here.</p>
-                            </div>
-                            <div class="tab-pane" id="logo">
-                                Insert Logo form here.
-                            </div>
+                            <form class="tab-pane active" id="banner" enctype="multipart/form-data" action="edit/banner" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy bannerUploadForm %}
+                            </form>
+                            <form class="tab-pane" id="logo" enctype="multipart/form-data" action="edit/logo" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy logoUploadForm %}
+                            </form>
                             <form class="tab-pane" id="color" action="edit/ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
@@ -85,7 +56,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" action="edit/create_product" method="post">
+                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
