@@ -132,11 +132,8 @@ def uploadlogo( request, slug ):
 
         form = LogoUploadForm( request.POST, request.FILES )
         currentShop = Shop.objects.get(slug=slug)
-
-        if form.is_valid():
-
-            currentShop.logo = form.cleaned_data["logo"]
-            currentShop.save(update_fields=["logo"])
+        currentShop.logo = form.cleaned_data["logo"]
+        currentShop.save(update_fields=["logo"])
 
         return renderShopEditor(request, currentShop, logoUploadForm=form)
 
