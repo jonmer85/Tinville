@@ -25,7 +25,14 @@ def shopper(request, slug):
 
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
-    return renderShopEditor(request, shop)
+    form = None
+    if request.method == 'POST':
+        sizeVariationType = request.POST["sizeVariation"]
+        sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
+        form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+        if form.is_valid():
+            canonicalProduct = form.save(shop)
+    return renderShopEditor(request, shop, productCreationForm=form)
 
 
 def shopabout(request, slug):
@@ -51,19 +58,6 @@ def ajax_color(request, slug):
     # return renderShopEditor(request, currentShop, colorPickerForm=form)
     # return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
-
-
-def create_product(request, slug):
-    if request.method == 'POST':
-        currentShop = Shop.objects.get(slug=slug)
-        sizeVariationType = request.POST["sizeVariation"]
-        sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-
-        form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
-        if form.is_valid():
-            canonicalProduct = form.save(currentShop)
-
-        return renderShopEditor(request, currentShop, productCreationForm=form)
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
