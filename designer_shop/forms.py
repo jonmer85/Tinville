@@ -167,7 +167,7 @@ class DesignerShopColorPicker(forms.Form):
 
     helper = FormHelper()
     helper.form_show_labels = False
-
+    helper.form_class = 'colorForm'
     helper.layout = Layout(
         Div(
             Field('color'),
