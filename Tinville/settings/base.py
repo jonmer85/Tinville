@@ -168,7 +168,6 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'crispy_forms',
     'braces',
-    'PIL',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
