@@ -1,3 +1,4 @@
+import uuid
 from django import forms
 from oscar.apps.catalogue.models import ProductImage
 
@@ -25,6 +26,8 @@ class ProductCreationForm(forms.ModelForm):
 
     product_image = forms.ImageField(required=False)
 
+    price = forms.DecimalField(decimal_places=2, max_digits=12)
+
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -37,7 +40,8 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('General',
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
-                         Field('product_class', placeholder='Product Class')
+                         Field('product_class', placeholder='Product Class'),
+                         Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
                          'product_image',
@@ -97,6 +101,16 @@ class ProductCreationForm(forms.ModelForm):
                         setattr(variantProduct.attr, 'size_set', sizeSet)
                         setattr(variantProduct.attr, 'color', color)
                         variantProduct.save()
+
+                        partner = get_partner_from_shop(shop)
+
+                        stockRecord \
+                            = get_model('partner', 'StockRecord')(product=variantProduct,
+                                                                    price_excl_tax=self.cleaned_data['price'],
+                                                                    num_in_stock=quantity, partner=partner)
+                        # Hack to ensure unique SKU. We should look into how real SKUs should work TODO
+                        stockRecord.partner_sku = uuid.uuid4()
+                        stockRecord.save()
                     else:
                         break
                     j += 1
@@ -113,6 +127,20 @@ class ProductCreationForm(forms.ModelForm):
                    'recommended_products', 'product_options',
                    'attributes', 'categories', 'shop')
         # fields = ['title', 'description', 'product_class']
+
+def get_partner_from_shop(shop):
+    Partner = get_model('partner', 'Partner')
+    shop_owner = shop.user
+
+    if Partner.objects.filter(users__id=shop_owner.id).exists():
+        return Partner.objects.filter(users__id=shop_owner.id)[0]
+    else:
+        partner = Partner(name=shop_owner.email, code=shop_owner.slug)
+        partner.save()
+        partner.users.add(shop_owner)
+        return partner
+
+
 
 class AboutBoxForm(forms.Form):
 
