@@ -182,12 +182,12 @@ class LogoUploadForm( forms.Form ):
         ))
 
     def save(self, shop):
-        canonicalProduct = super(LogoUploadForm, self).save(commit=False)
-        if not canonicalProduct.upc:
-            canonicalProduct.upc = None
-        canonicalProduct.shop = shop
-        canonicalProduct.save()
-        canonicalProductId = canonicalProduct.id
-        logoImage = ProductImage(product=canonicalProduct)
+        tempLogo = super(LogoUploadForm, self).save(commit=False)
+        if not tempLogo.upc:
+            tempLogo.upc = None
+        tempLogo.shop = shop
+        tempLogo.save()
+        canonicalProductId = tempLogo.id
+        logoImage = LogoImage(product=tempLogo)
         logoImage.original = self.cleaned_data['logo']
         logoImage.save()
