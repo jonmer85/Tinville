@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
-from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker
+from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker,
 from catalogue.models import Product
 
 from common.utils import get_list_or_empty

@@ -146,3 +146,48 @@ class DesignerShopColorPicker(forms.Form):
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
             css_class="container"
         ))
+
+class BannerUploadForm( forms.Form ):
+
+    banner = forms.ImageField()
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+
+    helper.layout = Layout(
+        Div(
+            Fieldset('Images',
+                     'banner',
+                      HTML("""{% if form.banner.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.banner.value }}">{% endif %}""", ),
+                ),
+            Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
+            css_class="container"
+        ))
+
+class LogoUploadForm( forms.Form ):
+
+    logo = forms.ImageField()
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+
+    helper.layout = Layout(
+        Div(
+            Fieldset('Images',
+                     'logo',
+                     HTML("""{% if form.logo.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.logo.value }}">{% endif %}""", ),
+                ),
+            Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
+            css_class="container"
+        ))
+
+    def save(self, shop):
+        canonicalProduct = super(LogoUploadForm, self).save(commit=False)
+        if not canonicalProduct.upc:
+            canonicalProduct.upc = None
+        canonicalProduct.shop = shop
+        canonicalProduct.save()
+        canonicalProductId = canonicalProduct.id
+        logoImage = ProductImage(product=canonicalProduct)
+        logoImage.original = self.cleaned_data['logo']
+        logoImage.save()
