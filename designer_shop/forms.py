@@ -60,17 +60,41 @@ class ProductCreationForm(forms.ModelForm):
         )
         self.fields['description'].widget = TinyMCE()
 
-        for i, size in enumerate(sizes):
-            self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
-                = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                              objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["size"])
-            for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-                = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                              objects.filter(group=2), empty_label="Choose a color...",
-                                         initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
-                = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+        if sizes:
+            for i, size in enumerate(sizes):
+                self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                  objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["size"])
+                for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                    self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                  objects.filter(group=2), empty_label="Choose a color...",
+                                             initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                    self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                    = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+
+    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, color=None, quantity=None):
+        variantProduct = canonical
+        variantProduct.pk = None
+        variantProduct.id = None
+        variantProduct.parent_id = canonical.id
+        setattr(variantProduct.attr, 'size_set', sizeSet)
+        if color:
+            setattr(variantProduct.attr, 'color', color)
+        variantProduct.save()
+
+        partner = get_partner_from_shop(shop)
+
+        stockRecord \
+            = get_model('partner', 'StockRecord')(product=variantProduct,
+                                                    price_excl_tax=self.cleaned_data['price'],
+                                                    partner=partner)
+        if(quantity):
+            stockRecord.num_in_stock = quantity
+        # Hack to ensure unique SKU. We should look into how real SKUs should work TODO
+
+        stockRecord.partner_sku = uuid.uuid4()
+        stockRecord.save()
 
     def save(self, shop):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
@@ -78,7 +102,6 @@ class ProductCreationForm(forms.ModelForm):
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
         canonicalProduct.save()
-        canonicalProductId = canonicalProduct.id
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
         productImage.save()
@@ -93,33 +116,19 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)]
-
-                        variantProduct = canonicalProduct
-                        variantProduct.pk = None
-                        variantProduct.id = None
-                        variantProduct.parent_id = canonicalProductId
-                        setattr(variantProduct.attr, 'size_set', sizeSet)
-                        setattr(variantProduct.attr, 'color', color)
-                        variantProduct.save()
-
-                        partner = get_partner_from_shop(shop)
-
-                        stockRecord \
-                            = get_model('partner', 'StockRecord')(product=variantProduct,
-                                                                    price_excl_tax=self.cleaned_data['price'],
-                                                                    num_in_stock=quantity, partner=partner)
-                        # Hack to ensure unique SKU. We should look into how real SKUs should work TODO
-                        stockRecord.partner_sku = uuid.uuid4()
-                        stockRecord.save()
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet,
+                                                                   color=color, quantity=quantity)
                     else:
                         break
                     j += 1
                 i += 1
             else:
+                self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
                 break
-
-
         return canonicalProduct
+
+
+
 
     class Meta:
         model = get_model('catalogue', 'Product')
@@ -127,6 +136,9 @@ class ProductCreationForm(forms.ModelForm):
                    'recommended_products', 'product_options',
                    'attributes', 'categories', 'shop')
         # fields = ['title', 'description', 'product_class']
+
+
+
 
 def get_partner_from_shop(shop):
     Partner = get_model('partner', 'Partner')
