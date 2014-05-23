@@ -1,5 +1,5 @@
 from django import forms
-from oscar.apps.catalogue.models import ProductImage
+from oscar.apps.catalogue.models import ProductImage, LogoImage, BannerImage
 
 from oscar.core.loading import get_model
 
