@@ -1,7 +1,7 @@
+import json
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
@@ -45,11 +45,10 @@ def ajax_color(request, slug):
     if request.is_ajax() and form.is_valid():
         currentShop.color = form.cleaned_data["color"]
         currentShop.save(update_fields=["color"])
-
-    return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+        return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
 
     # return renderShopEditor(request, currentShop, colorPickerForm=form)
-    # return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 
 

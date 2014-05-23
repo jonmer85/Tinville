@@ -21,6 +21,9 @@
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
+                            <a href="#addItems" data-toggle="pill">Add Item</a>
+                        </li>
+                        <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
                         <li>
@@ -31,27 +34,6 @@
                         </li>
                         <li>
                             <a href="#about" data-toggle="pill">About</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 1</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 2</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 3</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 4</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 5</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 6</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 7</a>
                         </li>
                     </ul>
                 </div>
@@ -112,7 +94,7 @@
 
                     </div>
                     <div id="buttonContainer" class="container col-sm-12 pull-right">
-                            <div id="message_area"></div>
+                            <div id="message_area">HELLO</div>
                             <button id="editorButton" class="btn btn-primary tinvilleButton pull-right">Submit</button>
                     </div>
                 </div>
@@ -139,17 +121,18 @@
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
-            var self = $(this),
-                url = self.attr("action"),
-
-                ajax_req = $.ajax({
+            var self = $(this)
+            var url = self.attr("action")
+            var colorHex = document.getElementById("id_color").value
+            var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
                     data: {
-                        color: self.find("#id_color").val()
+                        color: document.getElementById("id_color").value
                     },
                     success: function(data, textStatus, jqXHR) {
-							location.reload();
+					    $(".shopColor").css("color", document.getElementById("id_color").value);
+                        $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
