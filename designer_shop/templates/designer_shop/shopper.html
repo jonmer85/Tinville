@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load thumbnail %}
+{% load purchase_info_tags %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
 {% block content %}
+    {{ block.super }}
+
     <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>
 {#    need to add something if a designer does not have a banner#}
 {#    this will be decribed at a later time#}
@@ -85,6 +88,7 @@
       <div class=" ">
         <div class="shopItems row">
           {% for product in products %}
+            {% purchase_info_for_product request product as session %}
             {% if product.is_top_level %}
               <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
                   <div class="thumbnail shopItem shopBorderColor">
@@ -103,8 +107,9 @@
                   </div>
                   <div class="caption">
                       <span class="name shopColor">{{product.get_title}}</span>
-{#                      <span class="price shopColor">${{product.min_variant_price_excl_tax}}</span>#}
-                   </div>
+                      <span class="price shopColor">${{product.min_variant_price_excl_tax}}</span>
+                      <span class="shopColor">{{ session.availability.message }}</span>
+                  </div>
                </div>
             {% endif %}
           {% endfor %}
@@ -129,9 +134,9 @@
 
     $("#tinvilleTagBanner").remove();
     $("#aboutLink").css("background", "{{ shop.color }}");
-{#    $(".shopColor").css("color", "{{ shop.color }}");#}
-{#    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");#}
-{#    $("#editLink").css("background", "{{ shop.color }}");#}
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    $("#editLink").css("background", "{{ shop.color }}");
 
 
     </script>

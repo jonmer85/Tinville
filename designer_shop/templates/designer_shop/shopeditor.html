@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
+    <script src="http://tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
 {% endblock css %}
 {% block content %}
@@ -112,7 +112,8 @@
 
                     </div>
                     <div id="buttonContainer" class="container col-sm-12 pull-right">
-                            <button class="btn btn-primary tinvilleButton pull-right">Submit</button>
+                            <div id="message_area"></div>
+                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right">Submit</button>
                     </div>
                 </div>
             </div>
@@ -131,16 +132,10 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-    $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                    // Send the token to same-origin, relative URLs only.
-                    // Send the token only if the method warrants CSRF protection
-                    // Using the CSRFToken value acquired earlier
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
+
+    $( "#editorButton" ).click(function() {
+        $( "#color" ).click();
+    });
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
@@ -155,7 +150,19 @@
                     },
                     success: function(data, textStatus, jqXHR) {
 							location.reload();
-					}
+					},
+                    error: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#message_area"));
+                        clear_form_field_errors(".colorForm");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(index, value) {
+                            if (index === "__all__") {
+                                django_message(value[0], "error", self.find("#message_area"));
+                            } else {
+                                apply_form_field_error(self[0].id, index, value);
+                            }
+                        });
+                    }
                 });
         });
 

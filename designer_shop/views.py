@@ -17,7 +17,6 @@ def shopper(request, slug):
     categories = model_class.objects.all()
     shop = get_object_or_404(Shop, slug__exact=slug)
     return render(request, 'designer_shop/shopper.html', {
-        # 'categories': get_model('catalogue', 'AbstrastCategory').objects.all()
         'shop': shop,
         'categories': categories,
         'products': get_list_or_empty(Product, shop=shop.id)
@@ -32,7 +31,7 @@ def shopeditor(request, slug):
 def shopabout(request, slug):
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
-        currentshop = Shop.objects.get(slug=slug)
+        currentshop = Shop.objects.get(slug = slug)
         if form.is_valid():
             currentshop.aboutContent = form.cleaned_data["aboutContent"]
             currentshop.save(update_fields=["aboutContent"])
@@ -47,7 +46,11 @@ def ajax_color(request, slug):
         currentShop.color = form.cleaned_data["color"]
         currentShop.save(update_fields=["color"])
 
-    return renderShopEditor(request, currentShop, colorPickerForm=form)
+    return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+
+    # return renderShopEditor(request, currentShop, colorPickerForm=form)
+    # return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+
 
 
 def create_product(request, slug):
@@ -61,7 +64,6 @@ def create_product(request, slug):
             canonicalProduct = form.save(currentShop)
 
         return renderShopEditor(request, currentShop, productCreationForm=form)
-
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:

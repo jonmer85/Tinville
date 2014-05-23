@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 from tinymce.models import HTMLField
-
+from django.core.validators import RegexValidator
 # Create your models here.
 
 
@@ -14,7 +14,14 @@ class Shop(models.Model):
     banner = models.ImageField(upload_to=settings.MEDIA_URL)
     logo = models.ImageField(upload_to=settings.MEDIA_URL)
     aboutContent = HTMLField()
-    color = models.CharField(default='ffffff', max_length=6)
+    color = models.CharField(default='#ffffff', max_length=7,
+        validators=[RegexValidator(
+            regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+            message='Invalid hex code',
+        ),]
+    )
+
+
 
     def __unicode__(self):
         return self.name
