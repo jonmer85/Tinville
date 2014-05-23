@@ -156,7 +156,10 @@ class BannerUploadForm(forms.Form):
 
     helper.layout = Layout(
         Div(
-            Field('banner'),
+            Fieldset('Banner Image',
+                     'banner',
+                     HTML("""{% if form.banner.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.banner.value }}">{% endif %}""", ),
+                    ),
             Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))
@@ -171,7 +174,10 @@ class LogoUploadForm(forms.Form):
 
     helper.layout = Layout(
         Div(
-            Field('logo'),
+            Fieldset('Logo Image',
+                     'logo',
+                     HTML("""{% if form.logo.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.logo.value }}">{% endif %}""", ),
+                     ),
             Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))

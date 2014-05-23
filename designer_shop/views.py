@@ -124,7 +124,7 @@ def uploadbanner( request, slug ):
 
             currentShop = Shop.objects.get(slug=slug)
             currentShop.banner = form.cleaned_data["banner"]
-            currentShop.save()
+            currentShop.save(update_fields=["banner"])
 
     return renderShopEditor(request, currentShop, bannerUploadForm=form)
 
@@ -139,7 +139,7 @@ def uploadlogo( request, slug ):
 
             currentShop = Shop.objects.get(slug=slug)
             currentShop.logo = form.cleaned_data["logo"]
-            currentShop.save()
+            currentShop.save(update_fields=["logo"])
 
     return renderShopEditor(request, currentShop, logoUploadForm=form)
 

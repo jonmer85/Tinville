@@ -58,11 +58,11 @@
                 <div id="secondColumn" class="container col-sm-9">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <form class="tab-pane active" id="banner" action="edit/banner" method="post">
+                            <form class="tab-pane active" id="banner" enctype="multipart/form-data" action="edit/banner" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
-                            <form class="tab-pane active" id="logo" action="edit/logo" method="post">
+                            <form class="tab-pane" id="logo" enctype="multipart/form-data" action="edit/logo" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy logoUploadForm %}
                             </form>
