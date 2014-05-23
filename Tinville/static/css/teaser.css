@@ -82,9 +82,9 @@ body {
 @media(min-width: 768px){
   #tinvilleTagBanner {
     position: relative;
-    left: 5%;
+    left: 15%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    max-height: 170px;
+    max-height: 165px;
     margin-top: 5px;
     margin-bottom: 5px
   }
@@ -92,6 +92,7 @@ body {
 
 #tinvilleDescription {
     font-size: 1.3em;
+    padding: 30px;
 }
 
 
@@ -151,6 +152,7 @@ body {
 
 #emailFormDiv {
     margin-bottom: 0;
+    margin-top: 20px;
 }
 
 #joinButton {
