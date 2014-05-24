@@ -3,7 +3,7 @@
     color: #990099;
 }
 .shopBackgroundColor {
-    background-color: #990099;
+    background: #990099;
     /*color: #802152;*/
 }
 .shopBorderColor {
@@ -64,7 +64,6 @@
 
 
 #editLink {
-    background: #990099;
     /*width: 48px;*/
     position: fixed;
     top: 60%;
@@ -90,7 +89,6 @@
 }
 
 #aboutLink {
-    background: #990099;
     /*width: 48px;*/
     position: fixed;
     top: 30%;

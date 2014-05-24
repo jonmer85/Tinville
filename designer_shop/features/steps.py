@@ -132,3 +132,22 @@ def and_selecting_the_double_inward_arrows_should_decrease_the_size_to_thirtyfiv
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.35)) <= 1
 
+
+@step(u'When the color tab is selected')
+def when_the_color_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#color"]').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#color"]')
+
+@step(u'Then the color picker wheel is displayed')
+def then_the_color_picker_wheel_is_displayed(step):
+    assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
+    assert_id_exists('id_color-colorpicker')
+
+@step(u'And the color picker textbox is displayed')
+def and_the_color_picker_textbox_is_displayed(step):
+    assert_id_exists('id_color')
+
+@step(u'And the Create button is displayed')
+def and_the_create_button_is_displayed(step):
+    assert_id_exists('shopColorPicker')
