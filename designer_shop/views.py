@@ -87,6 +87,34 @@ def get_sizes_colors_and_quantities(sizeType, post):
                 break
         return sizes
 
+    if sizeType == SIZE_DIM:
+        sizes = {}
+        i=0
+        while (True):
+            sizeDimensionTemplate = "sizeDimensionSelectionTemplate" + str(i)
+            sizeDimensionSelection = sizeDimensionTemplate + "_sizeDimensionSelection"
+            if post[sizeDimensionSelection]:
+                sizes[i] = {
+                    "sizeX": post[sizeDimWidth],
+                    "sizeY": post[sizeDimLength],
+                    "colorsAndQuantities": []
+                }
+
+                j = 0
+                while (True):
+                    color = sizeDimensionTemplate + "_colorSelection" + str(j)
+                    quantity = sizeDimensionTemplate + "_quantityField" + str(j)
+                    if color in post and quantity in post:
+                        if post[color] and post[quantity]:
+                            sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
+                    else:
+                        break
+                    j += 1
+                i += 1
+            else:
+                break
+        return sizes
+
 
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None):

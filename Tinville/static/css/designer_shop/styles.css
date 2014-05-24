@@ -363,3 +363,7 @@ select.filterTabs option.option2
 .mceLayout {
     width: 100% !important;
 }
+
+.dimensionSplit {
+    text-align: center;
+}
