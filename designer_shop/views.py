@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-
+from django.shortcuts import redirect
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
@@ -9,6 +9,16 @@ from catalogue.models import Product
 from common.utils import get_list_or_empty
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
+
+def user_shop_owner(request, shop):
+    if request.user.is_authenticated():
+        if request.user.id == shop.user_id:
+            return True
+        else:
+                return False
+    else:
+        return False
+
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
@@ -85,7 +95,8 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None):
-    return render(request, 'designer_shop/shopeditor.html', {
+    if user_shop_owner(request, shop) :
+        return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
         'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
@@ -99,6 +110,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'colors': AttributeOption.objects.filter(group=2),
         'sizeSetOptions': AttributeOption.objects.filter(group=1)
     })
+    else:
+        return redirect('home')
 
 
 
