@@ -208,11 +208,10 @@ var rowColorQuantityTemplate = "" +
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
+    sizesFieldSet.removeClass("hidden");
     switch (selectedValue[0].value) {
         case "1":
             //Size set
-            sizesFieldSet.removeClass("hidden");
-
             addNewSizeSetRow();
             //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
             sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
@@ -229,7 +228,9 @@ $("#id_sizeVariation").change(function() {
                 if (selectedValue[0].value != "0") {
                     if($(this).closest('.accordion-group').next().length == "0") {
                         //Add a new size set row
+                        $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
                         addNewSizeSetRow();
+
                     }
                 }
             })
@@ -242,6 +243,7 @@ $("#id_sizeVariation").change(function() {
 
                     var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
                     if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
+                        $('#formContent').animate({scrollTop: $(this).closest("tbody")[0].scrollHeight}, 500);
                         addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(".sizeSetSelectionTemplate").attr("id") + "_", colorsAndQuantitiesTable);
                     }
                 }
@@ -250,8 +252,6 @@ $("#id_sizeVariation").change(function() {
 
         case "2":
            //Size set
-            sizesFieldSet.removeClass("hidden");
-
             addNewSizeDimensionRow();
             //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
             sizesFieldSet.on("change", ".sizeDimensionSelection", function(e) {
@@ -266,6 +266,7 @@ $("#id_sizeVariation").change(function() {
                 if (selectedValue[0].value != "0") {
                     //Add a new size set row
                     addNewSizeDimensionRow();
+
                 }
             })
             //Color event handling (Add a new color/quantity row for more color/quantity selection)
@@ -315,6 +316,7 @@ function addNewSizeSetRow() {
         $th.attr('name', newName);
     });
 
+
 }
 
 function addNewSizeDimensionRow() {
@@ -341,7 +343,9 @@ function addNewSizeDimensionRow() {
         var $th = $(this);
         var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
         $th.attr('name', newName);
+
     });
+
 
 }
 
