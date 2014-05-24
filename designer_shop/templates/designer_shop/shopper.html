@@ -88,31 +88,33 @@
       <div class=" ">
         <div class="shopItems row">
           {% for product in products %}
-            {% purchase_info_for_product request product as session %}
             {% if product.is_top_level %}
-              <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
-                  <div class="thumbnail shopItem shopBorderColor">
-                    {% if product.primary_image and product.primary_image.original.url %}
-                        {% with image=product.primary_image %}
-                            {% thumbnail image.original "200x250" upscale=False as thumb %}
-                            <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
-                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description=" class="img-responsive"
-                                    {% if image.caption %}{{ image.caption }}{% endif %}">
-                            </a>
-                            {% endthumbnail %}
-                        {% endwith %}
-                    {% else %}
-                            -
-                    {% endif %}
+                {% purchase_info_for_product request product as session %}
+                {% if product.is_top_level %}
+                  <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                      <div class="thumbnail shopItem shopBorderColor">
+                        {% if product.primary_image and product.primary_image.original.url %}
+                            {% with image=product.primary_image %}
+                                {% thumbnail image.original "200x250" upscale=False as thumb %}
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description=" class="img-responsive"
+                                        {% if image.caption %}{{ image.caption }}{% endif %}">
+                                </a>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        {% else %}
+                                -
+                        {% endif %}
 
-                  <div class="caption">
-                      <span class="name shopColor">{{product.get_title}}</span>
-                      <span class="price shopColor">${{session.price.excl_tax}}</span>
-                      <span class="shopColor">{{ session.availability.message }}</span>
-                  </div>
-                  </div>
-               </div>
-            {% endif %}
+                      <div class="caption">
+                          <span class="name shopColor">{{product.get_title}}</span>
+                          <span class="price shopColor">${{session.price.excl_tax}}</span>
+                          <span class="shopColor">{{ session.availability.message }}</span>
+                      </div>
+                      </div>
+                   </div>
+                {% endif %}
+              {% endif %}
           {% endfor %}
         </div>
       </div>
