@@ -16,6 +16,7 @@
                     <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
+            </div>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
@@ -40,7 +41,11 @@
                 <div id="secondColumn" class="container col-sm-9">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <form class="tab-pane active" id="banner" enctype="multipart/form-data" action="edit/banner" method="post">
+                            <form class="tab-pane active" id="addItems" enctype="multipart/form-data" method="post">
+                                {%  load crispy_forms_tags %}
+                                {% crispy productCreationForm %}
+                            </form>
+                            <form class="tab-pane" id="banner" enctype="multipart/form-data" action="edit/banner" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
@@ -56,16 +61,10 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" method="post">
-                                {%  load crispy_forms_tags %}
-                                {% crispy productCreationForm %}
-                            </form>
                         </div>
-                        </div>
-
                     </div>
                     <div id="buttonContainer" class="container col-sm-12 pull-right">
-                            <div id="message_area">HELLO</div>
+                            <div id="message_area" class="col-sm-10">HELLO</div>
                             <button id="editorButton" class="btn btn-primary tinvilleButton pull-right">Submit</button>
                     </div>
                 </div>
@@ -453,7 +452,7 @@ function resizeEditor() {
     var editorHeight;
     var maxHeight;
     var formTransitionHeight;
-    var excess
+    var excess;
 
     buttonHeight = $("#buttonContainer").outerHeight();
 
