@@ -359,3 +359,7 @@ select.filterTabs option.option2
         text-align: center;
     }
 }
+
+.mceLayout {
+    width: 100% !important;
+}
