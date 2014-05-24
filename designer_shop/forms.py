@@ -67,6 +67,7 @@ class ProductCreationForm(forms.ModelForm):
                 self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
                 = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
+
     def save(self, shop):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
