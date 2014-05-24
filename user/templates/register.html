@@ -28,19 +28,34 @@
 {% block javascript %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$("#shop_fields").slideUp(0);
+
+            if($("#div_id_shop_name").hasClass("has-error")) {
+                showDesigner();
+            }
+            else
+            {
+                $("#shop_fields").slideUp(0);
+            }
 
 			$("#shopper").on("click", function () {
-				$("#shopper").addClass("btn-default").removeClass("btn-inverse");
-				$("#designer").addClass("btn-inverse").removeClass("btn-default");
-				$("#shop_fields").slideUp();
+			    showShopper();
 			});
 
 			$("#designer").on("click", function () {
-				$("#designer").addClass("btn-default").removeClass("btn-inverse");
-				$("#shopper").addClass("btn-inverse").removeClass("btn-default");
-				$("#shop_fields").slideDown();
+                showDesigner();
 			});
 		});
+
+    function showDesigner() {
+        $("#designer").addClass("btn-default").removeClass("btn-inverse");
+        $("#shopper").addClass("btn-inverse").removeClass("btn-default");
+        $("#shop_fields").slideDown();
+    }
+
+    function showShopper() {
+        $("#shopper").addClass("btn-default").removeClass("btn-inverse");
+        $("#designer").addClass("btn-inverse").removeClass("btn-default");
+        $("#shop_fields").slideUp();
+    }
 	</script>
 {% endblock %}
