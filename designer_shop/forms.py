@@ -96,6 +96,7 @@ class ProductCreationForm(forms.ModelForm):
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
 
+
     def save(self, shop):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:

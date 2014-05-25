@@ -33,7 +33,7 @@ urlpatterns += patterns('',
     url(r'^(?P<slug>\w+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
     url(r'^(?P<slug>\w+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
+    url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper'),
 )
 
 if settings.DEBUG:

@@ -15,12 +15,10 @@ AttributeOption = get_model('catalogue', 'AttributeOption')
 
 
 def shopper(request, slug):
-    model_class = get_model('catalogue', 'Category')
-    categories = model_class.objects.all()
     shop = get_object_or_404(Shop, slug__exact=slug)
     return render(request, 'designer_shop/shopper.html', {
         'shop': shop,
-        'categories': categories,
+        'categories': get_model('catalogue', 'Category').objects.all(),
         'products': get_list_or_empty(Product, shop=shop.id)
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
@@ -130,7 +128,9 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                       "aboutContent": shop.aboutContent
                                                   }),
         'colors': AttributeOption.objects.filter(group=2),
-        'sizeSetOptions': AttributeOption.objects.filter(group=1)
+        'sizeSetOptions': AttributeOption.objects.filter(group=1),
+        'categories': get_model('catalogue', 'Category').objects.all(),
+        'products': get_list_or_empty(Product, shop=shop.id)
     })
 
 
