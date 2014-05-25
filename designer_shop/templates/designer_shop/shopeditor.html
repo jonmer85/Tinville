@@ -40,11 +40,11 @@
                 <div id="secondColumn" class="container col-sm-9">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <form class="tab-pane active" id="banner" enctype="multipart/form-data" action="edit/banner" method="post">
+                            <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
-                            <form class="tab-pane" id="logo" enctype="multipart/form-data" action="edit/logo" method="post">
+                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy logoUploadForm %}
                             </form>
@@ -52,11 +52,11 @@
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane" id="about" action="edit/about" method="post">
+                            <form class="tab-pane" id="about" action="edit/ajax_about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane active" id="addItems" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
@@ -94,7 +94,6 @@
             e.preventDefault();
             var self = $(this)
             var url = self.attr("action")
-            var colorHex = document.getElementById("id_color").value
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -108,6 +107,34 @@
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#message_area"));
                         clear_form_field_errors(".colorForm");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(index, value) {
+                            if (index === "__all__") {
+                                django_message(value[0], "error", self.find("#message_area"));
+                            } else {
+                                apply_form_field_error(self[0].id, index, value);
+                            }
+                        });
+                    }
+                });
+        });
+        $(document).on("submit", "#about", function(e) {
+            e.preventDefault();
+            var self = $(this)
+            var url = self.attr("action")
+
+            var ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        aboutContent: document.getElementById("id_aboutContent").value
+                    },
+                    success: function(data, textStatus, jqXHR) {
+					    document.getElementById('aboutLocation').innerHTML = document.getElementById("id_aboutContent").value
+					},
+                    error: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#message_area"));
+                        clear_form_field_errors(".aboutForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {

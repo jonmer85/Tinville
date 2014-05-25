@@ -88,7 +88,7 @@
 
 }
 
-#aboutLink {
+#shopLogoDiv {
     /*width: 48px;*/
     position: fixed;
     top: 30%;
@@ -103,18 +103,6 @@
     color: white;
 }
 
-.aboutIcon {
-    margin-right: 3px;
-    font-size: -webkit-xxx-large;
-    color: white;
-}
-
-
-@media (max-width: 768px) {
-    .aboutIcon {
-        font-size: -webkit-x-large;
-    }
-}
 
 .shopItems {
     padding: 6%;
@@ -128,13 +116,6 @@
 select.filterTabs option.option2
 {
     background-color: #007700;
-}
-#shopLogoDiv {
-    float: left;
-    width: 175px;
-    position: relative;
-    z-index: 2;
-
 }
 
 #shopBannerDiv {
