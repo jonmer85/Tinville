@@ -92,11 +92,11 @@ def get_sizes_colors_and_quantities(sizeType, post):
         i=0
         while (True):
             sizeDimensionTemplate = "sizeDimensionSelectionTemplate" + str(i)
-            sizeDimensionSelection = sizeDimensionTemplate + "_sizeDimensionSelection"
-            if post[sizeDimensionSelection]:
+            sizeDimensionSelection = {"x": sizeDimensionTemplate + "_sizeDimWidth", "y": sizeDimensionTemplate + "_sizeDimLength"}
+            if post[sizeDimensionSelection["x"]] and post[sizeDimensionSelection["y"]]:
                 sizes[i] = {
-                    "sizeX": post[sizeDimWidth],
-                    "sizeY": post[sizeDimLength],
+                    "sizeX": post[sizeDimensionSelection["x"]],
+                    "sizeY": post[sizeDimensionSelection["y"]],
                     "colorsAndQuantities": []
                 }
 
@@ -104,6 +104,33 @@ def get_sizes_colors_and_quantities(sizeType, post):
                 while (True):
                     color = sizeDimensionTemplate + "_colorSelection" + str(j)
                     quantity = sizeDimensionTemplate + "_quantityField" + str(j)
+                    if color in post and quantity in post:
+                        if post[color] and post[quantity]:
+                            sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
+                    else:
+                        break
+                    j += 1
+                i += 1
+            else:
+                break
+        return sizes
+
+    if sizeType == SIZE_NUM:
+        sizes = {}
+        i = 0
+        while (True):
+            sizeNumberTemplate = "sizeNumberSelectionTemplate" + str(i)
+            sizeNumberSelection = sizeNumberTemplate + "_sizeNumberSelection"
+            if post[sizeNumberSelection]:
+                sizes[i] = {
+                    "size": post[sizeNumberSelection],
+                    "colorsAndQuantities": []
+                }
+
+                j = 0
+                while (True):
+                    color = sizeNumberTemplate + "_colorSelection" + str(j)
+                    quantity = sizeNumberTemplate + "_quantityField" + str(j)
                     if color in post and quantity in post:
                         if post[color] and post[quantity]:
                             sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})

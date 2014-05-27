@@ -61,24 +61,44 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['description'].widget = TinyMCE()
 
         if sizes:
+            # for i, size in enumerate(sizes):
+            #     self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+            #         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+            #                                       objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["size"])
+            #     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+            #         self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+            #         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+            #                                       objects.filter(group=2), empty_label="Choose a color...",
+            #                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
+            #         self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
+            #         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+
             for i, size in enumerate(sizes):
-                self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
-                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                  objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["size"])
+                self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
+                    = forms.IntegerField(initial=sizes[i]["sizeX"])
+                self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
+                    = forms.IntegerField(initial=sizes[i]["sizeY"])
                 for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                    self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                    self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                     = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                   objects.filter(group=2), empty_label="Choose a color...",
                                              initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                    self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                    self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
                     = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, color=None, quantity=None):
+
+    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNumber=None, color=None, quantity=None):
         variantProduct = canonical
         variantProduct.pk = None
         variantProduct.id = None
         variantProduct.parent_id = canonical.id
-        setattr(variantProduct.attr, 'size_set', sizeSet)
+        if sizeSet:
+            setattr(variantProduct.attr, 'size_set', sizeSet)
+        if sizeDim:
+            setattr(variantProduct.attr, 'size_dimension_x', sizeDim['x'])
+            setattr(variantProduct.attr, 'size_dimension_y', sizeDim['y'])
+        if sizeNumber:
+            setattr(variantProduct.attr, 'size_number', sizeNumber)
         if color:
             setattr(variantProduct.attr, 'color', color)
         variantProduct.save()
@@ -120,14 +140,48 @@ class ProductCreationForm(forms.ModelForm):
                         self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet,
                                                                    color=color, quantity=quantity)
                     else:
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
+                        break
+                    j += 1
+                i += 1
+            # Tom Bowman was here 5-25-14
+            elif ('sizeDimensionSelectionTemplate%s_sizeDimWidth' % i) in self.cleaned_data and\
+                            ('sizeDimensionSelectionTemplate%s_sizeDimLength' % i) in self.cleaned_data:
+                sizeDimX = self.cleaned_data['sizeDimensionSelectionTemplate%s_sizeDimWidth' % i]
+                sizeDimY = self.cleaned_data['sizeDimensionSelectionTemplate%s_sizeDimLength' % i]
+                j = 0
+                while True:
+                    if ('sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
+                            'sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
+                        color = self.cleaned_data['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)]
+                        quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                                                                        "y": sizeDimY}, color=color, quantity=quantity)
+
+                    else:
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                                                                                                    "y": sizeDimY})
+                        break
+                    j += 1
+                i += 1
+            elif ('sizeNumberSelectionTemplate%s_sizeNumberSelection' % i) in self.cleaned_data:
+                sizeNumber = self.cleaned_data['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i]
+                j = 0
+                while True:
+                    if ('sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
+                            'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
+                        color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
+                        quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNumber=sizeNumber,
+                                                                   color=color, quantity=quantity)
+                    else:
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNumber=sizeNumber)
                         break
                     j += 1
                 i += 1
             else:
-                self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
                 break
         return canonicalProduct
-
 
 
 
@@ -137,8 +191,6 @@ class ProductCreationForm(forms.ModelForm):
                    'recommended_products', 'product_options',
                    'attributes', 'categories', 'shop')
         # fields = ['title', 'description', 'product_class']
-
-
 
 
 def get_partner_from_shop(shop):
@@ -152,8 +204,6 @@ def get_partner_from_shop(shop):
         partner.save()
         partner.users.add(shop_owner)
         return partner
-
-
 
 class AboutBoxForm(forms.Form):
 
@@ -204,7 +254,6 @@ class BannerUploadForm(forms.Form):
             Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
         ))
-
 
 class LogoUploadForm(forms.Form):
 
