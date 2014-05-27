@@ -61,17 +61,17 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['description'].widget = TinyMCE()
 
         if sizes:
-            # for i, size in enumerate(sizes):
-            #     self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
-            #         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-            #                                       objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["size"])
-            #     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-            #         self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-            #         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-            #                                       objects.filter(group=2), empty_label="Choose a color...",
-            #                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
-            #         self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
-            #         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+            for i, size in enumerate(sizes):
+                self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                  objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeSet"])
+                for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                    self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                  objects.filter(group=2), empty_label="Choose a color...",
+                                             initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                    self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                    = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
             for i, size in enumerate(sizes):
                 self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
@@ -85,6 +85,19 @@ class ProductCreationForm(forms.ModelForm):
                                              initial=sizes[i]["colorsAndQuantities"][j]["color"])
                     self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
                     = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+
+            for i, size in enumerate(sizes):
+                self.fields['sizeNumberSelectionTemplate%s_sizeSetSelection' % i] \
+                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                  objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeNumber"])
+                for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                    self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                  objects.filter(group=2), empty_label="Choose a color...",
+                                             initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                    self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                    = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+
 
 
     def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNumber=None, color=None, quantity=None):

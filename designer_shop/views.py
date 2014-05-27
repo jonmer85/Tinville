@@ -86,7 +86,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
             sizeSetSelection = sizeSetTemplate + "_sizeSetSelection"
             if post[sizeSetSelection]:
                 sizes[i] = {
-                    "size": post[sizeSetSelection],
+                    "sizeSet": post[sizeSetSelection],
                     "colorsAndQuantities": []
                 }
 
@@ -141,7 +141,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
             sizeNumberSelection = sizeNumberTemplate + "_sizeNumberSelection"
             if post[sizeNumberSelection]:
                 sizes[i] = {
-                    "size": post[sizeNumberSelection],
+                    "sizeNum": post[sizeNumberSelection],
                     "colorsAndQuantities": []
                 }
 
