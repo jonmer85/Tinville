@@ -28,34 +28,52 @@ def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__exact=slug)
     form = None
     if request.method == 'POST':
-        sizeVariationType = request.POST["sizeVariation"]
-        sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-        form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
-        if form.is_valid():
-            canonicalProduct = form.save(shop)
-    return renderShopEditor(request, shop, productCreationForm=form)
+        if request.POST.__contains__('bannerUploadForm'):
+            form = BannerUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                shop.banner = form.cleaned_data["banner"]
+                shop.save(update_fields=["banner"])
+            return renderShopEditor(request, shop, bannerUploadForm=form)
+        elif request.POST.__contains__('logoUploadForm'):
+            form = LogoUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                shop.logo = form.cleaned_data["logo"]
+                shop.save(update_fields=["logo"])
+            return renderShopEditor(request, shop, logoUploadForm=form)
+        else:
+            if request.method == 'POST':
+                sizeVariationType = request.POST["sizeVariation"]
+                sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
+                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                if form.is_valid():
+                    canonicalProduct = form.save(shop)
+            return renderShopEditor(request, shop, productCreationForm=form)
+    else:
+        return renderShopEditor(request, shop)
 
-
-def shopabout(request, slug):
+def ajax_about(request, slug):
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
         currentshop = Shop.objects.get(slug=slug)
-        if form.is_valid():
+        if request.is_ajax() and form.is_valid():
             currentshop.aboutContent = form.cleaned_data["aboutContent"]
             currentshop.save(update_fields=["aboutContent"])
-        return renderShopEditor(request, currentshop, aboutForm=form)
+            return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+
+    # return renderShopEditor(request, currentShop, colorPickerForm=form)
+    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 
 def ajax_color(request, slug):
-    currentShop = Shop.objects.get(slug=slug)
-    form = DesignerShopColorPicker(request.POST)
+    if request.method == 'POST':
+        currentShop = Shop.objects.get(slug=slug)
+        form = DesignerShopColorPicker(request.POST)
 
-    if request.is_ajax() and form.is_valid():
-        currentShop.color = form.cleaned_data["color"]
-        currentShop.save(update_fields=["color"])
-        return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+        if request.is_ajax() and form.is_valid():
+            currentShop.color = form.cleaned_data["color"]
+            currentShop.save(update_fields=["color"])
+            return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
 
-    # return renderShopEditor(request, currentShop, colorPickerForm=form)
     return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 
@@ -172,24 +190,25 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
 
 
 def uploadbanner(request, slug):
+    currentShop = Shop.objects.get(slug=slug)
     if request.method == 'POST':
         form = BannerUploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            currentShop = Shop.objects.get(slug=slug)
+
             currentShop.banner = form.cleaned_data["banner"]
             currentShop.save(update_fields=["banner"])
 
     return renderShopEditor(request, currentShop, bannerUploadForm=form)
 
-
 def uploadlogo(request, slug):
+    currentShop = Shop.objects.get(slug=slug)
     if request.method == 'POST':
 
         form = LogoUploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            currentShop = Shop.objects.get(slug=slug)
+
             currentShop.logo = form.cleaned_data["logo"]
             currentShop.save(update_fields=["logo"])
 

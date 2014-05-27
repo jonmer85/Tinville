@@ -211,7 +211,7 @@ class AboutBoxForm(forms.Form):
 
     helper = FormHelper()
     helper.form_show_labels = False
-
+    helper.form_class = 'aboutForm'
     helper.layout = Layout(
         Div(
             Field('aboutContent', placeholder="Enter Text Here"),
@@ -249,7 +249,7 @@ class BannerUploadForm(forms.Form):
         Div(
             Fieldset('Banner Image',
                      'banner',
-                     HTML("""{% if form.banner.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.banner.value }}">{% endif %}""", ),
+                     # HTML("""{% if form.banner.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.banner.value }}">{% endif %}""", ),
                     ),
             Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
@@ -266,7 +266,7 @@ class LogoUploadForm(forms.Form):
         Div(
             Fieldset('Logo Image',
                      'logo',
-                     HTML("""{% if form.logo.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.logo.value }}">{% endif %}""", ),
+                     # HTML("""{% if form.logo.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.logo.value }}">{% endif %}""", ),
                      ),
             Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
             css_class="container"
