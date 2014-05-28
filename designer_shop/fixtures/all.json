@@ -19,10 +19,10 @@
             "name": "Demo",
 			"slug": "Demo",
             "banner": "images/banner.jpg",
-            "logo": "images/logo.jpg",
+            "logo": "",
             "user": 1,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
-            "color": "ffffff"
+            "color": "#663399"
         }
     },
     {
