@@ -62,45 +62,45 @@ class ProductCreationForm(forms.ModelForm):
 
         if sizes:
             for i, size in enumerate(sizes):
-                self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
-                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                  objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeSet"])
-                for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                    self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                  objects.filter(group=2), empty_label="Choose a color...",
-                                             initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                    self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
-                    = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+                if "sizeSet" in sizes[i]:
+                    self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeSet"])
+                    for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                        self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                        self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-            for i, size in enumerate(sizes):
-                self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
-                    = forms.IntegerField(initial=sizes[i]["sizeX"])
-                self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
-                    = forms.IntegerField(initial=sizes[i]["sizeY"])
-                for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                    self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                  objects.filter(group=2), empty_label="Choose a color...",
-                                             initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                    self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
-                    = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+                elif "sizeX" in sizes[i] and "sizeY" in sizes[i]:
+                    self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
+                        = forms.IntegerField(initial=sizes[i]["sizeX"])
+                    self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
+                        = forms.IntegerField(initial=sizes[i]["sizeY"])
+                    for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                        self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                        self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-            for i, size in enumerate(sizes):
-                self.fields['sizeNumberSelectionTemplate%s_sizeSetSelection' % i] \
-                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                  objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeNumber"])
-                for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                    self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-                    = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                  objects.filter(group=2), empty_label="Choose a color...",
-                                             initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                    self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
-                    = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
-
+                elif "sizeNum" in sizes[i]:
+                    self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
+                        = forms.IntegerField(initial=sizes[i]["sizeNum"])
+                    for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                        self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                        self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
 
-    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNumber=None, color=None, quantity=None):
+
+    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = canonical
         variantProduct.pk = None
         variantProduct.id = None
@@ -110,8 +110,8 @@ class ProductCreationForm(forms.ModelForm):
         if sizeDim:
             setattr(variantProduct.attr, 'size_dimension_x', sizeDim['x'])
             setattr(variantProduct.attr, 'size_dimension_y', sizeDim['y'])
-        if sizeNumber:
-            setattr(variantProduct.attr, 'size_number', sizeNumber)
+        if sizeNum:
+            setattr(variantProduct.attr, 'size_number', sizeNum)
         if color:
             setattr(variantProduct.attr, 'color', color)
         variantProduct.save()
@@ -153,7 +153,8 @@ class ProductCreationForm(forms.ModelForm):
                         self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet,
                                                                    color=color, quantity=quantity)
                     else:
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
+                        if not j:
+                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
                         break
                     j += 1
                 i += 1
@@ -170,25 +171,26 @@ class ProductCreationForm(forms.ModelForm):
                         quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
                         self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
                                                                         "y": sizeDimY}, color=color, quantity=quantity)
-
                     else:
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                        if not j:
+                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
                                                                                                     "y": sizeDimY})
                         break
                     j += 1
                 i += 1
             elif ('sizeNumberSelectionTemplate%s_sizeNumberSelection' % i) in self.cleaned_data:
-                sizeNumber = self.cleaned_data['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i]
+                sizeNum = self.cleaned_data['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i]
                 j = 0
                 while True:
                     if ('sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
                             'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNumber=sizeNumber,
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum,
                                                                    color=color, quantity=quantity)
                     else:
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNumber=sizeNumber)
+                        if not j:
+                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum)
                         break
                     j += 1
                 i += 1
