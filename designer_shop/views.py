@@ -47,6 +47,7 @@ def shopeditor(request, slug):
                 form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop)
+                    form = ProductCreationForm()
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
         return renderShopEditor(request, shop)
