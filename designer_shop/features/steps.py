@@ -151,3 +151,19 @@ def and_the_color_picker_textbox_is_displayed(step):
 @step(u'And the Create button is displayed')
 def and_the_create_button_is_displayed(step):
     assert_id_exists('shopColorPicker')
+
+@step(u'And a color is submitted')
+def and_a_color_is_submitted(step):
+    color_picker = world.browser.find_element_by_id("color")
+    world.browser.find_element_by_id("id_color").clear()
+    color_picker.find_element_by_name("color").send_keys("#fb1c0e")
+    world.browser.find_element_by_id("resizeIcon").click()
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id("shopColorPicker").is_displayed())
+    world.browser.find_element_by_id("shopColorPicker").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The selected color is applied to the components of the shop')
+def the_selected_color_is_applied_to_the_components_of_the_shop(step):
+    color_element = world.browser.find_element_by_css_selector('.shopBackgroundColor')
+    style = color_element.get_attribute("style")
+    assert style == 'background-color: rgb(251, 28, 14);'
