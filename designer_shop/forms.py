@@ -266,7 +266,7 @@ class BannerUploadForm(forms.Form):
                      'banner',
                      # HTML("""{% if form.banner.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.banner.value }}">{% endif %}""", ),
                     ),
-            Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
+            Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="bannerUpload"),
             css_class="container"
         ))
 
@@ -283,6 +283,6 @@ class LogoUploadForm(forms.Form):
                      'logo',
                      # HTML("""{% if form.logo.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.logo.value }}">{% endif %}""", ),
                      ),
-            Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
+            Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="logoUpload"),
             css_class="container"
         ))

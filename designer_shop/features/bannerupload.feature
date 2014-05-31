@@ -7,8 +7,8 @@ Feature: Designer Shop Banner Upload Selection
   @tommy
   Scenario: Banner Menu
     Given a shop editor
-    When the lobannergo tab is selected
+    When the banner tab is selected
     Then the banner file upload is displayed
-    And the create button is displayed
+    And the submit banner button is displayed
     And a banner is submitted
-  The selected banner is applied to the shop
+  The selected file is saved

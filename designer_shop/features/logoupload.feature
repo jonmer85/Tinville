@@ -9,6 +9,6 @@ Feature: Designer Shop Logo Upload Selection
     Given a shop editor
     When the logo tab is selected
     Then the logo file upload is displayed
-    And the create button is displayed
+    And the submit logo button is displayed
     And a logo is submitted
-  The selected logo is applied to the shop
+  The selected logo is saved
