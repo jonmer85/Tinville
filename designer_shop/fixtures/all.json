@@ -19,10 +19,10 @@
             "name": "Demo",
 			"slug": "Demo",
             "banner": "images/banner.jpg",
-            "logo": "images/logo.jpg",
+            "logo": "",
             "user": 1,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
-            "color": "ffffff"
+            "color": "#663399"
         }
     },
     {
@@ -221,6 +221,162 @@
         "pk": 5,
         "fields": {
             "product_class": 1,
+			"name": "color",
+            "code": "color",
+            "type": "option",
+            "option_group": 2
+        }
+    },
+        {
+        "model": "catalogue.ProductAttribute",
+        "pk": 6,
+        "fields": {
+            "product_class": 2,
+			"name": "size_set",
+            "code": "size_set",
+            "type": "option",
+            "option_group": 1
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 7,
+        "fields": {
+            "product_class": 2,
+			"name": "size_dimension_x",
+            "code": "size_dimension_x",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 8,
+        "fields": {
+            "product_class": 2,
+			"name": "size_dimension_y",
+            "code": "size_dimension_y",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 9,
+        "fields": {
+            "product_class": 2,
+			"name": "size_number",
+            "code": "size_number",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 10,
+        "fields": {
+            "product_class": 2,
+			"name": "color",
+            "code": "color",
+            "type": "option",
+            "option_group": 2
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 11,
+        "fields": {
+            "product_class": 3,
+            "name": "size_set",
+            "code": "size_set",
+            "type": "option",
+            "option_group": 1
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 12,
+        "fields": {
+            "product_class": 3,
+			"name": "size_dimension_x",
+            "code": "size_dimension_x",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 13,
+        "fields": {
+            "product_class": 3,
+			"name": "size_dimension_y",
+            "code": "size_dimension_y",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 14,
+        "fields": {
+            "product_class": 3,
+			"name": "size_number",
+            "code": "size_number",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 15,
+        "fields": {
+            "product_class": 3,
+			"name": "color",
+            "code": "color",
+            "type": "option",
+            "option_group": 2
+        }
+    },
+        {
+        "model": "catalogue.ProductAttribute",
+        "pk": 16,
+        "fields": {
+            "product_class": 4,
+            "name": "size_set",
+            "code": "size_set",
+            "type": "option",
+            "option_group": 1
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 17,
+        "fields": {
+            "product_class": 4,
+			"name": "size_dimension_x",
+            "code": "size_dimension_x",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 18,
+        "fields": {
+            "product_class": 4,
+			"name": "size_dimension_y",
+            "code": "size_dimension_y",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 19,
+        "fields": {
+            "product_class": 4,
+			"name": "size_number",
+            "code": "size_number",
+            "type": "float"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 20,
+        "fields": {
+            "product_class": 4,
 			"name": "color",
             "code": "color",
             "type": "option",

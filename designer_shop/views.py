@@ -47,6 +47,7 @@ def shopeditor(request, slug):
                 form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop)
+                    form = ProductCreationForm()
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
         return renderShopEditor(request, shop)
@@ -86,7 +87,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
             sizeSetSelection = sizeSetTemplate + "_sizeSetSelection"
             if post[sizeSetSelection]:
                 sizes[i] = {
-                    "size": post[sizeSetSelection],
+                    "sizeSet": post[sizeSetSelection],
                     "colorsAndQuantities": []
                 }
 
@@ -94,6 +95,61 @@ def get_sizes_colors_and_quantities(sizeType, post):
                 while (True):
                     color = sizeSetTemplate + "_colorSelection" + str(j)
                     quantity = sizeSetTemplate + "_quantityField" + str(j)
+                    if color in post and quantity in post:
+                        if post[color] and post[quantity]:
+                            sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
+                    else:
+                        break
+                    j += 1
+                i += 1
+            else:
+                break
+        return sizes
+
+    if sizeType == SIZE_DIM:
+        sizes = {}
+        i=0
+        while (True):
+            sizeDimensionTemplate = "sizeDimensionSelectionTemplate" + str(i)
+            sizeDimensionSelection = {"x": sizeDimensionTemplate + "_sizeDimWidth", "y": sizeDimensionTemplate + "_sizeDimLength"}
+            if post[sizeDimensionSelection["x"]] and post[sizeDimensionSelection["y"]]:
+                sizes[i] = {
+                    "sizeX": post[sizeDimensionSelection["x"]],
+                    "sizeY": post[sizeDimensionSelection["y"]],
+                    "colorsAndQuantities": []
+                }
+
+                j = 0
+                while (True):
+                    color = sizeDimensionTemplate + "_colorSelection" + str(j)
+                    quantity = sizeDimensionTemplate + "_quantityField" + str(j)
+                    if color in post and quantity in post:
+                        if post[color] and post[quantity]:
+                            sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
+                    else:
+                        break
+                    j += 1
+                i += 1
+            else:
+                break
+        return sizes
+
+    if sizeType == SIZE_NUM:
+        sizes = {}
+        i = 0
+        while (True):
+            sizeNumberTemplate = "sizeNumberSelectionTemplate" + str(i)
+            sizeNumberSelection = sizeNumberTemplate + "_sizeNumberSelection"
+            if post[sizeNumberSelection]:
+                sizes[i] = {
+                    "sizeNum": post[sizeNumberSelection],
+                    "colorsAndQuantities": []
+                }
+
+                j = 0
+                while (True):
+                    color = sizeNumberTemplate + "_colorSelection" + str(j)
+                    quantity = sizeNumberTemplate + "_quantityField" + str(j)
                     if color in post and quantity in post:
                         if post[color] and post[quantity]:
                             sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
