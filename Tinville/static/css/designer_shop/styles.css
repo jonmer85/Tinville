@@ -307,7 +307,8 @@ select.filterTabs option.option2
 }
 
 #buttonContainer {
-    padding-bottom: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 .nav-pills>li.active>a {
