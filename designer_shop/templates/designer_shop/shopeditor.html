@@ -16,7 +16,7 @@
                     <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
-            <div id="editorPanels" class="row panel-collapse collapse in row-xs-height">
+            <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
@@ -61,13 +61,9 @@
                                 {% crispy productCreationForm %}
                             </form>
                         </div>
-                        <div id="buttonContainer" class="container col-sm-12 pull-right">
-                                <div id="message_area" class="col-sm-10">HELLO</div>
-                                <button id="editorButton" class="btn btn-primary tinvilleButton pull-right">Submit</button>
-                        </div>
                     </div>
-                    <div class="row-xs-height col-sm-12">
-                        <div id="buttonContainer" class="container col-sm-12 container-xs-height">
+                    <div class="row-xs-height col-xs-12">
+                        <div id="buttonContainer" class="container col-xs-12 container-xs-height">
                             <div id="message_area" class="col-middle col-xs-height">HELLO</div>
                             <button id="editorButton" class="btn btn-primary tinvilleButton pull-right">Submit</button>
                         </div>
