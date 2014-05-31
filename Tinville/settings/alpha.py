@@ -13,6 +13,8 @@ DATABASES = {
   }
 }
 
+GOOGLE_ANALYTICS_TRACKING_ID = 'UA-47214215-2'
+
 ALLOWED_HOSTS = ['tinville-alpha.herokuapp.com', 'www.alpha.tinville.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
