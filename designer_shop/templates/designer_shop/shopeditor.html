@@ -440,9 +440,9 @@ $("#optionsXS").click(function() {
 
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-        $("#optionPanel").transition({height: transitionHeight},{duration: 300});
-        $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight},{duration: 300});
-        $("#formContent").transition({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
+        $("#optionPanel").velocity({height: transitionHeight},{duration: 300});
+        $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});
+        $("#formContent").velocity({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
     }
     else
     {
@@ -474,10 +474,10 @@ function resizeEditor() {
                 $("#buttonContainer").outerHeight()-
                 parseInt($("#cornerRadius").css('border-top-width'))-
                 parseInt($("#cornerRadius").css('border-bottom-width'));
-        $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
-        $("#optionContent").transition({height: optionPanelHeight},{duration: 300});
-        $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
-        $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
+        $("#optionPanel").velocity({height:optionPanelHeight},{duration: 300});
+        $("#optionContent").velocity({height: optionPanelHeight},{duration: 300});
+        $("#formPanel").velocity({height:formTransitionHeight}, {duration: 300});
+        $("#formContent").velocity({height: formTransitionHeight}, {duration: 300});
     }
     else
     {
@@ -493,10 +493,10 @@ function resizeEditor() {
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
                 parseInt($("#shopEditorHeading").css('padding-bottom'));
         maxHeight = $(window).height()*editorPanelHeight;
-        $("#optionPanel").transition({height:maxHeight-excess},300);
-        $("#formPanel").transition({height:maxHeight-excess-buttonHeight},300);
-        $("#optionContent").transition({height: maxHeight-excess},300);
-        $("#formContent").transition({height: maxHeight-excess-buttonHeight},300);
+        $("#optionPanel").velocity({height:maxHeight-excess},300);
+        $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);
+        $("#optionContent").velocity({height: maxHeight-excess},300);
+        $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
     }
 }
 
