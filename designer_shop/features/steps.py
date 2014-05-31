@@ -187,17 +187,13 @@ def and_the_submit_logo_button_is_displayed(step):
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.click()
-    logo_uploader.send_keys("/home/tommy/batman.gif")
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id("logoUpload").is_displayed())
+    logo_uploader.send_keys("batman.gif")
     world.browser.find_element_by_id("logoUpload").click()
     wait_for_ajax_to_complete()
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_is_saved(step):
-    world.browser.find_element_by_id("id_logo")
-    #Check if the file got uploaded?
-    #os.path.isfile( <FileName> )
+    os.path.isfile("../fixtures/media/images/batman.gif")
 
 @step(u'When the banner tab is selected')
 def when_the_lbanner_tab_is_selected(step):
@@ -217,14 +213,10 @@ def and_the_submit_banner_button_is_displayed(step):
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
     banner_uploader = world.browser.find_element_by_id("id_banner")
-    banner_uploader.click()
-    banner_uploader.send_keys("/home/tommy/fists.jpg")
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id("bannerUpload").is_displayed())
+    banner_uploader.send_keys("fists.jpg")
     world.browser.find_element_by_id("bannerUpload").click()
     wait_for_ajax_to_complete()
 
 @step(u'The selected banner file is saved')
 def the_selected_file_is_saved(step):
-    world.browser.find_element_by_id("id_banner")
-    #Check if the file got uploaded?
-    #os.path.isfile( <FileName> )
+    os.path.isfile("../fixtures/media/images/fists.jpg")
