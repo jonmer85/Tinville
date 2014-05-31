@@ -187,7 +187,7 @@ def and_the_submit_logo_button_is_displayed(step):
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys("batman.gif")
+    logo_uploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/batman.gif")
     world.browser.find_element_by_id("logoUpload").click()
     wait_for_ajax_to_complete()
 
@@ -212,8 +212,9 @@ def and_the_submit_banner_button_is_displayed(step):
 
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
+    print( os.getcwd() )
     banner_uploader = world.browser.find_element_by_id("id_banner")
-    banner_uploader.send_keys("fists.jpg")
+    banner_uploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/fists.jpg")
     world.browser.find_element_by_id("bannerUpload").click()
     wait_for_ajax_to_complete()
 
