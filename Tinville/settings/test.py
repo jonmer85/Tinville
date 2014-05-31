@@ -22,7 +22,7 @@ LETTUCE_APPS = (
     'user',
 )
 
-INSTALLED_APPS = INSTALLED_APPS + ('lettuce.django',)
+INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',]
 
 ########## TEST SETTINGS
 #TEST_RUNNER = "discover_runner.DiscoverRunner"

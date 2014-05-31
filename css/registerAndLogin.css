@@ -1,0 +1,72 @@
+
+
+@media (min-width: 992px) {
+
+  .userInfoText {
+      float: left;
+  }
+}
+
+@media (max-width: 767px) {
+    .userInfoText {
+        text-align: center;
+    }
+}
+
+.orangeHeading {
+    color: #f46430;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+
+.loginForm {
+    margin-bottom: 0px;
+}
+
+
+.userInfo {
+    font-size: 1.5em;
+    text-align: left;
+}
+
+.registerField {
+    height: 4em;
+    margin-top: 20px;
+}
+
+.userRegistrationForm {
+    padding: 5%;
+    padding-top: 0;
+}
+
+.registerInfoButton {
+    padding: 1%;
+    width: 100%;
+}
+
+.registerButton {
+    /*position: relative;*/
+    /*right: 19%;*/
+}
+
+/* Bootstrap overrides */
+
+.controls {
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+
+    .form-group, .registerButton {
+        /*max-width: 60%;*/
+        /*margin: 0 auto;*/
+        /*margin-bottom: 15px;*/
+    }
+}
+
+
