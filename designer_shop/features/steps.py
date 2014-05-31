@@ -158,9 +158,8 @@ def and_a_color_is_submitted(step):
     world.browser.find_element_by_id("id_color").clear()
     color_picker.find_element_by_name("color").send_keys("#fb1c0e")
     world.browser.find_element_by_id("resizeIcon").click()
-    time.sleep(1.0)
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id("shopColorPicker").is_displayed())
     world.browser.find_element_by_id("shopColorPicker").click()
-    time.sleep(1.0)
     wait_for_ajax_to_complete()
 
 @step(u'The selected color is applied to the components of the shop')
