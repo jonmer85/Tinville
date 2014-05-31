@@ -92,7 +92,7 @@
 .shopLogoDiv {
     width: 150px;
     position: relative;
-
+    top: -185px;
     /*z-index: -1;*/
     right: -45%;
     border-radius: 8px;
