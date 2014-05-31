@@ -22,8 +22,8 @@ LETTUCE_APPS = (
     'user',
 )
 
-INSTALLED_APPS = INSTALLED_APPS + ('lettuce.django',)
-
+INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django']
+INSTALLED_APPS
 ########## TEST SETTINGS
 #TEST_RUNNER = "discover_runner.DiscoverRunner"
 #TEST_DISCOVER_TOP_LEVEL = PROJECT_DIR
