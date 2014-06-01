@@ -18,8 +18,8 @@
 {#    <div class="row">#}
 
       {% if shop.banner and shop.logo %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-              <img class="" src="{{shop.banner.url}}" />
+          <div class="shopBanner img-responsive full-screen ">
+              <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
               <img class="shopLogoDiv" src="{{shop.logo.url}}" />
           </div>
       {% elif not shop.banner and shop.logo %}
@@ -50,7 +50,9 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
           <div class="panel-body" id="aboutLocation">
-            {{ shop.aboutContent | safe }}
+              <div class="container aboutContent col-xs-12">
+                   {{ shop.aboutContent | safe }}
+              </div>
           </div>
         </div>
     </div>
