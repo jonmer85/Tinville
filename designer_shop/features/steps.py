@@ -89,8 +89,8 @@ def and_the_shop_editor_is_35(step):
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.35)) <= 1
 
-@step(u'Given a shop editor')
-def give_a_shop_editor(step):
+@step(u'Given the demo shop editor')
+def give_demo_shop_editor(step):
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
@@ -158,7 +158,7 @@ def and_a_color_is_submitted(step):
     world.browser.find_element_by_id("id_color").clear()
     color_picker.find_element_by_name("color").send_keys("#fb1c0e")
     world.browser.find_element_by_id("resizeIcon").click()
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id("shopColorPicker").is_displayed())
+    wait_for_element_with_id_to_be_displayed("shopColorPicker")
     world.browser.find_element_by_id("shopColorPicker").click()
     wait_for_ajax_to_complete()
 
@@ -167,3 +167,14 @@ def the_selected_color_is_applied_to_the_components_of_the_shop(step):
     color_element = world.browser.find_element_by_css_selector('.shopBackgroundColor')
     style = color_element.get_attribute("style")
     assert style == 'background-color: rgb(251, 28, 14);'
+
+@step(u'When the add item tab is selected')
+def when_the_add_item_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addItems"]').click()
+    wait_for_element_with_id_to_be_displayed("shopColorPicker")
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addItems"]')
+
+@step(u'Then the add item form is displayed')
+def then_the_add_item_form_is_displayed(step):
+    assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
+    assert_id_exists('id_title')
