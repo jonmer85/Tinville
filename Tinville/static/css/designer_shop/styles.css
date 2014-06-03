@@ -36,6 +36,14 @@
 
 }
 
+.aboutContent {
+    background-color: #ffffff;
+    border-radius: 4px;
+    font-size: 1.5em;
+    padding-right: 2%;
+    font-family:"Cabin Condensed", sans-serif;
+    word-wrap:break-word;
+}
 
 .imageContainer {
     border: solid;
@@ -124,7 +132,6 @@
     height: 150px;
     padding:3px;
     text-decoration: none;
-    color: white;
 }
 @media (max-width: 768px) {
      .shopLogoDiv2 {
