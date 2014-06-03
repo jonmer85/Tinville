@@ -146,6 +146,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.checkout.context_processors.checkout',
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
+    'Tinville.context_processors.google_analytics_id',
     )
 
 # Actual Tinville business logic
@@ -255,3 +256,6 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_PASTE = True
+
+# to be overridden in other settings files
+GOOGLE_ANALYTICS_TRACKING_ID = ''
