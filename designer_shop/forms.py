@@ -102,9 +102,10 @@ class ProductCreationForm(forms.ModelForm):
 
     def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = canonical
+        #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
+        variantProduct.parent_id = canonical.id
         variantProduct.pk = None
         variantProduct.id = None
-        variantProduct.parent_id = canonical.id
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
