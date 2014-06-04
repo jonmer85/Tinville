@@ -68,7 +68,7 @@
             <option class="shopBackgroundColor">View All</option>
               {% for category in categories %}
                 {% if category.depth == 1 %}
-                    <option class="" on="colorFunction()">{{ category.name }}</option>
+                    <option>{{ category.name }}</option>
                 {% endif %}
              {% endfor %}
           </select>
@@ -138,21 +138,6 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
-    function colorFunction() {
-        var myselect = document.getElementById("filterTab1"),
-        colour = myselect.options[myselect.selectedIndex].className;
-        myselect.className = myselect.className + "option2";
-        myselect.blur();
-
-    }
-
-    function colourFunction() {
-        var myselect = document.getElementById("filterTab1"),
-        colour = myselect.options[myselect.selectedIndex].className;
-        myselect.className = "option2";
-        myselect.blur();
-    }
 
     $("#tinvilleTagBanner").css("height", "50px");
     $("#tinvilleTagBanner").css("top", "0px");
