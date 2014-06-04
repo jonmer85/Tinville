@@ -237,7 +237,7 @@ class AboutBoxForm(forms.Form):
 
 class DesignerShopColorPicker(forms.Form):
 
-    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#ffffff", max_length=7, min_length = 6,
+    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#663399", max_length=7, min_length = 6,
                              validators=[
         RegexValidator(
             regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
