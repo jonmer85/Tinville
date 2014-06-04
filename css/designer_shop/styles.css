@@ -51,6 +51,10 @@
 
     border-radius: 10px;
 }
+select.filterTabs
+{
+    background-color: #990099;
+}
 
 .filterTabs {
     height: 25px;
@@ -109,7 +113,6 @@
     color: white;
 }
 
-
 @media (max-width: 768px) {
     .aboutIcon {
         font-size: -webkit-x-large;
@@ -125,10 +128,7 @@
        padding: 2%;
     }
 }
-select.filterTabs option.option2
-{
-    background-color: #007700;
-}
+
 #shopLogoDiv {
     float: left;
     width: 175px;

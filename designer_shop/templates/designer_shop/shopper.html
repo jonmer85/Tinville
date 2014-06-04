@@ -64,18 +64,18 @@
       {% endif %}
 
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-         <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
-            <option class="option2">View All</option>
+         <select class="select form-control filterTabs "  id="filterTab1" onchange="colourFunction()" onselect="colourFunction()" name="Filter1">
+            <option class="shopBackgroundColor">View All</option>
               {% for category in categories %}
                 {% if category.depth == 1 %}
-                    <option class="">{{ category.name }}</option>
+                    <option>{{ category.name }}</option>
                 {% endif %}
              {% endfor %}
           </select>
       </div>
 
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-          <select class="select form-control filterTabs " >
+          <select class="select form-control filterTabs" >
             <option>View All Types</option>
             {% for category in categories %}
                 {% if category.depth == 3 %}
@@ -138,15 +138,6 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
-
-
-{#    function colourFunction() {#}
-{#        var myselect = document.getElementById("select1"),#}
-{#        colour = myselect.options[myselect.selectedIndex].className;#}
-{#        myselect.className = "option2";#}
-{#        myselect.blur();#}
-{#    }#}
 
     $("#tinvilleTagBanner").css("height", "50px");
     $("#tinvilleTagBanner").css("top", "0px");
