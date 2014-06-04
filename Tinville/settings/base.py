@@ -147,6 +147,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
     'Tinville.context_processors.google_analytics_id',
+    'Tinville.context_processors.include_shops'
     )
 
 # Actual Tinville business logic
