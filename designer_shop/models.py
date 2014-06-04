@@ -15,7 +15,7 @@ class Shop(models.Model):
                                upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename))
     logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename))
     aboutContent = HTMLField()
-    color = models.CharField(default='#ffffff', max_length=7,
+    color = models.CharField(default='#663399', max_length=7,
         validators=[RegexValidator(
             regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
             message='Invalid hex code',
