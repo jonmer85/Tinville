@@ -168,6 +168,60 @@ def the_selected_color_is_applied_to_the_components_of_the_shop(step):
     style = color_element.get_attribute("style")
     assert style == 'background-color: rgb(251, 28, 14);'
 
+@step(u'When the logo tab is selected')
+def when_the_logo_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#logo"]').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#logo"]')
+
+@step(u'Then the logo file upload is displayed')
+def then_the_logo_file_upload_is_displayed(step):
+    assert world.browser.find_element_by_css_selector('#logo.tab-pane.active')
+    assert_id_exists('id_logo')
+
+@step(u'And the submit Logo button is displayed')
+def and_the_submit_logo_button_is_displayed(step):
+    assert_id_exists('logoUpload')
+
+@step(u'And a logo is submitted')
+def and_a_logo_is_submitted(step):
+    logo_uploader = world.browser.find_element_by_id("id_logo")
+    logo_uploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/batman.gif")
+    world.browser.find_element_by_id("logoUpload").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The selected logo file is saved')
+def the_selected_logo_is_saved(step):
+    os.path.isfile("../fixtures/media/images/batman.gif")
+
+@step(u'When the banner tab is selected')
+def when_the_lbanner_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#banner"]').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#banner"]')
+
+@step(u'Then the banner file upload is displayed')
+def then_the_banner_file_upload_is_displayed(step):
+    assert world.browser.find_element_by_css_selector('#banner.tab-pane.active')
+    assert_id_exists('id_banner')
+
+@step(u'And the submit Banner button is displayed')
+def and_the_submit_banner_button_is_displayed(step):
+    assert_id_exists('bannerUpload')
+
+@step(u'And a banner is submitted')
+def and_a_banner_is_submitted(step):
+    print( os.getcwd() )
+    banner_uploader = world.browser.find_element_by_id("id_banner")
+    banner_uploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/fists.jpg")
+    world.browser.find_element_by_id("bannerUpload").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The selected banner file is saved')
+def the_selected_file_is_saved(step):
+    os.path.isfile("../fixtures/media/images/fists.jpg")
+    assert style == 'background-color: rgb(251, 28, 14);'
+
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addItems"]').click()
