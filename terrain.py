@@ -1,8 +1,13 @@
+import os
+import sys
+
 from lettuce import *
 from selenium import webdriver
 from django.core.management import call_command
 from django.core.management import execute_from_command_line
-import sys
+
+
+
 
 currentbrowser =0
 @before.harvest
@@ -21,7 +26,9 @@ def foo(step):
         currentbrowser = currentbrowser + 1
         execute_from_command_line(sys.argv)
 
-@before.all
+#@before.all
+# Jon M - Commented this out since sync-ing the DB all the time was slow. Manually sync the test DB as needed with
+# ./test syncdb as needed
 def setup_database():
     call_command('syncdb', interactive=False, verbosity=0)
 
