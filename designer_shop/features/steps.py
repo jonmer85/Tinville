@@ -192,10 +192,11 @@ def and_a_logo_is_submitted(step):
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_is_saved(step):
-    os.path.isfile("../fixtures/media/images/batman.gif")
+    # We need to figure out how to check if the logo and banner is actually uploaded
+    currentLogo = world.browser.find_element_by_id()
 
 @step(u'When the banner tab is selected')
-def when_the_lbanner_tab_is_selected(step):
+def when_the_banner_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#banner"]').click()
     time.sleep(0.4)
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#banner"]')
@@ -211,16 +212,43 @@ def and_the_submit_banner_button_is_displayed(step):
 
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
-    print( os.getcwd() )
-    banner_uploader = world.browser.find_element_by_id("id_banner")
-    banner_uploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/fists.jpg")
+    bannerUploader = world.browser.find_element_by_id("id_banner")
+    bannerUploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/fists.jpg")
     world.browser.find_element_by_id("bannerUpload").click()
     wait_for_ajax_to_complete()
 
 @step(u'The selected banner file is saved')
 def the_selected_file_is_saved(step):
-    os.path.isfile("../fixtures/media/images/fists.jpg")
-    assert style == 'background-color: rgb(251, 28, 14);'
+    # We need to figure out how to check if the logo and banner is actually uploaded
+    currentBanner = world.browser.find_element_by_id()
+
+@step(u'When the about tab is selected')
+def when_the_about_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
+
+@step(u'Then the about text field box is displayed')
+def then_the_about_text_field_box_is_displayed(step):
+    assert world.browser.find_element_by_id('about')
+    assert_id_exists('about')
+
+@step(u'And the submit about content button is displayed')
+def and_the_submit_about_content_button_is_displayed(step):
+    assert_id_exists('submit-id-aboutboxform')
+
+@step(u'And the about content is submitted')
+def and_the_about_content_is_submitted(step):
+    bannerUploader = world.browser.find_element_by_id("tinymce")
+    bannerUploader.send_keys("We are doing Lettuce Tests")
+    world.browser.find_element_by_id("submit-id-aboutboxform").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The about content is saved')
+def the_about_content_is_saved(step):
+    # We need to figure out how to check if the logo and banner is actually uploaded
+    aboutLocation = world.browser.find_element_by_id("aboutLocation")
+    aboutLocation.getAttribute("innerHTML")
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
