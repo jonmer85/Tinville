@@ -2,7 +2,7 @@
 from common.lettuce_utils import *
 import cssselect
 from lettuce import step
-from nose.tools import assert_equals
+from nose.tools import assert_equals, assert_not_equals, assert_raises
 from user.models import TinvilleUser
 import lettuce.django
 from selenium.common.exceptions import * 
@@ -20,13 +20,32 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
     form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form)
 
-@step(u'When I register for a shop named "([^"]*)"')
+@step(u'(?:When|And) I register for a shop named "([^"]*)"')
 def when_i_register_for_a_shop(step, shop_name):
-    form = fill_in_user_form(email="joe@schmoe.com", password="test")
+    register_basic_shop(shop_name, "joe@schmoe.com", "test")
+
+@step(u'(?:When|And|Or) I try to register a shop named "([^"]*)"')
+def when_i_register_for_a_shop(step, shop_name):
+    form = fill_out_designer_registration_form("test", shop_name, "joe@schmoe.com")
+    form.submit()
+
+@step(u'When a shop named "([^"]*)" already exists')
+def when_a_shop_already_exists(step, shop_name):
+    register_basic_shop(shop_name, "cock@blocker.com", "test")
+
+
+def fill_out_designer_registration_form(password, shop_name, user):
+    form = fill_in_user_form(email=user, password=password)
     world.user_info['shop_name'] = shop_name
     form.find_element_by_id("designer").click()
     form.find_element_by_name("shop_name").send_keys(shop_name)
+    return form
+
+
+def register_basic_shop(shop_name, user, password):
+    form = fill_out_designer_registration_form(password, shop_name, user)
     submit_form_and_activate_user(form)
+
 
 def fill_in_user_form(email, password):
     access_registration_url(step)
@@ -64,16 +83,22 @@ def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
 def then_i_should_see_an_error_telling_me_that_email_is_required(step):
     assert_selector_does_exist("#lg-menuLogin #div_id_username.has-error")
 
+@step(u'I should get an error that the shop already exists')
+def then_i_should_see_an_error_telling_me_that_email_is_required(step):
+    assert_selector_does_exist("#div_id_shop_name.has-error")
+    assert_selector_contains_text("#error_1_id_shop_name strong", "Shop name is already taken.")
+
 
 
 @step(u'Then I should be redirected to the home page')
 def then_i_should_be_redirected_to_the_home_page(step):
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
 
-@step(u'Then I can visit my shop at "([^"]*)"')
+@step(u'(?:Then|And) I can visit my shop at "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
-    world.browser.get(lettuce.django.get_server().url(url))
-    assert_not_equals(world.browser.title, 'Server Error', world.browser.page_source)
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    assert_page_exist(url)
 
 @step(u'I should see a confirmation notification prompting me to activate the account via email instructions to "([^"]*)"')
 def i_should_see_a_confirmation_notification(step, email):

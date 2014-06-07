@@ -1,4 +1,5 @@
 from lettuce import *
+from django.test import Client
 from nose.tools import *
 import lettuce.django
 import re
@@ -110,6 +111,11 @@ def change_viewport_lg():
 
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id(id).is_displayed())
+
+def assert_page_exist(url):
+    c = Client()
+    response = c.get(url, follow=True)
+    assert_not_equals(response.status_code, 404)
 
 
 
