@@ -13,6 +13,7 @@ Feature: Designer Shop Color Selection
     And a color is submitted
     The selected color is applied to the components of the shop
 
+  @yori
   Scenario: AGW 214 - Colorpicker
     Given the demo shop editor
 	When the color tab is selected

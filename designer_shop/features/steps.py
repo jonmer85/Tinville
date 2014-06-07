@@ -136,7 +136,6 @@ def and_selecting_the_double_inward_arrows_should_decrease_the_size_to_thirtyfiv
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#color"]').click()
-    time.sleep(0.4)
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#color"]')
 
 @step(u'Then the color picker wheel is displayed')
@@ -191,5 +190,5 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
 
 @step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
 def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
-    assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
-    assert_id_exists('id_title')
+    assert_selector_does_exist("#id_color.has-error")
+    assert_selector_contains_text("#error_1_id_shop_name strong", "Tinville Branding is not Allowed to be Used")
