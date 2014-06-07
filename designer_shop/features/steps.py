@@ -178,3 +178,18 @@ def when_the_add_item_tab_is_selected(step):
 def then_the_add_item_form_is_displayed(step):
     assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
     assert_id_exists('id_title')
+
+@step(u'And the tinville orange color f46430 is submitted')
+def and_the_tinville_orange_color_f46430_is_submitted(step):
+    color_picker = world.browser.find_element_by_id("color")
+    world.browser.find_element_by_id("id_color").clear()
+    color_picker.find_element_by_name("color").send_keys("#f46430")
+    world.browser.find_element_by_id("resizeIcon").click()
+    wait_for_element_with_id_to_be_displayed("shopColorPicker")
+    world.browser.find_element_by_id("shopColorPicker").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
+def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
+    assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
+    assert_id_exists('id_title')
