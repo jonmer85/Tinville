@@ -84,7 +84,7 @@ def then_i_should_see_an_error_telling_me_that_email_is_required(step):
     assert_selector_does_exist("#lg-menuLogin #div_id_username.has-error")
 
 @step(u'I should get an error that the shop already exists')
-def then_i_should_see_an_error_telling_me_that_email_is_required(step):
+def then_i_should_see_an_error_telling_me_that_shop_exists(step):
     assert_selector_does_exist("#div_id_shop_name.has-error")
     assert_selector_contains_text("#error_1_id_shop_name strong", "Shop name is already taken.")
 
