@@ -64,7 +64,7 @@
                     </div>
                     <div class="row-xs-height col-xs-12">
                         <div id="buttonContainer" class="container col-xs-12 container-xs-height">
-                            <div id="message_area" class="col-middle col-xs-height">HELLO</div>
+                            <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>
                             <button id="editorButton" class="btn btn-primary tinvilleButton pull-right hidden">Submit</button>
                         </div>
                     </div>
@@ -105,12 +105,12 @@
                         $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
 					},
                     error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#message_area"));
+                        clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors(".colorForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#message_area"));
+                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
                             } else {
                                 apply_form_field_error(self[0].id, index, value);
                             }
@@ -131,14 +131,17 @@
                     },
                     success: function(data, textStatus, jqXHR) {
 					    document.getElementById('aboutLocation').innerHTML = document.getElementById("id_aboutContent").value
+                        $("#collapseOneTitle").removeClass( "collapsed").addClass("");
+                        $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
+                        $("#collapseOne").css("height", "auto");
 					},
                     error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#message_area"));
+                        clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors(".aboutForm");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#message_area"));
+                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
                             } else {
                                 apply_form_field_error(self[0].id, index, value);
                             }

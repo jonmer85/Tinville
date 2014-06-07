@@ -3,13 +3,13 @@
 from .base import *  # Start with base settings
 from tempfile import NamedTemporaryFile
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": NamedTemporaryFile().name,
+        "NAME": os.path.join(PROJECT_DIR, 'lettucedb.sqlite3'),
         "USER": "",
         "PASSWORD": "",
         "HOST": "",

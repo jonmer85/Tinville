@@ -15,7 +15,7 @@ AttributeOption = get_model('catalogue', 'AttributeOption')
 
 
 def shopper(request, slug):
-    shop = get_object_or_404(Shop, slug__exact=slug)
+    shop = get_object_or_404(Shop, slug__iexact=slug)
     return render(request, 'designer_shop/shopper.html', {
         'shop': shop,
         'categories': get_model('catalogue', 'Category').objects.all(),
@@ -25,7 +25,7 @@ def shopper(request, slug):
 
 
 def shopeditor(request, slug):
-    shop = get_object_or_404(Shop, slug__exact=slug)
+    shop = get_object_or_404(Shop, slug__iexact=slug)
     form = None
     if request.method == 'POST':
         if request.POST.__contains__('bannerUploadForm'):
@@ -55,7 +55,7 @@ def shopeditor(request, slug):
 def ajax_about(request, slug):
     if request.method == 'POST':
         form = AboutBoxForm(request.POST)
-        currentshop = Shop.objects.get(slug=slug)
+        currentshop = Shop.objects.get(slug__iexact=slug)
         if request.is_ajax() and form.is_valid():
             currentshop.aboutContent = form.cleaned_data["aboutContent"]
             currentshop.save(update_fields=["aboutContent"])
@@ -67,7 +67,7 @@ def ajax_about(request, slug):
 
 def ajax_color(request, slug):
     if request.method == 'POST':
-        currentShop = Shop.objects.get(slug=slug)
+        currentShop = Shop.objects.get(slug__iexact=slug)
         form = DesignerShopColorPicker(request.POST)
 
         if request.is_ajax() and form.is_valid():
@@ -191,7 +191,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
 
 
 def uploadbanner(request, slug):
-    currentShop = Shop.objects.get(slug=slug)
+    currentShop = Shop.objects.get(slug__iexact=slug)
     if request.method == 'POST':
         form = BannerUploadForm(request.POST, request.FILES)
 
@@ -203,7 +203,7 @@ def uploadbanner(request, slug):
     return renderShopEditor(request, currentShop, bannerUploadForm=form)
 
 def uploadlogo(request, slug):
-    currentShop = Shop.objects.get(slug=slug)
+    currentShop = Shop.objects.get(slug__iexact=slug)
     if request.method == 'POST':
 
         form = LogoUploadForm(request.POST, request.FILES)
