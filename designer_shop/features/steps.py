@@ -89,8 +89,8 @@ def and_the_shop_editor_is_35(step):
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.35)) <= 1
 
-@step(u'Given a shop editor')
-def give_a_shop_editor(step):
+@step(u'Given the demo shop editor')
+def give_demo_shop_editor(step):
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
@@ -151,3 +151,30 @@ def and_the_color_picker_textbox_is_displayed(step):
 @step(u'And the Create button is displayed')
 def and_the_create_button_is_displayed(step):
     assert_id_exists('shopColorPicker')
+
+@step(u'And a color is submitted')
+def and_a_color_is_submitted(step):
+    color_picker = world.browser.find_element_by_id("color")
+    world.browser.find_element_by_id("id_color").clear()
+    color_picker.find_element_by_name("color").send_keys("#fb1c0e")
+    world.browser.find_element_by_id("resizeIcon").click()
+    wait_for_element_with_id_to_be_displayed("shopColorPicker")
+    world.browser.find_element_by_id("shopColorPicker").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The selected color is applied to the components of the shop')
+def the_selected_color_is_applied_to_the_components_of_the_shop(step):
+    color_element = world.browser.find_element_by_css_selector('.shopBackgroundColor')
+    style = color_element.get_attribute("style")
+    assert style == 'background-color: rgb(251, 28, 14);'
+
+@step(u'When the add item tab is selected')
+def when_the_add_item_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addItems"]').click()
+    wait_for_element_with_id_to_be_displayed("shopColorPicker")
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addItems"]')
+
+@step(u'Then the add item form is displayed')
+def then_the_add_item_form_is_displayed(step):
+    assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
+    assert_id_exists('id_title')

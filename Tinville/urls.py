@@ -28,14 +28,12 @@ urlpatterns += patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^shopeditor/test/$', 'designer_shop.views.shopeditor'),
     url(r'^tinymce/', include( 'tinymce.urls')),
-    url(r'^(?P<slug>\w+)/edit$', 'designer_shop.views.shopeditor'),
-    url(r'^(?P<slug>\w+)/edit/about$', 'designer_shop.views.shopabout'),
-    url(r'^(?P<slug>\w+)/edit/color$', 'designer_shop.views.postcolor'),
-    url(r'^(?P<slug>\w+)/edit/create_product$', 'designer_shop.views.create_product'),
+    url(r'^(?P<slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
+    url(r'^(?P<slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
+    url(r'^(?P<slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'^(?P<slug>\w+)/$', 'designer_shop.views.shopper'),
+    url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper'),
 )
 
 if settings.DEBUG:

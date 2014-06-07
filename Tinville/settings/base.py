@@ -136,6 +136,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
+    'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
     'django_mobile.context_processors.flavour',
@@ -145,6 +146,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.checkout.context_processors.checkout',
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
+    'Tinville.context_processors.google_analytics_id',
+    'Tinville.context_processors.include_shops'
     )
 
 # Actual Tinville business logic
@@ -167,7 +170,6 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'crispy_forms',
     'braces',
-    'PIL',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
@@ -175,7 +177,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'compressor',
     'tinymce',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
@@ -255,3 +257,6 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_PASTE = True
+
+# to be overridden in other settings files
+GOOGLE_ANALYTICS_TRACKING_ID = ''

@@ -1,72 +1,87 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load thumbnail %}
+{% load purchase_info_tags %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
 {% block content %}
-    <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>
+    {{ block.super }}
+
+{#    <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>#}
 {#    need to add something if a designer does not have a banner#}
 {#    this will be decribed at a later time#}
-  {% if shop.banner %}
-    <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen" />
-  {% endif %}
 
-{#  This section is the info banner for a shop  #}
-  <div class="container infoBanner full-screen shopBackgroundColor"></div>
+{#  <div class="container">#}
+{#    <div class="row">#}
 
-  <div class="container">
-      {% if shop.aboutContent %}
-          <div id="aboutLink">
-            <div class="whhg-batman aboutIcon"> </div>
-{#          <button type="button" class="whhg-batman aboutIcon btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{ shop.aboutContent | safe }}">BIO</button>#}
+      {% if shop.banner and shop.logo %}
+          <div class="shopBanner img-responsive full-screen ">
+              <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
+              <img class="shopLogoDiv" src="{{shop.logo.url}}" />
           </div>
-
-
-
+      {% elif not shop.banner and shop.logo %}
+          <div class="shopBanner full-screen shopBackgroundColor">
+              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
+          </div>
+      {% elif shop.banner and not shop.logo %}
+          <div>
+            <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
+          </div>
+      {% else %}
+          <div class="shopBanner full-screen shopBackgroundColor">
+          </div>
       {% endif %}
+
+      <div class="infoBanner full-screen shopBackgroundColor"></div>
+
+    <div class="container">
+
 
     <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            <a id="collapseOneTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="">
               {{ shop }} Bio
             </a>
           </h4>
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
-          <div class="panel-body">
-            {{ shop.aboutContent | safe }}
+          <div class="panel-body" id="aboutLocation">
+              <div class="container aboutContent col-xs-12">
+                   {{ shop.aboutContent | safe }}
+              </div>
           </div>
         </div>
     </div>
 
       {% if user.email == shop.user.email%}
-        <div id="editLink">
+        <div id="editLink" class="shopBackgroundColor">
             <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
         </div>
       {% endif %}
 
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-         <select class="select form-control filterTabs "  id="filterTab1" onselect="colourFunction()" name="Filter1">
-            <option class="option2">View All</option>
-            <option class="">Women</option>
-            <option class="">Men</option>
-            <option class="">Kids</option>
-              {% for item in shop.item_set.all %}
-
+         <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
+            <option>View All</option>
+              {% for category in categories %}
+                {% if category.depth == 1 %}
+                    <option>{{ category.name }}</option>
+                {% endif %}
              {% endfor %}
           </select>
       </div>
 
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-          <select class="select form-control filterTabs " >
+          <select class="select form-control filterTabs" >
             <option>View All Types</option>
-            <option>Dresses</option>
-            <option>Pants</option>
-            <option>Shoes</option>
+            {% for category in categories %}
+                {% if category.depth == 3 %}
+                    <option class="">{{ category.name }}</option>
+                {% endif %}
+             {% endfor %}
           </select>
       </div>
 
@@ -84,12 +99,13 @@
       <div class=" ">
         <div class="shopItems row">
           {% for product in products %}
+            {% purchase_info_for_product request product as session %}
             {% if product.is_top_level %}
               <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
                   <div class="thumbnail shopItem shopBorderColor">
                     {% if product.primary_image and product.primary_image.original.url %}
                         {% with image=product.primary_image %}
-                            {% thumbnail image.original "150x120" upscale=False as thumb %}
+                            {% thumbnail image.original "200x250" upscale=False as thumb %}
                             <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
                                 <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description=" class="img-responsive"
                                     {% if image.caption %}{{ image.caption }}{% endif %}">
@@ -99,11 +115,17 @@
                     {% else %}
                             -
                     {% endif %}
-                  </div>
+
                   <div class="caption">
                       <span class="name shopColor">{{product.get_title}}</span>
-{#                      <span class="price shopColor">${{product.min_variant_price_excl_tax}}</span>#}
-                   </div>
+                      <span class="price shopColor">${{session.price.excl_tax}}</span>
+                      <span class="shopColor">
+                          {% if not session.availability.is_available_to_buy %}
+                              {{  session.availability.message  }}
+                          {% endif %}
+                      </span>
+                  </div>
+                  </div>
                </div>
             {% endif %}
           {% endfor %}
@@ -117,17 +139,12 @@
     {{ block.super }}
     <script>
 
+    $("#tinvilleTagBanner").css("height", "50px");
+    $("#tinvilleTagBanner").css("top", "0px");
+    $("#tinvilleTagBanner").css("margin-top", "0px");
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
 
-
-    function colourFunction() {
-        var myselect = document.getElementById("select1"),
-        colour = myselect.options[myselect.selectedIndex].className;
-        myselect.className = "option2";
-        myselect.blur();
-    }
-
-    $("#tinvilleTagBanner").remove();
-    $("#aboutLink").css("background", "{{ shop.aboutContent }}")
 
     </script>
 

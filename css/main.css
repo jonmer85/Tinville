@@ -169,15 +169,15 @@ body {
 }
 
 #navSearch {
-    font-size: 1.5em;
+    font-size: 2em;
     margin-right: 5%;
-    margin-top: 10px;
+    /*margin-top: 12px;*/
 }
 
 #navLogin {
     font-size: 2em;
     margin-right: 5%;
-    margin-top: -3px;
+    /*margin-top: 12px;*/
 }
 
 #navLogout {
@@ -217,22 +217,20 @@ body {
 
 #tinvilleTagBanner {
     position: relative;
-    top: 34px;
+    top: 20px;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
     height: 75px;
-    margin-top: -24px
 }
 
 
 @media(max-width: 767px){
     #tinvilleTagBanner {
     position: relative;
-    top: 10px;
+    top: 20px;
     left: 5%;
     z-index: 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height: 50px;
-    margin-top: 0px;
+    height: 75px;
 }
 
    /* #carousel{
@@ -763,142 +761,4 @@ textarea {
     h3 {
         page-break-after: avoid;
     }
-}
-
-/* Helper classes for vertical centering */
-
-/* columns of same height styles */
-.container-xs-height {
-    display:table;
-    padding-left:0px;
-    padding-right:0px;
-}
-.row-xs-height {
-    display:table-row;
-}
-.col-xs-height {
-    display:table-cell !important;
-    float:none !important;
-}
-@media (min-width: 768px) {
-    .container-sm-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-sm-height {
-        display:table-row;
-    }
-    .col-sm-height {
-        display:table-cell;
-        float:none;
-    }
-}
-@media (min-width: 992px) {
-    .container-md-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-md-height {
-        display:table-row;
-    }
-    .col-md-height {
-        display:table-cell;
-        float:none;
-    }
-}
-@media (min-width: 1200px) {
-    .container-lg-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-lg-height {
-        display:table-row;
-    }
-    .col-lg-height {
-        display:table-cell;
-        float:none;
-    }
-}
-
-/* vertical alignment styles */
-.col-top {
-    vertical-align:top;
-}
-.col-middle {
-    vertical-align:middle;
-}
-.col-bottom {
-    vertical-align:bottom;
-}
-
-/* Helper classes for vertical centering */
-
-/* columns of same height styles */
-.container-xs-height {
-    display:table;
-    padding-left:0px;
-    padding-right:0px;
-}
-.row-xs-height {
-    display:table-row;
-}
-.col-xs-height {
-    display:table-cell !important;
-    float:none !important;
-}
-@media (min-width: 768px) {
-    .container-sm-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-sm-height {
-        display:table-row;
-    }
-    .col-sm-height {
-        display:table-cell;
-        float:none;
-    }
-}
-@media (min-width: 992px) {
-    .container-md-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-md-height {
-        display:table-row;
-    }
-    .col-md-height {
-        display:table-cell;
-        float:none;
-    }
-}
-@media (min-width: 1200px) {
-    .container-lg-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-lg-height {
-        display:table-row;
-    }
-    .col-lg-height {
-        display:table-cell;
-        float:none;
-    }
-}
-
-/* vertical alignment styles */
-.col-top {
-    vertical-align:top;
-}
-.col-middle {
-    vertical-align:middle;
-}
-.col-bottom {
-    vertical-align:bottom;
 }

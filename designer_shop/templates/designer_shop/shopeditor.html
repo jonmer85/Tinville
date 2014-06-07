@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-    <script type='text/javascript' src='{{ STATIC_URL }}js/tiny_mce/tiny_mce.js'></script>
+    <script src="http://tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
 {% endblock css %}
 {% block content %}
@@ -21,6 +21,9 @@
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
+                            <a href="#addItems" data-toggle="pill">Add Item</a>
+                        </li>
+                        <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
                         <li>
@@ -32,87 +35,38 @@
                         <li>
                             <a href="#about" data-toggle="pill">About</a>
                         </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 1</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 2</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 3</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 4</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 5</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 6</a>
-                        </li>
-                        <li>
-                            <a href="#addItems" data-toggle="pill">Add Items 7</a>
-                        </li>
                     </ul>
                 </div>
                 <div id="secondColumn" class="container col-sm-9">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <div class="tab-pane active" id="banner">
-                                <p> 1 Insert Banner form here.</p>
-                                <p> 2 Insert Banner form here.</p>
-                                <p> 3 Insert Banner form here.</p>
-                                <p> 4 Insert Banner form here.</p>
-                                <p> 5 Insert Banner form here.</p>
-                                <p> 6 Insert Banner form here.</p>
-                                <p> 7 Insert Banner form here.</p>
-                                <p> 8 Insert Banner form here.</p>
-                                <p> 9 Insert Banner form here.</p>
-                                <p> 10 Insert Banner form here.</p>
-                                <p> 11 Insert Banner form here.</p>
-                                <p> 12 Insert Banner form here.</p>
-                                <p> 13 Insert Banner form here.</p>
-                                <p> 14 Insert Banner form here.</p>
-                                <p> 15 Insert Banner form here.</p>
-                                <p> 16 Insert Banner form here.</p>
-                                <p> 17 Insert Banner form here.</p>
-                                <p> 18 Insert Banner form here.</p>
-                                <p> 19 Insert Banner form here.</p>
-                                <p> 20 Insert Banner form here.</p>
-                                <p> 21 Insert Banner form here.</p>
-                                <p> 22 Insert Banner form here.</p>
-                                <p> 23 Insert Banner form here.</p>
-                                <p> 24 Insert Banner form here.</p>
-                                <p> 25 Insert Banner form here.</p>
-                                <p> 26 Insert Banner form here.</p>
-                                <p> 27 Insert Banner form here.</p>
-                                <p> 28 Insert Banner form here.</p>
-                                <p> 29 Insert Banner form here.</p>
-                                <p> 30 Insert Banner form here.</p>
-                                <p> 31 Insert Banner form here.</p>
-                                <p> 32 Insert Banner form here.</p>
-                            </div>
-                            <div class="tab-pane" id="logo">
-                                Insert Logo form here.
-                            </div>
-                            <form class="tab-pane" id="color" action="edit/color" method="post">
+                            <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy bannerUploadForm %}
+                            </form>
+                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy logoUploadForm %}
+                            </form>
+                            <form class="tab-pane" id="color" action="edit/ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane" id="about" action="edit/about" method="post">
+                            <form class="tab-pane" id="about" action="edit/ajax_about" method="post">
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane" id="addItems" enctype="multipart/form-data" action="edit/create_product" method="post">
+                            <form class="tab-pane active" id="addItems" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
                         </div>
-                        </div>
-
                     </div>
-                    <div id="buttonContainer" class="container col-sm-12 pull-right">
-                            <button class="btn btn-primary tinvilleButton pull-right">Submit</button>
+                    <div class="row-xs-height col-xs-12">
+                        <div id="buttonContainer" class="container col-xs-12 container-xs-height">
+                            <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>
+                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right hidden">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,25 +84,87 @@
 
 {% block javascript %}
     {{ block.super }}
+    <script>
+
+    $( "#editorButton" ).click(function() {
+        $( "#color" ).click();
+    });
+
+        $(document).on("submit", "#color", function(e) {
+            e.preventDefault();
+            var self = $(this)
+            var url = self.attr("action")
+            var ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        color: document.getElementById("id_color").value
+                    },
+                    success: function(data, textStatus, jqXHR) {
+					    $(".shopColor").css("color", document.getElementById("id_color").value);
+                        $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
+					},
+                    error: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#shopEditor_message_area"));
+                        clear_form_field_errors(".colorForm");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(index, value) {
+                            if (index === "__all__") {
+                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
+                            } else {
+                                apply_form_field_error(self[0].id, index, value);
+                            }
+                        });
+                    }
+                });
+        });
+        $(document).on("submit", "#about", function(e) {
+            e.preventDefault();
+            var self = $(this)
+            var url = self.attr("action")
+
+            var ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        aboutContent: document.getElementById("id_aboutContent").value
+                    },
+                    success: function(data, textStatus, jqXHR) {
+					    document.getElementById('aboutLocation').innerHTML = document.getElementById("id_aboutContent").value
+                        $("#collapseOneTitle").removeClass( "collapsed").addClass("");
+                        $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
+                        $("#collapseOne").css("height", "auto");
+					},
+                    error: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#shopEditor_message_area"));
+                        clear_form_field_errors(".aboutForm");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function(index, value) {
+                            if (index === "__all__") {
+                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
+                            } else {
+                                apply_form_field_error(self[0].id, index, value);
+                            }
+                        });
+                    }
+                });
+        });
+
+</script>
+
 <script>
 
-var htmlSTring = "<div>\
+$("#submit-id-productcreationform").click(function() {
+    this.disabled = true;
+    this.form.submit();
+
+});
+
+var htmlString = "<div>\
   This is a string.\
 </div>";
 
-var sizeSetTemplate = "" +
-"<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
-    "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-        "<div class='controls'>" +
-            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
-                "<option value='' selected='selected'>Choose a size...</option>" +
-                "{% for sizeSet in sizeSetOptions %}" +
-                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
-                "{% endfor %}" +
-            "</select>" +
-        "</div>" +
-    "</div>" +
-"</div>" +
+var colorQuantityTableHead = "" +
 "<div class='accordion-body collapse collapse-colors-quantity col-xs-8 col-xs-offset-4'>" +
     "<div class='accordion-inner table-responsive'>" +
         "<table class='table'>" +
@@ -163,6 +179,46 @@ var sizeSetTemplate = "" +
         "</table>" +
     "</div>" +
 "</div>"
+
+var sizeSetTemplate = "" +
+"<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
+        "<div class='controls'>" +
+            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+                "<option value='' selected='selected'>Choose a size...</option>" +
+                "{% for sizeSet in sizeSetOptions %}" +
+                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                "{% endfor %}" +
+            "</select>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
+
+var sizeDimensionTemplate = "" +
+"<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-5'>" +
+                "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'>" +
+            "</div>" +
+            "<div class='col-xs-2 dimensionSplit'>X</div>"+
+            "<div class='col-xs-5'>" +
+                "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
+            "</div>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
+var sizeNumberTemplate = "" +
+"<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
+        "<div class='controls'>" +
+            "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
 
 var rowColorQuantityTemplate = "" +
 "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
@@ -190,58 +246,98 @@ var rowColorQuantityTemplate = "" +
 "</tr>"
 
 
-
 $("#id_sizeVariation").change(function() {
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
-    if (selectedValue[0].value == "1") {
-        //Size set
-        sizesFieldSet.removeClass("hidden");
-
-        addNewSizeSetRow();
-        //Size set selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-        sizesFieldSet.on("change", ".sizeSetSelection", function(e) {
-
-            addNewColorAndQuantityRow($(this).parents(".sizeSetSelectionTemplate").attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
-
-            var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
-            colorsAndQuantities.collapse('show');
-
-            var selectedValue = $("option:selected", this);
-            var sizesFieldSet = $("#sizesFieldSet");
-            if (selectedValue[0].value != "0") {
-                //Add a new size set row
-                addNewSizeSetRow();
-            }
-        })
-        //Color event handling (Add a new color/quantity row for more color/quantity selection)
-        sizesFieldSet.on("change", ".row-color", function(e) {
-
-            var selectedValue = $("option:selected", this);
-            var sizesFieldSet = $("#sizesFieldSet");
-            if (selectedValue[0].value != "0") {
-
-                var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
-                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(".sizeSetSelectionTemplate").attr("id") + "_", colorsAndQuantitiesTable);
-
-            }
-        })
+    sizesFieldSet.removeClass("hidden");
+    var sizeType;
+    var sizeTemplateClass;
+    var sizeSelectionClass;
+    var selectedValueType;
+    switch (selectedValue[0].value) {
+        case "1":
+            sizeType = "sizeSet";
+            sizeTemplateClass = ".sizeSetSelectionTemplate";
+            sizeSelectionClass = ".sizeSetSelection";
+            selectedValueType = $("option:selected", this);
+            break;
+        case "2":
+            sizeType = "sizeDim";
+            sizeTemplateClass = ".sizeDimensionSelectionTemplate";
+            sizeSelectionClass = ".sizeDimensionSelection";
+            selectedValueType = $(this).val();
+            break;
+        case "3":
+            sizeType = "sizeNum";
+            sizeTemplateClass = ".sizeNumberSelectionTemplate";
+            sizeSelectionClass = ".sizeNumberSelection";
+            selectedValueType = $(this).val();
+            break;
     }
+    addNewSizeRow(sizeType);
+    //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+    sizesFieldSet.on("change", sizeSelectionClass, function(e) {
+
+        if($(this).closest('.accordion-group').next().length == "0") {
+            addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+        }
+
+        var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
+        colorsAndQuantities.collapse('show');
+
+        var selectedValue = selectedValueType;
+        var sizesFieldSet = $("#sizesFieldSet");
+        if (selectedValue[0].value != "0") {
+            if($(this).closest('.accordion-group').next().length == "0") {
+                //Add a new size set row
+                $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
+                addNewSizeRow(sizeType);
+
+            }
+        }
+    })
+    //Color event handling (Add a new color/quantity row for more color/quantity selection)
+    sizesFieldSet.on("change", ".row-color", function(e) {
+
+        var selectedValue = selectedValueType;
+        var sizesFieldSet = $("#sizesFieldSet");
+        if (selectedValue[0].value != 0) {
+            var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+            if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
+                $(this).closest('.accordion-group').velocity("scroll", {container: $('#formContent'), offset: 1, duration: 500});
+            }
+        }
+    })
+
 });
 
-function addNewSizeSetRow() {
-
-    $("#sizesFieldSet").append(sizeSetTemplate);
-
-    var $newSizeSetSelection = $("#sizeSetSelectionTemplate");
-
+function addNewSizeRow(sizeType) {
+    var sizeTemplateName;
+    var templateName;
+    switch (sizeType) {
+        case "sizeSet":
+            sizeTemplateName = "sizeSetSelectionTemplate";
+            templateName = sizeSetTemplate;
+            break;
+        case "sizeDim":
+            sizeTemplateName = "sizeDimensionSelectionTemplate";
+            templateName = sizeDimensionTemplate;
+            break;
+        case "sizeNum":
+            sizeTemplateName = "sizeNumberSelectionTemplate";
+            templateName = sizeNumberTemplate;
+            break
+    }
+    $("#sizesFieldSet").append(templateName)
+    var $newSizeSelection = $("#"+sizeTemplateName);
     // Get the number at the end of the ID, increment it, and replace the old id
-    var counter = GetNewCounter($newSizeSetSelection, "sizeSetSelectionTemplate", 0);
-    appendSuffixToAttribute($newSizeSetSelection, "id", counter);
+    var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
+    appendSuffixToAttribute($newSizeSelection, "id", counter);
 
     // Find all elements in $clone that have an ID, and iterate using each()
-    var prefix = $newSizeSetSelection[0].id + "_";
-    $newSizeSetSelection.find('[id]').each(function() {
+    var prefix = $newSizeSelection[0].id + "_";
+    $newSizeSelection.find('[id]').each(function() {
          //Perform the same replace as above
         var $th = $(this);
         var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str; });
@@ -249,42 +345,43 @@ function addNewSizeSetRow() {
     });
 
     // Find all elements in $clone that have a name, and iterate using each()
-    $newSizeSetSelection.find('[name]').each(function() {
+    $newSizeSelection.find('[name]').each(function() {
          //Perform the same replace as above
         var $th = $(this);
         var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
         $th.attr('name', newName);
     });
-
 }
 
 function addNewColorAndQuantityRow(prefix, appendTo) {
 
-    $(appendTo).append(rowColorQuantityTemplate);
+        $(appendTo).append(rowColorQuantityTemplate);
 
-    var $newColorQuantityRow = $("#rowColorQuantityTemplate");
+        var $newColorQuantityRow = $("#rowColorQuantityTemplate");
 
-    // Get the number at the end of the ID, increment it, and replace the old id
-    var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
-    prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
-    appendSuffixToAttribute($newColorQuantityRow, "id", counter);
+        // Get the number at the end of the ID, increment it, and replace the old id
+        var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
+        prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
+        appendSuffixToAttribute($newColorQuantityRow, "id", counter);
 
 
-    // Find all elements in $clone that have an ID, and iterate using each()
-    $newColorQuantityRow.find('[id]').each(function() {
-        //Perform the same replace as above
-        var $th = $(this);
-        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
-        $th.attr('id', newID);
-    });
+        // Find all elements in $clone that have an ID, and iterate using each()
+        $newColorQuantityRow.find('[id]').each(function() {
+            //Perform the same replace as above
+            var $th = $(this);
+            var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
+            $th.attr('id', newID);
+        });
 
-    // Find all elements in $clone that have a name, and iterate using each()
-    $newColorQuantityRow.find('[name]').each(function() {
-         //Perform the same replace as above
-        var $th = $(this);
-        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
-        $th.attr('name', newName);
-    });
+        // Find all elements in $clone that have a name, and iterate using each()
+        $newColorQuantityRow.find('[name]').each(function() {
+             //Perform the same replace as above
+            var $th = $(this);
+            var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
+            $th.attr('name', newName);
+        });
+
+
 }
 
 function GetNewCounter($element, classFromPrevious, initial){
@@ -352,9 +449,9 @@ $("#optionsXS").click(function() {
 
     if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
     {
-        $("#optionPanel").transition({height: transitionHeight},{duration: 300});
-        $("#formPanel").transition({height: currentFormPanelHeight-transitionHeight},{duration: 300});
-        $("#formContent").transition({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
+        $("#optionPanel").velocity({height: transitionHeight},{duration: 300});
+        $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});
+        $("#formContent").velocity({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
     }
     else
     {
@@ -370,7 +467,7 @@ function resizeEditor() {
     var editorHeight;
     var maxHeight;
     var formTransitionHeight;
-    var excess
+    var excess;
 
     buttonHeight = $("#buttonContainer").outerHeight();
 
@@ -386,10 +483,10 @@ function resizeEditor() {
                 $("#buttonContainer").outerHeight()-
                 parseInt($("#cornerRadius").css('border-top-width'))-
                 parseInt($("#cornerRadius").css('border-bottom-width'));
-        $("#optionPanel").transition({height:optionPanelHeight},{duration: 300});
-        $("#optionContent").transition({height: optionPanelHeight},{duration: 300});
-        $("#formPanel").transition({height:formTransitionHeight}, {duration: 300});
-        $("#formContent").transition({height: formTransitionHeight}, {duration: 300});
+        $("#optionPanel").velocity({height:optionPanelHeight},{duration: 300});
+        $("#optionContent").velocity({height: optionPanelHeight},{duration: 300});
+        $("#formPanel").velocity({height:formTransitionHeight}, {duration: 300});
+        $("#formContent").velocity({height: formTransitionHeight}, {duration: 300});
     }
     else
     {
@@ -405,10 +502,10 @@ function resizeEditor() {
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
                 parseInt($("#shopEditorHeading").css('padding-bottom'));
         maxHeight = $(window).height()*editorPanelHeight;
-        $("#optionPanel").transition({height:maxHeight-excess},300);
-        $("#formPanel").transition({height:maxHeight-excess-buttonHeight},300);
-        $("#optionContent").transition({height: maxHeight-excess},300);
-        $("#formContent").transition({height: maxHeight-excess-buttonHeight},300);
+        $("#optionPanel").velocity({height:maxHeight-excess},300);
+        $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);
+        $("#optionContent").velocity({height: maxHeight-excess},300);
+        $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
     }
 }
 
