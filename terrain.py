@@ -12,11 +12,12 @@ from django.core.management import execute_from_command_line
 currentbrowser =0
 @before.harvest
 def set_browser(step):
-    browsers = {0: webdriver.Firefox,
-                1: webdriver.Chrome,
-                }
+    browsers = (webdriver.Firefox,
+                webdriver.Chrome,
+                )
 
     world.browser = browsers[currentbrowser]()
+    world.browser.implicitly_wait(10)  # seconds
 
 @after.harvest
 def foo(step):
