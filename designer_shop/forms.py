@@ -266,7 +266,7 @@ class BannerUploadForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('Banner Image',
-                     'banner', css_id="fuckingstupid"),
+                     'banner'),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="bannerUpload"),
             css_class="container"
         ))
