@@ -1,7 +1,9 @@
 import json
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
@@ -12,6 +14,15 @@ from catalogue.models import Product
 from common.utils import get_list_or_empty
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
+
+def user_shop_owner(request, shop):
+    if request.user.is_authenticated():
+        if request.user.id == shop.user_id:
+            return True
+        else:
+                return False
+    else:
+        return False
 
 
 def shopper(request, slug):
@@ -26,31 +37,34 @@ def shopper(request, slug):
 
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
-    form = None
-    if request.method == 'POST':
-        if request.POST.__contains__('bannerUploadForm'):
-            form = BannerUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                shop.banner = form.cleaned_data["banner"]
-                shop.save(update_fields=["banner"])
-            return renderShopEditor(request, shop, bannerUploadForm=form)
-        elif request.POST.__contains__('logoUploadForm'):
-            form = LogoUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                shop.logo = form.cleaned_data["logo"]
-                shop.save(update_fields=["logo"])
-            return renderShopEditor(request, shop, logoUploadForm=form)
-        else:
-            if request.method == 'POST':
-                sizeVariationType = request.POST["sizeVariation"]
-                sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+    if(user_shop_owner(request, shop)):
+        form = None
+        if request.method == 'POST':
+            if request.POST.__contains__('bannerUploadForm'):
+                form = BannerUploadForm(request.POST, request.FILES)
                 if form.is_valid():
-                    canonicalProduct = form.save(shop)
-                    form = ProductCreationForm()
-            return renderShopEditor(request, shop, productCreationForm=form)
+                    shop.banner = form.cleaned_data["banner"]
+                    shop.save(update_fields=["banner"])
+                return renderShopEditor(request, shop, bannerUploadForm=form)
+            elif request.POST.__contains__('logoUploadForm'):
+                form = LogoUploadForm(request.POST, request.FILES)
+                if form.is_valid():
+                    shop.logo = form.cleaned_data["logo"]
+                    shop.save(update_fields=["logo"])
+                return renderShopEditor(request, shop, logoUploadForm=form)
+            else:
+                if request.method == 'POST':
+                    sizeVariationType = request.POST["sizeVariation"]
+                    sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
+                    form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                    if form.is_valid():
+                        canonicalProduct = form.save(shop)
+                        form = ProductCreationForm()
+                return renderShopEditor(request, shop, productCreationForm=form)
+        else:
+            return renderShopEditor(request, shop)
     else:
-        return renderShopEditor(request, shop)
+        return redirect('home')
 
 def ajax_about(request, slug):
     if request.method == 'POST':
@@ -164,7 +178,8 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None):
-    return render(request, 'designer_shop/shopeditor.html', {
+    if(user_shop_owner(request, shop)):
+        return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
         'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
@@ -188,7 +203,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'categories': get_model('catalogue', 'Category').objects.all(),
         'products': get_list_or_empty(Product, shop=shop.id)
     })
-
+    else:
+        return redirect('home')
 
 def uploadbanner(request, slug):
     currentShop = Shop.objects.get(slug__iexact=slug)
