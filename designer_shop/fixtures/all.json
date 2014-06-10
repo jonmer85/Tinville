@@ -177,6 +177,54 @@
         }
     },
     {
+        "model": "catalogue.AttributeOption",
+        "pk": 13,
+        "fields": {
+			"group": 2,
+            "option": "pink"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 14,
+        "fields": {
+			"group": 2,
+            "option": "brown"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 15,
+        "fields": {
+			"group": 2,
+            "option": "gray"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 16,
+        "fields": {
+			"group": 2,
+            "option": "yellow"
+        }
+    },
+        {
+        "model": "catalogue.AttributeOption",
+        "pk": 17,
+        "fields": {
+			"group": 2,
+            "option": "violet"
+        }
+    },
+        {
+        "model": "catalogue.AttributeOption",
+        "pk": 18,
+        "fields": {
+			"group": 2,
+            "option": "orange"
+        }
+    },
+    {
         "model": "catalogue.ProductAttribute",
         "pk": 1,
         "fields": {
