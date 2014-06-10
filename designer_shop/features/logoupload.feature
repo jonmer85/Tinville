@@ -6,7 +6,7 @@ Feature: Designer Shop Logo Upload Selection
 
   @tommy
   Scenario: Logo Menu
-    Given a shop editor
+    Given the demo shop editor
     When the logo tab is selected
     Then the logo file upload is displayed
     And the submit logo button is displayed

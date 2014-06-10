@@ -4,6 +4,7 @@ from user.models import TinvilleUser
 from common.lettuce_utils import *
 from lettuce import step
 from django.core.management import call_command
+from selenium import webdriver
 import lettuce.django
 import time
 import math
@@ -181,19 +182,18 @@ def then_the_logo_file_upload_is_displayed(step):
 
 @step(u'And the submit Logo button is displayed')
 def and_the_submit_logo_button_is_displayed(step):
-    assert_id_exists('logoUpload')
+    assert_id_exists('id_SubmitLogo')
 
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/batman.gif")
-    world.browser.find_element_by_id("logoUpload").click()
+    logo_uploader.send_keys("/images/logo2.jpg")
+    world.browser.find_element_by_id("id_SubmitLogo").click()
     wait_for_ajax_to_complete()
 
 @step(u'The selected logo file is saved')
-def the_selected_logo_is_saved(step):
-    # We need to figure out how to check if the logo and banner is actually uploaded
-    currentLogo = world.browser.find_element_by_id()
+def the_selected_logo_file_is_saved(step):
+    assert_selector_contains('img.shopLogo', 'src', 'logo2')
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
@@ -208,24 +208,23 @@ def then_the_banner_file_upload_is_displayed(step):
 
 @step(u'And the submit Banner button is displayed')
 def and_the_submit_banner_button_is_displayed(step):
-    assert_id_exists('bannerUpload')
+    assert_id_exists('id_SubmitBanner')
 
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys("/home/tommy/Desktop/Tinville/designer_shop/features/fists.jpg")
-    world.browser.find_element_by_id("bannerUpload").click()
+    bannerUploader.send_keys("/images/banner2.jpg")
+    world.browser.find_element_by_id("id_SubmitBanner").click()
     wait_for_ajax_to_complete()
 
 @step(u'The selected banner file is saved')
-def the_selected_file_is_saved(step):
-    # We need to figure out how to check if the logo and banner is actually uploaded
-    currentBanner = world.browser.find_element_by_id()
+def the_selected_banner_file_is_saved(step):
+    assert_selector_contains('img.shopBanner', 'src', 'banner2')
 
 @step(u'When the about tab is selected')
 def when_the_about_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
-    time.sleep(0.4)
+    time.sleep(5.4)
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
 
 @step(u'Then the about text field box is displayed')
@@ -235,18 +234,17 @@ def then_the_about_text_field_box_is_displayed(step):
 
 @step(u'And the submit about content button is displayed')
 def and_the_submit_about_content_button_is_displayed(step):
-    assert_id_exists('submit-id-aboutboxform')
+    assert_id_exists('id_SubmitAboutContent')
 
 @step(u'And the about content is submitted')
 def and_the_about_content_is_submitted(step):
-    bannerUploader = world.browser.find_element_by_id("tinymce")
-    bannerUploader.send_keys("We are doing Lettuce Tests")
-    world.browser.find_element_by_id("submit-id-aboutboxform").click()
+    aboutContent = world.browser.find_element_by_id('id_aboutContent')
+    aboutContent.send_keys("We are doing Lettuce Tests")
+    world.browser.find_element_by_id("id_SubmitAboutContent").click()
     wait_for_ajax_to_complete()
 
 @step(u'The about content is saved')
 def the_about_content_is_saved(step):
-    # We need to figure out how to check if the logo and banner is actually uploaded
     aboutLocation = world.browser.find_element_by_id("aboutLocation")
     aboutLocation.getAttribute("innerHTML")
 

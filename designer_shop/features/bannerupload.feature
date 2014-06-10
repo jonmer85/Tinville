@@ -6,7 +6,7 @@ Feature: Designer Shop Banner Upload Selection
 
   @tommy
   Scenario: Banner Menu
-    Given a shop editor
+    Given the demo shop editor
     When the banner tab is selected
     Then the banner file upload is displayed
     And the submit banner button is displayed
