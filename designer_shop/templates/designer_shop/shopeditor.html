@@ -274,6 +274,7 @@ $("#id_sizeVariation").change(function() {
             selectedValueType = $(this).val();
             break;
     }
+    RemoveWrongSizeTypes(sizeType);
     addNewSizeRow(sizeType);
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
@@ -292,7 +293,6 @@ $("#id_sizeVariation").change(function() {
                 //Add a new size set row
                 $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
                 addNewSizeRow(sizeType);
-
             }
         }
     })
@@ -382,6 +382,36 @@ function addNewColorAndQuantityRow(prefix, appendTo) {
         });
 
 
+}
+
+function RemoveWrongSizeTypes(newSizeType) {
+    switch (newSizeType) {
+        case "sizeSet":
+            $(".sizeDimensionSelectionTemplate").each(function() {
+                (this).remove();
+            });
+            $(".sizeNumberSelectionTemplate").each(function() {
+                (this).remove();
+            });
+            break;
+        case "sizeDim":
+            $(".sizeSetSelectionTemplate").each(function() {
+                (this).remove();
+            });
+            $(".sizeNumberSelectionTemplate").each(function() {
+                (this).remove();
+            });
+            break;
+        case "sizeNum":
+            $(".sizeSetSelectionTemplate").each(function() {
+                (this).remove();
+            });
+            $(".sizeDimensionSelectionTemplate").each(function() {
+                (this).remove();
+            });
+            break
+
+    }
 }
 
 function GetNewCounter($element, classFromPrevious, initial){
