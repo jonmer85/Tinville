@@ -247,6 +247,7 @@ var rowColorQuantityTemplate = "" +
 
 
 $("#id_sizeVariation").change(function() {
+    $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
     sizesFieldSet.removeClass("hidden");
