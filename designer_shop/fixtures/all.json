@@ -1,9 +1,10 @@
 [
     {
         "model": "user.TinvilleUser",
-        "pk": 1,
+        "pk": 2,
         "fields": {
             "email": "demo@user.com",
+            "password": "pbkdf2_sha256$12000$LyCRPn5i8lbC$sD0Sfps7UNPwAHyNWVHTzrY/40QDUDunWUD2ODhB8fs=",
 			"slug": "demousercom",
             "is_admin": false,
             "is_active": true,
@@ -20,7 +21,7 @@
 			"slug": "Demo",
             "banner": "images/banner.jpg",
             "logo": "",
-            "user": 1,
+            "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "#663399"
         }
