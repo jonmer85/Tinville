@@ -36,8 +36,9 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_shop_name(self):
         shop_name = self.cleaned_data['shop_name']
+
         try:
-            Shop.objects.get(name__iexact=shop_name)
+            Shop.objects.get(name__iexact=shop_name.lower())
         except ObjectDoesNotExist:
             return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
         raise forms.ValidationError('Shop name is already taken.')
