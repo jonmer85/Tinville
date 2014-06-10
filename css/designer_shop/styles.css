@@ -334,6 +334,10 @@ select.filterTabs
     background-color: #f46430;
 }
 
+.nav-pills > li.active > a:focus {
+    background-color: #f46430;
+}
+
 .nav-pills>li>a {
     color: #5B595A;
 }
