@@ -54,6 +54,7 @@ ul.infoList {
     font-size: 1.5em;
     padding-right: 2%;
     font-family:"Cabin Condensed", sans-serif;
+    word-wrap:break-word;
 }
 
 
