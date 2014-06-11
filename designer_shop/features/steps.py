@@ -187,13 +187,13 @@ def and_the_submit_logo_button_is_displayed(step):
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys("/images/logo2.jpg")
+    logo_uploader.send_keys('/images/logo2.jpg')
+    wait_for_element_with_id_to_be_displayed("id_SubmitLogo")
     world.browser.find_element_by_id("id_SubmitLogo").click()
-    wait_for_ajax_to_complete()
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('img.shopLogo', 'src', 'logo2')
+    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/banner/logo2.jpg')
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
@@ -213,18 +213,18 @@ def and_the_submit_banner_button_is_displayed(step):
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys("/images/banner2.jpg")
+    bannerUploader.send_keys('/images/banner2.jpg')
+    wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
-    wait_for_ajax_to_complete()
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
-    assert_selector_contains('img.shopBanner', 'src', 'banner2')
+    assert_selector_contains('#id_BannerImage', 'src', '/media/shops/demo/banner/banner2.jpg')
 
 @step(u'When the about tab is selected')
 def when_the_about_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
-    time.sleep(5.4)
+    time.sleep(0.4)
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
 
 @step(u'Then the about text field box is displayed')
