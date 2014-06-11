@@ -14,4 +14,3 @@ the content for this basic editor should include the following fields:
 	When the add item tab is selected
 	Then the add item form is displayed
 	And I fill in the general add item fields
-	And I fill in

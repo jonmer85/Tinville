@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from designer_shop.models import Shop
-from user.models import TinvilleUser
-from common.lettuce_utils import *
 from lettuce import step
 from django.core.management import call_command
+from selenium.webdriver.support.ui import Select
 import lettuce.django
 import time
 import math
+
+from designer_shop.models import Shop
+from user.models import TinvilleUser
+from common.lettuce_utils import *
 
 @before.each_scenario
 def load_all_fixtures(scenario):
@@ -91,6 +93,8 @@ def and_the_shop_editor_is_35(step):
 
 @step(u'Given the demo shop editor')
 def give_demo_shop_editor(step):
+    world.browser.get(lettuce.django.get_server().url('/'))
+    sign_in("demo@user.com", "tinville")
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
@@ -182,6 +186,8 @@ def then_the_add_item_form_is_displayed(step):
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
     world.browser.find_element_by_name("title").send_keys("Test item")
-    world.browser.find_element_by_id("tinymce").send_keys("<b>Test item description</b>")
-    world.browser.find_element_by_xpath("//select[@name='product_class']/option[text()='Tops']").click()
+    # TinyMCE uses iframes so need to use their javascript API to set the content
+    world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test Item Description</h1>')")
+    select = Select(world.browser.find_element_by_name('product_class'))
+    select.select_by_visible_text("Tops")
     world.browser.find_element_by_name("price").send_keys("10.00")
