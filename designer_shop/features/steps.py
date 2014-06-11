@@ -146,7 +146,8 @@ def then_the_color_picker_wheel_is_displayed(step):
 
 @step(u'And the color picker textbox is displayed')
 def and_the_color_picker_textbox_is_displayed(step):
-    assert_id_exists('id_color')
+    assert world.browser.execute_script("return $('#id_color').is(:visible);")
+    # assert_id_exists('id_color')
 
 @step(u'And the Create button is displayed')
 def and_the_create_button_is_displayed(step):
@@ -171,10 +172,16 @@ def the_selected_color_is_applied_to_the_components_of_the_shop(step):
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addItems"]').click()
-    wait_for_element_with_id_to_be_displayed("shopColorPicker")
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addItems"]')
 
 @step(u'Then the add item form is displayed')
 def then_the_add_item_form_is_displayed(step):
     assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
-    assert_id_exists('id_title')
+    assert world.browser.find_element_by_css_selector("#id_title").is_displayed()
+
+@step(u'And I fill in the general add item fields')
+def and_i_fill_in_the_general_add_item_fields(step):
+    world.browser.find_element_by_name("title").send_keys("Test item")
+    world.browser.find_element_by_id("tinymce").send_keys("<b>Test item description</b>")
+    world.browser.find_element_by_xpath("//select[@name='product_class']/option[text()='Tops']").click()
+    world.browser.find_element_by_name("price").send_keys("10.00")
