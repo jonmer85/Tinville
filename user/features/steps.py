@@ -131,11 +131,6 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 # Utilities
 
 def sign_in():
-    login_menu = world.browser.find_element_by_id("lg-menuLogin")
-    login_menu.find_element_by_link_text("SIGN IN").click()
-    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
-    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
-    login_menu.find_element_by_name("submit").click()
-    wait_for_ajax_to_complete()
+    sign_in(world.user_info["email"], world.user_info["password"])
 
 

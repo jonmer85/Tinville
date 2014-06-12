@@ -117,6 +117,17 @@ def assert_page_exist(url):
     response = c.get(url, follow=True)
     assert_not_equals(response.status_code, 404)
 
+def sign_in(email, password):
+    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu.find_element_by_link_text("SIGN IN").click()
+    login_menu.find_element_by_name("username").send_keys(email)
+    login_menu.find_element_by_name("password").send_keys(password)
+    login_menu.find_element_by_name("submit").click()
+    wait_for_ajax_to_complete()
+
+def scroll_to_element(element):
+    world.browser.execute_script("arguments[0].scrollIntoView(true);", element)
+
 
 
 

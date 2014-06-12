@@ -17,7 +17,7 @@ def set_browser(step):
                 )
 
     world.browser = browsers[currentbrowser]()
-    world.browser.implicitly_wait(10)  # seconds
+    world.browser.implicitly_wait(10)  # seconds JON M TBD - Implicit wait not working on Chrome Driver :(
 
 @after.harvest
 def foo(step):

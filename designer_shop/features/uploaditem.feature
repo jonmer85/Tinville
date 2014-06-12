@@ -8,12 +8,12 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
-  @wip
+  @jon
   Scenario: Create Basic Item
 	Given the demo shop editor
 	When the add item tab is selected
 	Then the add item form is displayed
-	And the color picker textbox is displayed
-	And the create button is displayed
-    And a color is submitted
-    The selected color is applied to the components of the shop
+	And I fill in the general add item fields
+	With an inventory of 7 items of a Red color and size set of SM
+	And I submit this item
+	Then I should see 1 product total

@@ -99,7 +99,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
         while (True):
             sizeSetTemplate = "sizeSetSelectionTemplate" + str(i)
             sizeSetSelection = sizeSetTemplate + "_sizeSetSelection"
-            if post[sizeSetSelection]:
+            if sizeSetSelection in post and post[sizeSetSelection]:
                 sizes[i] = {
                     "sizeSet": post[sizeSetSelection],
                     "colorsAndQuantities": []
@@ -126,7 +126,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
         while (True):
             sizeDimensionTemplate = "sizeDimensionSelectionTemplate" + str(i)
             sizeDimensionSelection = {"x": sizeDimensionTemplate + "_sizeDimWidth", "y": sizeDimensionTemplate + "_sizeDimLength"}
-            if post[sizeDimensionSelection["x"]] and post[sizeDimensionSelection["y"]]:
+            if sizeDimensionSelection["x"] in post and sizeDimensionSelection["y"] in post:
                 sizes[i] = {
                     "sizeX": post[sizeDimensionSelection["x"]],
                     "sizeY": post[sizeDimensionSelection["y"]],
@@ -154,7 +154,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
         while (True):
             sizeNumberTemplate = "sizeNumberSelectionTemplate" + str(i)
             sizeNumberSelection = sizeNumberTemplate + "_sizeNumberSelection"
-            if post[sizeNumberSelection]:
+            if sizeNumberSelection in post:
                 sizes[i] = {
                     "sizeNum": post[sizeNumberSelection],
                     "colorsAndQuantities": []
