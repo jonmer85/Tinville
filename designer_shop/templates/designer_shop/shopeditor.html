@@ -299,18 +299,16 @@ $("#id_sizeVariation").change(function() {
     })
     //Color event handling (Add a new color/quantity row for more color/quantity selection)
     sizesFieldSet.on("change", ".row-color", function(e) {
-
         var selectedValue = selectedValueType;
         var sizesFieldSet = $("#sizesFieldSet");
         if (selectedValue[0].value != 0) {
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
             if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
                 addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
-                $(this).closest('.accordion-group').velocity("scroll", {container: $('#formContent'), offset: 1, duration: 500});
+                $('#formContent').animate({scrollTop: $("#addItemEditor").height() - $(this).closest('.rowColorQuantityTemplate').next().position().top}, 500);
             }
         }
     })
-
 });
 
 function addNewSizeRow(sizeType) {
