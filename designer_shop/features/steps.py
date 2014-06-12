@@ -239,7 +239,7 @@ def and_the_submit_about_content_button_is_displayed(step):
 @step(u'And the about content is submitted')
 def and_the_about_content_is_submitted(step):
     world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test About Content</h1>')")
-    time.sleep(0.4)
+    wait_for_element_with_id_to_be_displayed("id_SubmitAboutContent")
     world.browser.find_element_by_id("id_SubmitAboutContent").click()
     wait_for_ajax_to_complete()
 
