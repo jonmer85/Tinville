@@ -62,8 +62,13 @@ def and_every_item_should_have_a_price(step):
 def given_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
 
+@step(u'Given a shop editor')
+def given_a_shop_editor(step):
+    assert_id_exists('shopEditor')
+
 @step(u'The designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
+    sign_in('Demo@user.com', 'tinville')
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
