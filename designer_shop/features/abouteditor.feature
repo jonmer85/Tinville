@@ -4,7 +4,7 @@ Feature: Designer Shop About Content Selection
   As a designer
   I want to have a text selection that allows me to add and modify text
 
-  @tommy1
+  @tommy
   Scenario: About Box Editor
     Given the demo shop editor
     When the about tab is selected

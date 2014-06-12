@@ -238,15 +238,16 @@ def and_the_submit_about_content_button_is_displayed(step):
 
 @step(u'And the about content is submitted')
 def and_the_about_content_is_submitted(step):
-    aboutContent = world.browser.find_element_by_id('id_aboutContent')
-    aboutContent.send_keys("We are doing Lettuce Tests")
+    world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test About Content</h1>')")
+    time.sleep(0.4)
     world.browser.find_element_by_id("id_SubmitAboutContent").click()
     wait_for_ajax_to_complete()
 
 @step(u'The about content is saved')
 def the_about_content_is_saved(step):
-    aboutLocation = world.browser.find_element_by_id("aboutLocation")
-    aboutLocation.getAttribute("innerHTML")
+    aboutLocation = world.browser.find_element_by_css_selector('#aboutLocation>p')
+    time.sleep(0.4)
+    assert aboutLocation.text() == "Test About Content"
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
