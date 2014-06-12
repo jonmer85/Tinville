@@ -125,6 +125,9 @@ def sign_in(email, password):
     login_menu.find_element_by_name("submit").click()
     wait_for_ajax_to_complete()
 
+def scroll_to_element(element):
+    world.browser.execute_script("arguments[0].scrollIntoView(true);", element)
+
 
 
 

@@ -3,9 +3,11 @@ from lettuce import step
 from django.core.management import call_command
 from selenium.webdriver.support.ui import Select
 import lettuce.django
+import os
 import time
 import math
 
+from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
 from user.models import TinvilleUser
 from common.lettuce_utils import *
@@ -183,11 +185,44 @@ def then_the_add_item_form_is_displayed(step):
     assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
     assert world.browser.find_element_by_css_selector("#id_title").is_displayed()
 
+
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
+    world.browser.maximize_window()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
+    world.browser.find_element_by_id("resizeIcon").click()
     world.browser.find_element_by_name("title").send_keys("Test item")
     # TinyMCE uses iframes so need to use their javascript API to set the content
     world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test Item Description</h1>')")
     select = Select(world.browser.find_element_by_name('product_class'))
-    select.select_by_visible_text("Tops")
+    select.select_by_value("1")
     world.browser.find_element_by_name("price").send_keys("10.00")
+    file = os.path.join(MEDIA_ROOT, "images/item.jpg")
+    world.browser.find_element_by_name("product_image").send_keys(file)
+
+
+@step(u'With an inventory of (\d+) items of a ([^"]*) color and size set of ([^"]*)')
+def with_quantity_color_and_sizeset(step, quantity, color, sizeset):
+    variationSelection = Select(world.browser.find_element_by_name('sizeVariation'))
+    time.sleep(2)
+    variationSelection.select_by_value("1")  # Size Set
+    sizeSetSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_sizeSetSelection'))
+    sizeSetSelection.select_by_visible_text(sizeset)
+    time.sleep(1)
+    colorSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_colorSelection0'))
+    colorSelection.select_by_visible_text(color)
+    world.browser.find_element_by_name('sizeSetSelectionTemplate0_quantityField0').send_keys(quantity)
+    time.sleep(1)
+
+
+@step(u'And I submit this item')
+def and_i_submit_this_item(step):
+    element = world.browser.find_element_by_name("productCreationForm")
+    scroll_to_element(element)
+    element.click()
+
+@step(u'Then I should see (\d+) product(?s) total')
+def i_should_see_n_products_total(step, total):
+    products = world.browser.find_elements_by_css_selector(".shopItem")
+    assert len(products) == int(total)
+
+

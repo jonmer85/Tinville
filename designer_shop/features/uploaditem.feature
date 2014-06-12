@@ -14,3 +14,6 @@ the content for this basic editor should include the following fields:
 	When the add item tab is selected
 	Then the add item form is displayed
 	And I fill in the general add item fields
+	With an inventory of 7 items of a Red color and size set of SM
+	And I submit this item
+	Then I should see 1 product total

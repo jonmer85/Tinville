@@ -99,7 +99,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
         while (True):
             sizeSetTemplate = "sizeSetSelectionTemplate" + str(i)
             sizeSetSelection = sizeSetTemplate + "_sizeSetSelection"
-            if sizeSetSelection in post:
+            if sizeSetSelection in post and post[sizeSetSelection]:
                 sizes[i] = {
                     "sizeSet": post[sizeSetSelection],
                     "colorsAndQuantities": []
