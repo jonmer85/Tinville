@@ -21,9 +21,6 @@ class ProductCreationForm(forms.ModelForm):
                                          choices=SIZE_TYPES_AND_EMPTY,
                                          initial='0')
 
-    product_class = forms.ModelChoiceField(queryset=get_model('catalogue', 'ProductClass').objects.all(),
-                                           empty_label="What are you selling?")
-
     product_image = forms.ImageField(required=False)
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
@@ -40,7 +37,6 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('General',
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
-                         Field('product_class', placeholder='Product Class'),
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -137,6 +133,8 @@ class ProductCreationForm(forms.ModelForm):
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
+        # Jon M TBD - Right now we only use 1 product class - "Apparel"
+        canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
@@ -206,7 +204,7 @@ class ProductCreationForm(forms.ModelForm):
         model = get_model('catalogue', 'Product')
         exclude = ('slug', 'status', 'score',
                    'recommended_products', 'product_options',
-                   'attributes', 'categories', 'shop')
+                   'attributes', 'categories', 'shop', 'product_class')
         # fields = ['title', 'description', 'product_class']
 
 
