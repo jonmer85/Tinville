@@ -198,8 +198,6 @@ def and_i_fill_in_the_general_add_item_fields(step):
     world.browser.find_element_by_name("title").send_keys("Test item")
     # TinyMCE uses iframes so need to use their javascript API to set the content
     world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test Item Description</h1>')")
-    select = Select(world.browser.find_element_by_name('product_class'))
-    select.select_by_value("1")
     world.browser.find_element_by_name("price").send_keys("10.00")
     file = os.path.join(MEDIA_ROOT, "images/item.jpg")
     world.browser.find_element_by_name("product_image").send_keys(file)
