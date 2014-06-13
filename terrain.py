@@ -34,6 +34,7 @@ def foo(step):
 def setup_database():
     call_command('syncdb', interactive=False, verbosity=0)
 
+
 @before.each_scenario
 def clean_database(scenario):
     subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
