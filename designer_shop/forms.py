@@ -21,6 +21,9 @@ class ProductCreationForm(forms.ModelForm):
                                          choices=SIZE_TYPES_AND_EMPTY,
                                          initial='0')
 
+    product_class = forms.ModelChoiceField(queryset=get_model('catalogue', 'ProductClass').objects.all(),
+                                           empty_label="What are you selling?")
+
     product_image = forms.ImageField(required=False)
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
@@ -37,6 +40,7 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('General',
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description'),
+                         Field('product_class', placeholder='Product Class'),
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -50,8 +54,7 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
-                css_class="container col-sm-12",
-                css_id="addItemEditor"
+                css_class="container col-sm-12"
             )
 
         )
@@ -133,8 +136,6 @@ class ProductCreationForm(forms.ModelForm):
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
-        # Jon M TBD - Right now we only use 1 product class - "Apparel"
-        canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
@@ -204,7 +205,7 @@ class ProductCreationForm(forms.ModelForm):
         model = get_model('catalogue', 'Product')
         exclude = ('slug', 'status', 'score',
                    'recommended_products', 'product_options',
-                   'attributes', 'categories', 'shop', 'product_class')
+                   'attributes', 'categories', 'shop')
         # fields = ['title', 'description', 'product_class']
 
 
@@ -252,6 +253,19 @@ class DesignerShopColorPicker(forms.Form):
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
             css_class="container"
         ))
+    #def clean_color(self):
+     #   shop_name = self.cleaned_data['shop_name']
+      #  try:
+       #     Shop.objects.get(name=shop_name)
+        #except ObjectDoesNotExist:
+         #   return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
+        #raise forms.ValidationError('Shop name is already taken.')
+
+    def clean_color(self):
+        tinville_color = self.cleaned_data['color']
+        if tinville_color == '#f46430':
+            raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
+        return tinville_color
 
 
 class BannerUploadForm(forms.Form):

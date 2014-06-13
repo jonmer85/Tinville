@@ -381,10 +381,6 @@ body {
 	border-color: rgb(204, 204, 204);
 }
 
-.banner img {
-    width: 100%;
-}
-
 /*The CSS below is for the footer -Jeff Bowman*/
 
 @media (max-width: 768px) {

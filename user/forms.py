@@ -36,7 +36,6 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_shop_name(self):
         shop_name = self.cleaned_data['shop_name']
-
         try:
             Shop.objects.get(name__iexact=shop_name)
         except ObjectDoesNotExist:
