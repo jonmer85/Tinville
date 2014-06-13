@@ -193,3 +193,17 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
 def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
     assert_selector_does_exist("#id_color.has-error")
     assert_selector_contains_text("#error_1_id_color strong", "Tinville Branding is not Allowed to be Used")
+
+@step(u'(?:When|And) I sign in')
+def and_i_sign_in(step):
+    sign_in()
+
+# Utilities
+
+def sign_in():
+    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu.find_element_by_link_text("SIGN IN").click()
+    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
+    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
+    login_menu.find_element_by_name("submit").click()
+    wait_for_ajax_to_complete()

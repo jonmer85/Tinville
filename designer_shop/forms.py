@@ -261,6 +261,12 @@ class DesignerShopColorPicker(forms.Form):
          #   return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
         #raise forms.ValidationError('Shop name is already taken.')
 
+    def clean_color(self):
+        tinville_color = self.cleaned_data['color']
+        if tinville_color == '#f46430':
+            raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
+        return tinville_color
+
 
 class BannerUploadForm(forms.Form):
 
