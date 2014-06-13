@@ -36,11 +36,6 @@ def setup_database():
 
 @before.each_scenario
 def clean_database(scenario):
-    #subprocess.call("./test sqlflush | ./test dbshell"
-
     subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
                     ' ; (./test sqlflush | ./test dbshell)', shell=True)
-
-   # call_command('sqlflush', interactive=False, verbosity=0)
-   # call_command('dbshell', interactive=False, verbosity=0)
     call_command('loaddata', 'all.json', verbosity=0)
