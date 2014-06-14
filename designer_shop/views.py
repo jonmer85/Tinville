@@ -67,29 +67,32 @@ def shopeditor(request, slug):
         return redirect('home')
 
 def ajax_about(request, slug):
-    if request.method == 'POST':
-        form = AboutBoxForm(request.POST)
-        currentshop = Shop.objects.get(slug__iexact=slug)
-        if request.is_ajax() and form.is_valid():
-            currentshop.aboutContent = form.cleaned_data["aboutContent"]
-            currentshop.save(update_fields=["aboutContent"])
-            return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
-
-    # return renderShopEditor(request, currentShop, colorPickerForm=form)
-    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
-
+    if(user_shop_owner):
+        if request.method == 'POST':
+            form = AboutBoxForm(request.POST)
+            currentshop = Shop.objects.get(slug__iexact=slug)
+            if request.is_ajax() and form.is_valid():
+                currentshop.aboutContent = form.cleaned_data["aboutContent"]
+                currentshop.save(update_fields=["aboutContent"])
+                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+    else:
+        return redirect('home')
 
 def ajax_color(request, slug):
-    if request.method == 'POST':
-        currentShop = Shop.objects.get(slug__iexact=slug)
-        form = DesignerShopColorPicker(request.POST)
+    if(user_shop_owner):
+        if request.method == 'POST':
+            currentShop = Shop.objects.get(slug__iexact=slug)
+            form = DesignerShopColorPicker(request.POST)
 
-        if request.is_ajax() and form.is_valid():
-            currentShop.color = form.cleaned_data["color"]
-            currentShop.save(update_fields=["color"])
-            return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+            if request.is_ajax() and form.is_valid():
+                currentShop.color = form.cleaned_data["color"]
+                currentShop.save(update_fields=["color"])
+                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
 
-    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+    else:
+        return redirect('home')
 
 
 def get_sizes_colors_and_quantities(sizeType, post):
@@ -205,29 +208,4 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
     })
     else:
         return redirect('home')
-
-def uploadbanner(request, slug):
-    currentShop = Shop.objects.get(slug__iexact=slug)
-    if request.method == 'POST':
-        form = BannerUploadForm(request.POST, request.FILES)
-
-        if form.is_valid():
-
-            currentShop.banner = form.cleaned_data["banner"]
-            currentShop.save(update_fields=["banner"])
-
-    return renderShopEditor(request, currentShop, bannerUploadForm=form)
-
-def uploadlogo(request, slug):
-    currentShop = Shop.objects.get(slug__iexact=slug)
-    if request.method == 'POST':
-
-        form = LogoUploadForm(request.POST, request.FILES)
-
-        if form.is_valid():
-
-            currentShop.logo = form.cleaned_data["logo"]
-            currentShop.save(update_fields=["logo"])
-
-    return renderShopEditor(request, currentShop, logoUploadForm=form)
 
