@@ -36,7 +36,7 @@
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
     <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
-    <nav class="navbar yamm navbar-default" role="navigation" style="height: 50px">
+    <nav class="navbar yamm navbar-default" role="navigation" style="height: 65px">
         <div class="container">
             <div id="navHeader" class="navbar-header">
 
@@ -271,7 +271,7 @@
                                 <li>
                                     <div class="yamm-content navbarLinkStyle ">
                                         <div class="row">
-                                            <ul class="col-sm-12 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 {% for shop in shops %}
                                                     <li><a href='{{ shop.get_absolute_url }}' >{{ shop.name }}</a></li>
                                                 {% endfor %}
@@ -433,7 +433,6 @@
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
