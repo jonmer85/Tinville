@@ -1,4 +1,3 @@
-import os
 import sys
 import subprocess
 import re
@@ -7,8 +6,8 @@ from lettuce import *
 from selenium import webdriver
 from django.core.management import call_command
 from django.core.management import execute_from_command_line
-from Tinville.settings.base import PROJECT_DIR
-from subprocess import PIPE
+from unipath import Path
+
 
 
 currentbrowser =0
@@ -39,6 +38,7 @@ def setup_database():
 @before.each_scenario
 def clean_database(scenario):
     pythonexe = re.sub(r'python.*', 'activate', sys.executable)
-    subprocess.call('. ' + pythonexe + ' ; cd ' + PROJECT_DIR[:-8] +
+    projectdir = Path(__file__).ancestor(1)
+    subprocess.call('. ' + pythonexe + ' ; cd ' + projectdir +
                     ' ; (./test sqlflush | ./test dbshell)', shell=True)
     call_command('loaddata', 'all.json', verbosity=0)
