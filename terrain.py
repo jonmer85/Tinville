@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import re
 
 from lettuce import *
 from selenium import webdriver
@@ -37,6 +38,7 @@ def setup_database():
 
 @before.each_scenario
 def clean_database(scenario):
-    subprocess.call('. ' + sys.executable.replace(r'python.*', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
+    pythonexe = re.sub(r'python.*', 'activate', sys.executable)
+    subprocess.call('. ' + pythonexe + ' ; cd ' + PROJECT_DIR[:-8] +
                     ' ; (./test sqlflush | ./test dbshell)', shell=True)
     call_command('loaddata', 'all.json', verbosity=0)
