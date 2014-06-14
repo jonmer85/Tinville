@@ -39,6 +39,5 @@ def setup_database():
 def clean_database(scenario):
     pythonexe = re.sub(r'python.*', 'activate', sys.executable)
     projectdir = Path(__file__).ancestor(1)
-    subprocess.call('. ' + pythonexe + ' ; cd ' + projectdir +
-                    ' ; (./test sqlflush | ./test dbshell)', shell=True)
+    subprocess.call('. ' + pythonexe + ' ; cd ' + projectdir + ' ; (./test sqlflush | ./test dbshell)', shell=True)
     call_command('loaddata', 'all.json', verbosity=0)
