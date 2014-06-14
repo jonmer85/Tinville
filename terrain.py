@@ -1,11 +1,12 @@
-import os
 import sys
+import subprocess
+import re
 
 from lettuce import *
 from selenium import webdriver
 from django.core.management import call_command
 from django.core.management import execute_from_command_line
-
+from unipath import Path
 
 
 
@@ -17,7 +18,7 @@ def set_browser(step):
                 )
 
     world.browser = browsers[currentbrowser]()
-    world.browser.implicitly_wait(10)  # seconds
+    world.browser.implicitly_wait(10)  # seconds JON M TBD - Implicit wait not working on Chrome Driver :(
 
 @after.harvest
 def foo(step):
@@ -33,7 +34,11 @@ def foo(step):
 def setup_database():
     call_command('syncdb', interactive=False, verbosity=0)
 
+
 @before.each_scenario
 def clean_database(scenario):
-    call_command('flush', interactive=False, verbosity=0)
+    pythonexe = re.sub(r'python.*', 'activate', sys.executable)
+    projectdir = Path(__file__).ancestor(1)
+    subprocess.call('. ' + pythonexe + ' ; cd ' + projectdir +
+                    ' ; (./test sqlflush | ./test dbshell)', shell=True)
     call_command('loaddata', 'all.json', verbosity=0)
