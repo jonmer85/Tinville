@@ -86,9 +86,7 @@
     {{ block.super }}
     <script>
 
-    $( "#editorButton" ).click(function() {
-        $( "#color" ).click();
-    });
+    $("#editLink").css("visibility", "hidden");
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
