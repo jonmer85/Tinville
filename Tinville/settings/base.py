@@ -178,6 +178,7 @@ INSTALLED_APPS = [
     'compressor',
     'tinymce',
     'sorl.thumbnail',
+    'django_basic_feedback',
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
