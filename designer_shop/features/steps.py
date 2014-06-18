@@ -155,10 +155,10 @@ def then_the_color_picker_wheel_is_displayed(step):
     assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
     assert_id_exists('id_color-colorpicker')
 
-@step(u'And the color picker textbox is displayed')
-def and_the_color_picker_textbox_is_displayed(step):
-    assert world.browser.execute_script("return $('#id_color').is(:visible);")
-    # assert_id_exists('id_color')
+@step(u'Then the color picker wheel is displayed')
+def then_the_color_picker_wheel_is_displayed(step):
+    assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
+    assert_id_exists('id_color-colorpicker')
 
 @step(u'And the Create button is displayed')
 def and_the_create_button_is_displayed(step):
@@ -190,6 +190,34 @@ def then_the_add_item_form_is_displayed(step):
     assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
     assert world.browser.find_element_by_css_selector("#id_title").is_displayed()
 
+@step(u'And the tinville orange color f46430 is submitted')
+def and_the_tinville_orange_color_f46430_is_submitted(step):
+    color_picker = world.browser.find_element_by_id("color")
+    world.browser.find_element_by_id("id_color").clear()
+    color_picker.find_element_by_name("color").send_keys("#f46430")
+    world.browser.find_element_by_id("resizeIcon").click()
+    wait_for_element_with_id_to_be_displayed("shopColorPicker")
+    world.browser.find_element_by_id("shopColorPicker").click()
+    wait_for_ajax_to_complete()
+
+@step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
+def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
+    assert_selector_does_exist("#id_color.has-error")
+    assert_selector_contains_text("#error_1_id_color strong", "Tinville Branding is not Allowed to be Used")
+
+@step(u'(?:When|And) I sign in')
+def and_i_sign_in(step):
+    sign_in()
+
+# Utilities
+
+def sign_in():
+    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu.find_element_by_link_text("SIGN IN").click()
+    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
+    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
+    login_menu.find_element_by_name("submit").click()
+    wait_for_ajax_to_complete()
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
@@ -208,7 +236,7 @@ def with_quantity_color_and_sizeset(step, quantity, color, sizeset):
     variationSelection = Select(world.browser.find_element_by_name('sizeVariation'))
     time.sleep(2)
     variationSelection.select_by_value("1")  # Size Set
-    sizeSetSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_sizeSetSelection'))
+    sizeSetSelection = Select(world.browser.find_element_by_name('sizeSetSdelectionTemplate0_sizeSetSelection'))
     sizeSetSelection.select_by_visible_text(sizeset)
     time.sleep(1)
     colorSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_colorSelection0'))
