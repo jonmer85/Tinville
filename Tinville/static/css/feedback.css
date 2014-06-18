@@ -3,8 +3,15 @@
 	position: fixed;
 	left: 0;
 	top: 10px;
-	z-index: 1002; /* 1 higher than Tinvilel banner tag*/
+	z-index: 1031; /* 1 higher than Tinville shop editor*/
 }
+/*
+ * Tinville Orange : f46430
+ * Tinville Gray : e7e5e6
+ * Tinville Dark Gray: #5B595A
+ * Bottom Content : cfc1ab
+ *
+ */
 #feedback_tab
 {
 	display: block;
@@ -15,6 +22,7 @@
 	-moz-transform: rotate(-90deg);
 	-o-transform: rotate(-90deg);
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    color: white;
 }
 #feedback_tab button
 {
@@ -24,10 +32,12 @@
 	padding-bottom: 8px;
 	padding-right: 10px;
 	padding-left: 10px;
-	border: 3px solid #333333;
-	font-weight: bold;
+	border: 2px solid #333333;
 	cursor: pointer;
-	background-color: #cccccc;
+	background-color: #f46430;
+    color: white;
+    border-radius: 0 0 10px 10px;
+    font-weight: bold;
 }
 #feedback_tab button:hover
 {
@@ -37,8 +47,9 @@
 #feedback_panel
 {
 	display: none;
-	background-color: #cccccc;
+	background-color: #5B595A;
 	padding: 10px;
+    color: white;
 }
 #feedback_panel p label, #feedback_panel p textarea{
 	vertical-align: top;
