@@ -64,16 +64,16 @@
 
 
 #editLink {
-    /*width: 48px;*/
-    position: fixed;
-    top: 55%;
+    width: 35px;
+    position: relative;
+    top: 280px;
     z-index: 1001;
-    right: 15px;
+    left: 15px;
     border-radius: 8px;
 }
 @media (max-width: 768px) {
     #editLink {
-        top: 65%;
+        top: 300px;
     }
 }
 
