@@ -30,3 +30,6 @@ INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',]
 #TEST_DISCOVER_ROOT = PROJECT_DIR
 #TEST_DISCOVER_PATTERN = "test_*"
 ########## IN-MEMORY TEST DATABASE
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'

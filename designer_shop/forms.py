@@ -230,7 +230,7 @@ class AboutBoxForm(forms.Form):
     helper.layout = Layout(
         Div(
             Field('aboutContent', placeholder="Enter Text Here"),
-            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
+            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container"
         ))
 
@@ -254,9 +254,10 @@ class DesignerShopColorPicker(forms.Form):
         ))
 
 
+
 class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False)
+    banner = forms.ImageField(required=False, max_length=255)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -265,14 +266,15 @@ class BannerUploadForm(forms.Form):
         Div(
             Fieldset('Banner Image',
                      'banner'),
-            Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
+            Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container"
         ))
 
 
+
 class LogoUploadForm(forms.Form):
 
-    logo = forms.ImageField(required=False)
+    logo = forms.ImageField(required=False, max_length=255)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -281,6 +283,6 @@ class LogoUploadForm(forms.Form):
         Div(
             Fieldset('Logo Image',
                      'logo'),
-            Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
+            Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container"
         ))
