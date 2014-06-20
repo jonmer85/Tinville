@@ -2,6 +2,7 @@
 -e git://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins
 -e git://github.com/maraujop/django-crispy-forms@d096de1a365d14761deb7f5ef3ba09bfaf57fd5d#egg=django-crispy-forms
 -e git://github.com/jonmer85/django-color-utils.git#egg=color_utils
+-e git://github.com/jonmer85/django-basic-feedback.git@10ca27c5824886fabe6a9dd74cf52284b3b34674#egg=django_basic_feedback-dev
 Babel==1.3
 Django==1.6
 South==0.8.4
