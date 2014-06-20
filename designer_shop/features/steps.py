@@ -72,11 +72,10 @@ def the_designer_can_open_a_shop_editor(step):
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 2 icons displayed for control')
-def there_should_be_2_icons_displays_for_control(step):
+@step(u'There should be 1 icon displayed for control')
+def there_should_be_1_icon_displays_for_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
-    assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-full')
 
 @step(u'And a panel for options')
 def and_a_panel_for_options(step):
@@ -92,11 +91,11 @@ def and_a_panel_with_the_panel(step):
 def and_a_global_submit_button(step):
     assert world.browser.find_element_by_css_selector('button.tinvilleButton.pull-right')
 
-@step(u'And the shop editor is 35% of the window size by default')
-def and_the_shop_editor_is_35(step):
+@step(u'And the shop editor is 85% of the window size by default')
+def and_the_shop_editor_is_85(step):
     time.sleep(1)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.35)) <= 1
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
 
 @step(u'Given the demo shop editor')
 def give_demo_shop_editor(step):
@@ -105,11 +104,10 @@ def give_demo_shop_editor(step):
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 2 icons displayed for size control')
-def there_should_be_two_icons_for_size_control(step):
+@step(u'There should be 1 icon displayed for size control')
+def there_should_be_one_icon_for_size_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
-    assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-full')
 
 @step(u'Then selecting the down arrow should minimize the shop editor')
 def then_selecting_the_down_arrow_should_minimize_the_shop_editor(step):
@@ -125,24 +123,7 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-up').click()
     time.sleep(0.4)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.35)) <= 1
-
-@step(u'And selecting the double arrows should increase the size of the shop editor to 75% of window size')
-def and_selecting_the_double_arrows_should_increase_the_size_of_the_shop_editor_to_seventyfive_of_window_size(step):
-    assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-full')
-    world.browser.find_element_by_css_selector("#resizeIcon.glyphicon-resize-full").click()
-    time.sleep(0.4)
-    shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.75)) <= 1
-
-@step(u'And selecting the double inward arrows should decrease the size of the shop editor to 35% of window size again')
-def and_selecting_the_double_inward_arrows_should_decrease_the_size_to_thirtyfive_of_window_size(step):
-    assert world.browser.find_element_by_css_selector('#resizeIcon.glyphicon-resize-small')
-    world.browser.find_element_by_css_selector("#resizeIcon.glyphicon-resize-small").click()
-    time.sleep(0.4)
-    shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] == int(shopeditorheight*.35)) <= 1
-
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
 
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
