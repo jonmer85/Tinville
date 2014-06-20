@@ -16,6 +16,13 @@
 
 {#  <div class="container">#}
 {#    <div class="row">#}
+    
+      {% if user.email == shop.user.email%}
+        <div id="editLink" class="shopBackgroundColor">
+            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+        </div>
+      {% endif %}
+
 
       {% if shop.banner and shop.logo %}
           <div class="shopBanner img-responsive full-screen ">
@@ -57,11 +64,7 @@
         </div>
     </div>
 
-      {% if user.email == shop.user.email%}
-        <div id="editLink" class="shopBackgroundColor">
-            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
-        </div>
-      {% endif %}
+
 
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
          <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
@@ -107,8 +110,8 @@
                         {% with image=product.primary_image %}
                             {% thumbnail image.original "200x250" upscale=False as thumb %}
                             <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
-                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description=" class="img-responsive"
-                                    {% if image.caption %}{{ image.caption }}{% endif %}">
+                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive"/>
+
                             </a>
                             {% endthumbnail %}
                         {% endwith %}
@@ -117,9 +120,9 @@
                     {% endif %}
 
                   <div class="caption">
-                      <span class="name shopColor">{{product.get_title}}</span>
-                      <span class="price shopColor">${{session.price.excl_tax}}</span>
-                      <span class="shopColor">
+                      <span class="name ">{{product.get_title}}</span>
+                      <span class="price ">${{session.price.excl_tax}}</span>
+                      <span class="">
                           {% if not session.availability.is_available_to_buy %}
                               {{  session.availability.message  }}
                           {% endif %}

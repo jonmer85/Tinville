@@ -66,14 +66,14 @@
 #editLink {
     width: 35px;
     position: relative;
-    top: 300px;
+    top: 280px;
     z-index: 1001;
-    left: 0px;
+    left: 15px;
     border-radius: 8px;
 }
 @media (max-width: 768px) {
     #editLink {
-        top: 325px;
+        top: 300px;
     }
 }
 
