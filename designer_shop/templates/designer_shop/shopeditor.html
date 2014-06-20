@@ -85,9 +85,12 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
+    $(".emptyShop").css("border-style", "dashed");
+    $(".emptyShop").css("border-color", "darkgray");
     $("#editLink").css("visibility", "hidden");
-
+    $(window).load(function(){
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    });
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
