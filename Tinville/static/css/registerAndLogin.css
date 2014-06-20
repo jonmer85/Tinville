@@ -12,7 +12,11 @@
         text-align: center;
     }
 }
-
+.borderHighlight{
+    border-color: #f46430;
+    border-width: medium;
+    background-color: #ffffff;
+}
 .orangeHeading {
     color: #f46430;
     font-size: 18px;

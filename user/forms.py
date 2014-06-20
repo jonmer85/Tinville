@@ -21,11 +21,13 @@ class TinvilleUserCreationForm(forms.ModelForm):
     helper.form_show_labels = False
     
     helper.layout = Layout(
-        Field('email', placeholder="Email"),
-        Field('password', placeholder="Password"),
         Div(
-            Field('shop_name', placeholder="Shop name"),
-            id="shop_fields",
+            Field('email', placeholder="Email"),
+            Field('password', placeholder="Password"),
+            Div(
+                Field('shop_name', placeholder="Shop name"),
+                id="shop_fields",
+            ), css_class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2"
         ),
         Submit('userForm', 'Register')
     )
