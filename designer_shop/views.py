@@ -12,18 +12,25 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
 from catalogue.models import Product
 
 from common.utils import get_list_or_empty
+from functools import wraps
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 
-def user_shop_owner(request, shop):
-    if request.user.is_authenticated():
-        if request.user.id == shop.user_id:
-            return True
-        else:
-                return False
-    else:
-        return False
+class IsShopOwnerDecorator(object):
+    def __init__(self, view_func):
+        self.view_func = view_func
+        wraps(view_func)(self)
 
+    def __call__(self, request, slug):
+        if request.user.is_authenticated():
+            shop = get_object_or_404(Shop, slug__iexact=slug)
+            if request.user.id == shop.user_id:
+                response = self.view_func(request, slug)
+                return response
+            else:
+                return redirect('home')
+        else:
+            return redirect('home')
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
@@ -35,11 +42,11 @@ def shopper(request, slug):
     })
 
 
+@IsShopOwnerDecorator
 def shopeditor(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
-    if(user_shop_owner(request, shop)):
-        form = None
-        if request.method == 'POST':
+    form = None
+    if request.method == 'POST':
             if request.POST.__contains__('bannerUploadForm'):
                 form = BannerUploadForm(request.POST, request.FILES)
                 if form.is_valid():
@@ -61,35 +68,32 @@ def shopeditor(request, slug):
                         canonicalProduct = form.save(shop)
                         form = ProductCreationForm()
                 return renderShopEditor(request, shop, productCreationForm=form)
-        else:
-            return renderShopEditor(request, shop)
     else:
-        return redirect('home')
+        return renderShopEditor(request, shop)
 
+@IsShopOwnerDecorator
 def ajax_about(request, slug):
-    if request.method == 'POST':
-        form = AboutBoxForm(request.POST)
-        currentshop = Shop.objects.get(slug__iexact=slug)
-        if request.is_ajax() and form.is_valid():
-            currentshop.aboutContent = form.cleaned_data["aboutContent"]
-            currentshop.save(update_fields=["aboutContent"])
-            return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+        if request.method == 'POST':
+            form = AboutBoxForm(request.POST)
+            currentshop = Shop.objects.get(slug__iexact=slug)
+            if request.is_ajax() and form.is_valid():
+                currentshop.aboutContent = form.cleaned_data["aboutContent"]
+                currentshop.save(update_fields=["aboutContent"])
+                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
-    # return renderShopEditor(request, currentShop, colorPickerForm=form)
-    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
-
-
+@IsShopOwnerDecorator
 def ajax_color(request, slug):
-    if request.method == 'POST':
-        currentShop = Shop.objects.get(slug__iexact=slug)
-        form = DesignerShopColorPicker(request.POST)
+        if request.method == 'POST':
+            currentShop = Shop.objects.get(slug__iexact=slug)
+            form = DesignerShopColorPicker(request.POST)
 
-        if request.is_ajax() and form.is_valid():
-            currentShop.color = form.cleaned_data["color"]
-            currentShop.save(update_fields=["color"])
-            return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+            if request.is_ajax() and form.is_valid():
+                currentShop.color = form.cleaned_data["color"]
+                currentShop.save(update_fields=["color"])
+                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
 
-    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 
 def get_sizes_colors_and_quantities(sizeType, post):
@@ -175,10 +179,9 @@ def get_sizes_colors_and_quantities(sizeType, post):
                 break
         return sizes
 
-
+#private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None):
-    if(user_shop_owner(request, shop)):
         return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
@@ -203,31 +206,4 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'categories': get_model('catalogue', 'Category').objects.all(),
         'products': get_list_or_empty(Product, shop=shop.id)
     })
-    else:
-        return redirect('home')
-
-def uploadbanner(request, slug):
-    currentShop = Shop.objects.get(slug__iexact=slug)
-    if request.method == 'POST':
-        form = BannerUploadForm(request.POST, request.FILES)
-
-        if form.is_valid():
-
-            currentShop.banner = form.cleaned_data["banner"]
-            currentShop.save(update_fields=["banner"])
-
-    return renderShopEditor(request, currentShop, bannerUploadForm=form)
-
-def uploadlogo(request, slug):
-    currentShop = Shop.objects.get(slug__iexact=slug)
-    if request.method == 'POST':
-
-        form = LogoUploadForm(request.POST, request.FILES)
-
-        if form.is_valid():
-
-            currentShop.logo = form.cleaned_data["logo"]
-            currentShop.save(update_fields=["logo"])
-
-    return renderShopEditor(request, currentShop, logoUploadForm=form)
 

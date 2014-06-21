@@ -21,11 +21,13 @@ class TinvilleUserCreationForm(forms.ModelForm):
     helper.form_show_labels = False
     
     helper.layout = Layout(
-        Field('email', placeholder="Email"),
-        Field('password', placeholder="Password"),
         Div(
-            Field('shop_name', placeholder="Shop name"),
-            id="shop_fields",
+            Field('email', placeholder="Email"),
+            Field('password', placeholder="Password"),
+            Div(
+                Field('shop_name', placeholder="Shop name"),
+                id="shop_fields",
+            ), css_class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2"
         ),
         Submit('userForm', 'Register')
     )
@@ -94,10 +96,10 @@ class LoginForm(AuthenticationForm):
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
             Div(
                 Div(HTML("""{{ form.non_field_errors }}"""), css_class='messageError message_area'),
-                Div(HTML("""<a id="loginFacebookButton" class="btn btn-facebook col-xs-12">
-                            <i class="icon-facebook"></i> | Sign in with Facebook
-                        </a""")),
-                HTML("""<img class="col-xs-12" src="{{ STATIC_URL }}img/or_login.gif" style=" margin-top: 5%; margin-bottom: 5%; "/>"""),
+                # Div(HTML("""<a id="loginFacebookButton" class="btn btn-facebook col-xs-12">
+                #             <i class="icon-facebook"></i> | Sign in with Facebook
+                #         </a""")),
+                # HTML("""<img class="col-xs-12" src="{{ STATIC_URL }}img/or_login.gif" style=" margin-top: 5%; margin-bottom: 5%; "/>"""),
                 Div(css_class='clearfix'),
                 Div(
                     Field('username', placeholder="Email"),
