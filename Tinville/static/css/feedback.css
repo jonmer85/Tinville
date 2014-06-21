@@ -2,7 +2,7 @@
 {
 	position: fixed;
 	left: 0;
-	top: 10px;
+	top: 35px;
 	z-index: 1031; /* 1 higher than Tinville shop editor*/
 }
 /*
