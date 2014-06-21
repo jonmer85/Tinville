@@ -16,11 +16,12 @@
 
 {#  <div class="container">#}
 {#    <div class="row">#}
+    
 
       {% if shop.banner and shop.logo %}
           <div class="shopBanner img-responsive full-screen ">
-              <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-              <img class="shopLogoDiv" src="{{shop.logo.url}}" />
+              <img id="id_BannerImage" class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
+              <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />
           </div>
       {% elif not shop.banner and shop.logo %}
           <div class="shopBanner full-screen shopBackgroundColor">
@@ -40,28 +41,29 @@
     <div class="container">
 
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a id="collapseOneTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="">
-              {{ shop }} Bio
-            </a>
-          </h4>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse">
-          <div class="panel-body" id="aboutLocation">
-              <div class="container aboutContent col-xs-12">
-                   {{ shop.aboutContent | safe }}
-              </div>
-          </div>
-        </div>
-    </div>
+        {% if user.email == shop.user.email%}
+            <div id="editLink" class="col-xs-1">
+                <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+            </div>
+        {% endif %}
 
-      {% if user.email == shop.user.email%}
-        <div id="editLink" class="shopBackgroundColor">
-            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+        <div class="panel panel-default col-xs-11">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a id="collapseOneTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="">
+                  {{ shop }} Bio
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+              <div class="panel-body" id="aboutLocation">
+                  <div class="container aboutContent col-xs-12">
+                       {{ shop.aboutContent | safe }}
+                  </div>
+              </div>
+            </div>
         </div>
-      {% endif %}
+
 
       <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
          <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
@@ -98,38 +100,45 @@
     <div class="row">
       <div class=" ">
         <div class="shopItems row">
-          {% for product in products %}
-            {% purchase_info_for_product request product as session %}
-            {% if product.is_top_level %}
-              <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
-                  <div class="thumbnail shopItem shopBorderColor">
-                    {% if product.primary_image and product.primary_image.original.url %}
-                        {% with image=product.primary_image %}
-                            {% thumbnail image.original "200x250" upscale=False as thumb %}
-                            <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
-                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" data-description=" class="img-responsive"
-                                    {% if image.caption %}{{ image.caption }}{% endif %}">
-                            </a>
-                            {% endthumbnail %}
-                        {% endwith %}
-                    {% else %}
-                            -
-                    {% endif %}
+          {% if products %}
 
-                  <div class="caption">
-                      <span class="name shopColor">{{product.get_title}}</span>
-                      <span class="price shopColor">${{session.price.excl_tax}}</span>
-                      <span class="shopColor">
-                          {% if not session.availability.is_available_to_buy %}
-                              {{  session.availability.message  }}
-                          {% endif %}
-                      </span>
-                  </div>
-                  </div>
-                  {% block item_extensions %}{% endblock %}
-              </div>
+
+              {% for product in products %}
+                {% purchase_info_for_product request product as session %}
+                {% if product.is_top_level %}
+                  <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                      <div class="thumbnail shopItem shopBorderColor">
+                        {% if product.primary_image and product.primary_image.original.url %}
+                            {% with image=product.primary_image %}
+                                {% thumbnail image.original "200x250" upscale=False as thumb %}
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive"/>
+
+                                </a>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        {% else %}
+                                -
+                        {% endif %}
+
+                      <div class="caption">
+                          <span class="name ">{{product.get_title}}</span>
+                          <span class="price "> ${{session.price.excl_tax}}</span>
+                          <span class="">
+                              {% if not session.availability.is_available_to_buy %}
+                                  {{  session.availability.message  }}
+                              {% endif %}
+                          </span>
+                      </div>
+                      </div>
+                   </div>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+                <div id="emptyShopId" class="emptyShop">
+                    Items coming soon...
+                </div>
             {% endif %}
-          {% endfor %}
         </div>
       </div>
     </div>

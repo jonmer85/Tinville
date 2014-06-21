@@ -64,22 +64,19 @@
 
 
 #editLink {
-    /*width: 48px;*/
-    position: fixed;
-    top: 55%;
+    width: 35px;
+    position: relative;
+    /*top: 280px;*/
     z-index: 1001;
-    right: 15px;
+    /*left: 15px;*/
     border-radius: 8px;
+    background-color: #f46430;
 }
-@media (max-width: 768px) {
-    #editLink {
-        top: 65%;
-    }
-}
+
 
 #editLink a {
     display: block;
-    text-indent: 3px;
+    text-indent: -10px;
     /*height: 48px;*/
     padding:3px;
     text-decoration: none;
@@ -87,13 +84,13 @@
 }
 
 .editIcon {
-    margin-right: 3px;
+    /*margin-right: 3px;*/
     font-size: x-large;
     color: white;
 }
 @media (max-width: 768px) {
     .editIcon {
-        font-size: large;
+        /*font-size: large;*/
     }
 }
 
@@ -285,6 +282,17 @@
     overflow: hidden;
 }
 
+.emptyShop {
+    width: 100%;
+    height: 500px;
+    /*border-style: dashed ;*/
+    /*border-color: darkgray;*/
+    font-size: 5em;
+    color: darkgray;
+    padding-top: 200px;
+    padding-left: 350px;
+
+}
 
 #resizeIcon {
     margin-left: .3em;

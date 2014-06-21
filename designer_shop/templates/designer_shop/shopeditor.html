@@ -21,7 +21,7 @@
             <div id="shopEditorHeading" class="panel-heading">
                 <h4 id="shopEditorTitle" class="panel-title">
                     <b>Shop Editor</b>
-                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
+{#                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>#}
                     <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
                 </h4>
             <div id="editorPanels" class="row panel-collapse collapse in">
@@ -100,9 +100,12 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
+    $(".emptyShop").css("border-style", "dashed");
+    $(".emptyShop").css("border-color", "darkgray");
     $("#editLink").css("visibility", "hidden");
-
+    $(window).load(function(){
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    });
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
@@ -534,7 +537,8 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-        editorPanelHeight = 0.35;
+{#        this was.35 instead of.85#}
+        editorPanelHeight = 0.85;
         if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
         {
             editorPanelHeight = 0.75;
