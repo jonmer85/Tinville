@@ -532,7 +532,6 @@ function resizeEditor() {
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
                 parseInt($("#shopEditorHeading").css('padding-bottom'));
         maxHeight = $(window).height()*editorPanelHeight;
-{#        maxHeight = 800 *editorPanelHeight;#}
         $("#optionPanel").velocity({height:maxHeight-excess},300);
         $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);
         $("#optionContent").velocity({height: maxHeight-excess},300);
