@@ -88,10 +88,7 @@
     $(".emptyShop").css("border-style", "dashed");
     $(".emptyShop").css("border-color", "darkgray");
     $("#editLink").css("visibility", "hidden");
-    $(window).load(function(){
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-        document.getElementById('tinymce').innerHTML = "Items go here..."
-    });
+
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
@@ -158,9 +155,7 @@
                 });
         });
 
-</script>
 
-<script>
 
 $("#submit-id-productcreationform").click(function() {
     this.disabled = true;
@@ -455,10 +450,12 @@ $("#minMaxIcon").click(function() {
 });
 
 $(window).resize(function() {
+    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
 $(window).load(function() {
+    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
@@ -535,6 +532,7 @@ function resizeEditor() {
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
                 parseInt($("#shopEditorHeading").css('padding-bottom'));
         maxHeight = $(window).height()*editorPanelHeight;
+{#        maxHeight = 800 *editorPanelHeight;#}
         $("#optionPanel").velocity({height:maxHeight-excess},300);
         $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);
         $("#optionContent").velocity({height: maxHeight-excess},300);
