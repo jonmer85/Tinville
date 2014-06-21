@@ -528,12 +528,7 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-{#        this was.35 instead of.85#}
         editorPanelHeight = 0.85;
-        if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
-        {
-            editorPanelHeight = 0.75;
-        }
         excess =  $("#shopEditorTitle").outerHeight()+
                 parseInt($("#cornerRadius").css('border-top-width'))+
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
@@ -545,6 +540,26 @@ function resizeEditor() {
         $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
     }
 }
+
+var json, tabsState;
+$('a[data-toggle="pill"]').click( function(e) {
+    var href, json, parentId, tabsState;
+
+    tabsState = sessionStorage.getItem("tabs-state");
+    json = JSON.parse(tabsState || "{}");
+    parentId = $(e.target).parents("ul.nav.nav-pills").attr("id");
+    href = $(e.target).attr('href');
+    json[parentId] = href;
+
+    return sessionStorage.setItem("tabs-state", JSON.stringify(json));
+});
+
+tabsState = sessionStorage.getItem("tabs-state");
+json = JSON.parse(tabsState || "{}");
+
+$.each(json, function(containerId, href) {
+    return $("#" + containerId + " a[href=" + href + "]").tab('show');
+});
 
 $(function(){
     $("#optionContent").slimScroll({});
