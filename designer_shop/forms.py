@@ -252,13 +252,6 @@ class DesignerShopColorPicker(forms.Form):
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
             css_class="container"
         ))
-    #def clean_color(self):
-     #   shop_name = self.cleaned_data['shop_name']
-      #  try:
-       #     Shop.objects.get(name=shop_name)
-        #except ObjectDoesNotExist:
-         #   return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
-        #raise forms.ValidationError('Shop name is already taken.')
 
     def clean_color(self):
         tinville_color = self.cleaned_data['color']

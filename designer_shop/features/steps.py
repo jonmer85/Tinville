@@ -236,7 +236,7 @@ def with_quantity_color_and_sizeset(step, quantity, color, sizeset):
     variationSelection = Select(world.browser.find_element_by_name('sizeVariation'))
     time.sleep(2)
     variationSelection.select_by_value("1")  # Size Set
-    sizeSetSelection = Select(world.browser.find_element_by_name('sizeSetSdelectionTemplate0_sizeSetSelection'))
+    sizeSetSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_sizeSetSelection'))
     sizeSetSelection.select_by_visible_text(sizeset)
     time.sleep(1)
     colorSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_colorSelection0'))
