@@ -257,7 +257,7 @@ class DesignerShopColorPicker(forms.Form):
 
 class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False, max_length=255)
+    banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -267,14 +267,14 @@ class BannerUploadForm(forms.Form):
             Fieldset('Banner Image',
                      'banner'),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
-            css_class="container"
+            css_class="container col-xs-12 col-sm-10"
         ))
 
 
 
 class LogoUploadForm(forms.Form):
 
-    logo = forms.ImageField(required=False, max_length=255)
+    logo = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -284,5 +284,5 @@ class LogoUploadForm(forms.Form):
             Fieldset('Logo Image',
                      'logo'),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
-            css_class="container"
+            css_class="container col-xs-12 col-sm-10"
         ))
