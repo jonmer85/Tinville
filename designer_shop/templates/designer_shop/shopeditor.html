@@ -88,9 +88,7 @@
     $(".emptyShop").css("border-style", "dashed");
     $(".emptyShop").css("border-color", "darkgray");
     $("#editLink").css("visibility", "hidden");
-    $(window).load(function(){
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    });
+
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
@@ -157,9 +155,7 @@
                 });
         });
 
-</script>
 
-<script>
 
 $("#submit-id-productcreationform").click(function() {
     this.disabled = true;
@@ -454,10 +450,12 @@ $("#minMaxIcon").click(function() {
 });
 
 $(window).resize(function() {
+    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
 $(window).load(function() {
+    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
