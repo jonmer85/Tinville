@@ -253,6 +253,13 @@ class DesignerShopColorPicker(forms.Form):
             css_class="container"
         ))
 
+    def clean_color(self):
+        tinville_color = self.cleaned_data['color']
+        if tinville_color == '#f46430':
+            raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
+        return tinville_color
+
+
 
 
 class BannerUploadForm(forms.Form):
