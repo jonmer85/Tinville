@@ -103,9 +103,7 @@
     $(".emptyShop").css("border-style", "dashed");
     $(".emptyShop").css("border-color", "darkgray");
     $("#editLink").css("visibility", "hidden");
-    $(window).load(function(){
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    });
+
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
@@ -117,8 +115,11 @@
                         color: document.getElementById("id_color").value
                     },
                     success: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#shopEditor_message_area"));
+                        clear_form_field_errors("#color");
 					    $(".shopColor").css("color", document.getElementById("id_color").value);
                         $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
+                        document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
@@ -146,14 +147,17 @@
                         aboutContent: document.getElementById("id_aboutContent").value
                     },
                     success: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#shopEditor_message_area"));
+                        clear_form_field_errors("#about");
 					    document.getElementById('aboutLocation').innerHTML = document.getElementById("id_aboutContent").value
                         $("#collapseOneTitle").removeClass( "collapsed").addClass("");
                         $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
                         $("#collapseOne").css("height", "auto");
+                        document.getElementById('shopEditor_message_area').innerHTML = "New about has been applied"
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors(".aboutForm");
+                        clear_form_field_errors("#about");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
@@ -166,9 +170,7 @@
                 });
         });
 
-</script>
 
-<script>
 
 $("#submit-id-productcreationform").click(function() {
     this.disabled = true;
@@ -463,10 +465,12 @@ $("#minMaxIcon").click(function() {
 });
 
 $(window).resize(function() {
+    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
 $(window).load(function() {
+    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
@@ -537,12 +541,7 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-{#        this was.35 instead of.85#}
         editorPanelHeight = 0.85;
-        if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
-        {
-            editorPanelHeight = 0.75;
-        }
         excess =  $("#shopEditorTitle").outerHeight()+
                 parseInt($("#cornerRadius").css('border-top-width'))+
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
@@ -554,6 +553,26 @@ function resizeEditor() {
         $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
     }
 }
+
+var json, tabsState;
+$('a[data-toggle="pill"]').click( function(e) {
+    var href, json, parentId, tabsState;
+
+    tabsState = sessionStorage.getItem("tabs-state");
+    json = JSON.parse(tabsState || "{}");
+    parentId = $(e.target).parents("ul.nav.nav-pills").attr("id");
+    href = $(e.target).attr('href');
+    json[parentId] = href;
+
+    return sessionStorage.setItem("tabs-state", JSON.stringify(json));
+});
+
+tabsState = sessionStorage.getItem("tabs-state");
+json = JSON.parse(tabsState || "{}");
+
+$.each(json, function(containerId, href) {
+    return $("#" + containerId + " a[href=" + href + "]").tab('show');
+});
 
 $(function(){
     $("#optionContent").slimScroll({});
