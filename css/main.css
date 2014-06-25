@@ -144,6 +144,7 @@ body {
 
 .navdropTopTextStyle {
   color: #000000;
+  background: #f8f8f8;
 }
 
 .xs-navbar-text {
@@ -376,10 +377,6 @@ body {
 	width: 150px;
 }
 
-.userType :hover {
-	background-color: white;
-	border-color: rgb(204, 204, 204);
-}
 
 /*The CSS below is for the footer -Jeff Bowman*/
 

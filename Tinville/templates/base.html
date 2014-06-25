@@ -20,6 +20,7 @@
     <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/feedback.css" />
 
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
 
@@ -28,6 +29,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/Utilities.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -35,8 +37,10 @@
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
+    {% load feedback_widget %}
+	{% feedback_widget %}
     <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
-    <nav class="navbar yamm navbar-default" role="navigation" style="height: 50px">
+    <nav class="navbar yamm navbar-default" role="navigation">
         <div class="container">
             <div id="navHeader" class="navbar-header">
 
@@ -260,6 +264,7 @@
                                     </div>
 
                                 </li>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
@@ -287,7 +292,7 @@
 
                         {% if user.is_authenticated %}
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="/logout" class="pull-right navbar-link">SIGN OUT</a>
+                                <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
 {#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
 {#                                <ul class="dropdown-menu navdropstyle ">#}
 {#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
