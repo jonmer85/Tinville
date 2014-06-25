@@ -181,7 +181,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm,
-        'productEditForm': productEditForm or ProductCreationForm(instance=item) if item else ProductCreationForm,
+        'productEditForm': productEditForm or ProductCreationForm(instance=item if item else None),
         'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
                                                                  {
                                                                      "banner": shop.banner
