@@ -36,11 +36,47 @@
           </div>
       {% endif %}
 
-      <div class="infoBanner full-screen shopBackgroundColor"></div>
+    {#    <div class="infoBanner full-screen shopBackgroundColor shopNavBarStyle"> #}
+    {#       <ul class="shopNavBarList" >#}
+      {#        <li class = "shopNavItemStyle"><a href = "#" class="shopNavLinkStyle">Shop    |</a></li>#}
+       {#       <li class = "shopNavItemStyle"><a href = "#" class="shopNavLinkStyle">About   |</a></li>#}
+       {#       <li class = "shopNavItemStyle"><a href = "#" class="shopNavLinkStyle">Landing     |</a></li>#}
+       {#   </ul>#}
+   {#   </div> #}
+
+<div id="page-wrap">
+
+    <div class="tabs shopBackgroundColor">
+
+       <div class="tab">
+           <input type="radio" id="tab-1" name="tab-group-1" checked>
+           <label for="tab-1">Shop   |</label>
+           <div class="content">
+               <p>Stuff for Shop</p>
+           </div>
+       </div>
+
+       <div class="tab">
+           <input type="radio" id="tab-2" name="tab-group-1">
+           <label for="tab-2">About   |</label>
+
+           <div class="content">
+               {{ shop.aboutContent | safe }}
+           </div>
+       </div>
+
+        <div class="tab">
+           <input type="radio" id="tab-3" name="tab-group-1">
+           <label for="tab-3">Landing   |</label>
+
+           <div class="content">
+               <p>Stuff for Landing</p>
+           </div>
+       </div>
+
+    </div>
 
     <div class="container">
-
-
         {% if user.email == shop.user.email%}
             <div id="editLink" class="col-xs-1">
                 <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
@@ -154,7 +190,6 @@
     $("#tinvilleTagBanner").css("margin-top", "0px");
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
-
 
     </script>
 
