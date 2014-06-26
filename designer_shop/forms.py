@@ -36,12 +36,12 @@ class ProductCreationForm(forms.ModelForm):
             Div(
                 Fieldset('General',
                          Field('title', placeholder='Title'),
+                         HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
                          'product_image',
-                         HTML("""{% if form.product_image.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.product_image.value }}">{% endif %}""", ),
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
