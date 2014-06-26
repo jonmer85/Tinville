@@ -121,7 +121,8 @@
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors(".colorForm");
+                        clear_form_field_errors("#color");
+                        document.getElementById('shopEditor_message_area').innerHTML = ""
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
@@ -156,6 +157,7 @@
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors("#about");
+                        document.getElementById('shopEditor_message_area').innerHTML = ""
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
