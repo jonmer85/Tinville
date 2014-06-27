@@ -6,6 +6,7 @@ from oscar.core.loading import get_model
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
+from crispy_forms.bootstrap import PrependedText
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
@@ -36,12 +37,12 @@ class ProductCreationForm(forms.ModelForm):
             Div(
                 Fieldset('General',
                          Field('title', placeholder='Title'),
+                         HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
-                         Field('price', placeholder='Price')
+                         PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
                          'product_image',
-                         HTML("""{% if form.product_image.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.product_image.value }}">{% endif %}""", ),
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -56,6 +57,7 @@ class ProductCreationForm(forms.ModelForm):
 
         )
         self.fields['description'].widget = TinyMCE()
+        self.fields['price'].label = ""
 
         if sizes:
             for i, size in enumerate(sizes):
