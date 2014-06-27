@@ -231,7 +231,8 @@ class AboutBoxForm(forms.Form):
     helper.form_class = 'aboutForm'
     helper.layout = Layout(
         Div(
-            Field('aboutContent', placeholder="Enter Text Here"),
+            Fieldset('About',
+            Field('aboutContent', placeholder="Enter Text Here")),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container"
         ))
