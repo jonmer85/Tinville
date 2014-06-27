@@ -11,11 +11,10 @@
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
-                <h4 id="shopEditorTitle" onclick="editorPanelControl()" class="panel-title">
+                  <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
                     <b>Shop Editor</b>
-{#                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>#}
-                    <div id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
-                </h4>
+                    <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
+                </div>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
@@ -88,20 +87,7 @@
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
-        function editorPanelControl() {
-            if($("#editorPanels").hasClass( "collapsed")) {
-                $("#editorPanels").removeClass( "collapsed").addClass("");
-                $("#editorPanels").removeClass( "collapse" ).addClass( "in" );
-                $("#editorPanels").css("height", "auto");
-                $("#minMaxIcon").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
-            }
-            else {
-                $("#editorPanels").addClass( "collapsed");
-                $("#editorPanels").removeClass("in").addClass( "collapse" );
-                $("#minMaxIcon").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
-{#                $("#editorPanels").css("height", "auto");#}
-            }
-        }
+
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
