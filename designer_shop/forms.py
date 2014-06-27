@@ -51,7 +51,7 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
-                css_class="container col-sm-12",
+                css_class="container col-xs-12 col-lg-8",
                 css_id="addItemEditor"
             )
 
