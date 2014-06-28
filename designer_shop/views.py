@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-
+from django.core.urlresolvers import reverse
 
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
@@ -207,3 +207,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'products': get_list_or_empty(Product, shop=shop.id)
     })
 
+
+def delete_product(request, id):
+    product = Product.objects.get(pk=id).delete()
+    return HttpResponseRedirect(reverse('designer_shop.views.shopeditor'))
