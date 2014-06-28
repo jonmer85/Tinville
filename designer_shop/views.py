@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.core.urlresolvers import reverse
 
 
 from oscar.core.loading import get_model
@@ -55,7 +56,6 @@ def shopper(request, slug):
         'products': get_list_or_empty(Product, shop=shop.id)
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
-
 
 
 @IsShopOwnerDecorator
@@ -235,3 +235,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
     else:
         return renderShopEditor(request, shop, item=get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None)
 
+
+def delete_product(request, id):
+    product = Product.objects.get(pk=id).delete()
+    return HttpResponseRedirect(reverse('designer_shop.views.shopeditor'))
