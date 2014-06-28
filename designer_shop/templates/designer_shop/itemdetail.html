@@ -9,26 +9,68 @@
 
 {% block content %}
     {{ block.super }}
+        {% if shop.banner and shop.logo %}
+            <div class="shopBanner img-responsive full-screen ">
+                <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
+                <img class="shopLogoDiv" src="{{shop.logo.url}}" />
+            </div>
+        {% elif not shop.banner and shop.logo %}
+            <div class="shopBanner full-screen shopBackgroundColor">
+                <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
+            </div>
+        {% elif shop.banner and not shop.logo %}
+            <div>
+                <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
+            </div>
+        {% else %}
+            <div class="shopBanner full-screen shopBackgroundColor"></div>
+        {% endif %}
 
-      {% if shop.banner and shop.logo %}
-          <div class="shopBanner img-responsive full-screen ">
-              <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-              <img class="shopLogoDiv" src="{{shop.logo.url}}" />
-          </div>
-      {% elif not shop.banner and shop.logo %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
-          </div>
-      {% elif shop.banner and not shop.logo %}
-          <div>
-            <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
-          </div>
-      {% else %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-          </div>
-      {% endif %}
 
-{% endblock %}
+    <div class="container">
+        <div class="shopItem row thumbnail">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="shopItem">
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "400x500" upscale=True as thumb %}
+                            <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive"/>
+                            </a>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="shopItem">
+                    <div class="itemTitle center">
+                        {{ item.title }}
+                    </div>
+                    <div class="itemDescription">
+                        {{ item.description | safe }}
+                    </div>
+
+                    <div class="itemOptionSelection">
+                        <select class="form-control selectpicker" title="Select a Color">
+                                <option><i>Choose a Color</i></option>
+                        </select>
+                    </div>
+                    <div class="itemOptionSelection">
+                        <select class="form-control" placeholder="Choose a Color">
+                        {% for color in validcolors %}
+                                <option>{{ color }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <div>{{ colorsizequantity }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content%}
 
 {% block javascript %}
     {{ block.super }}
@@ -39,6 +81,18 @@
     $("#tinvilleTagBanner").css("margin-top", "0px");
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+
+    var refreshVariants = function() {
+        ajax_refreshvariants = $.ajax({
+        url: "{{ item.slug }}/getVariants",
+        type: "GET"
+        });
+    };
+
+    var interval = 1000 * 5; // where X is your every X minutes
+
+    setInterval(ajax_refreshvariants, interval);
+
 
 
     </script>
