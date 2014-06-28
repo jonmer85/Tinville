@@ -305,11 +305,18 @@ $("#id_sizeVariation").change(function() {
     sizesFieldSet.on("change", ".row-color", function(e) {
         var selectedValue = selectedValueType;
         var sizesFieldSet = $("#sizesFieldSet");
+        var maxFormHeight;
+        var editorPanelHeight;
+        var currentPanel;
+        var foo;
+        editorPanelHeight = .85
+        maxHeight = $(window).height()*editorPanelHeight;
         if (selectedValue[0].value != 0) {
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
             if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
                 addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
-                $('#formContent').animate({scrollTop: $("#addItemEditor").height() - $(this).closest('.rowColorQuantityTemplate').next().position().top}, 500);
+                currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest('.sizeSetSelectionTemplate').next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
+                $('#formContent').animate({scrollTop: currentPanel  }, 500);
             }
         }
     })
@@ -439,12 +446,16 @@ function prependPrefixToAttribute(element, attr, prefix){
 }
 
 $(window).resize(function() {
-    document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
     resizeEditor();
 });
 
 $(window).load(function() {
-    document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
     resizeEditor();
 });
 
