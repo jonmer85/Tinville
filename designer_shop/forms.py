@@ -6,28 +6,41 @@ from oscar.core.loading import get_model
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
+from crispy_forms.bootstrap import PrependedText
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
 
-from . import models
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 
-SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + models.SIZE_TYPES
+SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
 class ProductCreationForm(forms.ModelForm):
 
-    sizeVariation = forms.ChoiceField(label='Size type',
-                                         choices=SIZE_TYPES_AND_EMPTY,
-                                         initial='0')
 
-    product_image = forms.ImageField(required=False)
+
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
+
+        self.fields['sizeVariation'] = forms.ChoiceField(label='Size type',
+                                         choices=SIZE_TYPES_AND_EMPTY,
+                                         initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
+
+
+        # self.fields['product_image'] = forms.ImageField(required=False)
+
+        self.fields['price'] \
+            = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
+
+        self.fields['product_image'] \
+            = forms.ImageField(required=False)
+
+
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
@@ -36,12 +49,12 @@ class ProductCreationForm(forms.ModelForm):
             Div(
                 Fieldset('General',
                          Field('title', placeholder='Title'),
+                         HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
-                         Field('price', placeholder='Price')
+                         PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
                          'product_image',
-                         HTML("""{% if form.product_image.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.product_image.value }}">{% endif %}""", ),
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -50,16 +63,17 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
-                css_class="container col-sm-12",
+                css_class="container col-xs-12 col-lg-8",
                 css_id="addItemEditor"
             )
 
         )
         self.fields['description'].widget = TinyMCE()
+        self.fields['price'].label = ""
 
         if sizes:
             for i, size in enumerate(sizes):
-                if "sizeSet" in sizes[i]:
+                if "sizeSet" in sizes[i] and sizes[i]["sizeSet"]:
                     self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeSet"])
@@ -71,7 +85,7 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-                elif "sizeX" in sizes[i] and "sizeY" in sizes[i]:
+                elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
                         = forms.IntegerField(initial=sizes[i]["sizeX"])
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
@@ -84,7 +98,7 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-                elif "sizeNum" in sizes[i]:
+                elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
                     self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
                         = forms.IntegerField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
@@ -126,6 +140,12 @@ class ProductCreationForm(forms.ModelForm):
 
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
+
+    def clean(self):
+        cleaned_data = super(ProductCreationForm, self).clean()
+        # do your custom validations / transformations here
+        # and some more
+        return cleaned_data
 
 
     def save(self, shop):
@@ -198,6 +218,34 @@ class ProductCreationForm(forms.ModelForm):
                 break
         return canonicalProduct
 
+    def get_size_variation(self):
+        if not self.instance or not self.instance.is_group:
+            return "0"
+
+        for variant in self.instance.variants.all():
+            if hasattr(variant.attr, 'size_set'):
+                return SIZE_SET
+            elif hasattr(variant.attr, 'size_dimension_x') or hasattr(variant.attr, 'size_dimension_y'):
+                return SIZE_DIM
+            elif hasattr(variant.attr, 'size_number'):
+                return SIZE_NUM
+        return "0"
+
+    def get_value_if_in_edit_mode(self, field_name, default):
+        if not self.instance or not self.instance.is_group:
+            return default
+        return self.get_value_from_instance(field_name)
+
+
+    def get_value_from_instance(self, field_name):
+        if field_name == 'sizeVariation':
+            return self.get_size_variation()
+        if field_name == 'price':
+            return self.instance.min_variant_price_excl_tax
+        if field_name == 'product_image':
+            return self.instance.primary_image().original.url
+        else:
+            return getattr(self.instance, field_name)
 
 
     class Meta:
@@ -229,7 +277,8 @@ class AboutBoxForm(forms.Form):
     helper.form_class = 'aboutForm'
     helper.layout = Layout(
         Div(
-            Field('aboutContent', placeholder="Enter Text Here"),
+            Fieldset('About',
+            Field('aboutContent', placeholder="Enter Text Here")),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container"
         ))
@@ -271,7 +320,9 @@ class BannerUploadForm(forms.Form):
 
     helper.layout = Layout(
         Div(
+
             Fieldset('Banner Image',
+                     HTML("""<p>If nothing is selected and clicked submit, then it will remove banner</p>"""),
                      'banner'),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
@@ -289,6 +340,7 @@ class LogoUploadForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('Logo Image',
+                     HTML("""<p>If nothing is selected and clicked submit, then it will remove logo</p>"""),
                      'logo'),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
