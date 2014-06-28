@@ -111,10 +111,10 @@ class ProductCreationForm(forms.ModelForm):
 
 
 
-    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
+    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = canonical
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
-        variantProduct.parent_id = canonical.id
+        variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
         if sizeSet:
@@ -156,6 +156,7 @@ class ProductCreationForm(forms.ModelForm):
         # Jon M TBD - Right now we only use 1 product class - "Apparel"
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
+        canonicalId = canonicalProduct.id
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
         productImage.save()
@@ -170,11 +171,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet)
                         break
                     j += 1
                 i += 1
@@ -189,11 +190,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
                                                                         "y": sizeDimY}, color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
                                                                                                     "y": sizeDimY})
                         break
                     j += 1
@@ -206,11 +207,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId,  shop, sizeNum=sizeNum)
                         break
                     j += 1
                 i += 1

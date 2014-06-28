@@ -150,8 +150,8 @@ def get_variants(item):
 def get_variants_httpresponse(request, shop_slug, item_slug):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
-    if request.is_ajax():
-        return HttpResponse(get_variants(item), mimetype='application/json')
+    # if request.is_ajax():
+    return HttpResponse(get_variants(item), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:

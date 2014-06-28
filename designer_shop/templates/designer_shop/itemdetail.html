@@ -82,19 +82,18 @@
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
 
-    var refreshVariants = function() {
-        ajax_refreshvariants = $.ajax({
-        url: "{{ item.slug }}/getVariants",
-        type: "GET"
-        });
-    };
-
-    var interval = 1000 * 5; // where X is your every X minutes
-
-    setInterval(ajax_refreshvariants, interval);
+{#    var refreshVariants = function() {#}
+{#        ajax_refreshvariants = $.getJSON( "{{ request.get_full_path }}/getVariants" );#}
+{#    };#}
+{##}
+{#    var interval = 1000 * 5; // where X is your every X minutes#}
+{##}
+{#    setInterval(ajax_refreshvariants, interval);#}
 
 
-
+    var refreshvariants = setInterval(function() {
+       $.getJSON( "{{ request.get_full_path }}/getVariants" );
+    }, 60000); //5 seconds
     </script>
 
 {% endblock %}
