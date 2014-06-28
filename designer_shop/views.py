@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 
+
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
@@ -21,16 +22,31 @@ class IsShopOwnerDecorator(object):
         self.view_func = view_func
         wraps(view_func)(self)
 
-    def __call__(self, request, slug):
+
+    def authenticate(self, request, shop_slug, item_slug):
         if request.user.is_authenticated():
-            shop = get_object_or_404(Shop, slug__iexact=slug)
+            shop = get_object_or_404(Shop, slug__iexact=shop_slug)
             if request.user.id == shop.user_id:
-                response = self.view_func(request, slug)
+                response = self.view_func(request, shop_slug) \
+                    if not item_slug else self.view_func(request, shop_slug, item_slug)
                 return response
             else:
                 return redirect('home')
         else:
             return redirect('home')
+
+    def __call__(self, request, shop_slug):
+        return self.authenticate(request, shop_slug, None)
+
+
+
+class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
+
+    def __call__(self, request, shop_slug, item_slug):
+        return self.authenticate(request, shop_slug, item_slug)
+
+
+
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
@@ -43,33 +59,13 @@ def shopper(request, slug):
 
 
 @IsShopOwnerDecorator
-def shopeditor(request, slug):
-    shop = get_object_or_404(Shop, slug__iexact=slug)
-    form = None
-    if request.method == 'POST':
-            if request.POST.__contains__('bannerUploadForm'):
-                form = BannerUploadForm(request.POST, request.FILES)
-                if form.is_valid():
-                    shop.banner = form.cleaned_data["banner"]
-                    shop.save(update_fields=["banner"])
-                return renderShopEditor(request, shop, bannerUploadForm=form)
-            elif request.POST.__contains__('logoUploadForm'):
-                form = LogoUploadForm(request.POST, request.FILES)
-                if form.is_valid():
-                    shop.logo = form.cleaned_data["logo"]
-                    shop.save(update_fields=["logo"])
-                return renderShopEditor(request, shop, logoUploadForm=form)
-            else:
-                if request.method == 'POST':
-                    sizeVariationType = request.POST["sizeVariation"]
-                    sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-                    form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
-                    if form.is_valid():
-                        canonicalProduct = form.save(shop)
-                        form = ProductCreationForm()
-                return renderShopEditor(request, shop, productCreationForm=form)
-    else:
-        return renderShopEditor(request, shop)
+def shopeditor(request, shop_slug):
+    return processShopEditorForms(request, shop_slug)
+
+@IsShopOwnerDecoratorUsingItem
+def shopeditor_with_item(request, shop_slug, item_slug):
+    return processShopEditorForms(request, shop_slug, item_slug)
+
 
 @IsShopOwnerDecorator
 def ajax_about(request, slug):
@@ -181,10 +177,12 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                     bannerUploadForm=None):
+                     bannerUploadForm=None, item=None):
+        editItem = item is not None
         return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
-        'productCreationForm': productCreationForm or ProductCreationForm,
+        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+        'editItemMode': editItem,
         'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
                                                                  {
                                                                      "banner": shop.banner
@@ -206,6 +204,36 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'categories': get_model('catalogue', 'Category').objects.all(),
         'products': get_list_or_empty(Product, shop=shop.id)
     })
+
+#private method no Auth
+def processShopEditorForms(request, shop_slug, item_slug=None):
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+
+    form = None
+    if request.method == 'POST':
+        if request.POST.__contains__('bannerUploadForm'):
+            form = BannerUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                shop.banner = form.cleaned_data["banner"]
+                shop.save(update_fields=["banner"])
+            return renderShopEditor(request, shop, bannerUploadForm=form)
+        elif request.POST.__contains__('logoUploadForm'):
+            form = LogoUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                shop.logo = form.cleaned_data["logo"]
+                shop.save(update_fields=["logo"])
+            return renderShopEditor(request, shop, logoUploadForm=form)
+        else:
+            if request.method == 'POST':
+                sizeVariationType = request.POST["sizeVariation"]
+                sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
+                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                if form.is_valid():
+                    canonicalProduct = form.save(shop)
+                    form = ProductCreationForm()
+            return renderShopEditor(request, shop, productCreationForm=form)
+    else:
+        return renderShopEditor(request, shop, item=get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None)
 
 
 def delete_product(request, id):

@@ -7,6 +7,14 @@
 {% endblock css %}
 {% block content %}
 {{ block.super }}
+{% block item_extensions %}
+    {{ block.super }}
+    <div>
+        {% if product and product.is_top_level %}
+            <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
+        {% endif %}
+    </div>
+{% endblock %}
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
@@ -20,7 +28,11 @@
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
-                            <a href="#addItems" data-toggle="pill">Add Item</a>
+                            {% if editItemMode %}
+                            <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
+                            {% else %}
+                            <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
+                            {% endif %}
                         </li>
                         <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
@@ -55,7 +67,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane active" id="addItems" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
