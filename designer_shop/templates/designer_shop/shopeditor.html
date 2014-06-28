@@ -29,10 +29,11 @@
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
-                            <a href="#addItems" data-toggle="pill">Add Item</a>
-                        </li>
-                        <li>
-                            <a href="#editItem" data-toggle="pill">Edit Item</a>
+                            {% if editItemMode %}
+                            <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
+                            {% else %}
+                            <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
+                            {% endif %}
                         </li>
                         <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
@@ -67,13 +68,9 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane active" id="addItems" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
-                            </form>
-                            <form class="tab-pane" id="editItem" enctype="multipart/form-data" method="post">
-                                {%  load crispy_forms_tags %}
-                                {% crispy productEditForm %}
                             </form>
                         </div>
                     </div>

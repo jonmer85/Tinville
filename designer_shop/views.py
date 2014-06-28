@@ -177,11 +177,12 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                     bannerUploadForm=None, productEditForm=None, item=None):
+                     bannerUploadForm=None, item=None):
+        editItem = item is not None
         return render(request, 'designer_shop/shopeditor.html', {
         'shop': shop,
-        'productCreationForm': productCreationForm or ProductCreationForm,
-        'productEditForm': productEditForm or ProductCreationForm(instance=item if item else None),
+        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+        'editItemMode': editItem,
         'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
                                                                  {
                                                                      "banner": shop.banner

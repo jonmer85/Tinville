@@ -18,7 +18,7 @@ SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 class ProductCreationForm(forms.ModelForm):
 
 
-    product_image = forms.ImageField(required=False)
+
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
 
@@ -28,11 +28,16 @@ class ProductCreationForm(forms.ModelForm):
 
         self.fields['sizeVariation'] = forms.ChoiceField(label='Size type',
                                          choices=SIZE_TYPES_AND_EMPTY,
-                                         initial=self.get_size_variation())
+                                         initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
+
 
         # self.fields['product_image'] = forms.ImageField(required=False)
 
-        # self.fields['price'] = forms.DecimalField(decimal_places=2, max_digits=12)
+        self.fields['price'] \
+            = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
+
+        self.fields['product_image'] \
+            = forms.ImageField(required=False)
 
 
 
@@ -48,7 +53,6 @@ class ProductCreationForm(forms.ModelForm):
                 ),
                 Fieldset('Images',
                          'product_image',
-                         HTML("""{% if form.product_image.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.product_image.value }}">{% endif %}""", ),
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -224,8 +228,21 @@ class ProductCreationForm(forms.ModelForm):
                 return SIZE_NUM
         return "0"
 
+    def get_value_if_in_edit_mode(self, field_name, default):
+        if not self.instance or not self.instance.is_group:
+            return default
+        return self.get_value_from_instance(field_name)
 
 
+    def get_value_from_instance(self, field_name):
+        if field_name == 'sizeVariation':
+            return self.get_size_variation()
+        if field_name == 'price':
+            return self.instance.min_variant_price_excl_tax
+        if field_name == 'product_image':
+            return self.instance.primary_image().original.url
+        else:
+            return getattr(self.instance, field_name)
 
 
     class Meta:
