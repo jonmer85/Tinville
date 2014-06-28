@@ -6,6 +6,7 @@ from oscar.core.loading import get_model
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
+from crispy_forms.bootstrap import PrependedText
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
@@ -48,8 +49,9 @@ class ProductCreationForm(forms.ModelForm):
             Div(
                 Fieldset('General',
                          Field('title', placeholder='Title'),
+                         HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
-                         Field('price', placeholder='Price')
+                         PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
                          'product_image',
@@ -61,12 +63,13 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
-                css_class="container col-sm-12",
+                css_class="container col-xs-12 col-lg-8",
                 css_id="addItemEditor"
             )
 
         )
         self.fields['description'].widget = TinyMCE()
+        self.fields['price'].label = ""
 
         if sizes:
             for i, size in enumerate(sizes):
@@ -274,7 +277,8 @@ class AboutBoxForm(forms.Form):
     helper.form_class = 'aboutForm'
     helper.layout = Layout(
         Div(
-            Field('aboutContent', placeholder="Enter Text Here"),
+            Fieldset('About',
+            Field('aboutContent', placeholder="Enter Text Here")),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container"
         ))
@@ -316,7 +320,9 @@ class BannerUploadForm(forms.Form):
 
     helper.layout = Layout(
         Div(
+
             Fieldset('Banner Image',
+                     HTML("""<p>If nothing is selected and clicked submit, then it will remove banner</p>"""),
                      'banner'),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
@@ -334,6 +340,7 @@ class LogoUploadForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('Logo Image',
+                     HTML("""<p>If nothing is selected and clicked submit, then it will remove logo</p>"""),
                      'logo'),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
