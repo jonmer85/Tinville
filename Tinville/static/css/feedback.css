@@ -1,10 +1,11 @@
 #feedback_widget
 {
 	position: fixed;
-	left: -32px;
-	top: 90px;
+	left: 0;
+	top: 40px;
 	z-index: 1031; /* 1 higher than Tinville shop editor*/
 }
+
 @media (max-width: 768px) {
     #feedback_widget {
         top: 50%;
@@ -20,8 +21,8 @@
 #feedback_tab
 {
 	display: block;
-	/*width: 115px;*/
-	/*height: 115px;*/
+	width: 115px;
+	height: 115px;
 	transform: rotate(-90deg);
 	-webkit-transform: rotate(-90deg);
 	-moz-transform: rotate(-90deg);
