@@ -18,9 +18,6 @@ SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
 class ProductCreationForm(forms.ModelForm):
 
-
-
-
     price = forms.DecimalField(decimal_places=2, max_digits=12)
 
     def __init__(self, *args, **kwargs):
@@ -140,12 +137,6 @@ class ProductCreationForm(forms.ModelForm):
 
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
-
-    def clean(self):
-        cleaned_data = super(ProductCreationForm, self).clean()
-        # do your custom validations / transformations here
-        # and some more
-        return cleaned_data
 
 
     def save(self, shop):

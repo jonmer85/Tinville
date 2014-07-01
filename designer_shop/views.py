@@ -40,7 +40,6 @@ class IsShopOwnerDecorator(object):
 
 
 class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
-
     def __call__(self, request, shop_slug, item_slug):
         return self.authenticate(request, shop_slug, item_slug)
 
