@@ -64,7 +64,6 @@ def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
     variants = get_list_or_empty(Product, parent=item.id)
-
     colorlist = []
     for variant in variants:
         colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)
@@ -125,6 +124,8 @@ def get_variants(item):
         sizeNum = ""
         divider = ""
         quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
+        price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
+        currency = get_or_none(StockRecords, product_id=variant.id).price_currency
         if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
             color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
 
@@ -140,10 +141,10 @@ def get_variants(item):
         if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
             sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
 
-        if sizeX != None and sizeY != None:
+        if sizeX != "" and sizeY != "":
             divider = " x "
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
-        quantitysize = {'size': variantsize, 'quantity': quantity}
+        quantitysize = {'size': variantsize, 'quantity': quantity, 'price': price, 'currency': currency}
         colorsizequantitydict[str(color)].append(quantitysize)
     return json.dumps(colorsizequantitydict)
 
