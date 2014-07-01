@@ -467,3 +467,8 @@
 .dimensionSplit {
     text-align: center;
 }
+/*item detail*/
+
+.itemTitle {
+    font-size: 2em;
+}

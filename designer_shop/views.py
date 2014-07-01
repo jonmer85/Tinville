@@ -1,8 +1,12 @@
 import json
+import collections
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.db import models
+from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
+from oscar.apps.partner.models import StockRecord as StockRecords
 
 
 from oscar.core.loading import get_model
@@ -11,7 +15,7 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
     LogoUploadForm
 from catalogue.models import Product
 
-from common.utils import get_list_or_empty
+from common.utils import get_list_or_empty, get_or_none
 from functools import wraps
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
@@ -55,7 +59,27 @@ def shopper(request, slug):
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
+def itemdetail(request, shop_slug, item_slug=None):
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+    item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    variants = get_list_or_empty(Product, parent=item.id)
 
+    colorlist = []
+    for variant in variants:
+        colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)
+        colorlist.append(colorattribute.value_as_text)
+    colorset = set(colorlist)
+
+    colorsizequantity = get_variants(item)
+
+    return render(request, 'designer_shop/itemdetail.html', {
+        'shop': shop,
+        'item': item,
+        'variants': variants,
+        'validcolors': colorset,
+        'colorsizequantity': colorsizequantity,
+        # What what in the butt (Tom Bowman) 6-22-14
+    })
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
@@ -64,7 +88,6 @@ def shopeditor(request, shop_slug):
 @IsShopOwnerDecoratorUsingItem
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
-
 
 @IsShopOwnerDecorator
 def ajax_about(request, slug):
@@ -90,6 +113,44 @@ def ajax_color(request, slug):
 
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
+def get_variants(item):
+    variants = get_list_or_empty(Product, parent=item.id)
+    colorsizequantitydict = collections.defaultdict(list)
+    for variant in variants:
+        color = ""
+        sizeSet = ""
+        sizeX = ""
+        sizeY = ""
+        sizeNum = ""
+        divider = ""
+        quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
+            color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
+            sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
+            sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=3) != None:
+            sizeY = get_or_none(Attributes, product_id=variant.id, attribute_id=3).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
+            sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
+
+        if sizeX != None and sizeY != None:
+            divider = " x "
+        variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+        quantitysize = {'size': variantsize, 'quantity': quantity}
+        colorsizequantitydict[str(color)].append(quantitysize)
+    return json.dumps(colorsizequantitydict)
+
+def get_variants_httpresponse(request, shop_slug, item_slug):
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+    item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    # if request.is_ajax():
+    return HttpResponse(get_variants(item), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
