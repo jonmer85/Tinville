@@ -49,23 +49,19 @@
                     <div class="itemTitle center">
                         {{ item.title }}
                     </div>
+                    <div class="itemColorSelection">
+                        <select id="itemColorSelection" class="form-control selectpicker">
+                            <option><i>Choose a Color</i></option>
+                        </select>
+                    </div>
+                    <div class="itemSizeSelection">
+                        <select id="itemSizeSelection" class="form-control selectpicker">
+                            <option><i>Choose a Size</i></option>
+                        </select>
+                    </div>
                     <div class="itemDescription">
                         {{ item.description | safe }}
                     </div>
-
-                    <div class="itemOptionSelection">
-                        <select class="form-control selectpicker" title="Select a Color">
-                                <option><i>Choose a Color</i></option>
-                        </select>
-                    </div>
-                    <div class="itemOptionSelection">
-                        <select class="form-control" placeholder="Choose a Color">
-                        {% for color in validcolors %}
-                                <option>{{ color }}</option>
-                        {% endfor %}
-                        </select>
-                    </div>
-                    <div>{{ colorsizequantity }}</div>
                 </div>
             </div>
         </div>
@@ -82,18 +78,38 @@
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
 
-{#    var refreshVariants = function() {#}
-{#        ajax_refreshvariants = $.getJSON( "{{ request.get_full_path }}/getVariants" );#}
-{#    };#}
-{##}
-{#    var interval = 1000 * 5; // where X is your every X minutes#}
-{##}
-{#    setInterval(ajax_refreshvariants, interval);#}
+    var myresponse;
 
+    refreshvariants();
 
-    var refreshvariants = setInterval(function() {
-       $.getJSON( "{{ request.get_full_path }}/getVariants" );
-    }, 60000); //5 seconds
+    function refreshvariants() {
+        myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants", function(data){
+            var colorlist = [];
+            $.each(data, function( key, val ) {
+                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
+            });
+            currentcolor = $('#itemColorSelection').val();
+            $('#itemColorSelection').html(colorlist.join(''));
+            $('#itemColorSelection').val(currentcolor);
+        });
+    }
+    setInterval(refreshvariants, 5000);
+
+    $("#itemColorSelection").change(function() {
+        $.each(myresponse.responseJSON, function(key, val){
+            var sizelist = [];
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    sizelist.push('<option>'+ this.size +'</option>');
+                });
+                currentsize = $('#itemSizeSelection').val();
+                $('#itemSizeSelection').html(sizelist.join(''));
+                return false;
+            }
+        });
+    });
+
     </script>
 
 {% endblock %}
