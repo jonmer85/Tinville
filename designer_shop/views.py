@@ -116,6 +116,7 @@ def ajax_color(request, slug):
 def get_variants(item):
     variants = get_list_or_empty(Product, parent=item.id)
     colorsizequantitydict = collections.defaultdict(list)
+    addsizetype = collections.defaultdict(list)
     for variant in variants:
         color = ""
         sizeSet = ""
@@ -126,6 +127,7 @@ def get_variants(item):
         quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
         price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
         currency = get_or_none(StockRecords, product_id=variant.id).price_currency
+
         if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
             color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
 
@@ -144,14 +146,25 @@ def get_variants(item):
         if sizeX != "" and sizeY != "":
             divider = " x "
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
-        quantitysize = {'size': variantsize, 'quantity': quantity, 'price': price, 'currency': currency}
-        colorsizequantitydict[str(color)].append(quantitysize)
-    return json.dumps(colorsizequantitydict)
+        quantitysize = {'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+        colorsizequantitydict[str(color).capitalize()].append(quantitysize)
+    addsizetype[get_sizetype(variants)].append(colorsizequantitydict)
+    return json.dumps(addsizetype)
+
+def get_sizetype(variants):
+    for variant in variants:
+       if hasattr(variant.attr, 'size_set'):
+           return SIZE_SET
+       elif hasattr(variant.attr, 'size_dimension_x') or hasattr(variant.attr, 'size_dimension_y'):
+           return SIZE_DIM
+       elif hasattr(variant.attr, 'size_number'):
+           return SIZE_NUM
+       return "0"
+
 
 def get_variants_httpresponse(request, shop_slug, item_slug):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
-    # if request.is_ajax():
     return HttpResponse(get_variants(item), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
