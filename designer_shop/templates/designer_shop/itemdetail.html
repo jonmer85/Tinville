@@ -87,8 +87,10 @@
     function refreshvariants() {
         myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants", function(data){
             var colorlist = [];
-            $.each(data, function( key, val ) {
-                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
+            $.each(data, function(sizetype, variants ) {
+                $.each(variants, function(key, val) {
+                    colorlist.push('<option value="'+ key +'">'+ key +'</option>');
+                });
             });
             currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));

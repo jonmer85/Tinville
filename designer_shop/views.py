@@ -115,7 +115,7 @@ def ajax_color(request, slug):
 def get_variants(item):
     variants = get_list_or_empty(Product, parent=item.id)
     colorsizequantitydict = collections.defaultdict(list)
-    addsizetype = collections.defaultdict(list)
+    addsizetype = collections.defaultdict(dict)
     for variant in variants:
         color = ""
         sizeSet = ""
@@ -147,7 +147,7 @@ def get_variants(item):
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
         quantitysize = {'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
         colorsizequantitydict[str(color).capitalize()].append(quantitysize)
-    addsizetype[get_sizetype(variants)].append(colorsizequantitydict)
+    addsizetype= {get_sizetype(variants): colorsizequantitydict }
     return json.dumps(addsizetype)
 
 def get_sizetype(variants):
