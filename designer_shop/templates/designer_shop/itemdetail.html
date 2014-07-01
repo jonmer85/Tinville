@@ -46,8 +46,10 @@
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="shopItem">
-                    <div class="itemTitle center">
+                    <div id="itemTitle" class="itemTitle">
                         {{ item.title }}
+                    </div>
+                    <div id="itemPrice" class="itemPrice center">
                     </div>
                     <div class="itemColorSelection">
                         <select id="itemColorSelection" class="form-control selectpicker">
@@ -105,6 +107,24 @@
                 });
                 currentsize = $('#itemSizeSelection').val();
                 $('#itemSizeSelection').html(sizelist.join(''));
+                return false;
+            }
+        });
+    });
+
+    $("#itemSizeSelection").change(function() {
+        $.each(myresponse.responseJSON, function(key, val){
+            var variantprice = ""
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    if (this.size === $("#itemSizeSelection").val())
+                    {
+                        variantprice = this.price;
+                    }
+                    variantprice.push('<h1>$ '+ this.price +'</h1>');
+                });
+                $('#itemPrice').html(variantprice.join(''));
                 return false;
             }
         });
