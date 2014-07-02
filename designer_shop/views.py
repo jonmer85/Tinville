@@ -113,10 +113,14 @@ def ajax_color(request, slug):
 
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
-def get_variants(item):
+def get_variants(item, group=None):
     variants = get_list_or_empty(Product, parent=item.id)
-    colorsizequantitydict = collections.defaultdict(list)
-    addsizetype = collections.defaultdict(dict)
+
+    if group is None:
+        colorsizequantitydict = []
+    else:
+        colorsizequantitydict = collections.defaultdict(list)
+
     for variant in variants:
         color = ""
         sizeSet = ""
@@ -146,9 +150,18 @@ def get_variants(item):
         if sizeX != "" and sizeY != "":
             divider = " x "
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
-        quantitysize = {'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
-        colorsizequantitydict[str(color).capitalize()].append(quantitysize)
-    addsizetype= {'sizetype': get_sizetype(variants), 'items': colorsizequantitydict}
+
+        if group is None:
+            quantitysize = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            colorsizequantitydict.append(quantitysize)
+        else:
+            groupdict = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            mysort = groupdict[group]
+            groupdict.pop(group)
+            quantitysize = groupdict
+            colorsizequantitydict[mysort].append(quantitysize)
+
+    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict}
     return json.dumps(addsizetype)
 
 def get_sizetype(variants):
@@ -161,11 +174,10 @@ def get_sizetype(variants):
            return SIZE_NUM
        return "0"
 
-
-def get_variants_httpresponse(request, shop_slug, item_slug):
+def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
-    return HttpResponse(get_variants(item), mimetype='application/json')
+    return HttpResponse(get_variants(item, group_by), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
