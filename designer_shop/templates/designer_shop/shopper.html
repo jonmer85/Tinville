@@ -52,7 +52,7 @@
            <input type="radio" id="tab-1" name="tab-group-1" checked>
            <label for="tab-1">Shop   |</label>
            <div class="content">
-               <p><div class="container">
+               <div class="container">
                 {% if user.email == shop.user.email%}
                     <div id="editLink" class="col-xs-1">
                         <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
@@ -145,7 +145,6 @@
             {% endif %}
         </div>
               </div>
-               </p>
            </div>
        </div>
 
