@@ -50,6 +50,7 @@
                         {{ item.title }}
                     </div>
                     <div id="itemPrice" class="itemPrice center">
+                        From {{ item.min_variant_price_excl_tax }}
                     </div>
                     <div class="itemColorSelection">
                         <select id="itemColorSelection" class="form-control selectpicker">
@@ -85,50 +86,62 @@
     refreshvariants();
 
     function refreshvariants() {
-        myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants", function(data){
+        myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants", function(data) {
             var colorlist = [];
             $.each(data, function(sizetype, variants ) {
-                $.each(variants, function(key, val) {
+                $.each(variants, function(key) {
                     colorlist.push('<option value="'+ key +'">'+ key +'</option>');
                 });
             });
             currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));
-            $('#itemColorSelection').val(currentcolor);
+            if (currentcolor == "")
+            {
+                $('#itemColorSelection').val("Choose a Color")
+            }
+            else
+            {
+               $('#itemColorSelection').val(currentcolor);
+            }
+
         });
     }
     setInterval(refreshvariants, 5000);
 
     $("#itemColorSelection").change(function() {
-        $.each(myresponse.responseJSON, function(key, val){
-            var sizelist = [];
-            if (key === $("#itemColorSelection").val())
-            {
-                $.each(val, function() {
-                    sizelist.push('<option>'+ this.size +'</option>');
-                });
-                currentsize = $('#itemSizeSelection').val();
-                $('#itemSizeSelection').html(sizelist.join(''));
-                return false;
-            }
+        $.each(myresponse.responseJSON, function(sizetype, variants) {
+            $.each(variants, function (key, val) {
+                var sizelist = [];
+                if (key === $("#itemColorSelection").val())
+                {
+                    $.each(val, function() {
+                        sizelist.push('<option>'+ this.size +'</option>');
+                    });
+                    currentsize = $('#itemSizeSelection').val();
+                    $('#itemSizeSelection').html(sizelist.join(''));
+                    return false;
+                }
+            });
         });
     });
 
     $("#itemSizeSelection").change(function() {
-        $.each(myresponse.responseJSON, function(key, val){
-            var variantprice = ""
-            if (key === $("#itemColorSelection").val())
-            {
-                $.each(val, function() {
-                    if (this.size === $("#itemSizeSelection").val())
-                    {
-                        variantprice = this.price;
-                    }
-                    variantprice.push('<h1>$ '+ this.price +'</h1>');
-                });
-                $('#itemPrice').html(variantprice.join(''));
-                return false;
-            }
+        $.each(myresponse.responseJSON, function(sizetype, variants) {
+            $.each(variants, function (key, val) {
+                var variantprice = []
+                if (key === $("#itemColorSelection").val())
+                {
+                    $.each(val, function() {
+                        if (this.size === $("#itemSizeSelection").val())
+                        {
+                            variantprice = ('<div>$ '+ this.price +'</div>')
+                        }
+                    });
+                    $('#itemPrice').append(variantprice); //html(variantprice.join(''));
+                    return false;
+                }
+            })
+
         });
     });
 

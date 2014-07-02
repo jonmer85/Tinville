@@ -147,7 +147,7 @@ def get_variants(item):
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
         quantitysize = {'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
         colorsizequantitydict[str(color).capitalize()].append(quantitysize)
-    addsizetype= {get_sizetype(variants): colorsizequantitydict }
+    addsizetype= {'sizetype': get_sizetype(variants), 'items': colorsizequantitydict}
     return json.dumps(addsizetype)
 
 def get_sizetype(variants):
