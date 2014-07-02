@@ -50,7 +50,7 @@
                         {{ item.title }}
                     </div>
                     <div id="itemPrice" class="itemPrice center">
-                        From {{ item.min_variant_price_excl_tax }}
+                        From $ {{ item.min_variant_price_excl_tax }}
                     </div>
                     <div class="itemColorSelection">
                         <select id="itemColorSelection" class="form-control selectpicker">
@@ -61,6 +61,9 @@
                         <select id="itemSizeSelection" class="form-control selectpicker">
                             <option><i>Choose a Size</i></option>
                         </select>
+                    </div>
+                    <div id="itemStockQuantity">
+
                     </div>
                     <div class="itemDescription">
                         {{ item.description | safe }}
@@ -81,17 +84,14 @@
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
 
-    var myresponse;
-
     refreshvariants();
 
+    var myresponse;
     function refreshvariants() {
-        myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants", function(data) {
+        myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants/color", function(data) {
             var colorlist = [];
-            $.each(data, function(sizetype, variants ) {
-                $.each(variants, function(key) {
-                    colorlist.push('<option value="'+ key +'">'+ key +'</option>');
-                });
+            $.each(data.variants, function(key) {
+                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
             });
             currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));
@@ -109,39 +109,37 @@
     setInterval(refreshvariants, 5000);
 
     $("#itemColorSelection").change(function() {
-        $.each(myresponse.responseJSON, function(sizetype, variants) {
-            $.each(variants, function (key, val) {
-                var sizelist = [];
-                if (key === $("#itemColorSelection").val())
-                {
-                    $.each(val, function() {
-                        sizelist.push('<option>'+ this.size +'</option>');
-                    });
-                    currentsize = $('#itemSizeSelection').val();
-                    $('#itemSizeSelection').html(sizelist.join(''));
-                    return false;
-                }
-            });
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var sizelist = [];
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    sizelist.push('<option>'+ this.size +'</option>');
+                });
+                currentsize = $('#itemSizeSelection').val();
+                $('#itemSizeSelection').html(sizelist.join(''));
+                return false;
+            }
         });
     });
 
     $("#itemSizeSelection").change(function() {
-        $.each(myresponse.responseJSON, function(sizetype, variants) {
-            $.each(variants, function (key, val) {
-                var variantprice = []
-                if (key === $("#itemColorSelection").val())
-                {
-                    $.each(val, function() {
-                        if (this.size === $("#itemSizeSelection").val())
-                        {
-                            variantprice = ('<div>$ '+ this.price +'</div>')
-                        }
-                    });
-                    $('#itemPrice').append(variantprice); //html(variantprice.join(''));
-                    return false;
-                }
-            })
-
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var variantprice = ""
+            var variantquantity = ""
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    if (this.size === $("#itemSizeSelection").val())
+                    {
+                        variantprice = '$' + this.price
+                        variantquantity = this.quantity + " remaining"
+                    }
+                });
+                $('#itemPrice').text(variantprice);
+                $('#itemStockQuantity').text(variantquantity);
+                return false;
+            }
         });
     });
 
