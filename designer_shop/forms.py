@@ -3,6 +3,7 @@ from django import forms
 from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
@@ -16,10 +17,8 @@ from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
+
 class ProductCreationForm(forms.ModelForm):
-
-
-
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
 
@@ -109,8 +108,6 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-
-
     def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = canonical
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
@@ -147,6 +144,15 @@ class ProductCreationForm(forms.ModelForm):
         # and some more
         return cleaned_data
 
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        products = get_model('catalogue', 'product')
+
+        try:
+            products.objects.get(title__iexact=title,parent__isnull=True)
+        except ObjectDoesNotExist:
+            return title
+        raise forms.ValidationError('Item name already exist.')
 
     def save(self, shop):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
