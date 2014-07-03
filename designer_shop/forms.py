@@ -12,7 +12,6 @@ from crispy_forms.bootstrap import PrependedText
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
-from designer_shop.models import Shop
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 
