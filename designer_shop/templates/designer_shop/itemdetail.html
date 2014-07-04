@@ -88,7 +88,7 @@
 
     var myresponse;
     function refreshvariants() {
-        myresponse = $.getJSON( "{{ request.get_full_path }}/getVariants/color", function(data) {
+        myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
             var colorlist = [];
             $.each(data.variants, function(key) {
                 colorlist.push('<option value="'+ key +'">'+ key +'</option>');
