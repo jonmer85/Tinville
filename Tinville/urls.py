@@ -35,7 +35,7 @@ urlpatterns += patterns('',
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)$', 'designer_shop.views.shopeditor_with_item'),
-    url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)$', 'designer_shop.views.itemdetail'),
+    url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/$', 'designer_shop.views.itemdetail'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/getVariants$', 'designer_shop.views.get_variants_httpresponse'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/getVariants/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_variants_httpresponse'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
