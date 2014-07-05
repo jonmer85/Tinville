@@ -161,7 +161,7 @@ def get_variants(item, group=None):
             quantitysize = groupdict
             colorsizequantitydict[mysort].append(quantitysize)
 
-    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict}
+    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
 
 def get_sizetype(variants):
@@ -174,9 +174,13 @@ def get_sizetype(variants):
            return SIZE_NUM
        return "0"
 
+def get_min_price(item):
+    return str(item.min_variant_price_excl_tax)
+
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    # if request.is_ajax():
     return HttpResponse(get_variants(item, group_by), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
