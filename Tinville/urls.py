@@ -28,7 +28,7 @@ urlpatterns += patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^tinymce/', include( 'tinymce.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^feedback/', include('django_basic_feedback.urls')),
     url(r'^(?P<shop_slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
