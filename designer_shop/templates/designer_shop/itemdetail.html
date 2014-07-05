@@ -98,6 +98,7 @@
             var currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));
             $('#itemColorSelection').val(currentcolor);
+            $('option[value="Choose a Color"]').attr('disabled', true);
             updateQuantityPrice();
         });
     }
