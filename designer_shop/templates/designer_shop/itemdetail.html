@@ -54,12 +54,12 @@
                     </div>
                     <div class="itemColorSelection">
                         <select id="itemColorSelection" class="form-control selectpicker">
-                            <option><i>Choose a Color</i></option>
+                            <option value="Choose a Color"><i>Choose a Color</i></option>
                         </select>
                     </div>
                     <div class="itemSizeSelection">
                         <select id="itemSizeSelection" class="form-control selectpicker">
-                            <option><i>Choose a Size</i></option>
+                            <option value="Choose a Size"><i>Choose a Size</i></option>
                         </select>
                     </div>
                     <div id="itemStockQuantity">
@@ -90,20 +90,15 @@
     function refreshvariants() {
         myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
             var colorlist = [];
-            $.each(data.variants, function(key) {
+            colorlist.push('<option value="Choose a Color"><i>Choose a Color</i></option>');
+            $.each(data.variants, function(key)
+            {
                 colorlist.push('<option value="'+ key +'">'+ key +'</option>');
             });
-            currentcolor = $('#itemColorSelection').val();
+            var currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));
-            if (currentcolor == "")
-            {
-                $('#itemColorSelection').val("Choose a Color")
-            }
-            else
-            {
-               $('#itemColorSelection').val(currentcolor);
-            }
-
+            $('#itemColorSelection').val(currentcolor);
+            updateQuantityPrice();
         });
     }
     setInterval(refreshvariants, 5000);
@@ -113,17 +108,34 @@
             var sizelist = [];
             if (key === $("#itemColorSelection").val())
             {
+                var currentsize = ""
+                sizelist.push('<option selected="selected" disabled="disabled" value="Choose a Size"><i>Choose a Size</i></option>');
                 $.each(val, function() {
-                    sizelist.push('<option>'+ this.size +'</option>');
+                    if (this.quantity <= 0)
+                    {
+                        sizelist.push('<option disabled="disabled" value="' + this.size + '">'+ this.size +'</option>')
+                    }
+                    else
+                    {
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>');
+                    }
+                    if (this.size === $('#itemSizeSelection').val())
+                    {
+                        currentsize = $('#itemSizeSelection').val();
+                    }
                 });
-                currentsize = $('#itemSizeSelection').val();
+                if (currentsize === "")
+                {
+                    currentsize = "Choose a Size"
+                }
                 $('#itemSizeSelection').html(sizelist.join(''));
+                $('#itemSizeSelection').val(currentsize);
                 return false;
             }
         });
     });
 
-    $("#itemSizeSelection").change(function() {
+    var updateQuantityPrice = function() {
         $.each(myresponse.responseJSON.variants, function(key, val) {
             var variantprice = ""
             var variantquantity = ""
@@ -136,12 +148,25 @@
                         variantquantity = this.quantity + " remaining"
                     }
                 });
+                if (variantprice === "")
+                {
+                    variantprice = 'From $ ' + myresponse.responseJSON.minprice;
+                }
                 $('#itemPrice').text(variantprice);
                 $('#itemStockQuantity').text(variantquantity);
-                return false;
+                return false
+            }
+            if (variantprice === "")
+            {
+                variantprice = 'From $ ' + myresponse.responseJSON.minprice;
+                $('#itemPrice').text(variantprice);
             }
         });
-    });
+    }
+
+    $("#itemSizeSelection").change(updateQuantityPrice);
+
+    $("#itemColorSelection").change(updateQuantityPrice);
 
     </script>
 
