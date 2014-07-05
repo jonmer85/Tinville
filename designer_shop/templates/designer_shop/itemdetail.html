@@ -90,6 +90,7 @@
     function refreshvariants() {
         myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
             var colorlist = [];
+            $('option[value="Choose a Color"]').attr('disabled', false);
             colorlist.push('<option value="Choose a Color"><i>Choose a Color</i></option>');
             $.each(data.variants, function(key)
             {
