@@ -450,14 +450,47 @@ function prependPrefixToAttribute(element, attr, prefix){
     element.attr(attr, prefix + element.attr(attr));
 }
 
+function populateProductVariantsInfo() {
+
+    $.getJSON("{{ request.get_full_path }}/getVariants", function(data) {
+        sizeType = data["sizeType"];
+
+        existingSizes = []
+        $(this).each(function(key, value) {
+            $.each(function(index) {
+
+            })
+            if(!jQuery.inArray(this.size, existingSizes)) {
+                addNewSizeRow(sizeType)
+            }
+
+        })
+
+
+
+
+    })
+
+{#    "brown": [{"quantity": 23, "size": "31.0 x 31.0"}, {"quantity": 2, "size": "31.0 x 30.0"},#}
+{#        {"quantity": 5, "size": "30.0 x 30.0"}], "violet": [{"quantity": 2, "size": "31.0 x 31.0"},#}
+{#        {"quantity": 4, "size": "31.0 x 30.0"}, {"quantity": 4, "size": "30.0 x 30.0"}],#}
+{#            "red": [{"quantity": 32, "size": "31.0 x 31.0"}, {"quantity": 34, "size": "31.0 x 30.0"},#}
+{#        {"quantity": 5, "size": "30.0 x 30.0"}], "gray": [{"quantity": 4, "size": "31.0 x 31.0"},#}
+{#        {"quantity": 5, "size": "31.0 x 30.0"}, {"quantity": 3, "size": "30.0 x 30.0"}]}#}
+
+
+}
+
 $(window).resize(function() {
-    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
 });
 
 $(window).load(function() {
-    document.getElementById('emptyShopId').innerHTML = "Items go here..."
     resizeEditor();
+    {% if editItemMode %}
+    populateProductVariantsInfo();
+    {% endif %}
+
 });
 
 $("#optionContent li").click(function (){
