@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
+from django.core.urlresolvers import reverse
 
 
 from oscar.core.loading import get_model
@@ -321,3 +322,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
     else:
         return renderShopEditor(request, shop, item=get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None)
 
+
+def delete_product(request, id):
+    product = Product.objects.get(pk=id).delete()
+    return HttpResponseRedirect(reverse('designer_shop.views.shopeditor'))
