@@ -41,15 +41,10 @@ class IsShopOwnerDecorator(object):
     def __call__(self, request, shop_slug):
         return self.authenticate(request, shop_slug, None)
 
-
-
 class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 
     def __call__(self, request, shop_slug, item_slug):
         return self.authenticate(request, shop_slug, item_slug)
-
-
-
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
