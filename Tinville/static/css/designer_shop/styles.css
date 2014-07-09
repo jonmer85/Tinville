@@ -470,5 +470,67 @@
 /*item detail*/
 
 .itemTitle {
+    font-size: 3em;
+    color: #5B595A;
+}
+
+.itemPrice {
+    color: #f46430;
+    font-size: 3em;
+    border-bottom: 1px solid #ccc;
+}
+
+.itemDetailBox {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.itemDescription {
+    font-size: 1.25em;
+    color: #5B595A;
+    max-height: 245px;
+    width: auto;
+}
+
+.shareMeTitle {
+    color: #5B595A;
     font-size: 2em;
+    border-bottom: 1px solid #ccc;
+}
+
+.itemStockQuantity {
+    border-bottom: 1px solid #ccc;
+}
+
+.selectedImage {
+    padding: 3px;
+    border: 1px solid #ccc;
+}
+
+.itemStockQuantity {
+    color: #5B595A;
+}
+
+.shopItem {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.itemSelectedImage {
+
+}
+
+.otherItemImages {
+    padding: 0px;
+}
+.selectpicker {
+    color: #5B595A;
+}
+
+.sociallogo {
+    max-width: 67% !important;
 }
