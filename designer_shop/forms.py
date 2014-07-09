@@ -117,6 +117,7 @@ class ProductCreationForm(forms.ModelForm):
         variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
+        variantProduct.description = None
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
