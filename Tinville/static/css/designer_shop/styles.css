@@ -478,6 +478,7 @@
     color: #f46430;
     font-size: 3em;
     border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
 }
 
 .itemDetailBox {
@@ -488,7 +489,6 @@
 .itemDescription {
     font-size: 1.25em;
     color: #5B595A;
-    max-height: 245px;
     width: auto;
 }
 
@@ -499,16 +499,13 @@
 }
 
 .itemStockQuantity {
-    border-bottom: 1px solid #ccc;
+
+    color: #5B595A;
 }
 
 .selectedImage {
     padding: 3px;
     border: 1px solid #ccc;
-}
-
-.itemStockQuantity {
-    color: #5B595A;
 }
 
 .shopItem {
@@ -524,6 +521,12 @@
 
 }
 
+.addToCart {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
 .otherItemImages {
     padding: 0px;
 }
@@ -533,4 +536,12 @@
 
 .sociallogo {
     max-width: 67% !important;
+}
+
+.shareMeTitle {
+    margin-bottom: 15px;
+}
+
+.sociallogo {
+    padding-bottom: 15px;
 }
