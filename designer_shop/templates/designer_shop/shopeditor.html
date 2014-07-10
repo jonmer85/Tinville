@@ -67,7 +67,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                            <form data-parsley-validate class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
@@ -87,9 +87,10 @@
 
 {% endblock %}
 
-{% block javascript_library %}l
+{% block javascript_library %}
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
 
 {% endblock javascript_library %}
 

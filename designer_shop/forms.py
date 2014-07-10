@@ -8,16 +8,18 @@ from django.core.exceptions import ObjectDoesNotExist
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 from crispy_forms.bootstrap import PrependedText
+from south.orm import _FakeORM
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
+from parsley.decorators import parsleyfy
 
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
-
+@parsleyfy
 class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
@@ -38,7 +40,7 @@ class ProductCreationForm(forms.ModelForm):
                                  required=True)
 
         self.fields['product_image'] \
-            = forms.ImageField(required=False)
+            = forms.ImageField(required=True)
 
 
 
