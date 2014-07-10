@@ -40,7 +40,7 @@ class ProductCreationForm(forms.ModelForm):
                                  required=True)
 
         self.fields['product_image'] \
-            = forms.ImageField(required=True)
+            = forms.ImageField(required=False)
 
 
 
