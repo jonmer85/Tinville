@@ -23,7 +23,7 @@ SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
-    title = forms.CharField(label="title",max_length=80,required=True)
+    title = forms.CharField(label="title",max_length=80)
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -36,8 +36,7 @@ class ProductCreationForm(forms.ModelForm):
         # self.fields['product_image'] = forms.ImageField(required=False)
 
         self.fields['price'] \
-            = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None),
-                                 required=True)
+            = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
         self.fields['product_image'] \
             = forms.ImageField(required=False)

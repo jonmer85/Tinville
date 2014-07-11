@@ -171,11 +171,19 @@
 
 
 
-$("#submit-id-productcreationform").click(function() {
-    this.disabled = true;
-    this.form.submit();
+        $( 'form' ).parsley( 'addListener', {
+            onFieldSuccess: function (e){
+                //ENABLE all Save buttons...
+            $("#submit-id-productcreationform").disabled = true;
+            $("#submit-id-productcreationform").form.submit();
+            }
+        });
 
-});
+{#$("#submit-id-productcreationform").click(function() {#}
+{#    #}
+{#    #}
+{#    #}
+{#});#}
 
 var htmlString = "<div>\
   This is a string.\
