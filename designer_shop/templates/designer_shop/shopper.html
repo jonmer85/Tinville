@@ -38,13 +38,16 @@
 
 <div id="shopNavi">
 
-    <div class="tabs shopBackgroundColor">
+    <!-- Nav tabs -->
+<ul class="nav nav-tabs shopBackgroundColor" role="tablist">
+  <li class="active"><a href="#shop" role="tab" data-toggle="tab">Home</a></li>
+  <li><a href="#about" role="tab" data-toggle="tab">About</a></li>
+  <li><a href="#landing" role="tab" data-toggle="tab">Landing</a></li>
+</ul>
 
-       <div class="tab">
-           <input type="radio" id="tab-1" name="tab-group-1" checked>
-           <label for="tab-1">Shop   |</label>
-           <div class="content">
-               <div class="container">
+<!-- Tab panes -->
+<div class="tab-content ">
+  <div class="navTab tab-pane active" id="shop">
                 {% if user.email == shop.user.email%}
                     <div id="editLink" class="col-xs-1">
                         <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
@@ -65,8 +68,7 @@
                     </div>
                 </div>
 
-
-              <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
                  <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
                     <option>View All</option>
                       {% for category in categories %}
@@ -95,7 +97,8 @@
                     <option>$50-$100</option>
                   </select>
               </div>
-           <div class="shopItems row">
+
+  <div class="shopItems ">
           {% if products %}
 
 
@@ -136,29 +139,13 @@
                 </div>
             {% endif %}
         </div>
-              </div>
-           </div>
-       </div>
 
-       <div class="tab">
-           <input type="radio" id="tab-2" name="tab-group-1">
-           <label for="tab-2">About   |</label>
+  </div>
+  <div class="navTab tab-pane" id="about">{{ shop.aboutContent | safe }}</div>
+  <div class="navTab tab-pane" id="landing"><p>Stuff for Landing</p></div>
+</div>
 
-           <div class="content">
-               {{ shop.aboutContent | safe }}
-           </div>
-       </div>
 
-        <div class="tab">
-           <input type="radio" id="tab-3" name="tab-group-1">
-           <label for="tab-3">Landing   |</label>
-
-           <div class="content">
-               <p>Stuff for Landing</p>
-           </div>
-       </div>
-
-    </div>{# End ShopNavi #}
 
 
 {% endblock %}
@@ -173,7 +160,7 @@
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
 
-
     </script>
 
 {% endblock %}
+

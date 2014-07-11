@@ -51,17 +51,18 @@
 }
 
 
-.tabs {
+.navTabs {
   position: relative;
   height: 320px;
   clear: both;
   padding-left: 750px;
 }
-.tab {
-  float: left;
+.navTab {
+  overflow:hidden;
   text-align:center;
+  margin-left:1em;
 }
-.tab label {
+.navTab label {
   background: transparent;
   padding: 10px;
   margin-left: 0px;
@@ -70,7 +71,7 @@
 
         padding-top: 5px;
 }
-.tab [type=radio] {
+.navTab [type=radio] {
   display: none;
 }
 .content {
@@ -82,6 +83,7 @@
   bottom: 0;
   padding: 20px;
   border: 1px solid #ccc;
+    overflow: hidden;
 }
 [type=radio]:checked ~ label {
   background: white;
