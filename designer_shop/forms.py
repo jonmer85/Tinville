@@ -145,7 +145,7 @@ class ProductCreationForm(forms.ModelForm):
         title = self.cleaned_data['title']
         products = get_model('catalogue', 'Product')
 
-        if self.is_edit and self.get_value_from_instance("title") == title:
+        if self.instance.pk and self.get_value_from_instance("title") == title:
             return title  # Ok to have the same title if this is an edit
 
         try:
