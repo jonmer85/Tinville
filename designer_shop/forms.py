@@ -11,6 +11,7 @@ from crispy_forms.bootstrap import PrependedText
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 
@@ -85,9 +86,9 @@ class ProductCreationForm(forms.ModelForm):
 
                 elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeX"])
+                        = forms.DecimalField(initial=sizes[i]["sizeX"])
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeY"])
+                        = forms.DecimalField(initial=sizes[i]["sizeY"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -98,7 +99,7 @@ class ProductCreationForm(forms.ModelForm):
 
                 elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
                     self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeNum"])
+                        = forms.DecimalField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -142,15 +143,19 @@ class ProductCreationForm(forms.ModelForm):
 
     def clean_title(self):
         title = self.cleaned_data['title']
-        products = get_model('catalogue', 'product')
+        products = get_model('catalogue', 'Product')
+
+        if self.is_edit and self.get_value_from_instance("title") == title:
+            return title  # Ok to have the same title if this is an edit
 
         try:
-            products.objects.get(title__iexact=title,parent__isnull=True)
+            products.objects.get(title__iexact=title, parent__isnull=True)
         except ObjectDoesNotExist:
             return title
         raise forms.ValidationError('Item name already exist.')
 
     def save(self, shop):
+        is_edit = self.instance.pk is not None
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
@@ -159,9 +164,16 @@ class ProductCreationForm(forms.ModelForm):
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
         canonicalId = canonicalProduct.id
-        productImage = ProductImage(product=canonicalProduct)
-        productImage.original = self.cleaned_data['product_image']
-        productImage.save()
+        if is_edit:
+            # Remove all variants since they will get recreated below
+            get_model('catalogue', 'Product').objects.get(parent=canonicalId).delete()
+
+
+        if not is_edit:
+            # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
+            productImage = ProductImage(product=canonicalProduct)
+            productImage.original = self.cleaned_data['product_image']
+            productImage.save()
 
         i = 0
         while True:
@@ -209,11 +221,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
+                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId,  shop, sizeNum=sizeNum)
+                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum)
                         break
                     j += 1
                 i += 1
@@ -235,7 +247,7 @@ class ProductCreationForm(forms.ModelForm):
         return "0"
 
     def get_value_if_in_edit_mode(self, field_name, default):
-        if not self.instance or not self.instance.is_group:
+        if not self.instance.pk or not self.instance.is_group:
             return default
         return self.get_value_from_instance(field_name)
 
@@ -325,11 +337,12 @@ class BannerUploadForm(forms.Form):
         Div(
 
             Fieldset('Banner Image',
-                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
+                     HTML("""<p>If nothing is selected and clicked submit, then it will remove banner</p>"""),
                      'banner'),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
         ))
+
 
 
 class LogoUploadForm(forms.Form):
@@ -342,7 +355,7 @@ class LogoUploadForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('Logo Image',
-                     HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
+                     HTML("""<p>If nothing is selected and clicked submit, then it will remove logo</p>"""),
                      'logo'),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
