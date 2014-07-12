@@ -67,7 +67,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form data-parsley-validate class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                            <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
@@ -169,21 +169,25 @@
                 });
         });
 
+$(document).ready(function () {
+  $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+    // if one of these blocks is not failing do not prevent submission
+    // we use here group validation with option force (validate even non required fields)
+    if (formInstance.isValid()) {
+        $("input[type=submit]").attr("disabled", "disabled");
+        return;
+    }
+    // else stop form submission
+    formInstance.submitEvent.preventDefault();
 
 
-        $( 'form' ).parsley( 'addListener', {
-            onFieldSuccess: function (e){
-                //ENABLE all Save buttons...
-            $("#submit-id-productcreationform").disabled = true;
-            $("#submit-id-productcreationform").form.submit();
-            }
-        });
+    return;
+  });
 
-{#$("#submit-id-productcreationform").click(function() {#}
-{#    #}
-{#    #}
-{#    #}
-{#});#}
+
+});
+
 
 var htmlString = "<div>\
   This is a string.\
