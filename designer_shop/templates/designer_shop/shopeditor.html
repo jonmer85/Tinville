@@ -12,6 +12,7 @@
     <div>
         {% if product and product.is_top_level %}
             <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
+            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
         {% endif %}
     </div>
 {% endblock %}
