@@ -27,53 +27,82 @@
         {% endif %}
 
     <div class="container">
-        <div class="shopItem row">
+        <div class="shopItem col-xs-12">
             <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
                 {{ item.title }}
             </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="itemSelectedImage col-sm-12 col-md-10 col-xs-12">
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "400x500" upscale=True as thumb %}
+                            <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage"/>
+                            </a>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                </div>
+                <div class="otherItemImages col-xs-12 col-sm-12 col-md-2">
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "100x125" upscale=True as thumb %}
+                            <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                </a>
+                            </div>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "100x125" upscale=True as thumb %}
+                            <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                </a>
+                            </div>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "100x125" upscale=True as thumb %}
+                            <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                </a>
+                            </div>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "100x125" upscale=True as thumb %}
+                            <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                </a>
+                            </div>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                </div>
+            </div>
+
             <div class="itemPrice center col-xs-12 visible-xs">
                 From $ {{ item.min_variant_price_excl_tax }}
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="shopItemImages">
-                    <div class="itemSelectedImage col-sm-10">
-                        {% if item.primary_image and item.primary_image.original.url %}
-                            {% with image=item.primary_image %}
-                                {% thumbnail image.original "400x500" upscale=True as thumb %}
-                                <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive selectedImage"/>
-                                </a>
-                                {% endthumbnail %}
-                            {% endwith %}
-                        {% else %}
-                                -
-                        {% endif %}
-                    </div>
-                    <div class="otherItemImages col-sm-2 hidden-xs">
-                        {% if item.primary_image and item.primary_image.original.url %}
-                            {% with image=item.primary_image %}
-                                {% thumbnail image.original "400x500" upscale=True as thumb %}
-                                <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive selectedImage"/>
-                                </a>
-                                {% endthumbnail %}
-                            {% endwith %}
-                        {% else %}
-                                -
-                        {% endif %}
-                        {% if item.primary_image and item.primary_image.original.url %}
-                            {% with image=item.primary_image %}
-                                {% thumbnail image.original "400x500" upscale=True as thumb %}
-                                <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive selectedImage"/>
-                                </a>
-                                {% endthumbnail %}
-                            {% endwith %}
-                        {% else %}
-                                -
-                        {% endif %}
-                    </div>
-                </div>
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div>
