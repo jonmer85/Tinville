@@ -17,6 +17,7 @@ from django.core.validators import RegexValidator
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 from parsley.decorators import parsleyfy
 
+
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
 @parsleyfy
@@ -356,3 +357,4 @@ class LogoUploadForm(forms.Form):
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
         ))
+
