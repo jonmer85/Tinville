@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
+from django.core.urlresolvers import reverse
 
 
 from oscar.core.loading import get_model

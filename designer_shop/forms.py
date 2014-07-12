@@ -3,26 +3,27 @@ from django import forms
 from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 from crispy_forms.bootstrap import PrependedText
+from south.orm import _FakeORM
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
+from parsley.decorators import parsleyfy
 
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
+@parsleyfy
 class ProductCreationForm(forms.ModelForm):
 
-
-
-
     price = forms.DecimalField(decimal_places=2, max_digits=12)
-
+    title = forms.CharField(label="title",max_length=80)
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -148,6 +149,15 @@ class ProductCreationForm(forms.ModelForm):
         # and some more
         return cleaned_data
 
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        products = get_model('catalogue', 'product')
+
+        try:
+            products.objects.get(title__iexact=title,parent__isnull=True)
+        except ObjectDoesNotExist:
+            return title
+        raise forms.ValidationError('Item name already exist.')
 
     def save(self, shop):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
@@ -324,12 +334,11 @@ class BannerUploadForm(forms.Form):
         Div(
 
             Fieldset('Banner Image',
-                     HTML("""<p>If nothing is selected and clicked submit, then it will remove banner</p>"""),
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      'banner'),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
         ))
-
 
 
 class LogoUploadForm(forms.Form):
@@ -342,7 +351,7 @@ class LogoUploadForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('Logo Image',
-                     HTML("""<p>If nothing is selected and clicked submit, then it will remove logo</p>"""),
+                     HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
                      'logo'),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
