@@ -470,13 +470,13 @@
 /*item detail*/
 
 .itemTitle {
-    font-size: 3em;
+    font-size: 2.5em;
     color: #5B595A;
 }
 
 .itemPrice {
     color: #f46430;
-    font-size: 3em;
+    font-size: 2.5em;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
 }
@@ -499,26 +499,37 @@
 }
 
 .itemStockQuantity {
-
     color: #5B595A;
 }
 
 .selectedImage {
-    padding: 3px;
+    padding: 4px;
     border: 1px solid #ccc;
 }
 
 .shopItem {
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
     padding-bottom: 5px;
     padding-right: 5px;
+    padding-left: 5px;
     margin-bottom: 5px;
     margin-right: 5px;
 }
 
-.itemSelectedImage {
+@media (min-width: 768px) {
+    .shopItem {
+    padding-right: 15px;
+    }
+}
 
+@media(min-width: 768px) {
+    .shopItem {
+        border-bottom: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+    }
+}
+
+.itemSelectedImage {
+    padding: 2px;
 }
 
 .addToCart {
@@ -530,6 +541,13 @@
 .otherItemImages {
     padding: 0px;
 }
+
+/*@media (max-width: 768px) {*/
+    .otherImage {
+        padding: 2px;
+    }
+/*}*/
+
 .selectpicker {
     color: #5B595A;
 }
