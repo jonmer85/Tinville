@@ -170,7 +170,7 @@
                     {
                         sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>');
                     }
-                    if (this.size === $('#itemSizeSelection').val())
+                    if (this.size === $('#itemSizeSelection').val() && this.quantity !== 0)
                     {
                         currentsize = $('#itemSizeSelection').val();
                     }
