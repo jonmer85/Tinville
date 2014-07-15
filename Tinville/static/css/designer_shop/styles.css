@@ -573,3 +573,13 @@
 .sociallogo {
     padding-bottom: 15px;
 }
+
+#buyQuantity:valid,
+#buyQuantity:in-range{
+    background:hsl(fff, 50%, 90%);
+}
+
+#buyQuantity:invalid,
+#buyQuantity:out-of-range{
+    background:hsl(0, 50%, 90%);
+}
