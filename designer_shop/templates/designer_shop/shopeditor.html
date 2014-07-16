@@ -525,14 +525,6 @@ function populateProductVariantsInfo() {
 
     });
 
-{#    "brown": [{"quantity": 23, "size": "31.0 x 31.0"}, {"quantity": 2, "size": "31.0 x 30.0"},#}
-{#        {"quantity": 5, "size": "30.0 x 30.0"}], "violet": [{"quantity": 2, "size": "31.0 x 31.0"},#}
-{#        {"quantity": 4, "size": "31.0 x 30.0"}, {"quantity": 4, "size": "30.0 x 30.0"}],#}
-{#            "red": [{"quantity": 32, "size": "31.0 x 31.0"}, {"quantity": 34, "size": "31.0 x 30.0"},#}
-{#        {"quantity": 5, "size": "30.0 x 30.0"}], "gray": [{"quantity": 4, "size": "31.0 x 31.0"},#}
-{#        {"quantity": 5, "size": "31.0 x 30.0"}, {"quantity": 3, "size": "30.0 x 30.0"}]}#}
-
-
 }
 
 function populateInitialDataForSizeRow(sizeRow, sizeType, size) {
@@ -567,10 +559,16 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 
 
 $(window).resize(function() {
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
     resizeEditor();
 });
 
 $(window).load(function() {
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
     resizeEditor();
     {% if editItemMode %}
     populateProductVariantsInfo();
