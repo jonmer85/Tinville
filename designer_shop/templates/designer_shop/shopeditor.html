@@ -510,14 +510,14 @@ function populateProductVariantsInfo() {
 
             var sizeRow = addNewSizeRow(sizeTypeString);
             populateInitialDataForSizeRow(sizeRow, sizeTypeString, key);
+            var prefix = sizeRow.attr("id") + "_";
+            var appendTo = sizeRow.find("tbody");
             $.each(value, function (key, value) {
-                var prefix = sizeRow.attr("id") + "_";
-                var appendTo = sizeRow.find("tbody");
+
                 var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
                 populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
-                addNewColorAndQuantityRow(prefix, appendTo);
-
             });
+            addNewColorAndQuantityRow(prefix, appendTo);
         });
         addNewSizeRow(sizeTypeString);
 
