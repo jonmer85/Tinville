@@ -1,6 +1,10 @@
 {% extends "designer_shop/shopperbase.html" %}
 {% load thumbnail %}
 
+{% block css %}
+    {{ block.super }}
+{% endblock css %}
+
 {% block content %}
     {{ block.super }}
     <div class="container">

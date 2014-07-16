@@ -2,6 +2,10 @@
 {% load thumbnail %}
 {% load purchase_info_tags %}
 
+{% block css %}
+    {{ block.super }}
+{% endblock css %}
+
 {% block content %}
     {{ block.super }}
 
