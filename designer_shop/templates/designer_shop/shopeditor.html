@@ -261,36 +261,47 @@ var rowColorQuantityTemplate = "" +
     "</tr>" +
 "</tr>"
 
+const SizeTypeInfo = {
+    "1" :
+    {
+        "sizeTemplateClass" : ".sizeSetSelectionTemplate",
+        "sizeSelectionClass" : ".sizeSetSelection",
+        "selectedValueType" : '$("option:selected", this)'
+    },
+    "2" :
+    {
+        "sizeTemplateClass" : ".sizeDimensionSelectionTemplate",
+        "sizeSelectionClass" : ".sizeDimensionSelection",
+        "selectedValueType" : '$(this).val()'
+    },
+    "3" :
+    {
+        "sizeTemplateClass" : ".sizeNumberSelectionTemplate",
+        "sizeSelectionClass" : ".sizeNumberSelection",
+        "selectedValueType" : '$(this).val()'
+    }
+};
 
 $("#id_sizeVariation").change(function() {
     $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
     sizesFieldSet.removeClass("hidden");
-    var sizeType;
-    var sizeTemplateClass;
-    var sizeSelectionClass;
-    var selectedValueType;
-    sizeType = sizeTypeStringFromNum(selectedValue[0].value);
-    switch (selectedValue[0].value) {
-        case "1":
-            sizeTemplateClass = ".sizeSetSelectionTemplate";
-            sizeSelectionClass = ".sizeSetSelection";
-            selectedValueType = $("option:selected", this);
-            break;
-        case "2":
-            sizeTemplateClass = ".sizeDimensionSelectionTemplate";
-            sizeSelectionClass = ".sizeDimensionSelection";
-            selectedValueType = $(this).val();
-            break;
-        case "3":
-            sizeTemplateClass = ".sizeNumberSelectionTemplate";
-            sizeSelectionClass = ".sizeNumberSelection";
-            selectedValueType = $(this).val();
-            break;
-    }
-    RemoveWrongSizeTypes(sizeType);
-    addNewSizeRow(sizeType);
+    var sizeType = selectedValue[0].value;
+    var sizeTypeString = sizeTypeStringFromNum(sizeType);
+    var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
+    var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
+    var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
+
+
+    RemoveWrongSizeTypes(sizeTypeString);
+    addNewSizeRow(sizeTypeString);
+    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+});
+
+
+
+function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
 
@@ -298,23 +309,23 @@ $("#id_sizeVariation").change(function() {
             addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
         }
 
-        var selectedValue = selectedValueType;
+        var selectedValue = eval(selectedValueType);
         var sizesFieldSet = $("#sizesFieldSet");
         if (selectedValue[0].value != "0") {
             if($(this).closest('.accordion-group').next().length == "0") {
                 //Add a new size set row
                 $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
-                addNewSizeRow(sizeType);
+                addNewSizeRow(sizeTypeString);
             }
         }
-    })
+    });
     //Color event handling (Add a new color/quantity row for more color/quantity selection)
     sizesFieldSet.on("change", ".row-color", function(e) {
-        var selectedValue = selectedValueType;
+        var selectedValue = eval(selectedValueType);
         var sizesFieldSet = $("#sizesFieldSet");
         var editorPanelHeight;
         var currentPanel;
-        editorPanelHeight = .85
+        editorPanelHeight = .85;
         maxHeight = $(window).height()*editorPanelHeight;
         if (selectedValue[0].value != 0) {
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
@@ -325,7 +336,7 @@ $("#id_sizeVariation").change(function() {
             }
         }
     })
-});
+}
 
 function addNewSizeRow(sizeType) {
     var sizeTemplateName;
@@ -470,20 +481,30 @@ function sizeTypeStringFromNum(num) {
 function populateProductVariantsInfo() {
 
     $.getJSON("{{ request.get_full_path }}/getVariants/size", function(data) {
-        var sizeType = sizeTypeStringFromNum(data["sizetype"]);
+        var sizeType = data["sizetype"];
+        var sizeTypeString = sizeTypeStringFromNum(sizeType);
+        var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
+        var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
+        var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
 
-        $("#sizesFieldSet").removeClass("hidden");
+
+        var sizesFieldSet = $("#sizesFieldSet");
+        sizesFieldSet.removeClass("hidden");
+        wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
 
         $.each(data.variants, function(key, value) {
 
-            var sizeRow = addNewSizeRow(sizeType);
-            populateInitialDataForSizeRow(sizeRow, sizeType, key);
-            $.each(value, function(key, value) {
-                var colorQuantityRow = addNewColorAndQuantityRow(sizeRow.attr("id") + "_", sizeRow.find("tbody"));
+            var sizeRow = addNewSizeRow(sizeTypeString);
+            populateInitialDataForSizeRow(sizeRow, sizeTypeString, key);
+            addNewSizeRow(sizeTypeString);
+            $.each(value, function (key, value) {
+                var prefix = sizeRow.attr("id") + "_";
+                var appendTo = sizeRow.find("tbody");
+                var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
                 populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
+                addNewColorAndQuantityRow(prefix, appendTo);
+
             });
-
-
         });
 
 
