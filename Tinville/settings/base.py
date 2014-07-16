@@ -229,6 +229,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+OSCAR_DEFAULT_CURRENCY = '$'
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'www.tinville.com']
 
 STATIC_DIRECTORY = '/static/'

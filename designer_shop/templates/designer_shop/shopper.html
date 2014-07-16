@@ -113,12 +113,12 @@
                 {% purchase_info_for_product request product as session %}
                 {% if product.is_top_level %}
                   <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
-                      <div class="thumbnail shopItem shopBorderColor ">
+                      <div class="thumbnail shopItem shopBorderColor">
                         {% if product.primary_image and product.primary_image.original.url %}
                             {% with image=product.primary_image %}
                                 {% thumbnail image.original "200x250" upscale=False as thumb %}
-                                <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class=" sub-image">
-                                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="" style="height: 200px; width: 250px;" />
+                                <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive"/>
                                 </a>
                                 {% endthumbnail %}
                             {% endwith %}
@@ -127,7 +127,7 @@
                         {% endif %}
 
                       <div class="caption">
-                          <span class="name ">{{product.get_title}}</span>
+                          <a class="name " href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
                           <span class="price "> ${{session.price.excl_tax}}</span>
                           <span class="">
                               {% if not session.availability.is_available_to_buy %}
@@ -151,9 +151,6 @@
   <div class="navTab tab-pane" id="about">{{ shop.aboutContent | safe }}</div>
   <div class="navTab tab-pane" id="landing"><p>Stuff for Landing</p></div>
 </div>
-
-
-
 
 {% endblock %}
 
