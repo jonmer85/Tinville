@@ -335,7 +335,7 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
     });
     //Color event handling (Add a new color/quantity row for more color/quantity selection)
     sizesFieldSet.on("change", ".row-color", function(e) {
-        var selectedValue = eval(selectedValueType);
+        var selectedValue = $("option:selected", this);
         var sizesFieldSet = $("#sizesFieldSet");
         var editorPanelHeight;
         var currentPanel;
@@ -345,7 +345,7 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
             if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
                 addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
-                currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest('.sizeSetSelectionTemplate').next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
+                currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
                 $('#formContent').animate({scrollTop: currentPanel  }, 500);
             }
         }
