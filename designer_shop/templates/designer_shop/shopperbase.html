@@ -7,15 +7,6 @@
 {% endblock css %}
 {% block content %}
     {{ block.super }}
-
-{#    <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>#}
-{#    need to add something if a designer does not have a banner#}
-{#    this will be decribed at a later time#}
-
-{#  <div class="container">#}
-{#    <div class="row">#}
-    
-
       {% if shop.banner and shop.logo %}
           <div class="shopBanner img-responsive full-screen ">
               <img id="id_BannerImage" class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
