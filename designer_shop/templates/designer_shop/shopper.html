@@ -36,32 +36,6 @@
           </div>
       {% endif %}
 
-
-      <div class="infoBanner full-screen shopBackgroundColor"></div>
-
-    <div class="container">
-
-
-        {% if user.email == shop.user.email%}
-            <div id="editLink" class="col-xs-1">
-                <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
-            </div>
-        {% endif %}
-
-        <div class="panel panel-default col-xs-11">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a id="collapseOneTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="">
-                  {{ shop }} Bio
-                </a>
-              </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse">
-              <div class="panel-body" id="aboutLocation">
-                  <div class="container aboutContent col-xs-12">
-                       {{ shop.aboutContent | safe }}
-                  </div>
-
     <!-- Nav tabs -->
 <ul class="nav nav-tabs shopBackgroundColor" role="tablist">
   <li class="active"><a href="#shop" role="tab" data-toggle="tab">Home</a></li>
@@ -180,7 +154,6 @@
     $("#tinvilleTagBanner").css("margin-top", "0px");
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
-
 
     </script>
 
