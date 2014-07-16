@@ -299,6 +299,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
 
     form = None
+    item = get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None
     if request.method == 'POST':
         if request.POST.__contains__('bannerUploadForm'):
             form = BannerUploadForm(request.POST, request.FILES)
@@ -316,13 +317,16 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             if request.method == 'POST':
                 sizeVariationType = request.POST["sizeVariation"]
                 sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                if item is None:
+                    form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                else:
+                    form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None, sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop)
                     form = ProductCreationForm()
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
-        return renderShopEditor(request, shop, item=get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None)
+        return renderShopEditor(request, shop, item=item)
 
 @IsShopOwnerDecoratorUsingItem
 def delete_product(request, shop_slug, item_slug):
