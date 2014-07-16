@@ -1,31 +1,12 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "designer_shop/shopperbase.html" %}
 {% load thumbnail %}
-{% load purchase_info_tags %}
+
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
 {% block content %}
     {{ block.super }}
-        {% if shop.banner and shop.logo %}
-            <div class="shopBanner img-responsive full-screen ">
-                <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-                <img class="shopLogoDiv" src="{{shop.logo.url}}" />
-            </div>
-        {% elif not shop.banner and shop.logo %}
-            <div class="shopBanner full-screen shopBackgroundColor">
-                <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
-            </div>
-        {% elif shop.banner and not shop.logo %}
-            <div>
-                <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
-            </div>
-        {% else %}
-            <div class="shopBanner full-screen shopBackgroundColor"></div>
-        {% endif %}
-
     <div class="container">
         <div class="shopItem col-xs-12">
             <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
@@ -115,13 +96,6 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
-    $("#tinvilleTagBanner").css("height", "50px");
-    $("#tinvilleTagBanner").css("top", "0px");
-    $("#tinvilleTagBanner").css("margin-top", "0px");
-    $(".shopColor").css("color", "{{ shop.color }}");
-    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
-
     refreshvariants();
 
     var myresponse;

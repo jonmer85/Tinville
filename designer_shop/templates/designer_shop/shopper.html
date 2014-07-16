@@ -1,40 +1,14 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "designer_shop/shopperbase.html" %}
 {% load thumbnail %}
 {% load purchase_info_tags %}
+
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
 {% block content %}
     {{ block.super }}
 
-{#    <a href="/"><img id="tinyTinvillelogo" class="pull-left" src="{{ STATIC_URL }}img/tinyTinvillelogo.png"></a>#}
-{#    need to add something if a designer does not have a banner#}
-{#    this will be decribed at a later time#}
-
-{#  <div class="container">#}
-{#    <div class="row">#}
-    
-
-      {% if shop.banner and shop.logo %}
-          <div class="shopBanner img-responsive full-screen ">
-              <img id="id_BannerImage" class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-              <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />
-          </div>
-      {% elif not shop.banner and shop.logo %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
-          </div>
-      {% elif shop.banner and not shop.logo %}
-          <div>
-            <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
-          </div>
-      {% else %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-          </div>
-      {% endif %}
 
     <!-- Nav tabs -->
 <ul class="nav nav-tabs shopBackgroundColor" role="tablist">
@@ -147,15 +121,6 @@
 
 {% block javascript %}
     {{ block.super }}
-    <script>
-
-    $("#tinvilleTagBanner").css("height", "50px");
-    $("#tinvilleTagBanner").css("top", "0px");
-    $("#tinvilleTagBanner").css("margin-top", "0px");
-    $(".shopColor").css("color", "{{ shop.color }}");
-    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
-
-    </script>
-
+    <script></script>
 {% endblock %}
 
