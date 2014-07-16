@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
+from oscar.apps.catalogue.models import ProductImage as ProductImages
 from django.core.urlresolvers import reverse
 
 
@@ -42,14 +43,9 @@ class IsShopOwnerDecorator(object):
     def __call__(self, request, shop_slug):
         return self.authenticate(request, shop_slug, None)
 
-
-
 class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
     def __call__(self, request, shop_slug, item_slug):
         return self.authenticate(request, shop_slug, item_slug)
-
-
-
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
@@ -64,6 +60,7 @@ def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
     variants = get_list_or_empty(Product, parent=item.id)
+    images = get_list_or_empty(ProductImages, product_id=item.id)
     colorlist = []
     for variant in variants:
         colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)
@@ -78,6 +75,7 @@ def itemdetail(request, shop_slug, item_slug=None):
         'variants': variants,
         'validcolors': colorset,
         'colorsizequantity': colorsizequantity,
+        'images': images,
         # What what in the butt (Tom Bowman) 6-22-14
     })
 
@@ -161,7 +159,7 @@ def get_variants(item, group=None):
             quantitysize = groupdict
             colorsizequantitydict[mysort].append(quantitysize)
 
-    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict}
+    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
 
 def get_sizetype(variants):
@@ -174,9 +172,13 @@ def get_sizetype(variants):
            return SIZE_NUM
        return "0"
 
+def get_min_price(item):
+    return str(item.min_variant_price_excl_tax)
+
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    # if request.is_ajax():
     return HttpResponse(get_variants(item, group_by), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
@@ -326,7 +328,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
     else:
         return renderShopEditor(request, shop, item=item)
 
-
-def delete_product(request, id):
-    product = Product.objects.get(pk=id).delete()
-    return HttpResponseRedirect(reverse('designer_shop.views.shopeditor'))
+@IsShopOwnerDecoratorUsingItem
+def delete_product(request, shop_slug, item_slug):
+    item = get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True)
+    product = Product.objects.get(pk=item.id).delete()
+    return redirect('designer_shop.views.shopeditor', shop_slug)

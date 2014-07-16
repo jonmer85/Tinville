@@ -7,6 +7,7 @@ from oscar.core.loading import get_model
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
 from crispy_forms.bootstrap import PrependedText
+from south.orm import _FakeORM
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
@@ -14,14 +15,16 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
+from parsley.decorators import parsleyfy
+
 
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
-
+@parsleyfy
 class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
-
+    title = forms.CharField(label="title",max_length=80)
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -116,6 +119,7 @@ class ProductCreationForm(forms.ModelForm):
         variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
+        variantProduct.description = None
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
@@ -360,3 +364,4 @@ class LogoUploadForm(forms.Form):
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
         ))
+

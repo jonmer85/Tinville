@@ -12,6 +12,7 @@
     <div>
         {% if product and product.is_top_level %}
             <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
+            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
         {% endif %}
     </div>
 {% endblock %}
@@ -67,7 +68,7 @@
                                  {%  load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                            <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
                                 {%  load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
@@ -87,9 +88,10 @@
 
 {% endblock %}
 
-{% block javascript_library %}l
+{% block javascript_library %}
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
 
 {% endblock javascript_library %}
 
@@ -168,13 +170,25 @@
                 });
         });
 
+$(document).ready(function () {
+  $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
+
+    // if one of these blocks is not failing do not prevent submission
+    // we use here group validation with option force (validate even non required fields)
+    if (formInstance.isValid()) {
+        $("input[type=submit]").attr("disabled", "disabled");
+        return;
+    }
+    // else stop form submission
+    formInstance.submitEvent.preventDefault();
 
 
-$("#submit-id-productcreationform").click(function() {
-    this.disabled = true;
-    this.form.submit();
+    return;
+  });
+
 
 });
+
 
 var htmlString = "<div>\
   This is a string.\
