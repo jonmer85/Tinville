@@ -98,9 +98,23 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+
+
+        $('#id_product_image').change
+        (
+                function()
+                {
+                    if( $("#id_product_Image1" ).css( "visibility", "hidden" ).is( ":hidden" ) == true )
+                    {
+                        $("#id_productImage1" ).show() ;
+                    }
+                }
+        )
+
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
+
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();

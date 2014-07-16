@@ -38,10 +38,10 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
-        self.fields['product_image'] \
-            = forms.ImageField(required=False)
-
-
+        self.fields['product_image'] = forms.ImageField(required=False)
+        self.fields['product_image1'] = forms.ImageField(required=False)
+        self.fields['product_image2'] = forms.ImageField(required=False)
+        self.fields['product_image3'] = forms.ImageField(required=False)
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
@@ -55,7 +55,10 @@ class ProductCreationForm(forms.ModelForm):
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
-                         'product_image',
+                         Field( 'product_image', css_id="id_productImage" ),
+                         Field( 'product_image1', css_id="id_productImage1"),
+                         Field( 'product_image2', css_id="id_productImage2"),
+                         Field( 'product_image3', css_id="id_productImage3")
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -166,6 +169,9 @@ class ProductCreationForm(forms.ModelForm):
         canonicalProduct.save()
         productImage = ProductImage(product=canonicalProduct)
         productImage.original = self.cleaned_data['product_image']
+        productImage.original = self.cleaned_data['product_image1']
+        productImage.original = self.cleaned_data['product_image2']
+        productImage.original = self.cleaned_data['product_image3']
         productImage.save()
 
         i = 0
