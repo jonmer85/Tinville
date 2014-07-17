@@ -17,6 +17,7 @@ from django.core.validators import RegexValidator
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 from parsley.decorators import parsleyfy
 
+
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
 
 @parsleyfy
@@ -66,7 +67,7 @@ class ProductCreationForm(forms.ModelForm):
                              Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
                          ,
                          css_class="accordion", css_id="accordion2"),
-                Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
+                Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
                 css_class="container col-xs-12 col-lg-8",
                 css_id="addItemEditor"
             )
@@ -91,9 +92,9 @@ class ProductCreationForm(forms.ModelForm):
 
                 elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeX"])
+                        = forms.DecimalField(initial=sizes[i]["sizeX"])
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeY"])
+                        = forms.DecimalField(initial=sizes[i]["sizeY"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -104,7 +105,7 @@ class ProductCreationForm(forms.ModelForm):
 
                 elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
                     self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeNum"])
+                        = forms.DecimalField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -113,12 +114,15 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
+
+
+    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = canonical
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
-        variantProduct.parent_id = canonical.id
+        variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
+        variantProduct.description = None
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
@@ -143,23 +147,22 @@ class ProductCreationForm(forms.ModelForm):
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
 
-    def clean(self):
-        cleaned_data = super(ProductCreationForm, self).clean()
-        # do your custom validations / transformations here
-        # and some more
-        return cleaned_data
 
     def clean_title(self):
         title = self.cleaned_data['title']
-        products = get_model('catalogue', 'product')
+        products = get_model('catalogue', 'Product')
+
+        if self.instance.pk and self.get_value_from_instance("title") == title:
+            return title  # Ok to have the same title if this is an edit
 
         try:
-            products.objects.get(title__iexact=title,parent__isnull=True)
+            products.objects.get(title__iexact=title, parent__isnull=True)
         except ObjectDoesNotExist:
             return title
         raise forms.ValidationError('Item name already exist.')
 
     def save(self, shop):
+        is_edit = self.instance.pk is not None
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
@@ -173,6 +176,17 @@ class ProductCreationForm(forms.ModelForm):
         productImage.original = self.cleaned_data['product_image2']
         productImage.original = self.cleaned_data['product_image3']
         productImage.save()
+        canonicalId = canonicalProduct.id
+        if is_edit:
+            # Remove all variants since they will get recreated below
+            get_model('catalogue', 'Product').objects.get(parent=canonicalId).delete()
+
+
+        if not is_edit:
+            # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
+            productImage = ProductImage(product=canonicalProduct)
+            productImage.original = self.cleaned_data['product_image']
+            productImage.save()
 
         i = 0
         while True:
@@ -184,11 +198,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet)
                         break
                     j += 1
                 i += 1
@@ -203,11 +217,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
                                                                         "y": sizeDimY}, color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
                                                                                                     "y": sizeDimY})
                         break
                     j += 1
@@ -220,11 +234,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId,  shop, sizeNum=sizeNum)
                         break
                     j += 1
                 i += 1
@@ -246,7 +260,7 @@ class ProductCreationForm(forms.ModelForm):
         return "0"
 
     def get_value_if_in_edit_mode(self, field_name, default):
-        if not self.instance or not self.instance.is_group:
+        if not self.instance.pk or not self.instance.is_group:
             return default
         return self.get_value_from_instance(field_name)
 
@@ -358,3 +372,4 @@ class LogoUploadForm(forms.Form):
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
         ))
+

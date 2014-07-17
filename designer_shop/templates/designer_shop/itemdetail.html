@@ -1,45 +1,197 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "designer_shop/shopperbase.html" %}
 {% load thumbnail %}
-{% load purchase_info_tags %}
+
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
 {% block content %}
     {{ block.super }}
+    <div class="container">
+        <div class="shopItem col-xs-12">
+            <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
+                {{ item.title }}
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="itemSelectedImage col-sm-12 col-md-10 col-xs-12">
+                    {% if item.primary_image and item.primary_image.original.url %}
+                        {% with image=item.primary_image %}
+                            {% thumbnail image.original "400x500" upscale=True as thumb %}
+                            <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage"/>
+                            </a>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    {% else %}
+                            -
+                    {% endif %}
+                </div>
+                <div class="otherItemImages col-xs-12 col-sm-12 col-md-2">
+                    {% for image in images %}
+                        {% if not image.is_primary %}
+                            {% thumbnail image.original "100x125" upscale=True as thumb %}
+                            <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
+                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                </a>
+                            </div>
+                            {% endthumbnail %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
 
-      {% if shop.banner and shop.logo %}
-          <div class="shopBanner img-responsive full-screen ">
-              <img class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-              <img class="shopLogoDiv" src="{{shop.logo.url}}" />
-          </div>
-      {% elif not shop.banner and shop.logo %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
-          </div>
-      {% elif shop.banner and not shop.logo %}
-          <div>
-            <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
-          </div>
-      {% else %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-          </div>
-      {% endif %}
-
-{% endblock %}
+            <div class="itemPrice center col-xs-12 visible-xs">
+                From $ {{ item.min_variant_price_excl_tax }}
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div>
+                    <div class="itemTitle hidden-xs">
+                        {{ item.title }}
+                    </div>
+                    <div class="itemPrice hidden-xs">
+                        From $ {{ item.min_variant_price_excl_tax }}
+                    </div>
+                    <div class="itemColorSelection itemDetailBox col-xs-6">
+                        <select id="itemColorSelection" class="form-control selectpicker">
+                            <option value="Choose a Color"><i>Choose a Color</i></option>
+                        </select>
+                    </div>
+                    <div class="itemSizeSelection itemDetailBox col-xs-6">
+                        <select id="itemSizeSelection" class="form-control selectpicker">
+                            <option value="Choose a Size"><i>Choose a Size</i></option>
+                        </select>
+                    </div>
+                    <div class="itemBuyQuantity itemDetailBox col-sm-3">
+                        <label for="buyQuantity">Quantity:</label>
+                        <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
+                    </div>
+                    <div class="itemStockQuantity col-xs-12"></div>
+                    <div class="addToCart col-xs-12">
+                        <input type="submit" name="addItemToCart" value="Add to Cart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">
+                    </div>
+                    <div class="itemDescription col-xs-12">
+                        {{ item.description | safe }}
+                    </div>
+                    <div class="sharingiscaring col-xs-12">
+                        <div class="shareMeTitle">Share This Item</div>
+                        <div class="socialMediaLinks">
+                            <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" class="pull-right facebooklogo">
+                                <img id="facebooklogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/facebook-idle.png" style="">
+                            </a>
+                            <a id="twitterLink" href="www.twitter.com" class="pull-right twitterlogo">
+                                <img id="twitterlogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/twitter-idle.png">
+                            </a>
+                            <a id="pinterestLink" href="www.pinterest.com>" class="pull-right pinterestlogo">
+                                <img id="pinterestlogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/pinterest-idle.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content%}
 
 {% block javascript %}
     {{ block.super }}
     <script>
+    refreshvariants();
 
-    $("#tinvilleTagBanner").css("height", "50px");
-    $("#tinvilleTagBanner").css("top", "0px");
-    $("#tinvilleTagBanner").css("margin-top", "0px");
-    $(".shopColor").css("color", "{{ shop.color }}");
-    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    var myresponse;
+    function refreshvariants() {
+        myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
+            var colorlist = [];
+            $('option[value="Choose a Color"]').attr('disabled', false);
+            colorlist.push('<option value="Choose a Color"><i>Choose a Color</i></option>');
+            $.each(data.variants, function(key)
+            {
+                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
+            });
+            var currentcolor = $('#itemColorSelection').val();
+            $('#itemColorSelection').html(colorlist.join(''));
+            $('#itemColorSelection').val(currentcolor);
+            $('option[value="Choose a Color"]').attr('disabled', true);
+            updateQuantityPrice();
+        });
+    }
+    setInterval(refreshvariants, 60000);
 
+    $("#itemColorSelection").change(function() {
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var sizelist = [];
+            if (key === $("#itemColorSelection").val())
+            {
+                var currentsize = ""
+                sizelist.push('<option selected="selected" disabled="disabled" value="Choose a Size"><i>Choose a Size</i></option>');
+                $.each(val, function() {
+                    if (this.quantity <= 0)
+                    {
+                        sizelist.push('<option disabled="disabled" value="' + this.size + '">'+ this.size +'</option>')
+                    }
+                    else
+                    {
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>');
+                    }
+                    if (this.size === $('#itemSizeSelection').val() && this.quantity !== 0)
+                    {
+                        currentsize = $('#itemSizeSelection').val();
+                    }
+                });
+                if (currentsize === "")
+                {
+                    currentsize = "Choose a Size"
+                }
+                $('#itemSizeSelection').html(sizelist.join(''));
+                $('#itemSizeSelection').val(currentsize);
+                return false;
+            }
+        });
+    });
+
+    var updateQuantityPrice = function() {
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var variantprice = ""
+            var variantquantity = ""
+            var numberquantity = ""
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    if (this.size === $("#itemSizeSelection").val())
+                    {
+                        variantprice = '$' + this.price
+                        variantquantity = this.quantity + " remaining"
+                        numberquantity = this.quantity
+                    }
+                });
+                if (variantprice === "")
+                {
+                    variantprice = 'From $ ' + myresponse.responseJSON.minprice;
+                }
+                if (numberquantity === "")
+                {
+                    numberquantity = "1"
+                }
+                $('.itemPrice').text(variantprice);
+                $('.itemStockQuantity').text(variantquantity);
+                $('#buyQuantity').attr('max', numberquantity)
+                return false
+            }
+            if (variantprice === "")
+            {
+                variantprice = 'From $ ' + myresponse.responseJSON.minprice;
+                $('.itemPrice').text(variantprice);
+            }
+        });
+    }
+
+    $("#itemSizeSelection").change(updateQuantityPrice);
+
+    $("#itemColorSelection").change(updateQuantityPrice);
+
+    $(".otherImage").click(function (){
+
+    });
 
     </script>
 
