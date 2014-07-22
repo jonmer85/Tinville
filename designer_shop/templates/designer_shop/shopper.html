@@ -12,14 +12,14 @@
 
     <!-- Nav tabs -->
 <ul class="nav nav-tabs shopBackgroundColor" role="tablist">
-  <li class="active shopTabStyle"><a href="#shop" role="tab" data-toggle="tab"z>Home</a></li>
-  <li class="shopTabStyle"><a href="#about" role="tab" data-toggle="tab">About</a></li>
-  <li class="shopTabStyle"><a href="#landing" role="tab" data-toggle="tab">Landing</a></li>
+  <li class="active shopTabStyle"><a href="#shopTab" role="tab" data-toggle="tab"z>Home</a></li>
+  <li class="shopTabStyle"><a href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
+  <li class="shopTabStyle"><a href="#landingTab" role="tab" data-toggle="tab">Landing</a></li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content ">
-  <div class="navTab tab-pane active" id="shop">
+  <div class="navTab tab-pane active" id="shopTab">
                 {% if user.email == shop.user.email%}
                     <div id="editLink" class="col-xs-1">
                         <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
@@ -113,8 +113,8 @@
         </div>
 
   </div>
-  <div class="navTab tab-pane" id="about">{{ shop.aboutContent | safe }}</div>
-  <div class="navTab tab-pane" id="landing"><p>Stuff for Landing</p></div>
+  <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
+  <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
 </div>
 
 {% endblock %}
