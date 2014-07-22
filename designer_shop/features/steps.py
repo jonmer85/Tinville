@@ -136,11 +136,6 @@ def then_the_color_picker_wheel_is_displayed(step):
     assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
     assert_id_exists('id_color-colorpicker')
 
-@step(u'Then the color picker wheel is displayed')
-def then_the_color_picker_wheel_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
-    assert_id_exists('id_color-colorpicker')
-
 @step(u'And the Create button is displayed')
 def and_the_create_button_is_displayed(step):
     assert_id_exists('shopColorPicker')
@@ -150,7 +145,6 @@ def and_a_color_is_submitted(step):
     color_picker = world.browser.find_element_by_id("color")
     world.browser.find_element_by_id("id_color").clear()
     color_picker.find_element_by_name("color").send_keys("#fb1c0e")
-    world.browser.find_element_by_id("resizeIcon").click()
     wait_for_element_with_id_to_be_displayed("shopColorPicker")
     world.browser.find_element_by_id("shopColorPicker").click()
     wait_for_ajax_to_complete()
@@ -179,13 +173,13 @@ def and_the_submit_logo_button_is_displayed(step):
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys('/images/logo2.jpg')
+    logo_uploader.send_keys(os.path.join(MEDIA_ROOT, "images/logo2.jpg"))
     wait_for_element_with_id_to_be_displayed("id_SubmitLogo")
     world.browser.find_element_by_id("id_SubmitLogo").click()
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/banner/logo2.jpg')
+    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2.jpg')
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
@@ -205,7 +199,7 @@ def and_the_submit_banner_button_is_displayed(step):
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys('/images/banner2.jpg')
+    bannerUploader.send_keys(os.path.join(MEDIA_ROOT, '/images/banner2.jpg'))
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 
@@ -247,12 +241,12 @@ def the_about_content_is_saved(step):
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addItems"]').click()
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addItems"]')
+    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
+    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addOrEditItem"]')
 
 @step(u'Then the add item form is displayed')
 def then_the_add_item_form_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#addItems.tab-pane.active')
+    assert world.browser.find_element_by_css_selector('#addOrEditItem.tab-pane.active')
     assert world.browser.find_element_by_css_selector("#id_title").is_displayed()
 
 @step(u'And the tinville orange color f46430 is submitted')
@@ -260,7 +254,7 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
     color_picker = world.browser.find_element_by_id("color")
     world.browser.find_element_by_id("id_color").clear()
     color_picker.find_element_by_name("color").send_keys("#f46430")
-    world.browser.find_element_by_id("resizeIcon").click()
+    # world.browser.find_element_by_id("minMaxIcon").click()
     wait_for_element_with_id_to_be_displayed("shopColorPicker")
     world.browser.find_element_by_id("shopColorPicker").click()
     wait_for_ajax_to_complete()
@@ -272,22 +266,12 @@ def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step)
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
-    sign_in()
-
-# Utilities
-
-def sign_in():
-    login_menu = world.browser.find_element_by_id("lg-menuLogin")
-    login_menu.find_element_by_link_text("SIGN IN").click()
-    login_menu.find_element_by_name("username").send_keys(world.user_info["email"])
-    login_menu.find_element_by_name("password").send_keys(world.user_info["password"])
-    login_menu.find_element_by_name("submit").click()
-    wait_for_ajax_to_complete()
+    sign_in('demo@user.com', 'tinville')
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
     world.browser.maximize_window()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
-    world.browser.find_element_by_id("resizeIcon").click()
+    world.browser.find_element_by_id("minMaxIcon").click()
     world.browser.find_element_by_name("title").send_keys("Test item")
     # TinyMCE uses iframes so need to use their javascript API to set the content
     world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test Item Description</h1>')")

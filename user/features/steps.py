@@ -66,7 +66,7 @@ def submit_form_and_activate_user(form):
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
-    sign_in()
+    sign_in_local()
 
 
 @step(u'When I fill in the login screen with email "([^"]*)" and password "([^"]*)"')
@@ -75,7 +75,7 @@ def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
         "email": email,
         "password": password,
     }
-    sign_in()
+    sign_in_local()
 
 
 
@@ -130,7 +130,7 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 
 # Utilities
 
-def sign_in():
+def sign_in_local():
     sign_in(world.user_info["email"], world.user_info["password"])
 
 
