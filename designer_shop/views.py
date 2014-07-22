@@ -1,8 +1,13 @@
 import json
+import collections
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.db import models
+from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
+from oscar.apps.partner.models import StockRecord as StockRecords
+from oscar.apps.catalogue.models import ProductImage as ProductImages
 from django.core.urlresolvers import reverse
 
 
@@ -12,7 +17,7 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
     LogoUploadForm
 from catalogue.models import Product
 
-from common.utils import get_list_or_empty
+from common.utils import get_list_or_empty, get_or_none
 from functools import wraps
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
@@ -38,15 +43,9 @@ class IsShopOwnerDecorator(object):
     def __call__(self, request, shop_slug):
         return self.authenticate(request, shop_slug, None)
 
-
-
 class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
-
     def __call__(self, request, shop_slug, item_slug):
         return self.authenticate(request, shop_slug, item_slug)
-
-
-
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
@@ -57,6 +56,28 @@ def shopper(request, slug):
         # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
+def itemdetail(request, shop_slug, item_slug=None):
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+    item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    variants = get_list_or_empty(Product, parent=item.id)
+    images = get_list_or_empty(ProductImages, product_id=item.id)
+    colorlist = []
+    for variant in variants:
+        colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)
+        colorlist.append(colorattribute.value_as_text)
+    colorset = set(colorlist)
+
+    colorsizequantity = get_variants(item)
+
+    return render(request, 'designer_shop/itemdetail.html', {
+        'shop': shop,
+        'item': item,
+        'variants': variants,
+        'validcolors': colorset,
+        'colorsizequantity': colorsizequantity,
+        'images': images,
+        # What what in the butt (Tom Bowman) 6-22-14
+    })
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
@@ -65,7 +86,6 @@ def shopeditor(request, shop_slug):
 @IsShopOwnerDecoratorUsingItem
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
-
 
 @IsShopOwnerDecorator
 def ajax_about(request, slug):
@@ -91,6 +111,75 @@ def ajax_color(request, slug):
 
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
+def get_variants(item, group=None):
+    variants = get_list_or_empty(Product, parent=item.id)
+
+    if group is None:
+        colorsizequantitydict = []
+    else:
+        colorsizequantitydict = collections.defaultdict(list)
+
+    for variant in variants:
+        color = ""
+        sizeSet = ""
+        sizeX = ""
+        sizeY = ""
+        sizeNum = ""
+        divider = ""
+        quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
+        price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
+        currency = get_or_none(StockRecords, product_id=variant.id).price_currency
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
+            color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
+            sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
+            sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=3) != None:
+            sizeY = get_or_none(Attributes, product_id=variant.id, attribute_id=3).value_as_text
+
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
+            sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
+
+        if sizeX != "" and sizeY != "":
+            divider = " x "
+        variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+
+        if group is None:
+            quantitysize = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            colorsizequantitydict.append(quantitysize)
+        else:
+            groupdict = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            mysort = groupdict[group]
+            groupdict.pop(group)
+            quantitysize = groupdict
+            colorsizequantitydict[mysort].append(quantitysize)
+
+    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
+    return json.dumps(addsizetype)
+
+def get_sizetype(variants):
+    for variant in variants:
+       if hasattr(variant.attr, 'size_set'):
+           return SIZE_SET
+       elif hasattr(variant.attr, 'size_dimension_x') or hasattr(variant.attr, 'size_dimension_y'):
+           return SIZE_DIM
+       elif hasattr(variant.attr, 'size_number'):
+           return SIZE_NUM
+       return "0"
+
+def get_min_price(item):
+    return str(item.min_variant_price_excl_tax)
+
+def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+    item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    # if request.is_ajax():
+    return HttpResponse(get_variants(item, group_by), mimetype='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
@@ -210,6 +299,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
 
     form = None
+    item = get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None
     if request.method == 'POST':
         if request.POST.__contains__('bannerUploadForm'):
             form = BannerUploadForm(request.POST, request.FILES)
@@ -227,15 +317,19 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             if request.method == 'POST':
                 sizeVariationType = request.POST["sizeVariation"]
                 sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                if item is None:
+                    form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                else:
+                    form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None, sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop)
                     form = ProductCreationForm()
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
-        return renderShopEditor(request, shop, item=get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None)
+        return renderShopEditor(request, shop, item=item)
 
-
-def delete_product(request, id):
-    product = Product.objects.get(pk=id).delete()
-    return HttpResponseRedirect(reverse('designer_shop.views.shopeditor'))
+@IsShopOwnerDecoratorUsingItem
+def delete_product(request, shop_slug, item_slug):
+    item = get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True)
+    product = Product.objects.get(pk=item.id).delete()
+    return redirect('designer_shop.views.shopeditor', shop_slug)

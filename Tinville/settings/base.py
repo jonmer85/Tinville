@@ -170,6 +170,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'crispy_forms',
     'braces',
+    'parsley',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
@@ -227,6 +228,8 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
     },
 }
+
+OSCAR_DEFAULT_CURRENCY = '$'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'www.tinville.com']
 

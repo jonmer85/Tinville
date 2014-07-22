@@ -26,6 +26,7 @@ django-fixture-media==0.1.4
 django-haystack==2.1.0
 django-mobile==0.3.0
 django-oscar==0.6.1
+django-parsley==0.5
 django-selenium==0.9.6
 django-storages==1.1.6
 django-tinymce==1.5.2
