@@ -3,6 +3,7 @@ from django import forms
 from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
@@ -12,7 +13,6 @@ from south.orm import _FakeORM
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
-from django.core.exceptions import ObjectDoesNotExist
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
 from parsley.decorators import parsleyfy
@@ -39,10 +39,11 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
-        self.fields['product_image'] \
-            = forms.ImageField(required=False)
-
-
+        self.fields['product_image'] = forms.ImageField(required=False)
+        self.fields['product_image1'] = forms.ImageField(required=False)
+        self.fields['product_image2'] = forms.ImageField(required=False)
+        self.fields['product_image3'] = forms.ImageField(required=False)
+        self.fields['product_image4'] = forms.ImageField(required=False)
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
@@ -56,7 +57,11 @@ class ProductCreationForm(forms.ModelForm):
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
-                         'product_image',
+                         Field( 'product_image', css_id="id_productImage" ),
+                         Field( 'product_image1', css_id="id_productImage1"),
+                         Field( 'product_image2', css_id="id_productImage2"),
+                         Field( 'product_image3', css_id="id_productImage3"),
+                         Field( 'product_image4', css_id="id_productImage4")
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -167,17 +172,38 @@ class ProductCreationForm(forms.ModelForm):
         # Jon M TBD - Right now we only use 1 product class - "Apparel"
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
+
         canonicalId = canonicalProduct.id
         if is_edit:
             # Remove all variants since they will get recreated below
             get_model('catalogue', 'Product').objects.get(parent=canonicalId).delete()
 
 
-        if not is_edit:
-            # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
-            productImage = ProductImage(product=canonicalProduct)
-            productImage.original = self.cleaned_data['product_image']
-            productImage.save()
+        #if not is_edit:
+        # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
+        productImage = ProductImage(product=canonicalProduct)
+        productImage1 = ProductImage(product=canonicalProduct)
+        productImage2 = ProductImage(product=canonicalProduct)
+        productImage3 = ProductImage(product=canonicalProduct)
+        productImage4 = ProductImage(product=canonicalProduct)
+
+        productImage.display_order = 1
+        productImage1.display_order = 2
+        productImage2.display_order = 3
+        productImage3.display_order = 4
+        productImage4.display_order = 5
+
+        productImage.original = self.cleaned_data['product_image']
+        productImage1.original = self.cleaned_data['product_image1']
+        productImage2.original = self.cleaned_data['product_image2']
+        productImage3.original = self.cleaned_data['product_image3']
+        productImage4.original = self.cleaned_data['product_image4']
+
+        productImage.save()
+        productImage1.save()
+        productImage2.save()
+        productImage3.save()
+        productImage4.save()
 
         i = 0
         while True:
