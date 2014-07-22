@@ -11,4 +11,4 @@ Feature: Designer Shop Banner Upload Selection
     Then the banner file upload is displayed
     And the submit banner button is displayed
     And a banner is submitted
-  The selected banner file is saved
+    The selected banner file is saved
