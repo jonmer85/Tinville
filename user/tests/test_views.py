@@ -9,7 +9,6 @@ from user.models import TinvilleUser
 from Tinville.settings.base import TIME_ZONE
 import re
 
-
 class RegistrationTest(TestCase):
     def setUp(self):
         self.registration_url = reverse('user.views.register')
@@ -46,7 +45,7 @@ class RegistrationTest(TestCase):
         })
         return TinvilleUser.objects.get(email=email)
 
-def ActivationTest(TestCase):
+class ActivationTest(TestCase):
     def setUp(self):
         self.user = TinvilleUser.objects.create()
 
