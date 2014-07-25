@@ -176,7 +176,7 @@ class ProductCreationForm(forms.ModelForm):
         canonicalId = canonicalProduct.id
         if is_edit:
             # Remove all variants since they will get recreated below
-            get_model('catalogue', 'Product').objects.get(parent=canonicalId).delete()
+            get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
 
 
         #if not is_edit:
