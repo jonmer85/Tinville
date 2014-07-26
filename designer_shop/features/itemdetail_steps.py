@@ -25,3 +25,14 @@ def when_i_click_on_the_item(step):
 @step(u'Then the item detail page is displayed')
 def then_the_item_detail_page_is_displayed(step):
     assert world.browser.current_url == step.scenario.context['itemurl'] + "/", world.browser.current_url + " does not equal " + step.scenario.context['itemurl']
+
+@step(u'Given I am on an item detail page')
+def given_i_am_on_an_item_detail_page(step):
+    step.behave_as("Given the demo shop")
+    step.behave_as("Given I have an item in the demo shop")
+    step.behave_as("When I click on the item")
+    step.behave_as("Then the item detail page is displayed")
+
+@step(u'Then I can see the following elements')
+def then_i_can_see_the_following_elements(step):
+    assert True

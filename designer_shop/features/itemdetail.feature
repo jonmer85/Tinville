@@ -11,6 +11,7 @@ Feature: Item Detail
         When I click on the item
         Then the item detail page is displayed
 
+    @wipitem
     Scenario: Visible the Item Detail page
         Given I am on an item detail page
         Then I can see the following elements
@@ -26,6 +27,7 @@ Feature: Item Detail
             | sharingiscaring    |
             | itemselectedimage  |
 
+    @wipitem
     Scenario: Default Values
         Given: I am on an item details page
         Then the default values for an item are as follows
@@ -33,11 +35,13 @@ Feature: Item Detail
             | itemSizeSelection | "Choose a Size" |
             | buyQuantity | 1 |
 
+    @wipitem
     Scenario: Select Color
         Given I am on an item detail page
         When I select the color Blue
         Then my itemColorSelection is Blue
 
+    @wipitem
     Scenario: Select Size
         Given I am on an item detail page
         When I try to select a size there are no options
@@ -45,6 +49,7 @@ Feature: Item Detail
         Then I should be
         Then
 
+    @wipitem
     Scenario: Select Quantity
         Given I am on an item detail page
 
