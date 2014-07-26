@@ -30,9 +30,9 @@
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
                             {% if editItemMode %}
-                            <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
+                                <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
                             {% else %}
-                            <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
+                                <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
                             {% endif %}
                         </li>
                         <li>
@@ -65,11 +65,11 @@
                                 {% crispy designerShopColorPicker %}
                             </form>
                             <form class="tab-pane" id="about" action="edit/ajax_about" method="post">
-                                 {%  load crispy_forms_tags %}
+                                 {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
                             <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
-                                {%  load crispy_forms_tags %}
+                                {% load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
                         </div>
@@ -713,13 +713,11 @@ $.each(json, function(containerId, href) {
     return $("#" + containerId + " a[href=" + href + "]").tab('show');
 });
 
-$(function(){
-    $("#optionContent").slimScroll({});
-});
 
-$(function(){
-    $("#formContent").slimScroll({});
-});
+$("#optionContent").slimScroll({});
+$("#formContent").slimScroll({});
+
+
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");

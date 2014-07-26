@@ -323,7 +323,7 @@ class AboutBoxForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('About',
-            Field('aboutContent', placeholder="Enter Text Here")),
+                    Field('aboutContent', placeholder="Enter Text Here")),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container"
         ))
