@@ -12,7 +12,7 @@
     <div>
         {% if product and product.is_top_level %}
             <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
-            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
+            <a id="deleteButtons" href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
         {% endif %}
     </div>
 {% endblock %}
@@ -692,6 +692,38 @@ function resizeEditor() {
         $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
     }
 }
+
+
+
+var jsonDel, delState;
+ $('.btn.btn-primary.tinvilleButton.pull-left').click(function(e){
+     var chevron, jsonDel, parentId, delState;
+     delState = sessionStorage.getItem("del-state");
+     jsonDel = JSON.parse(delState || "{}");
+     parentId = "editorPanels";
+     chevron = "false";
+     jsonDel[parentId] = chevron;
+
+     return sessionStorage.setItem("del-state", JSON.stringify(jsonDel));
+ });
+
+delState = sessionStorage.getItem("del-state");
+jsonDel = JSON.parse(delState || "{}");
+
+$(function() {
+    $.each(jsonDel, function (containerId, isHidden) {
+                if(isHidden === "false") {
+                    $("#minMaxIcon").removeClass("glyphicon-chevron-down");
+                    $("#minMaxIcon").addClass("glyphicon-chevron-up");
+                    sessionStorage.removeItem("del-state");
+                    return $("#" + containerId).collapse('hide');
+                }
+                else {
+                    return $("#" + containerId).collapse('show');
+                }
+            }
+    );
+});
 
 var json, tabsState;
 $('a[data-toggle="pill"]').click( function(e) {
