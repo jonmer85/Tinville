@@ -4,30 +4,11 @@ Feature: Item Detail
     I want to view a designer's shop and select an item
     and view it's detail. I should be able to select color, size and quantity
 
+    @wip
     Scenario: Navigate to Item Detail page
-        Given I am on the Demo Shop
-        Given I have a the following item in a shop
-            | attribute | value |
-            | Name      | "My Test Item" |
-            | Description | "This is my item description" |
-            | Price | "12.99" |
-            | Image1 | /media/image1 |
-            | Image2 | /media/image2 |
-            | Image3 | /media/image3 |
-            | Image4 | /media/image4 |
-            | Image5 | /media/image5 |
-            | SizeType | SizeSet |
-            | Size1 | SM |
-            | Color1 | Blue |
-            | Quantity1 | 5 |
-            | Color2 | Red |
-            | Quantity2 | 7 |
-            | Size2 | MD |
-            | Color1 | Yellow |
-            | Quantity1 | 15 |
-            | Color2 | Red |
-            | Quantity2 | 12 |
-        When I click on an item
+        Given the demo shop
+        Given I have an item in the demo shop
+        When I click on the item
         Then the item detail page is displayed
 
     Scenario: Visible the Item Detail page
@@ -59,6 +40,10 @@ Feature: Item Detail
 
     Scenario: Select Size
         Given I am on an item detail page
+        When I try to select a size there are no options
+        When I select a the Color Blue
+        Then I should be
+        Then
 
     Scenario: Select Quantity
         Given I am on an item detail page
