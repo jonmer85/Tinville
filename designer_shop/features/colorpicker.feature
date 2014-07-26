@@ -15,7 +15,6 @@ Feature: Designer Shop Color Selection
 
   @yori
   Scenario: AGW 214 - Colorpicker
-    When I sign in
     Given the demo shop editor
 	When the color tab is selected
 	Then the color picker wheel is displayed

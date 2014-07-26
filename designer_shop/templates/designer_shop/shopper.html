@@ -12,9 +12,9 @@
 
     <!-- Nav tabs -->
 <ul class="nav nav-tabs shopBackgroundColor" role="tablist">
-  <li class="active shopTabStyle"><a href="#shop" role="tab" data-toggle="tab"z>Home</a></li>
-  <li class="shopTabStyle"><a href="#about" role="tab" data-toggle="tab">About</a></li>
-  <li class="shopTabStyle"><a href="#landing" role="tab" data-toggle="tab">Landing</a></li>
+  <li class="activetab shopTabStyle"><a href="#shop" role="tab" data-toggle="tab">Home</a></li>
+  <li class = "shopTabStyle"><a href="#abouttab" role="tab" data-toggle="tab">About</a></li>
+  <li class="shopTabStyle"><a href="#landingtab" role="tab" data-toggle="tab">Landing</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -113,8 +113,8 @@
         </div>
 
   </div>
-  <div class="navTab tab-pane" id="about">{{ shop.aboutContent | safe }}</div>
-  <div class="navTab tab-pane" id="landing"><p>Stuff for Landing</p></div>
+  <div class="navTab tab-pane" id="abouttab">{{ shop.aboutContent | safe }}</div>
+  <div class="navTab tab-pane" id="landingtab"><p>Stuff for Landing</p></div>
 </div>
 
 {% endblock %}
