@@ -54,7 +54,7 @@
         "pk": 2,
         "fields": {
             "product": 1,
-            "original": "images/banner.jpg",
+            "original": "images/item.jpg",
             "display_order": 0,
             "date_created": "2014-06-28 18:03:32.910457"
         }
@@ -64,7 +64,7 @@
         "pk": 3,
         "fields": {
             "product": 1,
-            "original": "images/banner.jpg",
+            "original": "images/item.jpg",
             "display_order": 1,
             "date_created": "2014-06-28 18:03:32.910457"
         }
@@ -74,7 +74,7 @@
         "pk": 4,
         "fields": {
             "product": 1,
-            "original": "images/banner.jpg",
+            "original": "images/item.jpg",
             "display_order": 2,
             "date_created": "2014-06-28 18:03:32.910457"
         }
@@ -84,7 +84,7 @@
         "pk": 5,
         "fields": {
             "product": 1,
-            "original": "images/banner.jpg",
+            "original": "images/item.jpg",
             "display_order": 3,
             "date_created": "2014-06-28 18:03:32.910457"
         }
@@ -94,7 +94,7 @@
         "pk": 6,
         "fields": {
             "product": 1,
-            "original": "images/banner.jpg",
+            "original": "images/item.jpg",
             "display_order": 4,
             "date_created": "2014-06-28 18:03:32.910457"
         }
