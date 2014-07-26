@@ -58,10 +58,10 @@ class ProductCreationForm(forms.ModelForm):
                 ),
                 Fieldset('Images',
                          Field( 'product_image', css_id="id_productImage" ),
-                         Field( 'product_image1', css_id="id_productImage1"),
-                         Field( 'product_image2', css_id="id_productImage2"),
-                         Field( 'product_image3', css_id="id_productImage3"),
-                         Field( 'product_image4', css_id="id_productImage4")
+                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
