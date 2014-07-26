@@ -187,11 +187,11 @@ class ProductCreationForm(forms.ModelForm):
         productImage3 = ProductImage(product=canonicalProduct)
         productImage4 = ProductImage(product=canonicalProduct)
 
-        productImage.display_order = 1
-        productImage1.display_order = 2
-        productImage2.display_order = 3
-        productImage3.display_order = 4
-        productImage4.display_order = 5
+        productImage.display_order = 0
+        productImage1.display_order = 1
+        productImage2.display_order = 2
+        productImage3.display_order = 3
+        productImage4.display_order = 4
 
         productImage.original = self.cleaned_data['product_image']
         productImage1.original = self.cleaned_data['product_image1']
