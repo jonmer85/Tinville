@@ -58,10 +58,10 @@ class ProductCreationForm(forms.ModelForm):
                 ),
                 Fieldset('Images',
                          Field( 'product_image', css_id="id_productImage" ),
-                         Field( 'product_image1', css_id="id_productImage1"),
-                         Field( 'product_image2', css_id="id_productImage2"),
-                         Field( 'product_image3', css_id="id_productImage3"),
-                         Field( 'product_image4', css_id="id_productImage4")
+                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -176,7 +176,7 @@ class ProductCreationForm(forms.ModelForm):
         canonicalId = canonicalProduct.id
         if is_edit:
             # Remove all variants since they will get recreated below
-            get_model('catalogue', 'Product').objects.get(parent=canonicalId).delete()
+            get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
 
 
         #if not is_edit:
@@ -187,11 +187,11 @@ class ProductCreationForm(forms.ModelForm):
         productImage3 = ProductImage(product=canonicalProduct)
         productImage4 = ProductImage(product=canonicalProduct)
 
-        productImage.display_order = 1
-        productImage1.display_order = 2
-        productImage2.display_order = 3
-        productImage3.display_order = 4
-        productImage4.display_order = 5
+        productImage.display_order = 0
+        productImage1.display_order = 1
+        productImage2.display_order = 2
+        productImage3.display_order = 3
+        productImage4.display_order = 4
 
         productImage.original = self.cleaned_data['product_image']
         productImage1.original = self.cleaned_data['product_image1']

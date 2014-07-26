@@ -1,6 +1,5 @@
 Feature: Shop Editor Shell
 
-@wip
   Scenario: Shop Editor Shell non-XS loaded
     Given the demo shop
     The designer can open a shop editor
@@ -10,7 +9,6 @@ Feature: Shop Editor Shell
     And a global submit button
     And the shop editor is 85% of the window size by default
 
-@wip
   Scenario: Shop Editor Shell non-XS size control
     Given a shop editor
     There should be 1 icon displayed for size control

@@ -99,19 +99,41 @@
     {{ block.super }}
     <script>
 
-        //This doesnt do anything yet and im a n00b, it's having trouble finding the id within the form from django but it's only for looks anyway
-        //so I'm checking the image stuff in and will work on this in the upcomming week.
         $('#id_product_image').change
         (
                 function()
                 {
-                    if( $("#id_product_Image1" ).css( "visibility", "hidden" ).is( ":hidden" ) == true )
-                    {
-                        $("#id_productImage1" ).show() ;
-                    }
+                        $("#id_product_image1" ).removeClass("hidden");
+
                 }
         )
 
+        $('#id_product_image1').change
+        (
+                function()
+                {
+                    $("#id_product_image2" ).removeClass("hidden");
+
+                }
+        )
+
+        $('#id_product_image2').change
+        (
+                function()
+                {
+                    $("#id_product_image3" ).removeClass("hidden");
+
+                }
+        )
+
+        $('#id_product_image3').change
+        (
+                function()
+                {
+                    $("#id_product_image4" ).removeClass("hidden");
+
+                }
+        )
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
@@ -731,7 +753,6 @@ $("#formContent").slimScroll({});
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
-
 });
 
 </script>
