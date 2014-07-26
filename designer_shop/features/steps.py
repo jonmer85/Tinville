@@ -199,13 +199,13 @@ def and_the_submit_banner_button_is_displayed(step):
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys(os.path.join(MEDIA_ROOT, '/images/banner2.jpg'))
+    bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner2.jpg"))
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
-    assert_selector_contains('#id_BannerImage', 'src', '/media/shops/demo/banner/banner2.jpg')
+    assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2.jpg')
 
 @step(u'When the about tab is selected')
 def when_the_about_tab_is_selected(step):
@@ -261,8 +261,8 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
 
 @step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
 def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
-    assert_selector_does_exist("#id_color.has-error")
-    assert_selector_contains_text("#error_1_id_color strong", "Tinville Branding is not Allowed to be Used")
+    assert_selector_does_exist("#div_id_color.has-error")
+    assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
