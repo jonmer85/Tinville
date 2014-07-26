@@ -279,9 +279,6 @@ class ProductCreationForm(forms.ModelForm):
         retVal = None if not image else image.original
         return retVal
 
-    #def get_product_image(self, product, display_order):
-    #    ProductImage(product=product, display_order=display_order)
-
     def get_size_variation(self):
         if not self.instance or not self.instance.is_group:
             return "0"
