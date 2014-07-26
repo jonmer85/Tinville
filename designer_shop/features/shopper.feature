@@ -20,7 +20,6 @@ Feature: Designer Shop
 	And every item should have an image
 	And every item should have a price
 
-  @yori
   Scenario: Nav Bar
     Given a designer shop
     When the shop is visited
