@@ -31,7 +31,8 @@
         "pk": 1,
         "fields": {
             "code": "demousercom",
-            "name": "demo@user.com"
+            "name": "demo@user.com",
+            "users": [2]
         }
     },
     {
