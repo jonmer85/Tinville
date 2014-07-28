@@ -219,9 +219,17 @@ $(document).ready(function () {
     // else stop form submission
     formInstance.submitEvent.preventDefault();
 
-
     return;
   });
+
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
+    resizeEditor();
+    {% if editItemMode %}
+    populateProductVariantsInfo();
+    showImageFields();
+    {% endif %}
 
 
 });
@@ -625,17 +633,6 @@ $(window).resize(function() {
     resizeEditor();
 });
 
-$(window).load(function() {
-    if($("#emptyShopId").length > 0) {
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    }
-    resizeEditor();
-    {% if editItemMode %}
-    populateProductVariantsInfo();
-    showImageFields();
-    {% endif %}
-
-});
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
