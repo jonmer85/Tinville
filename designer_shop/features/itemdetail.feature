@@ -11,7 +11,7 @@ Feature: Item Detail
         When I click on the item
         Then the item detail page is displayed
 
-    @wipitem
+    @wip
     Scenario: Visible the Item Detail page
         Given I am on an item detail page
         Then I can see the following elements
@@ -25,15 +25,16 @@ Feature: Item Detail
             | addToCart          |
             | itemDescription    |
             | sharingiscaring    |
-            | itemselectedimage  |
+            | selectedImage  |
 
-    @wipitem
+    @wip
     Scenario: Default Values
-        Given: I am on an item details page
+        Given I am on an item detail page
         Then the default values for an item are as follows
+            | Class              | DefaultValue     |
             | itemColorSelection | "Choose a Color" |
-            | itemSizeSelection | "Choose a Size" |
-            | buyQuantity | 1 |
+            | itemSizeSelection  | "Choose a Size"  |
+            | buyQuantity        | 1                |
 
     @wipitem
     Scenario: Select Color

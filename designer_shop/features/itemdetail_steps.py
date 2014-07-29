@@ -10,6 +10,7 @@ from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
 from user.models import TinvilleUser
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
 @step(u'Given I have an item in the demo shop')
@@ -35,4 +36,26 @@ def given_i_am_on_an_item_detail_page(step):
 
 @step(u'Then I can see the following elements')
 def then_i_can_see_the_following_elements(step):
-    assert True
+    for itemdetailclass in step.hashes:
+        theitemclass = str(itemdetailclass["Class"])
+        myelements = world.browser.find_elements_by_class_name(theitemclass)
+        elementexists = False
+        for element in myelements:
+            if element.is_displayed() == True:
+                elementexists = True
+                break
+        assert elementexists, theitemclass + " is not displayed"
+
+@step(u'Then the default values for an item are as follows')
+def then_the_default_values_for_an_item_are_as_follows(step):
+    for itemdetailvalues in step.hashes:
+        theitemclass = str(itemdetailvalues["Class"])
+        thedefaultvalue = str(itemdetailvalues["DefaultValue"]).replace('"', '')
+        theselector = world.browser.find_element_by_id(theitemclass)
+
+        if theselector.tag_name == 'select':
+            theselectedvalue = str(Select(theselector).first_selected_option.text)
+        elif theselector.tag_name == "input":
+            theselectedvalue = str(theselector.get_attribute('value'))
+        assert theselectedvalue == thedefaultvalue,  theselectedvalue + " does not equal" + thedefaultvalue
+
