@@ -59,3 +59,41 @@ def then_the_default_values_for_an_item_are_as_follows(step):
             theselectedvalue = str(theselector.get_attribute('value'))
         assert theselectedvalue == thedefaultvalue,  theselectedvalue + " does not equal" + thedefaultvalue
 
+@step(u'When I select the color (.*)')
+def when_i_select_a_color(step, color):
+    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value(str(color))
+
+@step(u'Then my color is (.*)')
+def then_my_color_is(step, color):
+   theselectedvalue = str(Select(world.browser.find_element_by_id("itemColorSelection")).first_selected_option.text)
+   assert theselectedvalue == str(color), theselectedvalue + " does not equal " + str(color)
+
+@step(u'When I try to select a size there are no options')
+def when_i_try_select_a_size_before_selecting_color(step):
+    amountofoptions = len(Select(world.browser.find_element_by_class("itemSizeSelection")).all_selected_options)
+    assert amountofoptions == 1, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
+
+@step(u'When I select the size (.*)')
+def when_I_select_a_size(step, size):
+    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value(str(size))
+
+@step(u'Then my size is (.*)')
+def then_my_size_is(step, size):
+   theselectedvalue = str(Select(world.browser.find_element_by_id("itemSizeSelection")).first_selected_option.text)
+   assert theselectedvalue == str(size), theselectedvalue + " does not equal " + str(size)
+
+@step(u'When I select a quantity of (.*)')
+def when_I_select_a_size(step, quantity):
+    world.browser.find_element_by_id("buyQuantity").clear()
+    world.browser.find_element_by_id("buyQuantity").send_keys(str(quantity))
+
+@step(u'Then my quantity is (.*)')
+def then_my_size_is(step, quantity):
+   theselectedvalue = str(world.browser.find_element_by_id("buyQuantity").get_attribute("value"))
+   assert theselectedvalue == str(quantity), theselectedvalue + " does not equal " + str(quantity)
+
+@step(u'Then my stock quantity is (.*)')
+def then_my_stock_quantity_is(step, quantity):
+    theselectedvalue = str(world.browser.find_element_by_class_name("itemStockQuantity").text)
+    assert theselectedvalue == str(quantity) + " remaining", theselectedvalue + " does not equal " + str(quantity) + " remaining"
+
