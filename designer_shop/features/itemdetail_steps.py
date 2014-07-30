@@ -15,7 +15,7 @@ from common.lettuce_utils import *
 
 @step(u'Given I have an item in the demo shop')
 def given_I_have_an_item_in_the_shop(step):
-    assert world.browser.find_elements_by_css_selector(".shopItem").count > 0
+    assert len(world.browser.find_elements_by_css_selector(".shopItem")) > 0, "no shop items exist!"
 
 @step(u'When I click on the item')
 def when_i_click_on_the_item(step):
@@ -96,4 +96,3 @@ def then_my_size_is(step, quantity):
 def then_my_stock_quantity_is(step, quantity):
     theselectedvalue = str(world.browser.find_element_by_class_name("itemStockQuantity").text)
     assert theselectedvalue == str(quantity) + " remaining", theselectedvalue + " does not equal " + str(quantity) + " remaining"
-

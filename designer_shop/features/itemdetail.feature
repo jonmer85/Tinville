@@ -9,7 +9,7 @@ Feature: Item Detail
         Given I have an item in the demo shop
         When I click on the item
         Then the item detail page is displayed
-
+    @wip
     Scenario: Visible the Item Detail page
         Given I am on an item detail page
         Then I can see the following elements
@@ -23,7 +23,7 @@ Feature: Item Detail
             | addToCart          |
             | itemDescription    |
             | sharingiscaring    |
-            | selectedImage  |
+            | selectedImage      |
 
     Scenario: Default Values
         Given I am on an item detail page
@@ -57,6 +57,3 @@ Feature: Item Detail
         When I select the color Blue
         When I select the size Sm
         Then my stock quantity is 10
-
-
-
