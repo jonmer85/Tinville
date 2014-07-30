@@ -16,7 +16,7 @@ Feature: Item Detail
         Given I am on an item detail page
         Then I can see the following elements
             | Class              |
-            | shopItem           |
+            | shopItemDetail     |
             | itemTitle          |
             | itemPrice          |
             | itemColorSelection |
