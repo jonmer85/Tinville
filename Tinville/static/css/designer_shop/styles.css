@@ -539,13 +539,10 @@
     margin-bottom: 5px;
     margin-top: 5px;
     margin-right: 5px;
-    width: 150px;
-    height: 225px;
+    /*width: 150px;*/
+    /*height: 225px;*/
 }
 
-.itemSize {
-    max-height: 170px;
-}
 
 @media(min-width: 768px) {
     .shopItem {
