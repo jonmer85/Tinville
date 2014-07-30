@@ -118,6 +118,9 @@ def wait_for_element_with_css_selector_to_be_displayed(css_selector):
 def wait_for_element_with_class_to_be_displayed(class_name):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
 
+def wait_for_element_with_link_text_to_be_displayed(link_text):
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
+
 def assert_page_exist(url):
     c = Client()
     response = c.get(url, follow=True)
