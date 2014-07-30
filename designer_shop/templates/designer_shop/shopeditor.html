@@ -106,7 +106,7 @@
                         $("#id_product_image1" ).removeClass("hidden");
 
                 }
-        )
+        );
 
         $('#id_product_image1').change
         (
@@ -115,7 +115,7 @@
                     $("#id_product_image2" ).removeClass("hidden");
 
                 }
-        )
+        );
 
         $('#id_product_image2').change
         (
@@ -124,7 +124,7 @@
                     $("#id_product_image3" ).removeClass("hidden");
 
                 }
-        )
+        );
 
         $('#id_product_image3').change
         (
@@ -133,7 +133,7 @@
                     $("#id_product_image4" ).removeClass("hidden");
 
                 }
-        )
+        );
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
@@ -219,9 +219,17 @@ $(document).ready(function () {
     // else stop form submission
     formInstance.submitEvent.preventDefault();
 
-
     return;
   });
+
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
+    resizeEditor();
+    {% if editItemMode %}
+    populateProductVariantsInfo();
+    showImageFields();
+    {% endif %}
 
 
 });
@@ -594,6 +602,29 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 
 }
 
+function showImageFields() {
+
+    var visibleImages = [
+        $('#product_image-clear_id').is(':visible'),
+        $('#product_image1-clear_id').is(':visible'),
+        $('#product_image2-clear_id').is(':visible'),
+        $('#product_image3-clear_id').is(':visible'),
+    ];
+
+    if(visibleImages[0]) {
+        $("#id_product_image1").removeClass("hidden");
+    }
+    if(visibleImages[1]) {
+        $("#id_product_image2").removeClass("hidden");
+    }
+    if(visibleImages[2]) {
+        $("#id_product_image3").removeClass("hidden");
+    }
+    if(visibleImages[3]) {
+        $("#id_product_image4").removeClass("hidden");
+    }
+}
+
 
 $(window).resize(function() {
     if($("#emptyShopId").length > 0) {
@@ -602,16 +633,6 @@ $(window).resize(function() {
     resizeEditor();
 });
 
-$(window).load(function() {
-    if($("#emptyShopId").length > 0) {
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    }
-    resizeEditor();
-    {% if editItemMode %}
-    populateProductVariantsInfo();
-    {% endif %}
-
-});
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
