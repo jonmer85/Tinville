@@ -4,8 +4,23 @@
 }
 .shopBackgroundColor {
     background: #990099;
+    width: auto;
     /*color: #802152;*/
+    margin: auto;
 }
+
+.shopTabStyle{
+    text-align: center;
+    margin: auto;
+    width: 33.333%;
+    text-decoration-color: #ffff00;
+}
+
+.shopTabStyle > a{
+    color: #000000;
+    font-size: large;
+}
+
 .shopBorderColor {
     /*background-color: #802152;*/
     /*border-color: #990099;*/
@@ -50,12 +65,13 @@
     text-align: center;
 }
 
-
 .navTabs {
   position: relative;
   height: 320px;
   clear: both;
   padding-left: 750px;
+
+    text-align: center;
 }
 .navTab {
   overflow:hidden;
@@ -142,7 +158,6 @@
 
 #editLink a {
     display: block;
-    text-indent: -10px;
     /*height: 48px;*/
     padding:3px;
     text-decoration: none;
@@ -522,13 +537,23 @@
     padding-right: 5px;
     padding-left: 5px;
     margin-bottom: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 150px;
+    height: 225px;
+}
+
+.shopItemDetail {
+    padding-bottom: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     margin-right: 5px;
 }
 
-@media (min-width: 768px) {
-    .shopItem {
-    padding-right: 15px;
-    }
+.itemSize {
+    max-height: 170px;
 }
 
 @media(min-width: 768px) {

@@ -237,7 +237,7 @@ STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
 EMAIL_HOST_USER = 'registration@tinville.com'
-EMAIL_HOST_PASSWORD = """What'sgoodinthehood"""
+EMAIL_HOST_PASSWORD = 'Vill3Cr3w!2014'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

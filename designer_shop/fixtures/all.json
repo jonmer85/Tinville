@@ -27,6 +27,363 @@
         }
     },
     {
+        "model": "partner.Partner",
+        "pk": 1,
+        "fields": {
+            "code": "demousercom",
+            "name": "demo@user.com",
+            "users": [2]
+        }
+    },
+    {
+        "model": "catalogue.Product",
+        "pk": 1,
+        "fields": {
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "catalogue.ProductImage",
+        "pk": 2,
+        "fields": {
+            "product": 1,
+            "original": "images/item.jpg",
+            "display_order": 0,
+            "date_created": "2014-06-28 18:03:32.910457"
+        }
+    },
+    {
+        "model": "catalogue.ProductImage",
+        "pk": 3,
+        "fields": {
+            "product": 1,
+            "original": "images/item.jpg",
+            "display_order": 1,
+            "date_created": "2014-06-28 18:03:32.910457"
+        }
+    },
+    {
+        "model": "catalogue.ProductImage",
+        "pk": 4,
+        "fields": {
+            "product": 1,
+            "original": "images/item.jpg",
+            "display_order": 2,
+            "date_created": "2014-06-28 18:03:32.910457"
+        }
+    },
+    {
+        "model": "catalogue.ProductImage",
+        "pk": 5,
+        "fields": {
+            "product": 1,
+            "original": "images/item.jpg",
+            "display_order": 3,
+            "date_created": "2014-06-28 18:03:32.910457"
+        }
+    },
+    {
+        "model": "catalogue.ProductImage",
+        "pk": 6,
+        "fields": {
+            "product": 1,
+            "original": "images/item.jpg",
+            "display_order": 4,
+            "date_created": "2014-06-28 18:03:32.910457"
+        }
+    },
+    {
+        "model": "catalogue.Product",
+        "pk": 2,
+        "fields": {
+            "parent": 1,
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "partner.StockRecord",
+        "pk": 1,
+        "fields": {
+            "product": 2,
+            "partner": 1,
+            "partner_sku": "edbcc528-09f6-471e-a48c-6ee4e8d208b7",
+            "price_currency": "$",
+            "price_excl_tax": "12.99",
+            "num_in_stock": 10,
+            "date_created": "2014-07-22 23:35:22.555623",
+            "date_updated": "2014-07-22 23:35:22.555623"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 1,
+        "fields": {
+            "attribute": 5,
+            "product": 2,
+            "value_option": 8
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 2,
+        "fields": {
+            "attribute": 1,
+            "product": 2,
+            "value_option": 1
+        }
+    },
+
+    {
+        "model": "catalogue.Product",
+        "pk": 3,
+        "fields": {
+            "parent": 1,
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "partner.StockRecord",
+        "pk": 2,
+        "fields": {
+            "product": 3,
+            "partner": 1,
+            "partner_sku": "54c0a83f-6ef7-45cd-a327-877f66c8fabc",
+            "price_currency": "$",
+            "price_excl_tax": "12.99",
+            "num_in_stock": 10,
+            "date_created": "2014-07-22 23:35:22.555623",
+            "date_updated": "2014-07-22 23:35:22.555623"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 3,
+        "fields": {
+            "attribute": 5,
+            "product": 3,
+            "value_option": 9
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 4,
+        "fields": {
+            "attribute": 1,
+            "product": 3,
+            "value_option": 1
+        }
+    },
+    {
+        "model": "catalogue.Product",
+        "pk": 4,
+        "fields": {
+            "parent": 1,
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "partner.StockRecord",
+        "pk": 3,
+        "fields": {
+            "product": 4,
+            "partner": 1,
+            "partner_sku": "90d95008-7058-43f2-935a-bf68583e4b72",
+            "price_currency": "$",
+            "price_excl_tax": "12.99",
+            "num_in_stock": 10,
+            "date_created": "2014-07-22 23:35:22.555623",
+            "date_updated": "2014-07-22 23:35:22.555623"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 5,
+        "fields": {
+            "attribute": 5,
+            "product": 4,
+            "value_option": 8
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 6,
+        "fields": {
+            "attribute": 1,
+            "product": 4,
+            "value_option": 2
+        }
+    },
+    {
+        "model": "catalogue.Product",
+        "pk": 5,
+        "fields": {
+            "parent": 1,
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "partner.StockRecord",
+        "pk": 4,
+        "fields": {
+            "product": 5,
+            "partner": 1,
+            "partner_sku": "e87c0b95-142d-45f7-8ce5-e82f72044052",
+            "price_currency": "$",
+            "price_excl_tax": "12.99",
+            "num_in_stock": 10,
+            "date_created": "2014-07-22 23:35:22.555623",
+            "date_updated": "2014-07-22 23:35:22.555623"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 7,
+        "fields": {
+            "attribute": 5,
+            "product": 5,
+            "value_option": 9
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 8,
+        "fields": {
+            "attribute": 1,
+            "product": 5,
+            "value_option": 2
+        }
+    },
+    {
+        "model": "catalogue.Product",
+        "pk": 6,
+        "fields": {
+            "parent": 1,
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "partner.StockRecord",
+        "pk": 5,
+        "fields": {
+            "product": 6,
+            "partner": 1,
+            "partner_sku": "c7952258-76c9-4033-aaf4-ccd5d08701cc",
+            "price_currency": "$",
+            "price_excl_tax": "12.99",
+            "num_in_stock": 10,
+            "date_created": "2014-07-22 23:35:22.555623",
+            "date_updated": "2014-07-22 23:35:22.555623"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 9,
+        "fields": {
+            "attribute": 5,
+            "product": 6,
+            "value_option": 8
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 10,
+        "fields": {
+            "attribute": 1,
+            "product": 6,
+            "value_option": 3
+        }
+    },
+    {
+        "model": "catalogue.Product",
+        "pk": 7,
+        "fields": {
+            "parent": 1,
+            "title": "TestSizeSetItem",
+            "slug": "TestSizeSetItem",
+            "product_class": 1,
+            "score": 0,
+            "date_created": "2014-06-28 18:03:32.859698",
+            "date_updated": "2014-06-28 18:03:32.859728",
+            "is_discountable": 0,
+            "shop": 1
+        }
+    },
+    {
+        "model": "partner.StockRecord",
+        "pk": 6,
+        "fields": {
+            "product": 7,
+            "partner": 1,
+            "partner_sku": "40994aaf-e81e-4453-9657-cd10bbab96cc",
+            "price_currency": "$",
+            "price_excl_tax": "12.99",
+            "num_in_stock": 10,
+            "date_created": "2014-07-22 23:35:22.555623",
+            "date_updated": "2014-07-22 23:35:22.555623"
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 11,
+        "fields": {
+            "attribute": 5,
+            "product": 7,
+            "value_option": 9
+        }
+    },
+    {
+        "model": "catalogue.ProductAttributeValue",
+        "pk": 12,
+        "fields": {
+            "attribute": 1,
+            "product": 7,
+            "value_option": 3
+        }
+    },
+    {
         "model": "catalogue.ProductClass",
         "pk": 1,
         "fields": {
