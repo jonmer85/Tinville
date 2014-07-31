@@ -30,7 +30,7 @@
 
 
 
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-3">
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
      <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
         <option>View All</option>
           {% for category in categories %}
@@ -41,7 +41,7 @@
       </select>
   </div>
 
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3">
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
       <select class="select form-control filterTabs" >
         <option>View All Types</option>
         {% for category in categories %}
@@ -52,7 +52,7 @@
       </select>
   </div>
 
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3">
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
       <select class="select form-control filterTabs">
         <option>All Prices</option>
         <option>$0-$50</option>
@@ -67,8 +67,9 @@
               {% for product in products %}
                 {% purchase_info_for_product request product as session %}
                 {% if product.is_top_level %}
-                  <div class="row-xs-height col-xs-6 col-sm-4 col-md-2 col-lg-2" style=" padding-bottom: 10px; padding-top: 10px; ">
-                      <div class="container-xs-height">
+                  <div class=" col-xs-6 col-sm-4 col-md-2 col-lg-2" style="padding-top: 1%; padding-bottom: 1%; ">
+                    <div class="row-xs-height">
+                    <div class="container-xs-height">
                           <div class="thumbnail shopItem shopBorderColor col-middle col-xs-height">
                             {% if product.primary_image and product.primary_image.original.url %}
                                 {% with image=product.primary_image %}
@@ -90,10 +91,13 @@
                                       {{  session.availability.message  }}
                                   {% endif %}
                               </span>
+{#                          </div>#}
                           </div>
-                          </div>
-                          {% block item_extensions %}{% endblock %}
                        </div>
+                    </div>
+                    </div>
+                          {% block item_extensions %}{% endblock %}
+
                    </div>
                 {% endif %}
               {% endfor %}

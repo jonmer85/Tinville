@@ -226,7 +226,7 @@
 }
 
 .shopItems {
-    padding: 6%;
+    padding: 10%;
     z-index: 1;
 }
 
@@ -607,4 +607,10 @@
 #buyQuantity:invalid,
 #buyQuantity:out-of-range{
     background:hsl(0, 50%, 90%);
+}
+
+.bootstrapError {
+    color: #b94a48 !important;
+    background-color: #f2dede !important;
+    border: 1px solid #EED3D7 !important;
 }
