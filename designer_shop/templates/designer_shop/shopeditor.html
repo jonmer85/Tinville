@@ -222,8 +222,13 @@ $(document).ready(function () {
     $('.parsley-errors-list')
 {#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
       .addClass("filled bootstrapError help-block");
+
+
     return;
   });
+
+    document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+    document.getElementById("id_price").attributes["type"].value = "decimal";
 
     if($("#emptyShopId").length > 0) {
         document.getElementById('emptyShopId').innerHTML = "Items go here..."
