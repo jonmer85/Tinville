@@ -12,7 +12,7 @@
     <div>
         {% if product and product.is_top_level %}
             <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
-            <a id="deleteButtons" href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
+            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
         {% endif %}
     </div>
 {% endblock %}
@@ -92,6 +92,7 @@
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
   <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
 
 {% endblock javascript_library %}
 
@@ -218,7 +219,9 @@ $(document).ready(function () {
     }
     // else stop form submission
     formInstance.submitEvent.preventDefault();
-
+    $('.parsley-errors-list')
+{#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
+      .addClass("filled bootstrapError help-block");
     return;
   });
 
