@@ -92,6 +92,7 @@
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
   <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
 
 {% endblock javascript_library %}
 
@@ -224,8 +225,9 @@ $(document).ready(function () {
     }
     // else stop form submission
     formInstance.submitEvent.preventDefault();
-
-
+    $('.parsley-errors-list')
+{#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
+      .addClass("filled bootstrapError help-block");
     return;
   });
 
