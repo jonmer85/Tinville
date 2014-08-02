@@ -100,47 +100,64 @@
     {{ block.super }}
     <script>
 
-    /**
-     * Tommy Leedberg - 7/23/2014
-     *      The following calls check to see if the user has added an image and if they have we add the next image field
-     *      up to the 5 total fields that are available. This does no file checking to make sure they have selected valid
-     *      images but we might want to add that at some point too, at the very least we can check file extentions.
-     */
-        $('#id_product_image').change
+
+        //Tommy Leedberg - 8/2/2014 - User Story: 145 - Clear Fields on Add Item
+        $('#id_Clear_Description' ).click
         (
                 function()
                 {
-                        $("#id_product_image1" ).removeClass("hidden");
+                    //in order to set the content of a tinymce iframe you must make sure it is active first
+                    $('#id_description_ifr' ).trigger( 'click' ) ;
+                    tinyMCE.activeEditor.setContent('') ;
 
                 }
+        );
+
+        /**
+         * Tommy Leedberg - 7/23/2014
+         *      The following calls check to see if the user has added an image and if they have we add the next image field
+         *      up to the 5 total fields that are available. This does no file checking to make sure they have selected valid
+         *      images but we might want to add that at some point too, at the very least we can check file extentions.
+         */
+        $('#id_product_image').change
+        (
+
+                function()
+                {
+                    $("#id_product_image1" ).removeClass("hidden");
+                }
+
         );
 
         $('#id_product_image1').change
         (
+
                 function()
                 {
                     $("#id_product_image2" ).removeClass("hidden");
-
                 }
+
         );
 
         $('#id_product_image2').change
         (
+
                 function()
                 {
                     $("#id_product_image3" ).removeClass("hidden");
-
                 }
+
         );
 
         $('#id_product_image3').change
         (
+
                 function()
                 {
                     $("#id_product_image4" ).removeClass("hidden");
-
                 }
         );
+
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
