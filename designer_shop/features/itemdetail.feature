@@ -57,3 +57,4 @@ Feature: Item Detail
         When I select the color Blue
         When I select the size Sm
         Then my stock quantity is 10
+
