@@ -6,7 +6,7 @@ from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
+from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
 from crispy_forms.bootstrap import PrependedText
 from south.orm import _FakeORM
 
@@ -28,6 +28,7 @@ class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title",max_length=80)
+
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -51,6 +52,7 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
+                         Button( 'clear_Description', 'Clear Description', css_id="id_Clear_Description"),
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -63,7 +65,8 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
-                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
+                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"),
+                             Button( 'clear_Size', 'Clear Size', css_id="id_Clear_Sizes"))
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
