@@ -744,12 +744,7 @@
         $("#id_password.textinput.textInput").val("");
     });
 
-    $("#shoppingcartBtn").click(function()
-    {
-        $("#shoppingcart").toggle();
-    });
-
-        //TODO: Replace with on specific item "Add to Cart" click event
+ //TODO: Replace with on specific item "Add to Cart" click event
  var itemNum = 0;
     $("#buttonOfDOOM").click(function()
     {
@@ -763,10 +758,54 @@
         AddCartItem(CartItem);
     });
 
- //TODO: Move to Page load and read cart Total from local storage if present
- var cartTotal = 0.00;
+ var cartTotal;
+ var cartJson, cartState;
+ cartState = sessionStorage.getItem("cartState");
+ cartJson = JSON.parse(cartState || "{}");
 
-function AddCartItem(cartItem)
+$(function() {
+    cartTotal = cartJson["cartTotal"];
+    if(cartTotal === undefined)
+        cartTotal = 0.00;
+    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+
+    var _IsOpen = cartJson["IsOpen"];
+
+    if(_IsOpen === undefined || _IsOpen === false)
+        $("#shoppingcart").hide();
+
+    if(_IsOpen === true)
+        $("#shoppingcart").show();
+
+    var cartItems = cartJson["cartList"];
+
+    if(cartItems !== undefined)
+    {
+        //foreach item in cartItems
+        $.each(cartItems, function(index, item)
+        {
+            LoadCartItemDiv(item);
+        });
+    }
+});
+
+$("#shoppingcartBtn").click(function()
+{
+    $("#shoppingcart").toggle();
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var IsOpen;
+    //TODO: BUG: Always true
+    if($('#shoppingcart:visible'))
+        IsOpen = true;
+    else
+        IsOpen = false;
+
+    cartJson["IsOpen"] = IsOpen;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+});
+
+function LoadCartItemDiv(cartItem)
 {
     var cartitemdiv =  $('<div/>', {
         'class':'shoppingcartitem',
@@ -789,27 +828,52 @@ function AddCartItem(cartItem)
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
         'class' : 'btn btn-default btn-sm', 'html' : '<span class="glyphicon glyphicon-remove"></span>'
-        });
+    });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo("#shoppingcartitems");
+
+}
+
+function AddCartItem(cartItem)
+{
+    LoadCartItemDiv(cartItem);
 
     cartTotal += cartItem.price;
     //TODO: Prefix with currency type
     $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
 
-    //TODO: Add item to local storage
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var cartList= cartJson["cartList"];
+    if(cartList === undefined)
+        cartList = new Object();
+
+    cartList[cartItem.Id] = cartItem;
+
+    cartJson["cartTotal"] = cartTotal;
+
+    cartJson.cartList = cartList;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
 }
 
 function RemoveCartItem(itemId)
 {
-        $('#'+itemId).remove();
-    //TODO: Remove item price from total and display
-    //TODO: Remove item from local storage
+    $('#'+itemId).remove();
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var list = cartJson["cartList"];
+    var price = list[itemId].price;
+    cartTotal -= price;
+    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    cartJson["cartTotal"] = cartTotal;
+    delete list[itemId];
+    cartJson.cartList = list;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
 
-//TODO: Add LoadCartItems method to read from local storage on page refresh
-//TODO: Set cart NOT to display by default and read from local storage state on page refresh
+
 
     </script>
     <script id="message_template" type="text/x-handlebars-template">
