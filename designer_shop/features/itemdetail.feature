@@ -4,13 +4,11 @@ Feature: Item Detail
     I want to view a designer's shop and select an item
     and view it's detail. I should be able to select color, size and quantity
 
-    @wip
     Scenario: Navigate to Item Detail page
         Given the demo shop
         Given I have an item in the demo shop
         When I click on the item
         Then the item detail page is displayed
-
     @wip
     Scenario: Visible the Item Detail page
         Given I am on an item detail page
@@ -25,9 +23,8 @@ Feature: Item Detail
             | addToCart          |
             | itemDescription    |
             | sharingiscaring    |
-            | selectedImage  |
+            | selectedImage      |
 
-    @wip
     Scenario: Default Values
         Given I am on an item detail page
         Then the default values for an item are as follows
@@ -36,21 +33,28 @@ Feature: Item Detail
             | itemSizeSelection  | "Choose a Size"  |
             | buyQuantity        | 1                |
 
-    @wipitem
     Scenario: Select Color
         Given I am on an item detail page
         When I select the color Blue
-        Then my itemColorSelection is Blue
+        Then my color is Blue
 
-    @wipitem
     Scenario: Select Size
         Given I am on an item detail page
         When I try to select a size there are no options
-        When I select a the Color Blue
-        Then I should be
-        Then
+        When I select the color Blue
+        When I select the size Sm
+        Then my size is Sm
 
-    @wipitem
-    Scenario: Select Quantity
+    Scenario: Item Buy Quantity
         Given I am on an item detail page
+        When I select the color Blue
+        When I select the size Sm
+        When I select a quantity of 5
+        Then my quantity is 5
+
+    Scenario: Item Stock Quantity
+        Given I am on an item detail page
+        When I select the color Blue
+        When I select the size Sm
+        Then my stock quantity is 10
 
