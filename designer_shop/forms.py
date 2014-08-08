@@ -3,31 +3,44 @@ from django import forms
 from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
+from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
+from crispy_forms.bootstrap import PrependedText
+from south.orm import _FakeORM
 
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
+from parsley.decorators import parsleyfy
 
-from . import models
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
+from common.utils import get_or_none
+from common.widgets import AdvancedFileInput
 
-SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + models.SIZE_TYPES
 
+
+SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
+
+@parsleyfy
 class ProductCreationForm(forms.ModelForm):
 
-    sizeVariation = forms.ChoiceField(label='Size type',
-                                         choices=SIZE_TYPES_AND_EMPTY,
-                                         initial='0')
-
-    product_image = forms.ImageField(required=False)
-
     price = forms.DecimalField(decimal_places=2, max_digits=12)
-
+    title = forms.CharField(label="title",max_length=80)
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
+
+        self.fields['sizeVariation'] = forms.ChoiceField(label='Size type',
+                                         choices=SIZE_TYPES_AND_EMPTY,
+                                         initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
+
+
+        # self.fields['product_image'] = forms.ImageField(required=False)
+
+        self.fields['price'] \
+            = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
@@ -36,12 +49,16 @@ class ProductCreationForm(forms.ModelForm):
             Div(
                 Fieldset('General',
                          Field('title', placeholder='Title'),
+                         HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
-                         Field('price', placeholder='Price')
+                         PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
-                         'product_image',
-                         HTML("""{% if form.product_image.value %}<img class="img-responsive" src="{{ MEDIA_URL }}{{ form.product_image.value }}">{% endif %}""", ),
+                         Field( 'product_image', css_id="id_productImage" ),
+                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -49,17 +66,31 @@ class ProductCreationForm(forms.ModelForm):
                              Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
                          ,
                          css_class="accordion", css_id="accordion2"),
-                Submit('productCreationForm', 'Create', css_class='tinvilleButton'),
-                css_class="container col-sm-12",
+                Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
+                css_class="container col-xs-12 col-lg-8",
                 css_id="addItemEditor"
             )
 
         )
+
+        self.fields['product_image'] \
+            = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
+                               widget=AdvancedFileInput)
+        self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
+                                                         widget=AdvancedFileInput)
+        self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
+                                                         widget=AdvancedFileInput)
+        self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
+                                                         widget=AdvancedFileInput)
+        self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
+                                                         widget=AdvancedFileInput)
+
         self.fields['description'].widget = TinyMCE()
+        self.fields['price'].label = ""
 
         if sizes:
             for i, size in enumerate(sizes):
-                if "sizeSet" in sizes[i]:
+                if "sizeSet" in sizes[i] and sizes[i]["sizeSet"]:
                     self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeSet"])
@@ -71,11 +102,11 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-                elif "sizeX" in sizes[i] and "sizeY" in sizes[i]:
+                elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeX"])
+                        = forms.DecimalField(initial=sizes[i]["sizeX"])
                     self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeY"])
+                        = forms.DecimalField(initial=sizes[i]["sizeY"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -84,9 +115,9 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
-                elif "sizeNum" in sizes[i]:
+                elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
                     self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
-                        = forms.IntegerField(initial=sizes[i]["sizeNum"])
+                        = forms.DecimalField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -97,12 +128,13 @@ class ProductCreationForm(forms.ModelForm):
 
 
 
-    def create_variant_product_from_canonical(self, canonical, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
+    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = canonical
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
-        variantProduct.parent_id = canonical.id
+        variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
+        variantProduct.description = None
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
@@ -128,7 +160,21 @@ class ProductCreationForm(forms.ModelForm):
         stockRecord.save()
 
 
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        products = get_model('catalogue', 'Product')
+
+        if self.instance.pk and self.get_value_from_instance("title") == title:
+            return title  # Ok to have the same title if this is an edit
+
+        try:
+            products.objects.get(title__iexact=title, parent__isnull=True)
+        except ObjectDoesNotExist:
+            return title
+        raise forms.ValidationError('Item name already exist.')
+
     def save(self, shop):
+        is_edit = self.instance.pk is not None
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
@@ -136,9 +182,20 @@ class ProductCreationForm(forms.ModelForm):
         # Jon M TBD - Right now we only use 1 product class - "Apparel"
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
-        productImage = ProductImage(product=canonicalProduct)
-        productImage.original = self.cleaned_data['product_image']
-        productImage.save()
+
+        canonicalId = canonicalProduct.id
+        if is_edit:
+            # Remove all variants since they will get recreated below
+            get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
+
+
+        #if not is_edit:
+        # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
+        self.save_image_if_needed(canonicalProduct, "product_image", 0)
+        self.save_image_if_needed(canonicalProduct, "product_image1", 1)
+        self.save_image_if_needed(canonicalProduct, "product_image2", 2)
+        self.save_image_if_needed(canonicalProduct, "product_image3", 3)
+        self.save_image_if_needed(canonicalProduct, "product_image4", 4)
 
         i = 0
         while True:
@@ -150,11 +207,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeSet=sizeSet)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet)
                         break
                     j += 1
                 i += 1
@@ -169,11 +226,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
                                                                         "y": sizeDimY}, color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeDim={"x": sizeDimX,
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
                                                                                                     "y": sizeDimY})
                         break
                     j += 1
@@ -186,11 +243,11 @@ class ProductCreationForm(forms.ModelForm):
                             'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
                         color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
                         quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum,
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
                                                                    color=color, quantity=quantity)
                     else:
                         if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, shop, sizeNum=sizeNum)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId,  shop, sizeNum=sizeNum)
                         break
                     j += 1
                 i += 1
@@ -198,6 +255,66 @@ class ProductCreationForm(forms.ModelForm):
                 break
         return canonicalProduct
 
+    def save_image_if_needed(self, product, image_field, display_order):
+        if self.cleaned_data[image_field] is not None:
+            if not self.cleaned_data[image_field]:
+                # False means that the clear checkbox was checked
+                existing = get_or_none(ProductImage, display_order=display_order, product=product)
+                existing.delete()
+
+            else:
+                newFileExists = get_or_none(ProductImage, original=self.cleaned_data[image_field].name, product=product)
+                if not newFileExists:
+                    existing = get_or_none(ProductImage, display_order=display_order, product=product)
+                    if existing:
+                        existing.delete()
+                    productImage = ProductImage(product=product, display_order=display_order)
+                    productImage.original = self.cleaned_data[image_field]
+                    productImage.save()
+
+
+
+    def load_image(self, product, display_order):
+        image = get_or_none(ProductImage, product=product, display_order=display_order)
+        retVal = None if not image else image.original
+        return retVal
+
+    def get_size_variation(self):
+        if not self.instance or not self.instance.is_group:
+            return "0"
+
+        for variant in self.instance.variants.all():
+            if hasattr(variant.attr, 'size_set'):
+                return SIZE_SET
+            elif hasattr(variant.attr, 'size_dimension_x') or hasattr(variant.attr, 'size_dimension_y'):
+                return SIZE_DIM
+            elif hasattr(variant.attr, 'size_number'):
+                return SIZE_NUM
+        return "0"
+
+    def get_value_if_in_edit_mode(self, field_name, default):
+        if not self.instance.pk or not self.instance.is_top_level:
+            return default
+        return self.get_value_from_instance(field_name)
+
+
+    def get_value_from_instance(self, field_name):
+        if field_name == 'sizeVariation':
+            return self.get_size_variation()
+        if field_name == 'price':
+            return self.instance.min_variant_price_excl_tax
+        if field_name == 'product_image':
+            return self.load_image(self.instance.pk, 0)
+        if field_name == 'product_image1':
+            return self.load_image(self.instance.pk, 1)
+        if field_name == 'product_image2':
+            return self.load_image(self.instance.pk, 2)
+        if field_name == 'product_image3':
+            return self.load_image(self.instance.pk, 3)
+        if field_name == 'product_image4':
+            return self.load_image(self.instance.pk, 4)
+        else:
+            return getattr(self.instance, field_name)
 
 
     class Meta:
@@ -229,8 +346,9 @@ class AboutBoxForm(forms.Form):
     helper.form_class = 'aboutForm'
     helper.layout = Layout(
         Div(
-            Field('aboutContent', placeholder="Enter Text Here"),
-            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton'),
+            Fieldset('About',
+                    Field('aboutContent', placeholder="Enter Text Here")),
+            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container"
         ))
 
@@ -253,26 +371,36 @@ class DesignerShopColorPicker(forms.Form):
             css_class="container"
         ))
 
+    def clean_color(self):
+        tinville_color = self.cleaned_data['color']
+        if tinville_color == '#f46430':
+            raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
+        return tinville_color
+
+
+
 
 class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False)
+    banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
     helper.form_show_labels = False
 
     helper.layout = Layout(
         Div(
+
             Fieldset('Banner Image',
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      'banner'),
-            Submit('bannerUploadForm', 'Submit', css_class='tinvilleButton'),
-            css_class="container"
+            Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
+            css_class="container col-xs-12 col-sm-10"
         ))
 
 
 class LogoUploadForm(forms.Form):
 
-    logo = forms.ImageField(required=False)
+    logo = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -280,7 +408,9 @@ class LogoUploadForm(forms.Form):
     helper.layout = Layout(
         Div(
             Fieldset('Logo Image',
+                     HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
                      'logo'),
-            Submit('logoUploadForm', 'Submit', css_class='tinvilleButton'),
-            css_class="container"
+            Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
+            css_class="container col-xs-12 col-sm-10"
         ))
+

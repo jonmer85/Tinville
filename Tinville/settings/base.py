@@ -170,6 +170,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'crispy_forms',
     'braces',
+    'parsley',
     'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
@@ -178,6 +179,7 @@ INSTALLED_APPS = [
     'compressor',
     'tinymce',
     'sorl.thumbnail',
+    'django_basic_feedback',
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
@@ -227,13 +229,15 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+OSCAR_DEFAULT_CURRENCY = '$'
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'www.tinville.com']
 
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
 EMAIL_HOST_USER = 'registration@tinville.com'
-EMAIL_HOST_PASSWORD = """What'sgoodinthehood"""
+EMAIL_HOST_PASSWORD = 'Vill3Cr3w!2014'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

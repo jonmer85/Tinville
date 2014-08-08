@@ -7,21 +7,33 @@
 {% endblock css %}
 {% block content %}
 {{ block.super }}
+{% block item_extensions %}
+    {{ block.super }}
+    <div>
+        {% if product and product.is_top_level %}
+            <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
+            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
+        {% endif %}
+    </div>
+{% endblock %}
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
-                <h4 id="shopEditorTitle" class="panel-title">
+                  <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
                     <b>Shop Editor</b>
-                    <a id="resizeIcon" class="editorControlButton glyphicon glyphicon-resize-full pull-right hidden-xs"></a>
-                    <a id="minMaxIcon" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></a>
-                </h4>
+                    <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
+                </div>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
-                            <a href="#addItems" data-toggle="pill">Add Item</a>
+                            {% if editItemMode %}
+                                <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
+                            {% else %}
+                                <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
+                            {% endif %}
                         </li>
                         <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
@@ -53,11 +65,11 @@
                                 {% crispy designerShopColorPicker %}
                             </form>
                             <form class="tab-pane" id="about" action="edit/ajax_about" method="post">
-                                 {%  load crispy_forms_tags %}
+                                 {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form class="tab-pane active" id="addItems" enctype="multipart/form-data" method="post">
-                                {%  load crispy_forms_tags %}
+                            <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                                {% load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
                         </div>
@@ -76,9 +88,11 @@
 
 {% endblock %}
 
-{% block javascript_library %}l
+{% block javascript_library %}
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
 
 {% endblock javascript_library %}
 
@@ -86,7 +100,45 @@
     {{ block.super }}
     <script>
 
-    $("#editLink").css("visibility", "hidden");
+        $('#id_product_image').change
+        (
+                function()
+                {
+                        $("#id_product_image1" ).removeClass("hidden");
+
+                }
+        );
+
+        $('#id_product_image1').change
+        (
+                function()
+                {
+                    $("#id_product_image2" ).removeClass("hidden");
+
+                }
+        );
+
+        $('#id_product_image2').change
+        (
+                function()
+                {
+                    $("#id_product_image3" ).removeClass("hidden");
+
+                }
+        );
+
+        $('#id_product_image3').change
+        (
+                function()
+                {
+                    $("#id_product_image4" ).removeClass("hidden");
+
+                }
+        );
+        $(".emptyShop").css("border-style", "dashed");
+        $(".emptyShop").css("border-color", "darkgray");
+        $("#editLink").css("visibility", "hidden");
+
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
@@ -99,12 +151,16 @@
                         color: document.getElementById("id_color").value
                     },
                     success: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#shopEditor_message_area"));
+                        clear_form_field_errors("#color");
 					    $(".shopColor").css("color", document.getElementById("id_color").value);
                         $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
+                        document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors(".colorForm");
+                        clear_form_field_errors("#color");
+                        document.getElementById('shopEditor_message_area').innerHTML = ""
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
@@ -128,14 +184,18 @@
                         aboutContent: document.getElementById("id_aboutContent").value
                     },
                     success: function(data, textStatus, jqXHR) {
+                        clear_django_messages(self.find("#shopEditor_message_area"));
+                        clear_form_field_errors("#about");
 					    document.getElementById('aboutLocation').innerHTML = document.getElementById("id_aboutContent").value
                         $("#collapseOneTitle").removeClass( "collapsed").addClass("");
                         $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
                         $("#collapseOne").css("height", "auto");
+                        document.getElementById('shopEditor_message_area').innerHTML = "New about has been applied"
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors(".aboutForm");
+                        clear_form_field_errors("#about");
+                        document.getElementById('shopEditor_message_area').innerHTML = ""
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
@@ -148,15 +208,40 @@
                 });
         });
 
-</script>
+$(document).ready(function () {
+  $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
 
-<script>
+    // if one of these blocks is not failing do not prevent submission
+    // we use here group validation with option force (validate even non required fields)
+    if (formInstance.isValid()) {
+        $("input[type=submit]").attr("disabled", "disabled");
+        return;
+    }
+    // else stop form submission
+    formInstance.submitEvent.preventDefault();
+    $('.parsley-errors-list')
+{#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
+      .addClass("filled bootstrapError help-block");
 
-$("#submit-id-productcreationform").click(function() {
-    this.disabled = true;
-    this.form.submit();
+
+    return;
+  });
+
+    document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+    document.getElementById("id_price").attributes["type"].value = "decimal";
+
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
+    resizeEditor();
+    {% if editItemMode %}
+    populateProductVariantsInfo();
+    showImageFields();
+    {% endif %}
+
 
 });
+
 
 var htmlString = "<div>\
   This is a string.\
@@ -224,7 +309,7 @@ var rowColorQuantityTemplate = "" +
         "<div class='row-color >" +
             "<div id='div_id_colorSelection' class='form-group'>" +
                 "<div class='controls'>" +
-                    "<select class='select form-control' id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
+                    "<select class='select form-control colorSelect' id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
                         "<option value='' selected='selected'>Choose a color...</option>" +
                         "{% for color in colors %}" +
                         "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
@@ -237,44 +322,53 @@ var rowColorQuantityTemplate = "" +
     "<td>" +
         "<div id='div_id_quantityField' class='form-group'>" +
             "<div class='controls'>" +
-                "<input class='numberinput form-control' id='id_quantityField' name='quantityField' type='number'>" +
+                "<input class='numberinput form-control quantityField' id='id_quantityField' name='quantityField' type='number'>" +
             "</div>" +
         "</div>" +
     "</tr>" +
 "</tr>"
 
+const SizeTypeInfo = {
+    "1" :
+    {
+        "sizeTemplateClass" : ".sizeSetSelectionTemplate",
+        "sizeSelectionClass" : ".sizeSetSelection",
+        "selectedValueType" : '$("option:selected", this)'
+    },
+    "2" :
+    {
+        "sizeTemplateClass" : ".sizeDimensionSelectionTemplate",
+        "sizeSelectionClass" : ".sizeDimensionSelection",
+        "selectedValueType" : '$(this).val()'
+    },
+    "3" :
+    {
+        "sizeTemplateClass" : ".sizeNumberSelectionTemplate",
+        "sizeSelectionClass" : ".sizeNumberSelection",
+        "selectedValueType" : '$(this).val()'
+    }
+};
 
 $("#id_sizeVariation").change(function() {
     $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
     sizesFieldSet.removeClass("hidden");
-    var sizeType;
-    var sizeTemplateClass;
-    var sizeSelectionClass;
-    var selectedValueType;
-    switch (selectedValue[0].value) {
-        case "1":
-            sizeType = "sizeSet";
-            sizeTemplateClass = ".sizeSetSelectionTemplate";
-            sizeSelectionClass = ".sizeSetSelection";
-            selectedValueType = $("option:selected", this);
-            break;
-        case "2":
-            sizeType = "sizeDim";
-            sizeTemplateClass = ".sizeDimensionSelectionTemplate";
-            sizeSelectionClass = ".sizeDimensionSelection";
-            selectedValueType = $(this).val();
-            break;
-        case "3":
-            sizeType = "sizeNum";
-            sizeTemplateClass = ".sizeNumberSelectionTemplate";
-            sizeSelectionClass = ".sizeNumberSelection";
-            selectedValueType = $(this).val();
-            break;
-    }
-    RemoveWrongSizeTypes(sizeType);
-    addNewSizeRow(sizeType);
+    var sizeType = selectedValue[0].value;
+    var sizeTypeString = sizeTypeStringFromNum(sizeType);
+    var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
+    var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
+    var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
+
+
+    RemoveWrongSizeTypes(sizeTypeString);
+    addNewSizeRow(sizeTypeString);
+    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+});
+
+
+
+function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
 
@@ -282,32 +376,34 @@ $("#id_sizeVariation").change(function() {
             addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
         }
 
-        var colorsAndQuantities = $(".collapse-colors-quantity", $(this).parents(".accordion-group")[0]);
-        colorsAndQuantities.collapse('show');
-
-        var selectedValue = selectedValueType;
+        var selectedValue = eval(selectedValueType);
         var sizesFieldSet = $("#sizesFieldSet");
         if (selectedValue[0].value != "0") {
             if($(this).closest('.accordion-group').next().length == "0") {
                 //Add a new size set row
                 $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
-                addNewSizeRow(sizeType);
+                addNewSizeRow(sizeTypeString);
             }
         }
-    })
+    });
     //Color event handling (Add a new color/quantity row for more color/quantity selection)
     sizesFieldSet.on("change", ".row-color", function(e) {
-        var selectedValue = selectedValueType;
+        var selectedValue = $("option:selected", this);
         var sizesFieldSet = $("#sizesFieldSet");
+        var editorPanelHeight;
+        var currentPanel;
+        editorPanelHeight = .85;
+        maxHeight = $(window).height()*editorPanelHeight;
         if (selectedValue[0].value != 0) {
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
             if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
                 addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
-                $('#formContent').animate({scrollTop: $("#addItemEditor").height() - $(this).closest('.rowColorQuantityTemplate').next().position().top}, 500);
+                currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
+                $('#formContent').animate({scrollTop: currentPanel  }, 500);
             }
         }
     })
-});
+}
 
 function addNewSizeRow(sizeType) {
     var sizeTemplateName;
@@ -348,37 +444,40 @@ function addNewSizeRow(sizeType) {
         var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
         $th.attr('name', newName);
     });
+    return $newSizeSelection;
 }
 
 function addNewColorAndQuantityRow(prefix, appendTo) {
 
-        $(appendTo).append(rowColorQuantityTemplate);
+    var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
+    colorsAndQuantities.collapse('show');
 
-        var $newColorQuantityRow = $("#rowColorQuantityTemplate");
+    $(appendTo).append(rowColorQuantityTemplate);
 
-        // Get the number at the end of the ID, increment it, and replace the old id
-        var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
-        prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
-        appendSuffixToAttribute($newColorQuantityRow, "id", counter);
+    var $newColorQuantityRow = $("#rowColorQuantityTemplate");
 
-
-        // Find all elements in $clone that have an ID, and iterate using each()
-        $newColorQuantityRow.find('[id]').each(function() {
-            //Perform the same replace as above
-            var $th = $(this);
-            var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
-            $th.attr('id', newID);
-        });
-
-        // Find all elements in $clone that have a name, and iterate using each()
-        $newColorQuantityRow.find('[name]').each(function() {
-             //Perform the same replace as above
-            var $th = $(this);
-            var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
-            $th.attr('name', newName);
-        });
+    // Get the number at the end of the ID, increment it, and replace the old id
+    var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
+    prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
+    appendSuffixToAttribute($newColorQuantityRow, "id", counter);
 
 
+    // Find all elements in $clone that have an ID, and iterate using each()
+    $newColorQuantityRow.find('[id]').each(function() {
+        //Perform the same replace as above
+        var $th = $(this);
+        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
+        $th.attr('id', newID);
+    });
+
+    // Find all elements in $clone that have a name, and iterate using each()
+    $newColorQuantityRow.find('[name]').each(function() {
+         //Perform the same replace as above
+        var $th = $(this);
+        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
+        $th.attr('name', newName);
+    });
+    return $newColorQuantityRow;
 }
 
 function RemoveWrongSizeTypes(newSizeType) {
@@ -432,25 +531,116 @@ function prependPrefixToAttribute(element, attr, prefix){
     element.attr(attr, prefix + element.attr(attr));
 }
 
-$("#resizeIcon").click(function() {
-   $(this).toggleClass("glyphicon-resize-full");
-   $(this).toggleClass("glyphicon-resize-small");
-   resizeEditor();
-});
+function sizeTypeStringFromNum(num) {
+    switch (num) {
+        case "1":
+            return "sizeSet";
+        case "2":
+            return "sizeDim";
+        case "3":
+            return "sizeNum";
+        default:
+            return "";
+    }
 
-$("#minMaxIcon").click(function() {
-   $(this).toggleClass("glyphicon-chevron-up");
-   $(this).toggleClass("glyphicon-chevron-down");
-   $("#resizeIcon").toggleClass("hidden");
-});
+}
+
+function populateProductVariantsInfo() {
+
+    $.getJSON("{{ request.get_full_path }}/getVariants/size", function(data) {
+        var sizeType = data["sizetype"];
+        var sizeTypeString = sizeTypeStringFromNum(sizeType);
+        var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
+        var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
+        var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
+
+
+        var sizesFieldSet = $("#sizesFieldSet");
+        sizesFieldSet.removeClass("hidden");
+        wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+
+        $.each(data.variants, function(key, value) {
+
+            var sizeRow = addNewSizeRow(sizeTypeString);
+            populateInitialDataForSizeRow(sizeRow, sizeTypeString, key);
+            var prefix = sizeRow.attr("id") + "_";
+            var appendTo = sizeRow.find("tbody");
+            $.each(value, function (key, value) {
+
+                var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
+                populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
+            });
+            addNewColorAndQuantityRow(prefix, appendTo);
+        });
+        addNewSizeRow(sizeTypeString);
+
+
+
+    });
+
+}
+
+function populateInitialDataForSizeRow(sizeRow, sizeType, size) {
+    switch (sizeType) {
+        case "sizeSet":
+            sizeRow.find('.sizeSetSelection option').each(function() {
+              if($(this).text() == size.toUpperCase()) {
+                $(this).attr('selected', 'selected');
+              }
+            });
+            break;
+        case "sizeDim":
+            var dims = size.split(" x ");
+            sizeRow.find('.dimensionWidth').val(dims[0]);
+            sizeRow.find('.dimensionLength').val(dims[1]);
+            break;
+        case "sizeNum":
+            sizeRow.find('.sizeNumberSelection').val(size);
+            break;
+    }
+}
+
+function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quantity) {
+    colorQuantityRow.find('.colorSelect option').each(function() {
+      if($(this).text() == color) {
+        $(this).attr('selected', 'selected');
+      }
+    });
+    colorQuantityRow.find('.quantityField').val(quantity);
+
+}
+
+function showImageFields() {
+
+    var visibleImages = [
+        $('#product_image-clear_id').is(':visible'),
+        $('#product_image1-clear_id').is(':visible'),
+        $('#product_image2-clear_id').is(':visible'),
+        $('#product_image3-clear_id').is(':visible'),
+    ];
+
+    if(visibleImages[0]) {
+        $("#id_product_image1").removeClass("hidden");
+    }
+    if(visibleImages[1]) {
+        $("#id_product_image2").removeClass("hidden");
+    }
+    if(visibleImages[2]) {
+        $("#id_product_image3").removeClass("hidden");
+    }
+    if(visibleImages[3]) {
+        $("#id_product_image4").removeClass("hidden");
+    }
+}
+
 
 $(window).resize(function() {
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
     resizeEditor();
 });
 
-$(window).load(function() {
-    resizeEditor();
-});
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
@@ -519,11 +709,7 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-        editorPanelHeight = 0.35;
-        if ($("#resizeIcon").hasClass("glyphicon-resize-small") == true)
-        {
-            editorPanelHeight = 0.75;
-        }
+        editorPanelHeight = 0.85;
         excess =  $("#shopEditorTitle").outerHeight()+
                 parseInt($("#cornerRadius").css('border-top-width'))+
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
@@ -536,14 +722,67 @@ function resizeEditor() {
     }
 }
 
-$(function(){
-    $("#optionContent").slimScroll({});
+
+
+var jsonDel, delState;
+ $('.btn.btn-primary.tinvilleButton.pull-left').click(function(e){
+     var chevron, jsonDel, parentId, delState;
+     delState = sessionStorage.getItem("del-state");
+     jsonDel = JSON.parse(delState || "{}");
+     parentId = "editorPanels";
+     chevron = "false";
+     jsonDel[parentId] = chevron;
+
+     return sessionStorage.setItem("del-state", JSON.stringify(jsonDel));
+ });
+
+delState = sessionStorage.getItem("del-state");
+jsonDel = JSON.parse(delState || "{}");
+
+$(function() {
+    $.each(jsonDel, function (containerId, isHidden) {
+                if(isHidden === "false") {
+                    $("#minMaxIcon").removeClass("glyphicon-chevron-down");
+                    $("#minMaxIcon").addClass("glyphicon-chevron-up");
+                    sessionStorage.removeItem("del-state");
+                    return $("#" + containerId).collapse('hide');
+                }
+                else {
+                    return $("#" + containerId).collapse('show');
+                }
+            }
+    );
 });
 
-$(function(){
-    $("#formContent").slimScroll({});
+var json, tabsState;
+$('a[data-toggle="pill"]').click( function(e) {
+    var href, json, parentId, tabsState;
+
+    tabsState = sessionStorage.getItem("tabs-state");
+    json = JSON.parse(tabsState || "{}");
+    parentId = $(e.target).parents("ul.nav.nav-pills").attr("id");
+    href = $(e.target).attr('href');
+    json[parentId] = href;
+
+    return sessionStorage.setItem("tabs-state", JSON.stringify(json));
 });
 
+tabsState = sessionStorage.getItem("tabs-state");
+json = JSON.parse(tabsState || "{}");
+
+$.each(json, function(containerId, href) {
+    return $("#" + containerId + " a[href=" + href + "]").tab('show');
+});
+
+
+$("#optionContent").slimScroll({});
+$("#formContent").slimScroll({});
+
+
+$("#shopEditorTitle").click(function() {
+   $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
+   $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
+});
 
 </script>
 
