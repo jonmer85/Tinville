@@ -52,7 +52,6 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
-                         Button( 'clear_Description', 'Clear Description', css_id="id_Clear_Description"),
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -65,8 +64,7 @@ class ProductCreationForm(forms.ModelForm):
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
-                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"),
-                             Button( 'clear_Size', 'Clear Size', css_id="id_Clear_Sizes"))
+                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
@@ -128,7 +126,6 @@ class ProductCreationForm(forms.ModelForm):
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
-
 
 
     def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):

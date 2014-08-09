@@ -102,17 +102,6 @@
 
 
         //Tommy Leedberg - 8/2/2014 - User Story: 145 - Clear Fields on Add Item
-        $('#id_Clear_Description' ).click
-        (
-                function()
-                {
-                    //in order to set the content of a tinymce iframe you must make sure it is active first
-                    $('#id_description_ifr' ).trigger( 'click' ) ;
-                    tinyMCE.activeEditor.setContent('') ;
-
-                }
-        );
-
         /**
          * Tommy Leedberg - 7/23/2014
          *      The following calls check to see if the user has added an image and if they have we add the next image field
@@ -122,40 +111,41 @@
         $('#id_product_image').change
         (
 
-                function()
-                {
-                    $("#id_product_image1" ).removeClass("hidden");
-                }
+            function()
+            {
+                $("#id_product_image1" ).removeClass("hidden");
+            }
 
         );
 
         $('#id_product_image1').change
         (
 
-                function()
-                {
-                    $("#id_product_image2" ).removeClass("hidden");
-                }
+            function()
+            {
+                $("#id_product_image2" ).removeClass("hidden");
+            }
 
         );
 
         $('#id_product_image2').change
         (
 
-                function()
-                {
-                    $("#id_product_image3" ).removeClass("hidden");
-                }
+            function()
+            {
+                $("#id_product_image3" ).removeClass("hidden");
+            }
 
         );
 
         $('#id_product_image3').change
         (
 
-                function()
-                {
-                    $("#id_product_image4" ).removeClass("hidden");
-                }
+            function()
+            {
+                $("#id_product_image4" ).removeClass("hidden");
+            }
+
         );
 
         $(".emptyShop").css("border-style", "dashed");
@@ -284,12 +274,15 @@ var sizeSetTemplate = "" +
 "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
         "<div class='controls'>" +
-            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+            "<select class='sizeSetSelection select form-control col-xs-10' id='id_sizeSetSelection' name='sizeSetSelection'>" +
                 "<option value='' selected='selected'>Choose a size...</option>" +
                 "{% for sizeSet in sizeSetOptions %}" +
                 "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
                 "{% endfor %}" +
             "</select>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='$(sizeSetSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
+            "</div>" +
         "</div>" +
     "</div>" +
 "</div>" + colorQuantityTableHead
@@ -299,12 +292,15 @@ var sizeDimensionTemplate = "" +
 "<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
         "<div class='controls row'>" +
-            "<div class='col-xs-5'>" +
+            "<div class='col-xs-4'>" +
                 "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'>" +
             "</div>" +
             "<div class='col-xs-2 dimensionSplit'>X</div>"+
-            "<div class='col-xs-5'>" +
+            "<div class='col-xs-4'>" +
                 "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='$(sizeDimensionSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
             "</div>" +
         "</div>" +
     "</div>" +
@@ -315,6 +311,9 @@ var sizeNumberTemplate = "" +
     "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
         "<div class='controls'>" +
             "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='$(sizeNumberSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
+            "</div>" +
         "</div>" +
     "</div>" +
 "</div>" + colorQuantityTableHead
@@ -384,6 +383,12 @@ $("#id_sizeVariation").change(function() {
 });
 
 
+function clearRow( strIdOfRowToClear )
+{
+    var rowId = "#" + strIdOfRowToClear ;
+
+
+}
 
 function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
@@ -444,6 +449,10 @@ function addNewSizeRow(sizeType) {
     // Get the number at the end of the ID, increment it, and replace the old id
     var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
     appendSuffixToAttribute($newSizeSelection, "id", counter);
+
+    //find TEMPLATENUM and replace it with the appropriate row number for clearing
+    var newInnerHTML = $newSizeSelection.html().replace( "TEMPLATENUM", counter ) ;
+    $newSizeSelection.html( newInnerHTML ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
     var prefix = $newSizeSelection[0].id + "_";
