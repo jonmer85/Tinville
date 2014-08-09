@@ -273,13 +273,15 @@ var colorQuantityTableHead = "" +
 var sizeSetTemplate = "" +
 "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-        "<div class='controls'>" +
-            "<select class='sizeSetSelection select form-control col-xs-10' id='id_sizeSetSelection' name='sizeSetSelection'>" +
-                "<option value='' selected='selected'>Choose a size...</option>" +
-                "{% for sizeSet in sizeSetOptions %}" +
-                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
-                "{% endfor %}" +
-            "</select>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-10'>" +
+                "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+                    "<option value='' selected='selected'>Choose a size...</option>" +
+                    "{% for sizeSet in sizeSetOptions %}" +
+                    "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                    "{% endfor %}" +
+                "</select>" +
+            "</div>" +
             "<div class='col-xs-2'>" +
                 "<button id='id_clearSizes' value='Clear' onclick='$(sizeSetSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
             "</div>" +
@@ -309,8 +311,10 @@ var sizeDimensionTemplate = "" +
 var sizeNumberTemplate = "" +
 "<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
-        "<div class='controls'>" +
-            "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-10'>" +
+                "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+            "</div>" +
             "<div class='col-xs-2'>" +
                 "<button id='id_clearSizes' value='Clear' onclick='$(sizeNumberSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
             "</div>" +
