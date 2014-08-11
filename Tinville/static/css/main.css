@@ -958,6 +958,9 @@ textarea {
     height:60px;
     width: 140px;
     word-wrap:normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .shoppingcartremovebtn {

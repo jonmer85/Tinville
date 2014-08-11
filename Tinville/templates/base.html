@@ -752,7 +752,7 @@
         var CartItem = {
             Id:itemNum,
             title:"Hello World",
-            description:"This is an awesome item",
+            description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
             price:10.01
         };
         AddCartItem(CartItem);
@@ -764,6 +764,9 @@
  cartJson = JSON.parse(cartState || "{}");
 
 $(function() {
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
     cartTotal = cartJson["cartTotal"];
     if(cartTotal === undefined)
         cartTotal = 0.00;
@@ -781,7 +784,6 @@ $(function() {
 
     if(cartItems !== undefined)
     {
-        //foreach item in cartItems
         $.each(cartItems, function(index, item)
         {
             LoadCartItemDiv(item);
@@ -795,8 +797,7 @@ $("#shoppingcartBtn").click(function()
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var IsOpen;
-    //TODO: BUG: Always true
-    if($('#shoppingcart:visible'))
+    if($('#shoppingcart').is(":visible"))
         IsOpen = true;
     else
         IsOpen = false;
@@ -865,7 +866,7 @@ function RemoveCartItem(itemId)
     cartJson = JSON.parse(cartState || "{}");
     var list = cartJson["cartList"];
     var price = list[itemId].price;
-    cartTotal -= price;
+    cartTotal = (cartTotal * 100 - price * 100) / 100;
     $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
     cartJson["cartTotal"] = cartTotal;
     delete list[itemId];
