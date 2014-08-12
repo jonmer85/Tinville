@@ -310,13 +310,34 @@
                                 </ul>
                             </li>
                         {% endif %}
-
+                        <li class="yamm-fw navbarLinkStyle">
+                            <button type="button" id="shoppingcartBtn" href="#" class="btn btn-default btn-lg">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                            </button>
+                        </li>
 
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
+
+    <button id="buttonOfDOOM" type="button" href="#" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+
+                   <div id="shoppingcart">
+                    <div id="shoppingcartitems">
+                     </div>
+                       <div>
+                        <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
+                           <span class="glyphicon glyphicon-check"></span>
+                        </button>
+                         <div id="carttotal">
+
+                         </div>
+                       </div>
+                   </div>
 
     <div class="row">
         {% block content %}
@@ -722,6 +743,138 @@
         $("#id_username.textinput.textInput").val("");
         $("#id_password.textinput.textInput").val("");
     });
+
+ //TODO: Replace with on specific item "Add to Cart" click event
+ var itemNum = 0;
+    $("#buttonOfDOOM").click(function()
+    {
+        itemNum++;
+        var CartItem = {
+            Id:itemNum,
+            title:"Hello World",
+            description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
+            price:10.01
+        };
+        AddCartItem(CartItem);
+    });
+
+ var cartTotal;
+ var cartJson, cartState;
+ cartState = sessionStorage.getItem("cartState");
+ cartJson = JSON.parse(cartState || "{}");
+
+$(function() {
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    cartTotal = cartJson["cartTotal"];
+    if(cartTotal === undefined)
+        cartTotal = 0.00;
+    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+
+    var _IsOpen = cartJson["IsOpen"];
+
+    if(_IsOpen === undefined || _IsOpen === false)
+        $("#shoppingcart").hide();
+
+    if(_IsOpen === true)
+        $("#shoppingcart").show();
+
+    var cartItems = cartJson["cartList"];
+
+    if(cartItems !== undefined)
+    {
+        $.each(cartItems, function(index, item)
+        {
+            LoadCartItemDiv(item);
+        });
+    }
+});
+
+$("#shoppingcartBtn").click(function()
+{
+    $("#shoppingcart").toggle();
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var IsOpen;
+    if($('#shoppingcart').is(":visible"))
+        IsOpen = true;
+    else
+        IsOpen = false;
+
+    cartJson["IsOpen"] = IsOpen;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+});
+
+function LoadCartItemDiv(cartItem)
+{
+    var cartitemdiv =  $('<div/>', {
+        'class':'shoppingcartitem',
+        'id' : cartItem.Id
+    });
+
+    //TODO: Add thumbnail image
+    var itemThumbnail = $('<div/>', {'class':'shoppingcartthumbnail'});
+    itemThumbnail.appendTo(cartitemdiv);
+
+    var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
+
+    var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle','text':cartItem.title});
+    itemTitle.appendTo(itemInfoDiv);
+
+    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':cartItem.description});
+    itemDescription.appendTo(itemInfoDiv);
+
+    itemInfoDiv.appendTo(cartitemdiv);
+    var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
+    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
+        'class' : 'btn btn-default btn-sm', 'html' : '<span class="glyphicon glyphicon-remove"></span>'
+    });
+    removeBtn.appendTo(removeBtnDiv);
+    removeBtnDiv.appendTo(cartitemdiv);
+    cartitemdiv.appendTo("#shoppingcartitems");
+
+}
+
+function AddCartItem(cartItem)
+{
+    LoadCartItemDiv(cartItem);
+
+    cartTotal += cartItem.price;
+    //TODO: Prefix with currency type
+    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var cartList= cartJson["cartList"];
+    if(cartList === undefined)
+        cartList = new Object();
+
+    cartList[cartItem.Id] = cartItem;
+
+    cartJson["cartTotal"] = cartTotal;
+
+    cartJson.cartList = cartList;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+}
+
+function RemoveCartItem(itemId)
+{
+    $('#'+itemId).remove();
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var list = cartJson["cartList"];
+    var price = list[itemId].price;
+    cartTotal = (cartTotal * 100 - price * 100) / 100;
+    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    cartJson["cartTotal"] = cartTotal;
+    delete list[itemId];
+    cartJson.cartList = list;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+}
+
+
 
     </script>
     <script id="message_template" type="text/x-handlebars-template">
