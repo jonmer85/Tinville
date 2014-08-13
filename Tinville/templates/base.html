@@ -44,7 +44,7 @@
         <div class="container">
             <div id="navHeader" class="navbar-header">
 
-                <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
+                <button id="navbarBtn" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -68,7 +68,11 @@
                 {% else %}
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
-
+                <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
+                    <button type="button" id="shoppingcartMobileBtn" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                    </button>
+                </li>
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
@@ -310,8 +314,8 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="yamm-fw navbarLinkStyle">
-                            <button type="button" id="shoppingcartBtn" href="#" class="btn btn-default btn-lg">
+                        <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
+                            <button type="button" id="shoppingcartBtn" class="btn btn-default btn-lg">
                                 <span class="glyphicon glyphicon-shopping-cart"></span>
                             </button>
                         </li>
@@ -791,7 +795,28 @@ $(function() {
     }
 });
 
+$("#navbarBtn").click(function()
+{
+    $("#shoppingcart").hide();
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+     var IsOpen = false;
+
+    cartJson["IsOpen"] = IsOpen;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+});
+
 $("#shoppingcartBtn").click(function()
+{
+    cartToggleBtn();
+});
+
+$("#shoppingcartMobileBtn").click(function()
+{
+    cartToggleBtn();
+});
+
+function cartToggleBtn()
 {
     $("#shoppingcart").toggle();
     cartState = sessionStorage.getItem("cartState");
@@ -804,7 +829,7 @@ $("#shoppingcartBtn").click(function()
 
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-});
+}
 
 function LoadCartItemDiv(cartItem)
 {
