@@ -302,7 +302,7 @@ var sizeDimensionTemplate = "" +
                 "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
             "</div>" +
             "<div class='col-xs-2'>" +
-                "<button id='id_clearSizes' value='Clear' onclick='$(sizeDimensionSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
+                "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
             "</div>" +
         "</div>" +
     "</div>" +
@@ -345,7 +345,10 @@ var rowColorQuantityTemplate = "" +
                 "<input class='numberinput form-control quantityField' id='id_quantityField' name='quantityField' type='number'>" +
             "</div>" +
         "</div>" +
-    "</tr>" +
+    "</td>" +
+    "<td>" +
+        "<button id='id_clearColorQuantity' value='Clear' onclick='$(rowColorQuantityTemplateTEMPLATENUM).remove()'>Clear</button>" +
+    "</td>" +
 "</tr>"
 
 const SizeTypeInfo = {
@@ -386,14 +389,6 @@ $("#id_sizeVariation").change(function() {
     wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
 });
 
-
-function clearRow( strIdOfRowToClear )
-{
-    var rowId = "#" + strIdOfRowToClear ;
-
-
-}
-
 function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
@@ -431,6 +426,50 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
     })
 }
 
+var arSizeRows = [] ;
+
+function clearSizeRow( strRowToClear )
+{
+
+    var strRowId = "#" + strRowToClear ;
+    var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
+
+    if( indexToRemove == arSizeRows.length - 1) //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
+    {
+
+        //Clear the sizeSelection template
+        if( strRowToClear.indexOf("Selection") != -1 )
+        {
+            $(strRowId + "id_sizeSetSelection").val("");
+
+        }
+
+        //Clear the dimensionSelection template
+        if( strRowToClear.indexOf("Dimension") != -1 )
+        {
+
+            $(strRowId + "_id_sizeDimensionSelectionWidth").val("");
+            $(strRowId + "_id_sizeDimensionSelectionLength").val("");
+
+        }
+
+        //Clear the numberSelection template
+        if( strRowToClear.indexOf("Number") != -1 )
+        {
+            $(strRowId + "id_sizeNumberSelection").val("");
+        }
+
+    }
+    else
+    {
+
+        $( strRowId ).remove();
+        arSizeRows.splice( indexToRemove, 1 ) ;
+
+    }
+
+}
+
 function addNewSizeRow(sizeType) {
     var sizeTemplateName;
     var templateName;
@@ -457,6 +496,7 @@ function addNewSizeRow(sizeType) {
     //find TEMPLATENUM and replace it with the appropriate row number for clearing
     var newInnerHTML = $newSizeSelection.html().replace( "TEMPLATENUM", counter ) ;
     $newSizeSelection.html( newInnerHTML ) ;
+    arSizeRows[arSizeRows.length] = ( $( $newSizeSelection ).attr('id') ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
     var prefix = $newSizeSelection[0].id + "_";
@@ -491,6 +531,9 @@ function addNewColorAndQuantityRow(prefix, appendTo) {
     prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
     appendSuffixToAttribute($newColorQuantityRow, "id", counter);
 
+    //find TEMPLATENUM and replace it with the appropriate row number for clearing
+    var newInnerHTML = $newColorQuantityRow.html().replace( "TEMPLATENUM", counter ) ;
+    $newColorQuantityRow.html( newInnerHTML ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
     $newColorQuantityRow.find('[id]').each(function() {
