@@ -283,7 +283,7 @@ var sizeSetTemplate = "" +
                 "</select>" +
             "</div>" +
             "<div class='col-xs-2'>" +
-                "<button id='id_clearSizes' value='Clear' onclick='$(sizeSetSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
+                "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
             "</div>" +
         "</div>" +
     "</div>" +
@@ -316,7 +316,7 @@ var sizeNumberTemplate = "" +
                 "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
             "</div>" +
             "<div class='col-xs-2'>" +
-                "<button id='id_clearSizes' value='Clear' onclick='$(sizeNumberSelectionTemplateTEMPLATENUM).remove()'>Clear</button>" +
+                "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
             "</div>" +
         "</div>" +
     "</div>" +
@@ -347,7 +347,7 @@ var rowColorQuantityTemplate = "" +
         "</div>" +
     "</td>" +
     "<td>" +
-        "<button id='id_clearColorQuantity' value='Clear' onclick='$(rowColorQuantityTemplateTEMPLATENUM).remove()'>Clear</button>" +
+        "<button id='id_clearColorQuantity' value='Clear' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>Clear</button>" +
     "</td>" +
 "</tr>"
 
@@ -426,7 +426,55 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
     })
 }
 
-var arSizeRows = [] ;
+var arSizeRows  = [] ;
+var arColorRows = [] ;
+
+function clearColorRow( strRowToClear )
+{
+        var strRowId = "#" + strRowToClear ;
+        var indexToRemove = arColorRows.indexOf(strRowToClear) ;
+
+        console.log( strRowId ) ;
+        console.log( arColorRows ) ;
+
+{#        if( indexToRemove == arColorRows.length - 1) //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work#}
+{#        {#}
+{##}
+{#            //Clear the sizeSelection template#}
+{#            if( strRowToClear.indexOf("Selection") != -1 )#}
+{#            {#}
+{#                $(strRowId + "_id_quantityField0").val("");#}
+{##}
+{#            }#}
+{##}
+{#            //Clear the dimensionSelection template#}
+{#            if( strRowToClear.indexOf("Dimension") != -1 )#}
+{#            {#}
+{##}
+{#                $(strRowId + "_id_quantityField0").val("");#}
+{##}
+{#            }#}
+{##}
+{#            //Clear the numberSelection template#}
+{#            if( strRowToClear.indexOf("Number") != -1 )#}
+{#            {#}
+{#                $(strRowId + "_id_quantityField0").val("");#}
+{#            }#}
+{##}
+{#        }#}
+{#        else#}
+{#        {#}
+
+            console.log( strRowId ) ;
+            var temp = strRowId.replace("_rowColorQuantityTemplate0", "") ;
+            temp = temp.substring( 0, temp -1 ) ;
+            console.log(temp) ;
+            $( strRowId ).empty();
+            arColorRows.splice( indexToRemove, 1 ) ;
+
+        //}
+
+}
 
 function clearSizeRow( strRowToClear )
 {
@@ -533,7 +581,9 @@ function addNewColorAndQuantityRow(prefix, appendTo) {
 
     //find TEMPLATENUM and replace it with the appropriate row number for clearing
     var newInnerHTML = $newColorQuantityRow.html().replace( "TEMPLATENUM", counter ) ;
+    newInnerHTML = newInnerHTML.replace("rowColorQuantityTemplate", prefix + "rowColorQuantityTemplate" ) ;
     $newColorQuantityRow.html( newInnerHTML ) ;
+    arColorRows[arColorRows.length] = ( $( $newColorQuantityRow ).attr('id') ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
     $newColorQuantityRow.find('[id]').each(function() {
