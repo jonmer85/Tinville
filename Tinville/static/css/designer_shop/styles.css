@@ -577,6 +577,13 @@
     padding: 0px;
 }
 
+@media (max-width: 768px)
+{
+    .otherItemImages {
+        padding-top: 3px;
+    }
+}
+
 /*@media (max-width: 768px) {*/
     .otherImage {
         padding: 2px;

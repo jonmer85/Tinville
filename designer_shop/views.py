@@ -1,5 +1,6 @@
 import json
 import collections
+from operator import itemgetter
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -53,7 +54,6 @@ def shopper(request, slug):
         'shop': shop,
         'categories': get_model('catalogue', 'Category').objects.all(),
         'products': get_list_or_empty(Product, shop=shop.id)
-        # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
 def itemdetail(request, shop_slug, item_slug=None):
@@ -158,6 +158,11 @@ def get_variants(item, group=None):
             groupdict.pop(group)
             quantitysize = groupdict
             colorsizequantitydict[mysort].append(quantitysize)
+            if str(group) == 'color':
+                colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('size'))
+            elif group == 'size':
+                colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('color'))
+
 
     addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
