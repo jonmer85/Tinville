@@ -6,7 +6,7 @@ from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML
+from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
 from crispy_forms.bootstrap import PrependedText
 from south.orm import _FakeORM
 
@@ -28,6 +28,7 @@ class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title",max_length=80)
+
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
         super(ProductCreationForm, self).__init__(*args, **kwargs)
@@ -127,7 +128,6 @@ class ProductCreationForm(forms.ModelForm):
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
-
 
 
     def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
