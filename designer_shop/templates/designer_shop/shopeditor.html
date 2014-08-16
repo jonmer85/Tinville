@@ -434,45 +434,22 @@ function clearColorRow( strRowToClear )
         var strRowId = "#" + strRowToClear ;
         var indexToRemove = arColorRows.indexOf(strRowToClear) ;
 
-        console.log( strRowId ) ;
-        console.log( arColorRows ) ;
+        //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
+        if( indexToRemove == arColorRows.length - 1)
+        {
 
-{#        if( indexToRemove == arColorRows.length - 1) //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work#}
-{#        {#}
-{##}
-{#            //Clear the sizeSelection template#}
-{#            if( strRowToClear.indexOf("Selection") != -1 )#}
-{#            {#}
-{#                $(strRowId + "_id_quantityField0").val("");#}
-{##}
-{#            }#}
-{##}
-{#            //Clear the dimensionSelection template#}
-{#            if( strRowToClear.indexOf("Dimension") != -1 )#}
-{#            {#}
-{##}
-{#                $(strRowId + "_id_quantityField0").val("");#}
-{##}
-{#            }#}
-{##}
-{#            //Clear the numberSelection template#}
-{#            if( strRowToClear.indexOf("Number") != -1 )#}
-{#            {#}
-{#                $(strRowId + "_id_quantityField0").val("");#}
-{#            }#}
-{##}
-{#        }#}
-{#        else#}
-{#        {#}
+            var colorRowNum = strRowId.slice( -1 ) ;
+            var tempStr = strRowId.replace( "rowColorQuantityTemplate" + colorRowNum, "") ;
+            $(tempStr + "id_quantityField" + colorRowNum).val("");
 
-            console.log( strRowId ) ;
-            var temp = strRowId.replace("_rowColorQuantityTemplate0", "") ;
-            temp = temp.substring( 0, temp -1 ) ;
-            console.log(temp) ;
+        }
+        else
+        {
+
             $( strRowId ).empty();
             arColorRows.splice( indexToRemove, 1 ) ;
 
-        //}
+        }
 
 }
 
@@ -544,6 +521,12 @@ function addNewSizeRow(sizeType) {
     //find TEMPLATENUM and replace it with the appropriate row number for clearing
     var newInnerHTML = $newSizeSelection.html().replace( "TEMPLATENUM", counter ) ;
     $newSizeSelection.html( newInnerHTML ) ;
+
+    //If were working with a different size type we need to clear the array
+    if( arSizeRows.length != 0 && arSizeRows[0].indexOf( sizeTemplateName ) == -1 )
+    {
+        arSizeRows = [] ;
+    }
     arSizeRows[arSizeRows.length] = ( $( $newSizeSelection ).attr('id') ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
