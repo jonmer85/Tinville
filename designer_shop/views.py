@@ -54,7 +54,6 @@ def shopper(request, slug):
         'shop': shop,
         'categories': get_model('catalogue', 'Category').objects.all(),
         'products': get_list_or_empty(Product, shop=shop.id)
-        # 'categories': get_object_or_404(get_model('catalogue', 'AbstrastCategory')).objects.all()
     })
 
 def itemdetail(request, shop_slug, item_slug=None):
