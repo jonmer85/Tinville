@@ -8,7 +8,9 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadReque
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
+from oscar.apps.catalogue.models import ProductCategory as Categories
 from oscar.apps.catalogue.models import ProductImage as ProductImages
+from oscar.apps.catalogue.models import Category as Category
 from django.core.urlresolvers import reverse
 
 
@@ -50,9 +52,25 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
+    shopProducts = get_list_or_empty(Product, shop_id=shop.id, parent__isnull=True)
+    # shopCategories = get_list_or_empty(Categories, product_id=shopProducts)
+    shopProductCategories = set()
+    for products in shopProducts:
+        shopProductCategories.add(get_or_none(Categories, product_id=products.id))
+
+    shopCategories = set()
+    for productcategory in shopProductCategories:
+        if productcategory != None:
+                shopCategories.add(get_or_none(Category, id=productcategory.category.id))
+
+    shopGenders = set()
+    for category in shopCategories:
+        shopGenders.add(get_or_none(Category, path=category.path[:4]))
+
     return render(request, 'designer_shop/shopper.html', {
         'shop': shop,
-        'categories': get_model('catalogue', 'Category').objects.all(),
+        'shopgenders': shopGenders,
+        'shopcategories': shopCategories,
         'products': get_list_or_empty(Product, shop=shop.id)
     })
 

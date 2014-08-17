@@ -33,19 +33,17 @@
   <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
      <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
         <option>View All</option>
-          {% for category in categories %}
-            {% if category.depth == 1 %}
-                <option>{{ category.name }}</option>
-            {% endif %}
-         {% endfor %}
+            {% for genders in shopgenders %}
+                <option>{{ genders.name }}</option>
+            {% endfor %}
       </select>
   </div>
 
   <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
       <select class="select form-control filterTabs" >
         <option>View All Types</option>
-        {% for category in categories %}
-            {% if category.depth == 3 %}
+        {% for category in shopcategories %}
+            {% if category.numchild == 0 %}
                 <option class="">{{ category.name }}</option>
             {% endif %}
          {% endfor %}
