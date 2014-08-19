@@ -39,16 +39,19 @@
         <![endif]-->
     {% load feedback_widget %}
 	{% feedback_widget %}
-    <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <a href=""><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+
+    <div class="navbar-header">
+        <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navButton navbar-toggle collapsed menu-toggle">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+
     <nav class="navbar yamm navbar-default" role="navigation">
         <div class="container">
             <div id="navHeader" class="navbar-header">
-
-                <button id="navbarBtn" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
                 {% if not user.is_authenticated %}
                     <ul id="signInButton" class="nav pull-right">
@@ -68,11 +71,7 @@
                 {% else %}
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
-                <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
-                    <button type="button" id="shoppingcartMobileBtn" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
-                    </button>
-                </li>
+
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
@@ -84,7 +83,7 @@
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
-                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                            <ul class=" list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Clothing</strong></p></li>
                                                 <li><a href="#" >Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
@@ -314,34 +313,13 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
-                            <button type="button" id="shoppingcartBtn" class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
-                            </button>
-                        </li>
+
 
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
-
-    <button id="buttonOfDOOM" type="button" href="#" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-plus"></span>
-    </button>
-
-                   <div id="shoppingcart">
-                    <div id="shoppingcartitems">
-                     </div>
-                       <div>
-                        <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
-                           <span class="glyphicon glyphicon-check"></span>
-                        </button>
-                         <div id="carttotal">
-
-                         </div>
-                       </div>
-                   </div>
 
     <div class="row">
         {% block content %}
@@ -699,6 +677,33 @@
             {% endif %}
         });
 
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 10) {
+                $('.navbar-header').css('top', $(window).scrollTop());
+            }
+          }
+        );
+
+        $(document).ready(function() {
+
+                   var menu = "close";
+
+                    $('.menu-toggle').click(function() {
+
+                        if(menu == "close"){
+                            $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
+                            $('.navbar').css('-webkit-transform','translate(0, 0)');
+
+                            menu="open";
+                        }
+                        else{
+                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                            $('.navbar').css('-webkit-transform','translate(-100%, 0)');
+
+                            menu="close";
+                        }
+                    });
+         });
 
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
@@ -795,28 +800,7 @@ $(function() {
     }
 });
 
-$("#navbarBtn").click(function()
-{
-    $("#shoppingcart").hide();
-    cartState = sessionStorage.getItem("cartState");
-    cartJson = JSON.parse(cartState || "{}");
-     var IsOpen = false;
-
-    cartJson["IsOpen"] = IsOpen;
-    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-});
-
 $("#shoppingcartBtn").click(function()
-{
-    cartToggleBtn();
-});
-
-$("#shoppingcartMobileBtn").click(function()
-{
-    cartToggleBtn();
-});
-
-function cartToggleBtn()
 {
     $("#shoppingcart").toggle();
     cartState = sessionStorage.getItem("cartState");
@@ -829,7 +813,7 @@ function cartToggleBtn()
 
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-}
+});
 
 function LoadCartItemDiv(cartItem)
 {
