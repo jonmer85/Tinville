@@ -13,9 +13,12 @@ from south.orm import _FakeORM
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
+from parsley.decorators import parsleyfy
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
-from parsley.decorators import parsleyfy
+from common.utils import get_or_none
+from common.widgets import AdvancedFileInput
+
 
 
 SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
@@ -39,12 +42,6 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
-        self.fields['product_image'] = forms.ImageField(required=False)
-        self.fields['product_image1'] = forms.ImageField(required=False)
-        self.fields['product_image2'] = forms.ImageField(required=False)
-        self.fields['product_image3'] = forms.ImageField(required=False)
-        self.fields['product_image4'] = forms.ImageField(required=False)
-
         self.helper = FormHelper()
         self.helper.form_show_labels = False
 
@@ -58,10 +55,10 @@ class ProductCreationForm(forms.ModelForm):
                 ),
                 Fieldset('Images',
                          Field( 'product_image', css_id="id_productImage" ),
-                         Field( 'product_image1', css_id="id_productImage1"),
-                         Field( 'product_image2', css_id="id_productImage2"),
-                         Field( 'product_image3', css_id="id_productImage3"),
-                         Field( 'product_image4', css_id="id_productImage4")
+                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -75,6 +72,19 @@ class ProductCreationForm(forms.ModelForm):
             )
 
         )
+
+        self.fields['product_image'] \
+            = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
+                               widget=AdvancedFileInput)
+        self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
+                                                         widget=AdvancedFileInput)
+        self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
+                                                         widget=AdvancedFileInput)
+        self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
+                                                         widget=AdvancedFileInput)
+        self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
+                                                         widget=AdvancedFileInput)
+
         self.fields['description'].widget = TinyMCE()
         self.fields['price'].label = ""
 
@@ -176,34 +186,16 @@ class ProductCreationForm(forms.ModelForm):
         canonicalId = canonicalProduct.id
         if is_edit:
             # Remove all variants since they will get recreated below
-            get_model('catalogue', 'Product').objects.get(parent=canonicalId).delete()
+            get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
 
 
         #if not is_edit:
         # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
-        productImage = ProductImage(product=canonicalProduct)
-        productImage1 = ProductImage(product=canonicalProduct)
-        productImage2 = ProductImage(product=canonicalProduct)
-        productImage3 = ProductImage(product=canonicalProduct)
-        productImage4 = ProductImage(product=canonicalProduct)
-
-        productImage.display_order = 1
-        productImage1.display_order = 2
-        productImage2.display_order = 3
-        productImage3.display_order = 4
-        productImage4.display_order = 5
-
-        productImage.original = self.cleaned_data['product_image']
-        productImage1.original = self.cleaned_data['product_image1']
-        productImage2.original = self.cleaned_data['product_image2']
-        productImage3.original = self.cleaned_data['product_image3']
-        productImage4.original = self.cleaned_data['product_image4']
-
-        productImage.save()
-        productImage1.save()
-        productImage2.save()
-        productImage3.save()
-        productImage4.save()
+        self.save_image_if_needed(canonicalProduct, "product_image", 0)
+        self.save_image_if_needed(canonicalProduct, "product_image1", 1)
+        self.save_image_if_needed(canonicalProduct, "product_image2", 2)
+        self.save_image_if_needed(canonicalProduct, "product_image3", 3)
+        self.save_image_if_needed(canonicalProduct, "product_image4", 4)
 
         i = 0
         while True:
@@ -263,6 +255,30 @@ class ProductCreationForm(forms.ModelForm):
                 break
         return canonicalProduct
 
+    def save_image_if_needed(self, product, image_field, display_order):
+        if self.cleaned_data[image_field] is not None:
+            if not self.cleaned_data[image_field]:
+                # False means that the clear checkbox was checked
+                existing = get_or_none(ProductImage, display_order=display_order, product=product)
+                existing.delete()
+
+            else:
+                newFileExists = get_or_none(ProductImage, original=self.cleaned_data[image_field].name, product=product)
+                if not newFileExists:
+                    existing = get_or_none(ProductImage, display_order=display_order, product=product)
+                    if existing:
+                        existing.delete()
+                    productImage = ProductImage(product=product, display_order=display_order)
+                    productImage.original = self.cleaned_data[image_field]
+                    productImage.save()
+
+
+
+    def load_image(self, product, display_order):
+        image = get_or_none(ProductImage, product=product, display_order=display_order)
+        retVal = None if not image else image.original
+        return retVal
+
     def get_size_variation(self):
         if not self.instance or not self.instance.is_group:
             return "0"
@@ -277,7 +293,7 @@ class ProductCreationForm(forms.ModelForm):
         return "0"
 
     def get_value_if_in_edit_mode(self, field_name, default):
-        if not self.instance.pk or not self.instance.is_group:
+        if not self.instance.pk or not self.instance.is_top_level:
             return default
         return self.get_value_from_instance(field_name)
 
@@ -288,7 +304,15 @@ class ProductCreationForm(forms.ModelForm):
         if field_name == 'price':
             return self.instance.min_variant_price_excl_tax
         if field_name == 'product_image':
-            return self.instance.primary_image().original.url
+            return self.load_image(self.instance.pk, 0)
+        if field_name == 'product_image1':
+            return self.load_image(self.instance.pk, 1)
+        if field_name == 'product_image2':
+            return self.load_image(self.instance.pk, 2)
+        if field_name == 'product_image3':
+            return self.load_image(self.instance.pk, 3)
+        if field_name == 'product_image4':
+            return self.load_image(self.instance.pk, 4)
         else:
             return getattr(self.instance, field_name)
 

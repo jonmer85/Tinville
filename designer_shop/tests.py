@@ -78,3 +78,4 @@ class ViewTest(TestCase):
             re.compile(".*" + string + ".*"),
         )
     '''
+

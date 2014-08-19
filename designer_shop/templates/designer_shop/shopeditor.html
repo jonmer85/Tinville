@@ -92,6 +92,7 @@
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
   <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
 
 {% endblock javascript_library %}
 
@@ -99,19 +100,41 @@
     {{ block.super }}
     <script>
 
-        //This doesnt do anything yet and im a n00b, it's having trouble finding the id within the form from django but it's only for looks anyway
-        //so I'm checking the image stuff in and will work on this in the upcomming week.
         $('#id_product_image').change
         (
                 function()
                 {
-                    if( $("#id_product_Image1" ).css( "visibility", "hidden" ).is( ":hidden" ) == true )
-                    {
-                        $("#id_productImage1" ).show() ;
-                    }
-                }
-        )
+                        $("#id_product_image1" ).removeClass("hidden");
 
+                }
+        );
+
+        $('#id_product_image1').change
+        (
+                function()
+                {
+                    $("#id_product_image2" ).removeClass("hidden");
+
+                }
+        );
+
+        $('#id_product_image2').change
+        (
+                function()
+                {
+                    $("#id_product_image3" ).removeClass("hidden");
+
+                }
+        );
+
+        $('#id_product_image3').change
+        (
+                function()
+                {
+                    $("#id_product_image4" ).removeClass("hidden");
+
+                }
+        );
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
@@ -196,10 +219,25 @@ $(document).ready(function () {
     }
     // else stop form submission
     formInstance.submitEvent.preventDefault();
+    $('.parsley-errors-list')
+{#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
+      .addClass("filled bootstrapError help-block");
 
 
     return;
   });
+
+    document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+    document.getElementById("id_price").attributes["type"].value = "decimal";
+
+    if($("#emptyShopId").length > 0) {
+        document.getElementById('emptyShopId').innerHTML = "Items go here..."
+    }
+    resizeEditor();
+    {% if editItemMode %}
+    populateProductVariantsInfo();
+    showImageFields();
+    {% endif %}
 
 
 });
@@ -572,6 +610,29 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 
 }
 
+function showImageFields() {
+
+    var visibleImages = [
+        $('#product_image-clear_id').is(':visible'),
+        $('#product_image1-clear_id').is(':visible'),
+        $('#product_image2-clear_id').is(':visible'),
+        $('#product_image3-clear_id').is(':visible'),
+    ];
+
+    if(visibleImages[0]) {
+        $("#id_product_image1").removeClass("hidden");
+    }
+    if(visibleImages[1]) {
+        $("#id_product_image2").removeClass("hidden");
+    }
+    if(visibleImages[2]) {
+        $("#id_product_image3").removeClass("hidden");
+    }
+    if(visibleImages[3]) {
+        $("#id_product_image4").removeClass("hidden");
+    }
+}
+
 
 $(window).resize(function() {
     if($("#emptyShopId").length > 0) {
@@ -580,16 +641,6 @@ $(window).resize(function() {
     resizeEditor();
 });
 
-$(window).load(function() {
-    if($("#emptyShopId").length > 0) {
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    }
-    resizeEditor();
-    {% if editItemMode %}
-    populateProductVariantsInfo();
-    {% endif %}
-
-});
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
@@ -671,6 +722,38 @@ function resizeEditor() {
     }
 }
 
+
+
+var jsonDel, delState;
+ $('.btn.btn-primary.tinvilleButton.pull-left').click(function(e){
+     var chevron, jsonDel, parentId, delState;
+     delState = sessionStorage.getItem("del-state");
+     jsonDel = JSON.parse(delState || "{}");
+     parentId = "editorPanels";
+     chevron = "false";
+     jsonDel[parentId] = chevron;
+
+     return sessionStorage.setItem("del-state", JSON.stringify(jsonDel));
+ });
+
+delState = sessionStorage.getItem("del-state");
+jsonDel = JSON.parse(delState || "{}");
+
+$(function() {
+    $.each(jsonDel, function (containerId, isHidden) {
+                if(isHidden === "false") {
+                    $("#minMaxIcon").removeClass("glyphicon-chevron-down");
+                    $("#minMaxIcon").addClass("glyphicon-chevron-up");
+                    sessionStorage.removeItem("del-state");
+                    return $("#" + containerId).collapse('hide');
+                }
+                else {
+                    return $("#" + containerId).collapse('show');
+                }
+            }
+    );
+});
+
 var json, tabsState;
 $('a[data-toggle="pill"]').click( function(e) {
     var href, json, parentId, tabsState;
@@ -699,7 +782,6 @@ $("#formContent").slimScroll({});
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
-
 });
 
 </script>
