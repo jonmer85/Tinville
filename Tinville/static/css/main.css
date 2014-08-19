@@ -1045,3 +1045,7 @@ nav a:hover{
     left:140px;
     bottom:5px;
 }
+
+#shoppingcartMobileBtn {
+    float:right;
+}
