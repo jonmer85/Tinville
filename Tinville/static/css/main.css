@@ -167,6 +167,7 @@ body {
 }
 
 #navHeader {
+    z-index:2002;
 }
 
 #navSearch {
@@ -253,7 +254,7 @@ body {
 /**
   * Tommy Leedberg - 2/11/2014 - Defect #152
   *
-  * Summary: 
+  * Summary:
   *      Updating the login popupform to align it with the
   *      sign-in button.
   * Solution:
@@ -277,12 +278,12 @@ body {
     left: auto !important;
     width: 250px;
     margin-right: 4% ;
-    
+
   }
 }
 
 @media (min-width: 992px) {
-  .loginPopupForm 
+  .loginPopupForm
   {
       margin-right: 3% ;
   }
@@ -907,3 +908,65 @@ textarea {
 .col-bottom {
     vertical-align:bottom;
 }
+
+/*Start navbar*/
+@media (max-width: 768px) {
+.navbar {
+    position: fixed;
+    height: 100%;
+    width: 30%;
+    top: 0px;
+    left: 0px;
+    background-color: #e64a1c;
+    overflow: hidden;
+    margin-top: 50px;
+
+    -webkit-transform: translate(-100%, 0%);
+    -webkit-transition: all 1s ease;
+}
+
+.navbar .container{
+    width: 200px;
+}
+
+.banner img{
+    padding-left: 0px;
+}
+.navbar .navbar-collapse{
+    margin-left: -15%;
+margin-right: -15%;
+}
+
+.slidingContent{
+    -webkit-transition: all 1s ease;
+    margin-left:15px;
+}
+
+.navbar h2{
+    padding: 20px 0px;
+    columns: #e64a1c;
+    text-align: center;
+}
+
+nav a {
+    display: block;
+
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.43);
+}
+
+nav a:hover{
+    color: #CCCCCC;
+
+}
+
+#mobileMenu{}
+
+.navButton span{
+    background: black;
+    border-bottom-color: black;
+}
+
+}/*END navbar*/
