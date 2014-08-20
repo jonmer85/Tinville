@@ -3,6 +3,7 @@ import collections
 from operator import itemgetter
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.db import models
@@ -53,7 +54,6 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     shopProducts = get_list_or_empty(Product, shop_id=shop.id, parent__isnull=True)
-    # shopCategories = get_list_or_empty(Categories, product_id=shopProducts)
     shopProductCategories = set()
     for products in shopProducts:
         shopProductCategories.add(get_or_none(Categories, product_id=products.id))
@@ -67,12 +67,42 @@ def shopper(request, slug):
     for category in shopCategories:
         shopGenders.add(get_or_none(Category, path=category.path[:4]))
 
-    return render(request, 'designer_shop/shopper.html', {
-        'shop': shop,
-        'shopgenders': shopGenders,
-        'shopcategories': shopCategories,
-        'products': get_list_or_empty(Product, shop=shop.id)
-    })
+    if request.method == 'POST':
+        post = request.POST
+        genderfilter = post['gender']
+        itemtypefilter = post['type']
+        pricefilter = post['price']
+        filteredProductList = Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
+        return render(request, 'designer_shop/shop_items.html', {
+            'shop': shop,
+            'products': filteredProductList
+        })
+
+    if request.method == 'GET':
+        return render(request, 'designer_shop/shopper.html', {
+            'shop': shop,
+            'shopgenders': shopGenders,
+            'shopcategories': shopCategories,
+            'products': get_list_or_empty(Product, shop=shop.id)
+        })
+
+def get_valid_categories_for_filter(gender, type):
+    filter = list()
+    if gender != "View All":
+         filter.append(Q(categories__full_name__contains=gender + ' >'))
+    if type != "View All Types":
+        filter.append(Q(categories__full_name__contains='> ' + type))
+
+    qs = filter
+    if filter != []:
+        query = qs.pop()
+        for q in qs:
+            query &= q
+    else:
+        query = Q(parent__isnull=True)
+
+    return query
+
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
@@ -113,7 +143,7 @@ def ajax_about(request, slug):
             if request.is_ajax() and form.is_valid():
                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
                 currentshop.save(update_fields=["aboutContent"])
-                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+                return ppResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 @IsShopOwnerDecorator
