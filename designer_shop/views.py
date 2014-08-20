@@ -89,7 +89,7 @@ def shopper(request, slug):
 def get_valid_categories_for_filter(gender, type):
     filter = list()
     if gender != "View All":
-         filter.append(Q(categories__full_name__contains=gender + ' >'))
+         filter.append(Q(categories__full_name__startswith=gender + ' >'))
     if type != "View All Types":
         filter.append(Q(categories__full_name__contains='> ' + type))
 
