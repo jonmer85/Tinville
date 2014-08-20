@@ -259,8 +259,8 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
     world.browser.find_element_by_id("shopColorPicker").click()
     wait_for_ajax_to_complete()
 
-@step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
-def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
+@step(u'Then an exception Tinville Branding is not Allowed to be Used is thrown')
+def then_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
     assert_selector_does_exist("#div_id_color.has-error")
     assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
@@ -305,4 +305,35 @@ def i_should_see_n_products_total(step, total):
     products = world.browser.find_elements_by_css_selector(".shopItem")
     assert len(products) == int(total)
 
+@step(u'When the home tab is selected')
+def when_the_home_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#shopTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#shopTabButton')
 
+@step(u'Then the home content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('shopTab')
+    assert_id_exists('shopTab')
+
+@step(u'When the about tab is selected')
+def when_the_about_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#aboutTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#aboutTabButton')
+
+@step(u'Then the about content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('aboutTab')
+    assert_id_exists('aboutTab')
+
+@step(u'When the landing tab is selected')
+def when_the_landing_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#landingTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#landingTabButton')
+
+@step(u'Then the landing content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('landingTab')
+    assert_id_exists('landingTab')
