@@ -10,7 +10,7 @@
     {{ block.super }}
 
 
-    <!-- Nav tabs -->
+ <!-- Nav tabs -->
 <ul class="nav nav-tabs shopBackgroundColor" role="tablist">
   <li class="active shopTabStyle"><a href="#shopTab" role="tab" data-toggle="tab"z>Home</a></li>
   <li class="shopTabStyle"><a href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
@@ -19,48 +19,46 @@
 
 <!-- Tab panes -->
 <div class="tab-content ">
-  <div class="navTab tab-pane active" id="shopTab">
-  <div class="container">
-
-    {% if user.email == shop.user.email%}
-        <div id="editLink">
-            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
-        </div>
-    {% endif %}
-
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-     <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
-        <option>View All</option>
-            {% for genders in shopgenders %}
-                <option>{{ genders.name }}</option>
-            {% endfor %}
-      </select>
-  </div>
-
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-      <select class="select form-control filterTabs" id="filterType" name="typeFilter">
-        <option>View All Types</option>
-        {% for category in shopcategories %}
-            {% if category.numchild == 0 %}
-                <option class="">{{ category.name }}</option>
+    <div class="navTab tab-pane active" id="shopTab">
+        <div class="container">
+            {% if user.email == shop.user.email%}
+            <div id="editLink">
+                <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+            </div>
             {% endif %}
-         {% endfor %}
-      </select>
-  </div>
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+                <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
+                    <option>View All</option>
+                    {% for genders in shopgenders %}
+                        <option>{{ genders.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-      <select class="select form-control filterTabs" id = "filterPrice" name="priceFilter">
-        <option>All Prices</option>
-        <option>$0-$50</option>
-        <option>$50-$100</option>
-      </select>
-  </div>
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+                <select class="select form-control filterTabs" id="filterType" name="typeFilter">
+                    <option>View All Types</option>
+                    {% for category in shopcategories %}
+                        {% if category.numchild == 0 %}
+                            <option class="">{{ category.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
 
-  {% include "designer_shop/shop_items.html" %}
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+                <select class="select form-control filterTabs" id = "filterPrice" name="priceFilter">
+                    <option>All Prices</option>
+                    <option>$0-$50</option>
+                    <option>$50-$100</option>
+                </select>
+            </div>
 
-  </div>
-  <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
-  <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
+            {% include "designer_shop/shop_items.html" %}
+        </div>
+    </div>
+    <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
+    <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
 </div>
 
 {% endblock %}
