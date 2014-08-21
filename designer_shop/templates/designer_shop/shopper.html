@@ -77,7 +77,7 @@
         var genderFilter = $("#filterGender option:selected").text()
         var typeFilter = $("#filterType option:selected").text()
         var priceFilter = $("#filterPrice option:selected").text()
-        $("#shopItems").load(" #shopItems", {gender: genderFilter, type: typeFilter, price: priceFilter}, function(){$(this).children().unwrap()});
+        $("#shopItems").load(" #shopItems", {genderfilter: genderFilter, typefilter: typeFilter, pricefilter: priceFilter}, function(){$(this).children().unwrap()});
     }
 
     </script>
