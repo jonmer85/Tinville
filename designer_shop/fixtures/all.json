@@ -56,7 +56,7 @@
     	"fields": {
     	    "product": 1,
     	    "category": 13,
-    	    "is_cannoncial": 1
+    	    "is_canonical": 1
     	}
     },
     {
@@ -413,7 +413,7 @@
     	"fields": {
     	    "product": 8,
     	    "category": 13,
-    	    "is_cannoncial": 1
+    	    "is_canonical": 1
     	}
     },
     {
@@ -770,7 +770,7 @@
     	"fields": {
     	    "product": 15,
     	    "category": 13,
-    	    "is_cannoncial": 1
+    	    "is_canonical": 1
     	}
     },
     {
