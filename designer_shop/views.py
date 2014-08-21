@@ -95,23 +95,6 @@ def shopper(request, slug):
             'products': get_list_or_empty(Product, shop=shop.id)
         })
 
-def get_valid_categories_for_filter(gender, type):
-    filter = list()
-    if gender != "View All":
-         filter.append(Q(categories__full_name__startswith=gender + ' >'))
-    if type != "View All Types":
-        filter.append(Q(categories__full_name__contains='> ' + type))
-
-    qs = filter
-    if filter != []:
-        query = qs.pop()
-        for q in qs:
-            query &= q
-    else:
-        query = Q(parent__isnull=True)
-
-    return query
-
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
@@ -141,6 +124,23 @@ def get_filtered_products(shop, post):
     pricefilter = post['pricefilter']
     filteredProductList = Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
     return filteredProductList
+
+def get_valid_categories_for_filter(gender, type):
+    filter = list()
+    if gender != "View All":
+         filter.append(Q(categories__full_name__startswith=gender + ' >'))
+    if type != "View All Types":
+        filter.append(Q(categories__full_name__contains='> ' + type))
+
+    qs = filter
+    if filter != []:
+        query = qs.pop()
+        for q in qs:
+            query &= q
+    else:
+        query = Q(parent__isnull=True)
+
+    return query
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
