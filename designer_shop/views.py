@@ -158,7 +158,7 @@ def ajax_about(request, slug):
             if request.is_ajax() and form.is_valid():
                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
                 currentshop.save(update_fields=["aboutContent"])
-                return ppResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 @IsShopOwnerDecorator
