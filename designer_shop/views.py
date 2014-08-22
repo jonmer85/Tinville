@@ -337,6 +337,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                      bannerUploadForm=None, item=None):
         editItem = item is not None
         return render(request, 'designer_shop/shopeditor.html', {
+            'editmode': True,
             'shop': shop,
             'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
             'editItemMode': editItem,
@@ -384,6 +385,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             return renderShopEditor(request, shop, logoUploadForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
+                'editmode': True,
                 'shop': shop,
                 'products': get_filtered_products(shop, request.POST)
             })
