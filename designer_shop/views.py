@@ -3,12 +3,15 @@ import collections
 from operator import itemgetter
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
+from oscar.apps.catalogue.models import ProductCategory as Categories
 from oscar.apps.catalogue.models import ProductImage as ProductImages
+from oscar.apps.catalogue.models import Category as Category
 from django.core.urlresolvers import reverse
 
 
@@ -48,13 +51,49 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
     def __call__(self, request, shop_slug, item_slug):
         return self.authenticate(request, shop_slug, item_slug)
 
+class get_filter_lists:
+    def __init__(self, shop):
+        self.shop = shop
+        self.shop_products = get_list_or_empty(Product, shop_id=shop.id, parent__isnull=True)
+
+    def shop_product_categories(self):
+        shopProductCategories = set()
+        for products in self.shop_products:
+            shopProductCategories.add(get_or_none(Categories, product_id=products.id))
+        return shopProductCategories
+
+    def categorylist(self):
+        shopCategories = set()
+        shopProductCategories = self.shop_product_categories()
+        for productcategory in shopProductCategories:
+            if productcategory != None:
+                shopCategories.add(get_or_none(Category, id=productcategory.category.id))
+        return shopCategories
+
+    def genderlist(self):
+        shopGenders = set()
+        categorylist = self.categorylist()
+        for category in categorylist:
+            shopGenders.add(get_or_none(Category, path=category.path[:4]))
+        return shopGenders
+
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
-    return render(request, 'designer_shop/shopper.html', {
-        'shop': shop,
-        'categories': get_model('catalogue', 'Category').objects.all(),
-        'products': get_list_or_empty(Product, shop=shop.id)
-    })
+
+    if request.method == 'POST':
+        if request.POST.__contains__('genderfilter'):
+            return render(request, 'designer_shop/shop_items.html', {
+                'shop': shop,
+                'products': get_filtered_products(shop, request.POST)
+            })
+
+    if request.method == 'GET':
+        return render(request, 'designer_shop/shopper.html', {
+            'shop': shop,
+            'shopgenders': get_filter_lists(shop).genderlist(),
+            'shopcategories': get_filter_lists(shop).categorylist(),
+            'products': get_list_or_empty(Product, shop=shop.id)
+        })
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
@@ -78,6 +117,30 @@ def itemdetail(request, shop_slug, item_slug=None):
         'images': images,
         # What what in the butt (Tom Bowman) 6-22-14
     })
+
+def get_filtered_products(shop, post):
+    genderfilter = post['genderfilter']
+    itemtypefilter = post['typefilter']
+    pricefilter = post['pricefilter']
+    filteredProductList = Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
+    return filteredProductList
+
+def get_valid_categories_for_filter(gender, type):
+    filter = list()
+    if gender != "View All":
+         filter.append(Q(categories__full_name__startswith=gender + ' >'))
+    if type != "View All Types":
+        filter.append(Q(categories__full_name__contains='> ' + type))
+
+    qs = filter
+    if filter != []:
+        query = qs.pop()
+        for q in qs:
+            query &= q
+    else:
+        query = Q(parent__isnull=True)
+
+    return query
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
@@ -274,30 +337,32 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                      bannerUploadForm=None, item=None):
         editItem = item is not None
         return render(request, 'designer_shop/shopeditor.html', {
-        'shop': shop,
-        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
-        'editItemMode': editItem,
-        'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
-                                                                 {
-                                                                     "banner": shop.banner
-                                                                 }),
-        'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
-                                                           {
-                                                               "logo": shop.logo
-                                                           }),
-        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
-                                                                              {
-                                                                                  "color": shop.color
-                                                                              }),
-        'aboutBoxForm': aboutForm or AboutBoxForm(initial=
-                                                  {
-                                                      "aboutContent": shop.aboutContent
-                                                  }),
-        'colors': AttributeOption.objects.filter(group=2),
-        'sizeSetOptions': AttributeOption.objects.filter(group=1),
-        'categories': get_model('catalogue', 'Category').objects.all(),
-        'products': get_list_or_empty(Product, shop=shop.id)
-    })
+            'editmode': True,
+            'shop': shop,
+            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+            'editItemMode': editItem,
+            'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
+                                                                     {
+                                                                         "banner": shop.banner
+                                                                     }),
+            'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
+                                                               {
+                                                                   "logo": shop.logo
+                                                               }),
+            'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
+                                                                                  {
+                                                                                      "color": shop.color
+                                                                                  }),
+            'aboutBoxForm': aboutForm or AboutBoxForm(initial=
+                                                      {
+                                                          "aboutContent": shop.aboutContent
+                                                      }),
+            'colors': AttributeOption.objects.filter(group=2),
+            'sizeSetOptions': AttributeOption.objects.filter(group=1),
+            'shopcategories': get_filter_lists(shop).categorylist(),
+            'shopgenders': get_filter_lists(shop).genderlist(),
+            'products': get_list_or_empty(Product, shop=shop.id)
+        })
 
 #private method no Auth
 def processShopEditorForms(request, shop_slug, item_slug=None):
@@ -318,6 +383,12 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 shop.logo = form.cleaned_data["logo"]
                 shop.save(update_fields=["logo"])
             return renderShopEditor(request, shop, logoUploadForm=form)
+        elif request.POST.__contains__('genderfilter'):
+            return render(request, 'designer_shop/shop_items.html', {
+                'editmode': True,
+                'shop': shop,
+                'products': get_filtered_products(shop, request.POST)
+            })
         else:
             if request.method == 'POST':
                 sizeVariationType = request.POST["sizeVariation"]
