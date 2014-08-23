@@ -12,8 +12,25 @@
     <div>
         {% if product and product.is_top_level %}
             <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
-            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
+            <a id='{{ product.slug }}' onclick="DeleteConfirmation('{{ product.slug }}')"  class="btn btn-primary tinvilleButton pull-left">Delete</a>
         {% endif %}
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Delete Item</h4>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="okDeleteBtn" type="button" class="btn btn-primary">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 <div id="shopEditor">
@@ -783,6 +800,15 @@ $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
 });
+
+function DeleteConfirmation(slug) {
+    $('#deleteModal').modal('show');
+    $('#okDeleteBtn').click({param1: slug}, function (event) {
+        var href = "{{ shop.get_absolute_url }}edit/delete_product/";
+        window.location =  href + event.data.param1;
+    });
+}
+
 
 </script>
 
