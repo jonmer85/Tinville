@@ -78,13 +78,13 @@ class ProductCreationForm(forms.ModelForm):
             = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
                                widget=AdvancedFileInput)
         self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
 
         self.fields['description'].widget = TinyMCE()
         self.fields['price'].label = ""
