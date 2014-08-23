@@ -1015,7 +1015,11 @@ margin-right: -15%;
 
 .slidingContent{
     -webkit-transition: all 1s ease;
-    margin-left:15px;
+    margin-left:0px;
+}
+
+.notransition {
+  -webkit-transition: none;
 }
 
 .navbar h2{

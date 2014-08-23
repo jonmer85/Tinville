@@ -39,32 +39,27 @@
         <![endif]-->
     {% load feedback_widget %}
 	{% feedback_widget %}
-    <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <a href=""><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
 
     <div class="navbar-header">
-        <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navButton navbar-toggle collapsed menu-toggle">
+        <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navButton navbar-toggle collapsed menu-toggle">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
     </div>
 
-
-
     <nav class="navbar yamm navbar-default" role="navigation">
         <div class="container">
             <div id="navHeader" class="navbar-header">
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
 
-                <button id="navbarBtn" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
+
+
                 {% if not user.is_authenticated %}
-                    <ul id="signInButton" class="nav pull-right">
+                    <ul id="signInButton" class="nav ">
                       <li class="dropdown yamm-fw" id="xs-menuLogin" >
-                        <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
+                        <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
                         <ul class="dropdown-menu loginPopupForm">
                             <li>
                                 <div class="yamm-content" style="padding-top: 2px">
@@ -79,15 +74,14 @@
                 {% else %}
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
-                <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
-                    <button type="button" id="shoppingcartMobileBtn" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
-                    </button>
-                </li>
+
+                <button type="button" id="shoppingcartMobileBtn" class="navbar-link navbar-text visible-xs pull-left xs-navbar-text">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                </button>
+
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
-
                     <ul class="nav navbar-nav">
                         <li class="dropdown navdropSize mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b class="caret"></b></a>
@@ -95,7 +89,7 @@
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
-                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                            <ul class=" list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Clothing</strong></p></li>
                                                 <li><a href="#" >Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
@@ -139,45 +133,18 @@
 
                                     <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <button id="mobileWomensCbtn" class="contentButton"><b><i class="whhg-tshirt"></i></b></button>
-                                            <button id="mobileWomensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
-                                            <button id="mobileWomensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
-
-                                            <ul id="mobileWomensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Tops</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Jeans</a></li>
+                                                <li><a href="#">Jackets</a></li>
+                                                <li><a href="#">Shorts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Skirts</a></li>
                                                 <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All</b></a></li>
-                                            </ul>
-                                            <ul id="mobileWomensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All</strong></a></li>
-                                            </ul>
-                                            <ul id="mobileWomensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All</strong></a></li>
+                                                <li><a href="#">Footwear</a></li>
+                                                <li><a href="#">Accessories</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -235,45 +202,20 @@
 
                                     <div  id="mobileMenContent" class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <button id="mobileMensCbtn" class="contentButton"><b><i class="whhg-tshirt contentIcon"></i></b></button>
-                                            <button id="mobileMensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
-                                            <button id="mobileMensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
-
-                                            <ul id="mobileMensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Suits and Sportcoats</a></li>
+                                                <li><a href="#">Dress Shirts</a></li>
+                                                <li><a href="#">Polos</a></li>
+                                                <li><a href="#">T-Shirts</a></li>
+                                                <li><a href="#">Sweaters & Sweatshirts</a></li>
+                                                <li><a href="#">Coats & Jackets</a></li>
                                                 <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
-                                                <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
-                                            </ul>
-                                            <ul id="mobileMensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
-                                            </ul>
-                                            <ul id="mobileMensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                                <li><a href="#">Jeans</a></li>
+                                                <li><a href="#">Shorts</a></li>
+                                                <li><a href="#">Swimwear</a></li>
+                                                <li><a href="#">Sleepwear</a></li>
+                                                <li><a href="#">Footwear</a></li>
+                                                <li><a href="#">Accessories</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -305,6 +247,7 @@
                         </li>
 
                         {% if user.is_authenticated %}
+
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
                                 <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
 {#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
@@ -325,11 +268,7 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
-                            <button type="button" id="shoppingcartBtn" class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
-                            </button>
-                        </li>
+
 
                     </ul>
                 </div>
@@ -337,30 +276,13 @@
         </div>
     </nav>
 
-    <button id="buttonOfDOOM" type="button" href="#" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-plus"></span>
-    </button>
-
-                   <div id="shoppingcart">
-                    <div id="shoppingcartitems">
-                     </div>
-                       <div>
-                        <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
-                           <span class="glyphicon glyphicon-check"></span>
-                        </button>
-                         <div id="carttotal">
-
-                         </div>
-                       </div>
-                   </div>
-
-    <div class="row">
+    <div class="row slidingContent">
         {% block content %}
         {% endblock content %}
     </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="row">
+    <div id="footerContainer" class="row slidingContent">
         <div class="row footerRow hidden-xs">
             <nav id="footerNavRight" class="col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
                 <dl class="list-unstyled">
@@ -559,147 +481,38 @@
                 $("#nonMobileWomenContent").css("display","none");
                 $("#mobileWomenContent").css("display","");
             }
-            if(mode =='sm'){
+            else
+            {
                 $("#nonMobileMenContent").css("display","");
                 $("#mobileMenContent").css("display","none");
 
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
+
+                $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                $('.navbar').removeAttr( 'style' );
             }
-            if(mode =='md'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-            if(mode =='lg'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-
-             $("#mobileMensCbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","none");
-                e.stopPropagation();
-             });
-             $("#mobileMensSbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","");
-                $("#mobileMensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileMensAbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","");
-                 e.stopPropagation();
-             });
-
-             $("#mobileWomensCbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","none");
-
-                e.stopPropagation();
-             });
-             $("#mobileWomensSbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","");
-                $("#mobileWomensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileWomensAbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","");
-                 e.stopPropagation();
-             });
         });
 
          $(window).load(function(){
              var mode = checkMode();
 
             if(mode == 'xs'){
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","none");
-
                 $("#nonMobileMenContent").css("display","none");
                 $("#mobileMenContent").css("display","");
-
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","none");
 
                 $("#nonMobileWomenContent").css("display","none");
                 $("#mobileWomenContent").css("display","");
             }
-            if(mode =='sm'){
+            else{
                 $("#nonMobileMenContent").css("display","");
                 $("#mobileMenContent").css("display","none");
 
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
+
+                $('.navbar').removeAttr( 'style' );
             }
-            if(mode =='md'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-            if(mode =='lg'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-
-
-             $("#mobileMensCbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","none");
-                e.stopPropagation();
-             });
-             $("#mobileMensSbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","");
-                $("#mobileMensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileMensAbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","");
-                 e.stopPropagation();
-             });
-
-             $("#mobileWomensCbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","none");
-
-                e.stopPropagation();
-             });
-             $("#mobileWomensSbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","");
-                $("#mobileWomensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileWomensAbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","");
-                 e.stopPropagation();
-             });
         });
 
 {#        this is for the highlight the selected infopages#}
@@ -710,6 +523,33 @@
             {% endif %}
         });
 
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 10) {
+                $('.navbar-header').css('top', $(window).scrollTop());
+            }
+          }
+        );
+
+        $(document).ready(function() {
+
+                   var menu = "close";
+
+                    $('.menu-toggle').click(function() {
+
+                        if(menu == "close"){
+                            $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
+                            $('.navbar').css('-webkit-transform','translate(0, 0)');
+
+                            menu="open";
+                        }
+                        else{
+                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                            $('.navbar').css('-webkit-transform','translate(-100%, 0)');
+
+                            menu="close";
+                        }
+                    });
+         });
 
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
