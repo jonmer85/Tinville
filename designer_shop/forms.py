@@ -52,6 +52,7 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
+                         Field('category', placeholder='Choose a Category'),
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -87,6 +88,7 @@ class ProductCreationForm(forms.ModelForm):
                                                          widget=AdvancedFileInput)
 
         self.fields['description'].widget = TinyMCE()
+        self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3), empty_label="Choose a Category", required=True)
         self.fields['price'].label = ""
 
         if sizes:
@@ -182,8 +184,12 @@ class ProductCreationForm(forms.ModelForm):
         # Jon M TBD - Right now we only use 1 product class - "Apparel"
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
-
         canonicalId = canonicalProduct.id
+        productCategory = get_model('catalogue', 'ProductCategory')(product=canonicalProduct,
+                                            category=self.cleaned_data['category'],
+                                            is_canonical=True)
+        productCategory.save()
+
         if is_edit:
             # Remove all variants since they will get recreated below
             get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
@@ -272,8 +278,6 @@ class ProductCreationForm(forms.ModelForm):
                     productImage.original = self.cleaned_data[image_field]
                     productImage.save()
 
-
-
     def load_image(self, product, display_order):
         image = get_or_none(ProductImage, product=product, display_order=display_order)
         retVal = None if not image else image.original
@@ -297,7 +301,6 @@ class ProductCreationForm(forms.ModelForm):
             return default
         return self.get_value_from_instance(field_name)
 
-
     def get_value_from_instance(self, field_name):
         if field_name == 'sizeVariation':
             return self.get_size_variation()
@@ -315,7 +318,6 @@ class ProductCreationForm(forms.ModelForm):
             return self.load_image(self.instance.pk, 4)
         else:
             return getattr(self.instance, field_name)
-
 
     class Meta:
         model = get_model('catalogue', 'Product')

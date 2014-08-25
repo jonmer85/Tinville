@@ -1,0 +1,55 @@
+{% load purchase_info_tags %}
+{% load thumbnail %}
+
+<div id="shopItems">
+    {% if products %}
+        {% for product in products %}
+            {% purchase_info_for_product request product as session %}
+            {% if product.is_top_level %}
+                <div class=" col-xs-6 col-sm-4 col-md-2 col-lg-2" style="padding-top: 1%; padding-bottom: 1%; ">
+                    <div class="row-xs-height">
+                        <div class="container-xs-height">
+                            <div class="thumbnail shopItem shopBorderColor col-middle col-xs-height">
+                                {% if product.primary_image and product.primary_image.original.url %}
+                                    {% with image=product.primary_image %}
+                                        {% thumbnail image.original "200x250" upscale=False as thumb %}
+                                        <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
+                                            <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive itemSize"/>
+                                        </a>
+                                        {% endthumbnail %}
+                                    {% endwith %}
+                                {% else %}
+                                -
+                                {% endif %}
+
+                                <div class="caption">
+                                    <a class="name " href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
+                                    <span class="price "> ${{session.price.excl_tax}}</span>
+                                    <span class="">
+                                        {% if not session.availability.is_available_to_buy %}
+                                            {{  session.availability.message  }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        {% if editmode %}
+                            {% if product and product.is_top_level %}
+                                <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
+                                <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <div id="emptyShopId" class="emptyShop">
+                    Items coming soon...
+        </div>
+    {% endif %}
+</div>
+
+

@@ -51,6 +51,15 @@
         }
     },
     {
+    	"model": "catalogue.ProductCategory",
+    	"pk": 1,
+    	"fields": {
+    	    "product": 1,
+    	    "category": 13,
+    	    "is_canonical": 1
+    	}
+    },
+    {
         "model": "catalogue.ProductImage",
         "pk": 2,
         "fields": {
@@ -399,6 +408,15 @@
         }
     },
     {
+    	"model": "catalogue.ProductCategory",
+    	"pk": 2,
+    	"fields": {
+    	    "product": 8,
+    	    "category": 13,
+    	    "is_canonical": 1
+    	}
+    },
+    {
         "model": "catalogue.ProductImage",
         "pk": 7,
         "fields": {
@@ -745,6 +763,15 @@
             "is_discountable": 0,
             "shop": 1
         }
+    },
+    {
+    	"model": "catalogue.ProductCategory",
+    	"pk": 3,
+    	"fields": {
+    	    "product": 15,
+    	    "category": 13,
+    	    "is_canonical": 1
+    	}
     },
     {
         "model": "catalogue.ProductImage",
