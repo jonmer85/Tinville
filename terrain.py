@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import re
+import os
 
 from lettuce import *
 from selenium import webdriver
@@ -13,20 +14,19 @@ from unipath import Path
 currentbrowser =0
 @before.harvest
 def set_browser(step):
-    browsers = (webdriver.Firefox,
-                webdriver.Chrome,
-                )
-
-    world.browser = browsers[currentbrowser]()
+    desiredbrower = os.environ.get('lettucebrowser')
+    if desiredbrower == 'Firefox':
+        browser = webdriver.Firefox
+    elif desiredbrower == 'Chrome':
+        browser = webdriver.Chrome
+    elif desiredbrower == 'Ie':
+        browser = webdriver.Ie
+    elif desiredbrower == 'Safari':
+        browser = webdriver.Safari
+    else:
+        browser = webdriver.Firefox
+    world.browser = browser()
     world.browser.implicitly_wait(10)  # seconds JON M TBD - Implicit wait not working on Chrome Driver :(
-
-@after.harvest
-def foo(step):
-    global currentbrowser
-    world.browser.quit()
-    if currentbrowser < 1:
-        currentbrowser = currentbrowser + 1
-        execute_from_command_line(sys.argv)
 
 #@before.all
 # Jon M - Commented this out since sync-ing the DB all the time was slow. Manually sync the test DB as needed with
