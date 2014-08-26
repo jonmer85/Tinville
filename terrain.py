@@ -2,16 +2,12 @@ import sys
 import subprocess
 import re
 import os
-
 from lettuce import *
 from selenium import webdriver
 from django.core.management import call_command
 from django.core.management import execute_from_command_line
 from unipath import Path
 
-
-
-currentbrowser =0
 @before.harvest
 def set_browser(step):
     desiredbrower = os.environ.get('lettucebrowser')
