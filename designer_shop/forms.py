@@ -88,7 +88,9 @@ class ProductCreationForm(forms.ModelForm):
                                                          widget=AdvancedFileInput)
 
         self.fields['description'].widget = TinyMCE()
-        self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3), empty_label="Choose a Category", required=True)
+        self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3),
+                                                         empty_label="Choose a Category", required=True,
+                                                         initial=self.get_value_if_in_edit_mode('category', None))
         self.fields['price'].label = ""
 
         if sizes:
@@ -185,9 +187,12 @@ class ProductCreationForm(forms.ModelForm):
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
         canonicalId = canonicalProduct.id
-        productCategory = get_model('catalogue', 'ProductCategory')(product=canonicalProduct,
-                                            category=self.cleaned_data['category'],
-                                            is_canonical=True)
+
+        productCategory = get_model('catalogue', 'ProductCategory').objects.get_or_create(product=canonicalProduct,
+                                            category = self.instance.categories.all()[0]
+                                                        if is_edit else self.cleaned_data['category'],
+                                            is_canonical=True)[0]
+        productCategory.category = self.cleaned_data['category']
         productCategory.save()
 
         if is_edit:
@@ -316,6 +321,9 @@ class ProductCreationForm(forms.ModelForm):
             return self.load_image(self.instance.pk, 3)
         if field_name == 'product_image4':
             return self.load_image(self.instance.pk, 4)
+        if field_name == 'category':
+            categories = self.instance.categories.all()
+            return categories[0] if categories.count() > 0 else None
         else:
             return getattr(self.instance, field_name)
 
