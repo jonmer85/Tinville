@@ -1,28 +1,26 @@
 import json
 import collections
 from operator import itemgetter
-from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.shortcuts import redirect
+from functools import wraps
+
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-from django.db import models
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.contrib import messages
+
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
 from oscar.apps.catalogue.models import ProductCategory as Categories
 from oscar.apps.catalogue.models import ProductImage as ProductImages
 from oscar.apps.catalogue.models import Category as Category
-from django.core.urlresolvers import reverse
-
-
 from oscar.core.loading import get_model
+
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
 from catalogue.models import Product
-
 from common.utils import get_list_or_empty, get_or_none
-from functools import wraps
+
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 
@@ -393,13 +391,15 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             if request.method == 'POST':
                 sizeVariationType = request.POST["sizeVariation"]
                 sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-                if item is None:
+                is_create = item is None
+                if is_create:
                     form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
                 else:
                     form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None, sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop)
                     form = ProductCreationForm()
+                    messages.success(request, ("Item has been successfully {0}!").format("created" if is_create else "updated"))
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
         return renderShopEditor(request, shop, item=item)
