@@ -41,6 +41,7 @@ urlpatterns += patterns('',
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)/getVariants/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_variants_httpresponse'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/delete_product/(?P<item_slug>[\w-]+)$', 'designer_shop.views.delete_product'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/add_item_to_cart$', 'basket.views.add_item_to_cart'),
+    url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper'),
 )
