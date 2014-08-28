@@ -759,7 +759,8 @@
             Id:itemNum,
             title:"Hello World",
             description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
-            price:10.01
+            price:10.01,
+            image:"myimage.png"
         };
         AddCartItem(CartItem);
     });
@@ -776,7 +777,7 @@ $(function() {
     cartTotal = cartJson["cartTotal"];
     if(cartTotal === undefined)
         cartTotal = 0.00;
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
 
     var _IsOpen = cartJson["IsOpen"];
 
@@ -840,8 +841,7 @@ function LoadCartItemDiv(cartItem)
         'id' : cartItem.Id
     });
 
-    //TODO: Add thumbnail image
-    var itemThumbnail = $('<div/>', {'class':'shoppingcartthumbnail'});
+    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class':'shoppingcartthumbnail'});
     itemThumbnail.appendTo(cartitemdiv);
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
@@ -859,6 +859,9 @@ function LoadCartItemDiv(cartItem)
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
+    var price = '$' + cartItem.price;
+    var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
+    priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo("#shoppingcartitems");
 
 }
@@ -869,7 +872,7 @@ function AddCartItem(cartItem)
 
     cartTotal += cartItem.price;
     //TODO: Prefix with currency type
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
@@ -894,7 +897,7 @@ function RemoveCartItem(itemId)
     var list = cartJson["cartList"];
     var price = list[itemId].price;
     cartTotal = (cartTotal * 100 - price * 100) / 100;
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
     cartJson["cartTotal"] = cartTotal;
     delete list[itemId];
     cartJson.cartList = list;
