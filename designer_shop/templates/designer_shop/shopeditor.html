@@ -878,13 +878,13 @@ $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
 });
 
-function DeleteConfirmation(slug) {
-    $('#deleteModal').modal('show');
-    $('#okDeleteBtn').click({param1: slug}, function (event) {
-        var href = "{{ shop.get_absolute_url }}edit/delete_product/";
-        window.location =  href + event.data.param1;
-    });
-}
+        function DeleteConfirmation(slug) {
+            $('#deleteModal').modal('show');
+            $('#okDeleteBtn').click({param1: slug}, function (event) {
+                var href = "{{ shop.get_absolute_url }}edit/delete_product/";
+                window.location =  href + event.data.param1;
+            });
+        }
 
 
 </script>
