@@ -7,37 +7,11 @@
 {% endblock css %}
 {% block content %}
 {{ block.super }}
-{% block item_extensions %}
-    {{ block.super }}
-    <div>
-        {% if product and product.is_top_level %}
-            <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
-            <a id='{{ product.slug }}' onclick="DeleteConfirmation('{{ product.slug }}')"  class="btn btn-primary tinvilleButton pull-left">Delete</a>
-        {% endif %}
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Delete Item</h4>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to delete?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="okDeleteBtn" type="button" class="btn btn-primary">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
-                  <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
+                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
                     <b>Shop Editor</b>
                     <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
                 </div>
@@ -117,41 +91,47 @@
     {{ block.super }}
     <script>
 
+
         $('#id_product_image').change
         (
-                function()
-                {
-                        $("#id_product_image1" ).removeClass("hidden");
 
-                }
+            function()
+            {
+                $("#id_product_image1" ).removeClass("hidden");
+            }
+
         );
 
         $('#id_product_image1').change
         (
-                function()
-                {
-                    $("#id_product_image2" ).removeClass("hidden");
 
-                }
+            function()
+            {
+                $("#id_product_image2" ).removeClass("hidden");
+            }
+
         );
 
         $('#id_product_image2').change
         (
-                function()
-                {
-                    $("#id_product_image3" ).removeClass("hidden");
 
-                }
+            function()
+            {
+                $("#id_product_image3" ).removeClass("hidden");
+            }
+
         );
 
         $('#id_product_image3').change
         (
-                function()
-                {
-                    $("#id_product_image4" ).removeClass("hidden");
 
-                }
+            function()
+            {
+                $("#id_product_image4" ).removeClass("hidden");
+            }
+
         );
+
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
@@ -256,7 +236,6 @@ $(document).ready(function () {
     showImageFields();
     {% endif %}
 
-
 });
 
 
@@ -283,13 +262,18 @@ var colorQuantityTableHead = "" +
 var sizeSetTemplate = "" +
 "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-        "<div class='controls'>" +
-            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
-                "<option value='' selected='selected'>Choose a size...</option>" +
-                "{% for sizeSet in sizeSetOptions %}" +
-                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
-                "{% endfor %}" +
-            "</select>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-10'>" +
+                "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+                    "<option value='' selected='selected'>Choose a size...</option>" +
+                    "{% for sizeSet in sizeSetOptions %}" +
+                    "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                    "{% endfor %}" +
+                "</select>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+            "</div>" +
         "</div>" +
     "</div>" +
 "</div>" + colorQuantityTableHead
@@ -299,12 +283,15 @@ var sizeDimensionTemplate = "" +
 "<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
         "<div class='controls row'>" +
-            "<div class='col-xs-5'>" +
+            "<div class='col-xs-4'>" +
                 "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'>" +
             "</div>" +
             "<div class='col-xs-2 dimensionSplit'>X</div>"+
-            "<div class='col-xs-5'>" +
+            "<div class='col-xs-4'>" +
                 "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
             "</div>" +
         "</div>" +
     "</div>" +
@@ -313,8 +300,13 @@ var sizeDimensionTemplate = "" +
 var sizeNumberTemplate = "" +
 "<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
     "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
-        "<div class='controls'>" +
-            "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-10'>" +
+                "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+            "</div>" +
         "</div>" +
     "</div>" +
 "</div>" + colorQuantityTableHead
@@ -342,7 +334,10 @@ var rowColorQuantityTemplate = "" +
                 "<input class='numberinput form-control quantityField' id='id_quantityField' name='quantityField' type='number'>" +
             "</div>" +
         "</div>" +
-    "</tr>" +
+    "</td>" +
+    "<td>" +
+        "<button id='id_clearColorQuantity' value='Clear' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>Clear</button>" +
+    "</td>" +
 "</tr>"
 
 const SizeTypeInfo = {
@@ -383,8 +378,6 @@ $("#id_sizeVariation").change(function() {
     wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
 });
 
-
-
 function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
@@ -422,6 +415,75 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
     })
 }
 
+var arSizeRows  = [] ;
+var arColorRows = [] ;
+
+function clearColorRow( strRowToClear )
+{
+        var strRowId = "#" + strRowToClear ;
+        var indexToRemove = arColorRows.indexOf(strRowToClear) ;
+
+        //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
+        if( indexToRemove == arColorRows.length - 1)
+        {
+
+            var colorRowNum = strRowId.slice( -1 ) ;
+            var tempStr = strRowId.replace( "rowColorQuantityTemplate" + colorRowNum, "") ;
+            $(tempStr + "id_quantityField" + colorRowNum).val("");
+
+        }
+        else
+        {
+
+            $( strRowId ).empty();
+            arColorRows.splice( indexToRemove, 1 ) ;
+
+        }
+
+}
+
+function clearSizeRow( strRowToClear )
+{
+
+    var strRowId = "#" + strRowToClear ;
+    var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
+
+    if( indexToRemove == arSizeRows.length - 1) //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
+    {
+
+        //Clear the sizeSelection template
+        if( strRowToClear.indexOf("Selection") != -1 )
+        {
+            $(strRowId + "id_sizeSetSelection").val("");
+
+        }
+
+        //Clear the dimensionSelection template
+        if( strRowToClear.indexOf("Dimension") != -1 )
+        {
+
+            $(strRowId + "_id_sizeDimensionSelectionWidth").val("");
+            $(strRowId + "_id_sizeDimensionSelectionLength").val("");
+
+        }
+
+        //Clear the numberSelection template
+        if( strRowToClear.indexOf("Number") != -1 )
+        {
+            $(strRowId + "id_sizeNumberSelection").val("");
+        }
+
+    }
+    else
+    {
+
+        $( strRowId ).remove();
+        arSizeRows.splice( indexToRemove, 1 ) ;
+
+    }
+
+}
+
 function addNewSizeRow(sizeType) {
     var sizeTemplateName;
     var templateName;
@@ -444,6 +506,17 @@ function addNewSizeRow(sizeType) {
     // Get the number at the end of the ID, increment it, and replace the old id
     var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
     appendSuffixToAttribute($newSizeSelection, "id", counter);
+
+    //find TEMPLATENUM and replace it with the appropriate row number for clearing
+    var newInnerHTML = $newSizeSelection.html().replace( "TEMPLATENUM", counter ) ;
+    $newSizeSelection.html( newInnerHTML ) ;
+
+    //If were working with a different size type we need to clear the array
+    if( arSizeRows.length != 0 && arSizeRows[0].indexOf( sizeTemplateName ) == -1 )
+    {
+        arSizeRows = [] ;
+    }
+    arSizeRows[arSizeRows.length] = ( $( $newSizeSelection ).attr('id') ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
     var prefix = $newSizeSelection[0].id + "_";
@@ -478,6 +551,11 @@ function addNewColorAndQuantityRow(prefix, appendTo) {
     prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
     appendSuffixToAttribute($newColorQuantityRow, "id", counter);
 
+    //find TEMPLATENUM and replace it with the appropriate row number for clearing
+    var newInnerHTML = $newColorQuantityRow.html().replace( "TEMPLATENUM", counter ) ;
+    newInnerHTML = newInnerHTML.replace("rowColorQuantityTemplate", prefix + "rowColorQuantityTemplate" ) ;
+    $newColorQuantityRow.html( newInnerHTML ) ;
+    arColorRows[arColorRows.length] = ( $( $newColorQuantityRow ).attr('id') ) ;
 
     // Find all elements in $clone that have an ID, and iterate using each()
     $newColorQuantityRow.find('[id]').each(function() {
@@ -738,7 +816,6 @@ function resizeEditor() {
         $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
     }
 }
-
 
 
 var jsonDel, delState;
