@@ -71,8 +71,8 @@
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
                 <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
-                    <button type="button" id="shoppingcartMobileBtn" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                    <button type="button" id="shoppingcartMobileBtn" class="shoppingcartBtn">
+                        <img src="/static/img/shoppingCartLogo.png" width="25" height="25"/>
                     </button>
                 </li>
             </div>
@@ -317,8 +317,8 @@
                             </li>
                         {% endif %}
                         <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
-                            <button type="button" id="shoppingcartBtn" class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                            <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
+                                <img src="/static/img/shoppingCartLogo.png" width="25" height="25"/>
                             </button>
                         </li>
 
@@ -760,7 +760,7 @@
             title:"Hello World",
             description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
             price:10.01,
-            image:"myimage.png"
+            image:"/static/img/tinville_Logo.png"
         };
         AddCartItem(CartItem);
     });
@@ -855,7 +855,7 @@ function LoadCartItemDiv(cartItem)
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
-        'class' : 'btn btn-default btn-sm', 'html' : '<span class="glyphicon glyphicon-remove"></span>'
+        'class' : 'shoppingcartBtn', 'html' : '<img src="/static/img/delete.png" width="20" height="20"></span>'
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);

@@ -989,6 +989,9 @@ textarea {
     bottom:5px;
 }
 
-#shoppingcartMobileBtn {
+.shoppingcartBtn {
     float:right;
+    padding-top: 10px;
+    border: none;
+    background: none;
 }
