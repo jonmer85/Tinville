@@ -37,7 +37,7 @@ def and_the_about_content_is_submitted(step):
 def the_about_content_is_saved(step):
     world.browser.maximize_window()
     world.browser.find_element_by_id('minMaxIcon').click()
+    scroll_to_element(wait_for_element_with_id_to_be_clickable('aboutTabLink'))
     world.browser.find_element_by_id('aboutTabLink').click()
-    time.sleep(0.4)
     aboutLocation = world.browser.find_element_by_css_selector('#aboutTab>p')
     assert aboutLocation.text == "Test About Content"

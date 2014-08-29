@@ -4,6 +4,8 @@ from nose.tools import *
 import lettuce.django
 import re
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from lxml import html
 
@@ -110,16 +112,24 @@ def change_viewport_lg():
     world.browser.set_window_size(1920, 1080)
 
 def wait_for_element_with_id_to_be_displayed(id):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id(id).is_displayed())
+    WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
+    return world.browser.find_element_by_id(id)
+
+def wait_for_element_with_id_to_be_clickable(id):
+    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.ID, id)))
+    return world.browser.find_element_by_id(id)
+
+def wait_for_element_with_name_to_be_displayed(name):
+    WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.NAME, name)))
+    return world.browser.find_element_by_name(name)
 
 def wait_for_element_with_css_selector_to_be_displayed(css_selector):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_css_selector(css_selector).is_displayed())
+    return world.browser.find_element_by_css_selector(css_selector)
 
 def wait_for_element_with_class_to_be_displayed(class_name):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
-
-def wait_for_element_with_link_text_to_be_displayed(link_text):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
+    return world.browser.find_element_by_class_name(class_name)
 
 def assert_page_exist(url):
     c = Client()
@@ -136,7 +146,3 @@ def sign_in(email, password):
 
 def scroll_to_element(element):
     world.browser.execute_script("arguments[0].scrollIntoView(true);", element)
-
-
-
-
