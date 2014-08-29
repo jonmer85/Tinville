@@ -43,7 +43,7 @@ urlpatterns += patterns('',
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/add_item_to_cart$', 'basket.views.add_item_to_cart'),
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper'),
+    url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper '),
 )
 
 if settings.DEBUG:
