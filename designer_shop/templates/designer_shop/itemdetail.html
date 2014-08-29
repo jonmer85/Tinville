@@ -229,6 +229,7 @@
                         qtyFilter: qtyFilter
                     },
                     success: function(data, textStatus, jqXHR) {
+                        data.image = {{ MEDIA_URL }} + data.image
                         if (parseInt(data.Id) > 0){
                             AddCartItem(data)
                         }
@@ -247,18 +248,6 @@
                 });
         });
     });
-{#    $("#id_AddToCart").click(function()#}
-{#    {#}
-{#        updateAddItemCartView()#}
-{#        itemNum++;#}
-{#        var CartItem = {#}
-{#            Id:itemNum,#}
-{#            title:"Hello World",#}
-{#            description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",#}
-{#            price:10.01#}
-{#        };#}
-{#        AddCartItem(CartItem);#}
-{#    });#}
     </script>
 
 {% endblock %}

@@ -1,5 +1,6 @@
 import json
 import collections
+
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -84,38 +85,7 @@ def add_item_to_cart(request, shop_slug, item_slug):
 def get_filtered_variant(variants, post):
     sizeFilter = post['sizeFilter']
     colorFilter = post['colorFilter']
-    # foo = Product.object.filter(attribute_values__values_option_id=5)
-    # for variant in variants:
-    #     get_or_none(Product, productattributevalue__)
-    # product = get_object_or_404(Product, productattributevalue__ )
-    # filter = list()
-    # filter.append(Q(attributes__value_option__contains=colorFilter))
-    # # filter.append(Q(attributes__value__contains=sizeFilter))
-    #
-    # qs = filter
-    # if filter != []:
-    #     query = qs.pop()
-    #     for q in qs:
-    #         query &= q
-    # else:
-    #     query = Q(parent__isnull=True)
-    #
-    # return query
-    # # filteredVariant = None
-    # for variant in variants:
-    #
-    #     size_setattr = get_or_none(Attributes, product_id=variant.id, attribute_id=1)
-    #     size_dim_xattr = get_or_none(Attributes, product_id=variant.id, attribute_id=2)
-    #     size_dim_yattr = get_or_none(Attributes, product_id=variant.id, attribute_id=3)
-    #     size_numattr = get_or_none(Attributes, product_id=variant.id, attribute_id=4)
-    #     colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)
-    #     if colorattribute.value.option.lower() == colorFilter.lower():
-    #         if size_setattr.value.option.lower() == sizeFilter.lower():
-    #             return variant
-    #         elif str(size_dim_xattr.valu) + " x " + str(size_dim_yattr.value) == str(sizeFilter):
-    #             return variant
-    #         elif str(size_numattr.value) == sizeFilter.lower():
-    #             return variant
+    # ToDo create filter for the right variant
     return variants[0]
 
 
