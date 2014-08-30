@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-from lettuce import step
 from django.core.management import call_command
 import lettuce.django
-import os
-import time
 import math
 
 from Tinville.settings.base import MEDIA_ROOT
@@ -206,38 +203,6 @@ def and_a_banner_is_submitted(step):
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
     assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2.jpg')
-
-@step(u'When the about tab is selected')
-def when_the_about_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
-
-@step(u'Then the about text field box is displayed')
-def then_the_about_text_field_box_is_displayed(step):
-    assert world.browser.find_element_by_id('about')
-    assert_id_exists('about')
-
-@step(u'And the submit about content button is displayed')
-def and_the_submit_about_content_button_is_displayed(step):
-    assert_id_exists('id_SubmitAboutContent')
-
-@step(u'And the about content is submitted')
-def and_the_about_content_is_submitted(step):
-    time.sleep(0.4)
-    world.browser.find_element_by_id('id_aboutContent_ifr').click()
-    world.browser.execute_script("tinyMCE.activeEditor.setContent('<p>Test About Content</p>')")
-    wait_for_element_with_id_to_be_displayed("id_SubmitAboutContent")
-    world.browser.find_element_by_id("id_SubmitAboutContent").click()
-    wait_for_ajax_to_complete()
-
-@step(u'The about content is saved')
-def the_about_content_is_saved(step):
-    world.browser.maximize_window()
-    world.browser.find_element_by_id('minMaxIcon').click()
-    aboutLocation = world.browser.find_element_by_css_selector('#aboutLocation.panel-body>p')
-    time.sleep(0.4)
-    assert aboutLocation.text == "Test About Content"
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
