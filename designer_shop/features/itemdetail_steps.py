@@ -13,13 +13,13 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
-@step(u'Given I have an item in the demo shop')
-def given_I_have_an_item_in_the_shop(step):
-    assert len(world.browser.find_elements_by_css_selector(".shopItem")) > 0, "no shop items exist!"
+@step(u'Given I have at least (\d+) items in the demo shop')
+def given_I_have_at_least_some_items_in_the_shop(step, amount):
+    assert len(world.browser.find_elements_by_css_selector(".shopItem")) >= int(amount), "there are not at least " + amount + " items in the shop!"
 
-@step(u'When I click on the item')
-def when_i_click_on_the_item(step):
-    theitem = world.browser.find_element_by_css_selector(".shopItem")
+@step(u'When I click on the "(.*)" item')
+def when_i_click_on_the_item(step, itemname):
+    theitem = world.browser.find_element_by_css_selector(".shopItem>a[href='/Demo/" + itemname +"']")
     step.scenario.context['itemurl'] = theitem.find_element_by_css_selector("a").get_attribute("href")
     theitem.find_element_by_css_selector("a").click()
 

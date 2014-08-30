@@ -6,8 +6,8 @@ Feature: Item Detail
 
     Scenario: Navigate to Item Detail page
         Given the demo shop
-        Given I have an item in the demo shop
-        When I click on the item
+        Given I have at least 1 items in the demo shop
+        When I click on the "TestSizeSetItem" item
         Then the item detail page is displayed
     @wip
     Scenario: Visible the Item Detail page
