@@ -3,6 +3,7 @@ from django.core.management import call_command
 import lettuce.django
 import math
 import time
+import os
 
 from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
@@ -177,7 +178,7 @@ def and_a_logo_is_submitted(step):
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2.jpg')
+    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2' + '.*' + '.jpg')
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
@@ -203,7 +204,7 @@ def and_a_banner_is_submitted(step):
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
-    assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2.jpg')
+    assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2' + '.*' + '.jpg')
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
