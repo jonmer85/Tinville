@@ -20,8 +20,8 @@ def given_I_have_at_least_some_items_in_the_shop(step, amount):
 @step(u'When I click on the "(.*)" item')
 def when_i_click_on_the_item(step, itemname):
     theitem = world.browser.find_element_by_css_selector(".shopItem>a[href='/Demo/" + itemname +"']")
-    step.scenario.context['itemurl'] = theitem.find_element_by_css_selector("a").get_attribute("href")
-    theitem.find_element_by_css_selector("a").click()
+    step.scenario.context['itemurl'] = theitem.get_attribute("href")
+    theitem.click()
 
 @step(u'Then the item detail page is displayed')
 def then_the_item_detail_page_is_displayed(step):
@@ -31,7 +31,7 @@ def then_the_item_detail_page_is_displayed(step):
 def given_i_am_on_an_item_detail_page(step):
     step.behave_as("Given the demo shop")
     step.behave_as("Given I have an item in the demo shop")
-    step.behave_as("When I click on the item")
+    step.behave_as("When I click on the {0} item".format('"TestSizeSetItem"'))
     step.behave_as("Then the item detail page is displayed")
 
 @step(u'Then I can see the following elements')

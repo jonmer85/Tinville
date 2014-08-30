@@ -2,6 +2,7 @@
 from django.core.management import call_command
 import lettuce.django
 import math
+import time
 
 from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
