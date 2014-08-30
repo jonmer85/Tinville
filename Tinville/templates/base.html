@@ -42,6 +42,8 @@
     <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
     <nav class="navbar yamm navbar-default" role="navigation">
         <div class="container">
+
+            {% include "notification.html" %}
             <div id="navHeader" class="navbar-header">
 
                 <button id="navbarBtn" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
@@ -69,8 +71,8 @@
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
                 <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
-                    <button type="button" id="shoppingcartMobileBtn" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                    <button type="button" id="shoppingcartMobileBtn" class="shoppingcartBtn">
+                        <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
                     </button>
                 </li>
             </div>
@@ -315,8 +317,8 @@
                             </li>
                         {% endif %}
                         <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
-                            <button type="button" id="shoppingcartBtn" class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                            <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
+                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
                             </button>
                         </li>
 
@@ -757,7 +759,8 @@
             Id:itemNum,
             title:"Hello World",
             description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
-            price:10.01
+            price:10.01,
+            image:"/static/img/tinville_Logo.png"
         };
         AddCartItem(CartItem);
     });
@@ -774,7 +777,7 @@ $(function() {
     cartTotal = cartJson["cartTotal"];
     if(cartTotal === undefined)
         cartTotal = 0.00;
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
 
     var _IsOpen = cartJson["IsOpen"];
 
@@ -838,8 +841,7 @@ function LoadCartItemDiv(cartItem)
         'id' : cartItem.Id
     });
 
-    //TODO: Add thumbnail image
-    var itemThumbnail = $('<div/>', {'class':'shoppingcartthumbnail'});
+    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class':'shoppingcartthumbnail'});
     itemThumbnail.appendTo(cartitemdiv);
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
@@ -853,10 +855,13 @@ function LoadCartItemDiv(cartItem)
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
-        'class' : 'btn btn-default btn-sm', 'html' : '<span class="glyphicon glyphicon-remove"></span>'
+        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20"></span>'
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
+    var price = '$' + cartItem.price;
+    var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
+    priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo("#shoppingcartitems");
 
 }
@@ -867,7 +872,7 @@ function AddCartItem(cartItem)
 
     cartTotal += cartItem.price;
     //TODO: Prefix with currency type
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
@@ -886,13 +891,29 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
+    if (itemId > 0){
+        var self = $(this)
+        var url = "/delete_item_to_cart"
+
+        var ajax_req = $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    Id: itemId
+                },
+                success: function(data, textStatus, jqXHR) {
+                },
+                error: function(data, textStatus, jqXHR) {
+                }
+            });
+    }
     $('#'+itemId).remove();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var list = cartJson["cartList"];
     var price = list[itemId].price;
     cartTotal = (cartTotal * 100 - price * 100) / 100;
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
     cartJson["cartTotal"] = cartTotal;
     delete list[itemId];
     cartJson.cartList = list;
