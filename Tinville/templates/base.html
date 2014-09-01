@@ -47,13 +47,6 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-    </div>
-
-    <nav class="navbar yamm navbar-default" role="navigation">
-        <div class="container">
-            <div id="navHeader" class="navbar-header">
-                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
-
 
 
                 {% if not user.is_authenticated %}
@@ -74,17 +67,32 @@
                 {% else %}
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
+    </div>
 
-                <button type="button" id="shoppingcartMobileBtn" class="navbar-link navbar-text visible-xs pull-left xs-navbar-text">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                </button>
+    <nav class="navbar yamm navbar-default" role="navigation">
+        <div class="container">
+            <div id="navHeader" class="navbar-header">
+{#                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i>#}
+{#                    <input class="textinput textInput form-control" style = "float: right">#}
+{#                </a>#}
+
+                <div class="input-group margin-bottom-sm visible-xs ">
+                  <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+                  <input class="form-control" type="text" placeholder="Search">
+                </div>
+
+
+
+{#                <button type="button" id="shoppingcartMobileBtn" class="navbar-link navbar-text visible-xs pull-left xs-navbar-text">#}
+{#                    <span class="glyphicon glyphicon-shopping-cart"></span>#}
+{#                </button>#}
 
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navButtonIconStyle">
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
@@ -153,7 +161,7 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
@@ -224,10 +232,10 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b> + </b></a>
                         </li>
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div class="yamm-content navbarLinkStyle ">
@@ -243,7 +251,7 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b> + </b></a>
                         </li>
 
                         {% if user.is_authenticated %}

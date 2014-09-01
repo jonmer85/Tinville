@@ -76,12 +76,19 @@ body {
 
     .mobileDropListStyle{
         border-bottom: 1px solid #000000;
-        padding-bottom: 5px;
+        /*padding-bottom: 5px;*/
 
     }
 
     .mobileDropBtnStyle{
         text-align: center;
+        background-color: #e7e5e6
+    }
+
+    .mobileDropBtnStyle a{
+        /*background-color: #e7e5e6 ;*/
+        margin-right: -10px;
+        margin-left: -10px;
     }
 
     .mobileNeighborMenu{
@@ -144,7 +151,7 @@ body {
 
 .navdropTopTextStyle {
   color: #000000;
-  background: #f8f8f8;
+  background: transparent;
 }
 
 .xs-navbar-text {
@@ -191,6 +198,7 @@ body {
 #signInButton {
     margin-right: 0;
     margin-top: 0;
+    float:right;
 }
 
 .loginFormLine {
@@ -993,7 +1001,7 @@ textarea {
     width: 30%;
     top: 0px;
     left: 0px;
-    background-color: #e64a1c;
+    background-color: #e7e5e6;
     overflow: hidden;
     margin-top: 50px;
 
@@ -1010,12 +1018,18 @@ textarea {
 }
 .navbar .navbar-collapse{
     margin-left: -15%;
-margin-right: -15%;
+    margin-right: -15%;
+    overflow-x: hidden;
 }
 
 .slidingContent{
     -webkit-transition: all 1s ease;
     margin-left:0px;
+}
+
+.navButtonIconStyle b{
+    float: right;
+    padding-right: 1em;
 }
 
 .notransition {
