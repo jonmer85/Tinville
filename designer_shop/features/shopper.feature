@@ -20,3 +20,12 @@ Feature: Designer Shop
 	And every item should have an image
 	And every item should have a price
 
+  Scenario: Nav Bar
+    Given a designer shop
+    When the shop is visited
+    When the home tab is selected
+    Then The home content is displayed
+    When the about tab is selected
+    Then the about content is displayed
+    When the landing tab is selected
+    Then The landing content is displayed
