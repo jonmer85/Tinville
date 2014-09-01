@@ -8,6 +8,21 @@
 {% block content %}
     {{ block.super }}
     <div class="container">
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Item</h4>
+                    </div>
+                    <div id="messageId" class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="shopItemDetail col-xs-12">
             <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
                 {{ item.title }}
@@ -44,7 +59,7 @@
             <div class="itemPrice center col-xs-12 visible-xs">
                 From $ {{ item.min_variant_price_excl_tax }}
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-6" id="idItemDetail">
                 <div>
                     <div class="itemTitle hidden-xs">
                         {{ item.title }}
@@ -68,7 +83,7 @@
                     </div>
                     <div class="itemStockQuantity col-xs-12"></div>
                     <div class="addToCart col-xs-12">
-                        <input type="submit" name="addItemToCart" value="Add to Cart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">
+                        <a href='{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart' name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Cart</a>
                     </div>
                     <div class="itemDescription col-xs-12">
                         {{ item.description | safe }}
@@ -193,6 +208,46 @@
 
     });
 
+
+
+{#    Adding the shooping cart stuff#}
+    $(document).ready(function(){
+        $("#id_AddToCart").click(function(e){
+            e.preventDefault();
+            var self = $(this)
+            var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
+            var sizeFilter = $("#itemSizeSelection option:selected").text()
+            var colorFilter = $("#itemColorSelection option:selected").text()
+            var qtyFilter = $("#buyQuantity").val()
+
+            var ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        sizeFilter: sizeFilter,
+                        colorFilter: colorFilter,
+                        qtyFilter: qtyFilter
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        data.image = {{ MEDIA_URL }} + data.image
+                        if (parseInt(data.Id) > 0){
+                            AddCartItem(data)
+                        }
+                        else if (parseInt(data.Id) < 0){
+                            data.Id = data.Id--
+                            AddCartItem(data)
+                        }
+                        else {
+                            $('#messageId').html(data.msg)
+                            $('#messageModal').modal('show');
+                        }
+                    },
+                    error: function(data, textStatus, jqXHR) {
+
+                    }
+                });
+        });
+    });
     </script>
 
 {% endblock %}

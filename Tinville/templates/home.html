@@ -4,9 +4,6 @@
 
 {% block content %}
     {{ block.super }}
-    <div class="container">
-        {% include "notification.html" %}
-    </div>
     <span data-picture class="banner">
         <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
         <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>

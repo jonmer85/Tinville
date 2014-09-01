@@ -7,20 +7,11 @@
 {% endblock css %}
 {% block content %}
 {{ block.super }}
-{% block item_extensions %}
-    {{ block.super }}
-    <div>
-        {% if product and product.is_top_level %}
-            <a href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-right">Edit</a>
-            <a href='{{ shop.get_absolute_url }}edit/delete_product/{{ product.slug }}' class="btn btn-primary tinvilleButton pull-left">Delete</a>
-        {% endif %}
-    </div>
-{% endblock %}
 <div id="shopEditor">
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
-                  <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
+                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
                     <b>Shop Editor</b>
                     <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
                 </div>
@@ -192,7 +183,7 @@
                     success: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors("#about");
-					    document.getElementById('aboutLocation').innerHTML = document.getElementById("id_aboutContent").value
+					    document.getElementById('aboutTab').innerHTML = document.getElementById("id_aboutContent").value
                         $("#collapseOneTitle").removeClass( "collapsed").addClass("");
                         $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
                         $("#collapseOne").css("height", "auto");
@@ -886,6 +877,15 @@ $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
 });
+
+        function DeleteConfirmation(slug) {
+            $('#deleteModal').modal('show');
+            $('#okDeleteBtn').click({param1: slug}, function (event) {
+                var href = "{{ shop.get_absolute_url }}edit/delete_product/";
+                window.location =  href + event.data.param1;
+            });
+        }
+
 
 </script>
 

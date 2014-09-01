@@ -10,113 +10,73 @@
     {{ block.super }}
 
 
-    <!-- Nav tabs -->
+<!-- Nav tabs -->
 <ul class="nav nav-tabs shopBackgroundColor" role="tablist">
-  <li class="active shopTabStyle"><a id="shopTabButton" href="#shopTab" role="tab" data-toggle="tab"z>Home</a></li>
-  <li class="shopTabStyle"><a id="aboutTabButton" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
-  <li class="shopTabStyle"><a id="landingTabButton" href="#landingTab" role="tab" data-toggle="tab">Landing</a></li>
+    <li class="active shopTabStyle"><a href="#shopTab" role="tab" data-toggle="tab"z>Home</a></li>
+    <li class="shopTabStyle"><a href="#aboutTab" id="aboutTabLink" role="tab" data-toggle="tab">About</a></li>
+    <li class="shopTabStyle"><a href="#landingTab" role="tab" data-toggle="tab">Landing</a></li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content ">
-  <div class="navTab tab-pane active" id="shopTab">
-  <div class="container">
+    <div class="navTab tab-pane active" id="shopTab">
+        <div class="container">
+            {% if user.email == shop.user.email%}
+            <div id="editLink">
+                <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+            </div>
+            {% endif %}
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+                <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
+                    <option>View All</option>
+                    {% for genders in shopgenders %}
+                        <option>{{ genders.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    {% if user.email == shop.user.email%}
-        <div id="editLink">
-            <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+                <select class="select form-control filterTabs" id="filterType" name="typeFilter">
+                    <option>View All Types</option>
+                    {% for category in shopcategories %}
+                        {% if category.numchild == 0 %}
+                            <option class="">{{ category.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
+                <select class="select form-control filterTabs" id = "filterPrice" name="priceFilter">
+                    <option>All Prices</option>
+                    <option>$0-$50</option>
+                    <option>$50-$100</option>
+                </select>
+            </div>
+            {% include "designer_shop/shop_items.html" %}
         </div>
-    {% endif %}
-
-
-
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-     <select class="select form-control filterTabs "  id="filterTab1" name="Filter1">
-        <option>View All</option>
-          {% for category in categories %}
-            {% if category.depth == 1 %}
-                <option>{{ category.name }}</option>
-            {% endif %}
-         {% endfor %}
-      </select>
-  </div>
-
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-      <select class="select form-control filterTabs" >
-        <option>View All Types</option>
-        {% for category in categories %}
-            {% if category.depth == 3 %}
-                <option class="">{{ category.name }}</option>
-            {% endif %}
-         {% endfor %}
-      </select>
-  </div>
-
-  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-      <select class="select form-control filterTabs">
-        <option>All Prices</option>
-        <option>$0-$50</option>
-        <option>$50-$100</option>
-      </select>
-  </div>
-
-  <div class="shopItems ">
-          {% if products %}
-
-
-              {% for product in products %}
-                {% purchase_info_for_product request product as session %}
-                {% if product.is_top_level %}
-                  <div class=" col-xs-6 col-sm-4 col-md-2 col-lg-2" style="padding-top: 1%; padding-bottom: 1%; ">
-                    <div class="row-xs-height">
-                    <div class="container-xs-height">
-                          <div class="thumbnail shopItem shopBorderColor col-middle col-xs-height">
-                            {% if product.primary_image and product.primary_image.original.url %}
-                                {% with image=product.primary_image %}
-                                    {% thumbnail image.original "200x250" upscale=False as thumb %}
-                                    <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
-                                        <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive itemSize"/>
-                                    </a>
-                                    {% endthumbnail %}
-                                {% endwith %}
-                            {% else %}
-                                    -
-                            {% endif %}
-
-                          <div class="caption">
-                              <a class="name " href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
-                              <span class="price "> ${{session.price.excl_tax}}</span>
-                              <span class="">
-                                  {% if not session.availability.is_available_to_buy %}
-                                      {{  session.availability.message  }}
-                                  {% endif %}
-                              </span>
-                          </div>
-                       </div>
-                    </div>
-                    </div>
-                          {% block item_extensions %}{% endblock %}
-
-                   </div>
-                {% endif %}
-              {% endfor %}
-            {% else %}
-                <div id="emptyShopId" class="emptyShop">
-                    Items coming soon...
-                </div>
-            {% endif %}
-        </div>
-
-  </div>
-  </div>
-  <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
-  <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
+    </div>
+    <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
+    <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
 </div>
 
 {% endblock %}
 
 {% block javascript %}
     {{ block.super }}
-    <script></script>
+    <script>
+
+    $('#filterGender').change( function() {updateItemView()})
+    $('#filterType').change( function() {updateItemView()})
+    $('#filterPrice').change( function() {updateItemView()})
+
+    function updateItemView(){
+        var genderFilter = $("#filterGender option:selected").text()
+        var typeFilter = $("#filterType option:selected").text()
+        var priceFilter = $("#filterPrice option:selected").text()
+        $("#shopItems").load(" #shopItems", {genderfilter: genderFilter, typefilter: typeFilter, pricefilter: priceFilter}, function(){$(this).children().unwrap()});
+    }
+
+    </script>
 {% endblock %}
 

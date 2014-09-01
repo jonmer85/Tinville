@@ -8,7 +8,7 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
-  @jon
+  @jon2
   Scenario: Create Basic Item
 	Given the demo shop editor
 	When the add item tab is selected
