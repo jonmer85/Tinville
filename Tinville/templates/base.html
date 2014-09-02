@@ -72,7 +72,7 @@
                 {% endif %}
                 <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
                     <button type="button" id="shoppingcartMobileBtn" class="shoppingcartBtn">
-                        <img src="/static/img/shoppingCartLogo.png" width="25" height="25"/>
+                        <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
                     </button>
                 </li>
             </div>
@@ -318,7 +318,7 @@
                         {% endif %}
                         <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
                             <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
-                                <img src="/static/img/shoppingCartLogo.png" width="25" height="25"/>
+                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
                             </button>
                         </li>
 
@@ -856,7 +856,7 @@ function LoadCartItemDiv(cartItem)
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
-        'class' : 'shoppingcartBtn', 'html' : '<img src="/static/img/delete.png" width="20" height="20"></span>'
+        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20"></span>'
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
