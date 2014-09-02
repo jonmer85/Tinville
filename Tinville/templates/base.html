@@ -679,24 +679,25 @@ $("#navbarBtn").click(function()
 
 $("#shoppingcartBtn").click(function()
 {
+    $("#shoppingcart").animate({height:'toggle'},350);
     cartToggleBtn();
 });
 
 $("#shoppingcartMobileBtn").click(function()
 {
+    $("#shoppingcart").animate({width:'toggle'},350);
     cartToggleBtn();
 });
 
 function cartToggleBtn()
 {
-    $("#shoppingcart").toggle();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
-    var IsOpen;
-    if($('#shoppingcart').is(":visible"))
-        IsOpen = true;
-    else
+    var IsOpen = cartJson["IsOpen"];
+    if(IsOpen === undefined || IsOpen === true)
         IsOpen = false;
+    else
+        IsOpen = true;
 
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));

@@ -30,7 +30,7 @@
                 <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
                     <option>View All</option>
                     {% for genders in shopgenders %}
-                        <option>{{ genders.name }}</option>
+                        <option value="{{ genders.name }}">{{ genders.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -40,7 +40,7 @@
                     <option>View All Types</option>
                     {% for category in shopcategories %}
                         {% if category.numchild == 0 %}
-                            <option class="">{{ category.name }}</option>
+                            <option value="{{ category.name }}">{{ category.name }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>

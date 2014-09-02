@@ -13,15 +13,15 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
-@step(u'Given I have an item in the demo shop')
-def given_I_have_an_item_in_the_shop(step):
-    assert len(world.browser.find_elements_by_css_selector(".shopItem")) > 0, "no shop items exist!"
+@step(u'Given I have at least (\d+) items in the demo shop')
+def given_I_have_at_least_some_items_in_the_shop(step, amount):
+    assert len(world.browser.find_elements_by_css_selector(".shopItem")) >= int(amount), "there are not at least " + amount + " items in the shop!"
 
-@step(u'When I click on the item')
-def when_i_click_on_the_item(step):
-    theitem = world.browser.find_element_by_css_selector(".shopItem")
-    step.scenario.context['itemurl'] = theitem.find_element_by_css_selector("a").get_attribute("href")
-    theitem.find_element_by_css_selector("a").click()
+@step(u'When I click on the "(.*)" item')
+def when_i_click_on_the_item(step, itemname):
+    theitem = world.browser.find_element_by_css_selector(".shopItem>a[href='/Demo/" + itemname +"']")
+    step.scenario.context['itemurl'] = theitem.get_attribute("href")
+    theitem.click()
 
 @step(u'Then the item detail page is displayed')
 def then_the_item_detail_page_is_displayed(step):
@@ -31,7 +31,7 @@ def then_the_item_detail_page_is_displayed(step):
 def given_i_am_on_an_item_detail_page(step):
     step.behave_as("Given the demo shop")
     step.behave_as("Given I have an item in the demo shop")
-    step.behave_as("When I click on the item")
+    step.behave_as("When I click on the {0} item".format('"TestSizeSetItem"'))
     step.behave_as("Then the item detail page is displayed")
 
 @step(u'Then I can see the following elements')
@@ -70,7 +70,7 @@ def then_my_color_is(step, color):
 
 @step(u'When I try to select a size there are no options')
 def when_i_try_select_a_size_before_selecting_color(step):
-    amountofoptions = len(Select(world.browser.find_element_by_class("itemSizeSelection")).all_selected_options)
+    amountofoptions = len(Select(world.browser.find_element_by_id("itemSizeSelection")).all_selected_options)
     assert amountofoptions == 1, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
 
 @step(u'When I select the size (.*)')

@@ -20,12 +20,34 @@ Feature: Designer Shop
 	And every item should have an image
 	And every item should have a price
 
-  Scenario: Nav Bar
-    Given a designer shop
-    When the shop is visited
-    When the home tab is selected
-    Then The home content is displayed
-    When the about tab is selected
-    Then the about content is displayed
-    When the landing tab is selected
-    Then The landing content is displayed
+  Scenario: Shop filters
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    Then I should see the following filters
+      | FilterName     | DefaultValue     |
+      | filterGender   | "View All"       |
+      | filterType     | "View All Types" |
+      | filterPrice    | "All Prices      |
+
+  Scenario: Gender Filter Functionality
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    When I select the "filterGender" "Women"
+    Then I should have "2" items in the demo shop
+
+  Scenario: Type Filter Functionality
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    When I select the "filterType" "Boots"
+    Then I should have "1" items in the demo shop
+
+  Scenario: Gender Type Combo Filter Functionality
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    When I select the "filterGender" "Women"
+    Then I should have "2" items in the demo shop
+    When I select the "filterType" "Dresses"
+    Then I should have "1" items in the demo shop
+
+
+

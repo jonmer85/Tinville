@@ -55,7 +55,7 @@
     	"pk": 1,
     	"fields": {
     	    "product": 1,
-    	    "category": 13,
+    	    "category": 5,
     	    "is_canonical": 1
     	}
     },
@@ -412,7 +412,7 @@
     	"pk": 2,
     	"fields": {
     	    "product": 8,
-    	    "category": 13,
+    	    "category": 6,
     	    "is_canonical": 1
     	}
     },
