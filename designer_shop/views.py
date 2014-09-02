@@ -139,9 +139,7 @@ def get_valid_categories_for_filter(gender, type):
     return query
 
 def get_sort_order(sortfilter):
-    if sortfilter == 'relevance':
-        return '?'
-    elif sortfilter == 'date-asc':
+    if sortfilter == 'date-asc':
         return '-date_created'
     elif sortfilter == 'date-dsc':
         return 'date_created'
