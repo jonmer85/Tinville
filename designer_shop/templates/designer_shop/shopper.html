@@ -28,7 +28,7 @@
             {% endif %}
             <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
                 <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
-                    <option>View All</option>
+                    <option value="View All">View All</option>
                     {% for genders in shopgenders %}
                         <option value="{{ genders.name }}">{{ genders.name }}</option>
                     {% endfor %}
@@ -37,7 +37,7 @@
 
             <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
                 <select class="select form-control filterTabs" id="filterType" name="typeFilter">
-                    <option>View All Types</option>
+                    <option value="View All Types">View All Types</option>
                     {% for category in shopcategories %}
                         {% if category.numchild == 0 %}
                             <option value="{{ category.name }}">{{ category.name }}</option>
@@ -47,10 +47,14 @@
             </div>
 
             <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-4">
-                <select class="select form-control filterTabs" id = "filterPrice" name="priceFilter">
-                    <option>All Prices</option>
-                    <option>$0-$50</option>
-                    <option>$50-$100</option>
+                <select class="select form-control filterTabs" id="filterSort" name="sortFilter">
+                    <option value="relevance">Relevance</option>
+                    <option value="date-asc">Newest First</option>
+                    <option value="date-dsc">Oldest First</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-dsc">Price: High to Low</option>
+                    <option value="pop-asc">Popularity: Low to High</option>
+                    <option value="pop-dsc">Popularity: High to Low</option>
                 </select>
             </div>
             {% include "designer_shop/shop_items.html" %}
@@ -68,13 +72,13 @@
 
     $('#filterGender').change( function() {updateItemView()})
     $('#filterType').change( function() {updateItemView()})
-    $('#filterPrice').change( function() {updateItemView()})
+    $('#filterSort').change( function() {updateItemView()})
 
     function updateItemView(){
-        var genderFilter = $("#filterGender option:selected").text()
-        var typeFilter = $("#filterType option:selected").text()
-        var priceFilter = $("#filterPrice option:selected").text()
-        $("#shopItems").load(" #shopItems", {genderfilter: genderFilter, typefilter: typeFilter, pricefilter: priceFilter}, function(){$(this).children().unwrap()});
+        var genderFilter = $("#filterGender option:selected").attr("value");
+        var typeFilter = $("#filterType option:selected").attr("value");
+        var sortFilter = $("#filterSort option:selected").attr("value");
+        $("#shopItems").load(" #shopItems", {genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){$(this).children().unwrap()});
     }
 
     </script>
