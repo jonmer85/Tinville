@@ -892,6 +892,22 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
+    if (itemId > 0){
+        var self = $(this)
+        var url = "/delete_item_to_cart"
+
+        var ajax_req = $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    Id: itemId
+                },
+                success: function(data, textStatus, jqXHR) {
+                },
+                error: function(data, textStatus, jqXHR) {
+                }
+            });
+    }
     $('#'+itemId).remove();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");

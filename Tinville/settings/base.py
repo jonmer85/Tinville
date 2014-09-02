@@ -155,7 +155,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 PROJECT_APPS = [
     'user',
     'designer_shop',
-    'common'
+    'common',
+    'basket'
 ]
 
 INSTALLED_APPS = [
