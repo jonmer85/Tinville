@@ -76,7 +76,6 @@ body {
 
     .mobileDropListStyle{
         border-bottom: 1px solid #000000;
-        /*padding-bottom: 5px;*/
 
     }
 
@@ -86,7 +85,6 @@ body {
     }
 
     .mobileDropBtnStyle a{
-        /*background-color: #e7e5e6 ;*/
         margin-right: -10px;
         margin-left: -10px;
     }
@@ -141,7 +139,6 @@ body {
     background-color: #e7e7e7;
     border: 2px solid #c2c2c2;
     margin-top: -1px;
-    /*opacity: .95;*/
 }
 
 .navdropSize{
@@ -191,7 +188,6 @@ body {
 #navLogout {
     font-size: 2em;
     margin-right: 5%;
-    /*margin-top: 12px;*/
 }
 
 
@@ -243,11 +239,6 @@ body {
     height: 50px;
     margin-top: 0px;
 }
-
-   /* #carousel{
-    height: 812px;
-    length: 2632px;
-    } resizing home girl image for mobile*/
 }
 
 .navbar {
@@ -310,9 +301,6 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    /*width: 250px;;
-    /*opacity: .95;*/
-
 }
 .alignField {
 
@@ -371,7 +359,6 @@ body {
 }
 
 #loginFacebookButton {
-    /*min-width: 50%;*/
     margin-top: 1%;
 }
 
