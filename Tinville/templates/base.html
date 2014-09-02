@@ -811,17 +811,18 @@ $("#navbarBtn").click(function()
 
 $("#shoppingcartBtn").click(function()
 {
+    $("#shoppingcart").animate({height:'toggle'},350);
     cartToggleBtn();
 });
 
 $("#shoppingcartMobileBtn").click(function()
 {
+    $("#shoppingcart").animate({width:'toggle'},350);
     cartToggleBtn();
 });
 
 function cartToggleBtn()
 {
-    $("#shoppingcart").toggle();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var IsOpen;
