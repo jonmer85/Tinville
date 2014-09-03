@@ -27,7 +27,7 @@ Feature: Designer Shop
       | FilterName     | DefaultValue     |
       | filterGender   | "View All"       |
       | filterType     | "View All Types" |
-      | filterPrice    | "All Prices      |
+      | filterSort     | "No Sorting"     |
 
   Scenario: Gender Filter Functionality
     Given the demo shop
