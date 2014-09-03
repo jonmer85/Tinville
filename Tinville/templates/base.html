@@ -704,6 +704,11 @@
 
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
+            cartState = sessionStorage.getItem("cartState");
+            cartJson = JSON.parse(cartState || "{}");
+            cartTotal = cartJson["cartTotal"];
+            var cartItems = cartJson["cartList"];
+
             var self = $(this),
                 url = self.attr("action"),
 
@@ -713,8 +718,8 @@
                     data: {
                         username: self.find("#id_username").val(),
                         password: self.find("#id_password").val(),
-                        remember_me : self.find("#id_remember_me").val()
-
+                        remember_me : self.find("#id_remember_me").val(),
+                        cart: cartItems
                     },
                     success: function(data, textStatus, jqXHR) {
 						if (location.pathname == "/notifications") {
@@ -907,6 +912,7 @@ function RemoveCartItem(itemId)
                 }
             });
     }
+
     $('#'+itemId).remove();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");

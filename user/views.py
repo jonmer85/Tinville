@@ -10,7 +10,7 @@ from django.shortcuts import render
 
 from user.forms import TinvilleUserCreationForm
 from user.models import TinvilleUser
-
+from basket.views import load_cart
 
 def register(request):
     if request.method == 'POST':
@@ -73,6 +73,7 @@ def ajax_login(request, *args, **kwargs):
     if request.is_ajax() and form.is_valid():
 
         data = auth_view_login(request, form)
+        load_cart(request)
         logged_in = True
         return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), mimetype='application/json')
 

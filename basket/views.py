@@ -25,6 +25,11 @@ from common.utils import get_list_or_empty, get_or_none
 from django.utils.html import strip_tags
 
 # Create your views here.
+def load_cart(request):
+    if request.method == 'POST':
+        if not request.user.id is None:
+            return HttpResponse(json.dumps({'bin': 'pass'}, {'errors': 'error'}), mimetype='application/json')
+
 def add_item_to_cart(request, shop_slug, item_slug):
 
     if request.method == 'POST':

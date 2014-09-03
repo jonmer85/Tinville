@@ -219,7 +219,9 @@
             var sizeFilter = $("#itemSizeSelection option:selected").text()
             var colorFilter = $("#itemColorSelection option:selected").text()
             var qtyFilter = $("#buyQuantity").val()
-
+            var itemGUIDValue = sessionStorage.getItem("itemGUID");
+            if(itemGUIDValue === undefined)
+                itemGUIDValue = 0;
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -234,7 +236,9 @@
                             AddCartItem(data)
                         }
                         else if (parseInt(data.Id) < 0){
-                            data.Id = data.Id--
+                            itemGUIDValue = itemGUIDValue - 1
+                            data.Id = itemGUIDValue
+                            sessionStorage.setItem("itemGUID", data.Id);
                             AddCartItem(data)
                         }
                         else {
