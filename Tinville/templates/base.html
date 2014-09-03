@@ -756,11 +756,7 @@ $(function() {
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
 
-    //TODO: Aggregate Total method
-    cartTotal = cartJson["cartTotal"];
-    if(cartTotal === undefined)
-        cartTotal = 0.00;
-    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
+    aggregateTotal();
 
     var _IsOpen = cartJson["IsOpen"];
 
@@ -850,16 +846,33 @@ function LoadCartItemDiv(cartItem)
 
 }
 
+function aggregateTotal()
+{
+   var cartTotal = 0.00;
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var cartList= cartJson["cartList"];
+    if(cartList === undefined)
+        cartList = new Object();
+
+    $.each(cartList, function(index, item)
+    {
+        if(item === undefined || item.price === undefined)
+            cartTotal += 0.00;
+        else
+            cartTotal += item.price;
+
+    });
+
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
+}
+
 function AddCartItem(cartItem)
 {
     //TODO: Check if cartItem.Id exists if it does add quantity and update price...
     // else
     LoadCartItemDiv(cartItem);
-
-    //TODO: Aggregate Total method
-    cartTotal += cartItem.price;
-    //TODO: Prefix with currency type
-    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
@@ -869,10 +882,9 @@ function AddCartItem(cartItem)
 
     cartList[cartItem.Id] = cartItem;
 
-    cartJson["cartTotal"] = cartTotal;
-
     cartJson.cartList = cartList;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+    aggregateTotal();
 
 }
 
@@ -898,15 +910,11 @@ function RemoveCartItem(itemId)
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var list = cartJson["cartList"];
-
-    //TODO: Aggregate Total method
-    var price = list[itemId].price;
-    cartTotal = (cartTotal * 100 - price * 100) / 100;
-    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
-    cartJson["cartTotal"] = cartTotal;
     delete list[itemId];
     cartJson.cartList = list;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+    aggregateTotal();
 }
 
 
