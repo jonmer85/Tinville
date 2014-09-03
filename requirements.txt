@@ -27,7 +27,7 @@ django-haystack==2.1.0
 django-mobile==0.3.0
 django-oscar==0.6.1
 django-parsley==0.5
-django-selenium==0.9.6
+django-selenium==0.9.7
 django-storages==1.1.6
 django-tinymce==1.5.2
 django-treebeard==2.0b2
@@ -45,7 +45,7 @@ pylint==1.0.0
 python-mimeparse==0.1.4
 python-subunit==0.0.16
 pytz==2013b
-selenium==2.39.0
+selenium==2.42.1
 six==1.3.0
 sorl-thumbnail==11.12.1b
 sure==1.2.3

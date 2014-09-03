@@ -20,3 +20,34 @@ Feature: Designer Shop
 	And every item should have an image
 	And every item should have a price
 
+  Scenario: Shop filters
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    Then I should see the following filters
+      | FilterName     | DefaultValue     |
+      | filterGender   | "View All"       |
+      | filterType     | "View All Types" |
+      | filterPrice    | "All Prices      |
+
+  Scenario: Gender Filter Functionality
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    When I select the "filterGender" "Women"
+    Then I should have "2" items in the demo shop
+
+  Scenario: Type Filter Functionality
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    When I select the "filterType" "Boots"
+    Then I should have "1" items in the demo shop
+
+  Scenario: Gender Type Combo Filter Functionality
+    Given the demo shop
+    Given I have at least 3 items in the demo shop
+    When I select the "filterGender" "Women"
+    Then I should have "2" items in the demo shop
+    When I select the "filterType" "Dresses"
+    Then I should have "1" items in the demo shop
+
+
+
