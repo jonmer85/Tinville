@@ -20,7 +20,7 @@
             "name": "Demo",
 			"slug": "Demo",
             "banner": "images/banner.jpg",
-            "logo": "",
+            "logo": "images/logo.jpg",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "#663399"
@@ -55,8 +55,7 @@
     	"pk": 1,
     	"fields": {
     	    "product": 1,
-    	    "category": 13,
-    	    "is_canonical": 1
+    	    "category": 5
     	}
     },
     {
@@ -412,8 +411,7 @@
     	"pk": 2,
     	"fields": {
     	    "product": 8,
-    	    "category": 13,
-    	    "is_canonical": 1
+    	    "category": 6
     	}
     },
     {
@@ -769,8 +767,7 @@
     	"pk": 3,
     	"fields": {
     	    "product": 15,
-    	    "category": 13,
-    	    "is_canonical": 1
+    	    "category": 13
     	}
     },
     {
