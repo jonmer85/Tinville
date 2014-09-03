@@ -77,21 +77,11 @@
     <nav class="navbar yamm navbar-default" role="navigation">
         <div class="container">
             <div id="navHeader" class="navbar-header">
-{#                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i>#}
-{#                    <input class="textinput textInput form-control" style = "float: right">#}
-{#                </a>#}
 
                 <div class="input-group margin-bottom-sm visible-xs ">
                   <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
                   <input class="form-control" type="text" placeholder="Search">
                 </div>
-
-
-
-{#                <button type="button" id="shoppingcartMobileBtn" class="navbar-link navbar-text visible-xs pull-left xs-navbar-text">#}
-{#                    <span class="glyphicon glyphicon-shopping-cart"></span>#}
-{#                </button>#}
-
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
@@ -293,6 +283,19 @@
             </div>
         </div>
     </nav>
+
+                   <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
+                    <div id="shoppingcartitems" class="col-xs-11 col-sm-12 col-md-12">
+                     </div>
+                       <div>
+                        <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
+                           <span class="glyphicon glyphicon-check"></span>
+                        </button>
+                         <div id="carttotal">
+
+                         </div>
+                       </div>
+                   </div>
 
     <div class="row slidingContent">
         {% block content %}
@@ -618,21 +621,6 @@
         $("#id_password.textinput.textInput").val("");
     });
 
- //TODO: Replace with on specific item "Add to Cart" click event
- var itemNum = 0;
-    $("#buttonOfDOOM").click(function()
-    {
-        itemNum++;
-        var CartItem = {
-            Id:itemNum,
-            title:"Hello World",
-            description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
-            price:10.01,
-            image:"/static/img/tinville_Logo.png"
-        };
-        AddCartItem(CartItem);
-    });
-
  var cartTotal;
  var cartJson, cartState;
  cartState = sessionStorage.getItem("cartState");
@@ -642,6 +630,8 @@ $(function() {
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
+
+    //TODO: Aggregate Total method
     cartTotal = cartJson["cartTotal"];
     if(cartTotal === undefined)
         cartTotal = 0.00;
@@ -706,7 +696,7 @@ function cartToggleBtn()
 function LoadCartItemDiv(cartItem)
 {
     var cartitemdiv =  $('<div/>', {
-        'class':'shoppingcartitem',
+        'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
         'id' : cartItem.Id
     });
 
@@ -737,8 +727,11 @@ function LoadCartItemDiv(cartItem)
 
 function AddCartItem(cartItem)
 {
+    //TODO: Check if cartItem.Id exists if it does add quantity and update price...
+    // else
     LoadCartItemDiv(cartItem);
 
+    //TODO: Aggregate Total method
     cartTotal += cartItem.price;
     //TODO: Prefix with currency type
     $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
@@ -780,6 +773,8 @@ function RemoveCartItem(itemId)
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var list = cartJson["cartList"];
+
+    //TODO: Aggregate Total method
     var price = list[itemId].price;
     cartTotal = (cartTotal * 100 - price * 100) / 100;
     $('#carttotal').text('Total: $' + cartTotal.toFixed(2));

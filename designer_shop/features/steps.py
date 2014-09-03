@@ -65,13 +65,13 @@ def given_the_demo_shop(step):
 def given_a_shop_editor(step):
     assert_id_exists('shopEditor')
 
-@step(u'The designer can open a shop editor')
+@step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for control')
+@step(u'Then there should be 1 icon displayed for control')
 def there_should_be_1_icon_displays_for_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -98,12 +98,14 @@ def and_the_shop_editor_is_85(step):
 
 @step(u'Given the demo shop editor')
 def give_demo_shop_editor(step):
+    time.sleep(1)
     world.browser.get(lettuce.django.get_server().url('/'))
     sign_in("demo@user.com", "tinville")
+
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for size control')
+@step(u'Then there should be 1 icon displayed for size control')
 def there_should_be_one_icon_for_size_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
