@@ -76,12 +76,17 @@ body {
 
     .mobileDropListStyle{
         border-bottom: 1px solid #000000;
-        padding-bottom: 5px;
 
     }
 
     .mobileDropBtnStyle{
         text-align: center;
+        background-color: #e7e5e6
+    }
+
+    .mobileDropBtnStyle a{
+        margin-right: -10px;
+        margin-left: -10px;
     }
 
     .mobileNeighborMenu{
@@ -134,7 +139,6 @@ body {
     background-color: #e7e7e7;
     border: 2px solid #c2c2c2;
     margin-top: -1px;
-    /*opacity: .95;*/
 }
 
 .navdropSize{
@@ -144,7 +148,7 @@ body {
 
 .navdropTopTextStyle {
   color: #000000;
-  background: #f8f8f8;
+  background: transparent;
 }
 
 .xs-navbar-text {
@@ -184,13 +188,13 @@ body {
 #navLogout {
     font-size: 2em;
     margin-right: 5%;
-    /*margin-top: 12px;*/
 }
 
 
 #signInButton {
     margin-right: 0;
     margin-top: 0;
+    float:right;
 }
 
 .loginFormLine {
@@ -235,11 +239,6 @@ body {
     height: 50px;
     margin-top: 0px;
 }
-
-   /* #carousel{
-    height: 812px;
-    length: 2632px;
-    } resizing home girl image for mobile*/
 }
 
 .navbar {
@@ -302,9 +301,6 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    /*width: 250px;;
-    /*opacity: .95;*/
-
 }
 .alignField {
 
@@ -363,7 +359,6 @@ body {
 }
 
 #loginFacebookButton {
-    /*min-width: 50%;*/
     margin-top: 1%;
 }
 
@@ -993,3 +988,76 @@ textarea {
     border: none;
     background: none;
 }
+
+/*Start mobile navbar*/
+@media (max-width: 768px) {
+.navbar {
+    position: fixed;
+    height: 100%;
+    width: 30%;
+    top: 0px;
+    left: 0px;
+    background-color: #e7e5e6;
+    overflow: hidden;
+    margin-top: 50px;
+
+    -webkit-transform: translate(-100%, 0%);
+    -webkit-transition: all 1s ease;
+}
+
+.navbar .container{
+    width: 200px;
+}
+
+.banner img{
+    padding-left: 0px;
+}
+.navbar .navbar-collapse{
+    margin-left: -15%;
+    margin-right: -15%;
+    overflow-x: hidden;
+}
+
+.slidingContent{
+    -webkit-transition: all 1s ease;
+    margin-left:0px;
+}
+
+.navButtonIconStyle b{
+    float: right;
+    padding-right: 1em;
+}
+
+.notransition {
+  -webkit-transition: none;
+}
+
+.navbar h2{
+    padding: 20px 0px;
+    columns: #e64a1c;
+    text-align: center;
+}
+
+nav a {
+    display: block;
+
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.43);
+}
+
+nav a:hover{
+    color: #CCCCCC;
+
+}
+
+#mobileMenu{}
+
+.navButton span{
+    background: black;
+    border-bottom-color: black;
+}
+
+}
+/*END mobile navbar*/
