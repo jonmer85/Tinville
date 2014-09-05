@@ -10,7 +10,6 @@ from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
 from user.models import TinvilleUser
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
 @step(u'Given I have at least (\d+) items in the demo shop')
