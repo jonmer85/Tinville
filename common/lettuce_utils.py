@@ -32,6 +32,13 @@ def assert_class_exists(klass):
 def assert_id_exists(id):
     world.browser.find_element_by_id(id)
 
+def assert_id_does_not_exist(id):
+    try:
+        world.browser.find_element_by_id(id)
+        assert False, 'Did not expect ' + id + ' to be an element'
+    except NoSuchElementException:
+        pass
+
 
 def assert_class_does_not_exist(klass):
     try:
