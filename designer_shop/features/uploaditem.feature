@@ -24,5 +24,6 @@ the content for this basic editor should include the following fields:
      Given the demo shop editor
      Given I have an item in the demo shop
      When I click the delete button for the product
+     And I click ok on the confirmation
      Then the product is removed
      And the shop editor refreshes in a minimized state
