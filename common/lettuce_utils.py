@@ -39,6 +39,13 @@ def css_selector_exists(selector):
     except NoSuchElementException:
         return False
 
+def id_exists(id):
+    try:
+        world.browser.find_element_by_id(id)
+        return True
+    except NoSuchElementException:
+        return False
+
 
 def assert_class_does_not_exist(klass):
     try:
@@ -121,6 +128,9 @@ def change_viewport_lg():
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
     return world.browser.find_element_by_id(id)
+
+def wait_for_element_with_id_to_not_be_displayed(id):
+    WebDriverWait(world.browser, 10).until(lambda s: not id_exists(id) or not s.find_element_by_id(id).is_displayed())
 
 def wait_for_element_with_id_to_be_clickable(id):
     WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.ID, id)))

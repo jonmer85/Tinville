@@ -9,13 +9,15 @@ from Tinville.settings.base import MEDIA_ROOT
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
+    maximize_shop_editor()
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addOrEditItem"]')
 
 @step(u'Then the add item form is displayed')
 def then_the_add_item_form_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#addOrEditItem.tab-pane.active')
-    assert world.browser.find_element_by_css_selector("#id_title").is_displayed()
+    maximize_shop_editor()
+    wait_for_element_with_css_selector_to_be_displayed('#addOrEditItem.tab-pane.active')
+    wait_for_element_with_css_selector_to_be_displayed("#id_title")
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
@@ -47,6 +49,7 @@ def i_should_see_a_confirmation_message_stating_that_the_item_was_created_or_upd
     assert_id_exists("messagesModal")
     assert_selector_contains_text("#messagesModal .alert-success", "Item has been successfully {0}!".format(createdOrUpdated))
     wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
+    wait_for_element_with_id_to_not_be_displayed("messagesModal")
 
 @step(u'And I submit this item')
 def and_i_submit_this_item(step):
@@ -84,10 +87,12 @@ def and_shopEditor_refreshes_minimized(step):
 # Utilities
 def minimize_shop_editor():
     if css_selector_exists("#minMaxIcon.glyphicon-chevron-down"):
-        wait_for_element_with_id_to_be_clickable("#minMaxIcon").click()
+        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
+        time.sleep(1)
         wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
 
 def maximize_shop_editor():
     if css_selector_exists("#minMaxIcon.glyphicon-chevron-up"):
-        wait_for_element_with_id_to_be_clickable("#minMaxIcon").click()
+        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
+        time.sleep(1)
         wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-down")
