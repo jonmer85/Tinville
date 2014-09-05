@@ -19,7 +19,7 @@ the content for this basic editor should include the following fields:
 	Then I should see 1 product total
 
 
-   @andy
+   @deleteItem
    Scenario: Delete Basic Item
      Given the demo shop editor
      Given I have an item in the demo shop
