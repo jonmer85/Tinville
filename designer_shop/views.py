@@ -119,7 +119,7 @@ def get_filtered_products(shop, post):
     genderfilter = post['genderfilter']
     itemtypefilter = post['typefilter']
     sortfilter = post['sortfilter']
-    filteredProductList = Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)).order_by(get_sort_order(sortfilter))
+    filteredProductList = get_sort_order(Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)), sortfilter)
     return filteredProductList
 
 def get_valid_categories_for_filter(gender, type):
@@ -138,21 +138,21 @@ def get_valid_categories_for_filter(gender, type):
 
     return query
 
-def get_sort_order(sortfilter):
+def get_sort_order(filteredobjects, sortfilter):
     if sortfilter == 'date-asc':
-        return '-date_created'
+        return filteredobjects.order_by('-date_created')
     elif sortfilter == 'date-dsc':
-        return 'date_created'
+        return filteredobjects.order_by('date_created')
     elif sortfilter == 'price-asc':
-        return 'stockrecords__price_excl_tax'
+        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax)
     elif sortfilter == 'price-dsc':
-        return '-stockrecords__price_excl_tax'
+        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax, reverse=True)
     elif sortfilter == 'pop-asc':
-        return '?'
+        return filteredobjects.order_by('?')
     elif sortfilter == 'pop-dsc':
-        return '?'
+        return filteredobjects.order_by('?')
     else:
-        return '?'
+        return filteredobjects.order_by('?')
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
