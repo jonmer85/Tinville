@@ -229,7 +229,7 @@
                         qtyFilter: qtyFilter
                     },
                     success: function(data, textStatus, jqXHR) {
-                        data.image = {{ MEDIA_URL }} + data.image
+                        data.image = "{{ MEDIA_URL }}" + data.image
                         if (parseInt(data.Id) > 0){
                             AddCartItem(data)
                         }
