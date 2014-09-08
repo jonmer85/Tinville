@@ -50,10 +50,10 @@
 
 
                 {% if not user.is_authenticated %}
-                    <ul id="signInButton" class="nav ">
-                      <li class="dropdown yamm-fw" id="xs-menuLogin" >
+                    <ul id="signInButtonMobile" class="nav ">
+                      <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
                         <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
-                        <ul class="dropdown-menu loginPopupForm">
+                        <ul class="dropdown-menu loginPopupFormMobile">
                             <li>
                                 <div class="yamm-content" style="padding-top: 2px">
                                     <div class="row">
@@ -87,12 +87,13 @@
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
                     <ul class="nav navbar-nav navButtonIconStyle">
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b> + </b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="visible-xs"> + </b></a>
+
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
                                         <div class="row">
-                                            <ul class=" list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Clothing</strong></p></li>
                                                 <li><a href="#" >Outerwear</a></li>
                                                 <li><a href="#">Jackets & Blazers</a></li>
@@ -134,7 +135,7 @@
                                         </div>
                                     </div>
 
-                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle">
+                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle xs-navbar-text">
                                         <div class="row">
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Dresses</a></li>
@@ -156,7 +157,7 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b> + </b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
@@ -227,10 +228,10 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b> + </b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="visible-xs"> + </b></a>
                         </li>
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b> + </b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div class="yamm-content navbarLinkStyle ">
@@ -246,7 +247,7 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b> + </b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="visible-xs"> + </b></a>
                         </li>
 
                         {% if user.is_authenticated %}
@@ -559,13 +560,12 @@
 
         $(document).ready(function() {
 
-           var menu = "close";
+                   var menu = "close";
 
-            $('.menu-toggle').click(function() {
-
-                if(menu == "close"){
-                    $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
-                    $('.navbar').css('-webkit-transform','translate(0, 0)');
+                    $('.menu-toggle').click(function() {
+                        if(menu == "close"){
+                            $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
+                            $('.navbar').css('-webkit-transform','translate(0, 0)');
 
                     menu="open";
                 }
@@ -749,16 +749,21 @@ $(function() {
     }
 });
 
-$("#navbarBtn").click(function()
+$("#mobileNavButton").click(function()
+{
+    navbarClicked();
+});
+
+function navbarClicked()
 {
     $("#shoppingcart").hide();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
-     var IsOpen = false;
+    var IsOpen = false;
 
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-});
+}
 
 $("#shoppingcartBtn").click(function()
 {
@@ -806,7 +811,8 @@ function LoadCartItemDiv(cartItem)
 
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
-    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
+    var delBtnId = 'deleteBtnId_' + cartItem.Id;
+    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
         'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20"></span>'
     });
     removeBtn.appendTo(removeBtnDiv);

@@ -81,7 +81,7 @@ body {
 
     .mobileDropBtnStyle{
         text-align: center;
-        background-color: #e7e5e6
+        background-color: #e7e5e6;
     }
 
     .mobileDropBtnStyle a{
@@ -191,7 +191,7 @@ body {
 }
 
 
-#signInButton {
+#signInButtonMobile {
     margin-right: 0;
     margin-top: 0;
     float:right;
@@ -302,6 +302,19 @@ body {
     border-radius: 8px;
     font-size: small;
 }
+
+.loginPopupFormMobile {
+    background-color: #E7E7E7;
+    padding-top: 0%;
+    padding-bottom: 1%;
+    border-radius: 8px;
+    font-size: small;
+    margin-left: -200%;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 200px;
+}
+
 .alignField {
 
     padding-right: 0%;
@@ -1044,7 +1057,7 @@ nav a {
     text-decoration: none;
     font-size: 20px;
     color: #ffffff;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.43);
+    border-bottom: 1px solid rgba(172, 172, 172, 0.43);
 }
 
 nav a:hover{
