@@ -59,7 +59,7 @@ def load_cart(request):
                 qtys = ret['qty'].split(',')
                 descriptions = ret['description'].split('|')
                 for product_id in product_ids:
-                    if Ids[index] < 0:
+                    if int(Ids[index]) < 0:
                         cartItems.append(addBasket(request,product_id,images[index], descriptions[index], int(qtys[index])))
                     index = index + 1
             else:
