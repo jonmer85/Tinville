@@ -10,7 +10,7 @@ from django.shortcuts import render
 
 from user.forms import TinvilleUserCreationForm
 from user.models import TinvilleUser
-
+from basket.views import load_cart
 
 def register(request):
     if request.method == 'POST':
