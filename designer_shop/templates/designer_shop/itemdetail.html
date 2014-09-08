@@ -231,23 +231,29 @@
                         qtyFilter: qtyFilter
                     },
                     success: function(data, textStatus, jqXHR) {
-                        data.image = {{ MEDIA_URL }} + data.image
-                        if (parseInt(data.Id) > 0){
-                            AddCartItem(data)
-                        }
-                        else if (parseInt(data.Id) < 0){
-                            itemGUIDValue = itemGUIDValue - 1
-                            data.Id = itemGUIDValue
-                            sessionStorage.setItem("itemGUID", data.Id);
-                            AddCartItem(data)
+                        if (data.msg == ''){
+
+                            data.image = {{ MEDIA_URL }} + data.image
+                            if (parseInt(data.Id) > 0){
+                                AddCartItem(data)
+                            }
+                            else if (parseInt(data.Id) < 0){
+                                itemGUIDValue = itemGUIDValue - 1
+                                data.Id = itemGUIDValue
+                                sessionStorage.setItem("itemGUID", data.Id);
+                                AddCartItem(data)
+                            }
                         }
                         else {
                             $('#messageId').html(data.msg)
                             $('#messageModal').modal('show');
                         }
+
                     },
                     error: function(data, textStatus, jqXHR) {
-
+                        var msg = $.parseJSON(data.responseText)['errors']
+                        $('#messageId').html(msg)
+                        $('#messageModal').modal('show');
                     }
                 });
         });

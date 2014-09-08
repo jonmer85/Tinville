@@ -252,7 +252,7 @@
                         {% if user.is_authenticated %}
 
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
+                                <a href="/logout" onclick="logoutFunc()" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
 {#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
 {#                                <ul class="dropdown-menu navdropstyle ">#}
 {#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
@@ -552,34 +552,127 @@
           }
         );
 
+
+        function logoutFunc() {
+            sessionStorage.setItem("cartLoaded", 0);
+        }
+
         $(document).ready(function() {
 
-                   var menu = "close";
+           var menu = "close";
 
-                    $('.menu-toggle').click(function() {
+            $('.menu-toggle').click(function() {
 
-                        if(menu == "close"){
-                            $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
-                            $('.navbar').css('-webkit-transform','translate(0, 0)');
+                if(menu == "close"){
+                    $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
+                    $('.navbar').css('-webkit-transform','translate(0, 0)');
 
-                            menu="open";
-                        }
-                        else{
-                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
-                            $('.navbar').css('-webkit-transform','translate(-100%, 0)');
+                    menu="open";
+                }
+                else{
+                    $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                    $('.navbar').css('-webkit-transform','translate(-100%, 0)');
 
-                            menu="close";
-                        }
-                    });
-         });
+                    menu="close";
+                }
+            });
 
-        $(document).on("submit", ".loginForm", function(e) {
-            e.preventDefault();
             cartState = sessionStorage.getItem("cartState");
             cartJson = JSON.parse(cartState || "{}");
             cartTotal = cartJson["cartTotal"];
             var cartItems = cartJson["cartList"];
 
+            var product_id = '';
+            var image = '';
+            var qty = '';
+            var descriptions = '';
+            var id = '';
+            if(cartItems !== undefined)
+            {
+                $.each(cartItems, function(index, item)
+                {
+                    if(item === undefined || item.product_id === undefined)
+                        product_id = '0';
+                    else{
+                        if (product_id === ''){
+                            product_id = item.product_id.toString();
+                            qty = item.qty.toString();
+                            image = item.image.toString();
+                            descriptions = item.description.toString();
+                            id = item.Id.toString();
+                        }
+                        else{
+                            product_id = product_id + ',' + item.product_id.toString();
+                            qty = qty + ',' + item.qty.toString();
+                            image = image + ',' + item.image.toString();
+                            descriptions = descriptions + '|' + item.description.toString();
+                            id = id + ',' + item.Id.toString();
+                        }
+                    }
+                });
+            }
+            var cartLoaded = sessionStorage.getItem("cartLoaded");
+            if(cartLoaded === undefined)
+                cartLoaded = 0;
+
+
+            var self = $(this)
+            var url = "/load_cart"
+                ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        Id: id,
+                        description: descriptions,
+                        product_id: product_id,
+                        image: image,
+                        qty: qty,
+                        cartLoaded: cartLoaded
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        $.each(data, function(index, item)
+                        {
+                            if (parseInt(item.cartLoaded) > 0){
+                                sessionStorage.setItem("cartLoaded", item.cartLoaded);
+                            }
+                            var itemGUIDValue = sessionStorage.getItem("itemGUID");
+                            if(itemGUIDValue === undefined)
+                                itemGUIDValue = 0;
+                            if (itemGUIDValue < 0){
+                                var i;
+                                for (i = -1; i >= itemGUIDValue; i--) {
+                                    RemoveCartItem(i)
+                                }
+                            }
+                            if (item.msg == ''){
+                                if (parseInt(item.Id) > 0){
+                                    AddCartItem(item)
+                                }
+                                else if (parseInt(item.Id) < 0){
+                                    itemGUIDValue = itemGUIDValue - 1
+                                    item.Id = itemGUIDValue
+                                    sessionStorage.setItem("itemGUID", item.Id);
+                                    AddCartItem(item)
+                                }
+                            }
+                            else {
+                                $('#messageId').html(item.msg)
+                                $('#messageModal').modal('show');
+                            }
+                        });
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                    }
+                });
+
+
+        });
+
+
+
+        $(document).on("submit", ".loginForm", function(e) {
+            e.preventDefault();
             var self = $(this),
                 url = self.attr("action"),
 
@@ -590,7 +683,6 @@
                         username: self.find("#id_username").val(),
                         password: self.find("#id_password").val(),
                         remember_me : self.find("#id_remember_me").val(),
-                        cart: cartItems
                     },
                     success: function(data, textStatus, jqXHR) {
 						if (location.pathname == "/notifications") {
