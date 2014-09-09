@@ -20,7 +20,7 @@
             "name": "Demo",
 			"slug": "Demo",
             "banner": "images/banner.jpg",
-            "logo": "",
+            "logo": "images/logo.jpg",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "#663399"
@@ -49,6 +49,14 @@
             "is_discountable": 0,
             "shop": 1
         }
+    },
+    {
+    	"model": "catalogue.ProductCategory",
+    	"pk": 1,
+    	"fields": {
+    	    "product": 1,
+    	    "category": 5
+    	}
     },
     {
         "model": "catalogue.ProductImage",
@@ -107,6 +115,7 @@
             "parent": 1,
             "title": "TestSizeSetItem",
             "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -155,6 +164,7 @@
             "parent": 1,
             "title": "TestSizeSetItem",
             "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -202,6 +212,7 @@
             "parent": 1,
             "title": "TestSizeSetItem",
             "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -249,6 +260,7 @@
             "parent": 1,
             "title": "TestSizeSetItem",
             "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -296,6 +308,7 @@
             "parent": 1,
             "title": "TestSizeSetItem",
             "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -343,6 +356,7 @@
             "parent": 1,
             "title": "TestSizeSetItem",
             "slug": "TestSizeSetItem",
+            "description": "This item is a default SizeSetItem, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -399,6 +413,14 @@
         }
     },
     {
+    	"model": "catalogue.ProductCategory",
+    	"pk": 2,
+    	"fields": {
+    	    "product": 8,
+    	    "category": 6
+    	}
+    },
+    {
         "model": "catalogue.ProductImage",
         "pk": 7,
         "fields": {
@@ -455,6 +477,7 @@
             "parent": 8,
             "title": "TestSizeNumberItem",
             "slug": "TestSizeNumberItem",
+            "description": "This item is a default SizeNumber Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -503,6 +526,7 @@
             "parent": 8,
             "title": "TestSizeNumberItem",
             "slug": "TestSizeNumberItem",
+            "description": "This item is a default SizeNumber Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -550,6 +574,7 @@
             "parent": 8,
             "title": "TestSizeNumberItem",
             "slug": "TestSizeNumberItem",
+            "description": "This item is a default SizeNumber Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -597,6 +622,7 @@
             "parent": 8,
             "title": "TestSizeNumberItem",
             "slug": "TestSizeNumberItem",
+            "description": "This item is a default SizeNumber Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -644,6 +670,7 @@
             "parent": 8,
             "title": "TestSizeNumberItem",
             "slug": "TestSizeNumberItem",
+            "description": "This item is a default SizeNumber Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -691,6 +718,7 @@
             "parent": 8,
             "title": "TestSizeNumberItem",
             "slug": "TestSizeNumberItem",
+            "description": "This item is a default SizeNumber Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -745,6 +773,14 @@
             "is_discountable": 0,
             "shop": 1
         }
+    },
+    {
+    	"model": "catalogue.ProductCategory",
+    	"pk": 3,
+    	"fields": {
+    	    "product": 15,
+    	    "category": 13
+    	}
     },
     {
         "model": "catalogue.ProductImage",
@@ -803,6 +839,7 @@
             "parent": 15,
             "title": "TestSizeDimensionItem",
             "slug": "TestSizeDimensionItem",
+            "description": "This item is a default SizeDimension Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -860,6 +897,7 @@
             "parent": 15,
             "title": "TestSizeDimensionItem",
             "slug": "TestSizeDimensionItem",
+            "description": "This item is a default SizeDimension Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -916,6 +954,7 @@
             "parent": 15,
             "title": "TestSizeDimensionItem",
             "slug": "TestSizeDimensionItem",
+            "description": "This item is a default SizeDimension Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -972,6 +1011,7 @@
             "parent": 15,
             "title": "TestSizeDimensionItem",
             "slug": "TestSizeDimensionItem",
+            "description": "This item is a default SizeDimension Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -1028,6 +1068,7 @@
             "parent": 15,
             "title": "TestSizeDimensionItem",
             "slug": "TestSizeDimensionItem",
+            "description": "This item is a default SizeDimension Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",
@@ -1084,6 +1125,7 @@
             "parent": 15,
             "title": "TestSizeDimensionItem",
             "slug": "TestSizeDimensionItem",
+            "description": "This item is a default SizeDimension Item, It is expensive but everyone wants to buy it.",
             "product_class": 1,
             "score": 0,
             "date_created": "2014-06-28 18:03:32.859698",

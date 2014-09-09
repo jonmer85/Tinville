@@ -13,7 +13,6 @@ Feature: Designer Shop Color Selection
     And a color is submitted
     The selected color is applied to the components of the shop
 
-  @yori
   Scenario: AGW 214 - Colorpicker
     Given the demo shop editor
 	When the color tab is selected
@@ -21,4 +20,4 @@ Feature: Designer Shop Color Selection
 	And the color picker textbox is displayed
 	And the create button is displayed
     And the tinville orange color f46430 is submitted
-    The an exception Tinville Branding is not Allowed to be Used is thrown
+    Then an exception Tinville Branding is not Allowed to be Used is thrown

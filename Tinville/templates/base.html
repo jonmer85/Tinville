@@ -39,22 +39,21 @@
         <![endif]-->
     {% load feedback_widget %}
 	{% feedback_widget %}
-    <a href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
-    <nav class="navbar yamm navbar-default" role="navigation">
-        <div class="container">
-            <div id="navHeader" class="navbar-header">
+    <a href=""><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+ {% include "notification.html" %}
+    <div class="navbar-header">
+        <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navButton navbar-toggle collapsed menu-toggle">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
 
-                <button type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navSearch"><i class="fa fa-search fa-4"></i></a>
+
                 {% if not user.is_authenticated %}
-                    <ul id="signInButton" class="nav pull-right">
-                      <li class="dropdown yamm-fw" id="xs-menuLogin" >
-                        <a class="dropdown-toggle navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
-                        <ul class="dropdown-menu loginPopupForm">
+                    <ul id="signInButtonMobile" class="nav ">
+                      <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
+                        <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
+                        <ul class="dropdown-menu loginPopupFormMobile">
                             <li>
                                 <div class="yamm-content" style="padding-top: 2px">
                                     <div class="row">
@@ -66,16 +65,30 @@
                       </li>
                     </ul>
                 {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" onclick="logoutFunc()" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
+                <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
+                    <button type="button" id="shoppingcartMobileBtn" class="shoppingcartBtn">
+                        <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
+                    </button>
+                </li>
+    </div>
 
+    <nav class="navbar yamm navbar-default" role="navigation">
+        <div class="container">
+            <div id="navHeader" class="navbar-header">
+
+                <div class="input-group margin-bottom-sm visible-xs ">
+                  <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+                  <input class="form-control" type="text" placeholder="Search">
+                </div>
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
-
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navButtonIconStyle">
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN<b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="visible-xs"> + </b></a>
+
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
@@ -122,47 +135,20 @@
                                         </div>
                                     </div>
 
-                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle">
+                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle xs-navbar-text">
                                         <div class="row">
-                                            <button id="mobileWomensCbtn" class="contentButton"><b><i class="whhg-tshirt"></i></b></button>
-                                            <button id="mobileWomensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
-                                            <button id="mobileWomensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
-
-                                            <ul id="mobileWomensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
                                                 <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Tops</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Jeans</a></li>
+                                                <li><a href="#">Jackets</a></li>
+                                                <li><a href="#">Shorts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Skirts</a></li>
                                                 <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All</b></a></li>
-                                            </ul>
-                                            <ul id="mobileWomensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All</strong></a></li>
-                                            </ul>
-                                            <ul id="mobileWomensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All</strong></a></li>
+                                                <li><a href="#">Footwear</a></li>
+                                                <li><a href="#">Accessories</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -171,7 +157,7 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
@@ -220,45 +206,20 @@
 
                                     <div  id="mobileMenContent" class="yamm-content navbarLinkStyle">
                                         <div class="row">
-                                            <button id="mobileMensCbtn" class="contentButton"><b><i class="whhg-tshirt contentIcon"></i></b></button>
-                                            <button id="mobileMensSbtn" class="contentButton"><b><i class="whhg-shoebox"></i></b></button>
-                                            <button id="mobileMensAbtn" class="contentButton"><b><i class="whhg-purse"></i></b></button>
-
-                                            <ul id="mobileMensCcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Outerwear</a></li>
-                                                <li><a href="#">Jackets & Blazers</a></li>
-                                                <li><a href="#">Shirts</a></li>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Suits and Sportcoats</a></li>
+                                                <li><a href="#">Dress Shirts</a></li>
+                                                <li><a href="#">Polos</a></li>
+                                                <li><a href="#">T-Shirts</a></li>
+                                                <li><a href="#">Sweaters & Sweatshirts</a></li>
+                                                <li><a href="#">Coats & Jackets</a></li>
                                                 <li><a href="#">Pants</a></li>
-                                                <li><a href="#">Sweaters</a></li>
-                                                <li><a href="#">Suits</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Athletic Clothing</a></li>
-                                                <li><a href="#">Intimates</a></li>
-                                                <li><a href="#"><b>All Clothing</b></a></li>
-                                            </ul>
-                                            <ul id="mobileMensScontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Heels</a></li>
-                                                    <li><a href="#">Flats</a></li>
-                                                    <li><a href="#">Booties</a></li>
-                                                    <li><a href="#">Wedges</a></li>
-                                                    <li><a href="#">Athletic</a></li>
-                                                    <li><a href="#">Sandals</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Oxfords</a></li>
-                                                    <li><a href="#"><strong>All Shoes</strong></a></li>
-                                            </ul>
-                                            <ul id="mobileMensAcontent" class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
-                                                <li><a href="#">Handbags</a></li>
-                                                <li><a href="#">Fine Jewelry</a></li>
-                                                <li><a href="#">Fashion Jewelry</a></li>
-                                                <li><a href="#">Watches</a></li>
-                                                <li><a href="#">Sunglasses</a></li>
-                                                <li><a href="#">Scarves & Wraps</a></li>
-                                                <li><a href="#">Gloves</a></li>
-                                                <li><a href="#">Belts</a></li>
-                                                <li><a href="#">Designer Store</a></li>
-                                                <li><a href="#"><strong>All Accessories</strong></a></li>
+                                                <li><a href="#">Jeans</a></li>
+                                                <li><a href="#">Shorts</a></li>
+                                                <li><a href="#">Swimwear</a></li>
+                                                <li><a href="#">Sleepwear</a></li>
+                                                <li><a href="#">Footwear</a></li>
+                                                <li><a href="#">Accessories</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -267,10 +228,10 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="visible-xs"> + </b></a>
                         </li>
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div class="yamm-content navbarLinkStyle ">
@@ -286,12 +247,13 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="caret"></b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="visible-xs"> + </b></a>
                         </li>
 
                         {% if user.is_authenticated %}
+
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
+                                <a href="/logout" onclick="logoutFunc()" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
 {#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
 {#                                <ul class="dropdown-menu navdropstyle ">#}
 {#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
@@ -310,11 +272,12 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="yamm-fw navbarLinkStyle">
-                            <button type="button" id="shoppingcartBtn" href="#" class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
-                            </button>
+                        <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
+                            <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
+-                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
++                           </button>
                         </li>
+
 
                     </ul>
                 </div>
@@ -322,12 +285,8 @@
         </div>
     </nav>
 
-    <button id="buttonOfDOOM" type="button" href="#" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-plus"></span>
-    </button>
-
-                   <div id="shoppingcart">
-                    <div id="shoppingcartitems">
+                   <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
+                    <div id="shoppingcartitems" class="col-xs-11 col-sm-12 col-md-12">
                      </div>
                        <div>
                         <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
@@ -339,13 +298,13 @@
                        </div>
                    </div>
 
-    <div class="row">
+    <div class="row slidingContent">
         {% block content %}
         {% endblock content %}
     </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="row">
+    <div id="footerContainer" class="row slidingContent">
         <div class="row footerRow hidden-xs">
             <nav id="footerNavRight" class="col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
                 <dl class="list-unstyled">
@@ -372,7 +331,7 @@
                     <li class="mainFooterListItem">My Account</li>
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
-                            <a href="/logout">Sign Out</a>
+                            <a href="/logout" onclick="logoutFunc()">Sign Out</a>
                         {% else %}
                             <a id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
                         {% endif %}
@@ -425,7 +384,7 @@
                 <dl class="list-unstyled listPadding">
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
-                            <a href="/logout">Sign Out</a>
+                            <a href="/logout" onclick="logoutFunc()">Sign Out</a>
                         {% else %}
                             <a id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a>
                         {% endif %}
@@ -544,147 +503,36 @@
                 $("#nonMobileWomenContent").css("display","none");
                 $("#mobileWomenContent").css("display","");
             }
-            if(mode =='sm'){
+            else
+            {
                 $("#nonMobileMenContent").css("display","");
                 $("#mobileMenContent").css("display","none");
 
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
+
+                $('.navbar').removeAttr( 'style' );
+                $('.slidingContent').removeAttr( 'style' );
             }
-            if(mode =='md'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-            if(mode =='lg'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-
-             $("#mobileMensCbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","none");
-                e.stopPropagation();
-             });
-             $("#mobileMensSbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","");
-                $("#mobileMensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileMensAbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","");
-                 e.stopPropagation();
-             });
-
-             $("#mobileWomensCbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","none");
-
-                e.stopPropagation();
-             });
-             $("#mobileWomensSbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","");
-                $("#mobileWomensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileWomensAbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","");
-                 e.stopPropagation();
-             });
         });
 
          $(window).load(function(){
-             var mode = checkMode();
+              var mode = checkMode();
 
             if(mode == 'xs'){
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","none");
-
                 $("#nonMobileMenContent").css("display","none");
                 $("#mobileMenContent").css("display","");
-
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","none");
 
                 $("#nonMobileWomenContent").css("display","none");
                 $("#mobileWomenContent").css("display","");
             }
-            if(mode =='sm'){
+            else{
                 $("#nonMobileMenContent").css("display","");
                 $("#mobileMenContent").css("display","none");
 
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
             }
-            if(mode =='md'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-            if(mode =='lg'){
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
-
-
-             $("#mobileMensCbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","none");
-                e.stopPropagation();
-             });
-             $("#mobileMensSbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","");
-                $("#mobileMensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileMensAbtn").on( 'click', function(e) {
-                $("#mobileMensCcontent").css("display","none");
-                $("#mobileMensScontent").css("display","none");
-                $("#mobileMensAcontent").css("display","");
-                 e.stopPropagation();
-             });
-
-             $("#mobileWomensCbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","none");
-
-                e.stopPropagation();
-             });
-             $("#mobileWomensSbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","");
-                $("#mobileWomensAcontent").css("display","none");
-                 e.stopPropagation();
-             });
-             $("#mobileWomensAbtn").on( 'click', function(e) {
-                $("#mobileWomensCcontent").css("display","none");
-                $("#mobileWomensScontent").css("display","none");
-                $("#mobileWomensAcontent").css("display","");
-                 e.stopPropagation();
-             });
         });
 
 {#        this is for the highlight the selected infopages#}
@@ -694,6 +542,125 @@
                 $('#messagesModal').modal()
             {% endif %}
         });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 10) {
+                $('.navbar-header').css('top', $(window).scrollTop());
+            }
+          }
+        );
+
+
+        function logoutFunc() {
+            sessionStorage.setItem("cartLoaded", 0);
+            RemoveAllItems();
+        }
+
+        $(document).ready(function() {
+
+               var menu = "close";
+
+                $('.menu-toggle').click(function() {
+                    if(menu == "close"){
+                        $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
+                        $('.navbar').css('-webkit-transform','translate(0, 0)');
+
+                menu="open";
+                }
+                else{
+                    $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                    $('.navbar').css('-webkit-transform','translate(-100%, 0)');
+
+                    menu="close";
+                }
+            });
+
+            cartState = sessionStorage.getItem("cartState");
+            cartJson = JSON.parse(cartState || "{}");
+            cartTotal = cartJson["cartTotal"];
+            var cartItems = cartJson["cartList"];
+
+            var product_id = '';
+            var qty = '';
+            var id = '';
+            if(cartItems !== undefined)
+            {
+                $.each(cartItems, function(index, item)
+                {
+                    if(item === undefined || item.product_id === undefined)
+                        product_id = '0';
+                    else{
+                        if (product_id === ''){
+                            product_id = item.product_id.toString();
+                            qty = item.qty.toString();
+                            id = item.Id.toString();
+                        }
+                        else{
+                            product_id = product_id + ',' + item.product_id.toString();
+                            qty = qty + ',' + item.qty.toString();
+                            id = id + ',' + item.Id.toString();
+                        }
+                    }
+                });
+            }
+            var cartLoaded = sessionStorage.getItem("cartLoaded");
+            if(cartLoaded === undefined)
+                cartLoaded = 0;
+
+
+            var self = $(this)
+            var url = "/load_cart"
+                ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        Id: id,
+                        product_id: product_id,
+                        qty: qty,
+                        cartLoaded: cartLoaded
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        $.each(data, function(index, item)
+                        {
+                            if (parseInt(item.cartLoaded) > 0){
+                                sessionStorage.setItem("cartLoaded", item.cartLoaded);
+                            }
+                            var itemGUIDValue = sessionStorage.getItem("itemGUID");
+                            if(itemGUIDValue === undefined)
+                                itemGUIDValue = 0;
+                            if (itemGUIDValue < 0){
+                                var i;
+                                for (i = -1; i >= itemGUIDValue; i--) {
+                                    RemoveCartItem(i)
+                                }
+                            }
+                            if (item.msg == ''){
+                                item.image = {{ MEDIA_URL }} + item.image
+                                if (parseInt(item.Id) > 0){
+                                    AddCartItem(item)
+                                }
+                                else if (parseInt(item.Id) < 0){
+                                    itemGUIDValue = itemGUIDValue - 1
+                                    item.Id = itemGUIDValue
+                                    sessionStorage.setItem("itemGUID", item.Id);
+                                    AddCartItem(item)
+                                }
+                            }
+                            else {
+                                $('#messageId').html(item.msg)
+                                $('#messageModal').modal('show');
+                            }
+                        });
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                    }
+                });
+
+
+        });
+
 
 
         $(document).on("submit", ".loginForm", function(e) {
@@ -707,8 +674,7 @@
                     data: {
                         username: self.find("#id_username").val(),
                         password: self.find("#id_password").val(),
-                        remember_me : self.find("#id_remember_me").val()
-
+                        remember_me : self.find("#id_remember_me").val(),
                     },
                     success: function(data, textStatus, jqXHR) {
 						if (location.pathname == "/notifications") {
@@ -744,20 +710,6 @@
         $("#id_password.textinput.textInput").val("");
     });
 
- //TODO: Replace with on specific item "Add to Cart" click event
- var itemNum = 0;
-    $("#buttonOfDOOM").click(function()
-    {
-        itemNum++;
-        var CartItem = {
-            Id:itemNum,
-            title:"Hello World",
-            description:"This is an awesome item. You really want to buy it. Isn't it soo cool?",
-            price:10.01
-        };
-        AddCartItem(CartItem);
-    });
-
  var cartTotal;
  var cartJson, cartState;
  cartState = sessionStorage.getItem("cartState");
@@ -767,10 +719,8 @@ $(function() {
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
-    cartTotal = cartJson["cartTotal"];
-    if(cartTotal === undefined)
-        cartTotal = 0.00;
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
+
+    aggregateTotal();
 
     var _IsOpen = cartJson["IsOpen"];
 
@@ -791,30 +741,56 @@ $(function() {
     }
 });
 
-$("#shoppingcartBtn").click(function()
+$("#mobileNavButton").click(function()
 {
-    $("#shoppingcart").toggle();
+    navbarClicked();
+});
+
+function navbarClicked()
+{
+    $("#shoppingcart").hide();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
-    var IsOpen;
-    if($('#shoppingcart').is(":visible"))
-        IsOpen = true;
-    else
-        IsOpen = false;
+    var IsOpen = false;
 
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+}
+
+$("#shoppingcartBtn").click(function()
+{
+    $("#shoppingcart").animate({height:'toggle'},350);
+    cartToggleBtn();
 });
+
+$("#shoppingcartMobileBtn").click(function()
+{
+    $("#shoppingcart").animate({width:'toggle'},350);
+    cartToggleBtn();
+});
+
+function cartToggleBtn()
+{
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var IsOpen = cartJson["IsOpen"];
+    if(IsOpen === undefined || IsOpen === true)
+        IsOpen = false;
+    else
+        IsOpen = true;
+
+    cartJson["IsOpen"] = IsOpen;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+}
 
 function LoadCartItemDiv(cartItem)
 {
     var cartitemdiv =  $('<div/>', {
-        'class':'shoppingcartitem',
+        'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
         'id' : cartItem.Id
     });
 
-    //TODO: Add thumbnail image
-    var itemThumbnail = $('<div/>', {'class':'shoppingcartthumbnail'});
+    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class':'shoppingcartthumbnail'});
     itemThumbnail.appendTo(cartitemdiv);
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
@@ -827,22 +803,46 @@ function LoadCartItemDiv(cartItem)
 
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
-    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'href' : '#',
-        'class' : 'btn btn-default btn-sm', 'html' : '<span class="glyphicon glyphicon-remove"></span>'
+    var delBtnId = 'deleteBtnId_' + cartItem.Id;
+    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
+        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20"></span>'
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
+    var price = '$' + cartItem.price;
+    var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
+    priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo("#shoppingcartitems");
 
 }
 
+function aggregateTotal()
+{
+   var cartTotal = 0.00;
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var cartList= cartJson["cartList"];
+    if(cartList === undefined)
+        cartList = new Object();
+
+    $.each(cartList, function(index, item)
+    {
+        if(item === undefined || item.price === undefined)
+            cartTotal += 0.00;
+        else
+            cartTotal += item.price;
+
+    });
+
+    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));
+}
+
 function AddCartItem(cartItem)
 {
+    //TODO: Check if cartItem.Id exists if it does add quantity and update price...
+    // else
     LoadCartItemDiv(cartItem);
-
-    cartTotal += cartItem.price;
-    //TODO: Prefix with currency type
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
@@ -852,28 +852,60 @@ function AddCartItem(cartItem)
 
     cartList[cartItem.Id] = cartItem;
 
-    cartJson["cartTotal"] = cartTotal;
-
     cartJson.cartList = cartList;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+    aggregateTotal();
 
 }
 
 function RemoveCartItem(itemId)
 {
+    if (itemId > 0){
+        var self = $(this)
+        var url = "/delete_item_to_cart"
+
+        var ajax_req = $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    Id: itemId
+                },
+                success: function(data, textStatus, jqXHR) {
+                },
+                error: function(data, textStatus, jqXHR) {
+                }
+            });
+    }
+
     $('#'+itemId).remove();
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var list = cartJson["cartList"];
-    var price = list[itemId].price;
-    cartTotal = (cartTotal * 100 - price * 100) / 100;
-    $('#carttotal').text('Total: ' + cartTotal.toFixed(2));
-    cartJson["cartTotal"] = cartTotal;
     delete list[itemId];
     cartJson.cartList = list;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+    aggregateTotal();
 }
 
+function RemoveAllItems()
+{
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var list = cartJson["cartList"];
+    $.each(list, function(index, item)
+    {
+         $('#'+item.Id).remove();
+        delete list[item.Id];
+
+    });
+
+    cartJson.cartList = list;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+    aggregateTotal();
+}
 
 
     </script>

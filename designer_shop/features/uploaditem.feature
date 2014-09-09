@@ -8,7 +8,7 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
-  @jon
+  @jon2
   Scenario: Create Basic Item
 	Given the demo shop editor
 	When the add item tab is selected
@@ -19,10 +19,11 @@ the content for this basic editor should include the following fields:
 	Then I should see 1 product total
 
 
-   @andy
+   @deleteItem
    Scenario: Delete Basic Item
      Given the demo shop editor
      Given I have an item in the demo shop
      When I click the delete button for the product
+     And I click ok on the confirmation
      Then the product is removed
      And the shop editor refreshes in a minimized state

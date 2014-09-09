@@ -52,6 +52,7 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
+                         Field('category', placeholder='Choose a Category'),
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -87,6 +88,9 @@ class ProductCreationForm(forms.ModelForm):
                                                          widget=forms.ClearableFileInput)
 
         self.fields['description'].widget = TinyMCE()
+        self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3),
+                                                         empty_label="Choose a Category", required=True,
+                                                         initial=self.get_value_if_in_edit_mode('category', None))
         self.fields['price'].label = ""
 
         if sizes:
@@ -134,7 +138,7 @@ class ProductCreationForm(forms.ModelForm):
         variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
-        variantProduct.description = None
+        variantProduct.description = canonical.description
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
@@ -182,8 +186,14 @@ class ProductCreationForm(forms.ModelForm):
         # Jon M TBD - Right now we only use 1 product class - "Apparel"
         canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
         canonicalProduct.save()
-
         canonicalId = canonicalProduct.id
+
+        productCategory = get_model('catalogue', 'ProductCategory').objects.get_or_create(product=canonicalProduct,
+                                            category = self.instance.categories.all()[0]
+                                                        if is_edit else self.cleaned_data['category'])[0]
+        productCategory.category = self.cleaned_data['category']
+        productCategory.save()
+
         if is_edit:
             # Remove all variants since they will get recreated below
             get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
@@ -272,8 +282,6 @@ class ProductCreationForm(forms.ModelForm):
                     productImage.original = self.cleaned_data[image_field]
                     productImage.save()
 
-
-
     def load_image(self, product, display_order):
         image = get_or_none(ProductImage, product=product, display_order=display_order)
         retVal = None if not image else image.original
@@ -297,7 +305,6 @@ class ProductCreationForm(forms.ModelForm):
             return default
         return self.get_value_from_instance(field_name)
 
-
     def get_value_from_instance(self, field_name):
         if field_name == 'sizeVariation':
             return self.get_size_variation()
@@ -313,9 +320,11 @@ class ProductCreationForm(forms.ModelForm):
             return self.load_image(self.instance.pk, 3)
         if field_name == 'product_image4':
             return self.load_image(self.instance.pk, 4)
+        if field_name == 'category':
+            categories = self.instance.categories.all()
+            return categories[0] if categories.count() > 0 else None
         else:
             return getattr(self.instance, field_name)
-
 
     class Meta:
         model = get_model('catalogue', 'Product')
@@ -377,9 +386,6 @@ class DesignerShopColorPicker(forms.Form):
             raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
         return tinville_color
 
-
-
-
 class BannerUploadForm(forms.Form):
 
     banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
@@ -396,7 +402,6 @@ class BannerUploadForm(forms.Form):
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
         ))
-
 
 class LogoUploadForm(forms.Form):
 

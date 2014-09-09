@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from lettuce import step
 from django.core.management import call_command
 import lettuce.django
-import os
-import time
 import math
+import time
+import os
 
 from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
@@ -66,13 +65,13 @@ def given_the_demo_shop(step):
 def given_a_shop_editor(step):
     assert_id_exists('shopEditor')
 
-@step(u'The designer can open a shop editor')
+@step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for control')
+@step(u'Then there should be 1 icon displayed for control')
 def there_should_be_1_icon_displays_for_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -99,12 +98,14 @@ def and_the_shop_editor_is_85(step):
 
 @step(u'Given the demo shop editor')
 def give_demo_shop_editor(step):
+    time.sleep(1)
     world.browser.get(lettuce.django.get_server().url('/'))
     sign_in("demo@user.com", "tinville")
+
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for size control')
+@step(u'Then there should be 1 icon displayed for size control')
 def there_should_be_one_icon_for_size_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -179,7 +180,7 @@ def and_a_logo_is_submitted(step):
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2.jpg')
+    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2' + '.*' + '.jpg')
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
@@ -205,39 +206,7 @@ def and_a_banner_is_submitted(step):
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
-    assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2.jpg')
-
-@step(u'When the about tab is selected')
-def when_the_about_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
-
-@step(u'Then the about text field box is displayed')
-def then_the_about_text_field_box_is_displayed(step):
-    assert world.browser.find_element_by_id('about')
-    assert_id_exists('about')
-
-@step(u'And the submit about content button is displayed')
-def and_the_submit_about_content_button_is_displayed(step):
-    assert_id_exists('id_SubmitAboutContent')
-
-@step(u'And the about content is submitted')
-def and_the_about_content_is_submitted(step):
-    time.sleep(0.4)
-    world.browser.find_element_by_id('id_aboutContent_ifr').click()
-    world.browser.execute_script("tinyMCE.activeEditor.setContent('<p>Test About Content</p>')")
-    wait_for_element_with_id_to_be_displayed("id_SubmitAboutContent")
-    world.browser.find_element_by_id("id_SubmitAboutContent").click()
-    wait_for_ajax_to_complete()
-
-@step(u'The about content is saved')
-def the_about_content_is_saved(step):
-    world.browser.maximize_window()
-    world.browser.find_element_by_id('minMaxIcon').click()
-    aboutLocation = world.browser.find_element_by_css_selector('#aboutLocation.panel-body>p')
-    time.sleep(0.4)
-    assert aboutLocation.text == "Test About Content"
+    assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2' + '.*' + '.jpg')
 
 @step(u'When the add item tab is selected')
 def when_the_add_item_tab_is_selected(step):
@@ -259,8 +228,8 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
     world.browser.find_element_by_id("shopColorPicker").click()
     wait_for_ajax_to_complete()
 
-@step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
-def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
+@step(u'Then an exception Tinville Branding is not Allowed to be Used is thrown')
+def then_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
     assert_selector_does_exist("#div_id_color.has-error")
     assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
@@ -305,4 +274,35 @@ def i_should_see_n_products_total(step, total):
     products = world.browser.find_elements_by_css_selector(".shopItem")
     assert len(products) == int(total)
 
+@step(u'When the home tab is selected')
+def when_the_home_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#shopTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#shopTabButton')
 
+@step(u'Then the home content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('shopTab')
+    assert_id_exists('shopTab')
+
+@step(u'When the about tab is selected')
+def when_the_about_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#aboutTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#aboutTabButton')
+
+@step(u'Then the about content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('aboutTab')
+    assert_id_exists('aboutTab')
+
+@step(u'When the landing tab is selected')
+def when_the_landing_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#landingTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#landingTabButton')
+
+@step(u'Then the landing content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('landingTab')
+    assert_id_exists('landingTab')
