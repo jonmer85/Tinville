@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
+from oscar.apps.catalogue.models import AttributeOption
 from oscar.apps.partner.models import StockRecord as StockRecords
 from oscar.apps.catalogue.models import ProductImage as ProductImages
 from django.core.urlresolvers import reverse
@@ -141,7 +142,8 @@ def add_item_to_cart(request, shop_slug, item_slug):
             return HttpResponseBadRequest(json.dumps({'errors': 'Please select a color!'}), mimetype='application/json')
         if request.POST['sizeFilter'] == '':
             return HttpResponseBadRequest(json.dumps({'errors': 'Please select a size!'}), mimetype='application/json')
-        currentproduct = get_filtered_variant(variants, request.POST)
+        # varItem = Product.objects.filter(attribute_values__value_option_id=2)
+        currentproduct = get_filtered_variant(item.id, request.POST)
         image = get_list_or_empty(ProductImages, product_id=item.id)
         cartInfo = addBasket(request,currentproduct.id,qty)
         return HttpResponse(json.dumps(cartInfo), mimetype='application/json')
@@ -149,12 +151,13 @@ def add_item_to_cart(request, shop_slug, item_slug):
         return redirect('designer_shop.views.itemdetail', shop_slug, item_slug)
 
 
-def get_filtered_variant(variants, post):
+def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']
     colorFilter = post['colorFilter']
-
-    # ToDo create filter for the right variant
-    return variants[0]
+    attributeColor = get_object_or_404(AttributeOption, option=colorFilter.lower())
+    attributeSize = get_object_or_404(AttributeOption, option=sizeFilter.lower())
+    variant = get_object_or_404(Product, parent=itemId, attribute_values__value_option_id=attributeColor.id & attributeSize.id)
+    return variant
 
 
 def delete_item_to_cart(request):
