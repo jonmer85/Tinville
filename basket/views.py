@@ -55,12 +55,10 @@ def load_cart(request):
             if not str(ret['product_id'])=='':
                 product_ids = ret['product_id'].split(',')
                 Ids = ret['Id'].split(',')
-                images = ret['image'].split(',')
                 qtys = ret['qty'].split(',')
-                descriptions = ret['description'].split('|')
                 for product_id in product_ids:
                     if int(Ids[index]) < 0:
-                        cartItems.append(addBasket(request,product_id,images[index], descriptions[index], int(qtys[index])))
+                        cartItems.append(addBasket(request,product_id, int(qtys[index])))
                     index = index + 1
             else:
                 cartInfo = {'Id': 0, 'msg': ''}
@@ -81,14 +79,16 @@ def checkLineId(Ids, basketlineId):
                 return False
     else:
         return True
-def addBasket(request, product_id, image, description, qty):
+def addBasket(request, product_id, qty):
         msg = ''
         # ToDo figure out this tax stuff
         tax = 1
         stockrecord = get_object_or_404(StockRecords, product_id=product_id)
         currentproduct = get_object_or_404(Product, id=product_id)
+        parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
         price_excl_tax = stockrecord.price_excl_tax * qty
         price_incl_tax = (stockrecord.price_excl_tax * qty) * tax
+        image = get_list_or_empty(ProductImages, product_id=product_id)
         if not request.user.id is None:
             basket = get_object_or_404(Basket, owner_id=request.user.id)
             if not basket.has_strategy:
@@ -120,9 +120,9 @@ def addBasket(request, product_id, image, description, qty):
         cartInfo = {'Id': basketlineId,
                     'product_id': currentproduct.id,
                     'title': currentproduct.title,
-                    'description': strip_tags(description),
+                    'description': strip_tags(parentproduct.description),
                     'price': float(price_excl_tax),
-                    'image': str(image),
+                    'image': str(image[0].original),
                     'qty': qty,
                     'msg': msg,
                     'cartLoaded': 0}
@@ -137,13 +137,13 @@ def add_item_to_cart(request, shop_slug, item_slug):
         variants = get_list_or_empty(Product, parent=item.id)
         qty = int(request.POST['qtyFilter'])
         msg = ''
-        if "Choose" in request.POST['colorFilter']:
+        if request.POST['colorFilter'] == '':
             return HttpResponseBadRequest(json.dumps({'errors': 'Please select a color!'}), mimetype='application/json')
-        if "Choose" in request.POST['sizeFilter']:
+        if request.POST['sizeFilter'] == '':
             return HttpResponseBadRequest(json.dumps({'errors': 'Please select a size!'}), mimetype='application/json')
         currentproduct = get_filtered_variant(variants, request.POST)
         image = get_list_or_empty(ProductImages, product_id=item.id)
-        cartInfo = addBasket(request,currentproduct.id,image[0].original,strip_tags(item.description),qty)
+        cartInfo = addBasket(request,currentproduct.id,qty)
         return HttpResponse(json.dumps(cartInfo), mimetype='application/json')
     else:
         return redirect('designer_shop.views.itemdetail', shop_slug, item_slug)

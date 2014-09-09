@@ -216,8 +216,8 @@
             e.preventDefault();
             var self = $(this)
             var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
-            var sizeFilter = $("#itemSizeSelection option:selected").text()
-            var colorFilter = $("#itemColorSelection option:selected").text()
+            var sizeFilter = (document.getElementById("itemSizeSelection").selectedIndex === 0) ? '' : ($("#itemSizeSelection option:selected").text());
+            var colorFilter = (document.getElementById("itemColorSelection").selectedIndex === 0) ? '' : ($("#itemColorSelection option:selected").text());
             var qtyFilter = $("#buyQuantity").val()
             var itemGUIDValue = sessionStorage.getItem("itemGUID");
             if(itemGUIDValue === undefined)

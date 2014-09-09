@@ -273,9 +273,9 @@
                             </li>
                         {% endif %}
                         <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
-                            <button type="button" id="shoppingcartBtn" class="btn btn-default btn-lg">
-                                <span class="glyphicon glyphicon-shopping-cart"></span>
-                            </button>
+                            <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
+-                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
++                           </button>
                         </li>
 
 
@@ -511,7 +511,6 @@
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
 
-                //$('.slidingContent').css('-webkit-transform','translate(0, 0)');
                 $('.navbar').removeAttr( 'style' );
                 $('.slidingContent').removeAttr( 'style' );
             }
@@ -533,8 +532,6 @@
 
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
-
-                //$('.navbar').removeAttr( 'style' );
             }
         });
 
@@ -556,18 +553,19 @@
 
         function logoutFunc() {
             sessionStorage.setItem("cartLoaded", 0);
+            RemoveAllItems();
         }
 
         $(document).ready(function() {
 
-                   var menu = "close";
+               var menu = "close";
 
-                    $('.menu-toggle').click(function() {
-                        if(menu == "close"){
-                            $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
-                            $('.navbar').css('-webkit-transform','translate(0, 0)');
+                $('.menu-toggle').click(function() {
+                    if(menu == "close"){
+                        $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
+                        $('.navbar').css('-webkit-transform','translate(0, 0)');
 
-                    menu="open";
+                menu="open";
                 }
                 else{
                     $('.slidingContent').css('-webkit-transform','translate(0, 0)');
@@ -621,6 +619,7 @@
                 ajax_req = $.ajax({
                     url: url,
                     type: "POST",
+                    dataType: 'json',
                     data: {
                         Id: id,
                         description: descriptions,
@@ -646,6 +645,7 @@
                                 }
                             }
                             if (item.msg == ''){
+                                item.image = {{ MEDIA_URL }} + item.image
                                 if (parseInt(item.Id) > 0){
                                     AddCartItem(item)
                                 }
@@ -896,6 +896,24 @@ function RemoveCartItem(itemId)
     aggregateTotal();
 }
 
+function RemoveAllItems()
+{
+
+    cartState = sessionStorage.getItem("cartState");
+    cartJson = JSON.parse(cartState || "{}");
+    var list = cartJson["cartList"];
+    $.each(list, function(index, item)
+    {
+         $('#'+item.Id).remove();
+        delete list[item.Id];
+
+    });
+
+    cartJson.cartList = list;
+    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+    aggregateTotal();
+}
 
 
     </script>
