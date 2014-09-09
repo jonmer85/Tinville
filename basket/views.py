@@ -35,7 +35,7 @@ def load_cart(request):
             if int(ret['cartLoaded']) == 0:
                 basket = get_object_or_404(Basket, owner_id=request.user.id)
                 basketlines = get_list_or_empty(Line, basket_id=basket)
-                if basketlines.__len__() > 0:
+                if len(basketlines) > 0:
                     for basketline in basketlines:
                         if checkLineId(ret['Id'],basketline.id):
                             currentproduct = get_object_or_404(Product, id=basketline.product_id)
@@ -80,6 +80,8 @@ def checkLineId(Ids, basketlineId):
                 return False
     else:
         return True
+
+
 def addBasket(request, product_id, qty):
         msg = ''
         # ToDo figure out this tax stuff
@@ -128,6 +130,7 @@ def addBasket(request, product_id, qty):
                     'msg': msg,
                     'cartLoaded': 0}
         return cartInfo
+
 
 def add_item_to_cart(request, shop_slug, item_slug):
 
