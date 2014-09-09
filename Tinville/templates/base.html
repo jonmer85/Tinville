@@ -581,9 +581,7 @@
             var cartItems = cartJson["cartList"];
 
             var product_id = '';
-            var image = '';
             var qty = '';
-            var descriptions = '';
             var id = '';
             if(cartItems !== undefined)
             {
@@ -595,15 +593,11 @@
                         if (product_id === ''){
                             product_id = item.product_id.toString();
                             qty = item.qty.toString();
-                            image = item.image.toString();
-                            descriptions = item.description.toString();
                             id = item.Id.toString();
                         }
                         else{
                             product_id = product_id + ',' + item.product_id.toString();
                             qty = qty + ',' + item.qty.toString();
-                            image = image + ',' + item.image.toString();
-                            descriptions = descriptions + '|' + item.description.toString();
                             id = id + ',' + item.Id.toString();
                         }
                     }
@@ -622,9 +616,7 @@
                     dataType: 'json',
                     data: {
                         Id: id,
-                        description: descriptions,
                         product_id: product_id,
-                        image: image,
                         qty: qty,
                         cartLoaded: cartLoaded
                     },

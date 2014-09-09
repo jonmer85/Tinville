@@ -88,7 +88,7 @@ def addBasket(request, product_id, qty):
         parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
         price_excl_tax = stockrecord.price_excl_tax * qty
         price_incl_tax = (stockrecord.price_excl_tax * qty) * tax
-        image = get_list_or_empty(ProductImages, product_id=product_id)
+        image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
         if not request.user.id is None:
             basket = get_object_or_404(Basket, owner_id=request.user.id)
             if not basket.has_strategy:
