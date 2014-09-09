@@ -11,6 +11,7 @@ from django.shortcuts import render
 from user.forms import TinvilleUserCreationForm
 from user.models import TinvilleUser
 
+
 def register(request):
     if request.method == 'POST':
         form = TinvilleUserCreationForm(request.POST)
