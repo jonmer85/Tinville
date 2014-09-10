@@ -621,16 +621,14 @@
                         cartLoaded: cartLoaded
                     },
                     success: function(data, textStatus, jqXHR) {
+                        var itemGUIDValue = sessionStorage.getItem("itemGUID");
+                        if(itemGUIDValue === undefined)
+                            itemGUIDValue = 0;
 
                         $.each(data, function(index, item)
                         {
                             if (parseInt(item.cartLoaded) > 0){
                                 sessionStorage.setItem("cartLoaded", item.cartLoaded);
-                            }
-                            var itemGUIDValue = sessionStorage.getItem("itemGUID");
-                            if(itemGUIDValue === undefined)
-                                itemGUIDValue = 0;
-                            if (itemGUIDValue < 0){
                                 var i;
                                 for (i = -1; i >= itemGUIDValue; i--) {
                                     RemoveCartItem(i)

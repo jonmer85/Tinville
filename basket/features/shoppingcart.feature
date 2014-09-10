@@ -19,7 +19,6 @@ Scenario: Add and Remove Cart Item
   When I remove an item from my cart
   Then the item is removed from my cart
 
-
 @mobileCart
 Scenario: Open and Close Mobile Shopping Cart
   Given a mobile shopper
@@ -35,3 +34,4 @@ Scenario: Open Mobile Shopping Cart and Close via Menu
   Then the Shopping cart opens
   When I click the Menu button
   Then the Shopping cart closes
+
