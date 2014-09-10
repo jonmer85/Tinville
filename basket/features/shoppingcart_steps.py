@@ -60,3 +60,4 @@ def Then_item_removed_from_cart(step):
 @step(u'When I click the Menu button')
 def When_click_Menu_button(step):
     world.browser.find_element_by_id("mobileNavButton").click()
+

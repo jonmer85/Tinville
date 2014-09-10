@@ -225,10 +225,10 @@ def get_variants(item, group=None):
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
 
         if group is None:
-            quantitysize = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            quantitysize = {'color': str(color).capitalize(), 'size': variantsize.upper(), 'quantity': quantity, 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
-            groupdict = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            groupdict = {'color': str(color).capitalize(), 'size': variantsize.upper(), 'quantity': quantity, 'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
             quantitysize = groupdict

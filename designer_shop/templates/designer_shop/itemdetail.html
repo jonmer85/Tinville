@@ -216,10 +216,12 @@
             e.preventDefault();
             var self = $(this)
             var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
-            var sizeFilter = $("#itemSizeSelection option:selected").text()
-            var colorFilter = $("#itemColorSelection option:selected").text()
+            var sizeFilter = (document.getElementById("itemSizeSelection").selectedIndex === 0) ? '' : ($("#itemSizeSelection option:selected").text());
+            var colorFilter = (document.getElementById("itemColorSelection").selectedIndex === 0) ? '' : ($("#itemColorSelection option:selected").text());
             var qtyFilter = $("#buyQuantity").val()
-
+            var itemGUIDValue = sessionStorage.getItem("itemGUID");
+            if(itemGUIDValue === undefined)
+                itemGUIDValue = 0;
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -229,21 +231,29 @@
                         qtyFilter: qtyFilter
                     },
                     success: function(data, textStatus, jqXHR) {
-                        data.image = "{{ MEDIA_URL }}" + data.image
-                        if (parseInt(data.Id) > 0){
-                            AddCartItem(data)
-                        }
-                        else if (parseInt(data.Id) < 0){
-                            data.Id = data.Id--
-                            AddCartItem(data)
+                        if (data.msg == ''){
+
+                            data.image = "{{ MEDIA_URL }}" + data.image
+                            if (parseInt(data.Id) > 0){
+                                AddCartItem(data)
+                            }
+                            else if (parseInt(data.Id) < 0){
+                                itemGUIDValue = itemGUIDValue - 1
+                                data.Id = itemGUIDValue
+                                sessionStorage.setItem("itemGUID", data.Id);
+                                AddCartItem(data)
+                            }
                         }
                         else {
                             $('#messageId').html(data.msg)
                             $('#messageModal').modal('show');
                         }
+
                     },
                     error: function(data, textStatus, jqXHR) {
-
+                        var msg = $.parseJSON(data.responseText)['errors']
+                        $('#messageId').html(msg)
+                        $('#messageModal').modal('show');
                     }
                 });
         });
