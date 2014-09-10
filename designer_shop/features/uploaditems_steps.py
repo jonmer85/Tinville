@@ -65,12 +65,30 @@ def i_should_see_n_products_total(step, total):
 
 @step(u'my color, quantity, and size selections are')
 def my_color_quantity_and_size_selections_are(step):
-    unique_sizes = set()
+    colors_to_sizes_and_quantities = {}
 
     for variant in step.hashes:
-        unique_sizes.add(variant["Size"])
+        color = variant["Color"]
+        if color not in colors_to_sizes_and_quantities:
+            colors_to_sizes_and_quantities[color] = []
+        colors_to_sizes_and_quantities[color].append({"Size": variant["Size"], "Quantity": variant["Quantity"]})
+
+    color_select = Select(wait_for_element_with_id_to_be_displayed("itemColorSelection"))
+    wait_for_ajax_to_complete()
+    assert len(colors_to_sizes_and_quantities.keys()) == (len(color_select.options) - 1), "Because the number of colors expected were incorrect"
+
     size_select = Select(wait_for_element_with_id_to_be_displayed("itemSizeSelection"))
-    assert len(unique_sizes) == len(size_select.options()) - 1, "Because the number of sizes expected were incorrect"
+    for color, sizes_and_quantities in colors_to_sizes_and_quantities.iteritems():
+        color_select.select_by_visible_text(color)
+        assert len(sizes_and_quantities) == len(size_select.options) - 1, "Because the expected sizes for color {0} is not correct".format(color)
+        for size_and_quantity in sizes_and_quantities:
+            size = size_and_quantity["Size"]
+            quantity = size_and_quantity["Quantity"]
+            assert size in map(lambda x: x.text, size_select.options), "Because an expected size was not found for color {0}".format(color)
+            size_select.select_by_visible_text(size)
+            assert_selector_contains_text('.itemStockQuantity', quantity+' ')
+
+
 
 
 

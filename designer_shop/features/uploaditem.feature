@@ -9,11 +9,10 @@ the content for this basic editor should include the following fields:
     - quantity for each size
 
   @jon
-  Scenario: Create Basic Item on Demo Shop
+  Scenario: Create Basic Item on Demo Shop using size sets
 	Given the demo shop editor
 	Then I should see 3 product total
     When the add item tab is selected
-	Then the add item form is displayed
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1          | SizeVariation |
     | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item.jpg | 1             |
@@ -30,11 +29,11 @@ the content for this basic editor should include the following fields:
 	Then I should see 4 product total
     When I click on the "TestItem1" item
     Then my color, quantity, and size selections are
-    | Size  | Color  | Quantity |
-    | SM    | Red    | 7        |
-    | SM    | Blue   | 2        |
-    | LG    | Green  | 3        |
-    | LG    | Blue   | 5        |
+    | Color  | Size  | Quantity |
+    | Red    | SM    | 7        |
+    | Blue   | SM    | 2        |
+    | Blue   | LG    | 5        |
+    | Green  | LG    | 3        |
 
 
    @deleteItem
