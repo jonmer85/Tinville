@@ -22,7 +22,8 @@ before_script:
 
 script:
   - ./initDataNoInput test
-  - ./test harvest --with-xunit --xunit-file=shippable/testresults/lettucetests.xml
+  - coverage run manage.py harvest -with-xunit --xunit-file=shippable/testresults/lettucetests.xml --settings=Tinville.settings.test
+  - coverage xml -o shippable/codecoverage/coverage.xml
 
 after_script:
   - /etc/init.d/xvfb stop
