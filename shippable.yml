@@ -21,7 +21,7 @@ before_script:
   - /etc/init.d/xvfb start
 
 script:
-  - ./initDataNoInput test
+  - ./initDataNoInput test --with-xunit --xunit-file=shippable/testresults/lettucetests.xml
   - ./test harvest
 
 after_script:
