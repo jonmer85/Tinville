@@ -65,13 +65,13 @@ def given_the_demo_shop(step):
 def given_a_shop_editor(step):
     assert_id_exists('shopEditor')
 
-@step(u'The designer can open a shop editor')
+@step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for control')
+@step(u'Then there should be 1 icon displayed for control')
 def there_should_be_1_icon_displays_for_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -98,12 +98,14 @@ def and_the_shop_editor_is_85(step):
 
 @step(u'Given the demo shop editor')
 def give_demo_shop_editor(step):
+    time.sleep(1)
     world.browser.get(lettuce.django.get_server().url('/'))
     sign_in("demo@user.com", "tinville")
+
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for size control')
+@step(u'Then there should be 1 icon displayed for size control')
 def there_should_be_one_icon_for_size_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -217,8 +219,8 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
     world.browser.find_element_by_id("shopColorPicker").click()
     wait_for_ajax_to_complete()
 
-@step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
-def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
+@step(u'Then an exception Tinville Branding is not Allowed to be Used is thrown')
+def then_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
     assert_selector_does_exist("#div_id_color.has-error")
     assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
@@ -227,4 +229,35 @@ def and_i_sign_in(step):
     sign_in('demo@user.com', 'tinville')
 
 
+@step(u'When the home tab is selected')
+def when_the_home_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#shopTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#shopTabButton')
 
+@step(u'Then the home content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('shopTab')
+    assert_id_exists('shopTab')
+
+@step(u'When the about tab is selected')
+def when_the_about_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#aboutTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#aboutTabButton')
+
+@step(u'Then the about content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('aboutTab')
+    assert_id_exists('aboutTab')
+
+@step(u'When the landing tab is selected')
+def when_the_landing_tab_is_selected(step):
+    world.browser.find_element_by_css_selector('#landingTabButton').click()
+    time.sleep(0.4)
+    assert world.browser.find_element_by_css_selector('.active>#landingTabButton')
+
+@step(u'Then the landing content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('landingTab')
+    assert_id_exists('landingTab')

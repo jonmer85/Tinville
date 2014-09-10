@@ -77,12 +77,11 @@ class get_filter_lists:
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
-
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'shop': shop,
-                'products': get_filtered_products(shop, request.POST)
+                'products': get_filtered_products(shop, request.POST),
             })
 
     if request.method == 'GET':
@@ -119,8 +118,8 @@ def itemdetail(request, shop_slug, item_slug=None):
 def get_filtered_products(shop, post):
     genderfilter = post['genderfilter']
     itemtypefilter = post['typefilter']
-    pricefilter = post['pricefilter']
-    filteredProductList = Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
+    sortfilter = post['sortfilter']
+    filteredProductList = get_sort_order(Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)), sortfilter)
     return filteredProductList
 
 def get_valid_categories_for_filter(gender, type):
@@ -129,7 +128,6 @@ def get_valid_categories_for_filter(gender, type):
          filter.append(Q(categories__full_name__startswith=gender + ' >'))
     if type != "View All Types":
         filter.append(Q(categories__full_name__contains='> ' + type))
-
     qs = filter
     if filter != []:
         query = qs.pop()
@@ -139,6 +137,22 @@ def get_valid_categories_for_filter(gender, type):
         query = Q(parent__isnull=True)
 
     return query
+
+def get_sort_order(filteredobjects, sortfilter):
+    if sortfilter == 'date-asc':
+        return filteredobjects.order_by('-date_created')
+    elif sortfilter == 'date-dsc':
+        return filteredobjects.order_by('date_created')
+    elif sortfilter == 'price-asc':
+        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax)
+    elif sortfilter == 'price-dsc':
+        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax, reverse=True)
+    elif sortfilter == 'pop-asc':
+        return filteredobjects.order_by('?')
+    elif sortfilter == 'pop-dsc':
+        return filteredobjects.order_by('?')
+    else:
+        return filteredobjects.order_by('?')
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):

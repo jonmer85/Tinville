@@ -138,7 +138,7 @@ class ProductCreationForm(forms.ModelForm):
         variantProduct.parent_id = canonicalId
         variantProduct.pk = None
         variantProduct.id = None
-        variantProduct.description = None
+        variantProduct.description = canonical.description
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
         if sizeDim:
@@ -190,8 +190,7 @@ class ProductCreationForm(forms.ModelForm):
 
         productCategory = get_model('catalogue', 'ProductCategory').objects.get_or_create(product=canonicalProduct,
                                             category = self.instance.categories.all()[0]
-                                                        if is_edit else self.cleaned_data['category'],
-                                            is_canonical=True)[0]
+                                                        if is_edit else self.cleaned_data['category'])[0]
         productCategory.category = self.cleaned_data['category']
         productCategory.save()
 
@@ -387,9 +386,6 @@ class DesignerShopColorPicker(forms.Form):
             raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
         return tinville_color
 
-
-
-
 class BannerUploadForm(forms.Form):
 
     banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
@@ -406,7 +402,6 @@ class BannerUploadForm(forms.Form):
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
         ))
-
 
 class LogoUploadForm(forms.Form):
 

@@ -26,13 +26,12 @@ the content for this basic editor should include the following fields:
 	Then I should see 4 product total
     When I click on the "TestItem1" item
 
-    
-    
-    
-   @andy
+
+   @deleteItem
    Scenario: Delete Basic Item
      Given the demo shop editor
      Given I have an item in the demo shop
      When I click the delete button for the product
+     And I click ok on the confirmation
      Then the product is removed
-     And the shop editor refreshes in a minimized state  
+     And the shop editor refreshes in a minimized state

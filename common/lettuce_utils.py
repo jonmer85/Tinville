@@ -38,6 +38,13 @@ def css_selector_exists(selector):
         return True
     except NoSuchElementException:
         return False
+    
+def assert_id_does_not_exist(id):
+    try:
+        world.browser.find_element_by_id(id)
+        assert False, 'Did not expect ' + id + ' to be an element'
+    except NoSuchElementException:
+        pass
 
 def id_exists(id):
     try:
@@ -45,6 +52,7 @@ def id_exists(id):
         return True
     except NoSuchElementException:
         return False
+
 
 
 def assert_class_does_not_exist(klass):
@@ -162,7 +170,13 @@ def assert_page_exist(url):
 
 def sign_in(email, password):
     login_menu = world.browser.find_element_by_id("lg-menuLogin")
-    login_menu.find_element_by_link_text("SIGN IN").click()
+    if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
+        login_menu.find_element_by_link_text("SIGN IN").click()
+    elif len(login_menu.find_elements_by_link_text("SIGN OUT")) > 0:
+        login_menu.find_element_by_link_text("SIGN OUT").click()
+        wait_for_element_with_link_text_to_be_displayed("SIGN IN")
+        time.sleep(.5)
+        login_menu.find_element_by_link_text("SIGN IN").click()
     login_menu.find_element_by_name("username").send_keys(email)
     login_menu.find_element_by_name("password").send_keys(password)
     login_menu.find_element_by_name("submit").click()
