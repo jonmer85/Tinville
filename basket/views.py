@@ -111,9 +111,8 @@ def addBasket(request, product_id, qty):
         image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
         if not request.user.id is None:
             basket = get_basket(request)
-            strategy = selector.strategy(request=request, user=request.user)
-
             if not basket.has_strategy:
+                strategy = selector.strategy(request=request, user=request.user)
                 basket._set_strategy(strategy)
             line_quantity = basket.line_quantity(product=currentproduct, stockrecord=stockrecord)
             line_ref=basket._create_line_reference(product=currentproduct, stockrecord=stockrecord, options=None)
