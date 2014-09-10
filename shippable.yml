@@ -21,7 +21,7 @@ before_script:
   - /etc/init.d/xvfb start
 
 script:
-  - ./initData test
+  - ./initDataNoInput test
   - ./test harvest
 
 after_script:

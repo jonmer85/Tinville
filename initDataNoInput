@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python manage.py syncdb --noinput --settings=Tinville.settings.$1
+python manage.py syncdb --settings=Tinville.settings.$1
 python manage.py loaddata initial_data.json --settings=Tinville.settings.$1
 python manage.py loaddata all.json --settings=Tinville.settings.$1
-python manage.py collectmedia --noinput --settings=Tinville.settings.$1
+python manage.py collectmedia --settings=Tinville.settings.$1
