@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from autoslug.utils import slugify
 from lettuce import step
 from django.core.management import call_command
 import lettuce.django
@@ -10,7 +11,6 @@ from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
 from user.models import TinvilleUser
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
 @step(u'Given I have at least (\d+) items in the demo shop')
@@ -19,7 +19,7 @@ def given_I_have_at_least_some_items_in_the_shop(step, amount):
 
 @step(u'When I click on the "(.*)" item')
 def when_i_click_on_the_item(step, itemname):
-    theitem = world.browser.find_element_by_css_selector(".shopItem>a[href='/Demo/" + itemname +"']")
+    theitem = world.browser.find_element_by_css_selector(".shopItem>a[href='/Demo/" + slugify(itemname) +"']")
     step.scenario.context['itemurl'] = theitem.get_attribute("href")
     theitem.click()
 

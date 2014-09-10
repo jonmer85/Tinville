@@ -8,15 +8,31 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
-  @jon2
-  Scenario: Create Basic Item
+  Scenario: Create Basic Item on Demo Shop using size sets
 	Given the demo shop editor
-	When the add item tab is selected
-	Then the add item form is displayed
-	And I fill in the general add item fields
-	With an inventory of 7 items of a Red color and size set of SM
-	And I submit this item
-	Then I should see 1 product total
+	Then I should see 3 product total
+    When the add item tab is selected
+	And I fill in the general add item fields with
+    | Title     | Description                     | Category                 | Price | Image1          | SizeVariation |
+    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item.jpg | 1             |
+	And I choose the size SM with row number 1 and I fill the following quantities and colors
+    | Color | Quantity  |
+    | Red   | 7         |
+    | Blue  | 2         |
+	And I choose the size LG with row number 2 and I fill the following quantities and colors
+    | Color | Quantity  |
+    | Green | 3         |
+    | Blue  | 5         |
+    And I submit this item
+    Then I should see a confirmation message stating that the item was created
+	Then I should see 4 product total
+    When I click on the "TestItem1" item
+    Then my color, quantity, and size selections are
+    | Color  | Size  | Quantity |
+    | Red    | SM    | 7        |
+    | Blue   | SM    | 2        |
+    | Blue   | LG    | 5        |
+    | Green  | LG    | 3        |
 
 
    @deleteItem

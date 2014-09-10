@@ -30,7 +30,14 @@ def assert_class_exists(klass):
 
 
 def assert_id_exists(id):
-    world.browser.find_element_by_id(id)
+    wait_for_element_with_id_to_exist(id)
+
+def css_selector_exists(selector):
+    try:
+        world.browser.find_element_by_css_selector(selector)
+        return True
+    except NoSuchElementException:
+        return False
 
 def assert_id_does_not_exist(id):
     try:
@@ -38,6 +45,14 @@ def assert_id_does_not_exist(id):
         assert False, 'Did not expect ' + id + ' to be an element'
     except NoSuchElementException:
         pass
+
+def id_exists(id):
+    try:
+        world.browser.find_element_by_id(id)
+        return True
+    except NoSuchElementException:
+        return False
+
 
 
 def assert_class_does_not_exist(klass):
@@ -118,9 +133,16 @@ def change_viewport_md():
 def change_viewport_lg():
     world.browser.set_window_size(1920, 1080)
 
+def wait_for_element_with_id_to_exist(id):
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id(id))
+    return world.browser.find_element_by_id(id)
+
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
     return world.browser.find_element_by_id(id)
+
+def wait_for_element_with_id_to_not_be_displayed(id):
+    WebDriverWait(world.browser, 10).until(lambda s: not id_exists(id) or not s.find_element_by_id(id).is_displayed())
 
 def wait_for_element_with_id_to_be_clickable(id):
     WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.ID, id)))
@@ -132,6 +154,10 @@ def wait_for_element_with_name_to_be_displayed(name):
 
 def wait_for_element_with_css_selector_to_be_displayed(css_selector):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_css_selector(css_selector).is_displayed())
+    return world.browser.find_element_by_css_selector(css_selector)
+
+def wait_for_element_with_css_selector_to_be_clickable(css_selector):
+    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_selector)))
     return world.browser.find_element_by_css_selector(css_selector)
 
 def wait_for_element_with_class_to_be_displayed(class_name):
