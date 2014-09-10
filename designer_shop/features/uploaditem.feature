@@ -21,10 +21,20 @@ the content for this basic editor should include the following fields:
     | Color | Quantity  |
     | Red   | 7         |
     | Blue  | 2         |
-	And I submit this item
+	And I choose the size LG with row number 2 and I fill the following quantities and colors
+    | Color | Quantity  |
+    | Green | 3         |
+    | Blue  | 5         |
+    And I submit this item
     Then I should see a confirmation message stating that the item was created
 	Then I should see 4 product total
     When I click on the "TestItem1" item
+    Then my color, quantity, and size selections are
+    | Size  | Color  | Quantity |
+    | SM    | Red    | 7        |
+    | SM    | Blue   | 2        |
+    | LG    | Green  | 3        |
+    | LG    | Blue   | 5        |
 
 
    @deleteItem

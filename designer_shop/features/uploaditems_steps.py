@@ -46,7 +46,7 @@ def i_choose_the_size_and_fill_colors_and_quantities(step, size_set, row_number)
 
 @step(u'I should see a confirmation message stating that the item was (.*)')
 def i_should_see_a_confirmation_message_stating_that_the_item_was_created_or_updated(step, createdOrUpdated):
-    assert_id_exists("messagesModal")
+    wait_for_element_with_id_to_exist("messagesModal")
     assert_selector_contains_text("#messagesModal .alert-success", "Item has been successfully {0}!".format(createdOrUpdated))
     wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
     wait_for_element_with_id_to_not_be_displayed("messagesModal")
@@ -62,6 +62,20 @@ def i_should_see_n_products_total(step, total):
     minimize_shop_editor()
     products = world.browser.find_elements_by_css_selector(".shopItem")
     assert len(products) == int(total)
+
+@step(u'my color, quantity, and size selections are')
+def my_color_quantity_and_size_selections_are(step):
+    unique_sizes = set()
+
+    for variant in step.hashes:
+        unique_sizes.add(variant["Size"])
+    size_select = Select(wait_for_element_with_id_to_be_displayed("itemSizeSelection"))
+    assert len(unique_sizes) == len(size_select.options()) - 1, "Because the number of sizes expected were incorrect"
+
+
+
+
+
     
     
 @step(u'When I click the delete button for the product')

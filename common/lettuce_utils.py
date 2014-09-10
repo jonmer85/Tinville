@@ -30,7 +30,7 @@ def assert_class_exists(klass):
 
 
 def assert_id_exists(id):
-    world.browser.find_element_by_id(id)
+    wait_for_element_with_id_to_exist(id)
 
 def css_selector_exists(selector):
     try:
@@ -38,7 +38,7 @@ def css_selector_exists(selector):
         return True
     except NoSuchElementException:
         return False
-    
+
 def assert_id_does_not_exist(id):
     try:
         world.browser.find_element_by_id(id)
@@ -132,6 +132,10 @@ def change_viewport_md():
 
 def change_viewport_lg():
     world.browser.set_window_size(1920, 1080)
+
+def wait_for_element_with_id_to_exist(id):
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id(id))
+    return world.browser.find_element_by_id(id)
 
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
