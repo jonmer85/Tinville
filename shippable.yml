@@ -1,0 +1,28 @@
+language: python
+
+python:
+  - 2.7
+addons:
+  firefox: "28.0"
+services:
+  - selenium
+
+env:
+  global:
+    - DISPLAY=:99.0
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+#  - mysql -e 'create database test;'
+  - /etc/init.d/xvfb start
+
+script:
+  - ./initDataNoInput test
+  - ./test harvest
+
+after_script:
+  - /etc/init.d/xvfb stop
