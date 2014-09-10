@@ -637,7 +637,7 @@
                                 }
                             }
                             if (item.msg == ''){
-                                item.image = {{ MEDIA_URL }} + item.image
+                                item.image = "{{ MEDIA_URL }}" + item.image
                                 if (parseInt(item.Id) > 0){
                                     AddCartItem(item)
                                 }
