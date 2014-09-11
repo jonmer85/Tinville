@@ -222,6 +222,11 @@
             var itemGUIDValue = sessionStorage.getItem("itemGUID");
             if(itemGUIDValue === undefined)
                 itemGUIDValue = 0;
+            cartState = sessionStorage.getItem("cartState");
+            cartJson = JSON.parse(cartState || "{}");
+            cartTotal = cartJson["cartTotal"];
+            var cartItems = cartJson["cartList"];
+
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -238,10 +243,30 @@
                                 AddCartItem(data)
                             }
                             else if (parseInt(data.Id) < 0){
-                                itemGUIDValue = itemGUIDValue - 1
-                                data.Id = itemGUIDValue
-                                sessionStorage.setItem("itemGUID", data.Id);
-                                AddCartItem(data)
+                                if(cartItems !== undefined)
+                                {
+                                    var present = false;
+                                    $.each(cartItems, function(index, item)
+                                    {
+                                        if (item.product_id === data.product_id){
+                                            present = true;
+                                            return false
+                                        }
+                                    });
+                                    if (present === false){
+                                        itemGUIDValue = itemGUIDValue - 1
+                                        data.Id = itemGUIDValue
+                                        sessionStorage.setItem("itemGUID", data.Id);
+                                        AddCartItem(data)
+                                    }
+                                }
+                                else
+                                {
+                                    itemGUIDValue = itemGUIDValue - 1
+                                    data.Id = itemGUIDValue
+                                    sessionStorage.setItem("itemGUID", data.Id);
+                                    AddCartItem(data)
+                                }
                             }
                         }
                         else {

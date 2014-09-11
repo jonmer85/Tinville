@@ -123,18 +123,22 @@ def addBasket(request, product_id, qty):
                 add_signal.send(sender=None,product=currentproduct, user=request.user, request=request)
                 basketline = get_list_or_empty(Line, line_reference=line_ref, basket_id=basket.id)[0]
                 basketlineId = basketline.id
+                cartLoaded = 1
             elif line_quantity == qty:
                 msg = "You have tried to add the same item, please change the quantity"
                 basketlineId = 0
+                cartLoaded = 0
             else:
                 # item already in the basket_line but add to the qty
                 basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
                 basketline.quantity = qty
                 basketline.save(update_fields=["quantity"])
                 basketlineId = 0
+                cartLoaded = 1
         else:
             # not logged in or does not have an account
             basketlineId = -1
+            cartLoaded = 0
         cartInfo = {'Id': basketlineId,
                     'product_id': currentproduct.id,
                     'title': currentproduct.title,
@@ -143,7 +147,7 @@ def addBasket(request, product_id, qty):
                     'image': str(image[0].original),
                     'qty': qty,
                     'msg': msg,
-                    'cartLoaded': 1}
+                    'cartLoaded': cartLoaded}
         return cartInfo
 
 
