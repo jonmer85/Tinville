@@ -60,6 +60,10 @@ def fill_in_user_form(email, password):
 
 def submit_form_and_activate_user(form):
     form.submit()
+z    wait_for_element_with_id_to_exist("messagesModal")
+    assert_selector_contains_text("#messagesModal .alert-success", world.user_info['email'])
+    wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
+    wait_for_element_with_id_to_not_be_displayed("messagesModal")
     user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
     user.is_active = True
     user.save()

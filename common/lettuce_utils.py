@@ -167,17 +167,21 @@ def wait_for_element_with_class_to_be_displayed(class_name):
 def wait_for_element_with_link_text_to_be_displayed(link_text):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
 
+def wait_for_element_with_link_text_to_be_clickable(link_text):
+    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
+    return world.browser.find_element_by_link_text(link_text)
+
 def assert_page_exist(url):
     c = Client()
     response = c.get(url, follow=True)
     assert_not_equals(response.status_code, 404)
 
 def sign_in(email, password):
-    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu = wait_for_element_with_id_to_be_displayed("lg-menuLogin")
     if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
-        login_menu.find_element_by_link_text("SIGN IN").click()
+        wait_for_element_with_link_text_to_be_clickable("SIGN IN").click()
     elif len(login_menu.find_elements_by_link_text("SIGN OUT")) > 0:
-        login_menu.find_element_by_link_text("SIGN OUT").click()
+        wait_for_element_with_link_text_to_be_clickable("SIGN OUT").click()
         wait_for_element_with_link_text_to_be_displayed("SIGN IN")
         time.sleep(.5)
         login_menu.find_element_by_link_text("SIGN IN").click()
