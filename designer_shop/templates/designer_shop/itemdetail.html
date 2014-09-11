@@ -68,12 +68,12 @@
                         From $ {{ item.min_variant_price_excl_tax }}
                     </div>
                     <div class="itemColorSelection itemDetailBox col-xs-6">
-                        <select id="itemColorSelection" class="form-control selectpicker">
+                        <select id="itemColorSelection" class="form-control selectpicker" parsley-required="true" data-error-message="Please select a Color.">
                             <option value="Choose a Color"><i>Choose a Color</i></option>
                         </select>
                     </div>
                     <div class="itemSizeSelection itemDetailBox col-xs-6">
-                        <select id="itemSizeSelection" class="form-control selectpicker">
+                        <select id="itemSizeSelection" class="form-control selectpicker" parsley-required="true" data-error-message="Please select a Size.">
                             <option value="Choose a Size"><i>Choose a Size</i></option>
                         </select>
                     </div>
@@ -222,6 +222,11 @@
             var itemGUIDValue = sessionStorage.getItem("itemGUID");
             if(itemGUIDValue === undefined)
                 itemGUIDValue = 0;
+            cartState = sessionStorage.getItem("cartState");
+            cartJson = JSON.parse(cartState || "{}");
+            cartTotal = cartJson["cartTotal"];
+            var cartItems = cartJson["cartList"];
+
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -238,10 +243,30 @@
                                 AddCartItem(data)
                             }
                             else if (parseInt(data.Id) < 0){
-                                itemGUIDValue = itemGUIDValue - 1
-                                data.Id = itemGUIDValue
-                                sessionStorage.setItem("itemGUID", data.Id);
-                                AddCartItem(data)
+                                if(cartItems !== undefined)
+                                {
+                                    var present = false;
+                                    $.each(cartItems, function(index, item)
+                                    {
+                                        if (item.product_id === data.product_id){
+                                            present = true;
+                                            return false
+                                        }
+                                    });
+                                    if (present === false){
+                                        itemGUIDValue = itemGUIDValue - 1
+                                        data.Id = itemGUIDValue
+                                        sessionStorage.setItem("itemGUID", data.Id);
+                                        AddCartItem(data)
+                                    }
+                                }
+                                else
+                                {
+                                    itemGUIDValue = itemGUIDValue - 1
+                                    data.Id = itemGUIDValue
+                                    sessionStorage.setItem("itemGUID", data.Id);
+                                    AddCartItem(data)
+                                }
                             }
                         }
                         else {
