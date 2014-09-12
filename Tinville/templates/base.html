@@ -606,6 +606,8 @@
             var cartLoaded = sessionStorage.getItem("cartLoaded");
             if(cartLoaded === undefined)
                 cartLoaded = 0;
+            if(cartLoaded === null)
+                cartLoaded = 0;
 
 
             var self = $(this)
