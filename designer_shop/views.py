@@ -199,6 +199,7 @@ def get_variants(item, group=None):
     for variant in variants:
         color = ""
         sizeSet = ""
+        isSizeSet = False
         sizeX = ""
         sizeY = ""
         sizeNum = ""
@@ -212,6 +213,7 @@ def get_variants(item, group=None):
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
+            isSizeSet = True
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
             sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
@@ -225,12 +227,14 @@ def get_variants(item, group=None):
         if sizeX != "" and sizeY != "":
             divider = " x "
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+        caseFunc = str.capitalize if not isSizeSet else str.upper
+
 
         if group is None:
-            quantitysize = {'color': str(color).capitalize(), 'size': variantsize.upper(), 'quantity': quantity, 'price': price, 'currency': currency}
+            quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
-            groupdict = {'color': str(color).capitalize(), 'size': variantsize.upper(), 'quantity': quantity, 'price': price, 'currency': currency}
+            groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
             quantitysize = groupdict
