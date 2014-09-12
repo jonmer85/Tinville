@@ -61,3 +61,18 @@ def Then_item_removed_from_cart(step):
 def When_click_Menu_button(step):
     world.browser.find_element_by_id("mobileNavButton").click()
 
+@step(u'When I log in')
+def When_I_log_in(step):
+    sign_in('foo@user.com','password')
+
+@step(u'Then the item is added to my backend')
+def Then_item_added_to_backend(step):
+    assert_id_exists("1")
+
+@step(u'When I log out')
+def When_I_log_out(step):
+    sign_in('foo@user.com','password')
+
+@step(u'Then all items are removed from my cart')
+def Then_all_items_removed_from_cart(step):
+    assert_id_does_not_exist("1")
