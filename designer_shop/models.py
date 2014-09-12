@@ -29,6 +29,7 @@ class Shop(models.Model):
         return "/%s/" % self.slug
 
     def save(self, *args, **kwargs):
+        self.slug = slugify(self.name.lower())
         super(Shop, self).save(*args, **kwargs)
 
 

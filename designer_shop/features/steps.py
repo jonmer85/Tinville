@@ -15,23 +15,15 @@ from common.lettuce_utils import *
 def load_all_fixtures(scenario):
     call_command('loaddata', 'all.json')
 
-@step(u'Given a designer shop')
-def given_a_designer_shop(step):
-    world.user = TinvilleUser.objects.create(email="foo@bar.com")
-    world.shop = Shop.objects.create(user=world.user, name='foo', banner='bar', logo='baz')
 
 @step(u'And (\d+) shop items')
 def and_n_shop_items(step, n):
     for i in range(int(n)):
         world.shop.item_set.create(name='itemname', image='itemimage', price='3.42')
 
-@step(u'When the shop is visited')
-def when_the_shop_is_visited(step):
-    world.browser.get(lettuce.django.get_server().url(world.shop.get_absolute_url()))
-
 @step(u'Then the banner for the shop is displayed')
 def then_the_banner_for_the_shop_is_displayed(step):
-    assert_selector_contains('img.shopBanner', 'src', 'bar')
+    assert_selector_contains('#id_BannerImage', 'src', 'bar')
 
 @step(u'And the items for the shop are displayed')
 def and_the_items_for_the_shop_are_displayed(step):
@@ -57,7 +49,7 @@ def and_every_item_should_have_an_image(step):
 def and_every_item_should_have_a_price(step):
     assert_text_of_every_selector('.shopItems .shopItem .price', '$3.42')
 
-@step(u'Given the demo shop($)')
+@step(u'Given the demo shop$')
 def given_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
 
@@ -174,13 +166,13 @@ def and_the_submit_logo_button_is_displayed(step):
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys(os.path.join(MEDIA_ROOT, "images/logo2.jpg"))
+    logo_uploader.send_keys(os.path.join(MEDIA_ROOT, "images/logo.jpg"))
     wait_for_element_with_id_to_be_displayed("id_SubmitLogo")
     world.browser.find_element_by_id("id_SubmitLogo").click()
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2' + '.*' + '.jpg')
+    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo.jpg')
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):

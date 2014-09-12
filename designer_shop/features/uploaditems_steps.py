@@ -98,13 +98,13 @@ def my_color_quantity_and_size_selections_are(step):
     
 @step(u'When I click the delete button for the product')
 def when_I_click_delete_button_product(step):
-    world.browser.find_element_by_css_selector("#minMaxIcon").click()
+    minimize_shop_editor()
     wait_for_element_with_link_text_to_be_displayed("Delete")
     world.browser.find_element_by_link_text("Delete").click()
 
 @step(u'And I click ok on the confirmation')
 def and_I_click_ok_confirmation(step):
-    world.browser.find_element_by_css_selector("#okDeleteBtn").click()
+    wait_for_element_with_css_selector_to_be_clickable("#okDeleteBtn").click()
 
 @step(u'Then the product is removed')
 def then_product_is_removed(step):
