@@ -30,5 +30,5 @@ after_script:
   - /etc/init.d/xvfb stop
 
 after_success :
-  - if [ "$BRANCH" == "Sprint6" ]; then git push -f git@heroku.com:tinville-testing.git Sprint6:master && ./initData qatest && ./qatest collectstatic
-  - if [ "$BRANCH" == "Sprint6" ]; then git push -f git@heroku.com:tinville-dev.git Sprint6:master && ./initData dev && ./dev collectstatic
+  - if [ "$BRANCH" == "Sprint6ShippableDeployments" ]; then git push -f git@heroku.com:tinville-testing.git Sprint6:master && ./initData qatest && ./qatest collectstatic
+  - if [ "$BRANCH" == "Sprint6ShippableDeployments" ]; then git push -f git@heroku.com:tinville-dev.git Sprint6:master && ./initData dev && ./dev collectstatic
