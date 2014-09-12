@@ -30,4 +30,4 @@ after_script:
   - /etc/init.d/xvfb stop
 
 after_success :
-  - if [ "$BRANCH" == "master" ]; then git push -f git@heroku.com:tinville-testing.git Sprint6:master; fi
+  - if [ "$BRANCH" == "Sprint6ShippableDeployments" ]; then git push -f git@heroku.com:tinville-testing.git Sprint6:master; fi
