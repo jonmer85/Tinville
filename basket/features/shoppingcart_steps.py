@@ -43,7 +43,9 @@ def Then_Shopping_Cart_Closes(step):
 @step(u'When I add an item to my cart')
 def When_add_item_to_cart(step):
     world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))
-    world.browser.find_element_by_css_selector("#id_AddToCart").click()
+    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
+    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("SM")
+    wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
 
 @step(u'Then the item is added to my cart')
 def Then_item_added_to_cart(step):

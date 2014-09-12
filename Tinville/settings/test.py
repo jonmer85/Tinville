@@ -20,7 +20,7 @@ DATABASES = {
 LETTUCE_APPS = (
     'designer_shop',
     'user',
-    'basket',
+    # 'basket',
 )
 
 INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',] + ['extensions',]
