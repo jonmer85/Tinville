@@ -13,11 +13,6 @@ def when_the_add_item_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
 
-@step(u'Then the add item form is displayed')
-def then_the_add_item_form_is_displayed(step):
-    maximize_shop_editor()
-    wait_for_element_with_css_selector_to_be_displayed('#addOrEditItem.tab-pane.active')
-    wait_for_element_with_css_selector_to_be_displayed("#id_title")
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
