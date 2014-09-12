@@ -4,14 +4,12 @@ Feature: Item Detail
     I want to view a designer's shop and select an item
     and view it's detail. I should be able to select color, size and quantity
 
-  @jon
   Scenario: Navigate to Item Detail page
         Given the demo shop
         Given I have at least 1 items in the demo shop
         When I click on the "TestSizeSetItem" item
         Then the item detail page is displayed
 
-  @jon
   Scenario: Visible the Item Detail page
       Given I am on an item detail page
       Then I can see the following elements
