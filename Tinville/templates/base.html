@@ -608,53 +608,53 @@
                 cartLoaded = 0;
 
 
-            var self = $(this)
-            var url = "/load_cart"
-                ajax_req = $.ajax({
-                    url: url,
-                    type: "POST",
-                    dataType: 'json',
-                    data: {
-                        Id: id,
-                        product_id: product_id,
-                        qty: qty,
-                        cartLoaded: cartLoaded
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        var itemGUIDValue = sessionStorage.getItem("itemGUID");
-                        if(itemGUIDValue === undefined)
-                            itemGUIDValue = 0;
-
-                        $.each(data, function(index, item)
-                        {
-                            if (parseInt(item.cartLoaded) > 0){
-                                sessionStorage.setItem("cartLoaded", item.cartLoaded);
-                                var i;
-                                for (i = -1; i >= itemGUIDValue; i--) {
-                                    RemoveCartItem(i)
-                                }
-                            }
-                            if (item.msg == ''){
-                                item.image = "{{ MEDIA_URL }}" + item.image
-                                if (parseInt(item.Id) > 0){
-                                    AddCartItem(item)
-                                }
-                                else if (parseInt(item.Id) < 0){
-                                    itemGUIDValue = itemGUIDValue - 1
-                                    item.Id = itemGUIDValue
-                                    sessionStorage.setItem("itemGUID", item.Id);
-                                    AddCartItem(item)
-                                }
-                            }
-                            else {
-                                $('#messageId').html(item.msg)
-                                $('#messageModal').modal('show');
-                            }
-                        });
-                    },
-                    error: function(data, textStatus, jqXHR) {
-                    }
-                });
+{#            var self = $(this)#}
+{#            var url = "/load_cart"#}
+{#                ajax_req = $.ajax({#}
+{#                    url: url,#}
+{#                    type: "POST",#}
+{#                    dataType: 'json',#}
+{#                    data: {#}
+{#                        Id: id,#}
+{#                        product_id: product_id,#}
+{#                        qty: qty,#}
+{#                        cartLoaded: cartLoaded#}
+{#                    },#}
+{#                    success: function(data, textStatus, jqXHR) {#}
+{#                        var itemGUIDValue = sessionStorage.getItem("itemGUID");#}
+{#                        if(itemGUIDValue === undefined)#}
+{#                            itemGUIDValue = 0;#}
+{##}
+{#                        $.each(data, function(index, item)#}
+{#                        {#}
+{#                            if (parseInt(item.cartLoaded) > 0){#}
+{#                                sessionStorage.setItem("cartLoaded", item.cartLoaded);#}
+{#                                var i;#}
+{#                                for (i = -1; i >= itemGUIDValue; i--) {#}
+{#                                    RemoveCartItem(i)#}
+{#                                }#}
+{#                            }#}
+{#                            if (item.msg == ''){#}
+{#                                item.image = "{{ MEDIA_URL }}" + item.image#}
+{#                                if (parseInt(item.Id) > 0){#}
+{#                                    AddCartItem(item)#}
+{#                                }#}
+{#                                else if (parseInt(item.Id) < 0){#}
+{#                                    itemGUIDValue = itemGUIDValue - 1#}
+{#                                    item.Id = itemGUIDValue#}
+{#                                    sessionStorage.setItem("itemGUID", item.Id);#}
+{#                                    AddCartItem(item)#}
+{#                                }#}
+{#                            }#}
+{#                            else {#}
+{#                                $('#messageId').html(item.msg)#}
+{#                                $('#messageModal').modal('show');#}
+{#                            }#}
+{#                        });#}
+{#                    },#}
+{#                    error: function(data, textStatus, jqXHR) {#}
+{#                    }#}
+{#                });#}
 
 
         });

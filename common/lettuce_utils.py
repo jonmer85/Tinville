@@ -1,8 +1,11 @@
+import lettuce.django
+import re
+import time
+
 from lettuce import *
 from django.test import Client
 from nose.tools import *
-import lettuce.django
-import re
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -176,6 +179,26 @@ def assert_page_exist(url):
     response = c.get(url, follow=True)
     assert_not_equals(response.status_code, 404)
 
+
+def scroll_to_element(element):
+    world.browser.execute_script("arguments[0].scrollIntoView(true);", element)
+
+
+# Tinville site specific utilities
+
+# Utilities
+def minimize_shop_editor():
+    if css_selector_exists("#minMaxIcon.glyphicon-chevron-down"):
+        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
+        time.sleep(1)
+        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
+
+def maximize_shop_editor():
+    if css_selector_exists("#minMaxIcon.glyphicon-chevron-up"):
+        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
+        time.sleep(1)
+        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-down")
+
 def sign_in(email, password):
     login_menu = wait_for_element_with_id_to_be_displayed("lg-menuLogin")
     if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
@@ -189,6 +212,3 @@ def sign_in(email, password):
     login_menu.find_element_by_name("password").send_keys(password)
     login_menu.find_element_by_name("submit").click()
     wait_for_ajax_to_complete()
-
-def scroll_to_element(element):
-    world.browser.execute_script("arguments[0].scrollIntoView(true);", element)

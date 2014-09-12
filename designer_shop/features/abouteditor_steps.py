@@ -11,7 +11,7 @@ def load_all_fixtures(scenario):
 
 @step(u'When the about tab is selected')
 def when_the_about_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
+    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#about"]').click()
     time.sleep(0.4)
     assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
 
