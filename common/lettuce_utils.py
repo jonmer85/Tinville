@@ -144,6 +144,10 @@ def wait_for_element_with_css_selector_to_exist(css_selector):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_css_selector(css_selector))
     return world.browser.find_element_by_css_selector(css_selector)
 
+def wait_for_element_with_name_to_exist(name):
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_name(name))
+    return world.browser.find_element_by_name(name)
+
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
     return world.browser.find_element_by_id(id)

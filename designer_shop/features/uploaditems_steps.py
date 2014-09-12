@@ -21,6 +21,7 @@ def and_i_fill_in_the_general_add_item_fields(step):
         world.browser.find_element_by_name("title").send_keys(itemfields["Title"])
         # TinyMCE uses iframes so need to use their javascript API to set the content
         world.browser.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(itemfields["Description"]))
+        scroll_to_element(wait_for_element_with_name_to_exist("price"))
         wait_for_element_with_name_to_be_displayed("price").send_keys(itemfields["Price"])
         world.browser.find_element_by_name("category").send_keys(itemfields["Category"])
         file = os.path.join(MEDIA_ROOT, itemfields["Image1"])
