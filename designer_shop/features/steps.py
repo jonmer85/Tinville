@@ -121,12 +121,11 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#color"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#color"]')
+    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#color"]')
 
 @step(u'Then the color picker wheel is displayed')
 def then_the_color_picker_wheel_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
+    wait_for_element_with_css_selector_to_be_displayed('#color.tab-pane.active')
     assert_id_exists('id_color-colorpicker')
 
 @step(u'And the Create button is displayed')
@@ -151,12 +150,11 @@ def the_selected_color_is_applied_to_the_components_of_the_shop(step):
 @step(u'When the logo tab is selected')
 def when_the_logo_tab_is_selected(step):
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#logo"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#logo"]')
+    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#logo"]')
 
 @step(u'Then the logo file upload is displayed')
 def then_the_logo_file_upload_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#logo.tab-pane.active')
+    wait_for_element_with_css_selector_to_be_displayed('#logo.tab-pane.active')
     assert_id_exists('id_logo')
 
 @step(u'And the submit Logo button is displayed')
@@ -177,12 +175,11 @@ def the_selected_logo_file_is_saved(step):
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#banner"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#banner"]')
+    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#banner"]')
 
 @step(u'Then the banner file upload is displayed')
 def then_the_banner_file_upload_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#banner.tab-pane.active')
+    wait_for_element_with_css_selector_to_be_displayed('#banner.tab-pane.active')
     assert_id_exists('id_banner')
 
 @step(u'And the submit Banner button is displayed')
@@ -225,8 +222,7 @@ def and_i_sign_in(step):
 @step(u'When the home tab is selected')
 def when_the_home_tab_is_selected(step):
     wait_for_element_with_css_selector_to_be_clickable('#shopTabButton').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('.active>#shopTabButton')
+    wait_for_element_with_css_selector_to_be_displayed('.active>#shopTabButton')
 
 @step(u'Then the home content is displayed')
 def then_the_home_content_is_displayed(step):
@@ -242,8 +238,7 @@ def then_the_home_content_is_displayed(step):
 @step(u'When the landing tab is selected')
 def when_the_landing_tab_is_selected(step):
     wait_for_element_with_css_selector_to_be_clickable('#landingTabButton').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('.active>#landingTabButton')
+    wait_for_element_with_css_selector_to_be_displayed('.active>#landingTabButton')
 
 @step(u'Then the landing content is displayed')
 def then_the_home_content_is_displayed(step):

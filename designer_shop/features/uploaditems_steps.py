@@ -11,7 +11,7 @@ from Tinville.settings.base import MEDIA_ROOT
 def when_the_add_item_tab_is_selected(step):
     maximize_shop_editor()
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addOrEditItem"]')
+    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
 
 @step(u'Then the add item form is displayed')
 def then_the_add_item_form_is_displayed(step):
