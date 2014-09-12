@@ -47,10 +47,11 @@ def then_i_can_see_the_following_elements(step):
 
 @step(u'Then the default values for an item are as follows')
 def then_the_default_values_for_an_item_are_as_follows(step):
+    wait_for_ajax_to_complete()
     for itemdetailvalues in step.hashes:
-        theitemclass = str(itemdetailvalues["Class"])
+        theitem = str(itemdetailvalues["ID"])
         thedefaultvalue = str(itemdetailvalues["DefaultValue"]).replace('"', '')
-        theselector = wait_for_element_with_css_selector_to_be_displayed("." + theitemclass)
+        theselector = wait_for_element_with_id_to_be_clickable(theitem)
 
         if theselector.tag_name == 'select':
             theselectedvalue = str(Select(theselector).first_selected_option.text)

@@ -25,10 +25,11 @@ Feature: Item Detail
           | sharingiscaring    |
           | selectedImage      |
 
+  @jon
   Scenario: Default Values
       Given I am on an item detail page
       Then the default values for an item are as follows
-          | Class              | DefaultValue     |
+          | ID                 | DefaultValue     |
           | itemColorSelection | "Choose a Color" |
           | itemSizeSelection  | "Choose a Size"  |
           | buyQuantity        | 1                |

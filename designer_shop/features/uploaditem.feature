@@ -8,6 +8,7 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
+  @jon
   Scenario: Create Basic Item on Demo Shop using size sets
 	Given the demo shop editor
 	Then I should see 3 product total
