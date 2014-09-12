@@ -11,13 +11,8 @@ from Tinville.settings.base import MEDIA_ROOT
 def when_the_add_item_tab_is_selected(step):
     maximize_shop_editor()
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addOrEditItem"]')
+    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
 
-@step(u'Then the add item form is displayed')
-def then_the_add_item_form_is_displayed(step):
-    maximize_shop_editor()
-    wait_for_element_with_css_selector_to_be_displayed('#addOrEditItem.tab-pane.active')
-    wait_for_element_with_css_selector_to_be_displayed("#id_title")
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
@@ -26,11 +21,11 @@ def and_i_fill_in_the_general_add_item_fields(step):
         world.browser.find_element_by_name("title").send_keys(itemfields["Title"])
         # TinyMCE uses iframes so need to use their javascript API to set the content
         world.browser.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(itemfields["Description"]))
-        wait_for_element_with_name_to_be_displayed("price")
-        world.browser.find_element_by_name("price").send_keys(itemfields["Price"])
+        scroll_to_element(wait_for_element_with_name_to_exist("price"))
+        wait_for_element_with_name_to_be_displayed("price").send_keys(itemfields["Price"])
         world.browser.find_element_by_name("category").send_keys(itemfields["Category"])
         file = os.path.join(MEDIA_ROOT, itemfields["Image1"])
-        world.browser.find_element_by_name("product_image").send_keys(file)
+        wait_for_element_with_name_to_be_displayed("product_image").send_keys(file)
         sizeVariationElement = world.browser.find_element_by_name('sizeVariation')
         scroll_to_element(sizeVariationElement)
         Select(sizeVariationElement).select_by_value(itemfields['SizeVariation'])
@@ -98,13 +93,13 @@ def my_color_quantity_and_size_selections_are(step):
     
 @step(u'When I click the delete button for the product')
 def when_I_click_delete_button_product(step):
-    world.browser.find_element_by_css_selector("#minMaxIcon").click()
+    minimize_shop_editor()
     wait_for_element_with_link_text_to_be_displayed("Delete")
     world.browser.find_element_by_link_text("Delete").click()
 
 @step(u'And I click ok on the confirmation')
 def and_I_click_ok_confirmation(step):
-    world.browser.find_element_by_css_selector("#okDeleteBtn").click()
+    wait_for_element_with_css_selector_to_be_clickable("#okDeleteBtn").click()
 
 @step(u'Then the product is removed')
 def then_product_is_removed(step):
@@ -120,15 +115,4 @@ def and_shopEditor_refreshes_minimized(step):
     assert len(world.browser.find_elements_by_css_selector("#editorPanels.collapse")) == 1, "Because the editor panel should be collapsed"
 
 
-# Utilities
-def minimize_shop_editor():
-    if css_selector_exists("#minMaxIcon.glyphicon-chevron-down"):
-        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
-        time.sleep(1)
-        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
 
-def maximize_shop_editor():
-    if css_selector_exists("#minMaxIcon.glyphicon-chevron-up"):
-        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
-        time.sleep(1)
-        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-down")

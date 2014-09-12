@@ -10,4 +10,4 @@ Feature: Designer Shop Logo Upload Selection
     Then the logo file upload is displayed
     And the submit logo button is displayed
     And a logo is submitted
-    The selected logo file is saved
+    Then The selected logo file is saved

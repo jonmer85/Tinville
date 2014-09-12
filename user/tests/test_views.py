@@ -35,7 +35,7 @@ class RegistrationTest(TestCase):
         return response
 
     def post_request_user(self, email='joe@schmoe.com', last_login=datetime.datetime.now(),
-                          password='test', is_seller=False, shop_name=None):
+                          password='test', is_seller=False, shop_name=''):
         self.client.post(self.registration_url, {
             'email': email,
             'password': password,
@@ -44,33 +44,3 @@ class RegistrationTest(TestCase):
             'shop_name': shop_name,
         })
         return TinvilleUser.objects.get(email=email)
-
-class ActivationTest(TestCase):
-    def setUp(self):
-        self.user = TinvilleUser.objects.create()
-
-    def test_unconfirmed(self):
-        self.assertFalse(self.user.is_active)
-
-    def test_confirmed(self):
-        self.client.get(reverse('activate-user', kwargs={'activation_key': self.user.activation_key}))
-        self.assertTrue(TinvilleUser.objects.get(id=self.user.id).is_active)
-
-    def test_already_registered_warning(self):
-        self.user.is_active = True
-        self.user.save()
-        response = self.client.get(reverse('activate-user', kwargs={'activation_key': self.user.activation_key}))
-        self.assertRegexpMatches(
-            response.content,
-            re.compile(".*Your account already exists and is activated.*"),
-        )
-
-    def test_other_user_logged_in(self):
-        other_user = TinvilleUser.objects.create(
-            is_active=True,
-            email='joe@schmoe.com',
-            password='test',
-        )
-        self.client.login(username=other_user.email, password='test')
-        self.client.get(reverse('activate-user', kwargs={'activation_key': self.user.activation_key}))
-        self.assertTrue(TinvilleUser.objects.get(id=self.user.id).is_active)
