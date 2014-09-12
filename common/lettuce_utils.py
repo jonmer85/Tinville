@@ -9,13 +9,15 @@ from nose.tools import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from lxml import html
 
 
 def wait_for_ajax_to_complete():
     WebDriverWait(world.browser, 10).until(ajax_complete,  "Timeout waiting for page to load")
 
+def wait_for_javascript_to_complete():
+    wait_for_ajax_to_complete()
 
 def ajax_complete(driver):
     try:
