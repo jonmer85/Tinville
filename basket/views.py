@@ -16,15 +16,29 @@ from django.contrib import messages
 
 
 from oscar.core.loading import get_model
+from oscar.core.loading import get_class
 from designer_shop.models import Shop
-from catalogue.models import Product
-from oscar.apps.basket.models import Basket
-from oscar.apps.basket.models import Line
 
 from oscar.apps.partner import strategy
 from common.utils import get_list_or_empty, get_or_none
 from django.utils.html import strip_tags
+from oscar.apps.basket import signals
 
+Basket = get_model('basket', 'basket')
+Product = get_model('catalogue', 'product')
+Line = get_model('basket', 'line')
+Selector = get_class('partner.strategy', 'Selector')
+
+selector = Selector()
+add_signal = signals.basket_addition
+
+def get_basket(request):
+    manager = Basket.open
+    if hasattr(request, 'user') and request.user.is_authenticated():
+        basket, _ = manager.get_or_create(owner=request.user)
+    else:
+        basket = Basket()
+    return basket
 # Create your views here.
 def load_cart(request):
     if request.method == 'POST':
@@ -33,9 +47,12 @@ def load_cart(request):
             index = 0
             ret = request.POST
             if int(ret['cartLoaded']) == 0:
-                basket = get_object_or_404(Basket, owner_id=request.user.id)
+                basket = get_basket(request)
+                if not basket.has_strategy:
+                    strategy = selector.strategy(request=request, user=request.user)
+                    basket._set_strategy(strategy)
                 basketlines = get_list_or_empty(Line, basket_id=basket)
-                if basketlines.__len__() > 0:
+                if len(basketlines) > 0:
                     for basketline in basketlines:
                         if checkLineId(ret['Id'],basketline.id):
                             currentproduct = get_object_or_404(Product, id=basketline.product_id)
@@ -62,10 +79,10 @@ def load_cart(request):
                         cartItems.append(addBasket(request,product_id, int(qtys[index])))
                     index = index + 1
             else:
-                cartInfo = {'Id': 0, 'msg': ''}
+                cartInfo = {'Id': 0, 'msg': '', 'cartLoaded': 0}
                 cartItems.append(cartInfo)
         else:
-            cartInfo = {'Id': 0, 'msg': ''}
+            cartInfo = {'Id': 0, 'msg': '', 'cartLoaded': 0}
             cartItems.append(cartInfo)
         return HttpResponse(json.dumps(cartItems), mimetype='application/json')
 
@@ -80,6 +97,8 @@ def checkLineId(Ids, basketlineId):
                 return False
     else:
         return True
+
+
 def addBasket(request, product_id, qty):
         msg = ''
         # ToDo figure out this tax stuff
@@ -91,33 +110,35 @@ def addBasket(request, product_id, qty):
         price_incl_tax = (stockrecord.price_excl_tax * qty) * tax
         image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
         if not request.user.id is None:
-            basket = get_object_or_404(Basket, owner_id=request.user.id)
+            basket = get_basket(request)
             if not basket.has_strategy:
+                strategy = selector.strategy(request=request, user=request.user)
                 basket._set_strategy(strategy)
             line_quantity = basket.line_quantity(product=currentproduct, stockrecord=stockrecord)
             line_ref=basket._create_line_reference(product=currentproduct, stockrecord=stockrecord, options=None)
             if line_quantity == 0:
                 # item not in the basket line
-                basketline = get_model('basket', 'Line')(basket=basket, product=currentproduct, line_reference=line_ref,
-                                                         stockrecord=stockrecord,
-                                                         quantity=qty,
-                                                         price_currency=stockrecord.price_currency,
-                                                         price_excl_tax=price_excl_tax,
-                                                         price_incl_tax=price_incl_tax)
-                basketline.save()
+                basket.add_product(currentproduct,qty)
+                # Send signal for basket addition
+                add_signal.send(sender=None,product=currentproduct, user=request.user, request=request)
+                basketline = get_list_or_empty(Line, line_reference=line_ref, basket_id=basket.id)[0]
                 basketlineId = basketline.id
+                cartLoaded = 1
             elif line_quantity == qty:
                 msg = "You have tried to add the same item, please change the quantity"
                 basketlineId = 0
+                cartLoaded = 0
             else:
                 # item already in the basket_line but add to the qty
                 basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
                 basketline.quantity = qty
                 basketline.save(update_fields=["quantity"])
                 basketlineId = 0
+                cartLoaded = 1
         else:
             # not logged in or does not have an account
             basketlineId = -1
+            cartLoaded = 0
         cartInfo = {'Id': basketlineId,
                     'product_id': currentproduct.id,
                     'title': currentproduct.title,
@@ -126,8 +147,9 @@ def addBasket(request, product_id, qty):
                     'image': str(image[0].original),
                     'qty': qty,
                     'msg': msg,
-                    'cartLoaded': 0}
+                    'cartLoaded': cartLoaded}
         return cartInfo
+
 
 def add_item_to_cart(request, shop_slug, item_slug):
 
@@ -156,7 +178,7 @@ def get_filtered_variant(itemId, post):
     colorFilter = post['colorFilter']
     attributeColor = get_object_or_404(AttributeOption, option=colorFilter.lower())
     attributeSize = get_object_or_404(AttributeOption, option=sizeFilter.lower())
-    variant = get_object_or_404(Product, parent=itemId, attribute_values__value_option_id=attributeColor.id & attributeSize.id)
+    variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId, attribute_values__value_option_id=attributeSize.id)[0]
     return variant
 
 

@@ -12,8 +12,8 @@ class Shop(models.Model):
                             default=None, max_length=100)
     slug = models.SlugField()
     banner = models.ImageField(default='images/banner.jpg',
-                               upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename))
-    logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename))
+                               upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
+    logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename), max_length=255)
     aboutContent = HTMLField()
     color = models.CharField(default='#663399', max_length=7,
         validators=[RegexValidator(
