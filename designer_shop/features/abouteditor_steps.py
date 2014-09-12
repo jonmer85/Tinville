@@ -29,7 +29,7 @@ def and_the_about_content_is_submitted(step):
     wait_for_element_with_id_to_be_clickable('id_aboutContent_ifr').click()
     world.browser.execute_script("tinyMCE.activeEditor.setContent('<p>Test About Content</p>')")
     wait_for_javascript_to_complete()
-    wait_for_element_with_id_to_be_displayed("id_SubmitAboutContent")
+    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitAboutContent"))
     wait_for_element_with_id_to_be_clickable("id_SubmitAboutContent").click()
     wait_for_ajax_to_complete()
 
