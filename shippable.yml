@@ -3,9 +3,7 @@ language: python
 python:
   - 2.7
 addons:
-  firefox: "28.0"
-services:
-  - selenium
+  firefox: "27.0"
 
 env:
   global:
@@ -21,6 +19,7 @@ before_script:
   - /etc/init.d/xvfb start
 
 script:
+  - ./test reset_db --noinput
   - ./initDataNoInput test
   - coverage run manage.py harvest --with-xunit --xunit-file=shippable/testresults/lettucetests.xml --settings=Tinville.settings.test
   - coverage xml -o shippable/codecoverage/coverage_lettuce.xml

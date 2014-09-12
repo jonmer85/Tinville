@@ -1,5 +1,6 @@
 import json
 import collections
+import shutil
 from operator import itemgetter
 from functools import wraps
 
@@ -15,6 +16,7 @@ from oscar.apps.catalogue.models import ProductImage as ProductImages
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 
+from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
@@ -386,12 +388,14 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         if request.POST.__contains__('bannerUploadForm'):
             form = BannerUploadForm(request.POST, request.FILES)
             if form.is_valid():
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug), ignore_errors=True)
                 shop.banner = form.cleaned_data["banner"]
                 shop.save(update_fields=["banner"])
             return renderShopEditor(request, shop, bannerUploadForm=form)
         elif request.POST.__contains__('logoUploadForm'):
             form = LogoUploadForm(request.POST, request.FILES)
             if form.is_valid():
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/logo'.format(shop.slug), ignore_errors=True)
                 shop.logo = form.cleaned_data["logo"]
                 shop.save(update_fields=["logo"])
             return renderShopEditor(request, shop, logoUploadForm=form)

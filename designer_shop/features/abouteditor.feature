@@ -4,10 +4,11 @@ Feature: Designer Shop About Content Selection
   As a designer
   I want to have a text selection that allows me to add and modify text
 
+  @jon
   Scenario: About Box Editor
     Given the demo shop editor
     When the about tab is selected
     Then the about text field box is displayed
     And the submit about content button is displayed
     And the about content is submitted
-  The about content is saved
+    Then The about content is saved
