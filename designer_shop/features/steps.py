@@ -120,6 +120,7 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
 
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
+    maximize_shop_editor()
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#color"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#color"]')
 
@@ -149,6 +150,7 @@ def the_selected_color_is_applied_to_the_components_of_the_shop(step):
 
 @step(u'When the logo tab is selected')
 def when_the_logo_tab_is_selected(step):
+    maximize_shop_editor()
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#logo"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#logo"]')
 
@@ -174,6 +176,7 @@ def the_selected_logo_file_is_saved(step):
 
 @step(u'When the banner tab is selected')
 def when_the_banner_tab_is_selected(step):
+    maximize_shop_editor()
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#banner"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#banner"]')
 

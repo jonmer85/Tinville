@@ -11,6 +11,7 @@ def load_all_fixtures(scenario):
 
 @step(u'When the about tab is selected')
 def when_the_about_tab_is_selected(step):
+    maximize_shop_editor()
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#about"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#about"]')
 
