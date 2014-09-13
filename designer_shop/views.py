@@ -64,15 +64,18 @@ class get_filter_lists:
 
     def categorylist(self):
         shopCategories = set()
+        shopCategoryNames = set()
         shopProductCategories = self.shop_product_categories()
         for productcategory in shopProductCategories:
             if productcategory != None:
-                shopCategories.add(get_or_none(Category, id=productcategory.category.id))
-        return shopCategories
+                currentcategory = get_or_none(Category, id=productcategory.category.id)
+                shopCategories.add(currentcategory)
+                shopCategoryNames.add(currentcategory.name)
+        return shopCategories, shopCategoryNames
 
     def genderlist(self):
         shopGenders = set()
-        categorylist = self.categorylist()
+        categorylist, names = self.categorylist()
         for category in categorylist:
             shopGenders.add(get_or_none(Category, path=category.path[:4]))
         return shopGenders
@@ -87,10 +90,11 @@ def shopper(request, slug):
             })
 
     if request.method == 'GET':
+        shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
         return render(request, 'designer_shop/shopper.html', {
             'shop': shop,
             'shopgenders': get_filter_lists(shop).genderlist(),
-            'shopcategories': get_filter_lists(shop).categorylist(),
+            'shopcategories': shopcategorynames,
             'products': get_list_or_empty(Product, shop=shop.id)
         })
 
@@ -354,6 +358,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None, item=None):
         editItem = item is not None
+        shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
         return render(request, 'designer_shop/shopeditor.html', {
             'editmode': True,
             'shop': shop,
@@ -377,7 +382,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                       }),
             'colors': AttributeOption.objects.filter(group=2),
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
-            'shopcategories': get_filter_lists(shop).categorylist(),
+            'shopcategories': shopCategoryNames,
             'shopgenders': get_filter_lists(shop).genderlist(),
             'products': get_list_or_empty(Product, shop=shop.id)
         })
