@@ -14,14 +14,6 @@
         }
     },
     {
-        "model": "basket.Basket",
-        "pk": 1,
-        "fields": {
-            "owner": 2,
-            "date_created": "2014-06-28 18:03:32.859698"
-        }
-    },
-    {
         "model": "designer_shop.Shop",
         "pk": 1,
         "fields": {
