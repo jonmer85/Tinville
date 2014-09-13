@@ -20,6 +20,11 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
     form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form)
 
+@step(u'(?:When|And) I try to again register for a shopper account with email "([^"]*)" and password "([^"]*)"')
+def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
+    form = fill_in_user_form(email=email, password=password)
+    submit_form_and_activate_user(form, False)
+
 @step(u'(?:When|And) I register for a shop named "([^"]*)"')
 def when_i_register_for_a_shop(step, shop_name):
     register_basic_shop(shop_name, "joe@schmoe.com", "test")
@@ -58,11 +63,16 @@ def fill_in_user_form(email, password):
     form.find_element_by_name("password").send_keys(password)
     return form
 
-def submit_form_and_activate_user(form):
+def submit_form_and_activate_user(form, expectSuccess=True):
     form.submit()
-    user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
-    user.is_active = True
-    user.save()
+    if(expectSuccess):
+        wait_for_element_with_id_to_exist("messagesModal")
+        assert_selector_contains_text("#messagesModal .alert-success", world.user_info['email'])
+        wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
+        wait_for_element_with_id_to_not_be_displayed("messagesModal")
+        user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
+        user.is_active = True
+        user.save()
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):

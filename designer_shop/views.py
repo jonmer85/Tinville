@@ -1,5 +1,6 @@
 import json
 import collections
+import shutil
 from operator import itemgetter
 from functools import wraps
 
@@ -15,6 +16,7 @@ from oscar.apps.catalogue.models import ProductImage as ProductImages
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 
+from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
@@ -197,6 +199,7 @@ def get_variants(item, group=None):
     for variant in variants:
         color = ""
         sizeSet = ""
+        isSizeSet = False
         sizeX = ""
         sizeY = ""
         sizeNum = ""
@@ -210,6 +213,7 @@ def get_variants(item, group=None):
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
+            isSizeSet = True
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
             sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
@@ -223,12 +227,14 @@ def get_variants(item, group=None):
         if sizeX != "" and sizeY != "":
             divider = " x "
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+        caseFunc = str.capitalize if not isSizeSet else str.upper
+
 
         if group is None:
-            quantitysize = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
-            groupdict = {'color': str(color).capitalize(), 'size': variantsize.capitalize(), 'quantity': quantity, 'price': price, 'currency': currency}
+            groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
             quantitysize = groupdict
@@ -386,12 +392,14 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         if request.POST.__contains__('bannerUploadForm'):
             form = BannerUploadForm(request.POST, request.FILES)
             if form.is_valid():
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug), ignore_errors=True)
                 shop.banner = form.cleaned_data["banner"]
                 shop.save(update_fields=["banner"])
             return renderShopEditor(request, shop, bannerUploadForm=form)
         elif request.POST.__contains__('logoUploadForm'):
             form = LogoUploadForm(request.POST, request.FILES)
             if form.is_valid():
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/logo'.format(shop.slug), ignore_errors=True)
                 shop.logo = form.cleaned_data["logo"]
                 shop.save(update_fields=["logo"])
             return renderShopEditor(request, shop, logoUploadForm=form)

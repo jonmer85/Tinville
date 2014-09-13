@@ -11,4 +11,4 @@ Feature: Designer Shop About Content Selection
     Then the about text field box is displayed
     And the submit about content button is displayed
     And the about content is submitted
-  The about content is saved
+    Then The about content is saved

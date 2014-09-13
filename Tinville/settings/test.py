@@ -20,9 +20,12 @@ DATABASES = {
 LETTUCE_APPS = (
     'designer_shop',
     'user',
+    # 'basket',
 )
 
-INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',] + ['extensions',]
+INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',  'django_nose',] + ['extensions',]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 ########## TEST SETTINGS
 #TEST_RUNNER = "discover_runner.DiscoverRunner"
