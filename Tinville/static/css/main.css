@@ -1007,7 +1007,7 @@ textarea {
 .navbar {
     position: fixed;
     height: 100%;
-    width: 30%;
+    width: auto;
     top: 0px;
     left: 0px;
     background-color: #e7e5e6;
@@ -1033,7 +1033,6 @@ textarea {
 
 .slidingContent{
     -webkit-transition: all 1s ease;
-    margin-left:0px;
 }
 
 .navButtonIconStyle b{
