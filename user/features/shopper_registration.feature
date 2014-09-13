@@ -11,7 +11,7 @@ Feature: Shopper Registration
 
   Scenario: Duplicate address
     When I register for a shopper account with email "foo@bar.com" and password "foobar"
-    And I register for a shopper account with email "Foo@bar.com" and password "foobar"
+    And I try to again register for a shopper account with email "Foo@bar.com" and password "foobar"
 	Then I should get a validation error on email address
 
   Scenario: No initial validation

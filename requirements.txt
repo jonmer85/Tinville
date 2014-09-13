@@ -25,6 +25,7 @@ django-extra-views==0.6.3
 django-fixture-media==0.1.4
 django-haystack==2.1.0
 django-mobile==0.3.0
+django-nose==1.2
 django-oscar==0.7.0
 django-parsley==0.5
 django-selenium==0.9.7
