@@ -43,7 +43,9 @@ def Then_Shopping_Cart_Closes(step):
 @step(u'When I add an item to my cart')
 def When_add_item_to_cart(step):
     world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))
-    world.browser.find_element_by_css_selector("#id_AddToCart").click()
+    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
+    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("SM")
+    wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
 
 @step(u'Then the item is added to my cart')
 def Then_item_added_to_cart(step):
@@ -61,3 +63,18 @@ def Then_item_removed_from_cart(step):
 def When_click_Menu_button(step):
     world.browser.find_element_by_id("mobileNavButton").click()
 
+@step(u'When I log in')
+def When_I_log_in(step):
+    sign_in('foo@user.com','password')
+
+@step(u'Then the item is added to my backend')
+def Then_item_added_to_backend(step):
+    assert_id_exists("1")
+
+@step(u'When I log out')
+def When_I_log_out(step):
+    sign_in('foo@user.com','password')
+
+@step(u'Then all items are removed from my cart')
+def Then_all_items_removed_from_cart(step):
+    assert_id_does_not_exist("1")

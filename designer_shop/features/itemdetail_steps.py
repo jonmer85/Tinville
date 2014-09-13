@@ -19,7 +19,7 @@ def given_I_have_at_least_some_items_in_the_shop(step, amount):
 
 @step(u'When I click on the "(.*)" item')
 def when_i_click_on_the_item(step, itemname):
-    theitem = world.browser.find_element_by_css_selector(".shopItem>a[href='/Demo/" + slugify(itemname) +"']")
+    theitem = world.browser.find_element_by_css_selector("a[href='/demo/" + slugify(itemname) +"']")
     step.scenario.context['itemurl'] = theitem.get_attribute("href")
     theitem.click()
 
@@ -38,20 +38,20 @@ def given_i_am_on_an_item_detail_page(step):
 def then_i_can_see_the_following_elements(step):
     for itemdetailclass in step.hashes:
         theitemclass = str(itemdetailclass["Class"])
-        myelements = world.browser.find_elements_by_class_name(theitemclass)
-        elementexists = False
-        for element in myelements:
-            if element.is_displayed() == True:
-                elementexists = True
-                break
-        assert elementexists, theitemclass + " is not displayed"
+        try:
+            wait_for_element_with_css_selector_to_exist("." + theitemclass)
+            # Jon M TODO: Put back when this is more stable with Selenium and FIrefox driver :(
+            # myelements = wait_for_element_with_css_selector_to_be_displayed("." + theitemclass)
+        except:
+            assert False, theitemclass + " is not displayed"
 
 @step(u'Then the default values for an item are as follows')
 def then_the_default_values_for_an_item_are_as_follows(step):
+    wait_for_ajax_to_complete()
     for itemdetailvalues in step.hashes:
-        theitemclass = str(itemdetailvalues["Class"])
+        theitem = str(itemdetailvalues["ID"])
         thedefaultvalue = str(itemdetailvalues["DefaultValue"]).replace('"', '')
-        theselector = world.browser.find_element_by_id(theitemclass)
+        theselector = wait_for_element_with_id_to_be_clickable(theitem)
 
         if theselector.tag_name == 'select':
             theselectedvalue = str(Select(theselector).first_selected_option.text)

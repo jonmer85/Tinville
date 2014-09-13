@@ -1,18 +1,23 @@
+import lettuce.django
+import re
+import time
+
 from lettuce import *
 from django.test import Client
 from nose.tools import *
-import lettuce.django
-import re
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from lxml import html
 
 
 def wait_for_ajax_to_complete():
     WebDriverWait(world.browser, 10).until(ajax_complete,  "Timeout waiting for page to load")
 
+def wait_for_javascript_to_complete():
+    wait_for_ajax_to_complete()
 
 def ajax_complete(driver):
     try:
@@ -137,6 +142,14 @@ def wait_for_element_with_id_to_exist(id):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id(id))
     return world.browser.find_element_by_id(id)
 
+def wait_for_element_with_css_selector_to_exist(css_selector):
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_css_selector(css_selector))
+    return world.browser.find_element_by_css_selector(css_selector)
+
+def wait_for_element_with_name_to_exist(name):
+    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_name(name))
+    return world.browser.find_element_by_name(name)
+
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
     return world.browser.find_element_by_id(id)
@@ -167,17 +180,41 @@ def wait_for_element_with_class_to_be_displayed(class_name):
 def wait_for_element_with_link_text_to_be_displayed(link_text):
     WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
 
+def wait_for_element_with_link_text_to_be_clickable(link_text):
+    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
+    return world.browser.find_element_by_link_text(link_text)
+
 def assert_page_exist(url):
     c = Client()
     response = c.get(url, follow=True)
     assert_not_equals(response.status_code, 404)
 
+
+def scroll_to_element(element):
+    world.browser.execute_script("arguments[0].scrollIntoView(true);", element)
+
+
+# Tinville site specific utilities
+
+# Utilities
+def minimize_shop_editor():
+    if css_selector_exists("#minMaxIcon.glyphicon-chevron-down"):
+        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
+        time.sleep(1)
+        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
+
+def maximize_shop_editor():
+    if css_selector_exists("#minMaxIcon.glyphicon-chevron-up"):
+        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
+        time.sleep(1)
+        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-down")
+
 def sign_in(email, password):
-    login_menu = world.browser.find_element_by_id("lg-menuLogin")
+    login_menu = wait_for_element_with_id_to_be_displayed("lg-menuLogin")
     if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
-        login_menu.find_element_by_link_text("SIGN IN").click()
+        wait_for_element_with_link_text_to_be_clickable("SIGN IN").click()
     elif len(login_menu.find_elements_by_link_text("SIGN OUT")) > 0:
-        login_menu.find_element_by_link_text("SIGN OUT").click()
+        wait_for_element_with_link_text_to_be_clickable("SIGN OUT").click()
         wait_for_element_with_link_text_to_be_displayed("SIGN IN")
         time.sleep(.5)
         login_menu.find_element_by_link_text("SIGN IN").click()
@@ -185,6 +222,3 @@ def sign_in(email, password):
     login_menu.find_element_by_name("password").send_keys(password)
     login_menu.find_element_by_name("submit").click()
     wait_for_ajax_to_complete()
-
-def scroll_to_element(element):
-    world.browser.execute_script("arguments[0].scrollIntoView(true);", element)
