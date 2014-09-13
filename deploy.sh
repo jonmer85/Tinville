@@ -1,5 +1,5 @@
 #!/bin/sh
-[[ $BRANCH != 'Sprint6' ]] && exit 0
+if [ $BRANCH != 'Sprint6' ]; then exit 0; fi
 git push -f git@heroku.com:tinville-testing.git Sprint6:master
 ./initDataNoInput qatest
 ./qatest collectstatic --noinput
