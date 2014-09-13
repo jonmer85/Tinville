@@ -39,9 +39,7 @@
                 <select class="select form-control filterTabs" id="filterType" name="typeFilter">
                     <option value="View All Types">View All Types</option>
                     {% for category in shopcategories %}
-                        {% if category.numchild == 0 %}
-                            <option value="{{ category.name }}">{{ category.name }}</option>
-                        {% endif %}
+                        <option value="{{ category }}">{{ category }}</option>
                     {% endfor %}
                 </select>
             </div>
