@@ -37,9 +37,6 @@ class ProductCreationForm(forms.ModelForm):
                                          choices=SIZE_TYPES_AND_EMPTY,
                                          initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
 
-
-        # self.fields['product_image'] = forms.ImageField(required=False)
-
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
@@ -76,7 +73,7 @@ class ProductCreationForm(forms.ModelForm):
         )
 
         self.fields['product_image'] \
-            = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
+            = forms.ImageField(required=True, initial=self.get_value_if_in_edit_mode('product_image', None),
                                widget=AdvancedFileInput)
         self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
                                                          widget=forms.ClearableFileInput)
