@@ -555,16 +555,16 @@
 
         $(document).ready(function() {
 
-               var menu = "close";
+                   var menu = "close";
 
-                $('.menu-toggle').click(function() {
-                    if(menu == "close"){
-                        $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
-                        $('.navbar').css('-webkit-transform','translate(0, 0)');
+                    $('.menu-toggle').click(function() {
+                        if(menu == "close"){
+                            $('.slidingContent').css('-webkit-transform','translate(225px, 0)');
+                            $('.navbar').css('-webkit-transform','translate(0, 0)');
 
-                menu="open";
-                }
-                else{
+                            menu="open";
+                        }
+                        else{
                     $('.slidingContent').css('-webkit-transform','translate(0, 0)');
                     $('.navbar').css('-webkit-transform','translate(-100%, 0)');
 
@@ -657,8 +657,6 @@
 
 
         });
-
-
 
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
