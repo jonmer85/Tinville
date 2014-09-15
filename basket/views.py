@@ -176,9 +176,21 @@ def add_item_to_cart(request, shop_slug, item_slug):
 def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']
     colorFilter = post['colorFilter']
+
     attributeColor = get_object_or_404(AttributeOption, option=colorFilter.lower())
-    attributeSize = get_object_or_404(AttributeOption, option=sizeFilter.lower())
-    variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId, attribute_values__value_option_id=attributeSize.id)[0]
+    if " x " in sizeFilter:
+        sizeDim = sizeFilter.split(' x ')
+        variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId,
+                                                                                                          attribute_values__attribute_id=2,
+                                                                                                          attribute_values__value_float=sizeDim[0]).filter(
+            parent=itemId, attribute_values__attribute_id=3, attribute_values__value_float=sizeDim[1])[0]
+    else:
+        try:
+            attributeSize = get_object_or_404(AttributeOption, option=sizeFilter.lower())
+            variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId, attribute_values__value_option_id=attributeSize.id)[0]
+        except Exception as e:
+            variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId,
+                                                                                                          attribute_values__attribute_id=4,                                                                                                          attribute_values__value_float=float(sizeFilter))[0]
     return variant
 
 
