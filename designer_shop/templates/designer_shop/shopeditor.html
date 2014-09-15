@@ -91,6 +91,10 @@
     {{ block.super }}
     <script>
 
+function ClearImage(imageId)
+{
+    $(imageId).val("");
+}
 
         $('#id_product_image').change
         (
@@ -98,6 +102,7 @@
             function()
             {
                 $("#id_product_image1" ).removeClass("hidden");
+                $("#prod_img1Clear" ).removeClass("hidden");
             }
 
         );
@@ -108,6 +113,7 @@
             function()
             {
                 $("#id_product_image2" ).removeClass("hidden");
+                $("#prod_img2Clear" ).removeClass("hidden");
             }
 
         );
@@ -118,6 +124,7 @@
             function()
             {
                 $("#id_product_image3" ).removeClass("hidden");
+                $("#prod_img3Clear" ).removeClass("hidden");
             }
 
         );
@@ -128,6 +135,7 @@
             function()
             {
                 $("#id_product_image4" ).removeClass("hidden");
+                $("#prod_img4Clear" ).removeClass("hidden");
             }
 
         );

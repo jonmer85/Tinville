@@ -37,9 +37,6 @@ class ProductCreationForm(forms.ModelForm):
                                          choices=SIZE_TYPES_AND_EMPTY,
                                          initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
 
-
-        # self.fields['product_image'] = forms.ImageField(required=False)
-
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
 
@@ -56,11 +53,20 @@ class ProductCreationForm(forms.ModelForm):
                          PrependedText('price', '$', placeholder='Price')
                 ),
                 Fieldset('Images',
-                         Field( 'product_image', css_id="id_productImage" ),
-                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
-                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
-                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
-                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
+                         Div(Field( 'product_image', css_id="id_productImage" ),
+                             HTML('<button type="button" name="Clear" onclick="ClearImage(product_image)">Clear</button>')),
+
+                         Div(Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                             HTML('<button id="prod_img1Clear" class="hidden" type="button" name="Clear" onclick="ClearImage(product_image1)">Clear</button>')),
+
+                         Div(Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                             HTML('<button id="prod_img2Clear" class="hidden" type="button" name="Clear" onclick="ClearImage(product_image2)">Clear</button>')),
+
+                         Div(Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                             HTML('<button id="prod_img3Clear" class="hidden" type="button" name="Clear" onclick="ClearImage(product_image3)">Clear</button>')),
+
+                         Div(Field( 'product_image4', css_id="id_productImage4", css_class='hidden'),
+                             HTML('<button id="prod_img4Clear" class="hidden" type="button" name="Clear" onclick="ClearImage(product_image4)">Clear</button>'))
                 ),
                 Fieldset('Sizes and Colors',
                          Field('sizeVariation', placeholder='Choose a variation'),
@@ -76,17 +82,16 @@ class ProductCreationForm(forms.ModelForm):
         )
 
         self.fields['product_image'] \
-            = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
+            = forms.ImageField(required=True, initial=self.get_value_if_in_edit_mode('product_image', None),
                                widget=AdvancedFileInput)
         self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
-                                                         widget=AdvancedFileInput)
-
+                                                         widget=forms.ClearableFileInput)
         self.fields['description'].widget = TinyMCE()
         self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3),
                                                          empty_label="Choose a Category", required=True,

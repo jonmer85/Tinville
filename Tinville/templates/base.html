@@ -272,17 +272,14 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="dropdown navdropSize mobileDropBtnStyle hidden-xs">
+                        <li class="hidden-xs">
                             <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
--                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
-+                           </button>
+                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
+                           </button>
                         </li>
-
-
                     </ul>
                 </div>
             </div>
-        </div>
     </nav>
 
                    <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
@@ -378,7 +375,7 @@
                 </dl>
             </div>
             <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseMyAccount">
-                <h4 id="tinvilleXSFooterHeaders">My Account</h4></h4>
+                <h4 id="tinvilleXSFooterHeaders">My Account</h4>
             </button>
             <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
                 <dl class="list-unstyled listPadding">
@@ -558,16 +555,16 @@
 
         $(document).ready(function() {
 
-               var menu = "close";
+                   var menu = "close";
 
-                $('.menu-toggle').click(function() {
-                    if(menu == "close"){
-                        $('.slidingContent').css('-webkit-transform','translate(30%, 0)');
-                        $('.navbar').css('-webkit-transform','translate(0, 0)');
+                    $('.menu-toggle').click(function() {
+                        if(menu == "close"){
+                            $('.slidingContent').css('-webkit-transform','translate(225px, 0)');
+                            $('.navbar').css('-webkit-transform','translate(0, 0)');
 
-                menu="open";
-                }
-                else{
+                            menu="open";
+                        }
+                        else{
                     $('.slidingContent').css('-webkit-transform','translate(0, 0)');
                     $('.navbar').css('-webkit-transform','translate(-100%, 0)');
 
@@ -660,8 +657,6 @@
 
 
         });
-
-
 
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
@@ -805,7 +800,7 @@ function LoadCartItemDiv(cartItem)
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var delBtnId = 'deleteBtnId_' + cartItem.Id;
     var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
-        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20"></span>'
+        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
