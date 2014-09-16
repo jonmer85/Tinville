@@ -2,7 +2,7 @@
 {% load thumbnail %}
 
 <div id="shopItems">
-    {% if shopProducts %}
+    {% if shopProductCount > 0 %}
         {% if products %}
             {% for product in products %}
                 {% purchase_info_for_product request product as session %}
