@@ -376,14 +376,12 @@
     /*border-color: darkgray;*/
     font-size: 5em;
     color: darkgray;
-    padding-top: 12%;
     padding-left: 35%;
 
 }
 @media (max-width: 768px) {
      .emptyShop {
          font-size: 3em;
-         padding-top: 15%;
          padding-left: 33%;
          height: 300px;
     }
