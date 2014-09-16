@@ -10,11 +10,15 @@
       {% if shop.banner and shop.logo %}
           <div class="shopBanner img-responsive full-screen ">
               <img id="id_BannerImage" class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-              <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />
+              <a href='{{ shop.get_absolute_url }}' >{{ shop.name }}
+                <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />
+              </a>
           </div>
       {% elif not shop.banner and shop.logo %}
           <div class="shopBanner full-screen shopBackgroundColor">
+            <a href='{{ shop.get_absolute_url }}' >{{ shop.name }}
               <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
+            </a>
           </div>
       {% elif shop.banner and not shop.logo %}
           <div>

@@ -120,11 +120,21 @@
 
 .aboutContent {
     background-color: #ffffff;
-    border-radius: 4px;
-    font-size: 1.5em;
-    padding-right: 2%;
+    font-size: 1.2em;
+    margin: 10px;
+    /*padding-right: 10%;*/
+    padding-left: 20%;
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
+    text-align: left;
+
+}
+
+@media (max-width: 992px) {
+     .aboutContent {
+        font-size: 1em;
+        padding-left: 0%;
+    }
 }
 
 .imageContainer {
