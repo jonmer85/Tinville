@@ -87,6 +87,7 @@ def shopper(request, slug):
             return render(request, 'designer_shop/shop_items.html', {
                 'shop': shop,
                 'products': get_filtered_products(shop, request.POST),
+                'shopProducts': get_list_or_empty(Product, shop=shop.id)
             })
 
     if request.method == 'GET':
@@ -95,7 +96,8 @@ def shopper(request, slug):
             'shop': shop,
             'shopgenders': get_filter_lists(shop).genderlist(),
             'shopcategories': shopcategorynames,
-            'products': get_list_or_empty(Product, shop=shop.id)
+            'products': get_list_or_empty(Product, shop=shop.id),
+            'shopProducts': get_list_or_empty(Product, shop=shop.id)
         })
 
 def itemdetail(request, shop_slug, item_slug=None):
