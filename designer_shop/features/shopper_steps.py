@@ -35,3 +35,7 @@ def then_my_color_is(step, amount):
    # WebDriverWait(world.browser, 10).until(lambda s: s.find_elements_by_css_selector(".shopItem") == int(amount))
     hello = len(world.browser.find_elements_by_css_selector(".shopItem"))
     assert WebDriverWait(world.browser, 10).until(lambda s: len(s.find_elements_by_css_selector(".shopItem")) == int(amount)), "there are not " + amount + " items in the demo shop"
+
+@step(u'Then I should not see coming soon message')
+def then_no_coming_soon_message(step):
+    assert_id_does_not_exist("emptyShopId")
