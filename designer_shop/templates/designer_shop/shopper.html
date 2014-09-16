@@ -58,7 +58,11 @@
             {% include "designer_shop/shop_items.html" %}
         </div>
     </div>
-    <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
+    <div class="navTab tab-pane" id="aboutTab">
+        <div class="container aboutContent">
+            {{ shop.aboutContent | safe }}
+        </div>
+    </div>
     <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
 </div>
 

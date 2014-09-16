@@ -12,7 +12,7 @@
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
                 <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
-                    <b>Shop Editor</b>
+                    <b>Pimp my Shop - {{ shop.name }}</b>
                     <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
                 </div>
             <div id="editorPanels" class="row panel-collapse collapse in">
@@ -82,8 +82,6 @@
 {% block javascript_library %}
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
-  <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
-  <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
 
 {% endblock javascript_library %}
 
@@ -91,10 +89,6 @@
     {{ block.super }}
     <script>
 
-function ClearImage(imageId)
-{
-    $(imageId).val("");
-}
 
         $('#id_product_image').change
         (
@@ -102,7 +96,6 @@ function ClearImage(imageId)
             function()
             {
                 $("#id_product_image1" ).removeClass("hidden");
-                $("#prod_img1Clear" ).removeClass("hidden");
             }
 
         );
@@ -113,7 +106,6 @@ function ClearImage(imageId)
             function()
             {
                 $("#id_product_image2" ).removeClass("hidden");
-                $("#prod_img2Clear" ).removeClass("hidden");
             }
 
         );
@@ -124,7 +116,6 @@ function ClearImage(imageId)
             function()
             {
                 $("#id_product_image3" ).removeClass("hidden");
-                $("#prod_img3Clear" ).removeClass("hidden");
             }
 
         );
@@ -135,7 +126,6 @@ function ClearImage(imageId)
             function()
             {
                 $("#id_product_image4" ).removeClass("hidden");
-                $("#prod_img4Clear" ).removeClass("hidden");
             }
 
         );

@@ -222,3 +222,6 @@ def sign_in(email, password):
     login_menu.find_element_by_name("password").send_keys(password)
     login_menu.find_element_by_name("submit").click()
     wait_for_ajax_to_complete()
+
+def go_home_page():
+    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))

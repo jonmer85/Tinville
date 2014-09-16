@@ -82,11 +82,13 @@ class get_filter_lists:
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
+    products = get_list_or_empty(Product, shop=shop.id)
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'shop': shop,
                 'products': get_filtered_products(shop, request.POST),
+                'shopProductCount': len(products)
             })
 
     if request.method == 'GET':
@@ -95,7 +97,8 @@ def shopper(request, slug):
             'shop': shop,
             'shopgenders': get_filter_lists(shop).genderlist(),
             'shopcategories': shopcategorynames,
-            'products': get_list_or_empty(Product, shop=shop.id)
+            'products': products,
+            'shopProductCount': len(products)
         })
 
 def itemdetail(request, shop_slug, item_slug=None):
@@ -359,6 +362,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                      bannerUploadForm=None, item=None):
         editItem = item is not None
         shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
+        products = get_list_or_empty(Product, shop=shop.id)
         return render(request, 'designer_shop/shopeditor.html', {
             'editmode': True,
             'shop': shop,
@@ -384,7 +388,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
             'shopcategories': shopCategoryNames,
             'shopgenders': get_filter_lists(shop).genderlist(),
-            'products': get_list_or_empty(Product, shop=shop.id)
+            'products': products,
+            'shopProductCount': len(products)
         })
 
 #private method no Auth
@@ -412,7 +417,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,
                 'shop': shop,
-                'products': get_filtered_products(shop, request.POST)
+                'products': get_filtered_products(shop, request.POST),
+                'shopProductCount': len(get_list_or_empty(Product, shop=shop.id))
             })
         else:
             if request.method == 'POST':
