@@ -283,8 +283,10 @@
     </nav>
 
                    <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
-                    <div id="shoppingcartitems" class="col-xs-11 col-sm-12 col-md-12">
+                   <div id="shoppingcartSlimJeff">
+                    <div id="shoppingcartitems" class="slimScrollBar col-xs-11 col-sm-12 col-md-12">
                      </div>
+                   </div>
                        <div>
                         <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
                            <span class="glyphicon glyphicon-check"></span>
@@ -293,6 +295,7 @@
 
                          </div>
                        </div>
+
                    </div>
 
     <div class="row slidingContent">
@@ -901,6 +904,8 @@ function RemoveAllItems()
 
     aggregateTotal();
 }
+
+        $("#shoppingcartSlimJeff").slimScroll({});
 
 
     </script>
