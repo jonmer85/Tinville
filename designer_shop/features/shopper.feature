@@ -33,7 +33,6 @@ Feature: Designer Shop
     When I select the "filterType" "Dresses"
     Then I should have "1" items in the demo shop
 
-@senay
   Scenario: No Search found with Combo Filter
     Given the demo shop
     Given I have at least 3 items in the demo shop
