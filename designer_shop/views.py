@@ -219,6 +219,7 @@ def get_variants(item, group=None):
             color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
+            sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).id
             sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
             isSizeSet = True
 
@@ -250,7 +251,6 @@ def get_variants(item, group=None):
                 colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('size'))
             elif group == 'size':
                 colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('color'))
-
 
     addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
