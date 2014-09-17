@@ -39,9 +39,7 @@
                 <select class="select form-control filterTabs" id="filterType" name="typeFilter">
                     <option value="View All Types">View All Types</option>
                     {% for category in shopcategories %}
-                        {% if category.numchild == 0 %}
-                            <option value="{{ category.name }}">{{ category.name }}</option>
-                        {% endif %}
+                        <option value="{{ category }}">{{ category }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -60,7 +58,11 @@
             {% include "designer_shop/shop_items.html" %}
         </div>
     </div>
-    <div class="navTab tab-pane" id="aboutTab">{{ shop.aboutContent | safe }}</div>
+    <div class="navTab tab-pane" id="aboutTab">
+        <div class="container aboutContent">
+            {{ shop.aboutContent | safe }}
+        </div>
+    </div>
     <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
 </div>
 

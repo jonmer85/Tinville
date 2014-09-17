@@ -64,34 +64,41 @@ class get_filter_lists:
 
     def categorylist(self):
         shopCategories = set()
+        shopCategoryNames = set()
         shopProductCategories = self.shop_product_categories()
         for productcategory in shopProductCategories:
             if productcategory != None:
-                shopCategories.add(get_or_none(Category, id=productcategory.category.id))
-        return shopCategories
+                currentcategory = get_or_none(Category, id=productcategory.category.id)
+                shopCategories.add(currentcategory)
+                shopCategoryNames.add(currentcategory.name)
+        return shopCategories, shopCategoryNames
 
     def genderlist(self):
         shopGenders = set()
-        categorylist = self.categorylist()
+        categorylist, names = self.categorylist()
         for category in categorylist:
             shopGenders.add(get_or_none(Category, path=category.path[:4]))
         return shopGenders
 
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
+    products = get_list_or_empty(Product, shop=shop.id)
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'shop': shop,
                 'products': get_filtered_products(shop, request.POST),
+                'shopProductCount': len(products)
             })
 
     if request.method == 'GET':
+        shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
         return render(request, 'designer_shop/shopper.html', {
             'shop': shop,
             'shopgenders': get_filter_lists(shop).genderlist(),
-            'shopcategories': get_filter_lists(shop).categorylist(),
-            'products': get_list_or_empty(Product, shop=shop.id)
+            'shopcategories': shopcategorynames,
+            'products': products,
+            'shopProductCount': len(products)
         })
 
 def itemdetail(request, shop_slug, item_slug=None):
@@ -354,6 +361,8 @@ def get_sizes_colors_and_quantities(sizeType, post):
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None, item=None):
         editItem = item is not None
+        shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
+        products = get_list_or_empty(Product, shop=shop.id)
         return render(request, 'designer_shop/shopeditor.html', {
             'editmode': True,
             'shop': shop,
@@ -377,9 +386,10 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                       }),
             'colors': AttributeOption.objects.filter(group=2),
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
-            'shopcategories': get_filter_lists(shop).categorylist(),
+            'shopcategories': shopCategoryNames,
             'shopgenders': get_filter_lists(shop).genderlist(),
-            'products': get_list_or_empty(Product, shop=shop.id)
+            'products': products,
+            'shopProductCount': len(products)
         })
 
 #private method no Auth
@@ -407,7 +417,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,
                 'shop': shop,
-                'products': get_filtered_products(shop, request.POST)
+                'products': get_filtered_products(shop, request.POST),
+                'shopProductCount': len(get_list_or_empty(Product, shop=shop.id))
             })
         else:
             if request.method == 'POST':

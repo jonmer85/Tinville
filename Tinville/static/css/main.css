@@ -943,6 +943,11 @@ textarea {
 }
 
 .shoppingcartthumbnail {
+    max-width: 75px;
+    max-height: 75px;
+}
+
+.shoppingcartthumbnaildiv {
     width:75px;
     height:75px;
     float:left;
