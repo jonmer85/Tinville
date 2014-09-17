@@ -219,7 +219,7 @@ def get_variants(item, group=None):
             color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
-            sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).id
+            sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
             sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
             isSizeSet = True
 
@@ -239,16 +239,25 @@ def get_variants(item, group=None):
 
 
         if group is None:
-            quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
+            if isSizeSet == True:
+                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
+            else:
+                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
-            groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
+            if isSizeSet == True:
+                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
+            else:
+                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
             quantitysize = groupdict
             colorsizequantitydict[mysort].append(quantitysize)
             if str(group) == 'color':
-                colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('size'))
+                if isSizeSet == True:
+                    colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('sizeorder'))
+                else:
+                    colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('size'))
             elif group == 'size':
                 colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('color'))
 
