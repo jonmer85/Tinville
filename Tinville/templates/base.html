@@ -283,8 +283,10 @@
     </nav>
 
                    <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
-                    <div id="shoppingcartitems" class="col-xs-11 col-sm-12 col-md-12">
+                   <div id="shoppingcartSlimJeff">
+                    <div id="shoppingcartitems" class="slimScrollBar col-xs-11 col-sm-12 col-md-12">
                      </div>
+                   </div>
                        <div>
                         <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
                            <span class="glyphicon glyphicon-check"></span>
@@ -293,6 +295,7 @@
 
                          </div>
                        </div>
+
                    </div>
 
     <div class="row slidingContent">
@@ -785,8 +788,10 @@ function LoadCartItemDiv(cartItem)
         'id' : cartItem.Id
     });
 
-    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class':'shoppingcartthumbnail'});
-    itemThumbnail.appendTo(cartitemdiv);
+    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
+    var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
+    itemThumbnail.appendTo(thumbnailDiv);
+    thumbnailDiv.appendTo(cartitemdiv);
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
 
@@ -901,6 +906,8 @@ function RemoveAllItems()
 
     aggregateTotal();
 }
+
+        $("#shoppingcartSlimJeff").slimScroll({});
 
 
     </script>
