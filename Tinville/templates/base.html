@@ -788,8 +788,10 @@ function LoadCartItemDiv(cartItem)
         'id' : cartItem.Id
     });
 
-    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class':'shoppingcartthumbnail'});
-    itemThumbnail.appendTo(cartitemdiv);
+    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
+    var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
+    itemThumbnail.appendTo(thumbnailDiv);
+    thumbnailDiv.appendTo(cartitemdiv);
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
 
