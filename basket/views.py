@@ -91,7 +91,7 @@ def checkLineId(Ids, basketlineId):
     if not str(Ids) == '':
         ids = Ids.split(',')
         for id in ids:
-            if id < 0:
+            if int(id) < 0:
                 return True
             if id == basketlineId:
                 return False
