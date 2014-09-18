@@ -282,11 +282,11 @@ var sizeDimensionTemplate = "" +
     "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
         "<div class='controls row'>" +
             "<div class='col-xs-4'>" +
-                "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'>" +
+                "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='demical' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'>" +
             "</div>" +
             "<div class='col-xs-2 dimensionSplit'>X</div>"+
             "<div class='col-xs-4'>" +
-                "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
+                "<input class='sizeDimensionSelection numberinput form-control dimensionLength' data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='demical' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
             "</div>" +
             "<div class='col-xs-2'>" +
                 "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
@@ -300,7 +300,7 @@ var sizeNumberTemplate = "" +
     "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
         "<div class='controls row'>" +
             "<div class='col-xs-10'>" +
-                "<input class='sizeNumberSelection numberinput form-control' id='id_sizeNumberSelection' name='sizeNumberSelection' type='number' placeholder = 'Type a size'>" +
+                "<input class='sizeNumberSelection numberinput form-control' data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='demical' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' id='id_sizeNumberSelection' name='sizeNumberSelection' type='demical' placeholder = 'Type a size'>" +
             "</div>" +
             "<div class='col-xs-2'>" +
                 "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
