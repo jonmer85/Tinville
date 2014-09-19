@@ -58,7 +58,7 @@ def load_cart(request):
                             currentproduct = get_object_or_404(Product, id=basketline.product_id)
                             attrProduct = currentproduct.attribute_summary.split(',')
                             color = attrProduct[0].split(':')
-                            size = attrProduct[1].split(':')
+                            size = getSize(attrProduct)
                             parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
                             image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
                             stockrecord = get_object_or_404(StockRecords, product_id=basketline.product_id)
@@ -94,6 +94,18 @@ def load_cart(request):
             cartInfo = {'Id': 0, 'msg': '', 'cartLoaded': 0}
             cartItems.append(cartInfo)
         return HttpResponse(json.dumps(cartItems), mimetype='application/json')
+
+
+def getSize(attrProduct):
+    if len(attrProduct) == 2:
+        size = attrProduct[1].split(':')
+        return str(size[1])
+    else:
+        sizeX = attrProduct[1].split(':')
+        sizeY = attrProduct[2].split(':')
+        divider = " x "
+        size = str(sizeX[1]) + divider + str(sizeY[1])
+        return size
 
 
 def checkLineId(Ids, basketlineId):
