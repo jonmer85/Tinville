@@ -108,6 +108,12 @@
     </div>
 {% endblock content%}
 
+{% block javascript_library %}
+  {{ block.super }}
+
+{% endblock javascript_library %}
+
+
 {% block javascript %}
     {{ block.super }}
     <script>

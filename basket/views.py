@@ -56,6 +56,9 @@ def load_cart(request):
                     for basketline in basketlines:
                         if checkLineId(ret['Id'],basketline.id):
                             currentproduct = get_object_or_404(Product, id=basketline.product_id)
+                            attrProduct = currentproduct.attribute_summary.split(',')
+                            color = attrProduct[0].split(':')
+                            size = getSize(attrProduct)
                             parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
                             image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
                             stockrecord = get_object_or_404(StockRecords, product_id=basketline.product_id)
@@ -66,6 +69,8 @@ def load_cart(request):
                                         'description': strip_tags(parentproduct.description),
                                         'price': float(basketline.price_excl_tax),
                                         'image': str(image[0].original),
+                                        'color': str(color[1]),
+                                        'size': size,
                                         'qty': basketline.quantity,
                                         'msg': '',
                                         'cartLoaded': 1}
@@ -76,7 +81,11 @@ def load_cart(request):
                 qtys = ret['qty'].split(',')
                 for product_id in product_ids:
                     if int(Ids[index]) < 0:
-                        cartItems.append(addBasket(request,product_id, int(qtys[index])))
+                        currentproduct = get_object_or_404(Product, id=product_id)
+                        attrProduct = currentproduct.attribute_summary.split(',')
+                        color = attrProduct[0].split(':')
+                        size = attrProduct[1].split(':')
+                        cartItems.append(addBasket(request,product_id, int(qtys[index]),str(color[1]),str(size[1])))
                     index = index + 1
             else:
                 cartInfo = {'Id': 0, 'msg': '', 'cartLoaded': 0}
@@ -85,6 +94,18 @@ def load_cart(request):
             cartInfo = {'Id': 0, 'msg': '', 'cartLoaded': 0}
             cartItems.append(cartInfo)
         return HttpResponse(json.dumps(cartItems), mimetype='application/json')
+
+
+def getSize(attrProduct):
+    if len(attrProduct) == 2:
+        size = attrProduct[1].split(':')
+        return str(size[1])
+    else:
+        sizeX = attrProduct[1].split(':')
+        sizeY = attrProduct[2].split(':')
+        divider = " x "
+        size = str(sizeX[1]) + divider + str(sizeY[1])
+        return size
 
 
 def checkLineId(Ids, basketlineId):
@@ -99,7 +120,7 @@ def checkLineId(Ids, basketlineId):
         return True
 
 
-def addBasket(request, product_id, qty):
+def addBasket(request, product_id, qty, color, size):
         msg = ''
         # ToDo figure out this tax stuff
         tax = 1
@@ -125,9 +146,9 @@ def addBasket(request, product_id, qty):
                 basketlineId = basketline.id
                 cartLoaded = 1
             elif line_quantity == qty:
-                msg = "You have tried to add the same item, please change the quantity"
+                msg = ""
                 basketlineId = 0
-                cartLoaded = 0
+                cartLoaded = 1
             else:
                 # item already in the basket_line but add to the qty
                 basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
@@ -145,6 +166,8 @@ def addBasket(request, product_id, qty):
                     'description': strip_tags(parentproduct.description),
                     'price': float(price_excl_tax),
                     'image': str(image[0].original),
+                    'color': color,
+                    'size': size,
                     'qty': qty,
                     'msg': msg,
                     'cartLoaded': cartLoaded}
@@ -167,7 +190,7 @@ def add_item_to_cart(request, shop_slug, item_slug):
         # varItem = Product.objects.filter(attribute_values__value_option_id=2)
         currentproduct = get_filtered_variant(item.id, request.POST)
         image = get_list_or_empty(ProductImages, product_id=item.id)
-        cartInfo = addBasket(request,currentproduct.id,qty)
+        cartInfo = addBasket(request,currentproduct.id,qty,request.POST['colorFilter'],request.POST['sizeFilter'])
         return HttpResponse(json.dumps(cartInfo), mimetype='application/json')
     else:
         return redirect('designer_shop.views.itemdetail', shop_slug, item_slug)
