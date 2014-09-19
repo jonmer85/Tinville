@@ -70,7 +70,7 @@ def load_cart(request):
                                         'price': float(basketline.price_excl_tax),
                                         'image': str(image[0].original),
                                         'color': str(color[1]),
-                                        'size': str(size[1]),
+                                        'size': size,
                                         'qty': basketline.quantity,
                                         'msg': '',
                                         'cartLoaded': 1}
