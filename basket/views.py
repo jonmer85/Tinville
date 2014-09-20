@@ -135,9 +135,9 @@ def addBasket(request, product_id, qty, color, size):
             if not basket.has_strategy:
                 strategy = selector.strategy(request=request, user=request.user)
                 basket._set_strategy(strategy)
-            line_quantity = basket.line_quantity(product=currentproduct, stockrecord=stockrecord)
             line_ref=basket._create_line_reference(product=currentproduct, stockrecord=stockrecord, options=None)
-            if line_quantity == 0:
+            lines = get_list_or_empty(Line, line_reference=line_ref, basket_id=basket.id)
+            if len(lines) == 0:
                 # item not in the basket line
                 basket.add_product(currentproduct,qty)
                 # Send signal for basket addition
@@ -145,17 +145,18 @@ def addBasket(request, product_id, qty, color, size):
                 basketline = get_list_or_empty(Line, line_reference=line_ref, basket_id=basket.id)[0]
                 basketlineId = basketline.id
                 cartLoaded = 1
-            elif line_quantity == qty:
-                msg = ""
-                basketlineId = 0
-                cartLoaded = 1
             else:
-                # item already in the basket_line but add to the qty
-                basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
-                basketline.quantity = qty
-                basketline.save(update_fields=["quantity"])
-                basketlineId = 0
-                cartLoaded = 1
+                if lines[0].quantity == qty:
+                    msg = ""
+                    basketlineId = 0
+                    cartLoaded = 1
+                else:
+                    # item already in the basket_line but add to the qty
+                    basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
+                    basketline.quantity = qty
+                    basketline.save(update_fields=["quantity"])
+                    basketlineId = basketline.id
+                    cartLoaded = 2
         else:
             # not logged in or does not have an account
             basketlineId = -1

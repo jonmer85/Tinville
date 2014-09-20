@@ -125,7 +125,7 @@
     function refreshvariants() {
         myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
             var colorlist = [];
-            colorlist.push('<option disabled="disabled" value=""><i>Choose a Color</i></option>');
+            colorlist.push('<option value=""><i>Choose a Color</i></option>');
             $.each(data.variants, function(key)
             {
                 colorlist.push('<option value="'+ key +'">'+ key +'</option>');
@@ -148,11 +148,11 @@
             if (key === $("#itemColorSelection").val())
             {
                 var currentsize = ""
-                sizelist.push('<option disabled="disabled" value=""><i>Choose a Size</i></option>');
+                sizelist.push('<option value=""><i>Choose a Size</i></option>');
                 $.each(val, function() {
                     if (this.quantity <= 0)
                     {
-                        sizelist.push('<option disabled="disabled" value="' + this.size + '">'+ this.size +'</option>')
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>')
                     }
                     else
                     {
@@ -163,12 +163,8 @@
                         currentsize = $('#itemSizeSelection').val();
                     }
                 });
-                if (currentsize === "")
-                {
-                    currentsize = "Choose a Size"
-                }
                 $('#itemSizeSelection').html(sizelist.join(''));
-{#                $('#itemSizeSelection').val(currentcolor);#}
+                $('#itemSizeSelection').val(currentsize);
                 return false;
             }
         });
@@ -275,6 +271,8 @@
 
                             data.image = "{{ MEDIA_URL }}" + data.image
                             if (parseInt(data.Id) > 0){
+                                if(data.cartLoaded === 2)
+                                    RemoveCartData(data);
                                 AddCartItem(data)
                             }
                             else if (parseInt(data.Id) < 0){
@@ -285,6 +283,11 @@
                                     {
                                         if (item.product_id === data.product_id){
                                             present = true;
+                                            if(item.qty !== data.qty)
+                                            {
+                                                RemoveCartItem(item.Id);
+                                                present = false;
+                                            }
                                             return false
                                         }
                                     });
