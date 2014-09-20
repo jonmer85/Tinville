@@ -569,9 +569,9 @@
 }
 
 .itemSize {
-    height:auto;
+    height:250;
     width:auto;
-    max-height:200px;
+    max-height:185px;
 }
 
 @media(min-width: 768px) {
