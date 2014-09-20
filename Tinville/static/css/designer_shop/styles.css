@@ -544,6 +544,9 @@
     padding: 4px;
     border: 1px solid #ccc;
 }
+.autoHeight{
+    height: auto;
+}
 
 .shopItem {
     padding-bottom: 5px;
