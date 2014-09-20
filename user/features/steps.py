@@ -102,7 +102,7 @@ def then_i_should_see_an_error_telling_me_that_shop_exists(step):
 
 @step(u'Then I should be redirected to the home page')
 def then_i_should_be_redirected_to_the_home_page(step):
-    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
+    go_home_page()
 
 @step(u'(?:Then|And) I can visit my shop at "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):

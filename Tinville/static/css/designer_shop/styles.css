@@ -120,11 +120,21 @@
 
 .aboutContent {
     background-color: #ffffff;
-    border-radius: 4px;
-    font-size: 1.5em;
-    padding-right: 2%;
+    font-size: 1.2em;
+    margin: 10px;
+    /*padding-right: 10%;*/
+    padding-left: 20%;
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
+    text-align: left;
+
+}
+
+@media (max-width: 992px) {
+     .aboutContent {
+        font-size: 1em;
+        padding-left: 0%;
+    }
 }
 
 .imageContainer {
@@ -542,8 +552,8 @@
     margin-bottom: 5px;
     margin-top: 5px;
     margin-right: 5px;
-    width: 150px;
-    height: 225px;
+    width: 200px;
+    height: 250px;
 }
 
 .shopItemDetail {
@@ -554,9 +564,14 @@
     margin-top: 5px;
     margin-right: 5px;
 }
+.thumbnail a > img {
+    max-width: 150px;
+}
 
 .itemSize {
-    max-height: 170px;
+    height:auto;
+    width:auto;
+    max-height:200px;
 }
 
 @media(min-width: 768px) {
