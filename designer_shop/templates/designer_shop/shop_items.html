@@ -25,7 +25,7 @@
 
                                     <div class="caption">
                                         <a class="name" href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
-                                        <span class="price "> ${{session.price.excl_tax}}</span>
+                                        <div class="price "> ${{session.price.excl_tax}}</div>
                                         <span class="">
                                             {% if not session.availability.is_available_to_buy %}
                                                 {{  session.availability.message  }}
