@@ -6,62 +6,62 @@ class ItemVarientService(TestCase):
     fixtures = ['all.json',]
 
     def test_nofiltersizeset(self):
-        thecorrectresponse =json.loads('''{"variants": [{"color": "Red", "currency": "$", "price": "12.99", "quantity": 10, "size": "XXS"},
-                                        {"color": "Blue", "currency": "$", "price": "12.99", "quantity": 10, "size": "XXS"},
-                                        {"color": "Red", "currency": "$", "price": "12.99", "quantity": 10, "size": "XS"},
-                                        {"color": "Blue", "currency": "$", "price": "12.99", "quantity": 10, "size": "XS"},
-                                        {"color": "Red", "currency": "$", "price": "12.99", "quantity": 10, "size": "SM"},
-                                        {"color": "Blue", "currency": "$", "price": "12.99", "quantity": 10, "size": "SM"}],
+        thecorrectresponse =json.loads('''{"variants": [{"color": "Red", "currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10, "size": "XXS"},
+                                        {"color": "Blue", "currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10, "size": "XXS"},
+                                        {"color": "Red", "currency": "$", "sizeorder": 2, "price": "12.99", "quantity": 10, "size": "XS"},
+                                        {"color": "Blue", "currency": "$", "sizeorder": 2,"price": "12.99", "quantity": 10, "size": "XS"},
+                                        {"color": "Red", "currency": "$", "sizeorder": 3, "price": "12.99", "quantity": 10, "size": "SM"},
+                                        {"color": "Blue", "currency": "$", "sizeorder": 3, "price": "12.99", "quantity": 10, "size": "SM"}],
                                         "sizetype": "1", "minprice": "12.99"}''')
         self.checkfilter("TestSizeSetItem", None, thecorrectresponse)
 
     def test_pricefiltersizeset(self):
-        thecorrectresponse = json.loads('''{"variants": {"12.99": [{"color": "Red", "currency": "$", "quantity": 10, "size": "XXS"},
-                                           {"color": "Blue", "currency": "$", "quantity": 10, "size": "XXS"},
-                                           {"color": "Red", "currency": "$", "quantity": 10, "size": "XS"},
-                                           {"color": "Blue", "currency": "$", "quantity": 10, "size": "XS"},
-                                           {"color": "Red", "currency": "$", "quantity": 10, "size": "SM"},
-                                           {"color": "Blue", "currency": "$", "quantity": 10, "size": "SM"}]},
+        thecorrectresponse = json.loads('''{"variants": {"12.99": [{"color": "Red", "currency": "$", "sizeorder": 1, "quantity": 10, "size": "XXS"},
+                                           {"color": "Blue", "currency": "$", "sizeorder": 1, "quantity": 10, "size": "XXS"},
+                                           {"color": "Red", "currency": "$", "sizeorder": 2, "quantity": 10, "size": "XS"},
+                                           {"color": "Blue", "currency": "$", "sizeorder": 2, "quantity": 10, "size": "XS"},
+                                           {"color": "Red", "currency": "$", "sizeorder": 3, "quantity": 10, "size": "SM"},
+                                           {"color": "Blue", "currency": "$", "sizeorder": 3, "quantity": 10, "size": "SM"}]},
                                            "sizetype": "1", "minprice": "12.99"}''')
         self.checkfilter("TestSizeSetItem", "price", thecorrectresponse)
 
     def test_colorfiltersizeset(self):
-        thecorrectresponse = json.loads('''{"variants": {"Blue": [{"currency": "$", "price": "12.99", "quantity": 10, "size": "SM"},
-                                           {"currency": "$", "price": "12.99", "quantity": 10, "size": "XS"},
-                                           {"currency": "$", "price": "12.99", "quantity": 10, "size": "XXS"}],
-                                           "Red": [{"currency": "$", "price": "12.99", "quantity": 10, "size": "SM"},
-                                           {"currency": "$", "price": "12.99", "quantity": 10, "size": "XS"},
-                                           {"currency": "$", "price": "12.99", "quantity": 10, "size": "XXS"}]},
+        thecorrectresponse = json.loads('''{"variants": {"Blue": [{"currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10, "size": "XXS"},
+                                           {"currency": "$", "sizeorder": 2, "price": "12.99", "quantity": 10, "size": "XS"},
+                                           {"currency": "$", "sizeorder": 3, "price": "12.99", "quantity": 10, "size": "SM"}],
+                                           "Red": [{"currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10, "size": "XXS"},
+                                           {"currency": "$", "sizeorder": 2, "price": "12.99", "quantity": 10, "size": "XS"},
+                                           {"currency": "$", "sizeorder": 3, "price": "12.99", "quantity": 10, "size": "SM"}]},
                                            "sizetype": "1", "minprice": "12.99"}''')
         self.checkfilter("TestSizeSetItem", "color", thecorrectresponse)
 
     def test_sizefiltersizeset(self):
-        thecorrectresponse = json.loads('''{"variants": {"XXS": [{"color": "Blue", "currency": "$", "price": "12.99", "quantity": 10},
-                                           {"color": "Red", "currency": "$", "price": "12.99", "quantity": 10}],
-                                           "XS": [{"color": "Blue", "currency": "$", "price": "12.99", "quantity": 10},
-                                           {"color": "Red", "currency": "$", "price": "12.99", "quantity": 10}],
-                                           "SM": [{"color": "Blue", "currency": "$", "price": "12.99", "quantity": 10},
-                                           {"color": "Red", "currency": "$", "price": "12.99", "quantity": 10}]},
+        thecorrectresponse = json.loads('''{"variants": {"XXS": [{"color": "Blue", "currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10},
+                                           {"color": "Red", "currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10}],
+                                           "XS": [{"color": "Blue", "currency": "$", "sizeorder": 2, "price": "12.99", "quantity": 10},
+                                           {"color": "Red", "currency": "$", "sizeorder": 2, "price": "12.99", "quantity": 10}],
+                                           "SM": [{"color": "Blue", "currency": "$", "sizeorder": 3, "price": "12.99", "quantity": 10},
+                                           {"color": "Red", "currency": "$", "sizeorder": 3, "price": "12.99", "quantity": 10}]},
                                            "sizetype": "1", "minprice": "12.99"}''')
         self.checkfilter("TestSizeSetItem", "size", thecorrectresponse)
 
     def test_quantityfiltersizeset(self):
-        thecorrectresponse = json.loads('''{"variants": {"10": [{"color": "Red", "currency": "$", "price": "12.99", "size": "XXS"},
-                                           {"color": "Blue", "currency": "$", "price": "12.99", "size": "XXS"},
-                                           {"color": "Red", "currency": "$", "price": "12.99", "size": "XS"},
-                                           {"color": "Blue", "currency": "$", "price": "12.99", "size": "XS"},
-                                           {"color": "Red", "currency": "$", "price": "12.99", "size": "SM"},
-                                           {"color": "Blue", "currency": "$", "price": "12.99", "size": "SM"}]},
+        thecorrectresponse = json.loads('''{"variants": {"10": [{"color": "Red", "currency": "$", "sizeorder": 1, "price": "12.99", "size": "XXS"},
+                                           {"color": "Blue", "currency": "$", "sizeorder": 1, "price": "12.99", "size": "XXS"},
+                                           {"color": "Red", "currency": "$", "sizeorder": 2, "price": "12.99", "size": "XS"},
+                                           {"color": "Blue", "currency": "$", "sizeorder": 2, "price": "12.99", "size": "XS"},
+                                           {"color": "Red", "currency": "$", "sizeorder": 3,"price": "12.99", "size": "SM"},
+                                           {"color": "Blue", "currency": "$", "sizeorder": 3, "price": "12.99", "size": "SM"}]},
                                            "sizetype": "1", "minprice": "12.99"}''')
         self.checkfilter("TestSizeSetItem", "quantity", thecorrectresponse)
 
     def test_currencyfiltersizeset(self):
-        thecorrectresponse = json.loads('''{"variants": {"$": [{"color": "Red", "price": "12.99", "quantity": 10, "size": "XXS"},
-                                           {"color": "Blue", "price": "12.99", "quantity": 10, "size": "XXS"},
-                                           {"color": "Red", "price": "12.99", "quantity": 10, "size": "XS"},
-                                           {"color": "Blue", "price": "12.99", "quantity": 10, "size": "XS"},
-                                           {"color": "Red", "price": "12.99", "quantity": 10, "size": "SM"},
-                                           {"color": "Blue", "price": "12.99", "quantity": 10, "size": "SM"}]},
+        thecorrectresponse = json.loads('''{"variants": {"$": [{"color": "Red", "price": "12.99", "sizeorder": 1, "quantity": 10, "size": "XXS"},
+                                           {"color": "Blue", "price": "12.99", "sizeorder": 1, "quantity": 10, "size": "XXS"},
+                                           {"color": "Red", "price": "12.99", "sizeorder": 2, "quantity": 10, "size": "XS"},
+                                           {"color": "Blue", "price": "12.99", "sizeorder": 2, "quantity": 10, "size": "XS"},
+                                           {"color": "Red", "price": "12.99", "sizeorder": 3, "quantity": 10, "size": "SM"},
+                                           {"color": "Blue", "price": "12.99", "sizeorder": 3, "quantity": 10, "size": "SM"}]},
                                            "sizetype": "1", "minprice": "12.99"}''')
         self.checkfilter("TestSizeSetItem", "currency", thecorrectresponse)
 
