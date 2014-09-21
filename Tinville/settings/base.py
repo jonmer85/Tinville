@@ -96,8 +96,8 @@ SECRET_KEY = '=5sic^#9yx+r9o5khng_8#!41y=5f8z8218bvpb)mu%p0q0xs3'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.app_directories.Loader',
     'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
     'django_mobile.loader.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
@@ -182,8 +182,6 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
-    'paypal',
-    'debug_toolbar'
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
@@ -268,7 +266,3 @@ TINYMCE_PASTE = True
 
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
-
-PAYPAL_API_USERNAME = 'dis.abreu_api1.tinville.com'
-PAYPAL_API_PASSWORD = 'QJ2FDWUTCS698EVK'
-PAYPAL_API_SIGNATURE = 'A.du0CNmdwFvvDeE1iilY11MlA-wAJ1j18ehYUGBKhRNaxN8bnPWvInR'

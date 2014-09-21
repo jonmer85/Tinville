@@ -5,7 +5,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from user.views import ajax_login, register
 from user.forms import LoginForm
 
-from oscar.app import application
+# from oscar.app import application
 
 
 
@@ -20,7 +20,6 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 
 urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^checkout/paypal/', include('paypal.express.urls')),
     url(r'^register$', 'user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,
@@ -44,9 +43,7 @@ urlpatterns += patterns('',
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/add_item_to_cart$', 'basket.views.add_item_to_cart'),
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     url(r'^load_cart$', 'basket.views.load_cart'),
-    # url(r'^dashboard/paypal/express/', include(application.urls)),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'', include(application.urls)),
     url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper'),
 )
 
