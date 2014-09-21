@@ -142,8 +142,8 @@
     });
 
     $("#itemColorSelection").change(function() {
+        $('option[value=""]').attr('disabled', true);
         $.each(myresponse.responseJSON.variants, function(key, val) {
-            $('option[value=""]').attr('disabled', true);
             var sizelist = [];
             if (key === $("#itemColorSelection").val())
             {
@@ -152,7 +152,7 @@
                 $.each(val, function() {
                     if (this.quantity <= 0)
                     {
-                        sizelist.push('<option disabled="disabled" value="' + this.size + '">'+ this.size +'</option>')
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>')
                     }
                     else
                     {
@@ -163,11 +163,8 @@
                         currentsize = $('#itemSizeSelection').val();
                     }
                 });
-                if (currentsize === "")
-                {
-                    currentsize = "Choose a Size"
-                }
                 $('#itemSizeSelection').html(sizelist.join(''));
+                $('#itemSizeSelection').val(currentsize);
                 return false;
             }
         });
@@ -274,6 +271,8 @@
 
                             data.image = "{{ MEDIA_URL }}" + data.image
                             if (parseInt(data.Id) > 0){
+                                if(data.cartLoaded === 2)
+                                    RemoveCartData(data);
                                 AddCartItem(data)
                             }
                             else if (parseInt(data.Id) < 0){
@@ -284,6 +283,11 @@
                                     {
                                         if (item.product_id === data.product_id){
                                             present = true;
+                                            if(item.qty !== data.qty)
+                                            {
+                                                RemoveCartItem(item.Id);
+                                                present = false;
+                                            }
                                             return false
                                         }
                                     });

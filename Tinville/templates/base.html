@@ -858,6 +858,24 @@ function AddCartItem(cartItem)
 
 }
 
+function RemoveCartData(data)
+{
+    if(data.cartLoaded !== 2)
+        RemoveCartItem(data.Id);
+    else{
+        $('#'+data.Id).remove();
+        cartState = sessionStorage.getItem("cartState");
+        cartJson = JSON.parse(cartState || "{}");
+        var list = cartJson["cartList"];
+        delete list[data.Id];
+        cartJson.cartList = list;
+        sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+        aggregateTotal();
+    }
+
+}
+
 function RemoveCartItem(itemId)
 {
     if (itemId > 0){
