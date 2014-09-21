@@ -32,11 +32,9 @@ Selector = get_class('partner.strategy', 'Selector')
 selector = Selector()
 add_signal = signals.basket_addition
 
-def get_basket(request):
-    return request.basket
 # Create your views here.
 def load_cart(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         cartItems = []
         basket = request.basket
         index = 0
@@ -58,8 +56,6 @@ def load_cart(request):
                             'qty': basketline.quantity,
                             'msg': ''}
                 cartItems.append(cartInfo)
-        else:
-            cartItems.append({'Id': 0, 'msg': ''})
 
         return HttpResponse(json.dumps(cartItems), mimetype='application/json')
 
@@ -86,16 +82,13 @@ def addBasket(request, product_id, qty):
         # Send signal for basket addition
         add_signal.send(sender=None,product=currentproduct, user=request.user, request=request)
         basketline = get_list_or_empty(Line, line_reference=line_ref, basket_id=basket.id)[0]
-        basketlineId = basketline.id
-    elif line_quantity == qty:
-        msg = "You have tried to add the same item, please change the quantity"
-        basketlineId = 0
+
     else:
         # item already in the basket_line but add to the qty
         basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
         basketline.quantity = qty
         basketline.save(update_fields=["quantity"])
-        basketlineId = 0
+    basketlineId = basketline.id
 
     cartInfo = {'Id': basketlineId,
                 'product_id': currentproduct.id,

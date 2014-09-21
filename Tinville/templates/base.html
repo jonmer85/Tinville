@@ -572,20 +572,14 @@
             var url = "/load_cart"
                 ajax_req = $.ajax({
                     url: url,
-                    type: "POST",
+                    type: "GET",
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR) {
-                        var itemGUIDValue = sessionStorage.getItem("itemGUID");
-                        if(itemGUIDValue === undefined)
-                            itemGUIDValue = 0;
-
                         $.each(data, function(index, item)
                         {
                             if (item.msg == ''){
                                 item.image = "{{ MEDIA_URL }}" + item.image
-                                if (parseInt(item.Id) > 0){
-                                    AddCartItem(item)
-                                }
+                                AddCartItem(item)
                             }
                             else {
                                 $('#messageId').html(item.msg)
@@ -748,20 +742,15 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-   var cartTotal = 0.00;
+    var cartTotal = 0.00;
 
-    cartState = sessionStorage.getItem("cartState");
-    cartJson = JSON.parse(cartState || "{}");
-    var cartList= cartJson["cartList"];
-    if(cartList === undefined)
-        cartList = new Object();
-
-    $.each(cartList, function(index, item)
+    var  cartListPrices = $('.shoppingcartitemPrice');
+    $.each(cartListPrices, function(index, price)
     {
-        if(item === undefined || item.price === undefined)
+        if(price === undefined)
             cartTotal += 0.00;
         else
-            cartTotal += item.price;
+            cartTotal += price;
 
     });
 
@@ -801,7 +790,7 @@ function RemoveCartItem(itemId)
     aggregateTotal();
 }
 
-        $("#shoppingcartSlimJeff").slimScroll({});
+    $("#shoppingcartSlimJeff").slimScroll({});
 
 
     </script>
