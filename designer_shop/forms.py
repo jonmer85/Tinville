@@ -395,10 +395,9 @@ class BannerUploadForm(forms.Form):
 
     helper.layout = Layout(
         Div(
-
             Fieldset('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
-                     'banner'),
+                     Field('banner', css_class="autoHeight")),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
         ))
@@ -414,7 +413,7 @@ class LogoUploadForm(forms.Form):
         Div(
             Fieldset('Logo Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
-                     'logo'),
+                     Field('logo', css_class="autoHeight")),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
         ))

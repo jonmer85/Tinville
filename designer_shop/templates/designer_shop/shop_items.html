@@ -15,7 +15,7 @@
                                         {% with image=product.primary_image %}
                                             {% thumbnail image.original "200x250" upscale=False as thumb %}
                                             <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
-                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="img-responsive itemSize"/>
+                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="itemSize"/>
                                             </a>
                                             {% endthumbnail %}
                                         {% endwith %}
@@ -25,7 +25,7 @@
 
                                     <div class="caption">
                                         <a class="name" href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
-                                        <span class="price "> ${{session.price.excl_tax}}</span>
+                                        <div class="price "> ${{session.price.excl_tax}}</div>
                                         <span class="">
                                             {% if not session.availability.is_available_to_buy %}
                                                 {{  session.availability.message  }}
