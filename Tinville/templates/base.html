@@ -556,6 +556,33 @@
             RemoveAllItems();
         }
 
+        $("#shoppingcart").click(function(){
+            sessionStorage.setItem("cartClick","1")
+        })
+        $(".loginPopupForm").click(function(){
+            sessionStorage.setItem("cartClick","1")
+        })
+
+
+        $(document).on('click',function () {
+            var cartClick = sessionStorage.getItem("cartClick");
+            if(cartClick === undefined)
+                cartClick = "0";
+
+            if (cartClick==="0"){
+                var mode = checkMode();
+                if(mode == 'xs')
+                    $("#shoppingcart").animate({width:'hide'},350);
+                else
+                    $("#shoppingcart").animate({height:'hide'},350);
+                cartState = sessionStorage.getItem("cartState");
+                cartJson = JSON.parse(cartState || "{}");
+                cartJson["IsOpen"] = false;
+                sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+            }
+            sessionStorage.setItem("cartClick","0");
+        });
+
         $(document).ready(function() {
 
                    var menu = "close";
@@ -757,12 +784,14 @@ function navbarClicked()
 
 $("#shoppingcartBtn").click(function()
 {
+    sessionStorage.setItem("cartClick","1");
     $("#shoppingcart").animate({height:'toggle'},350);
     cartToggleBtn();
 });
 
 $("#shoppingcartMobileBtn").click(function()
 {
+    sessionStorage.setItem("cartClick","1");
     $("#shoppingcart").animate({width:'toggle'},350);
     cartToggleBtn();
 });
@@ -858,6 +887,24 @@ function AddCartItem(cartItem)
 
 }
 
+function RemoveCartData(data)
+{
+    if(data.cartLoaded !== 2)
+        RemoveCartItem(data.Id);
+    else{
+        $('#'+data.Id).remove();
+        cartState = sessionStorage.getItem("cartState");
+        cartJson = JSON.parse(cartState || "{}");
+        var list = cartJson["cartList"];
+        delete list[data.Id];
+        cartJson.cartList = list;
+        sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+
+        aggregateTotal();
+    }
+
+}
+
 function RemoveCartItem(itemId)
 {
     if (itemId > 0){
@@ -907,7 +954,7 @@ function RemoveAllItems()
     aggregateTotal();
 }
 
-        $("#shoppingcartSlimJeff").slimScroll({});
+        $("#shoppingcartitems").slimScroll({width: "100%"});
 
 
     </script>
