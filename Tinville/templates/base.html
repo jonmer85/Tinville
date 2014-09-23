@@ -288,8 +288,8 @@
                      </div>
                    </div>
                        <div>
-                        <button id="shoppingcartcheckout" type="button" href="#" class="btn btn-default btn-sm">
-                           <span class="glyphicon glyphicon-check"></span>
+                        <button id="shoppingcartcheckout" type="button" class="btn btn-default btn-sm">
+                           <a href="{% url 'checkout' %}" class="glyphicon glyphicon-check"></a>
                         </button>
                          <div id="carttotal">
 
@@ -714,7 +714,11 @@
  cartJson = JSON.parse(cartState || "{}");
 
 $(function() {
+   LoadCart("#shoppingcartitems");
+});
 
+function LoadCart(divId)
+{
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
 
@@ -734,10 +738,10 @@ $(function() {
     {
         $.each(cartItems, function(index, item)
         {
-            LoadCartItemDiv(item);
+            LoadCartItemDiv(item, divId);
         });
     }
-});
+}
 
 $("#mobileNavButton").click(function()
 {
@@ -781,7 +785,7 @@ function cartToggleBtn()
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
 
-function LoadCartItemDiv(cartItem)
+function LoadCartItemDiv(cartItem, divId)
 {
     var cartitemdiv =  $('<div/>', {
         'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
@@ -812,7 +816,7 @@ function LoadCartItemDiv(cartItem)
     var price = '$' + cartItem.price;
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
-    cartitemdiv.appendTo("#shoppingcartitems");
+    cartitemdiv.appendTo(divId);
 
 }
 
@@ -842,7 +846,7 @@ function AddCartItem(cartItem)
 {
     //TODO: Check if cartItem.Id exists if it does add quantity and update price...
     // else
-    LoadCartItemDiv(cartItem);
+    LoadCartItemDiv(cartItem, "#shoppingcartitems");
 
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
