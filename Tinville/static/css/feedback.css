@@ -8,8 +8,14 @@
 
 @media (max-width: 768px) {
     #feedback_widget {
-        top: 50%;
+        top: 20%;
+        width: 80%;
+        height: 50%;
     }
+}
+#id_text{
+    width: 85%;
+    height: 85%;
 }
 /*
  * Tinville Orange : f46430

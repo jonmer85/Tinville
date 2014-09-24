@@ -737,6 +737,7 @@ $(window).resize(function() {
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
+    $("#shopEditor_message_area").empty();
     resizeEditor();
 });
 
