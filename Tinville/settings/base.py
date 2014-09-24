@@ -182,6 +182,8 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
+    'paypal',
+    'debug_toolbar'
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
@@ -266,3 +268,10 @@ TINYMCE_PASTE = True
 
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
+
+PAYPAL_API_USERNAME = 'jon.meran_api1.tinville.com'
+PAYPAL_API_PASSWORD = 'XN9GPW6ZDNPY42UX'
+PAYPAL_API_SIGNATURE = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ASWqj4DT5Z3q2L4CpuxAs9cDaOsh'
+PAYPAL_CURRENCY = 'USD'
+PAYPAL_CUSTOMER_SERVICES_NUMBER = '1-888-ASK-DIZZ'
+PAYPAL_BRAND_NAME = 'Tinville'
