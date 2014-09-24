@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load i18n %}
+{% load url from future %}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -276,6 +277,10 @@
                             <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
                                 <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
                            </button>
+                        </li>
+                        <li>
+                            <a href="{% url 'paypal-redirect' %}"><img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;"></a>
+{#                            <a href="{% url 'checkout' %}" class="pull-right btn btn-large btn-primary">{% trans "Proceed to checkout" %}</a>#}
                         </li>
                     </ul>
                 </div>
