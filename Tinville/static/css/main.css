@@ -928,7 +928,7 @@ textarea {
 
 #shoppingcartitems {
     line-height:3em;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     height:260px;
     padding: 0px;
     color:#714D03;
