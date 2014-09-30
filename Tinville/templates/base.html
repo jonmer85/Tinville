@@ -745,7 +745,7 @@ function LoadCartItemDiv(cartItem)
 {
     var cartitemdiv =  $('<div/>', {
         'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
-        'id' : cartItem.Id
+        'id' : "lineId" + cartItem.Id
     });
 
     var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
@@ -795,31 +795,29 @@ function aggregateTotal()
 
 function AddCartItem(cartItem)
 {
-    //TODO: Check if cartItem.Id exists if it does add quantity and update price...
-    // else
-    LoadCartItemDiv(cartItem);
-    aggregateTotal();
+    if ($("#lineId" + cartItem.Id).length === 0){
+        LoadCartItemDiv(cartItem);
+        aggregateTotal();
+    }
 
 }
 
 function RemoveCartItem(itemId)
 {
-    if (itemId > 0){
-        var self = $(this)
-        var url = "/delete_item_to_cart"
+    var self = $(this)
+    var url = "/delete_item_to_cart"
 
-        var ajax_req = $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    Id: itemId
-                },
-                success: function(data, textStatus, jqXHR) {
-                },
-                error: function(data, textStatus, jqXHR) {
-                }
-            });
-    }
+    var ajax_req = $.ajax({
+            url: url,
+            type: "POST",
+            data: {
+                Id: itemId
+            },
+            success: function(data, textStatus, jqXHR) {
+            },
+            error: function(data, textStatus, jqXHR) {
+            }
+        });
 
     $('#'+itemId).remove();
 
