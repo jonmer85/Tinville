@@ -68,7 +68,8 @@ def addBasket(request, product_id, qty):
     tax = 1
     stockrecord = get_object_or_404(StockRecords, product_id=product_id)
     if(qty > stockrecord.num_in_stock):
-        return HttpResponseBadRequest(json.dumps({'errors': 'Quantity is greater than current stock.'}), mimetype='application/json')
+        errorMsg = "Quantity is greater than {0}.".format(stockrecord.num_in_stock)
+        return HttpResponseBadRequest(json.dumps({'errors': errorMsg}), mimetype='application/json')
     if(qty < 1):
         return HttpResponseBadRequest(json.dumps({'errors': "Quantity cannot be less than 1."}), mimetype='application/json')
 

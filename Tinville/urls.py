@@ -20,7 +20,7 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 
 urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^checkout', TemplateView.as_view(template_name='checkout.html'), name='checkout'),
+    url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
     url(r'^register$', 'user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,
