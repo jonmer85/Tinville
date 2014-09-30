@@ -37,6 +37,7 @@ urlpatterns += patterns('',
     url(r'^feedback/', include('django_basic_feedback.urls')),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^(?P<shop_slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
