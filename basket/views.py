@@ -79,7 +79,6 @@ def addBasket(request, product_id, qty):
     price_incl_tax = (stockrecord.price_excl_tax * qty) * tax
     image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
 
-
     basket = request.basket
     line_quantity = basket.line_quantity(product=currentproduct, stockrecord=stockrecord)
     line_ref=basket._create_line_reference(product=currentproduct, stockrecord=stockrecord, options=None)
@@ -133,16 +132,17 @@ def add_item_to_cart(request, shop_slug, item_slug):
 #        product_id  -- The id of the product
 #        quantity    -- The number of the product which cannot be less than 1 or greater than current stock
 def update_cart_item(request):
-    if(request.POST.__contains__('product_id') is not True):
-        return HttpResponseBadRequest("Product Id is required.")
+    if(not 'product_id' in request.POST):
+        return HttpResponseBadRequest(json.dumps({'errors':'Product Id is required.'}), mimetype='application/json')
 
-    if(request.POST.__contains__('quantity') is not True):
-        return HttpResponseBadRequest("Quantity is required.")
+    if(not 'quantity' in request.POST):
+        return HttpResponseBadRequest(json.dumps({'errors':'Quantity is required.'}), mimetype='application/json')
 
     quantity = int(request.POST['quantity'])
 
     return addBasket(request, int(request.POST['product_id']), quantity)
 
+# Purpose: Get cart total
 def cart_total(request):
     basket = request.basket
     return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), mimetype='application/json')
