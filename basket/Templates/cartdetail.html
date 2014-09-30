@@ -84,7 +84,7 @@ function LoadCheckoutCartDivs()
         removeBtnDiv.appendTo(cartitemdiv);
 
         var qtyDiv = $('<form/>', {'class' : ''});
-        var qtyInputDiv = $('<input/>', {'type' : 'number', 'width':40,'min':'1', 'value' : cartItem.qty, 'onchange' : 'AddCheckoutItemQuantity(this, ' + cartItem.product_id + ')'});
+        var qtyInputDiv = $('<input/>', {'type' : 'number', 'width':40,'min':'1', 'max': cartItem.currentStock, 'value' : cartItem.qty, 'onchange' : 'AddCheckoutItemQuantity(this, ' + cartItem.product_id + ')'});
         qtyInputDiv.appendTo(qtyDiv);
         qtyDiv.appendTo(cartitemdiv);
 
@@ -114,12 +114,13 @@ function LoadCheckoutCartDivs()
             },
             success: function(data, textStatus, jqXHR) {
                 $('#id_price_'+id).text('$'+data.price);
+                $('#checkoutTotal').text('Total: $' + data.total);
             },
             error: function(data, textStatus, jqXHR) {
             }
         });
 
-        aggregateCheckoutTotal();
+        //aggregateCheckoutTotal();
     }
 
     function aggregateCheckoutTotal()

@@ -55,6 +55,7 @@ def load_cart(request):
                             'price': float(basketline.price_excl_tax),
                             'image': str(image[0].original),
                             'qty': basketline.quantity,
+                            'currentStock' : stockrecord.num_in_stock,
                             'msg': ''}
                 cartItems.append(cartInfo)
 
@@ -96,6 +97,7 @@ def addBasket(request, product_id, qty):
         basketline.save(update_fields=["quantity"])
     basketlineId = basketline.id
 
+
     cartInfo = {'Id': basketlineId,
                 'product_id': currentproduct.id,
                 'title': currentproduct.title,
@@ -103,8 +105,10 @@ def addBasket(request, product_id, qty):
                 'price': float(price_excl_tax),
                 'image': str(image[0].original),
                 'qty': qty,
-                'msg': msg}
-    return HttpResponse(json.dumps(cartInfo), mimetype='application/json')
+                'currentStock' : stockrecord.num_in_stock,
+                'msg': msg,
+                'total' : Decimal(basket.total_excl_tax)}
+    return HttpResponse(json.dumps(cartInfo, use_decimal=True), mimetype='application/json')
 
 
 def add_item_to_cart(request, shop_slug, item_slug):
