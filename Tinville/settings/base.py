@@ -185,10 +185,9 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django_basic_feedback',
     'debug_toolbar',
-] + get_core_apps(['catalogue', 'dashboard', 'dashboard.orders']) + PROJECT_APPS    'paypal',
+    'paypal',
     'debug_toolbar'
-] + get_core_apps(['catalogue']) + PROJECT_APPS
-
+] + get_core_apps(['catalogue', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
