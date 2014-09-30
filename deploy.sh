@@ -1,9 +1,9 @@
 #!/bin/sh
-if [ $BRANCH != 'Sprint6' ]; then exit 0; fi
-git push -f git@heroku.com:tinville-testing.git Sprint6:master
+if [ $BRANCH != 'Sprint7' ]; then exit 0; fi
+git push -f git@heroku.com:tinville-testing.git Sprint7:master
 ./initDataNoInput qatest
 ./qatest collectstatic --noinput
 
-git push -f git@heroku.com:tinville-dev.git Sprint6:master
+git push -f git@heroku.com:tinville-dev.git Sprint7:master
 ./initDataNoInput dev
 ./dev collectstatic --noinput
