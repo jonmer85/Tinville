@@ -10,6 +10,9 @@ from oscar.app import application
 
 admin.autodiscover()
 
+basket_app = get_class('basket.app', 'application')
+checkout_app = get_class('checkout.app', 'application')
+
 urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
     url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
@@ -19,6 +22,7 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 
 urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^checkout/paypal/', include('paypal.express.urls')),
     url(r'^register$', 'user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,

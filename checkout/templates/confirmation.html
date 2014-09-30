@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load i18n %}
+{% block css %}
+    {{ block.super }}
+
+{% endblock css %}
+{% block content %}
+    {{ block.super }}
+
+
+{% endblock %}
+
+{% block javascript_library %}
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
+  <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
+
+{% endblock javascript_library %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+
+    </script>
+
+{% endblock %}

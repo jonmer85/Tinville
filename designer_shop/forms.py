@@ -21,7 +21,7 @@ from common.widgets import AdvancedFileInput
 
 
 
-SIZE_TYPES_AND_EMPTY = [('0', 'How is this item sized?')] + SIZE_TYPES
+SIZE_TYPES_AND_EMPTY = [('', 'How is this item sized?')] + SIZE_TYPES
 
 @parsleyfy
 class ProductCreationForm(forms.ModelForm):
@@ -34,7 +34,7 @@ class ProductCreationForm(forms.ModelForm):
         super(ProductCreationForm, self).__init__(*args, **kwargs)
 
         self.fields['sizeVariation'] = forms.ChoiceField(label='Size type',
-                                         choices=SIZE_TYPES_AND_EMPTY,
+                                         choices=SIZE_TYPES_AND_EMPTY, required=True,
                                          initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
 
 
@@ -53,7 +53,7 @@ class ProductCreationForm(forms.ModelForm):
                          HTML("""<p>Description</p>"""),
                          Field('description', placeholder='Description'),
                          Field('category', placeholder='Choose a Category'),
-                         PrependedText('price', '$', placeholder='Price')
+                         Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
                          Field( 'product_image', css_id="id_productImage" ),
@@ -98,7 +98,7 @@ class ProductCreationForm(forms.ModelForm):
                 if "sizeSet" in sizes[i] and sizes[i]["sizeSet"]:
                     self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                      objects.filter(group=1), empty_label="Choose a size...", initial=sizes[i]["sizeSet"])
+                                                      objects.filter(group=1), empty_label="Choose a size...", required=True, initial=sizes[i]["sizeSet"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
                         self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
@@ -395,10 +395,9 @@ class BannerUploadForm(forms.Form):
 
     helper.layout = Layout(
         Div(
-
             Fieldset('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
-                     'banner'),
+                     Field('banner', css_class="autoHeight")),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-12 col-sm-10"
         ))
@@ -414,7 +413,7 @@ class LogoUploadForm(forms.Form):
         Div(
             Fieldset('Logo Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
-                     'logo'),
+                     Field('logo', css_class="autoHeight")),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
             css_class="container col-xs-12 col-sm-10"
         ))

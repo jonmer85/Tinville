@@ -544,6 +544,9 @@
     padding: 4px;
     border: 1px solid #ccc;
 }
+.autoHeight{
+    height: auto;
+}
 
 .shopItem {
     padding-bottom: 5px;
@@ -640,4 +643,5 @@
     margin-top: 5px;
     margin-bottom: 10px;
     list-style-type: none;
+    padding-left: 10px;
 }

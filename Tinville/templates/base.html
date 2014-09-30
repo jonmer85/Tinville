@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load i18n %}
+{% load url from future %}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -65,7 +66,7 @@
                       </li>
                     </ul>
                 {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" onclick="logoutFunc()" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
+                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
                 <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
                     <button type="button" id="shoppingcartMobileBtn" class="shoppingcartBtn">
@@ -253,7 +254,7 @@
                         {% if user.is_authenticated %}
 
                             <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="/logout" onclick="logoutFunc()" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
+                                <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
 {#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
 {#                                <ul class="dropdown-menu navdropstyle ">#}
 {#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
@@ -276,6 +277,10 @@
                             <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
                                 <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
                            </button>
+                        </li>
+                        <li>
+                            <a href="{% url 'paypal-redirect' %}"><img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;"></a>
+{#                            <a href="{% url 'checkout' %}" class="pull-right btn btn-large btn-primary">{% trans "Proceed to checkout" %}</a>#}
                         </li>
                     </ul>
                 </div>
@@ -331,7 +336,7 @@
                     <li class="mainFooterListItem">My Account</li>
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
-                            <a href="/logout" onclick="logoutFunc()">Sign Out</a>
+                            <a href="/logout">Sign Out</a>
                         {% else %}
                             <a id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
                         {% endif %}
@@ -384,7 +389,7 @@
                 <dl class="list-unstyled listPadding">
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
-                            <a href="/logout" onclick="logoutFunc()">Sign Out</a>
+                            <a href="/logout">Sign Out</a>
                         {% else %}
                             <a id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a>
                         {% endif %}
@@ -551,10 +556,33 @@
         );
 
 
-        function logoutFunc() {
-            sessionStorage.setItem("cartLoaded", 0);
-            RemoveAllItems();
-        }
+        $("#shoppingcart").click(function(){
+            sessionStorage.setItem("cartClick","1")
+        });
+
+        $(".loginPopupForm").click(function(){
+            sessionStorage.setItem("cartClick","1")
+        });
+
+
+        $(document).on('click',function () {
+            var cartClick = sessionStorage.getItem("cartClick");
+            if(cartClick === undefined)
+                cartClick = "0";
+
+            if (cartClick==="0"){
+                var mode = checkMode();
+                if(mode == 'xs')
+                    $("#shoppingcart").animate({width:'hide'},350);
+                else
+                    $("#shoppingcart").animate({height:'hide'},350);
+                cartState = sessionStorage.getItem("cartState");
+                cartJson = JSON.parse(cartState || "{}");
+                cartJson["IsOpen"] = false;
+                sessionStorage.setItem("cartState", JSON.stringify(cartJson));
+            }
+            sessionStorage.setItem("cartClick","0");
+        });
 
         $(document).ready(function() {
 
@@ -574,79 +602,18 @@
                     menu="close";
                 }
             });
-
-            cartState = sessionStorage.getItem("cartState");
-            cartJson = JSON.parse(cartState || "{}");
-            cartTotal = cartJson["cartTotal"];
-            var cartItems = cartJson["cartList"];
-
-            var product_id = '';
-            var qty = '';
-            var id = '';
-            if(cartItems !== undefined)
-            {
-                $.each(cartItems, function(index, item)
-                {
-                    if(item === undefined || item.product_id === undefined)
-                        product_id = '0';
-                    else{
-                        if (product_id === ''){
-                            product_id = item.product_id.toString();
-                            qty = item.qty.toString();
-                            id = item.Id.toString();
-                        }
-                        else{
-                            product_id = product_id + ',' + item.product_id.toString();
-                            qty = qty + ',' + item.qty.toString();
-                            id = id + ',' + item.Id.toString();
-                        }
-                    }
-                });
-            }
-            var cartLoaded = sessionStorage.getItem("cartLoaded");
-            if(cartLoaded === undefined)
-                cartLoaded = 0;
-            if(cartLoaded === null)
-                cartLoaded = 0;
-
-
             var self = $(this)
             var url = "/load_cart"
                 ajax_req = $.ajax({
                     url: url,
-                    type: "POST",
+                    type: "GET",
                     dataType: 'json',
-                    data: {
-                        Id: id,
-                        product_id: product_id,
-                        qty: qty,
-                        cartLoaded: cartLoaded
-                    },
                     success: function(data, textStatus, jqXHR) {
-                        var itemGUIDValue = sessionStorage.getItem("itemGUID");
-                        if(itemGUIDValue === undefined)
-                            itemGUIDValue = 0;
-
                         $.each(data, function(index, item)
                         {
-                            if (parseInt(item.cartLoaded) > 0){
-                                sessionStorage.setItem("cartLoaded", item.cartLoaded);
-                                var i;
-                                for (i = -1; i >= itemGUIDValue; i--) {
-                                    RemoveCartItem(i)
-                                }
-                            }
                             if (item.msg == ''){
                                 item.image = "{{ MEDIA_URL }}" + item.image
-                                if (parseInt(item.Id) > 0){
-                                    AddCartItem(item)
-                                }
-                                else if (parseInt(item.Id) < 0){
-                                    itemGUIDValue = itemGUIDValue - 1
-                                    item.Id = itemGUIDValue
-                                    sessionStorage.setItem("itemGUID", item.Id);
-                                    AddCartItem(item)
-                                }
+                                AddCartItem(item)
                             }
                             else {
                                 $('#messageId').html(item.msg)
@@ -672,7 +639,7 @@
                     data: {
                         username: self.find("#id_username").val(),
                         password: self.find("#id_password").val(),
-                        remember_me : self.find("#id_remember_me").val(),
+                        remember_me : self.find("#id_remember_me").val()
                     },
                     success: function(data, textStatus, jqXHR) {
 						if (location.pathname == "/notifications") {
@@ -728,15 +695,6 @@ $(function() {
     if(_IsOpen === true)
         $("#shoppingcart").show();
 
-    var cartItems = cartJson["cartList"];
-
-    if(cartItems !== undefined)
-    {
-        $.each(cartItems, function(index, item)
-        {
-            LoadCartItemDiv(item);
-        });
-    }
 });
 
 $("#mobileNavButton").click(function()
@@ -757,12 +715,14 @@ function navbarClicked()
 
 $("#shoppingcartBtn").click(function()
 {
+    sessionStorage.setItem("cartClick","1")
     $("#shoppingcart").animate({height:'toggle'},350);
     cartToggleBtn();
 });
 
 $("#shoppingcartMobileBtn").click(function()
 {
+    sessionStorage.setItem("cartClick","1")
     $("#shoppingcart").animate({width:'toggle'},350);
     cartToggleBtn();
 });
@@ -818,20 +778,15 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-   var cartTotal = 0.00;
+    var cartTotal = 0.00;
 
-    cartState = sessionStorage.getItem("cartState");
-    cartJson = JSON.parse(cartState || "{}");
-    var cartList= cartJson["cartList"];
-    if(cartList === undefined)
-        cartList = new Object();
-
-    $.each(cartList, function(index, item)
+    var  cartListPrices = $('.shoppingcartitemPrice');
+    $.each(cartListPrices, function(index, price)
     {
-        if(item === undefined || item.price === undefined)
+        if(price === undefined)
             cartTotal += 0.00;
         else
-            cartTotal += item.price;
+            cartTotal += price;
 
     });
 
@@ -843,17 +798,6 @@ function AddCartItem(cartItem)
     //TODO: Check if cartItem.Id exists if it does add quantity and update price...
     // else
     LoadCartItemDiv(cartItem);
-
-    cartState = sessionStorage.getItem("cartState");
-    cartJson = JSON.parse(cartState || "{}");
-    var cartList= cartJson["cartList"];
-    if(cartList === undefined)
-        cartList = new Object();
-
-    cartList[cartItem.Id] = cartItem;
-
-    cartJson.cartList = cartList;
-    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
     aggregateTotal();
 
 }
@@ -878,36 +822,11 @@ function RemoveCartItem(itemId)
     }
 
     $('#'+itemId).remove();
-    cartState = sessionStorage.getItem("cartState");
-    cartJson = JSON.parse(cartState || "{}");
-    var list = cartJson["cartList"];
-    delete list[itemId];
-    cartJson.cartList = list;
-    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 
     aggregateTotal();
 }
 
-function RemoveAllItems()
-{
-
-    cartState = sessionStorage.getItem("cartState");
-    cartJson = JSON.parse(cartState || "{}");
-    var list = cartJson["cartList"];
-    $.each(list, function(index, item)
-    {
-         $('#'+item.Id).remove();
-        delete list[item.Id];
-
-    });
-
-    cartJson.cartList = list;
-    sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-
-    aggregateTotal();
-}
-
-        $("#shoppingcartSlimJeff").slimScroll({});
+    $("#shoppingcartSlimJeff").slimScroll({});
 
 
     </script>

@@ -7,7 +7,8 @@
 
 {% block content %}
     {{ block.super }}
-    <div class="container">
+<div class="container">
+    <form id="itemDetailForm" data-parsley-validate>
         <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -68,22 +69,22 @@
                         From $ {{ item.min_variant_price_excl_tax }}
                     </div>
                     <div class="itemColorSelection itemDetailBox col-xs-6">
-                        <select id="itemColorSelection" class="form-control selectpicker">
-                            <option value="Choose a Color"><i>Choose a Color</i></option>
+                        <select id="itemColorSelection" class="form-control selectpicker" required>
+                            <option value=""><i>Choose a Color</i></option>
                         </select>
                     </div>
                     <div class="itemSizeSelection itemDetailBox col-xs-6">
-                        <select id="itemSizeSelection" class="form-control selectpicker">
-                            <option value="Choose a Size"><i>Choose a Size</i></option>
+                        <select id="itemSizeSelection" class="form-control selectpicker" required>
+                            <option value=""><i>Choose a Size</i></option>
                         </select>
                     </div>
-                    <div class="itemBuyQuantity itemDetailBox col-sm-3">
+                    <div class="itemBuyQuantity itemDetailBox col-xs-3">
                         <label for="buyQuantity">Quantity:</label>
                         <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
                     </div>
                     <div class="itemStockQuantity col-xs-12"></div>
                     <div class="addToCart col-xs-12">
-                        <a href='{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart' name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Cart</a>
+                        <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Cart</a>
                     </div>
                     <div class="itemDescription col-xs-12">
                         {{ item.description | safe }}
@@ -105,6 +106,7 @@
                 </div>
             </div>
         </div>
+    </form>
     </div>
 {% endblock content%}
 
@@ -123,8 +125,7 @@
     function refreshvariants() {
         myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
             var colorlist = [];
-            $('option[value="Choose a Color"]').attr('disabled', false);
-            colorlist.push('<option value="Choose a Color"><i>Choose a Color</i></option>');
+            colorlist.push('<option value=""><i>Choose a Color</i></option>');
             $.each(data.variants, function(key)
             {
                 colorlist.push('<option value="'+ key +'">'+ key +'</option>');
@@ -132,23 +133,26 @@
             var currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));
             $('#itemColorSelection').val(currentcolor);
-            $('option[value="Choose a Color"]').attr('disabled', true);
             updateQuantityPrice();
         });
     }
     setInterval(refreshvariants, 60000);
+    $("#itemSizeSelection").change(function() {
+        $('option[value=""]').attr('disabled', true);
+    });
 
     $("#itemColorSelection").change(function() {
+        $('option[value=""]').attr('disabled', true);
         $.each(myresponse.responseJSON.variants, function(key, val) {
             var sizelist = [];
             if (key === $("#itemColorSelection").val())
             {
                 var currentsize = ""
-                sizelist.push('<option selected="selected" disabled="disabled" value="Choose a Size"><i>Choose a Size</i></option>');
+                sizelist.push('<option value=""><i>Choose a Size</i></option>');
                 $.each(val, function() {
                     if (this.quantity <= 0)
                     {
-                        sizelist.push('<option disabled="disabled" value="' + this.size + '">'+ this.size +'</option>')
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>')
                     }
                     else
                     {
@@ -159,18 +163,24 @@
                         currentsize = $('#itemSizeSelection').val();
                     }
                 });
-                if (currentsize === "")
-                {
-                    currentsize = "Choose a Size"
-                }
                 $('#itemSizeSelection').html(sizelist.join(''));
                 $('#itemSizeSelection').val(currentsize);
                 return false;
             }
         });
     });
+    var validateFront = function () {
+          if (true === $('#itemDetailForm').parsley().isValid()) {
+            $('.parsley-errors-list').remove();
 
+          }
+          else{
+              $('.parsley-errors-list').addClass("filled bootstrapError help-block");
+          }
+
+        };
     var updateQuantityPrice = function() {
+         validateFront();
         $.each(myresponse.responseJSON.variants, function(key, val) {
             var variantprice = ""
             var variantquantity = ""
@@ -218,7 +228,22 @@
 
 {#    Adding the shooping cart stuff#}
     $(document).ready(function(){
-        $("#id_AddToCart").click(function(e){
+
+
+
+        $.listen('parsley:field:validate', function () {
+             validateFront();
+        });
+
+
+    $("#id_AddToCart").click(function(e){
+
+        $('#itemDetailForm').parsley().validate();
+        if (false === $('#itemDetailForm').parsley().isValid()) {
+            $('.parsley-errors-list').addClass("filled bootstrapError help-block");
+        }
+        else{
+            $('.parsley-errors-list').remove();
             e.preventDefault();
             var self = $(this)
             var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
@@ -246,6 +271,8 @@
 
                             data.image = "{{ MEDIA_URL }}" + data.image
                             if (parseInt(data.Id) > 0){
+                                if(data.cartLoaded === 2)
+                                    RemoveCartData(data);
                                 AddCartItem(data)
                             }
                             else if (parseInt(data.Id) < 0){
@@ -256,6 +283,11 @@
                                     {
                                         if (item.product_id === data.product_id){
                                             present = true;
+                                            if(item.qty !== data.qty)
+                                            {
+                                                RemoveCartItem(item.Id);
+                                                present = false;
+                                            }
                                             return false
                                         }
                                     });
@@ -287,8 +319,9 @@
                         $('#messageModal').modal('show');
                     }
                 });
-        });
+            }
     });
+ });
     </script>
 
 {% endblock %}
