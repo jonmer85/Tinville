@@ -185,9 +185,8 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django_basic_feedback',
     'debug_toolbar',
-    'paypal',
-    'debug_toolbar'
-] + get_core_apps(['catalogue', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
+    'oscar_stripe'
+] + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -269,9 +268,6 @@ TINYMCE_PASTE = True
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
-PAYPAL_API_USERNAME = 'jon.meran_api1.tinville.com'
-PAYPAL_API_PASSWORD = 'XN9GPW6ZDNPY42UX'
-PAYPAL_API_SIGNATURE = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ASWqj4DT5Z3q2L4CpuxAs9cDaOsh'
-PAYPAL_CURRENCY = 'USD'
-PAYPAL_CUSTOMER_SERVICES_NUMBER = '1-888-ASK-DIZZ'
-PAYPAL_BRAND_NAME = 'Tinville'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
+STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
+STRIPE_CURRENCY = 'USD'
