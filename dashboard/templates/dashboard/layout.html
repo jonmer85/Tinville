@@ -5,25 +5,25 @@
 {% load i18n %}
 {% load compress %}
 {% load staticfiles %}
-
-{% block mainstyles %}
-    {% compress css %}
-        <link rel="stylesheet" href="{% static "oscar/css/bootstrap.min.css" %}" />
-        {% if use_less %}
-            <link rel="stylesheet" type="text/less" href="{% static "oscar/less/dashboard.less" %}" />
-        {% else %}
-            <link rel="stylesheet" type="text/css" href="{% static "oscar/css/dashboard.css" %}" />
-        {% endif %}
-    {% endcompress %}
-{% endblock %}
-
-{% block extrastyles %}
-    {{ block.super }}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.css">
-    {% compress css %}
-        <link rel="stylesheet" href="{% static "oscar/js/select2/select2.css" %}" />
-    {% endcompress %}
-{% endblock %}
+{##}
+{#{% block mainstyles %}#}
+{#    {% compress css %}#}
+{#        <link rel="stylesheet" href="{% static "oscar/css/bootstrap.min.css" %}" />#}
+{#        {% if use_less %}#}
+{#            <link rel="stylesheet" type="text/less" href="{% static "oscar/less/dashboard.less" %}" />#}
+{#        {% else %}#}
+{#            <link rel="stylesheet" type="text/css" href="{% static "oscar/css/dashboard.css" %}" />#}
+{#        {% endif %}#}
+{#    {% endcompress %}#}
+{#{% endblock %}#}
+{##}
+{#{% block extrastyles %}#}
+{#    {{ block.super }}#}
+{#    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.css">#}
+{#    {% compress css %}#}
+{#        <link rel="stylesheet" href="{% static "oscar/js/select2/select2.css" %}" />#}
+{#    {% endcompress %}#}
+{#{% endblock %}#}
 
 {% block title %}
     {% trans "Dashboard" %} | {{ block.super }}
@@ -103,7 +103,7 @@
         </div>
     {% endblock %}
 
-    <div class="container-fluid dashboard">
+    <div class="container dashboard">
         {% block breadcrumbs %}
         <ul class="breadcrumb">
             <li><a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a> <span class="divider">/</span></li>
@@ -152,9 +152,9 @@
         <script src="{% static "oscar/js/select2/select2.js" %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static "oscar/js/oscar/dashboard.js" %}" type="text/javascript" charset="utf-8"></script>
     {% endcompress %}
-
-    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="//tinymce.cachefly.net/4.0/jquery.tinymce.min.js" type="text/javascript" charset="utf-8"></script>
+{##}
+{#    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js" type="text/javascript" charset="utf-8"></script>#}
+{#    <script src="//tinymce.cachefly.net/4.0/jquery.tinymce.min.js" type="text/javascript" charset="utf-8"></script>#}
 
 {% endblock %}
 
