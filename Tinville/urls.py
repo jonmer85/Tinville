@@ -4,11 +4,9 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
 from user.views import ajax_login, register
 from user.forms import LoginForm
-
-# from oscar.app import application
 from oscar.core.loading import get_class
-
-
+from oscar.app import application
+# from oscar.app import application
 
 admin.autodiscover()
 
@@ -40,6 +38,10 @@ urlpatterns += patterns('',
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^(?P<shop_slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
+    url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
+    url(r'^load_cart$', 'basket.views.load_cart'),
+    url(r'^oscar/', include(application.urls)),
+    #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)$', 'designer_shop.views.shopeditor_with_item'),
