@@ -185,8 +185,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django_basic_feedback',
     'debug_toolbar',
-    'paypal',
-    'debug_toolbar'
+    'oscar_stripe'
 ] + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
 
 # A sample logging configuration. The only tangible logging
@@ -269,5 +268,6 @@ TINYMCE_PASTE = True
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
-STRIPE_PUBLIC_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
 STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
+STRIPE_CURRENCY = 'USD'

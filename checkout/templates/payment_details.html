@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form id="payment-details-form" role="form">
+                    <form id="payment-details-form" role="form" action="{% url 'checkout:payment-details' %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="cardNumber">
