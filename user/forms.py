@@ -3,11 +3,13 @@ from datetime import datetime
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
 from crispy_forms.bootstrap import AppendedText
+from oscar.core.compat import urlparse
 
 from user.models import TinvilleUser
 from designer_shop.models import Shop
@@ -16,6 +18,7 @@ from designer_shop.models import Shop
 class TinvilleUserCreationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     shop_name = forms.CharField(label='Shop name', required=False)
+    redirect_url = forms.CharField(widget=forms.HiddenInput, required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -24,6 +27,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Div(
             Field('email', placeholder="Email"),
             Field('password', placeholder="Password"),
+            Field('redirect_url'),
             Div(
                 Field('shop_name', placeholder="Shop name"),
                 id="shop_fields",
@@ -31,6 +35,10 @@ class TinvilleUserCreationForm(forms.ModelForm):
         ),
         Submit('userForm', 'Register')
     )
+
+    def __init__(self, *args, **kwargs):
+        self.host = kwargs.pop('host', None)
+        super(TinvilleUserCreationForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = TinvilleUser
@@ -62,6 +70,15 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
+
+    def clean_redirect_url(self):
+        url = self.cleaned_data['redirect_url'].strip()
+        if not url:
+            return settings.LOGIN_REDIRECT_URL
+        host = urlparse.urlparse(url)[1]
+        if host and self.host and host != self.host:
+            return settings.LOGIN_REDIRECT_URL
+        return url
 
 
 class TinvilleUserChangeForm(forms.ModelForm):

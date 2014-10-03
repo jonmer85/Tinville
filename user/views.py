@@ -26,10 +26,15 @@ def register(request):
                 message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
                 customer support to correct the address.""" % user.email
             messages.success(request, msg)
-            success_url = reverse('home')
-            return HttpResponseRedirect(success_url)
+            return HttpResponseRedirect(form.cleaned_data['redirect_url'])
     else:
-        form = TinvilleUserCreationForm()
+
+        form = TinvilleUserCreationForm(initial=
+                                        {
+                                            'email': request.GET.get('email', ''),
+                                            'redirect_url': request.GET.get('next', reverse('home'))
+                                        },
+                                        host=request.get_host())
     c = {
         'form': form,
     }

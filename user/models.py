@@ -11,6 +11,7 @@ from django.utils.timezone import utc
 from autoslug import AutoSlugField
 
 from Tinville.settings.base import EMAIL_HOST_USER
+from oscar.apps.customer.abstract_models import UserManager, AbstractUser
 
 
 # Create your models here.
@@ -22,44 +23,45 @@ class FashionStyles(models.Model):
         return self.style
 
 
-class TinvilleUserManager(BaseUserManager):
-    def create_user(self, email, password=None):
-        """
-        Creates and saves a User with the given email, date of
-        birth and password.
-        """
-        if not email:
-            raise ValueError('Users must have an email address')
-
-        user = self.model(
-            email=TinvilleUserManager.normalize_email(email),
-        )
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+class TinvilleUserManager(UserManager):
+    # def create_user(self, email, password=None):
+    #     """
+    #     Creates and saves a User with the given email, date of
+    #     birth and password.
+    #     """
+    #     if not email:
+    #         raise ValueError('Users must have an email address')
+    #
+    #     user = self.model(
+    #         email=TinvilleUserManager.normalize_email(email),
+    #     )
+    #
+    #     user.set_password(password)
+    #     user.save(using=self._db)
+    #     return user
 
     def create_superuser(self, email, password):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
-        user = self.create_user(email,
-                                password=password,
-                                )
+        user = super(TinvilleUserManager, self).create_superuser(email, password)
+        # user = self.create_user(email,
+        #                         password=password,
+        #                         )
         user.is_admin = True
         user.is_active = True
         user.save(using=self._db)
         return user
 
 
-class TinvilleUser(AbstractBaseUser):
-    email = models.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
+class TinvilleUser(AbstractUser):
+
+    # email = _metamodels.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
     slug = AutoSlugField(populate_from='email', unique=True)
-
     is_admin = models.BooleanField(default=False)
-
-    is_active = models.BooleanField(default=False)
+    is_active = False
+    # = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=40, blank=True)
     key_expires = models.DateTimeField(auto_now_add=True)
 
@@ -69,7 +71,7 @@ class TinvilleUser(AbstractBaseUser):
 
     objects = TinvilleUserManager()
 
-    USERNAME_FIELD = "email"
+    # USERNAME_FIELD = "email"
 
     def generate_activation_information(self):
 
@@ -94,7 +96,7 @@ class TinvilleUser(AbstractBaseUser):
     def __unicode__(self):
         return self.email
 
-    def has_perm(self, perm, obj=None):
+    def has_perms(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         #TODO Add permission system for designer pages
@@ -117,8 +119,8 @@ class TinvilleUser(AbstractBaseUser):
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 
-    @property
-    def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        return self.is_admin
+    # @property
+    # def is_staff(self):
+    #     "Is the user a member of staff?"
+    #     # Simplest possible answer: All admins are staff
+    #     return self.is_admin
