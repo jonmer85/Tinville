@@ -5,22 +5,33 @@
         <div align="center"><font size="12" color="f46430">Tinville</font></div>
 
         <div class="container">
-        <!-- load items dynamically -->
-        <div align="center" id="checkoutcartitems" class="col-xs-12 col-md-10 col-lg-10 col-xl-10"></div>
+        <!-- load items dynamically <div align="center" id="checkoutcartitems" class="col-xs-12 col-md-10 col-lg-10 col-xl-10"></div>-->
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th style="width:50%">Product</th>
+                    <th style="width:10%">Price</th>
+                    <th style="width:8%">Quantity</th>
+                    <th style="width:22%" class="text-center">Subtotal</th>
+                    <th style="width:10%"></th>
+                </tr>
+                </thead>
+                <tbody id="checkoutcartitems">
+                </tbody>
+                <tfoot>
+                <tr class="visible-xs">
+                    <td class="text-center"><strong id="checkoutTotalMobile">Total: </strong></td>
+                </tr>
+                <tr>
+                    <td><a href="{% url 'home' %}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td class="hidden-xs text-center"><strong id="checkoutTotal">Total: </strong></td>
+                    <td><a href="#" id="paypalBtn" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
-        <!-- align right -->
-        <div class="container" align="center">
-            <div>
-                <div>
-                    <div id="checkoutTotal">Total: </div>
-                </div>
-                <div style="position:relative; left: 100px;">
-                    <!-- paypal button -->
-                    <button id="paypalBtn">PayPal Button</button>
-                </div>
-            </div>
-        </div>
 
 <script>
     $(function() {
@@ -55,44 +66,49 @@ function LoadCheckoutCartDivs()
 
     function LoadCheckoutCartDiv(cartItem)
     {
-        var cartitemdiv =  $('<div/>', {
-            'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
+        var cartitemtr =  $('<tr/>', {
             'id' : cartItem.Id
         });
 
-        var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
-        var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
+        var cartitemtd = $('<td/>', {'data-th' : 'Product' });
+
+        var cartprodrow = $('<div/>', {'class':'row'});
+
+        var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive'});
+        var thumbnailDiv = $('<div/>', {'class': 'col-sm-2 hidden-xs'});
         itemThumbnail.appendTo(thumbnailDiv);
-        thumbnailDiv.appendTo(cartitemdiv);
+        thumbnailDiv.appendTo(cartprodrow);
+        cartprodrow.appendTo(cartitemtd);
 
-        var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
+        var itemInfoDiv = $('<div/>', {'class' : 'col-sm-10'});
 
-        var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle','text':cartItem.title});
+        var itemTitle = $('<h4/>', {'class':'nomargin','text':cartItem.title});
         itemTitle.appendTo(itemInfoDiv);
 
-        var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':cartItem.description});
+        var itemDescription = $('<p/>', {'text':cartItem.description});
         itemDescription.appendTo(itemInfoDiv);
 
-        itemInfoDiv.appendTo(cartitemdiv);
-        var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
+        itemInfoDiv.appendTo(cartprodrow);
+        cartitemtd.appendTo(cartitemtr);
+        var price = '$' + cartItem.price;
+        var priceDiv = $('<td/>', {'id': 'id_price_' + cartItem.product_id,'data-th' : 'Price', 'text': price});
+        priceDiv.appendTo(cartitemtr);
+
+        var qtyTd = $('<td/>', {'data-th' : 'Quantity'});
+        var qtyInputDiv = $('<input/>', {'class': 'form-control text-center', 'type' : 'number', 'min':'1', 'max': cartItem.currentStock, 'value' : cartItem.qty, 'onchange' : 'AddCheckoutItemQuantity(this, ' + cartItem.product_id + ')'});
+        qtyInputDiv.appendTo(qtyTd);
+        qtyTd.appendTo(cartitemtr);
+
+        var actions  = $('<td/>', {'class':'actions', 'data-th': ''});
         var delBtnId = 'deleteBtnId_' + cartItem.Id;
 
         var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCheckoutItem(' + cartItem.Id + ')', 'id' : delBtnId,
             'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
         });
-        removeBtn.appendTo(removeBtnDiv);
-        removeBtnDiv.appendTo(cartitemdiv);
+        removeBtn.appendTo(actions);
+        actions.appendTo(cartitemtr);
 
-        var qtyDiv = $('<form/>', {'class' : ''});
-        var qtyInputDiv = $('<input/>', {'type' : 'number', 'width':40,'min':'1', 'max': cartItem.currentStock, 'value' : cartItem.qty, 'onchange' : 'AddCheckoutItemQuantity(this, ' + cartItem.product_id + ')'});
-        qtyInputDiv.appendTo(qtyDiv);
-        qtyDiv.appendTo(cartitemdiv);
-
-        var price = '$' + cartItem.price;
-        var priceDiv = $('<div/>', {'id': 'id_price_' + cartItem.product_id,'class':'shoppingcartitemPrice', 'text': price});
-        priceDiv.appendTo(cartitemdiv);
-        cartitemdiv.appendTo("#checkoutcartitems");
-
+        cartitemtr.appendTo("#checkoutcartitems");
     }
 
     function RemoveCheckoutItem(Id)
@@ -120,7 +136,7 @@ function LoadCheckoutCartDivs()
             }
         });
 
-        //aggregateCheckoutTotal();
+        aggregateCheckoutTotal();
     }
 
     function aggregateCheckoutTotal()
@@ -131,12 +147,11 @@ function LoadCheckoutCartDivs()
             type: "GET",
             success: function(data, textStatus, jqXHR) {
                 $('#checkoutTotal').text('Total: $' + data.total);
+                $('#checkoutTotalMobile').text('Total: $' + data.total);
             },
             error: function(data, textStatus, jqXHR) {
             }
         });
     }
-
-
 </script>
     {% endblock %}
