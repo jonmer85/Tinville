@@ -14,7 +14,6 @@ input[disabled] {
 .paddingContainer {
     border: 1px solid black;
     border-radius: 4px;
-
 }
 
 .paddingContainer:hover
@@ -25,7 +24,7 @@ input[disabled] {
 .table>tbody>tr>td, .table>tfoot>tr>td{
     vertical-align: middle;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
     table#orders tbody td .form-control{
 		width:20%;
 		display: inline !important;
@@ -44,13 +43,11 @@ input[disabled] {
 
 	table#orders thead { display: none; }
 	table#orders tbody td { display: block; padding: .6rem; min-width:320px;}
-	table#orders tbody tr td:first-child { background: #333; color: #fff; }
+	table#orders tbody tr td:first-child { background: #5B595A; color: #e7e5e6; }
 	table#orders tbody td:before {
 		content: attr(data-th); font-weight: bold;
 		display: inline-block; width: 8rem;
 	}
-
-
 
 	table#orders tfoot td{display:block; }
 	table#orders tfoot td .btn{display:block;}

@@ -6,7 +6,7 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard/styles.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard/styles.css" xmlns="http://www.w3.org/1999/html"/>
 {% endblock css %}
 
 {% block body_class %}orders{% endblock %}
@@ -80,19 +80,17 @@
         <form action="." method="post" class="order_table" id="orders_form">
             {% csrf_token %}
             {% include "dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
-
-            <table id="orders" class="table-condensed table table-striped table-bordered table-hover">
-{#                <caption>#}
-{#                    <h3 class="pull-left"><i class="icon-shopping-cart icon-large"></i>{{ queryset_description }}</h3>#}
-{#                    <div class="pull-right">#}
-{#                        <div class="form-inline">#}
-{#                            <label>{% trans "Download selected orders as a CSV" %}</label>#}
-{#                            <input type="hidden" name="action" value="download_selected_orders" />#}
-{#                            <button type="submit" class="btn btn-primary" name="download_selected">{% trans "Download" %}</button>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </caption>#}
-
+            <caption>
+                <h3 class="pull-left"><i class="icon-shopping-cart icon-large"></i>{{ queryset_description }}</h3>
+                <div class="pull-right">
+                    <div class="form-inline hidden-xs">
+                        <label>{% trans "Download selected orders as a CSV" %}</label>
+                        <input type="hidden" name="action" value="download_selected_orders" />
+                        <button type="submit" class="btn btn-primary" name="download_selected">{% trans "Download" %}</button>
+                    </div>
+                </div>
+            </caption>
+            <table id="orders" class="table-condensed table table-striped table-bordered table-hover panel-group">
                 <thead>
                     <tr>
                         <th>{% trans "Select all" %}</th>
@@ -102,38 +100,40 @@
                         <th>{% trans "Status" %}</th>
                         <th>{% trans "Customer" %}</th>
                         <th>{% trans "Shipping address" %}</th>
-                        <th>{% trans "Billing address" %}</th>
                         <th>{% trans "Date of purchase" %}</th>
                         <th></th>
                     </tr>
                 </thead>
                 {% for order in orders %}
-                    <tr>
-                        <td data-th="{% trans 'Select all' %}"><input type="checkbox" name="selected_order" class="selected_order" value="{{ order.id }}"/>
-                            <td data-th="{% trans "Order number" %}"><a href="{% url 'dashboard:order-detail' number=order.number %}">{{ order.number }}</a></td>
-                            <td data-th="{% trans "Total inc tax" %}">{{ order.total_incl_tax|currency:order.currency }}</td>
-                            <td data-th="{% trans "Number of items" %}">{{ order.num_items }}</td>
-                            <td data-th="{% trans "Status" %}">{{ order.status|default:"-" }}</td>
-                            <td data-th="{% trans "Customer" %}">
-                                {% if not order.is_anonymous %}
-                                    <a href="{% url 'dashboard:user-detail' pk=order.user.id %}">{{ order.user.get_full_name|default:"-" }}</a>
-                                {% else %}
-                                    {{ order.email }}
-                                {% endif %}
-                            </td>
-                            <td data-th="{% trans "Shipping address" %}">{{ order.shipping_address|default:"-" }}</td>
-                            <td data-th="{% trans "Billing address" %}">{{ order.billing_address|default:"-" }}</td>
-                            <td data-th="{% trans "Date of purchase" %}">{{ order.date_placed }}</td>
-                            <td data-th="">
-                                <a class="btn btn-info" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>
-                            </td>
-                        </tr>
+                    <tr class="visible-xs" data-toggle="collapse" data-target="#ordernumber_{{ order.number }}">
+                        <td data-th="Order Number:">
+                            {{ order.number }}
+{#                            <a class="btn btn-info" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>#}
+                        </td>
+                    </tr>
+                    <tr id="ordernumber_{{ order.number }}" class="collapse">
+                        <td data-th="{% trans 'Select all' %}" class="hidden-xs"><input type="checkbox" name="selected_order" class="selected_order" value="{{ order.id }}"/>
+                        <td data-th="{% trans "Order number" %}"><a href="{% url 'dashboard:order-detail' number=order.number %}">{{ order.number }}</a></td>
+                        <td data-th="{% trans "Total inc tax" %}">{{ order.total_incl_tax|currency:order.currency }}</td>
+                        <td data-th="{% trans "Number of items" %}">{{ order.num_items }}</td>
+                        <td data-th="{% trans "Status" %}">{{ order.status|default:"-" }}</td>
+                        <td data-th="{% trans "Customer" %}">
+                            {% if not order.is_anonymous %}
+                                <a href="{% url 'dashboard:user-detail' pk=order.user.id %}">{{ order.user.get_full_name|default:"-" }}</a>
+                            {% else %}
+                                {{ order.email }}
+                            {% endif %}
+                        </td>
+                        <td data-th="{% trans "Shipping address" %}">{{ order.shipping_address|default:"-" }}</td>
+                        <td data-th="{% trans "Date of purchase" %}">{{ order.date_placed }}</td>
+                        <td data-th="">
+                            <a class="btn btn-info" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>
+                        </td>
+                    </tr>
                     {% endfor %}
                 </table>
-
                 {% include "dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
                 {% include "partials/pagination.html" %}
-
             </form>
 
         {% else %}
