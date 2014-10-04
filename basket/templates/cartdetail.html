@@ -98,6 +98,9 @@
             qtyInputDiv.appendTo(qtyTd);
             qtyTd.appendTo(cartitemtr);
 
+            var subTotal = $('<td/>', {'id': 'id_subtotal_' + cartItem.product_id, 'style': 'text-align: center;', 'data-th' : 'Subtotal', 'text': '$' + cartItem.subtotal});
+            subTotal.appendTo(cartitemtr);
+
             var actions  = $('<td/>', {'class':'actions', 'data-th': ''});
             var delBtnId = 'deleteBtnId_' + cartItem.Id;
 
@@ -129,13 +132,12 @@
                 },
                 success: function(data, textStatus, jqXHR) {
                     $('#id_price_'+id).text('$'+data.price);
+                    $('#id_subtotal_'+id).text('$'+data.subtotal);
                     $('#checkoutTotal').text('Total: $' + data.total);
                 },
                 error: function(data, textStatus, jqXHR) {
                 }
             });
-
-            aggregateCheckoutTotal();
         }
 
         function aggregateCheckoutTotal()
