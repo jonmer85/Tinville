@@ -928,6 +928,7 @@ textarea {
 
 #shoppingcartitems {
     line-height:3em;
+    overflow-y: scroll;
     height:260px;
     padding: 0px;
     color:#714D03;
@@ -1031,6 +1032,7 @@ textarea {
 }
 .navbar .navbar-collapse{
     margin-left: -15%;
+    margin-right: -15%;
     overflow-x: hidden;
 }
 
@@ -1076,3 +1078,8 @@ nav a:hover{
 
 }
 /*END mobile navbar*/
+
+#checkoutcartitems
+{
+
+}

@@ -1,6 +1,7 @@
 import json
 import collections
-
+from decimal import Decimal
+import simplejson as json
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -54,6 +55,7 @@ def load_cart(request):
                             'price': float(basketline.price_excl_tax),
                             'image': str(image[0].original),
                             'qty': basketline.quantity,
+                            'currentStock' : stockrecord.num_in_stock,
                             'msg': ''}
                 cartItems.append(cartInfo)
 
@@ -66,12 +68,17 @@ def addBasket(request, product_id, qty):
     # ToDo figure out this tax stuff
     tax = 1
     stockrecord = get_object_or_404(StockRecords, product_id=product_id)
+    if(qty > stockrecord.num_in_stock):
+        errorMsg = "Quantity is greater than {0}.".format(stockrecord.num_in_stock)
+        return HttpResponseBadRequest(json.dumps({'errors': errorMsg}), mimetype='application/json')
+    if(qty < 1):
+        return HttpResponseBadRequest(json.dumps({'errors': "Quantity cannot be less than 1."}), mimetype='application/json')
+
     currentproduct = get_object_or_404(Product, id=product_id)
     parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
     price_excl_tax = stockrecord.price_excl_tax * qty
     price_incl_tax = (stockrecord.price_excl_tax * qty) * tax
     image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
-
 
     basket = request.basket
     line_quantity = basket.line_quantity(product=currentproduct, stockrecord=stockrecord)
@@ -90,6 +97,7 @@ def addBasket(request, product_id, qty):
         basketline.save(update_fields=["quantity"])
     basketlineId = basketline.id
 
+
     cartInfo = {'Id': basketlineId,
                 'product_id': currentproduct.id,
                 'title': currentproduct.title,
@@ -97,8 +105,10 @@ def addBasket(request, product_id, qty):
                 'price': float(price_excl_tax),
                 'image': str(image[0].original),
                 'qty': qty,
-                'msg': msg}
-    return cartInfo
+                'currentStock' : stockrecord.num_in_stock,
+                'msg': msg,
+                'total' : Decimal(basket.total_excl_tax)}
+    return HttpResponse(json.dumps(cartInfo, use_decimal=True), mimetype='application/json')
 
 
 def add_item_to_cart(request, shop_slug, item_slug):
@@ -117,11 +127,29 @@ def add_item_to_cart(request, shop_slug, item_slug):
         # varItem = Product.objects.filter(attribute_values__value_option_id=2)
         currentproduct = get_filtered_variant(item.id, request.POST)
         image = get_list_or_empty(ProductImages, product_id=item.id)
-        cartInfo = addBasket(request,currentproduct.id,qty)
-        return HttpResponse(json.dumps(cartInfo), mimetype='application/json')
+        return addBasket(request,currentproduct.id,qty)
     else:
         return redirect('designer_shop.views.itemdetail', shop_slug, item_slug)
 
+# Purpose: Update a pre-existing cart item
+# Params:
+#        product_id  -- The id of the product
+#        quantity    -- The number of the product which cannot be less than 1 or greater than current stock
+def update_cart_item(request):
+    if(not 'product_id' in request.POST):
+        return HttpResponseBadRequest(json.dumps({'errors':'Product Id is required.'}), mimetype='application/json')
+
+    if(not 'quantity' in request.POST):
+        return HttpResponseBadRequest(json.dumps({'errors':'Quantity is required.'}), mimetype='application/json')
+
+    quantity = int(request.POST['quantity'])
+
+    return addBasket(request, int(request.POST['product_id']), quantity)
+
+# Purpose: Get cart total
+def cart_total(request):
+    basket = request.basket
+    return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), mimetype='application/json')
 
 def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']

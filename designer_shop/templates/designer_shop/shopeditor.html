@@ -257,99 +257,87 @@ var colorQuantityTableHead = "" +
     "</div>" +
 "</div>"
 
-function sizeSetTemplate(required) {
-    var sizeSetTemplate = "" +
-    "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
-        "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-            "<div class='controls row'>" +
-                "<div class='col-xs-10'>" +
-                    "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
-                        "<option value='' selected='selected'>Choose a size...</option>" +
-                        "{% for sizeSet in sizeSetOptions %}" +
-                        "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+var sizeSetTemplate = "" +
+"<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-10'>" +
+                "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection'>" +
+                    "<option value='' selected='selected'>Choose a size...</option>" +
+                    "{% for sizeSet in sizeSetOptions %}" +
+                    "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                    "{% endfor %}" +
+                "</select>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+            "</div>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
+
+var sizeDimensionTemplate = "" +
+"<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-4'>" +
+                "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='demical' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'>" +
+            "</div>" +
+            "<div class='col-xs-2 dimensionSplit'>X</div>"+
+            "<div class='col-xs-4'>" +
+                "<input class='sizeDimensionSelection numberinput form-control dimensionLength' data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='demical' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+            "</div>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
+var sizeNumberTemplate = "" +
+"<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
+    "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
+        "<div class='controls row'>" +
+            "<div class='col-xs-10'>" +
+                "<input class='sizeNumberSelection numberinput form-control' data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='demical' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' id='id_sizeNumberSelection' name='sizeNumberSelection' type='demical' placeholder = 'Type a size'>" +
+            "</div>" +
+            "<div class='col-xs-2'>" +
+                "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+            "</div>" +
+        "</div>" +
+    "</div>" +
+"</div>" + colorQuantityTableHead
+
+
+var rowColorQuantityTemplate = "" +
+"<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
+    "<td>" +
+        "<div class='row-color >" +
+            "<div id='div_id_colorSelection' class='form-group'>" +
+                "<div class='controls'>" +
+                    "<select class='select form-control colorSelect' id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
+                        "<option value='' selected='selected'>Choose a color...</option>" +
+                        "{% for color in colors %}" +
+                        "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
                         "{% endfor %}" +
                     "</select>" +
                 "</div>" +
-                "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
-                "</div>" +
             "</div>" +
         "</div>" +
-    "</div>" + colorQuantityTableHead
-    return sizeSetTemplate;
-}
-
-function sizeDimensionTemplate(required) {
-    var sizeDimensionTemplate = "" +
-    "<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
-        "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
-            "<div class='controls row'>" +
-                "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'" + required +">" +
-                "</div>" +
-                "<div class='col-xs-2 dimensionSplit'>X</div>"+
-                "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'" + required +">" +
-                "</div>" +
-                "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
-                "</div>" +
+    "</td>" +
+    "<td>" +
+        "<div id='div_id_quantityField' class='form-group'>" +
+            "<div class='controls'>" +
+                "<input class='numberinput form-control quantityField' id='id_quantityField' name='quantityField' type='number'>" +
             "</div>" +
         "</div>" +
-    "</div>" + colorQuantityTableHead
-    return sizeDimensionTemplate;
-}
+    "</td>" +
+    "<td>" +
+        "<button id='id_clearColorQuantity' value='Clear' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>Clear</button>" +
+    "</td>" +
+"</tr>"
 
-function sizeNumberTemplate(required){
-    var sizeNumberTemplate = "" +
-    "<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
-        "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
-            "<div class='controls row'>" +
-                "<div class='col-xs-10'>" +
-                    "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='demical' placeholder = 'Type a size'>" +
-                "</div>" +
-                "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
-                "</div>" +
-            "</div>" +
-        "</div>" +
-    "</div>" + colorQuantityTableHead
-    return sizeNumberTemplate;
-}
-
-function rowColorQuantityTemplate(required){
-    numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-    if (required === "")
-        numRequired = ""
-    var rowColorQuantityTemplate = "" +
-    "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
-        "<td>" +
-            "<div class='row-color >" +
-                "<div id='div_id_colorSelection' class='form-group'>" +
-                    "<div class='controls'>" +
-                        "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
-                            "<option value='' selected='selected'>Choose a color...</option>" +
-                            "{% for color in colors %}" +
-                            "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
-                            "{% endfor %}" +
-                        "</select>" +
-                    "</div>" +
-                "</div>" +
-            "</div>" +
-        "</td>" +
-        "<td>" +
-            "<div id='div_id_quantityField' class='form-group'>" +
-                "<div class='controls'>" +
-                    "<input class='numberinput form-control quantityField'" + numRequired +  "id='id_quantityField' name='quantityField' type='number' value='1'>" +
-                "</div>" +
-            "</div>" +
-        "</td>" +
-        "<td>" +
-            "<button id='id_clearColorQuantity' value='Clear' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>Clear</button>" +
-        "</td>" +
-    "</tr>"
-    return rowColorQuantityTemplate;
-}
 const SizeTypeInfo = {
     "1" :
     {
@@ -392,11 +380,9 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
 
-        rowQtyRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
         if($(this).closest('.accordion-group').next().length == "0") {
             addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
         }
-        rowQtyRequired="";
 
         var selectedValue = eval(selectedValueType);
         var sizesFieldSet = $("#sizesFieldSet");
@@ -429,11 +415,8 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
 
 var arSizeRows  = [] ;
 var arColorRows = [] ;
-var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
-var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-var rowQtyRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
-        function clearColorRow( strRowToClear )
+
+function clearColorRow( strRowToClear )
 {
         var strRowId = "#" + strRowToClear ;
         var indexToRemove = arColorRows.indexOf(strRowToClear) ;
@@ -505,18 +488,15 @@ function addNewSizeRow(sizeType) {
     switch (sizeType) {
         case "sizeSet":
             sizeTemplateName = "sizeSetSelectionTemplate";
-            templateName = sizeSetTemplate(sizeRequired);
-            sizeRequired="";
+            templateName = sizeSetTemplate;
             break;
         case "sizeDim":
             sizeTemplateName = "sizeDimensionSelectionTemplate";
-            templateName = sizeDimensionTemplate(sizeDimRequired);
-            sizeDimRequired = "";
+            templateName = sizeDimensionTemplate;
             break;
         case "sizeNum":
             sizeTemplateName = "sizeNumberSelectionTemplate";
-            templateName = sizeNumberTemplate(sizeNumRequired);
-            sizeNumRequired="";
+            templateName = sizeNumberTemplate;
             break
     }
     $("#sizesFieldSet").append(templateName)
@@ -560,7 +540,7 @@ function addNewColorAndQuantityRow(prefix, appendTo) {
     var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
     colorsAndQuantities.collapse('show');
 
-    $(appendTo).append(rowColorQuantityTemplate(rowQtyRequired));
+    $(appendTo).append(rowColorQuantityTemplate);
 
     var $newColorQuantityRow = $("#rowColorQuantityTemplate");
 

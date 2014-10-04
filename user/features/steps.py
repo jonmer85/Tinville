@@ -51,6 +51,7 @@ def register_basic_shop(shop_name, user, password):
     form = fill_out_designer_registration_form(password, shop_name, user)
     submit_form_and_activate_user(form)
 
+
 def fill_in_user_form(email, password):
     access_registration_url(step)
     world.user_info = {
