@@ -17,6 +17,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+
 AUTH_USER_MODEL = 'user.TinvilleUser'
 
 PROJECT_DIR = Path(__file__).ancestor(2)
@@ -29,6 +30,7 @@ MEDIA_URL = '/media/'
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -184,7 +186,8 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
-    # 'debug_toolbar',
+    'simplejson',
+    'debug_toolbar',
     'oscar_stripe'
 ] + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
 
