@@ -12,6 +12,7 @@ admin.autodiscover()
 
 basket_app = get_class('basket.app', 'application')
 checkout_app = get_class('checkout.app', 'application')
+customer_app = get_class('customer.app', 'application')
 
 urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
@@ -22,7 +23,6 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 
 urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^checkout/paypal/', include('paypal.express.urls')),
     url(r'^register$', 'user.views.register'),
     url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,
@@ -35,6 +35,8 @@ urlpatterns += patterns('',
     url(r'^feedback/', include('django_basic_feedback.urls')),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
+    url(r'^accounts/register', 'user.views.register', name='register'),
+    url(r'^accounts/', include(customer_app.urls)),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),

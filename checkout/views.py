@@ -26,12 +26,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
     template_name = "payment_details.html"
 
 
-    pre_conditions = (
-        'check_basket_is_not_empty',
-        'check_basket_is_valid')
-        #'check_user_email_is_captured',
-        #'check_shipping_data_is_captured')
-
     def get_context_data(self, **kwargs):
         # ctx = super(PaymentDetailsView, self).get_context_data(**kwargs)
         #
@@ -99,44 +93,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
     def payment_metadata(self, order_number, total, **kwargs):
         return {'order_number': order_number}
-
-    def get_shipping_address(self, basket):
-        """
-        Return a created shipping address instance, created using
-        the data returned by PayPal.
-        """
-        # Determine names - PayPal uses a single field
-        # Jon M TODO
-        # ship_to_name = self.txn.value('PAYMENTREQUEST_0_SHIPTONAME')
-        # if ship_to_name is None:
-        #     return None
-        # first_name = last_name = None
-        # parts = ship_to_name.split()
-        # if len(parts) == 1:
-        #     last_name = ship_to_name
-        # elif len(parts) > 1:
-        #     first_name = parts[0]
-        #     last_name = " ".join(parts[1:])
-
-        # return ShippingAddress(
-        #     first_name=first_name,
-        #     last_name=last_name,
-        #     line1=self.txn.value('PAYMENTREQUEST_0_SHIPTOSTREET'),
-        #     line2=self.txn.value('PAYMENTREQUEST_0_SHIPTOSTREET2', default=""),
-        #     line4=self.txn.value('PAYMENTREQUEST_0_SHIPTOCITY', default=""),
-        #     state=self.txn.value('PAYMENTREQUEST_0_SHIPTOSTATE', default=""),
-        #     postcode=self.txn.value('PAYMENTREQUEST_0_SHIPTOZIP'),
-        #     country=Country.objects.get(iso_3166_1_a2=self.txn.value('PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'))
-        return ShippingAddress(
-            first_name="Joe",
-            last_name="Shmoe",
-            line1='123 Main St',
-            line2="",
-            line4="Londonderry",
-            state="NH",
-            postcode="03053",
-            country=Country.objects.get(iso_3166_1_a2="US"))
-
 
     def get_shipping_method(self, basket, shipping_address=None, **kwargs):
         """
