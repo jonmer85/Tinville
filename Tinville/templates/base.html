@@ -289,9 +289,9 @@
                      </div>
                    </div>
                        <div>
-                        <a id="shoppingcartcheckout" type="button" href="{% url 'checkout:index' %}" class="btn btn-default btn-sm">
-                           <span class="glyphicon glyphicon-check"></span>
-                        </a>
+                        <button id="shoppingcartcheckout" type="button" class="btn btn-default btn-sm">
+                           <a href="{% url 'cartdetail' %}" class="glyphicon glyphicon-check"></a>
+                        </button>
                          <div id="carttotal">
 
                          </div>
@@ -774,19 +774,16 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-    var cartTotal = 0.00;
-
-    var  cartListPrices = $('.shoppingcartitemPrice');
-    $.each(cartListPrices, function(index, price)
-    {
-        if(price === undefined)
-            cartTotal += 0.00;
-        else
-            cartTotal += price;
-
+    var url = "/cart_total"
+    ajax_req = $.ajax({
+        url: url,
+        type: "GET",
+        success: function(data, textStatus, jqXHR) {
+            $('#carttotal').text('Total: $' + data.total);
+        },
+        error: function(data, textStatus, jqXHR) {
+        }
     });
-
-{#    $('#carttotal').text('Total: $' + cartTotal.toFixed(2));#}
 }
 
 function AddCartItem(cartItem)
