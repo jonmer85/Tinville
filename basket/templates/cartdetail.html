@@ -15,8 +15,6 @@
                     <th style="width:10%"></th>
                 </tr>
                 </thead>
-                <tbody id="checkoutcartitems">
-                </tbody>
                 <tfoot>
                 <tr class="visible-xs">
                     <td class="text-center"><strong id="checkoutTotalMobile">Total: </strong></td>
@@ -116,11 +114,13 @@
             }
             else
             {
-                var shopDiv = $('<tbody/>', { 'id' : cartItem.shop,
-                    'text' : cartItem.shop, 'style': 'text-align: center; font-size: large;'
+                var shopDiv = $('<tr/>', {
+                    'text' : cartItem.shop, 'style': 'font-size: large;'
                 });
-                cartitemtr.appendTo(shopDiv);
-                shopDiv.appendTo(".table");
+                var shopBody = $('<tbody/>', {'id' : cartItem.shop});
+                shopDiv.appendTo(shopBody)
+                cartitemtr.appendTo(shopBody);
+                shopBody.appendTo(".table");
             }
         }
 
