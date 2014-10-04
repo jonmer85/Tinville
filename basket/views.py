@@ -14,6 +14,7 @@ from oscar.apps.catalogue.models import ProductImage as ProductImages
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.contrib import messages
+from operator import itemgetter, attrgetter
 
 
 from oscar.core.loading import get_model
@@ -48,23 +49,26 @@ def load_cart(request):
                 image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
                 stockrecord = get_object_or_404(StockRecords, product_id=basketline.product_id)
                 price_excl_tax = basketline.price_excl_tax
-                cartInfo = {'Id': basketline.id,
-                            'product_id': currentproduct.id,
-                            'title': currentproduct.title,
-                            'description': strip_tags(parentproduct.description),
-                            'price': float(basketline.price_excl_tax),
-                            'image': str(image[0].original),
-                            'qty': basketline.quantity,
-                            'currentStock' : stockrecord.num_in_stock,
-                            'msg': ''}
+                cartInfo = cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, basketline.quantity, image)
                 cartItems.append(cartInfo)
 
-        return HttpResponse(json.dumps(cartItems), mimetype='application/json')
+        return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), mimetype='application/json')
 
-
+def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image):
+    return {'Id': basketline.id,
+                'product_id': currentproduct.id,
+                'title': currentproduct.title,
+                'description': strip_tags(parentproduct.description),
+                'price': float(stockrecord.price_excl_tax),
+                'subtotal': float(stockrecord.price_excl_tax * qty),
+                'image': str(image[0].original),
+                'qty': qty,
+                'currentStock' : stockrecord.num_in_stock,
+                'total' : Decimal(basket.total_excl_tax),
+                'shop' : currentproduct.shop.name,
+                'msg': ''}
 
 def addBasket(request, product_id, qty):
-    msg = ''
     # ToDo figure out this tax stuff
     tax = 1
     stockrecord = get_object_or_404(StockRecords, product_id=product_id)
@@ -95,19 +99,9 @@ def addBasket(request, product_id, qty):
         basketline = Line.objects.get(basket=basket, product=currentproduct, line_reference=line_ref)
         basketline.quantity = qty
         basketline.save(update_fields=["quantity"])
-    basketlineId = basketline.id
 
+    cartInfo = cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image)
 
-    cartInfo = {'Id': basketlineId,
-                'product_id': currentproduct.id,
-                'title': currentproduct.title,
-                'description': strip_tags(parentproduct.description),
-                'price': float(price_excl_tax),
-                'image': str(image[0].original),
-                'qty': qty,
-                'currentStock' : stockrecord.num_in_stock,
-                'msg': msg,
-                'total' : Decimal(basket.total_excl_tax)}
     return HttpResponse(json.dumps(cartInfo, use_decimal=True), mimetype='application/json')
 
 

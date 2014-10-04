@@ -15,8 +15,6 @@
                     <th style="width:10%"></th>
                 </tr>
                 </thead>
-                <tbody id="checkoutcartitems">
-                </tbody>
                 <tfoot>
                 <tr class="visible-xs">
                     <td class="text-center"><strong id="checkoutTotalMobile">Total: </strong></td>
@@ -98,6 +96,9 @@
             qtyInputDiv.appendTo(qtyTd);
             qtyTd.appendTo(cartitemtr);
 
+            var subTotal = $('<td/>', {'id': 'id_subtotal_' + cartItem.product_id, 'style': 'text-align: center;', 'data-th' : 'Subtotal', 'text': '$' + cartItem.subtotal});
+            subTotal.appendTo(cartitemtr);
+
             var actions  = $('<td/>', {'class':'actions', 'data-th': ''});
             var delBtnId = 'deleteBtnId_' + cartItem.Id;
 
@@ -107,7 +108,20 @@
             removeBtn.appendTo(actions);
             actions.appendTo(cartitemtr);
 
-            cartitemtr.appendTo("#checkoutcartitems");
+            if( $('#'+cartItem.shop).length )
+            {
+                cartitemtr.appendTo("#"+cartItem.shop);
+            }
+            else
+            {
+                var shopDiv = $('<tr/>', {
+                    'text' : cartItem.shop, 'style': 'font-size: large;'
+                });
+                var shopBody = $('<tbody/>', {'id' : cartItem.shop});
+                shopDiv.appendTo(shopBody)
+                cartitemtr.appendTo(shopBody);
+                shopBody.appendTo(".table");
+            }
         }
 
         function RemoveCheckoutItem(Id)
@@ -129,13 +143,13 @@
                 },
                 success: function(data, textStatus, jqXHR) {
                     $('#id_price_'+id).text('$'+data.price);
+                    $('#id_subtotal_'+id).text('$'+data.subtotal);
                     $('#checkoutTotal').text('Total: $' + data.total);
+                    $('#checkoutTotalMobile').text('Total: $' + data.total);
                 },
                 error: function(data, textStatus, jqXHR) {
                 }
             });
-
-            aggregateCheckoutTotal();
         }
 
         function aggregateCheckoutTotal()
