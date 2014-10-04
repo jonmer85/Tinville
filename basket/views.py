@@ -14,6 +14,7 @@ from oscar.apps.catalogue.models import ProductImage as ProductImages
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.contrib import messages
+from operator import itemgetter, attrgetter
 
 
 from oscar.core.loading import get_model
@@ -51,7 +52,7 @@ def load_cart(request):
                 cartInfo = cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, basketline.quantity, image)
                 cartItems.append(cartInfo)
 
-        return HttpResponse(json.dumps(cartItems), mimetype='application/json')
+        return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), mimetype='application/json')
 
 def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image):
     return {'Id': basketline.id,
@@ -64,6 +65,7 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'qty': qty,
                 'currentStock' : stockrecord.num_in_stock,
                 'total' : Decimal(basket.total_excl_tax),
+                'shop' : currentproduct.shop.name,
                 'msg': ''}
 
 def addBasket(request, product_id, qty):

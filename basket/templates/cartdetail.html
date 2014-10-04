@@ -110,7 +110,18 @@
             removeBtn.appendTo(actions);
             actions.appendTo(cartitemtr);
 
-            cartitemtr.appendTo("#checkoutcartitems");
+            if( $('#'+cartItem.shop).length )
+            {
+                cartitemtr.appendTo("#"+cartItem.shop);
+            }
+            else
+            {
+                var shopDiv = $('<tbody/>', { 'id' : cartItem.shop,
+                    'text' : cartItem.shop, 'style': 'text-align: center; font-size: large;'
+                });
+                cartitemtr.appendTo(shopDiv);
+                shopDiv.appendTo(".table");
+            }
         }
 
         function RemoveCheckoutItem(Id)
@@ -134,6 +145,7 @@
                     $('#id_price_'+id).text('$'+data.price);
                     $('#id_subtotal_'+id).text('$'+data.subtotal);
                     $('#checkoutTotal').text('Total: $' + data.total);
+                    $('#checkoutTotalMobile').text('Total: $' + data.total);
                 },
                 error: function(data, textStatus, jqXHR) {
                 }
