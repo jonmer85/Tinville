@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.db.models import get_model
 
-from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView
+from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView
 from oscar.apps.shipping.methods import NoShippingRequired, FixedPrice
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 
@@ -118,6 +118,8 @@ class PaymentDetailsView(CorePaymentDetailsView):
             method.name = name
         return method
 
+class IndexView(CoreIndexView):
+    template_name = 'gateway.html'
 
 
 
