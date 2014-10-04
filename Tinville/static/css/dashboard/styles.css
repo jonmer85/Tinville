@@ -1,0 +1,12 @@
+input[disabled] {
+    background-color: white !important;
+    color: black;
+}
+
+.dashboard-input {
+    padding: 5px;
+}
+
+#orderSelectAll {
+    margin: 0px;
+}

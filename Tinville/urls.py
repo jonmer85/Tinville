@@ -4,12 +4,15 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView, TemplateView
 from user.views import ajax_login, register
 from user.forms import LoginForm
-
+from oscar.core.loading import get_class
+from oscar.app import application
 # from oscar.app import application
 
-
-
 admin.autodiscover()
+
+basket_app = get_class('basket.app', 'application')
+checkout_app = get_class('checkout.app', 'application')
+customer_app = get_class('customer.app', 'application')
 
 urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
@@ -31,8 +34,17 @@ urlpatterns += patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^feedback/', include('django_basic_feedback.urls')),
-    url(r'^(?P<shop_slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
+    url(r'^cart/', include(basket_app.urls)),
+    url(r'^checkout/', include(checkout_app.urls)),
+    url(r'^accounts/register', 'user.views.register', name='register'),
+    url(r'^accounts/', include(customer_app.urls)),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
+    url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
+    url(r'^load_cart$', 'basket.views.load_cart'),
+    url(r'^oscar/', include(application.urls)),
+    #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
+    url(r'^(?P<shop_slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)$', 'designer_shop.views.shopeditor_with_item'),
@@ -47,7 +59,7 @@ urlpatterns += patterns('',
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     url(r'^load_cart$', 'basket.views.load_cart'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper'),
+    url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper')
 )
 
 if settings.DEBUG:
