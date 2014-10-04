@@ -1,7 +1,7 @@
 # Django settings for Tinville project.
 
 import os.path
-
+import os
 from unipath import Path
 
 from oscar import get_core_apps
@@ -17,7 +17,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-
 AUTH_USER_MODEL = 'user.TinvilleUser'
 
 PROJECT_DIR = Path(__file__).ancestor(2)
@@ -30,7 +29,6 @@ MEDIA_URL = '/media/'
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
-
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -122,13 +120,15 @@ ROOT_URLCONF = 'Tinville.urls'
 WSGI_APPLICATION = 'Tinville.wsgi.application'
 
 from oscar import OSCAR_MAIN_TEMPLATE_DIR
+location = lambda x: os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', x)
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
-    OSCAR_MAIN_TEMPLATE_DIR,
-
+    PROJECT_DIR.parent.child("dashboard"),
+    OSCAR_MAIN_TEMPLATE_DIR
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -157,7 +157,9 @@ PROJECT_APPS = [
     'user',
     'designer_shop',
     'common',
-    'basket'
+    'basket',
+    'dashboard',
+    'dashboard.orders',
 ]
 
 INSTALLED_APPS = [
@@ -182,19 +184,9 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
-    # 'debug_toolbar'
-] + get_core_apps(['catalogue']) + PROJECT_APPS
-
-
-# These are used by jenkins to know which tasks to run
-JENKINS_TASKS = (
-    'django_jenkins.tasks.run_pylint',
-    'django_jenkins.tasks.with_coverage',
-    'django_jenkins.tasks.lettuce_tests',
-)
-
-
-
+    # 'debug_toolbar',
+    'oscar_stripe'
+] + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -232,9 +224,18 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+# DJANGO OSCAR SETTINGS
 OSCAR_DEFAULT_CURRENCY = '$'
+OSCAR_INITIAL_ORDER_STATUS = 'Pending'
+OSCAR_INITIAL_LINE_STATUS = 'Pending'
+OSCAR_ORDER_STATUS_PIPELINE = {
+    'Pending': ('Being processed', 'Cancelled',),
+    'Being processed': ('Processed', 'Cancelled',),
+    'Cancelled': (),
+}
+OSCAR_ALLOW_ANON_CHECKOUT = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'young-island-7486.herokuapp.com', 'www.tinville.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'www.tinville.com']
 
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
@@ -268,9 +269,6 @@ TINYMCE_PASTE = True
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
-PAYPAL_API_USERNAME = 'jon.meran_api1.tinville.com'
-PAYPAL_API_PASSWORD = 'XN9GPW6ZDNPY42UX'
-PAYPAL_API_SIGNATURE = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ASWqj4DT5Z3q2L4CpuxAs9cDaOsh'
-PAYPAL_CURRENCY = 'USD'
-PAYPAL_CUSTOMER_SERVICES_NUMBER = '1-888-ASK-DIZZ'
-PAYPAL_BRAND_NAME = 'Tinville'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
+STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
+STRIPE_CURRENCY = 'USD'
