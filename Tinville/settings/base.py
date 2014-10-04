@@ -182,8 +182,7 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
-    'paypal',
-    'debug_toolbar'
+    # 'debug_toolbar'
 ] + get_core_apps(['catalogue']) + PROJECT_APPS
 
 
