@@ -8,7 +8,7 @@ from django.conf import settings
 from django.db.models import get_model
 
 from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView
-from oscar.apps.shipping.methods import NoShippingRequired, FixedPrice
+from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 
 # Create your views here.
@@ -101,21 +101,8 @@ class PaymentDetailsView(CorePaymentDetailsView):
         if not basket.is_shipping_required():
             return NoShippingRequired()
 
-        # Instantiate a new FixedPrice shipping method instance
-        # Jon M TODO
-        charge_incl_tax = D(9.99) #D(self.txn.value('PAYMENTREQUEST_0_SHIPPINGAMT'))
-        # Assume no tax for now
-        charge_excl_tax = charge_incl_tax
-        method = FixedPrice(charge_excl_tax, charge_incl_tax)
-        name = "Test shipping option"#self.txn.value('SHIPPINGOPTIONNAME')
+        method = Free
 
-        if not name:
-            session_method = super(PaymentDetailsView, self).get_shipping_method(
-                basket, shipping_address, **kwargs)
-            if session_method:
-                method.name = session_method.name
-        else:
-            method.name = name
         return method
 
 class IndexView(CoreIndexView):
