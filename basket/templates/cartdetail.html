@@ -108,16 +108,16 @@
             removeBtn.appendTo(actions);
             actions.appendTo(cartitemtr);
 
-            if( $('#'+cartItem.shop).length )
+            if( $('#'+cartItem.shopSlug).length )
             {
-                cartitemtr.appendTo("#"+cartItem.shop);
+                cartitemtr.appendTo("#"+cartItem.shopSlug);
             }
             else
             {
                 var shopDiv = $('<tr/>', {
                     'text' : cartItem.shop, 'style': 'font-size: large;'
                 });
-                var shopBody = $('<tbody/>', {'id' : cartItem.shop});
+                var shopBody = $('<tbody/>', {'id' : cartItem.shopSlug});
                 shopDiv.appendTo(shopBody)
                 cartitemtr.appendTo(shopBody);
                 shopBody.appendTo(".table");
