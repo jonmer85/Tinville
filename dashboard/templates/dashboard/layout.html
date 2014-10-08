@@ -162,3 +162,47 @@
     {{ block.super }}
     oscar.dashboard.init();
 {% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $(document).ready(function(){
+            var mode = checkMode();
+            if (mode == 'xs')
+            {
+                collapseAll();
+            }
+            else
+            {
+                expandAll();
+            }
+        });
+
+        $(window).resize(function(){
+            var mode = checkMode();
+            if (mode == 'xs')
+            {
+                collapseAll();
+            }
+            else
+            {
+                expandAll();
+            }
+        });
+
+        function collapseAll()
+        {
+            $('.dashboardCollapse').collapse('hide');
+        }
+
+        function expandAll()
+        {
+            $('.dashboardCollapse').collapse('show');
+        }
+
+        $("#orderContentDropdown li").click(function (){
+            $("#orderContentDropdownHead").text($(this).text());
+            $("#orderContentDropdownHead").append('<span class="caret"></span>');
+        });
+    </script>
+{% endblock %}
