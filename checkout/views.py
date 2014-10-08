@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.conf import settings
 from django.db.models import get_model
 
-from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView
+from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView,\
+    ShippingAddressView as CoreShippingAddressView, GatewayForm, ShippingAddressForm
 from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 
@@ -107,6 +108,9 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
 class IndexView(CoreIndexView):
     template_name = 'gateway.html'
+    form_class = GatewayForm
 
-
+class ShippingAddressView(CoreShippingAddressView):
+    template_name = 'shipping_address.html'
+    form_class = ShippingAddressForm
 
