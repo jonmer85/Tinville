@@ -66,6 +66,7 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'currentStock' : stockrecord.num_in_stock,
                 'total' : Decimal(basket.total_excl_tax),
                 'shop' : currentproduct.shop.name,
+                'shopSlug' : currentproduct.shop.slug,
                 'msg': ''}
 
 def addBasket(request, product_id, qty):
