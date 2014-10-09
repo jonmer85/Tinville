@@ -1,5 +1,5 @@
-{% extends "checkout/layout.html" %}
-
+{% extends "base.html" %}
+base.html" %}
 {% load i18n %}
 
 {% block title %}
@@ -12,52 +12,26 @@
 
 {% block checkout_title %}{% trans "Who are you?" %}{% endblock %}
 
+{% block css %}
+{{ block.super }}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/checkout/styles.css" />
+{% endblock css %}
 {% block content %}
 
     <form action="." method="post" class="form-stacked well">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+    <div class = "checkoutAlign">
+                        {% csrf_token %}
+    					{% load crispy_forms_tags %}
+						{% crispy form %}
 
-        {% include "partials/form_field.html" with field=form.username %}
-        <div class="control-group">
-            <div class="controls">
-                <div class="radio">
-                    {{ form.options.0 }}
-                </div>
-            </div>
-        </div>
-
-        <div class="control-group {% if form.password.errors %}error{% endif %}">
-            {{ form.options.errors }}
-            <div class="controls">
-                <div class="radio">
-                    {{ form.options.2 }}
-                    <div class="form-inline">
-                        {{ form.password }}
-                        <small><a href="{% url 'password-reset' %}" tabindex="-1">{% trans "Get a password reminder" %}</a></small>
-                        {% for error in form.password.errors %}
-                            <span class="error-block">{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="controls">
-                <div class="radio">
-                    {{ form.options.1 }}
-                </div>
-            </div>
-        </div>
-
-        <div class="form-actions">
+                        <div class="form-actions">
             <div class="row-fluid">
                 <div class="span3">
-                    <button type="submit" class="btn btn-large btn-block btn-primary">{% trans "Continue" %}</button>
+                    <button type="submit" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue" %}</button>
                 </div>
             </div>
         </div>
+    </div>
     </form>
 
 {% endblock content %}
