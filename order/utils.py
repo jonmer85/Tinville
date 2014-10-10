@@ -40,8 +40,11 @@ class OrderCreator(CoreOrderCreator):
             user, basket, shipping_address, shipping_method, billing_address,
             total, order_number, status, **kwargs)
         for line in basket.all_lines():
-            self.create_line_models(order, line)
-            if line.product.shop.id == shop.id:
+            if shop is None or line.product.shop.id == shop.id:
+                # Top level order and Shop orders track product lines
+                self.create_line_models(order, line)
+            if shop and line.product.shop.id == shop.id:
+                # Stock is updated only for the Shop orders, not the top level order
                 self.update_stock_records(line)
 
         for application in basket.offer_applications:

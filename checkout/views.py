@@ -199,7 +199,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
             if(line.product.shop not in items_by_shop):
                 items_by_shop[line.product.shop] = {"products": [], "order_total": 0}
             items_by_shop[line.product.shop]["products"].append(line.product),
-            items_by_shop[line.product.shop]["order_total"] += line.price_excl_tax
+            items_by_shop[line.product.shop]["order_total"] += line.line_price_excl_tax
 
         for shop in items_by_shop.keys():
 
