@@ -10,3 +10,54 @@ input[disabled] {
 #orderSelectAll {
     margin: 0px;
 }
+
+.paddingContainer {
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.paddingContainer:hover {
+    background-color: #e7e5e6;
+}
+
+.table>tbody>tr>td, .table>tfoot>tr>td{
+    vertical-align: middle;
+}
+
+#orderContentDropdown.dropdown-menu {
+    width: 100% !important;
+}
+
+@media screen and (max-width: 767px) {
+    table.collapseTableXS tbody td .form-control{
+		width:20%;
+		display: inline !important;
+	}
+	.actions .btn{
+		width:36%;
+		margin:1.5em 0;
+	}
+
+	.actions .btn-info{
+		float:left;
+	}
+	.actions .btn-danger{
+		float:right;
+	}
+    table.collapseTableXS {
+        margin-bottom: 0px;
+    }
+	table.collapseTableXS thead { display: none; }
+	table.collapseTableXS tbody td { display: block; padding: .6rem; min-width:320px;}
+	table.collapseTableXS tbody tr td:first-child { background: #5B595A; color: #e7e5e6; }
+	table.collapseTableXS tbody td:before {
+		content: attr(data-th); font-weight: bold;
+		display: inline-block; width: 8rem;
+	}
+    table.collapseTableXS tbody td {
+        text-align: left !important;
+    }
+
+	table.collapseTableXS tfoot td{display:block; }
+	table.collapseTableXS tfoot td .btn{display:block;}
+}
