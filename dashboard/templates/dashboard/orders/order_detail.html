@@ -163,6 +163,8 @@
                                     <th>{% trans "Line ID" %}</th>
                                     <th>{% trans "Quantity" %}</th>
                                     <th>{% trans "Product" %}</th>
+                                    <th>{% trans "Product Size" %}</th>
+                                    <th>{% trans "Product Color" %}</th>
                                     <th>{% trans "UPC" %}</th>
                                     <th>{% trans "Status" %}</th>
                                     {% if user.is_staff %}
@@ -179,15 +181,7 @@
                                 {% for line in order.lines.all %}
                                     <tr class="visible-xs" data-toggle="collapse" data-target="#orderline_{{ line.id }}">
                                         <td data-th="Order Line:">
-
-{#                                            {{ line.id }}#}
-{##}
-{#                                            {% for attribute in line.product.attribute_values.all %}#}
-{#                                                {% if attribute.attribute.name == color %}#}
-{#                                                    {{  attribute.value }}#}
-{#                                                {% endif %}#}
-{#                                            {% endfor %}#}
-
+                                            {{ line.id }}
                                         </td>
                                     </tr>
                                     <tr id="orderline_{{ line.id }}" class="dashboardCollapse collapse">
@@ -203,6 +197,32 @@
                                             {% else %}
                                                 {{ line.title }}
                                             {% endif %}
+                                        </td>
+                                        <td data-th="{% trans "Product Size" %}">
+                                            {% for attribute in line.product.attribute_values.all %}
+                                                {% if attribute.attribute.name == "size_set" %}
+                                                    {{  attribute.value|upper }}
+                                                {% endif %}
+
+                                                {% if attribute.attribute.name == "size_number" %}
+                                                    {{  attribute.value }}
+                                                {% endif %}
+
+                                                {% if attribute.attribute.name == "size_dimension_x" %}
+                                                    {{  attribute.value }}
+                                                {% endif %}
+
+                                                {% if attribute.attribute.name == "size_dimension_y" %}
+                                                    x {{  attribute.value }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td data-th="{% trans "Product Color" %}">
+                                            {% for attribute in line.product.attribute_values.all %}
+                                                {% if attribute.attribute.name == "color" %}
+                                                    {{  attribute.value|title }}
+                                                {% endif %}
+                                            {% endfor %}
                                         </td>
                                         <td data-th="{% trans "UPC" %}">{{ line.upc|default:"-" }}</td>
                                         <td data-th="{% trans "Status" %}">{{ line.status|default:"-" }}</td>
