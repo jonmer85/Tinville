@@ -108,6 +108,7 @@
                     <tr class="visible-xs" data-toggle="collapse" data-target="#ordernumber_{{ order.number }}">
                         <td data-th="Order Number:">
                             {{ order.number }}
+                            <a class="btn btn-info pull-right" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>
 {#                            <a class="btn btn-info" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>#}
                         </td>
                     </tr>
@@ -131,7 +132,7 @@
                         </td>
                         <td data-th="{% trans "Shipping address" %}">{{ order.shipping_address|default:"-" }}</td>
                         <td data-th="{% trans "Date of purchase" %}">{{ order.date_placed }}</td>
-                        <td data-th="">
+                        <td class="hidden-xs">
                             <a class="btn btn-info" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>
                         </td>
                     </tr>

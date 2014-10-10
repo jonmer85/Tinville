@@ -114,7 +114,7 @@
         </tbody>
     </table>
 
-    <div id="orderDetails" class="tabbable dashboard dashboardCollapse">
+    <div id="orderDetails" class="tabbable dashboard dashboardCollapse collapse">
         <ul class="nav nav-tabs hidden-xs">
             {% block nav_tabs_nonxs %}
                 <li class="{% if active_tab == 'lines' %}active{% endif %}"><a href="#lines" data-toggle="tab">{% trans "Order contents" %}</a></li>
@@ -151,7 +151,7 @@
         <div class="tab-content">
             <div class="tab-pane {% if active_tab == 'lines' %}active{% endif %}" id="lines">
                 <div class="table-header">
-                    <h3 class="text-center">{% trans "Items ordered" %}</h3>
+                    <h3>{% trans "Items ordered" %}</h3>
                 </div>
                 <form id="order_lines_form" action="." method="post" class="form-inline">
                     {% csrf_token %}
@@ -179,7 +179,15 @@
                                 {% for line in order.lines.all %}
                                     <tr class="visible-xs" data-toggle="collapse" data-target="#orderline_{{ line.id }}">
                                         <td data-th="Order Line:">
-                                            {{ line.id }}
+
+{#                                            {{ line.id }}#}
+{##}
+{#                                            {% for attribute in line.product.attribute_values.all %}#}
+{#                                                {% if attribute.attribute.name == color %}#}
+{#                                                    {{  attribute.value }}#}
+{#                                                {% endif %}#}
+{#                                            {% endfor %}#}
+
                                         </td>
                                     </tr>
                                     <tr id="orderline_{{ line.id }}" class="dashboardCollapse collapse">
@@ -216,8 +224,10 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
-
-                                <tr>
+                                <tr class="visible-xs" data-toggle="collapse" data-target=".ordertotals">
+                                     <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }} (expand for details)</td>
+                                </tr>
+                                <tr class="ordertotals dashboardCollapse collapse">
                                     <td class="hidden-xs" colspan="7"></td>
                                     <th class="hidden-xs">{% trans "Discount" %}</th>
                                     <td data-th="{% trans "Discount" %} excl tax" style="text-align: right">{{ order.total_discount_excl_tax|currency:order.currency }}</td>
@@ -226,7 +236,7 @@
                                 </tr>
                                 {% with discounts=order.basket_discounts %}
                                     {% if discounts %}
-                                        <tr>
+                                        <tr class="ordertotals dashboardCollapse collapse">
                                             <td class="hidden-xs" colspan="7"></td>
                                             <th class="hidden-xs">{% trans "Basket total (excl. discounts)" %}</th>
                                             <td data-th="{% trans "Basket total (excl. discounts)" %} excl tax" style="text-align: right">{{ order.basket_total_before_discounts_excl_tax|currency:order.currency }}</td>
@@ -234,7 +244,7 @@
                                             <td class="hidden-xs"></td>
                                         </tr>
                                         {% for discount in discounts %}
-                                            <tr>
+                                            <tr class="ordertotals dashboardCollapse collapse">
                                                 <td class="hidden-xs" colspan="7"></td>
                                                 <td>
                                                     <span class="label label-success">{% trans "Discount" %}</span>
@@ -245,30 +255,34 @@
                                                 <td class="hidden-xs"></td>
                                             </tr>
                                         {% endfor %}
-                                        <tr>
+                                        <tr class="ordertotals dashboardCollapse collapse">
                                             <td class="hidden-xs" colspan="7"></td>
                                             <th class="hidden-xs">{% trans "Basket total (inc. discounts)" %}</th>
                                             <th class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</th>
                                             <th class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</th>
-                                            <td class="visible-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-                                            <td class="visible-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+                                            <div class="visible-xs">
+                                                <td class="" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+                                                <td class="" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+                                            </div>
                                             <td class="hidden-xs"></td>
                                         </tr>
                                     {% else %}
-                                        <tr>
+                                        <tr class="ordertotals dashboardCollapse collapse">
                                             <td class="hidden-xs" colspan="7"></td>
                                             <th class="hidden-xs">{% trans "Basket total" %}</th>
                                             <th class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</th>
                                             <th class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</th>
-                                            <td data-th="{% trans "Basket total" %} excl tax" class="visible-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-                                            <td data-th="{% trans "Basket total" %} incl tax" class="visible-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+                                            <div class="visible-xs">
+                                                <td data-th="{% trans "Basket total" %} excl tax" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+                                                <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+                                            </div>
                                             <td class="hidden-xs"></td>
                                         </tr>
                                     {% endif %}
                                 {% endwith %}
 
                                 {% if order.has_shipping_discounts %}
-                                    <tr>
+                                    <tr class="ordertotals dashboardCollapse collapse">
                                         <td class="hidden-xs" colspan="7"></td>
                                         <td class="hidden-xs">{% trans "Shipping total (excl. discounts)" %}</td>
                                         <td data-th="{% trans "Shipping total (excl. discounts) excl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_excl_tax|currency:order.currency }}</td>
@@ -276,7 +290,7 @@
                                         <td class="hidden-xs"></td>
                                     </tr>
                                     {% for discount in order.shipping_discounts %}
-                                        <tr>
+                                        <tr class="ordertotals dashboardCollapse collapse">
                                             <td class="hidden-xs" colspan="7"></td>
                                             <td>
                                                 <span class="label label-success">{% trans "Discount" %}</span>
@@ -287,34 +301,40 @@
                                             <td class="hidden-xs"></td>
                                         </tr>
                                     {% endfor %}
-                                    <tr>
+                                    <tr class="ordertotals dashboardCollapse collapse">
                                         <td class="hidden-xs" colspan="7"></td>
                                         <th class="hidden-xs">{% trans "Shipping total (inc. discounts)" %}</th>
                                         <th class="hidden-xs" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</th>
                                         <th class="hidden-xs" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</th>
-                                        <td data-th="{% trans "Shipping total (inc. discounts)" %} excl tax" class="visible-xs" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
-                                        <td data-th="{% trans "Shipping total (inc. discounts)" %} incl tax" class="visible-xs" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>
+                                        <div class="visible-xs">
+                                            <td data-th="{% trans "Shipping total (inc. discounts)" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
+                                            <td data-th="{% trans "Shipping total (inc. discounts)" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>
+                                        </div>
                                         <td class="hidden-xs"></td>
                                     </tr>
                                 {% else %}
-                                    <tr>
+                                    <tr class="ordertotals dashboardCollapse collapse">
                                         <td class="hidden-xs" colspan="7"></td>
                                         <th class="hidden-xs" >{% trans "Shipping total" %}</th>
                                         <th class="hidden-xs" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</th>
                                         <th class="hidden-xs"style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</th>
-                                        <td data-th="{% trans "Shipping total" %} excl tax" class="visible-xs" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
-                                        <td data-th="{% trans "Shipping total" %} incl tax" class="visible-xs" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>
+                                        <div class="visible-xs">
+                                            <td data-th="{% trans "Shipping total" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
+                                            <td data-th="{% trans "Shipping total" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>
+                                        </div>
                                         <td class="hidden-xs" ></td>
                                     </tr>
                                 {% endif %}
 
-                                <tr>
+                                <tr class="ordertotals dashboardCollapse collapse">
                                     <td class="hidden-xs" colspan="7"></td>
                                     <th class="hidden-xs">{% trans "Order total" %}</th>
                                     <th class="hidden-xs" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</th>
                                     <th class="hidden-xs" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</th>
-                                    <td data-th="{% trans "Order total" %} excl tax" class="visible-xs" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
-                                    <td data-th="{% trans "Order total" %} incl tax" class="visible-xs" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>
+                                    <div class="visible-xs">
+                                        <td data-th="{% trans "Order total" %} excl tax" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
+                                        <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>
+                                    </div>
                                     <td class="hidden-xs"></td>
                                 </tr>
                             </tbody>

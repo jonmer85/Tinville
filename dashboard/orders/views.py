@@ -6,6 +6,3 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
-
-
-

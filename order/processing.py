@@ -3,7 +3,7 @@ from datacash import models, facade, gateway
 from oscar.apps.order import processing
 from oscar.apps.payment import exceptions
 
-from .models import PaymentEventType
+# from .models import PaymentEventType
 
 
 class EventHandler(processing.EventHandler):
