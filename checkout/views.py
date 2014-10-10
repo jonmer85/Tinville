@@ -11,6 +11,7 @@ from django.utils.translation import ugettext as _
 
 from oscar.apps.checkout import signals
 from oscar.core.loading import get_class, get_classes
+from oscar.core import prices
 
 from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView
 from oscar.apps.shipping.methods import NoShippingRequired, Free
@@ -170,30 +171,52 @@ class PaymentDetailsView(CorePaymentDetailsView):
         top_level_order_number = self.generate_order_number(basket)
         self.checkout_session.set_order_number(top_level_order_number)
 
+        logger.info("Order #%s: beginning submission process for basket #%d",
+                        top_level_order_number, basket.id)
+
         items_by_shop = {}
-        order_total_by_shop = 0
+
+        top_level_order = None
+        try:
+            top_level_order = self.handle_order_placement(
+                top_level_order_number, user, basket, shipping_address, shipping_method,
+                prices.Price(currency=basket.currency, excl_tax=basket.total_excl_tax, incl_tax=basket.total_excl_tax), **order_kwargs)
+        except UnableToPlaceOrder as e:
+            # It's possible that something will go wrong while trying to
+            # actually place an order.  Not a good situation to be in as a
+            # payment transaction may already have taken place, but needs
+            # to be handled gracefully.
+            msg = six.text_type(e)
+            logger.error("Order #%s: unable to place order - %s",
+                         top_level_order_number, msg, exc_info=True)
+            self.restore_frozen_basket()
+            return self.render_preview(
+                self.request, error=msg, **payment_kwargs)
+
+        # Collect information to split into an order for each shop
         for line in basket.all_lines():
             if(line.product.shop not in items_by_shop):
-                items_by_shop[line.product.shop] = []
-            items_by_shop[line.product.shop].append(line.product)
-            order_total_by_shop += line.price_excl_tax
+                items_by_shop[line.product.shop] = {"products": [], "order_total": 0}
+            items_by_shop[line.product.shop]["products"].append(line.product),
+            items_by_shop[line.product.shop]["order_total"] += line.price_excl_tax
 
-
+        for shop in items_by_shop.keys():
 
             # We generate the order number first as this will be used
             # in payment requests (ie before the order model has been
             # created).  We also save it in the session for multi-stage
             # checkouts (eg where we redirect to a 3rd party site and place
             # the order on a different request).
-            order_number = self.generate_order_number(basket)
-
-            logger.info("Order #%s: beginning submission process for basket #%d",
-                        order_number, basket.id)
+            order_number = self.generate_order_number(basket, shop.id)
+            order = None
 
             try:
-                return self.handle_order_placement(
+                order_kwargs['shop'] = shop
+                order = self.handle_order_placement(
                     order_number, user, basket, shipping_address, shipping_method,
-                    order_total_by_shop, **order_kwargs)
+                    prices.Price(currency=basket.currency, excl_tax=items_by_shop[shop]["order_total"],
+                                 incl_tax=items_by_shop[shop]["order_total"]),
+                                 **order_kwargs)
             except UnableToPlaceOrder as e:
                 # It's possible that something will go wrong while trying to
                 # actually place an order.  Not a good situation to be in as a
@@ -205,7 +228,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
                 self.restore_frozen_basket()
                 return self.render_preview(
                     self.request, error=msg, **payment_kwargs)
-
 
 
         try:
@@ -257,6 +279,35 @@ class PaymentDetailsView(CorePaymentDetailsView):
         # If all is ok with payment, try and place order
         logger.info("Order #%s: payment successful, placing order",
                     top_level_order_number)
+
+        basket.submit()
+
+        return self.handle_successful_order(top_level_order)
+
+    def generate_order_number(self, basket, shop_id=None):
+        order_num = 100000 + basket.id
+        if shop_id is not None:
+            order_num = str(shop_id) + '-' + str(order_num)
+        return order_num
+
+
+
+    def handle_order_placement(self, order_number, user, basket,
+                               shipping_address, shipping_method,
+                               total, **kwargs):
+        """
+        Write out the order models and return the appropriate HTTP response
+
+        We deliberately pass the basket in here as the one tied to the request
+        isn't necessarily the correct one to use in placing the order.  This
+        can happen when a basket gets frozen.
+        """
+        order = self.place_order(
+            order_number, user, basket, shipping_address, shipping_method,
+            total, **kwargs)
+
+        return order
+
 
 
 class IndexView(CoreIndexView):
