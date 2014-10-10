@@ -29,9 +29,9 @@
                         <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
-                        <li>
-                            <a href="#logo" data-toggle="pill">Logo</a>
-                        </li>
+{#                        <li>#}
+{#                            <a href="#logo" data-toggle="pill">Logo</a>#}
+{#                        </li>#}
                         <li>
                             <a href="#color" data-toggle="pill">Color</a>
                         </li>
@@ -47,10 +47,11 @@
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
-                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">
-                                {% load crispy_forms_tags %}
-                                {% crispy logoUploadForm %}
-                            </form>
+{#                            S.Abbay - removing logo for now until we understand better way to place it#}
+{#                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">#}
+{#                                {% load crispy_forms_tags %}#}
+{#                                {% crispy logoUploadForm %}#}
+{#                            </form>#}
                             <form class="tab-pane" id="color" action="edit/ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
@@ -271,7 +272,9 @@ function sizeSetTemplate(required) {
                     "</select>" +
                 "</div>" +
                 "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+                    "<button id='id_clearSizes' class='shoppingcartBtn' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                    "</button>" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -285,14 +288,16 @@ function sizeDimensionTemplate(required) {
         "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
             "<div class='controls row'>" +
                 "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'" + required +">" +
+                    "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='decimal' placeholder = 'Type a width'" + required +">" +
                 "</div>" +
                 "<div class='col-xs-2 dimensionSplit'>X</div>"+
                 "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'" + required +">" +
+                    "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='decimal' placeholder = 'Type a length'" + required +">" +
                 "</div>" +
                 "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+                    "<button id='id_clearSizes' class='shoppingcartBtn'  value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                    "</button>" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -306,10 +311,12 @@ function sizeNumberTemplate(required){
         "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
             "<div class='controls row'>" +
                 "<div class='col-xs-10'>" +
-                    "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='demical' placeholder = 'Type a size'>" +
+                    "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='decimal' placeholder = 'Type a size'>" +
                 "</div>" +
                 "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+                    "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                    "</button>" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -345,7 +352,9 @@ function rowColorQuantityTemplate(required){
             "</div>" +
         "</td>" +
         "<td>" +
-            "<button id='id_clearColorQuantity' value='Clear' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>Clear</button>" +
+            "<button id='id_clearColorQuantity' value='Clear' class='shoppingcartBtn' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>" +
+                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20' />" +
+            "</button>" +
         "</td>" +
     "</tr>"
     return rowColorQuantityTemplate;

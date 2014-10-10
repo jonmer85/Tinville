@@ -195,6 +195,24 @@ def ajax_color(request, slug):
 
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
+
+def get_types(request, shop_slug, group_by=None):
+        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+        shopCategoryNames = []
+        shopProductCategories = get_filter_lists(shop).shop_product_categories()
+        for productcategory in shopProductCategories:
+            if productcategory != None:
+                currentcategory = get_or_none(Category, id=productcategory.category.id)
+                if group_by != "All":
+                    if currentcategory.full_name.find(group_by) >= 0:
+                        shopCategoryNames.append(str(currentcategory.name))
+                else:
+                    if not shopCategoryNames.__contains__(currentcategory.name):
+                        shopCategoryNames.append(currentcategory.name)
+        types = {'types': shopCategoryNames}
+        return HttpResponse(json.dumps(types), mimetype='application/json')
+
+
 def get_variants(item, group=None):
     variants = get_list_or_empty(Product, parent=item.id)
 

@@ -87,9 +87,8 @@
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
                     <ul class="nav navbar-nav navButtonIconStyle">
-                        <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="visible-xs"> + </b></a>
-
+                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
@@ -156,8 +155,7 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <li class="dropdown navdropSize mobileDropBtnStyle">
+                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
@@ -228,11 +226,11 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="visible-xs"> + </b></a>
+                        <li class="hidden dropdown yamm-fw mobileDropBtnStyle">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Shop<b class="visible-xs"> + </b></a>
                         </li>
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="visible-xs"> + </b></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS<b class="visible-xs"> + </b></a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div class="yamm-content navbarLinkStyle ">
@@ -248,7 +246,7 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="visible-xs"> + </b></a>
+                            <a href="http://blog.tinville.com" target="_blank">BLOG<b class="visible-xs"> + </b></a>
                         </li>
 
                         {% if user.is_authenticated %}
@@ -329,12 +327,12 @@
             </nav>
             <nav class="footer-nav col-sm-2">
                 <dl class="list-unstyled">
-                    <li class="mainFooterListItem">My Account</li>
+{#                    <li class="mainFooterListItem">My Account</li>#}
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
                             <a href="/logout">Sign Out</a>
                         {% else %}
-                            <a id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
+                            <a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
                         {% endif %}
                     </li>
                     <li class="mainFooterListItem"><a href="#">View Cart</a></li>
@@ -344,7 +342,7 @@
             <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-1 col-lg-offset-1">
                 <dl class="list-unstyled">
                     <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2013</li>
+                    <li id="tinvilleFooterListItemChild">2011-2014</li>
                     <li id="tinvilleFooterListItemPrimary">Contact Us</li>
                     <li id="tinvilleFooterListItemChild">
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
@@ -387,7 +385,7 @@
                         {% if user.is_authenticated %}
                             <a href="/logout">Sign Out</a>
                         {% else %}
-                            <a id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a>
+                            <a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a>
                         {% endif %}
                     </li>
                     <li class="mainFooterListItem"><a href="#">View Cart</a></li>

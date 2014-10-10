@@ -69,7 +69,7 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
-                css_class="container col-xs-12 col-lg-8",
+                css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8",
                 css_id="addItemEditor"
             )
 
