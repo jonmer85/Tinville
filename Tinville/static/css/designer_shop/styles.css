@@ -152,6 +152,8 @@
     /*width : 30%;*/
     margin-right: 2%;
     padding: 0px 12px;
+    border: none;
+    border-radius: 0px;
 }
 
 

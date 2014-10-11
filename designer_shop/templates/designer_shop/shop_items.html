@@ -13,9 +13,9 @@
                                 <div class="thumbnail shopItem shopBorderColor col-middle col-xs-height">
                                     {% if editmode %}
                                         {% if product and product.is_top_level %}
-                                            <a class="overlayEdit whhg-edit" href='{{ shop.get_absolute_url }}edit/{{ product.slug }}'> </a>
+                                            <a class="overlayEdit whhg-edit" href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' data-toggle="tooltip" data-placement="left" title="Edit item"> </a>
                                             <a id='{{ product.slug }}' onclick="DeleteConfirmation('{{ product.slug }}')"  >
-                                                <img class="overlayDelete" src='{{ STATIC_URL }}img/delete.png' />
+                                                <img class="overlayDelete" src='{{ STATIC_URL }}img/delete.png' data-toggle="tooltip" data-placement="right" title="Delete item" />
                                             </a>
                                         {% endif %}
                                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -39,9 +39,11 @@
                                     {% if product.primary_image and product.primary_image.original.url %}
                                         {% with image=product.primary_image %}
                                             {% thumbnail image.original "200x250" upscale=False as thumb %}
-                                            <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
-                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="itemSize" style="max-width: 150px"/>
+                                            <div style = "width: 150px; height: 185px">
+                                                <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
+                                                <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="itemSize" style="max-width: 150px; width: 150px; height: 185px""/>
                                             </a>
+                                                </div>
                                             {% endthumbnail %}
                                         {% endwith %}
                                     {% else %}

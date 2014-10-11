@@ -205,7 +205,8 @@ def get_types(request, shop_slug, group_by=None):
                 currentcategory = get_or_none(Category, id=productcategory.category.id)
                 if group_by != "All":
                     if currentcategory.full_name.find(group_by) >= 0:
-                        shopCategoryNames.append(str(currentcategory.name))
+                        if not shopCategoryNames.__contains__(currentcategory.name):
+                            shopCategoryNames.append(str(currentcategory.name))
                 else:
                     if not shopCategoryNames.__contains__(currentcategory.name):
                         shopCategoryNames.append(currentcategory.name)
