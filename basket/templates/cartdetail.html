@@ -23,7 +23,7 @@
                     <td><a href="{% url 'home' %}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                     <td colspan="2" class="hidden-xs"></td>
                     <td class="hidden-xs text-center"><strong id="checkoutTotal">Total: </strong></td>
-                    <td><a href="#" id="paypalBtn" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                    <td><a href="{% url 'checkout:index' %}" id="checkoutBtn" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
                 </tr>
                 </tfoot>
             </table>
@@ -108,16 +108,16 @@
             removeBtn.appendTo(actions);
             actions.appendTo(cartitemtr);
 
-            if( $('#'+cartItem.shop).length )
+            if( $('#'+cartItem.shopSlug).length )
             {
-                cartitemtr.appendTo("#"+cartItem.shop);
+                cartitemtr.appendTo("#"+cartItem.shopSlug);
             }
             else
             {
                 var shopDiv = $('<tr/>', {
                     'text' : cartItem.shop, 'style': 'font-size: large;'
                 });
-                var shopBody = $('<tbody/>', {'id' : cartItem.shop});
+                var shopBody = $('<tbody/>', {'id' : cartItem.shopSlug});
                 shopDiv.appendTo(shopBody)
                 cartitemtr.appendTo(shopBody);
                 shopBody.appendTo(".table");

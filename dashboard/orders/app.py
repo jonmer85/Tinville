@@ -18,7 +18,7 @@ class OrdersDashboardApplication(Application):
     }
 
     order_list_view = jeffsviews.OrderListView
-    order_detail_view = views.OrderDetailView
+    order_detail_view = jeffsviews.OrderDetailView
     shipping_address_view = views.ShippingAddressUpdateView
     line_detail_view = views.LineDetailView
     order_stats_view = views.OrderStatsView

@@ -1576,5 +1576,29 @@
             "full_name": "Men > Shoes > Sneakers"
 
         }
+    },
+    {
+        "pk": 1,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "shipped",
+            "name": "Shipped"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "returned",
+            "name": "Returned"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "cancelled",
+            "name": "Cancelled"
+        }
     }
 ]
