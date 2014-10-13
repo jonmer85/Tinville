@@ -47,9 +47,9 @@
                         {% if not image.is_primary %}
                             {% thumbnail image.original "100x125" upscale=True as thumb %}
                             <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
-                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
-                                </a>
+{#                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">#}
+                                    <img src="{{ image.original.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+{#                                </a>#}
                             </div>
                             {% endthumbnail %}
                         {% endif %}
@@ -221,7 +221,8 @@
     $("#itemColorSelection").change(updateQuantityPrice);
 
     $(".otherImage").click(function (){
-
+        var src = $(this).attr("src");
+        $("#itemSelectedImage img").attr("src", src);
     });
 
 

@@ -163,37 +163,6 @@
     border-radius: 0px;
 }
 
-
-#editLink {
-    width: 35px;
-    position: relative;
-    /*top: 280px;*/
-
-    /*left: 15px;*/
-    border-radius: 8px;
-    background-color: #f46430;
-}
-
-
-#editLink a {
-    display: block;
-    /*height: 48px;*/
-    padding:3px;
-    text-decoration: none;
-    color: white;
-}
-
-.editIcon {
-    /*margin-right: 3px;*/
-    font-size: x-large;
-    color: white;
-}
-@media (max-width: 768px) {
-    .editIcon {
-        /*font-size: large;*/
-    }
-}
-
 .shopLogoDiv {
     width: 150px;
     position: relative;
