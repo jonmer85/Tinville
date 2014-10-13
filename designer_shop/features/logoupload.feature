@@ -3,7 +3,7 @@ Feature: Designer Shop Logo Upload Selection
   In order to upload a logo image for the designer shop
   As a designer
   I want to have a file selection that allows me to choose the image
-
+@skip_circle
   Scenario: Logo Menu
     Given the demo shop editor
     When the logo tab is selected

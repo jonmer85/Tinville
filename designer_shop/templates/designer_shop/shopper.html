@@ -32,9 +32,9 @@
 				<ul class="nav navbar-nav">
 					<li class="active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
                     {% if user.email == shop.user.email%}
-                        <li><a href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
+                        <li><a id="editLink" href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
                     {% endif %}
-					<li><a href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
+					<li><a href="#aboutTab" id="aboutTabLink" role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 
