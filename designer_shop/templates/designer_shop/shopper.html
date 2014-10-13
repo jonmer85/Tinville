@@ -11,22 +11,42 @@
 
 
 <!-- Nav tabs -->
-<ul class="nav nav-tabs shopBackgroundColor" role="tablist">
-    <li class="active shopTabStyle"><a href="#shopTab" role="tab" data-toggle="tab"z>Home</a></li>
-    <li class="shopTabStyle"><a href="#aboutTab" id="aboutTabLink" role="tab" data-toggle="tab">About</a></li>
-    <li class="shopTabStyle"><a href="#landingTab" role="tab" data-toggle="tab">Landing</a></li>
-</ul>
+{#<div class="container">#}
+{#    <ul class="nav nav-tabs shopBackgroundColor" role="tablist">#}
+{#        <a href="#shopTab" role="tab" data-toggle="tab">Home</a>#}
+{#        <a href="#aboutTab" id="aboutTabLink" role="tab" data-toggle="tab">About</a>#}
+{#        <a href="#landingTab" role="tab" data-toggle="tab">Landing</a>#}
+{#    </ul>#}
+{#</div>#}
+<div class="container">
+    <nav class="navbar navbar-default shopBackgroundColor">
+
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+
+				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
+                    {% if user.email == shop.user.email%}
+                        <li><a href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
+                    {% endif %}
+					<li><a href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+
+	</nav>
+</div><!-- /.container-fluid -->
+
 
 <!-- Tab panes -->
 <div class="tab-content ">
-    <div class="navTab tab-pane active" id="shopTab">
-        <div class="container">
-            {% if user.email == shop.user.email%}
-            <div id="editLink">
-                <a class="whhg-edit editIcon" href="{{ shop.get_absolute_url }}edit"> </a>
-            </div>
-            {% endif %}
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-2">
+    <div class=" tab-pane active" id="shopTab">
+        <div class="container comboBoxes">
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-3 col-md-offset-3 col-md-2">
                 <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
                     <option value="View All">View All</option>
                     {% for genders in shopgenders %}
@@ -35,7 +55,7 @@
                 </select>
             </div>
 
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2">
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
                 <select class="select form-control filterTabs" id="filterType" name="typeFilter">
                     <option value="View All Types">View All Types</option>
                     {% for category in shopcategories %}
@@ -44,7 +64,7 @@
                 </select>
             </div>
 
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2">
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
                 <select class="select form-control filterTabs" id="filterSort" name="sortFilter">
                     <option value="no-sort">No Sorting</option>
                     <option value="date-asc">Newest First</option>
@@ -55,15 +75,17 @@
                     <option value="pop-dsc">Popularity: High to Low</option>
                 </select>
             </div>
+        </div>
+        <div class="container">
             {% include "designer_shop/shop_items.html" %}
         </div>
     </div>
-    <div class="navTab tab-pane" id="aboutTab">
+    <div class=" tab-pane" id="aboutTab">
         <div class="container aboutContent">
             {{ shop.aboutContent | safe }}
         </div>
     </div>
-    <div class="navTab tab-pane" id="landingTab"><p>Stuff for Landing</p></div>
+
 </div>
 
 {% endblock %}
@@ -99,6 +121,7 @@ var myresponse;
             $('#filterType').val("View All Types");
         });
     }
+
     </script>
 {% endblock %}
 

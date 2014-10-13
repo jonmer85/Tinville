@@ -7,6 +7,7 @@
     width: auto;
     /*color: #802152;*/
     margin: auto;
+    height: 20px;
 }
 
 .shopTabStyle{
@@ -143,6 +144,11 @@
 
     border-radius: 10px;
 }
+.comboBoxes{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /*margin-left: 35%;*/
+}
 
 .filterTabs {
     height: 25px;
@@ -152,7 +158,8 @@
     /*width : 30%;*/
     margin-right: 2%;
     padding: 0px 12px;
-    border: none;
+    border: 1px solid;
+    border-color: #939393;
     border-radius: 0px;
 }
 
@@ -651,9 +658,9 @@
 
 .overlayDelete{
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 25px;
+  bottom: 17px;
+  right: 40px;
+  width: 16px;
   height: 25px;
   z-index: 10;
 }
@@ -661,9 +668,21 @@
 .overlayEdit{
   position: absolute;
   bottom: 10px;
-  left: 10px;
+  left: 40px;
   width: 25px;
   height: 25px;
   z-index: 10;
   color: #f46430;
+}
+
+.shopItem a:link,
+.shopItem a:visited,
+.shopItem a:hover,
+.shopItem a:active
+{
+    color: #515151;
+}
+
+.caption{
+    text-align: center;
 }

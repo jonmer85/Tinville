@@ -1006,6 +1006,19 @@ textarea {
     background: none;
 }
 
+.cartCount{
+    width: 10px;
+    z-index: 990;
+    top: 10px;
+    background-color: #000000;
+    border-radius: 8px;
+    color: #ffffff;
+    font: bold 11px Arial;
+    line-height: 16px;
+    position: absolute;
+    text-align: center;
+}
+
 /*Start mobile navbar*/
 @media (max-width: 768px) {
 .navbar {
@@ -1075,4 +1088,6 @@ nav a:hover{
 }
 
 }
+
+
 /*END mobile navbar*/

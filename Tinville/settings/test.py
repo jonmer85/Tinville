@@ -19,9 +19,9 @@ DATABASES = {
 
 LETTUCE_APPS = (
     'Tinville',
-    # 'designer_shop',
-    # 'user',
-    'basket',
+    'designer_shop',
+    'user',
+    # 'basket',
 )
 
 INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',  'django_nose',] + ['extensions',]
