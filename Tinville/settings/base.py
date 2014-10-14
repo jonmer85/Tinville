@@ -159,7 +159,7 @@ PROJECT_APPS = [
     'common',
     'basket',
     'dashboard',
-    'dashboard.orders',
+    'dashboard.orders'
 ]
 
 INSTALLED_APPS = [
@@ -186,7 +186,7 @@ INSTALLED_APPS = [
     'django_basic_feedback',
     # 'debug_toolbar',
     'oscar_stripe'
-] + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders']) + PROJECT_APPS
+] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -88,52 +88,41 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
-
         $('#id_product_image').change
         (
-
             function()
             {
                 $("#id_product_image1" ).removeClass("hidden");
             }
-
         );
 
         $('#id_product_image1').change
         (
-
             function()
             {
                 $("#id_product_image2" ).removeClass("hidden");
             }
-
         );
 
         $('#id_product_image2').change
         (
-
             function()
             {
                 $("#id_product_image3" ).removeClass("hidden");
             }
-
         );
 
         $('#id_product_image3').change
         (
-
             function()
             {
                 $("#id_product_image4" ).removeClass("hidden");
             }
-
         );
 
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
         $("#editLink").css("visibility", "hidden");
-
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
@@ -619,7 +608,6 @@ function RemoveWrongSizeTypes(newSizeType) {
                 (this).remove();
             });
             break
-
     }
 }
 
@@ -746,14 +734,12 @@ function showImageFields() {
     }
 }
 
-
 $(window).resize(function() {
     if($("#emptyShopId").length > 0) {
         document.getElementById('emptyShopId').innerHTML = "Items go here..."
     }
     resizeEditor();
 });
-
 
 $("#optionContent li").click(function (){
     $("#optionsXS").text($(this).text()+" (click here for editor options)");
@@ -836,7 +822,6 @@ function resizeEditor() {
     }
 }
 
-
 var jsonDel, delState;
  $('.btn.btn-primary.tinvilleButton.pull-left').click(function(e){
      var chevron, jsonDel, parentId, delState;
@@ -887,24 +872,21 @@ $.each(json, function(containerId, href) {
     return $("#" + containerId + " a[href=" + href + "]").tab('show');
 });
 
-
 $("#optionContent").slimScroll({});
 $("#formContent").slimScroll({});
-
 
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
    $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
 });
 
-        function DeleteConfirmation(slug) {
-            $('#deleteModal').modal('show');
-            $('#okDeleteBtn').click({param1: slug}, function (event) {
-                var href = "{{ shop.get_absolute_url }}edit/delete_product/";
-                window.location =  href + event.data.param1;
-            });
-        }
-
+function DeleteConfirmation(slug) {
+    $('#deleteModal').modal('show');
+    $('#okDeleteBtn').click({param1: slug}, function (event) {
+        var href = "{{ shop.get_absolute_url }}edit/delete_product/";
+        window.location =  href + event.data.param1;
+    });
+}
 
 </script>
 
