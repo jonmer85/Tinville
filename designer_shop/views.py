@@ -171,16 +171,16 @@ def shopeditor(request, shop_slug):
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
 
-@IsShopOwnerDecorator
-def ajax_about(request, slug):
-        if request.method == 'POST':
-            form = AboutBoxForm(request.POST)
-            currentshop = Shop.objects.get(slug__iexact=slug)
-            if request.is_ajax() and form.is_valid():
-                currentshop.aboutContent = form.cleaned_data["aboutContent"]
-                currentshop.save(update_fields=["aboutContent"])
-                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
-        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+# @IsShopOwnerDecorator
+# def about(request, slug):
+#         if request.method == 'POST':
+#             form = AboutBoxForm(request.POST)
+#             currentshop = Shop.objects.get(slug__iexact=slug)
+#             if request.is_ajax() and form.is_valid():
+#                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
+#                 currentshop.save(update_fields=["aboutContent"])
+#                 return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+#         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
@@ -410,7 +410,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                                                   }),
             'aboutBoxForm': aboutForm or AboutBoxForm(initial=
                                                       {
-                                                          "aboutContent": shop.aboutContent
+                                                          "aboutContent": shop.aboutContent,
+                                                          "aboutImg": shop.aboutImg
                                                       }),
             'colors': AttributeOption.objects.filter(group=2),
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
@@ -441,6 +442,15 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 shop.logo = form.cleaned_data["logo"]
                 shop.save(update_fields=["logo"])
             return renderShopEditor(request, shop, logoUploadForm=form)
+        elif request.POST.__contains__('aboutBoxForm'):
+            form = AboutBoxForm(request.POST, request.FILES)
+            if form.is_valid():
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug), ignore_errors=True)
+                shop.aboutContent = form.cleaned_data["aboutContent"]
+                shop.save(update_fields=["aboutContent"])
+                shop.aboutImg = form.cleaned_data["aboutImg"]
+                shop.save(update_fields=["aboutImg"])
+            return renderShopEditor(request, shop, aboutForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,

@@ -71,8 +71,7 @@
                 <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
                     <a id="shoppingcartMobileBtn" class="shoppingcartBtn">
                        <img src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 20px; height: 20px;" />
-                       <div class="hidden cartCount">
-                           <div>2</div>
+                       <div class="cartCount">
                        </div>
                     </a>
                 </li>
@@ -253,13 +252,21 @@
 
                         {% if user.is_authenticated %}
 
-                            <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
-{#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
-{#                                <ul class="dropdown-menu navdropstyle ">#}
-{#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
-{#                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>#}
-{#                                </ul>#}
+                            <li class="dropdown navbarLinkS" id="lg-menuLogin" >
+
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user lg pull-right"></span></a>
+                                  <ul class="dropdown-menu">
+                                    <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Messages <span class="badge pull-right"> 42 </span></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Favourites Snippets <span class="glyphicon glyphicon-heart pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout" >SIGN OUT<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                  </ul>
+
                             </li>
                         {% else %}
                             <li class="dropdown yamm-fw" id="lg-menuLogin" >
@@ -273,34 +280,40 @@
                                 </ul>
                             </li>
                         {% endif %}
+
                         <li class="hidden-xs">
-                            <a id="shoppingcartBtn" class="shoppingcartBtn">
-                               <img src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 20px; height: 20px;" />
-                               <div class="hidden cartCount">
-                                   <div>2</div>
+                            <a id="shoppingcartBtn" class="shoppingcartBtn dropdown-toggle hidden-xs">
+                               <img src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 25px; height: 25px;" />
+                               <div class=" cartCount">
                                </div>
                             </a>
+                            <ul class="dropdown-menu ">
+                                </ul>
                         </li>
                     </ul>
                 </div>
             </div>
     </nav>
 
-                   <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
+
+
+
+
+               <div id="shoppingcart" class="col-xs-8 col-sm-4 col-md-2">
                    <div id="shoppingcartSlimJeff">
-                    <div id="shoppingcartitems" class="slimScrollBar col-xs-11 col-sm-12 col-md-12">
+                    <div id="shoppingcartitems" class="slimScrollBar">
                      </div>
                    </div>
                        <div>
-                        <button id="shoppingcartcheckout" type="button" class="btn btn-default btn-sm">
-                           <a href="{% url 'cartdetail' %}" class="glyphicon glyphicon-check"></a>
-                        </button>
+                        <a id="shoppingcartcheckout" class="btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                            Checkout
+                        </a>
                          <div id="carttotal">
 
                          </div>
                        </div>
 
-                   </div>
+               </div>
 
     <div class="slidingContent">
         {% block content %}
@@ -352,6 +365,18 @@
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
                     <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+                    <li Id="tinvilleFooterListItemPrimary">
+                        <div class="footersocialMediaLinks">
+                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
+                            </a>
+                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
+                            </a>
+                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
+                            </a>
+                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
+                            </a>
+                        </div>
+                    </li>
                 </dl>
             </nav>
         </div>
@@ -406,6 +431,18 @@
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
                     <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+                    <li Id="tinvilleFooterListItemChild">
+                        <div class="footersocialMediaLinks">
+                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
+                            </a>
+                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
+                            </a>
+                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
+                            </a>
+                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
+                            </a>
+                        </div>
+                    </li>
                 </dl>
             </div>
         </div>
@@ -624,6 +661,16 @@
                     }
                 });
 
+            ajax_req = $.ajax({
+                url: "/total_cart_items",
+                type: "GET",
+                success: function(data, textStatus, jqXHR) {
+                    $('.cartCount').text(data.count);
+                },
+                error: function(data, textStatus, jqXHR) {
+                }
+            });
+
 
         });
 
@@ -739,7 +786,6 @@ function cartToggleBtn()
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
-
 function LoadCartItemDiv(cartItem)
 {
     var cartitemdiv =  $('<div/>', {
@@ -754,16 +800,19 @@ function LoadCartItemDiv(cartItem)
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
 
-    var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle','text':cartItem.title});
+    var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
     itemTitle.appendTo(itemInfoDiv);
 
-    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':cartItem.description});
+    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color:" + cartItem.color + ", Size:" + cartItem.size});
     itemDescription.appendTo(itemInfoDiv);
+
+    var itemQty = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Qty:" + cartItem.qty});
+    itemQty.appendTo(itemInfoDiv);
 
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var delBtnId = 'deleteBtnId_' + cartItem.Id;
-    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
+    var removeBtn = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
         'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
     });
     removeBtn.appendTo(removeBtnDiv);
@@ -815,7 +864,7 @@ function RemoveCartItem(itemId)
             }
         });
 
-    $('#'+itemId).remove();
+    $('#lineId'+itemId).remove();
 
     aggregateTotal();
 }

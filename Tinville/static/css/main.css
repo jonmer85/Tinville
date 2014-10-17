@@ -465,17 +465,12 @@ body {
     margin-bottom: .5em;
 }
 
-.footerRow a:link {
-    color: #CBD3D5;
-}
-.footerRow a:visited {
-    color: #CBD3D5;
-}
-.footerRow a:hover {
-    color: #CBD3D5;
-}
+.footerRow a:link,
+.footerRow a:visited,
+.footerRow a:hover,
 .footerRow a:active {
     color: #CBD3D5;
+    text-decoration: none;
 }
 
 .footerSectionTitle {
@@ -924,21 +919,24 @@ textarea {
     background-color:white;
     border:2px solid #F5F5F5;
     z-index: 100;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 #shoppingcartitems {
-    line-height:3em;
+    /*line-height:3em;*/
     height:260px;
     padding: 0px;
     color:#714D03;
 }
 
 .shoppingcartitem {
-    height:100px;
     background-color:whitesmoke;
     border:2px solid whitesmoke;
     clear:both;
-    padding: 0px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    border-bottom: 1px #e7e5e6 solid;
 }
 
 .shoppingcartthumbnail {
@@ -953,21 +951,21 @@ textarea {
 }
 
 .shoppingcartiteminfo {
-    width:150px;
-    height:100px;
+    /*width:150px;*/
+    /*height:100px;*/
     float:left;
     padding:5px
 }
 
 .shoppingcartitemTitle {
-    width: 140px;
-    height:40px;
+    /*width: 140px;*/
+    /*height:40px;*/
     font-weight: bold;
 }
 
 .shoppingcartitemDescription {
-    height:60px;
-    width: 140px;
+    /*height:60px;*/
+    /*width: 140px;*/
     word-wrap:normal;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -1002,21 +1000,29 @@ textarea {
 .shoppingcartBtn {
     float:right;
     padding-top: 10px;
+    padding-bottom: 0px;
     border: none;
     background: none;
 }
 
 .cartCount{
-    width: 10px;
+    width: 16px;
     z-index: 990;
-    top: 10px;
-    background-color: #000000;
-    border-radius: 8px;
+    top: 9px;
+    right: 8px;
+    background-color: darkred;
+    /*background-color: #f46430;*/
+    border-color: #5B595A;
+    border-radius: 10px;
+    border: .5px solid;
     color: #ffffff;
     font: bold 11px Arial;
     line-height: 16px;
     position: absolute;
     text-align: center;
+}
+.footersociallogo {
+   padding: 1px;
 }
 
 /*Start mobile navbar*/

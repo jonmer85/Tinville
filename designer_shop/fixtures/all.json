@@ -21,6 +21,7 @@
 			"slug": "demo",
             "banner": "images/banner.jpg",
             "logo": "",
+            "aboutImg": "images/aboutImage.png",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "#663399"
@@ -1574,6 +1575,19 @@
             "name": "Sneakers",
             "slug": "Men/shoes/sneakers",
             "full_name": "Men > Shoes > Sneakers"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 15,
+        "fields": {
+            "path": "000200020003",
+            "depth": 3,
+            "numchild": 0,
+            "name": "FlipFlop",
+            "slug": "Men/shoes/flipflop",
+            "full_name": "Men > Shoes > Flip Flop"
 
         }
     },

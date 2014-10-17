@@ -349,16 +349,18 @@ def get_partner_from_shop(shop):
 class AboutBoxForm(forms.Form):
 
     aboutContent = forms.CharField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
     helper.form_show_labels = False
-    helper.form_class = 'aboutForm'
     helper.layout = Layout(
         Div(
             Fieldset('About',
-                    Field('aboutContent', placeholder="Enter Text Here")),
+                     HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
+                     Field('aboutImg', css_class="autoHeight"),
+                     Field('aboutContent', placeholder="Enter Text Here")),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
-            css_class="container"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 
 class DesignerShopColorPicker(forms.Form):
@@ -377,7 +379,7 @@ class DesignerShopColorPicker(forms.Form):
         Div(
             Field('color'),
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
-            css_class="container"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 
     def clean_color(self):
@@ -399,7 +401,7 @@ class BannerUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('banner', css_class="autoHeight")),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
-            css_class="container col-xs-12 col-sm-10"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 
 class LogoUploadForm(forms.Form):
@@ -415,6 +417,6 @@ class LogoUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
                      Field('logo', css_class="autoHeight")),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
-            css_class="container col-xs-12 col-sm-10"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 

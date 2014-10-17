@@ -63,6 +63,8 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'subtotal': float(stockrecord.price_excl_tax * qty),
                 'image': str(image[0].original),
                 'qty': qty,
+                'color': 'blue',
+                'size': 'small',
                 'currentStock' : stockrecord.num_in_stock,
                 'total' : Decimal(basket.total_excl_tax),
                 'shop' : currentproduct.shop.name,
@@ -146,6 +148,10 @@ def cart_total(request):
     basket = request.basket
     return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), mimetype='application/json')
 
+def total_cart_items(request):
+    basket = request.basket
+    return HttpResponse(json.dumps({'count': basket.num_lines}), mimetype='application/json')
+
 def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']
     colorFilter = post['colorFilter']
@@ -154,7 +160,7 @@ def get_filtered_variant(itemId, post):
     if " x " in sizeFilter:
         sizeDim = sizeFilter.split(' x ')
         variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId,
-                                                                                                          attribute_values__attribute_id=2,
+                                                                                                           attribute_values__attribute_id=2,
                                                                                                           attribute_values__value_float=sizeDim[0]).filter(
             parent=itemId, attribute_values__attribute_id=3, attribute_values__value_float=sizeDim[1])[0]
     else:

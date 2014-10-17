@@ -56,7 +56,7 @@
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane" id="about" action="ajax_about" method="post">
+                            <form class="tab-pane" id="about" enctype="multipart/form-data" method="post">
                                  {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
@@ -123,7 +123,9 @@
 
         $(".emptyShop").css("border-style", "dashed");
         $(".emptyShop").css("border-color", "darkgray");
-        $("#editLink").css("visibility", "hidden");
+        $("#shopTabLink").removeClass("active");
+        $("#aboutTabLink").removeClass("active");
+        $("#editLink").addClass("active");
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
@@ -145,41 +147,6 @@
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors("#color");
-                        document.getElementById('shopEditor_message_area').innerHTML = ""
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function(index, value) {
-                            if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
-                            } else {
-                                apply_form_field_error(self[0].id, index, value);
-                            }
-                        });
-                    }
-                });
-        });
-        $(document).on("submit", "#about", function(e) {
-            e.preventDefault();
-            var self = $(this)
-            var url = self.attr("action")
-
-            var ajax_req = $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {
-                        aboutContent: document.getElementById("id_aboutContent").value
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors("#about");
-					    document.getElementById('aboutTab').innerHTML = document.getElementById("id_aboutContent").value
-                        $("#collapseOneTitle").removeClass( "collapsed").addClass("");
-                        $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
-                        $("#collapseOne").css("height", "auto");
-                        document.getElementById('shopEditor_message_area').innerHTML = "New about has been applied"
-					},
-                    error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors("#about");
                         document.getElementById('shopEditor_message_area').innerHTML = ""
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {

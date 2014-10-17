@@ -47,7 +47,9 @@
     $("#tinvilleTagBanner").css("margin-top", "0px");
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
-
+    $("a.name").text(function(index, currentText) {
+        return currentText.substr(0, 20);
+    });
     </script>
 
 {% endblock %}

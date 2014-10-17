@@ -122,9 +122,9 @@
 .aboutContent {
     background-color: #ffffff;
     font-size: 1.2em;
-    margin: 10px;
-    /*padding-right: 10%;*/
-    padding-left: 20%;
+    /*margin: 10px;*/
+    padding: 20px;
+    /*padding-bottom: 20px;*/
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
     text-align: left;
@@ -152,15 +152,12 @@
 
 .filterTabs {
     height: 25px;
-    /*margin-left: 2px;*/
     margin-top: 2%;
     margin-bottom: 2%;
-    /*width : 30%;*/
     margin-right: 2%;
     padding: 0px 12px;
-    border: 1px solid;
     border-color: #939393;
-    border-radius: 0px;
+    /*border-radius: 0px;*/
 }
 
 .shopLogoDiv {
@@ -529,12 +526,6 @@
 .shopItem {
     padding-bottom: 5px;
     padding-right: 5px;
-    padding-left: 5px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    margin-right: 5px;
-    width: 200px;
-    height: 250px;
 }
 
 .shopItemDetail {
@@ -555,12 +546,7 @@
     max-height:185px;
 }
 
-@media(min-width: 768px) {
-    .shopItem {
-        border-bottom: 1px solid #ccc;
-        border-right: 1px solid #ccc;
-    }
-}
+
 
 .itemSelectedImage {
     padding: 2px;
@@ -595,15 +581,13 @@
 
 .sociallogo {
     max-width: 67% !important;
+    padding-bottom: 15px;
 }
-
 .shareMeTitle {
     margin-bottom: 15px;
 }
 
-.sociallogo {
-    padding-bottom: 15px;
-}
+
 
 #buyQuantity:valid,
 #buyQuantity:in-range{
@@ -643,15 +627,33 @@
   z-index: 10;
   color: #f46430;
 }
-
+.overlayEdit a:link,
+.overlayEdit a:visited,
+.overlayEdit a:hover,
+.overlayEdit a:active
+{
+    color: #f46430;
+    text-decoration: none;
+}
 .shopItem a:link,
 .shopItem a:visited,
 .shopItem a:hover,
 .shopItem a:active
 {
     color: #515151;
+    text-decoration: none;
 }
 
 .caption{
     text-align: center;
+}
+
+.navbar2{
+    border-radius: 4px;
+    position: relative;
+    min-height: 50px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    display: block;
+
 }
