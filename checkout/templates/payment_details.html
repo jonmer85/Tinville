@@ -30,7 +30,7 @@
 
         <div class="row">
         <span class="payment-errors"></span>
-        <div class="col-xs-12 col-md-4">
+        <div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -57,16 +57,15 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-7 col-md-7">
+                            <label for="expityMonth">EXPIRATION DATE</label>
                             <div class="form-group">
-                                <label for="expityMonth">
-                                    EXPIRY DATE</label>
                                 <div class="col-xs-6 col-lg-6 pl-ziro">
                                     <input type="text" class="form-control" id="expityMonth" placeholder="MM" required
                                             pattern="\d*" autocomplete="off" data-stripe="exp-month" />
                                 </div>
                                 <div class="col-xs-6 col-lg-6 pl-ziro">
-                                    <input type="text" class="form-control" id="expityYear" placeholder="YY" required
-                                            pattern="\d*" autocomplete="off" data-stripe="exp-year"/></div>
+                                   <input type="text" class="form-control" id="expityYear" placeholder="YY" required pattern="\d*" autocomplete="off" data-stripe="exp-year"/>
+                                </div>
                             </div>
                         </div>
                         <div class="col-xs-5 col-md-5 pull-right">
