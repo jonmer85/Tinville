@@ -255,7 +255,7 @@
                             <li class="dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span class="glyphicon glyphicon-user tinvilleOrange pull-right" style="font-size: large;"></span>
+                                      <span class="glyphicon glyphicon-user pull-right" style="font-size: large;"></span>
                                   </a>
                                   <ul class="dropdown-menu">
                                     <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
@@ -283,8 +283,16 @@
 
 
                         <li class="dropdown navbarLinkS" id="" >
+{#<a id="shoppingcartMobileBtn" class="shoppingcartBtn">#}
 
-                                  <a href="#" data-toggle="dropdown" class="dropdown-toggle">Cart<b class="visible-xs"> + </b></a>
+{#                    </a>#}
+                                  <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                      <i class="fa fa-tags tinvilleOrange" style="font-size: x-large"></i>
+{#                                      <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
+                                      <div class="cartCount">
+                                      </div>
+                                  </a>
+                                  <div id="shoppingcartSlimJeff"></div>
                                   <ul class="dropdown-menu" id="">
                                     <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
 

@@ -25,6 +25,7 @@ from oscar.apps.partner import strategy
 from common.utils import get_list_or_empty, get_or_none
 from django.utils.html import strip_tags
 from oscar.apps.basket import signals
+from designer_shop.views import get_single_variant
 
 Basket = get_model('basket', 'basket')
 Product = get_model('catalogue', 'product')
@@ -55,6 +56,8 @@ def load_cart(request):
         return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), mimetype='application/json')
 
 def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image):
+    colorattribute = get_or_none(Attributes, product_id=currentproduct.id, attribute_id=5)
+    color, size = get_single_variant(currentproduct)
     return {'Id': basketline.id,
                 'product_id': currentproduct.id,
                 'title': currentproduct.title,
@@ -63,8 +66,8 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'subtotal': float(stockrecord.price_excl_tax * qty),
                 'image': str(image[0].original),
                 'qty': qty,
-                'color': 'blue',
-                'size': 'small',
+                'color': color,
+                'size': size,
                 'currentStock' : stockrecord.num_in_stock,
                 'total' : Decimal(basket.total_excl_tax),
                 'shop' : currentproduct.shop.name,

@@ -283,6 +283,48 @@ def get_variants(item, group=None):
     addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
 
+def get_single_variant(variant, group=None):
+
+    if group is None:
+        colorsizequantitydict = []
+    else:
+        colorsizequantitydict = collections.defaultdict(list)
+
+    color = ""
+    sizeSet = ""
+    isSizeSet = False
+    sizeX = ""
+    sizeY = ""
+    sizeNum = ""
+    divider = ""
+    quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
+    price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
+    currency = get_or_none(StockRecords, product_id=variant.id).price_currency
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
+        color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
+        sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
+        sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
+        isSizeSet = True
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
+        sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=3) != None:
+        sizeY = get_or_none(Attributes, product_id=variant.id, attribute_id=3).value_as_text
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
+        sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
+
+    if sizeX != "" and sizeY != "":
+        divider = " x "
+    variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+    caseFunc = str.capitalize if not isSizeSet else str.upper
+
+    return str(color).capitalize(), caseFunc(variantsize)
+
 def get_sizetype(variants):
     for variant in variants:
        if hasattr(variant.attr, 'size_set'):
