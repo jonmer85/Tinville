@@ -14,31 +14,8 @@ from Tinville.settings.base import EMAIL_HOST_USER
 from oscar.apps.customer.abstract_models import UserManager, AbstractUser
 
 
-# Create your models here.
-
-class FashionStyles(models.Model):
-    style = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return self.style
-
 
 class TinvilleUserManager(UserManager):
-    # def create_user(self, email, password=None):
-    #     """
-    #     Creates and saves a User with the given email, date of
-    #     birth and password.
-    #     """
-    #     if not email:
-    #         raise ValueError('Users must have an email address')
-    #
-    #     user = self.model(
-    #         email=TinvilleUserManager.normalize_email(email),
-    #     )
-    #
-    #     user.set_password(password)
-    #     user.save(using=self._db)
-    #     return user
 
     def create_superuser(self, email, password):
         """
@@ -46,9 +23,6 @@ class TinvilleUserManager(UserManager):
         birth and password.
         """
         user = super(TinvilleUserManager, self).create_superuser(email, password)
-        # user = self.create_user(email,
-        #                         password=password,
-        #                         )
         user.is_admin = True
         user.is_active = True
         user.save(using=self._db)
@@ -68,6 +42,12 @@ class TinvilleUser(AbstractUser):
     # Seller/Designer fields
     is_seller = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
+    account_token = models.CharField(max_length=255)
+    account_last4 = models.CharField(max_length=4)
+    full_legal_name = models.CharField(max_length=255)
+    recipient_id = models.CharField(max_length=255)
+
+
 
     objects = TinvilleUserManager()
 

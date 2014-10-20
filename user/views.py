@@ -2,14 +2,53 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
-from user.forms import LoginForm
-from django.core.urlresolvers import reverse
+from django.views.generic import FormView
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render
+import stripe
 
-from user.forms import TinvilleUserCreationForm
+from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoForm
 from user.models import TinvilleUser
+
+class DesignerPaymentInfoView(FormView):
+    template_name = 'payment_info.html'
+    form_class = PaymentInfoForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super(DesignerPaymentInfoView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+        return context
+
+
+    def form_valid(self, form):
+        # Add the payment info to the user
+        token = form.cleaned_data['stripe_token']
+        full_legal_name = form.cleaned_data['full_legal_name']
+
+        # Create a Recipient
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        recipient = stripe.Recipient.create(
+          name=full_legal_name,
+          type="individual",
+          email=self.request.user.email,
+          card=token)
+
+        self.request.user.recipient_id = recipient.id
+        self.request.user.account_last4 = form.cleaned_data['last4']
+        self.request.user.account_token = token
+        self.request.user.save()
+
+        messages.success(self.request, "You have successfully added your payment info")
+
+        return super(DesignerPaymentInfoView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, "Error occurred while processing card information.")
+        return super(DesignerPaymentInfoView, self).form_invalid(form)
 
 
 def register(request):
