@@ -92,17 +92,17 @@
                             <div class="itemPrice hidden-xs">
                                 From $ {{ item.min_variant_price_excl_tax }}
                             </div>
-                            <div class="itemColorSelection itemDetailBox col-xs-6">
+                            <div class="itemColorSelection itemDetailBox col-xs-5">
                                 <select id="itemColorSelection" class="form-control selectpicker" required>
                                     <option value=""><i>Choose a Color</i></option>
                                 </select>
                             </div>
-                            <div class="itemSizeSelection itemDetailBox col-xs-6">
+                            <div class="itemSizeSelection itemDetailBox col-xs-5" style="margin-left: 2.5%">
                                 <select id="itemSizeSelection" class="form-control selectpicker" required>
                                     <option value=""><i>Choose a Size</i></option>
                                 </select>
                             </div>
-                            <div class="itemBuyQuantity itemDetailBox col-xs-3">
+                            <div class="itemBuyQuantity itemDetailBox col-xs-2">
                                 <label for="buyQuantity">Quantity:</label>
                                 <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
                             </div>
@@ -304,6 +304,7 @@
 
                             data.image = "{{ MEDIA_URL }}" + data.image
                             AddCartItem(data)
+                            cartCount()
                         }
                         else {
                             $('#messageId').html(data.msg)

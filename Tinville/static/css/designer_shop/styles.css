@@ -507,10 +507,11 @@
 
 .shareMeTitle {
     color: #5B595A;
-    font-size: 2em;
+    font-size: 1.5em;
     border-bottom: 1px solid #ccc;
+    padding-top: 2%;
+    margin-bottom: 15px;
 }
-
 .itemStockQuantity {
     color: #5B595A;
 }
@@ -583,9 +584,7 @@
     max-width: 67% !important;
     padding-bottom: 15px;
 }
-.shareMeTitle {
-    margin-bottom: 15px;
-}
+
 
 
 

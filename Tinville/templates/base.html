@@ -70,8 +70,8 @@
                 {% endif %}
                 <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
                     <a id="shoppingcartMobileBtn" class="shoppingcartBtn">
-                       <img src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 20px; height: 20px;" />
-                       <div class="cartCount">
+                       <img id="cartImg" src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 21px; height: 21px;" />
+                       <div class="hidden cartCount">
                        </div>
                     </a>
                 </li>
@@ -254,7 +254,9 @@
 
                             <li class="dropdown navbarLinkS" id="lg-menuLogin" >
 
-                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user lg pull-right"></span></a>
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <span class="glyphicon glyphicon-user tinvilleOrange pull-right" style="font-size: large;"></span>
+                                  </a>
                                   <ul class="dropdown-menu">
                                     <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                                     <li class="divider"></li>
@@ -262,9 +264,7 @@
                                     <li class="divider"></li>
                                     <li><a href="#">Messages <span class="badge pull-right"> 42 </span></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#">Favourites Snippets <span class="glyphicon glyphicon-heart pull-right"></span></a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="/logout" >SIGN OUT<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                    <li><a href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                   </ul>
 
                             </li>
@@ -281,39 +281,27 @@
                             </li>
                         {% endif %}
 
-                        <li class="hidden-xs">
-                            <a id="shoppingcartBtn" class="shoppingcartBtn dropdown-toggle hidden-xs">
-                               <img src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 25px; height: 25px;" />
-                               <div class=" cartCount">
-                               </div>
-                            </a>
-                            <ul class="dropdown-menu ">
-                                </ul>
-                        </li>
+
+                        <li class="dropdown navbarLinkS" id="" >
+
+                                  <a href="#" data-toggle="dropdown" class="dropdown-toggle">Cart<b class="visible-xs"> + </b></a>
+                                  <ul class="dropdown-menu" id="">
+                                    <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
+
+                                    <li><div id="carttotal" class=""></div></li>
+                                    <li class="divider"></li>
+
+                                    <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                                            Checkout
+                                        </a></li>
+                                  </ul>
+
+                         </li>
                     </ul>
                 </div>
             </div>
     </nav>
 
-
-
-
-
-               <div id="shoppingcart" class="col-xs-8 col-sm-4 col-md-2">
-                   <div id="shoppingcartSlimJeff">
-                    <div id="shoppingcartitems" class="slimScrollBar">
-                     </div>
-                   </div>
-                       <div>
-                        <a id="shoppingcartcheckout" class="btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
-                            Checkout
-                        </a>
-                         <div id="carttotal">
-
-                         </div>
-                       </div>
-
-               </div>
 
     <div class="slidingContent">
         {% block content %}
@@ -592,33 +580,33 @@
         );
 
 
-        $("#shoppingcart").click(function(){
-            sessionStorage.setItem("cartClick","1")
-        });
+{#        $("#shoppingcart").click(function(){#}
+{#            sessionStorage.setItem("cartClick","1")#}
+{#        });#}
+{##}
+{#        $(".loginPopupForm").click(function(){#}
+{#            sessionStorage.setItem("cartClick","1")#}
+{#        });#}
 
-        $(".loginPopupForm").click(function(){
-            sessionStorage.setItem("cartClick","1")
-        });
 
-
-        $(document).on('click',function () {
-            var cartClick = sessionStorage.getItem("cartClick");
-            if(cartClick === undefined)
-                cartClick = "0";
-
-            if (cartClick==="0"){
-                var mode = checkMode();
-                if(mode == 'xs')
-                    $("#shoppingcart").animate({width:'hide'},350);
-                else
-                    $("#shoppingcart").animate({height:'hide'},350);
-                cartState = sessionStorage.getItem("cartState");
-                cartJson = JSON.parse(cartState || "{}");
-                cartJson["IsOpen"] = false;
-                sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-            }
-            sessionStorage.setItem("cartClick","0");
-        });
+{#        $(document).on('click',function () {#}
+{#            var cartClick = sessionStorage.getItem("cartClick");#}
+{#            if(cartClick === undefined)#}
+{#                cartClick = "0";#}
+{##}
+{#            if (cartClick==="0"){#}
+{#                var mode = checkMode();#}
+{#                if(mode == 'xs')#}
+{#                    $("#shoppingcart").animate({width:'hide'},350);#}
+{#                else#}
+{#                    $("#shoppingcart").animate({height:'hide'},350);#}
+{#                cartState = sessionStorage.getItem("cartState");#}
+{#                cartJson = JSON.parse(cartState || "{}");#}
+{#                cartJson["IsOpen"] = false;#}
+{#                sessionStorage.setItem("cartState", JSON.stringify(cartJson));#}
+{#            }#}
+{#            sessionStorage.setItem("cartClick","0");#}
+{#        });#}
 
         $(document).ready(function() {
 
@@ -650,6 +638,7 @@
                             if (item.msg == ''){
                                 item.image = "{{ MEDIA_URL }}" + item.image
                                 AddCartItem(item)
+                                cartCount()
                             }
                             else {
                                 $('#messageId').html(item.msg)
@@ -661,16 +650,7 @@
                     }
                 });
 
-            ajax_req = $.ajax({
-                url: "/total_cart_items",
-                type: "GET",
-                success: function(data, textStatus, jqXHR) {
-                    $('.cartCount').text(data.count);
-                },
-                error: function(data, textStatus, jqXHR) {
-                }
-            });
-
+            cartCount();
 
         });
 
@@ -726,6 +706,26 @@
  cartState = sessionStorage.getItem("cartState");
  cartJson = JSON.parse(cartState || "{}");
 
+      function cartCount()
+      {
+          ajax_req = $.ajax({
+                url: "/total_cart_items",
+                type: "GET",
+                success: function(data, textStatus, jqXHR) {
+                    if (data.count > 0){
+                        $('.cartCount').text(data.count);
+                        $('.cartCount').removeClass("hidden");
+{#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartLogo.png");#}
+                    }
+                    else{
+                        $('.cartCount').addClass("hidden");
+{#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartEmpty.png");#}
+                    }
+                },
+                error: function(data, textStatus, jqXHR) {
+                }
+            });
+      }
 $(function() {
 
     cartState = sessionStorage.getItem("cartState");
@@ -759,19 +759,19 @@ function navbarClicked()
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
 
-$("#shoppingcartBtn").click(function()
-{
-    sessionStorage.setItem("cartClick","1")
-    $("#shoppingcart").animate({height:'toggle'},350);
-    cartToggleBtn();
-});
-
-$("#shoppingcartMobileBtn").click(function()
-{
-    sessionStorage.setItem("cartClick","1")
-    $("#shoppingcart").animate({width:'toggle'},350);
-    cartToggleBtn();
-});
+{#$("#shoppingcartBtn").click(function()#}
+{#{#}
+{#    sessionStorage.setItem("cartClick","1")#}
+{#    $("#shoppingcart").animate({height:'toggle'},350);#}
+{#    cartToggleBtn();#}
+{#});#}
+{##}
+{#$("#shoppingcartMobileBtn").click(function()#}
+{#{#}
+{#    sessionStorage.setItem("cartClick","1")#}
+{#    $("#shoppingcart").animate({width:'toggle'},350);#}
+{#    cartToggleBtn();#}
+{#});#}
 
 function cartToggleBtn()
 {
@@ -788,7 +788,7 @@ function cartToggleBtn()
 }
 function LoadCartItemDiv(cartItem)
 {
-    var cartitemdiv =  $('<div/>', {
+    var cartitemdiv =  $('<li/>', {
         'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
         'id' : "lineId" + cartItem.Id
     });
@@ -806,7 +806,7 @@ function LoadCartItemDiv(cartItem)
     var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color:" + cartItem.color + ", Size:" + cartItem.size});
     itemDescription.appendTo(itemInfoDiv);
 
-    var itemQty = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Qty:" + cartItem.qty});
+    var itemQty = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
     itemQty.appendTo(itemInfoDiv);
 
     itemInfoDiv.appendTo(cartitemdiv);
@@ -867,6 +867,7 @@ function RemoveCartItem(itemId)
     $('#lineId'+itemId).remove();
 
     aggregateTotal();
+    cartCount();
 }
 
     $("#shoppingcartSlimJeff").slimScroll({});

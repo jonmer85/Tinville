@@ -921,6 +921,22 @@ textarea {
     z-index: 100;
     padding-right: 0px;
     padding-left: 0px;
+    width: 300px;
+}
+@media (max-width: 768px) {
+    #shoppingcart {
+
+    }
+}
+@media (max-width: 992px) {
+    #shoppingcart {
+
+    }
+}
+@media (max-width: 1200px) {
+    #shoppingcart {
+
+    }
 }
 
 #shoppingcartitems {
@@ -928,15 +944,17 @@ textarea {
     height:260px;
     padding: 0px;
     color:#714D03;
+    width: 300px;
 }
 
 .shoppingcartitem {
     background-color:whitesmoke;
-    border:2px solid whitesmoke;
+    /*border-bottom:2px solid #000000;*/
     clear:both;
     padding-top: 4px;
     padding-bottom: 6px;
-    border-bottom: 1px #e7e5e6 solid;
+    border-bottom: 2px #e2e1e1 solid;
+    padding-left: 7px;
 }
 
 .shoppingcartthumbnail {
@@ -958,18 +976,25 @@ textarea {
 }
 
 .shoppingcartitemTitle {
-    /*width: 140px;*/
-    /*height:40px;*/
+    color: #2E2D2E;
     font-weight: bold;
 }
 
 .shoppingcartitemDescription {
-    /*height:60px;*/
-    /*width: 140px;*/
+    margin-top: 7px;
     word-wrap:normal;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    color: #5B595A;
+}
+
+.shoppingcartitemQty {
+    word-wrap:normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #f46430;
 }
 
 .shoppingcartremovebtn {
@@ -979,37 +1004,42 @@ textarea {
 }
 
 .shoppingcartitemPrice {
-    height:50px;
-    width:35px;
-    float:left;
     color:#f46430;
+    position: absolute;
+    left: 85%;
+    top: 63%;
+    font-size: 1.15em;
 }
 
 #shoppingcartcheckout {
-    position:absolute;
-    left:10px;
-    bottom:5px;
+    /*position:absolute;*/
+    /*left:10px;*/
+    /*bottom:5px;*/
+    color: #ffffff;
+
 }
 
 #carttotal {
-    position:absolute;
-    left:140px;
-    bottom:5px;
+    color: #2E2D2E;
+    font-size: 1.15em;
+    left: 70%;
+    padding-top: 10px;
+    position: relative;
 }
 
 .shoppingcartBtn {
     float:right;
-    padding-top: 10px;
+    padding-top: 4px;
     padding-bottom: 0px;
     border: none;
     background: none;
 }
 
 .cartCount{
-    width: 16px;
+    width: 14px;
     z-index: 990;
-    top: 9px;
-    right: 8px;
+    top: 11px;
+    right: 9px;
     background-color: darkred;
     /*background-color: #f46430;*/
     border-color: #5B595A;
@@ -1017,12 +1047,16 @@ textarea {
     border: .5px solid;
     color: #ffffff;
     font: bold 11px Arial;
-    line-height: 16px;
+    line-height: 14px;
     position: absolute;
     text-align: center;
 }
 .footersociallogo {
    padding: 1px;
+}
+
+.tinvilleOrange{
+    color: #f46430;
 }
 
 /*Start mobile navbar*/

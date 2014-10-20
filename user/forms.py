@@ -31,9 +31,11 @@ class TinvilleUserCreationForm(forms.ModelForm):
             Div(
                 Field('shop_name', placeholder="Shop name"),
                 id="shop_fields",
-            ), css_class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2"
+            ), css_class="col-xs-12"
         ),
-        Submit('userForm', 'Register')
+        Div(
+            Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-4 col-sm-offset-2 col-sm-4"
+        )
     )
 
     def __init__(self, *args, **kwargs):
