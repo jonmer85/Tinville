@@ -13,6 +13,7 @@ from oscar.core.compat import urlparse
 
 from user.models import TinvilleUser
 from designer_shop.models import Shop
+from checkout.forms import PaymentInfoForm
 
 
 class TinvilleUserCreationForm(forms.ModelForm):
@@ -152,43 +153,14 @@ class LoginForm(AuthenticationForm):
     def clean_username(self):
             return self.cleaned_data['username'].lower()
 
-class PaymentInfoForm(forms.Form):
+class PaymentInfoFormWithFullName(PaymentInfoForm):
     full_legal_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'autofocus': 'autofocus'}))
-    stripe_token = forms.CharField()
-    last4 = forms.CharField(max_length=4, min_length=4)
-    card_number = forms.CharField(required=True,
-                                  widget=forms.TextInput(attrs={'data-stripe': 'number',
-                                                                'pattern': '\d*', 'autocomplete': 'off'}))
-    expiration_month = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-month',
-                                                                     'pattern': '\d*', 'autocomplete': 'off'}))
-    expiration_year = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-year',
-                                                                     'pattern': '\d*', 'autocomplete': 'off'}))
-    cvc = forms.CharField(required=True, max_length=4,
-                                       widget=forms.PasswordInput(attrs={'data-stripe': 'cvc',
-                                                                         'pattern': '\d*', 'autocomplete': 'off'}))
 
-    helper = FormHelper()
-    helper.form_id = 'payment-info-form'
-    helper.form_show_labels = False
-    # helper.form_action = reverse_lazy('checkout:payment-details')
-
-    helper.layout = Layout(
-        Div(
-            Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
-            AppendedText('card_number',  '<span class="glyphicon glyphicon-lock"></span>',
-                         placeholder="Valid Card Number"),
+    def __init__(self, *args, **kwargs):
+        super(PaymentInfoFormWithFullName, self).__init__(*args, **kwargs)
+        self.helper.layout = Layout(
             Div(
-                Fieldset('Expiration Date',
-                    Div(Field('expiration_month', placeholder="MM"), css_class='col-xs-5', style='padding-left: 0'),
-                    Div(Field('expiration_year', placeholder="YY"), css_class=' col-xs-offset-2 col-xs-5', style='padding-right: 0'),
-                    css_class='col-xs-5', style='padding-left: 0'
-                ),
-                Fieldset('CV Code',
-                    Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-8', style='padding-left: 0'),
-                    css_class='col-xs-offset-2 col-xs-5', style='padding-right: 0')
-            ),
-            Submit('paymentForm', 'Submit')
+                Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
+                PaymentInfoForm.base_payment_layout
+            )
         )
-    )

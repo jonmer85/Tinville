@@ -13,22 +13,7 @@
 </div>
 
 <div class="container">
-{#        <h2>Current Card</h2>#}
-{#        <p class="lead">#}
-{#            {% if request.user.customer.card_kind and request.user.customer.card_last_4 %}#}
-{#                Current card on file is a <strong>{{ request.user.customer.card_kind }}</strong>#}
-{#                ending in the digits <strong>{{ request.user.customer.card_last_4 }}</strong>.#}
-{#            {% else %}#}
-{#                You do not currently have a card on file.#}
-{#            {% endif %}#}
-{#        </p>#}
-
-{#        {% if stripe_error %}#}
-{#            <div class="alert alert-error">{{ stripe_error }}</div>#}
-{#        {% endif %}#}
-
-
-        <div class="row">
+        <div class="col-xs-12 col-lg-6 col-lg-offset-3">
         <span class="payment-errors"></span>
         <div>
             <div class="panel panel-default">
@@ -36,53 +21,10 @@
                     <h3 class="panel-title">
                         Payment Details
                     </h3>
-                    <div class="checkbox pull-right">
-                        <label>
-                            <input type="checkbox" />
-                            Remember
-                        </label>
-                    </div>
                 </div>
                 <div class="panel-body">
-                    <form id="payment-details-form" role="form" action="{% url 'checkout:payment-details' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="cardNumber">
-                            CARD NUMBER</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="cardNumber" placeholder="Valid Card Number"
-                                required autofocus pattern="\d*" autocomplete="off" data-stripe="number"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-7 col-md-7">
-                            <label for="expityMonth">EXPIRATION DATE</label>
-                            <div class="form-group">
-                                <div class="col-xs-6 col-lg-6 pl-ziro">
-                                    <input type="text" class="form-control" id="expityMonth" placeholder="MM" required
-                                            pattern="\d*" autocomplete="off" data-stripe="exp-month" />
-                                </div>
-                                <div class="col-xs-6 col-lg-6 pl-ziro">
-                                   <input type="text" class="form-control" id="expityYear" placeholder="YY" required pattern="\d*" autocomplete="off" data-stripe="exp-year"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-5 col-md-5 pull-right">
-                            <div class="form-group">
-                                <label for="cvCode">
-                                    CV CODE</label>
-                                <input type="password" class="form-control" id="cvCode" placeholder="CV" required pattern="\d*" data-stripe="cvc"/>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>4200</span> Final Payment</a>
-                        </li>
-                    </ul>
-                    <br/>
-                    <button class="btn btn-primary change-card" type="submit">Pay</button>
-                    </form>
+                    {% load crispy_forms_tags %}
+                    {% crispy form %}
                 </div>
             </div>
 
@@ -99,7 +41,7 @@
   // This identifies your website in the createToken call below
   Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
   jQuery(function($) {
-    $('#payment-details-form').submit(function(event) {
+    $('#payment-info-form').submit(function(event) {
         var $form = $(this);
 
         // Disable the submit button to prevent repeated clicks
@@ -112,7 +54,7 @@
     });
 
     var stripeResponseHandler = function(status, response) {
-      var $form = $('#payment-details-form');
+      var $form = $('#payment-info-form');
 
       if (response.error) {
         // Show the errors on the form

@@ -21,6 +21,8 @@ from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 # Create your views here.
 from oscar_stripe.facade import Facade
 
+from user.forms import PaymentInfoForm
+
 RedirectRequired, UnableToTakePayment, PaymentError \
     = get_classes('payment.exceptions', ['RedirectRequired',
                                          'UnableToTakePayment',
@@ -49,13 +51,12 @@ class PaymentDetailsView(CorePaymentDetailsView):
         #     return ctx
 
         # This context generation only runs when in preview mode
+        ctx = ({
+            'form': PaymentInfoForm(),
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY
+        })
 
-
-        # ctx.update({
-        #     'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY
-        # })
-
-        return {'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY}
+        return ctx
 
     def post(self, request, *args, **kwargs):
 

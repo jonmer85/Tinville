@@ -10,12 +10,12 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render
 import stripe
 
-from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoForm
+from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName
 from user.models import TinvilleUser
 
 class DesignerPaymentInfoView(FormView):
     template_name = 'payment_info.html'
-    form_class = PaymentInfoForm
+    form_class = PaymentInfoFormWithFullName
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -38,7 +38,6 @@ class DesignerPaymentInfoView(FormView):
           card=token)
 
         self.request.user.recipient_id = recipient.id
-        self.request.user.account_last4 = form.cleaned_data['last4']
         self.request.user.account_token = token
         self.request.user.save()
 

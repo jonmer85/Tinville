@@ -43,7 +43,6 @@ class TinvilleUser(AbstractUser):
     is_seller = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
     account_token = models.CharField(max_length=255)
-    account_last4 = models.CharField(max_length=4)
     full_legal_name = models.CharField(max_length=255)
     recipient_id = models.CharField(max_length=255)
 
