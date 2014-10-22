@@ -14,12 +14,14 @@ from oscar.core.loading import get_class, get_classes
 from oscar.core import prices
 
 from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView,\
-    ShippingAddressView as CoreShippingAddressView, GatewayForm, ShippingAddressForm
+    ShippingAddressView as CoreShippingAddressView, ThankYouView as CoreThankYouView, GatewayForm, ShippingAddressForm
 from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 
 # Create your views here.
 from oscar_stripe.facade import Facade
+
+from user.forms import PaymentInfoForm
 
 RedirectRequired, UnableToTakePayment, PaymentError \
     = get_classes('payment.exceptions', ['RedirectRequired',
@@ -49,13 +51,12 @@ class PaymentDetailsView(CorePaymentDetailsView):
         #     return ctx
 
         # This context generation only runs when in preview mode
+        ctx = ({
+            'form': PaymentInfoForm(),
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY
+        })
 
-
-        # ctx.update({
-        #     'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY
-        # })
-
-        return {'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY}
+        return ctx
 
     def post(self, request, *args, **kwargs):
 
@@ -319,3 +320,5 @@ class ShippingAddressView(CoreShippingAddressView):
     template_name = 'shipping_address.html'
     form_class = ShippingAddressForm
 
+class ThankYouView(CoreThankYouView):
+    template_name = 'thank-you.html'
