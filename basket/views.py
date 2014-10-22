@@ -56,7 +56,6 @@ def load_cart(request):
         return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), mimetype='application/json')
 
 def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image):
-    colorattribute = get_or_none(Attributes, product_id=currentproduct.id, attribute_id=5)
     color, size = get_single_variant(currentproduct)
     return {'Id': basketline.id,
                 'product_id': currentproduct.id,

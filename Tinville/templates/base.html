@@ -68,13 +68,7 @@
                 {% else %}
                     <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
                 {% endif %}
-                <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
-                    <a id="shoppingcartMobileBtn" class="shoppingcartBtn">
-                       <img id="cartImg" src="{{ STATIC_URL }}img/shoppingCartEmpty.png" style="width: 21px; height: 21px;" />
-                       <div class="hidden cartCount">
-                       </div>
-                    </a>
-                </li>
+
     </div>
 
     <nav class="navbar yamm navbar-default" role="navigation">
@@ -247,7 +241,7 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="http://blog.tinville.com" target="_blank">BLOG<b class="visible-xs"> + </b></a>
+                            <a href="http://blog.tinville.com" target="_blank">BLOG</a>
                         </li>
 
                         {% if user.is_authenticated %}
@@ -255,14 +249,14 @@
                             <li class="dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span class="glyphicon glyphicon-user pull-right" style="font-size: large;"></span>
+                                      <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
                                   </a>
-                                  <ul class="dropdown-menu">
+                                  <ul class="dropdown-menu" style="right: 0;">
                                     <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#">Messages <span class="badge pull-right"> 42 </span></a></li>
+                                    <li><a href="#">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
                                     <li class="divider"></li>
                                     <li><a href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                   </ul>
@@ -280,30 +274,24 @@
                                 </ul>
                             </li>
                         {% endif %}
-
-
-                        <li class="dropdown navbarLinkS" id="" >
-{#<a id="shoppingcartMobileBtn" class="shoppingcartBtn">#}
-
-{#                    </a>#}
-                                  <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                      <i class="fa fa-tags tinvilleOrange" style="font-size: x-large"></i>
+                        <li class="dropdown navbarLinkS" id="shoppingcartBtn" >
+                              <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                  <i class="fa fa-tags tinvilleOrange" style="font-size: x-large"></i>
 {#                                      <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
-                                      <div class="cartCount">
-                                      </div>
-                                  </a>
-                                  <div id="shoppingcartSlimJeff"></div>
-                                  <ul class="dropdown-menu" id="">
-                                    <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
+                                  <div class="cartCount">
+                                  </div>
+                              </a>
+{#                              <div id="shoppingcartSlimJeff">#}
+                              <ul class="dropdown-menu" id="" style="right: 0;">
+                                <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
 
-                                    <li><div id="carttotal" class=""></div></li>
-                                    <li class="divider"></li>
+                                <li><div id="carttotal" class=""></div></li>
+                                <li class="divider"></li>
 
-                                    <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
-                                            Checkout
-                                        </a></li>
-                                  </ul>
-
+                                <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                                        Checkout
+                                    </a></li>
+                              </ul>
                          </li>
                     </ul>
                 </div>
@@ -597,26 +585,12 @@
 {#        });#}
 
 
-{#        $(document).on('click',function () {#}
-{#            var cartClick = sessionStorage.getItem("cartClick");#}
-{#            if(cartClick === undefined)#}
-{#                cartClick = "0";#}
-{##}
-{#            if (cartClick==="0"){#}
-{#                var mode = checkMode();#}
-{#                if(mode == 'xs')#}
-{#                    $("#shoppingcart").animate({width:'hide'},350);#}
-{#                else#}
-{#                    $("#shoppingcart").animate({height:'hide'},350);#}
-{#                cartState = sessionStorage.getItem("cartState");#}
-{#                cartJson = JSON.parse(cartState || "{}");#}
-{#                cartJson["IsOpen"] = false;#}
-{#                sessionStorage.setItem("cartState", JSON.stringify(cartJson));#}
-{#            }#}
-{#            sessionStorage.setItem("cartClick","0");#}
-{#        });#}
+
 
         $(document).ready(function() {
+{#            $("#shoppingcart").click(function() {#}
+{#                $("#shoppingcart").addClass("open");#}
+{#            });#}
 
                    var menu = "close";
 
@@ -743,11 +717,11 @@ $(function() {
 
     var _IsOpen = cartJson["IsOpen"];
 
-    if(_IsOpen === undefined || _IsOpen === false)
-        $("#shoppingcart").hide();
-
-    if(_IsOpen === true)
-        $("#shoppingcart").show();
+{#    if(_IsOpen === undefined || _IsOpen === false)#}
+{#        $("#shoppingcart").hide();#}
+{##}
+{#    if(_IsOpen === true)#}
+{#        $("#shoppingcart").show();#}
 
 });
 
@@ -758,7 +732,7 @@ $("#mobileNavButton").click(function()
 
 function navbarClicked()
 {
-    $("#shoppingcart").hide();
+{#    $("#shoppingcart").hide();#}
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var IsOpen = false;
@@ -766,20 +740,6 @@ function navbarClicked()
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
-
-{#$("#shoppingcartBtn").click(function()#}
-{#{#}
-{#    sessionStorage.setItem("cartClick","1")#}
-{#    $("#shoppingcart").animate({height:'toggle'},350);#}
-{#    cartToggleBtn();#}
-{#});#}
-{##}
-{#$("#shoppingcartMobileBtn").click(function()#}
-{#{#}
-{#    sessionStorage.setItem("cartClick","1")#}
-{#    $("#shoppingcart").animate({width:'toggle'},350);#}
-{#    cartToggleBtn();#}
-{#});#}
 
 function cartToggleBtn()
 {
@@ -878,7 +838,7 @@ function RemoveCartItem(itemId)
     cartCount();
 }
 
-    $("#shoppingcartSlimJeff").slimScroll({});
+    $("#shoppingcartitems").slimScroll({});
 
 
     </script>

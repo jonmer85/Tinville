@@ -25,6 +25,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
     
     helper.layout = Layout(
         Div(
+            HTML("""<hr>"""),
             Field('email', placeholder="Email"),
             Field('password', placeholder="Password"),
             Field('redirect_url'),

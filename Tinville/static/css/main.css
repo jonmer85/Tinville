@@ -911,33 +911,6 @@ textarea {
     vertical-align:bottom;
 }
 
-#shoppingcart {
-    position:absolute;
-    right:20px;
-    top:50px;
-    height:300px;
-    background-color:white;
-    border:2px solid #F5F5F5;
-    z-index: 100;
-    padding-right: 0px;
-    padding-left: 0px;
-    width: 300px;
-}
-@media (max-width: 768px) {
-    #shoppingcart {
-
-    }
-}
-@media (max-width: 992px) {
-    #shoppingcart {
-
-    }
-}
-@media (max-width: 1200px) {
-    #shoppingcart {
-
-    }
-}
 
 #shoppingcartitems {
     /*line-height:3em;*/
@@ -946,8 +919,8 @@ textarea {
     color:#714D03;
     width: 300px;
     max-height: 270px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    /*overflow-y: auto;*/
+    /*overflow-x: hidden;*/
 }
 
 .shoppingcartitem {
@@ -958,6 +931,7 @@ textarea {
     padding-bottom: 6px;
     border-bottom: 2px #e2e1e1 solid;
     padding-left: 7px;
+    width: 310px;
 }
 
 .shoppingcartthumbnail {
@@ -1134,3 +1108,64 @@ nav a:hover{
 
 
 /*END mobile navbar*/
+
+
+.navbar-collapse2 {
+  max-height: 340px;
+  padding-right: 15px;
+  padding-left: 15px;
+  overflow-x: visible;
+  border-top: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  -webkit-overflow-scrolling: touch;
+}
+
+.navbar-collapse2:before,
+.navbar-collapse2:after {
+  display: table;
+  content: " ";
+}
+
+.navbar-collapse2:after {
+  clear: both;
+}
+
+.navbar-collapse2:before,
+.navbar-collapse2:after {
+  display: table;
+  content: " ";
+}
+
+.navbar-collapse2:after {
+  clear: both;
+}
+
+.navbar-collapse2.in {
+  overflow-y: auto;
+}
+@media (max-width: 768px) {
+  .navbar-collapse2 {
+    width: auto;
+    border-top: 0;
+    box-shadow: none;
+  }
+  .navbar-collapse2.collapse {
+    display: block !important;
+    height: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+  }
+  .navbar-collapse2.in {
+    overflow-y: auto;
+  }
+  .navbar-collapse2 .navbar-nav.navbar-left:first-child {
+    margin-left: -15px;
+  }
+  .navbar-collapse2 .navbar-nav.navbar-right:last-child {
+    margin-right: -15px;
+  }
+  .navbar-collapse2 .navbar-text:last-child {
+    margin-right: 0;
+  }
+}
+

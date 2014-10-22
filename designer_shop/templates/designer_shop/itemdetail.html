@@ -158,6 +158,10 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+
     refreshvariants();
 
     var myresponse;
