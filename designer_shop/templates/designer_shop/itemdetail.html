@@ -116,15 +116,13 @@
                             <div class="sharingiscaring col-xs-12">
                                 <div class="shareMeTitle">Share This Item</div>
                                 <div class="socialMediaLinks">
-                                    <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="pull-right facebooklogo">
-                                        <img id="facebooklogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/facebook-idle.png" style="">
+                                    <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="facebooklogo">
+                                        <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
                                     </a>
-                                    <a id="twitterLink" href="www.twitter.com" target="_blank" class="pull-right twitterlogo">
-                                        <img id="twitterlogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/twitter-idle.png">
+                                    <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
+                                        <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
                                     </a>
-                                    <a id="pinterestLink" href="www.pinterest.com>" target="_blank" class="pull-right pinterestlogo">
-                                        <img id="pinterestlogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/pinterest-idle.png">
-                                    </a>
+                                    <a href="//www.pinterest.com/pin/create/button/"  target="_blank" class="pull-right pinterestlogo" data-pin-do="buttonBookmark"  data-pin-shape="round" data-pin-height="32"></a>
                                 </div>
                             </div>
                         </div>
@@ -151,6 +149,8 @@
 
 {% block javascript_library %}
   {{ block.super }}
+<!-- Please call pinit.js only once per page -->
+<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
 
 {% endblock javascript_library %}
 
@@ -158,7 +158,7 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
 

@@ -26,7 +26,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
     
     helper.layout = Layout(
         Div(
-            HTML("""<hr>"""),
+            HTML("""<div style="padding-top: 25px;"></div>"""),
             Field('email', placeholder="Email"),
             Field('password', placeholder="Password"),
             Field('redirect_url'),
@@ -36,7 +36,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             ), css_class="col-xs-12"
         ),
         Div(
-            Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-4 col-sm-offset-2 col-sm-4"
+            Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4"
         )
     )
 
