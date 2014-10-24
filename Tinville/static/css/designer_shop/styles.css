@@ -611,7 +611,7 @@
 .overlayDelete{
   position: absolute;
   bottom: 17px;
-  right: 40px;
+  left: 130px;
   width: 16px;
   height: 25px;
   z-index: 10;
@@ -643,6 +643,13 @@
     text-decoration: none;
 }
 
+.socialMediaLinks a:link,
+.socialMediaLinks a:visited,
+.socialMediaLinks a:hover,
+.socialMediaLinks a:active
+{
+    text-decoration: none;
+}
 .caption{
     text-align: center;
 }
