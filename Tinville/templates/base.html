@@ -747,14 +747,14 @@
                 type: "GET",
                 success: function(data, textStatus, jqXHR) {
                     if (data.count > 0){
-                        $('#cartCount').text(data.count);
-                        $('#cartCount').removeClass("hidden");
+                        $('#cartCountId').text(data.count);
+                        $('#cartCountId').removeClass("hidden");
                         $('#cartCountM').text(data.count);
                         $('#cartCountM').removeClass("hidden");
 {#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartLogo.png");#}
                     }
                     else{
-                        $('.cartCount').addClass("hidden");
+                        $('.cartCountId').addClass("hidden");
                         $('.cartCountM').addClass("hidden");
 {#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartEmpty.png");#}
                     }
