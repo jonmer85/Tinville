@@ -9,21 +9,28 @@
     {{ block.super }}
 
 <div class="container">
-    <nav class="navbar navbar-default shopBackgroundColor">
+    <div class="navbar2 navbar-default shopBackgroundColor">
+
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 
 				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
+                <div class=" collapse navbar-collapse" id="">
+                <ul class="visible-xs nav pull-right">
+					<li class="shopTabLink active" ><a data-toggle="tab" href="#itemTab">Edit</a></li>
+					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+				</ul>
+                </div>
 			</div>
+
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<div class="hidden-xs collapse navbar-collapse" id="">
 				<ul class="nav navbar-nav">
-                    <li class="active" ><a href="#itemTab" id="idemTabLink" role="tab" data-toggle="tab">Item</a></li>
-					<li><a href="#aboutTab" id="aboutTabLink" role="tab" data-toggle="tab">About</a></li>
+					<li class="editTabLink active" ><a data-toggle="tab" href="#itemTab">Edit</a></li>
+					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
-
-	</nav>
+    </div><!-- /.container-fluid -->
 </div><!-- /.container-fluid -->
 
 

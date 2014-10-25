@@ -16,10 +16,19 @@
 			<div class="navbar-header">
 
 				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
+                <div class=" collapse navbar-collapse" id="">
+                <ul class="visible-xs nav pull-right">
+					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
+                    {% if user.email == shop.user.email%}
+                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
+                    {% endif %}
+					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+				</ul>
+                </div>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse2" id="">
+			<div class="hidden-xs collapse navbar-collapse" id="">
 				<ul class="nav navbar-nav">
 					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
                     {% if user.email == shop.user.email%}
@@ -28,62 +37,59 @@
 					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
 
-	</nav>
-</div><!-- /.container-fluid -->
+    <div class="tab-content ">
+        <div class=" tab-pane active" id="shopTab">
+            <div class="container comboBoxes">
+                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-3 col-md-offset-3 col-md-2">
+                    <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
+                        <option value="View All">View All</option>
+                        {% for genders in shopgenders %}
+                            <option value="{{ genders.name }}">{{ genders.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
+                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
+                    <select class="select form-control filterTabs" id="filterType" name="typeFilter">
+                        <option value="View All Types">View All Types</option>
+                        {% for category in shopcategories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-<!-- Tab panes -->
-<div class="tab-content ">
-    <div class=" tab-pane active" id="shopTab">
-        <div class="container comboBoxes">
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-3 col-md-offset-3 col-md-2">
-                <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
-                    <option value="View All">View All</option>
-                    {% for genders in shopgenders %}
-                        <option value="{{ genders.name }}">{{ genders.name }}</option>
-                    {% endfor %}
-                </select>
+                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
+                    <select class="select form-control filterTabs" id="filterSort" name="sortFilter">
+                        <option value="no-sort">No Sorting</option>
+                        <option value="date-asc">Newest First</option>
+                        <option value="date-dsc">Oldest First</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-dsc">Price: High to Low</option>
+                        <option value="pop-asc">Popularity: Low to High</option>
+                        <option value="pop-dsc">Popularity: High to Low</option>
+                    </select>
+                </div>
             </div>
-
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
-                <select class="select form-control filterTabs" id="filterType" name="typeFilter">
-                    <option value="View All Types">View All Types</option>
-                    {% for category in shopcategories %}
-                        <option value="{{ category }}">{{ category }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
-                <select class="select form-control filterTabs" id="filterSort" name="sortFilter">
-                    <option value="no-sort">No Sorting</option>
-                    <option value="date-asc">Newest First</option>
-                    <option value="date-dsc">Oldest First</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-dsc">Price: High to Low</option>
-                    <option value="pop-asc">Popularity: Low to High</option>
-                    <option value="pop-dsc">Popularity: High to Low</option>
-                </select>
+            <div class="container">
+                {% include "designer_shop/shop_items.html" %}
             </div>
         </div>
-        <div class="container">
-            {% include "designer_shop/shop_items.html" %}
+        <div class=" tab-pane" id="aboutTab">
+            <div class="container">
+                <div class="col-xs-offset-1 col-xs-2 aboutContent">
+                    {% if shop.aboutImg %}
+                        <img class="full-screen" src="{{shop.aboutImg.url}}"  />
+                    {% endif %}
+                </div>
+                <div class="col-xs-8 aboutContent">
+                    {{ shop.aboutContent | safe }}
+                </div>
+            </div>
         </div>
+
     </div>
-    <div class=" tab-pane" id="aboutTab">
-        <div class="container">
-            <div class="col-xs-offset-1 col-xs-2 aboutContent">
-                {% if shop.aboutImg %}
-                    <img class="full-screen" src="{{shop.aboutImg.url}}"  />
-                {% endif %}
-            </div>
-            <div class="col-xs-8 aboutContent">
-                {{ shop.aboutContent | safe }}
-            </div>
-        </div>
-    </div>
-
 </div>
 
 {% endblock %}

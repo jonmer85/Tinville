@@ -75,7 +75,7 @@ body {
     }
 
     .mobileDropListStyle{
-        border-bottom: 1px solid #000000;
+        /*border-bottom: 1px solid #000000;*/
 
     }
 
@@ -152,7 +152,7 @@ body {
 }
 
 .xs-navbar-text {
-    font-size: 2em;
+    font-size: 1.15em;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -995,7 +995,7 @@ textarea {
 
 }
 
-#carttotal {
+.carttotal {
     color: #2E2D2E;
     font-size: 1.15em;
     left: 67%;
@@ -1171,4 +1171,10 @@ nav a:hover{
     float:  left;
     left: -67px;
     top: 4px;
+}
+
+.slideMenuText {
+    font-size: 15px;
+    text-align: left;
+    margin-left: 4%;
 }

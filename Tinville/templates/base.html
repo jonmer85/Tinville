@@ -38,8 +38,8 @@
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
-    {% load feedback_widget %}
-	{% feedback_widget %}
+{#    {% load feedback_widget %}#}
+{#	{% feedback_widget %}#}
     <a id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
  {% include "notification.html" %}
     <div class="navbar-header">
@@ -52,13 +52,13 @@
                   <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                       <i class="fa fa-tags tinvilleOrange" style="font-size: x-large"></i>
 {#                                      <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
-                      <div class="cartCount">
+                      <div id="cartCountM" class="cartCount">
                       </div>
                   </a>
-                  <ul class="dropdown-menu" id="" style="right: 0;">
-                    <li><div id="shoppingcartitemsMobile" class="slimScrollBar"></div></li>
+                  <ul class="dropdown-menu" id="" style="left: -194px;width: 250px;">
+                    <li><div id="shoppingcartitemsM" class="slimScrollBar"></div></li>
 
-                    <li><div id="carttotal" class=""></div></li>
+                    <li><div id="carttotalM" class="carttotal"></div></li>
                     <li class="divider"></li>
 
                     <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
@@ -109,16 +109,22 @@
         <div class="container">
             <div id="navHeader" class="navbar-header">
 
-                <div class="input-group margin-bottom-sm visible-xs ">
-                  <span class="input-group-addon">{{ user.name }}</span>
-                  <input class="form-control col-xs-10" type="text" placeholder="Search">
+                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >
+{#                  <span class="input-group-addon">{{ user.name }}</span>#}
+                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
                 </div>
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
                     <ul class="nav navbar-nav navButtonIconStyle">
+                        <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
+                            <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw"></i>&nbsp; Home</a>
+                        </li>
                         <li class=" dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#"  data-toggle="dropdown" class="dropdown-toggle">Women</a>
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-female fa-fw"></i>&nbsp; Women
+                            </a>
+                            <a href="#"  data-toggle="dropdown" class="hidden-xs dropdown-toggle">WOMEN</a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
@@ -186,7 +192,10 @@
                             </ul>
                         </li>
                         <li class="hidden dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="visible-xs"> + </b></a>
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-male fa-fw"></i>&nbsp; Men
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">MEN</a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
@@ -256,17 +265,24 @@
                             </ul>
                         </li>
                         <li class="hidden dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Shop</a>
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-female fa-fw"></i>&nbsp; Shop
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">SHOP</a>
                         </li>
+
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Designers</a>
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">DESIGNERS</a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div class="yamm-content navbarLinkStyle ">
                                         <div class="row">
                                             <ul class="col-sm-12 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 {% for shop in shops %}
-                                                    <li><a href='{{ shop.get_absolute_url }}' >{{ shop.name }}</a></li>
+                                                    <li><a class="list-group-item slideMenuText" href='{{ shop.get_absolute_url }}' >{{ shop.name }}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -275,12 +291,15 @@
                             </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="http://blog.tinville.com" target="_blank">Blog</a>
+                            <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
+                                <i class="fa fa-rss fa-fw"></i>&nbsp; Blog
+                            </a>
+                            <a class="hidden-xs" href="http://blog.tinville.com" target="_blank">BLOG</a>
                         </li>
 
                         {% if user.is_authenticated %}
 
-                            <li class="dropdown navbarLinkS" id="lg-menuLogin" >
+                            <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                       <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
@@ -297,7 +316,7 @@
 
                             </li>
                         {% else %}
-                            <li class="dropdown yamm-fw" id="lg-menuLogin" >
+                            <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
                                 <ul class="dropdown-menu loginPopupForm">
                                     <li>
@@ -308,24 +327,24 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="dropdown yamm-fw" id="shoppingcartBtn" >
-                          <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                              <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
-        {#                                      <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
-                              <div class="cartCount">
-                              </div>
-                          </a>
-                          <ul class="dropdown-menu" id="" style="right: 0;">
-                            <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
+                        <li class="hidden-xs dropdown navbarLinkS" id="shoppingcartBtn" >
+                              <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                  <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
+{#                                                  <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
+                                  <div id="cartCountId" class="cartCount">
+                                  </div>
+                              </a>
+                              <ul class="dropdown-menu" id="" style="right: 0;">
+                                <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
 
-                            <li><div id="carttotal" class=""></div></li>
-                            <li class="divider"></li>
+                                <li><div id="carttotal" class="carttotal"></div></li>
+                                <li class="divider"></li>
 
-                            <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
-                                    Checkout
-                                </a></li>
-                          </ul>
-                     </li>
+                                <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                                        Checkout
+                                    </a></li>
+                              </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -728,12 +747,15 @@
                 type: "GET",
                 success: function(data, textStatus, jqXHR) {
                     if (data.count > 0){
-                        $('.cartCount').text(data.count);
-                        $('.cartCount').removeClass("hidden");
+                        $('#cartCount').text(data.count);
+                        $('#cartCount').removeClass("hidden");
+                        $('#cartCountM').text(data.count);
+                        $('#cartCountM').removeClass("hidden");
 {#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartLogo.png");#}
                     }
                     else{
                         $('.cartCount').addClass("hidden");
+                        $('.cartCountM').addClass("hidden");
 {#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartEmpty.png");#}
                     }
                 },
@@ -822,7 +844,44 @@ function LoadCartItemDiv(cartItem)
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo("#shoppingcartitems");
-    cartitemdiv.appendTo("#shoppingcartitemsMobile");
+}
+function LoadCartItemDivM(cartItem)
+{
+
+    var cartitemdivM =  $('<li/>', {
+        'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
+        'id' : "lineIdM" + cartItem.Id
+    });
+
+    var itemThumbnailM = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
+    var thumbnailDivM = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
+    itemThumbnailM.appendTo(thumbnailDivM);
+    thumbnailDivM.appendTo(cartitemdivM);
+
+    var itemInfoDivM = $('<div/>', {'class' : 'shoppingcartiteminfo'});
+
+    var itemTitleM = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
+    itemTitleM.appendTo(itemInfoDivM);
+
+    var itemDescriptionM = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color:" + cartItem.color + ", Size:" + cartItem.size});
+    itemDescriptionM.appendTo(itemInfoDivM);
+
+    var itemQtyM = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
+    itemQtyM.appendTo(itemInfoDivM);
+
+    itemInfoDivM.appendTo(cartitemdivM);
+    var removeBtnDivM = $('<div/>', {'class':'shoppingcartremovebtn'});
+    var delBtnIdM = 'deleteBtnIdM_' + cartItem.Id;
+    var removeBtnM = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnIdM,
+        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
+    });
+    removeBtnM.appendTo(removeBtnDivM);
+    removeBtnDivM.appendTo(cartitemdivM);
+    var priceM = '$' + cartItem.price;
+    var priceDivM = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
+    priceDivM.appendTo(cartitemdivM);
+    cartitemdivM.appendTo("#shoppingcartitemsM");
+
 }
 
 function aggregateTotal()
@@ -833,6 +892,7 @@ function aggregateTotal()
         type: "GET",
         success: function(data, textStatus, jqXHR) {
             $('#carttotal').text('Total: $' + data.total);
+            $('#carttotalM').text('Total: $' + data.total);
         },
         error: function(data, textStatus, jqXHR) {
         }
@@ -843,6 +903,10 @@ function AddCartItem(cartItem)
 {
     if ($("#lineId" + cartItem.Id).length === 0){
         LoadCartItemDiv(cartItem);
+        aggregateTotal();
+    }
+    if ($("#lineIdM" + cartItem.Id).length === 0){
+        LoadCartItemDivM(cartItem);
         aggregateTotal();
     }
 
@@ -872,6 +936,7 @@ function RemoveCartItem(itemId)
 }
 
     $("#shoppingcartitems").slimScroll({});
+    $("#shoppingcartitemsM").slimScroll({});
 
 
     </script>
