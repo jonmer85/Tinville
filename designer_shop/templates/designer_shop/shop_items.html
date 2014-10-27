@@ -50,7 +50,7 @@
                                     -
                                     {% endif %}
                                     <div class="caption">
-                                        <a class="name" href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
+                                        <a rel="" title="{{product.get_title}}" class="name" href="{{ shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
                                         <div class="price "> ${{session.price.excl_tax}}</div>
 {#                                        <span class="">#}
 {#                                            {% if not session.availability.is_available_to_buy %}#}

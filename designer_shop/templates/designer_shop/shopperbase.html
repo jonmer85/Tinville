@@ -21,9 +21,15 @@
             </a>
           </div>
       {% elif shop.banner and not shop.logo %}
-          <div class="">
-            <img class="full-screen" src="{{shop.banner.url}}"  />
-          </div>
+            <span data-picture class="banner">
+                {% if shop.mobileBanner %}
+                    <span data-src="{{shop.mobileBanner.url}}"></span>
+                {% else %}
+                    <span data-src="{{shop.banner.url}}"></span>
+                {% endif %}
+                <span data-src="{{shop.banner.url}}" data-media="(min-width: 768px)"></span>
+            </span>
+
       {% else %}
           <div class=" shopBanner shopBackgroundColor">
           </div>
@@ -48,8 +54,12 @@
     $(".shopColor").css("color", "{{ shop.color }}");
     $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
     $("a.name").text(function(index, currentText) {
+        if (currentText.length > 20){
+            $('a.name').attr('rel', 'tooltip');
+        }
         return currentText.substr(0, 20);
     });
+
     </script>
 
 {% endblock %}

@@ -440,7 +440,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
             'editItemMode': editItem,
             'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
                                                                      {
-                                                                         "banner": shop.banner
+                                                                         "banner": shop.banner,
+                                                                         "mobileBanner": shop.mobileBanner
                                                                      }),
             'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
                                                                {
@@ -476,6 +477,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 shutil.rmtree(MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug), ignore_errors=True)
                 shop.banner = form.cleaned_data["banner"]
                 shop.save(update_fields=["banner"])
+                shop.mobileBanner = form.cleaned_data["mobileBanner"]
+                shop.save(update_fields=["mobileBanner"])
             return renderShopEditor(request, shop, bannerUploadForm=form)
         elif request.POST.__contains__('logoUploadForm'):
             form = LogoUploadForm(request.POST, request.FILES)

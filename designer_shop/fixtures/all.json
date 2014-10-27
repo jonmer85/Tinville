@@ -20,11 +20,12 @@
             "name": "Demo",
 			"slug": "demo",
             "banner": "images/banner.jpg",
+            "mobileBanner": "images/mobileBanner.jpg",
             "logo": "",
             "aboutImg": "images/aboutImage.png",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
-            "color": "#663399"
+            "color": "#AED4EF"
         }
     },
     {

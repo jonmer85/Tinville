@@ -220,7 +220,7 @@ body {
  }
 
 
-#tinvilleTagBanner {
+.tinvilleTagBanner {
     position: relative;
     top: 34px;
     left: 5%;
@@ -230,7 +230,7 @@ body {
 }
 
 @media(max-width: 767px){
-    #tinvilleTagBanner {
+    .tinvilleTagBanner {
     position: relative;
     top: 10px;
     left: 16px;
@@ -957,7 +957,7 @@ textarea {
 }
 
 .shoppingcartitemDescription {
-    margin-top: 7px;
+    /*margin-top: 7px;*/
     word-wrap:normal;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -998,7 +998,7 @@ textarea {
 .carttotal {
     color: #2E2D2E;
     font-size: 1.15em;
-    left: 67%;
+    left: 64%;
     padding-top: 10px;
     position: relative;
 }
@@ -1014,7 +1014,7 @@ textarea {
 .cartCount{
     width: 14px;
     z-index: 990;
-    top: 11px;
+    top: -7px;
     right: 9px;
     background-color: darkred;
     /*background-color: #f46430;*/
@@ -1026,6 +1026,28 @@ textarea {
     line-height: 14px;
     position: absolute;
     text-align: center;
+}
+
+.cartLocation{
+    width: 30px;
+    height: 30px;
+    z-index: 9999;
+    float: right;
+    position: relative;
+    top: 17px;
+    right: 17%;
+    list-style-type: none;
+}
+
+@media (max-width: 768px) {
+    .cartLocation{
+        right: 0%;
+    }
+}
+@media (max-width: 992px) {
+    .cartLocation{
+        right: 25%;
+    }
 }
 .footersociallogo {
    padding: 1px;

@@ -69,7 +69,7 @@ class ProductCreationForm(forms.ModelForm):
                          ,
                          css_class="accordion", css_id="accordion2"),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
-                css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8",
+                css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6",
                 css_id="addItemEditor"
             )
 
@@ -391,17 +391,21 @@ class DesignerShopColorPicker(forms.Form):
 class BannerUploadForm(forms.Form):
 
     banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
-
+    mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
     helper = FormHelper()
     helper.form_show_labels = False
 
     helper.layout = Layout(
         Div(
             Fieldset('Banner Image',
-                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
+                     <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
                      Field('banner', css_class="autoHeight")),
+            Fieldset('Mobile Banner Image',
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
+                     Field('mobileBanner', css_class="autoHeight")),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
-            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
         ))
 
 class LogoUploadForm(forms.Form):

@@ -13,6 +13,8 @@ class Shop(models.Model):
     slug = models.SlugField()
     banner = models.ImageField(default='images/banner.jpg',
                                upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
+    mobileBanner = models.ImageField(default='images/banner.jpg',
+                               upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
     logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename), max_length=255)
     aboutImg = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/aboutImg/{1}'.format(instance.slug, filename), max_length=255)
     aboutContent = HTMLField()

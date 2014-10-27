@@ -21,6 +21,7 @@
     <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/feedback.css" />
 
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
@@ -40,33 +41,33 @@
         <![endif]-->
 {#    {% load feedback_widget %}#}
 {#	{% feedback_widget %}#}
-    <a id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <div class="cartLocation" id="shoppingcartBtn">
+        <li class="dropdown navbarLinkS " id="" >
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                  <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
+    {#                                                  <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
+                  <div id="cartCountId" class="cartCount">
+                  </div>
+              </a>
+              <ul class="dropdown-menu" id="" style="right: 0; width: 275px">
+                <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
+
+                <li><div id="carttotal" class="carttotal"></div></li>
+                <li class="divider"></li>
+
+                <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                        Checkout
+                    </a></li>
+              </ul>
+        </li>
+    </div>
  {% include "notification.html" %}
     <div class="navbar-header">
         <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="mobileNavButton navButton navbar-toggle collapsed menu-toggle">
             <i class="fa fa-bars" style="font-size: large;"></i>
         </button>
 
-        <ul id="signInButtonMobile" class="nav visible-xs">
-            <li class="dropdown navbarLinkS" id="shoppingcartBtn" >
-                  <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                      <i class="fa fa-tags tinvilleOrange" style="font-size: x-large"></i>
-{#                                      <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
-                      <div id="cartCountM" class="cartCount">
-                      </div>
-                  </a>
-                  <ul class="dropdown-menu" id="" style="left: -194px;width: 250px;">
-                    <li><div id="shoppingcartitemsM" class="slimScrollBar"></div></li>
-
-                    <li><div id="carttotalM" class="carttotal"></div></li>
-                    <li class="divider"></li>
-
-                    <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
-                            Checkout
-                        </a></li>
-                  </ul>
-             </li>
-        </ul>
         {% if not user.is_authenticated %}
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
@@ -88,7 +89,7 @@
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                               <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
-                          <ul class="dropdown-menu" style="right: 0;">
+                          <ul class="dropdown-menu" style="right: 0; width: 300px;">
                             <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                             <li class="divider"></li>
                             <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
@@ -101,8 +102,20 @@
                     </li>
              </ul>
         {% endif %}
+        <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
+                <ul class="dropdown-menu loginPopupFormMobile">
+                    <li>
+                        <div class="yamm-content" style="padding-top: 2px">
+                            <div class="row">
 
-
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+              </li>
+            </ul>
     </div>
 
     <nav class="navbar yamm navbar-default" role="navigation">
@@ -113,12 +126,13 @@
 {#                  <span class="input-group-addon">{{ user.name }}</span>#}
                   <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
                 </div>
+                <a id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
                     <ul class="nav navbar-nav navButtonIconStyle">
                         <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
-                            <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw"></i>&nbsp; Home</a>
+                            <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>
                         </li>
                         <li class=" dropdown navdropSize mobileDropBtnStyle">
                             <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
@@ -327,29 +341,13 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="hidden-xs dropdown navbarLinkS" id="shoppingcartBtn" >
-                              <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                  <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
-{#                                                  <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
-                                  <div id="cartCountId" class="cartCount">
-                                  </div>
-                              </a>
-                              <ul class="dropdown-menu" id="" style="right: 0;">
-                                <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
-
-                                <li><div id="carttotal" class="carttotal"></div></li>
-                                <li class="divider"></li>
-
-                                <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
-                                        Checkout
-                                    </a></li>
-                              </ul>
-                        </li>
+{#                        <li class="dropdown yamm-fw mobileDropBtnStyle">#}
+{#                            <a class="hidden-xs" href="#" target="_blank">cart</a>#}
+{#                        </li>#}
                     </ul>
                 </div>
             </div>
     </nav>
-
 
     <div class="slidingContent">
         {% block content %}
@@ -500,6 +498,7 @@
         <script src="{{ STATIC_URL }}js/main.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -560,6 +559,7 @@
                 }
             }
         });
+
 
 
 
@@ -749,13 +749,11 @@
                     if (data.count > 0){
                         $('#cartCountId').text(data.count);
                         $('#cartCountId').removeClass("hidden");
-                        $('#cartCountM').text(data.count);
-                        $('#cartCountM').removeClass("hidden");
 {#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartLogo.png");#}
                     }
                     else{
                         $('.cartCountId').addClass("hidden");
-                        $('.cartCountM').addClass("hidden");
+
 {#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartEmpty.png");#}
                     }
                 },
@@ -826,8 +824,10 @@ function LoadCartItemDiv(cartItem)
     var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
     itemTitle.appendTo(itemInfoDiv);
 
-    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color:" + cartItem.color + ", Size:" + cartItem.size});
+    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color: " + cartItem.color});
     itemDescription.appendTo(itemInfoDiv);
+    var itemSize = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Size: " + cartItem.size});
+    itemSize.appendTo(itemInfoDiv);
 
     var itemQty = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
     itemQty.appendTo(itemInfoDiv);
@@ -844,45 +844,12 @@ function LoadCartItemDiv(cartItem)
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo("#shoppingcartitems");
+
+     $(".shoppingcartitemTitle").text(function(index, currentText) {
+            return currentText.substr(0, 15);
+        });
 }
-function LoadCartItemDivM(cartItem)
-{
 
-    var cartitemdivM =  $('<li/>', {
-        'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
-        'id' : "lineIdM" + cartItem.Id
-    });
-
-    var itemThumbnailM = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
-    var thumbnailDivM = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
-    itemThumbnailM.appendTo(thumbnailDivM);
-    thumbnailDivM.appendTo(cartitemdivM);
-
-    var itemInfoDivM = $('<div/>', {'class' : 'shoppingcartiteminfo'});
-
-    var itemTitleM = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
-    itemTitleM.appendTo(itemInfoDivM);
-
-    var itemDescriptionM = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color:" + cartItem.color + ", Size:" + cartItem.size});
-    itemDescriptionM.appendTo(itemInfoDivM);
-
-    var itemQtyM = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
-    itemQtyM.appendTo(itemInfoDivM);
-
-    itemInfoDivM.appendTo(cartitemdivM);
-    var removeBtnDivM = $('<div/>', {'class':'shoppingcartremovebtn'});
-    var delBtnIdM = 'deleteBtnIdM_' + cartItem.Id;
-    var removeBtnM = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnIdM,
-        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
-    });
-    removeBtnM.appendTo(removeBtnDivM);
-    removeBtnDivM.appendTo(cartitemdivM);
-    var priceM = '$' + cartItem.price;
-    var priceDivM = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
-    priceDivM.appendTo(cartitemdivM);
-    cartitemdivM.appendTo("#shoppingcartitemsM");
-
-}
 
 function aggregateTotal()
 {
@@ -892,7 +859,6 @@ function aggregateTotal()
         type: "GET",
         success: function(data, textStatus, jqXHR) {
             $('#carttotal').text('Total: $' + data.total);
-            $('#carttotalM').text('Total: $' + data.total);
         },
         error: function(data, textStatus, jqXHR) {
         }
@@ -905,10 +871,7 @@ function AddCartItem(cartItem)
         LoadCartItemDiv(cartItem);
         aggregateTotal();
     }
-    if ($("#lineIdM" + cartItem.Id).length === 0){
-        LoadCartItemDivM(cartItem);
-        aggregateTotal();
-    }
+
 
 }
 
@@ -936,7 +899,6 @@ function RemoveCartItem(itemId)
 }
 
     $("#shoppingcartitems").slimScroll({});
-    $("#shoppingcartitemsM").slimScroll({});
 
 
     </script>
