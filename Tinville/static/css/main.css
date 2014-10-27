@@ -192,7 +192,7 @@ body {
 
 
 #signInButtonMobile {
-    margin-right: 0;
+    margin-right: 20px;
     margin-top: 0;
     float:right;
 }
@@ -1034,20 +1034,26 @@ textarea {
     z-index: 9999;
     float: right;
     position: relative;
-    top: 17px;
+    top: 19px;
     right: 17%;
     list-style-type: none;
 }
 
 @media (max-width: 768px) {
     .cartLocation{
-        right: 0%;
+        right: 15px;
     }
 }
 @media (max-width: 992px) {
     .cartLocation{
-        right: 25%;
+        right: 10px;
+        /*top: 17px;*/
     }
+}
+.cartDropdown{
+    margin-top: 19px;
+    width: 275px;
+    margin-left: -240px;
 }
 .footersociallogo {
    padding: 1px;

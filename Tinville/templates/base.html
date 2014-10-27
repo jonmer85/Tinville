@@ -46,11 +46,10 @@
         <li class="dropdown navbarLinkS " id="" >
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                   <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
-    {#                                                  <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" style="width: 20px; height: 20px;" />#}
                   <div id="cartCountId" class="cartCount">
                   </div>
               </a>
-              <ul class="dropdown-menu" id="" style="right: 0; width: 275px">
+              <ul class="dropdown-menu cartDropdown" id="cartDropdown">
                 <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
 
                 <li><div id="carttotal" class="carttotal"></div></li>
@@ -85,11 +84,11 @@
             </ul>
         {% else %}
             <ul id="signInButtonMobile" class="nav ">
-              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
+                          <a href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
                               <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
-                          <ul class="dropdown-menu" style="right: 0; width: 300px;">
+                          <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
                             <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                             <li class="divider"></li>
                             <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
@@ -102,20 +101,7 @@
                     </li>
              </ul>
         {% endif %}
-        <ul id="signInButtonMobile" class="nav ">
-              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
-                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
-                <ul class="dropdown-menu loginPopupFormMobile">
-                    <li>
-                        <div class="yamm-content" style="padding-top: 2px">
-                            <div class="row">
 
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-              </li>
-            </ul>
     </div>
 
     <nav class="navbar yamm navbar-default" role="navigation">
@@ -286,23 +272,17 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                          <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
                                 <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
-                            </a>
-                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">DESIGNERS</a>
-                            <ul class="dropdown-menu navdropstyle ">
-                                <li>
-                                    <div class="yamm-content navbarLinkStyle ">
-                                        <div class="row">
-                                            <ul class="col-sm-12 list-unstyled mobileDropListStyle mobileDropItemStyle">
-                                                {% for shop in shops %}
-                                                    <li><a class="list-group-item slideMenuText" href='{{ shop.get_absolute_url }}' >{{ shop.name }}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                          </a>
+                          <a href="#" class="hidden-xs dropdown-toggle " data-toggle="dropdown">
+                              DESIGNERS
+                          </a>
+                          <ul class="dropdown-menu" >
+                              {% for shop in shops %}
+                                <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
+                              {% endfor %}
+                          </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
@@ -341,9 +321,6 @@
                                 </ul>
                             </li>
                         {% endif %}
-{#                        <li class="dropdown yamm-fw mobileDropBtnStyle">#}
-{#                            <a class="hidden-xs" href="#" target="_blank">cart</a>#}
-{#                        </li>#}
                     </ul>
                 </div>
             </div>
@@ -749,12 +726,11 @@
                     if (data.count > 0){
                         $('#cartCountId').text(data.count);
                         $('#cartCountId').removeClass("hidden");
-{#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartLogo.png");#}
+                        $('#cartDropdown').removeClass("hidden");
                     }
                     else{
                         $('.cartCountId').addClass("hidden");
-
-{#                        $("#cartImg").attr('src',"{{ STATIC_URL }}img/shoppingCartEmpty.png");#}
+                        $('#cartDropdown').addClass("hidden");
                     }
                 },
                 error: function(data, textStatus, jqXHR) {
