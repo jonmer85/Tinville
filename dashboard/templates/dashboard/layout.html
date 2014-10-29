@@ -5,7 +5,7 @@
 {% load i18n %}
 {% load compress %}
 {% load staticfiles %}
-{##}
+
 {#{% block mainstyles %}#}
 {#    {% compress css %}#}
 {#        <link rel="stylesheet" href="{% static "oscar/css/bootstrap.min.css" %}" />#}
@@ -16,7 +16,7 @@
 {#        {% endif %}#}
 {#    {% endcompress %}#}
 {#{% endblock %}#}
-{##}
+
 {#{% block extrastyles %}#}
 {#    {{ block.super }}#}
 {#    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.css">#}
@@ -27,74 +27,76 @@
 
 {% block title %}
     {% trans "Dashboard" %} | {{ block.super }}
-{% endblock %}
+{% endblock title %}
 
-{% block layout %}
-    {% block navbar %}
-    <div class="navbar navbar-static-top navbar-inverse navbar-accounts">
-        <div class="navbar-inner">
-            <div class="dashboard">
-                <span class="brand">{{ shop_name }}</span>
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-accounts">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-
-                <div class="nav-collapse nav-accounts collapse">
-                    <ul class="nav pull-right">
-                        <li><span>{% trans "Welcome" %} <em>{{ request.user.get_full_name|default:request.user.email }}</em></span></li>
-                        <li><a href="{% url 'promotions:home' %}"><i class="icon-home"></i> {% trans "Return to site" %}</a></li>
-                        <li><a href="{% url 'customer:summary' %}"><i class="icon-user"></i> {% trans "Account" %}</a></li>
-                        <li><a href="{% url 'customer:logout' %}"><i class="icon-signout"></i> {% trans "Log out" %}</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div><!-- /navbar-inner -->
-    </div><!-- /navbar -->
-    {% endblock navbar %}
+{% block content %}
+{#    {% block navbar %}#}
+{#    <div class="navbar navbar-static-top navbar-inverse navbar-accounts">#}
+{#        <div class="navbar-inner">#}
+{#            <div class="dashboard">#}
+{#                <span class="brand">{{ shop_name }}</span>#}
+{#                <a class="btn navbar-btn" data-toggle="collapse" data-target=".nav-accounts">#}
+{#                    <span class="glyphicon glyphicon-bar"></span>#}
+{#                    <span class="glyphicon glyphicon-bar"></span>#}
+{#                    <span class="glyphicon glyphicon-bar"></span>#}
+{#                </a>#}
+{#                <div class="navbar-collapse nav-accounts collapse">#}
+{#                    <ul class="nav pull-right">#}
+{#                        <li><span>{% trans "Welcome" %} <em>{{ request.user.get_full_name|default:request.user.email }}</em></span></li>#}
+{#                        <li><a href="{% url 'promotions:home' %}"><i class="glyphicon glyphicon-home"></i> {% trans "Return to site" %}</a></li>#}
+{#                        <li><a href="{% url 'customer:summary' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Account" %}</a></li>#}
+{#                        <li><a href="{% url 'customer:logout' %}"><i class="glyphicon glyphicon-signout"></i> {% trans "Log out" %}</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div><!-- /navbar-inner -->#}
+{#    </div><!-- /navbar -->#}
+{#    {% endblock navbar %}#}
 
     {% block dashboard_nav %}
         {% dashboard_navigation request.user %}
 
-        <div class="navbar navbar-static-top navbar-inverse navbar-primary">
+        <div class="navbar nav navbar-static-top navbar navbar-primary">
             <div class="navbar-inner">
                 <div class="dashboard">
-
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-primary">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-
-                    <div class="nav-collapse nav-primary">
-                        <ul class="nav nav-pills dashboard">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed navButton" data-toggle="collapse" data-target=".nav-primary">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-collapse collapse nav-primary">
+                        <ul class="nav navbar-nav">
                             {% for item in nav_items %}
-                            <li class="dropdown">
-                                {% if item.is_heading %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
-                                    {{ item.label }} <b class="caret"></b>
-                                </a>
-                                {% else %}
-                                <a href="{{ item.url }}">
-                                    {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
-                                    {{ item.label }}
-                                </a>
+                                {% if "Catalogue" not in item.label %}
+                                <li class="dropdown">
+                                    {% if item.is_heading %}
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        {% if item.icon %}<i class="glyphicon {{ item.icon }}"></i>{% endif %}
+                                        {{ item.label }} <b class="caret"></b>
+                                    </a>
+                                    {% else %}
+                                    <a href="{{ item.url }}">
+                                        {% if item.icon %}<i class="glyphicon {{ item.icon }}"></i>{% endif %}
+                                        {{ item.label }}
+                                    </a>
+                                    {% endif %}
+                                    {% if item.has_children %}
+                                    <ul class="dropdown-menu">
+                                        {% for subitem in item.children %}
+                                        <li>
+                                            <a href="{{ subitem.url }}">
+                                            {% if subitem.icon %}<i class="glyphicon {{ subitem.icon }}"></i>{% endif %}
+                                            {{ subitem.label }}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
                                 {% endif %}
-                                {% if item.has_children %}
-                                <ul class="dropdown-menu">
-                                    {% for subitem in item.children %}
-                                    <li>
-                                        <a href="{{ subitem.url }}">
-                                        {% if subitem.icon %}<i class="{{ subitem.icon }}"></i>{% endif %}
-                                        {{ subitem.label }}
-                                        </a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </li>
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -103,24 +105,24 @@
         </div>
     {% endblock %}
 
-    <div class="container dashboard">
+    <div class="dashboard">
         {% block breadcrumbs %}
         <ul class="breadcrumb">
             <li><a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a> <span class="divider">/</span></li>
         </ul>
-        {% endblock %}
+        {% endblock breadcrumbs %}
 
         <div class="content">
             {% include 'partials/alert_messages.html' %}
             {% block header %}
             <div class="page-header action">
-                <h1>{% block headertext %}{% endblock %}</h1>
+                <h1>{% block headertext %}{% endblock headertext %}</h1>
             </div>
             {% endblock %}
             <div class="page-content">
-                {% block content %}
+                {% block dashboardcontent %}
                     {% block dashboard_content %}{% endblock dashboard_content %}
-                {% endblock content %}
+                {% endblock dashboardcontent %}
             </div>
         </div>
     </div><!-- /container -->
@@ -166,7 +168,12 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+        var prevMode = 0;
+        var prevTab = "";
+
         $(document).ready(function(){
+            prevMode = checkMode();
+            prevTab = getCurrentActiveTab();
             var mode = checkMode();
             if (mode == 'xs')
             {
@@ -179,15 +186,25 @@
         });
 
         $(window).resize(function(){
+            var currentMode = checkMode();
             var mode = checkMode();
-            if (mode == 'xs')
+            if (mode == 'xs' && currentMode != prevMode)
             {
                 collapseAll();
+                $("#orderContentDropdownHead").text("");
+                $("#orderContentDropdownHead").text(prevTab);
+                $("#orderContentDropdownHead").append('<span class="caret"></span>');
             }
-            else
+            else if (mode == 'xs'){}
+            else if (mode != 'xs' && currentMode != prevMode)
             {
                 expandAll();
             }
+            else if (mode != 'xs')
+            {
+                expandAll();
+            }
+            prevMode = checkMode();
         });
 
         function collapseAll()
@@ -204,5 +221,26 @@
             $("#orderContentDropdownHead").text($(this).text());
             $("#orderContentDropdownHead").append('<span class="caret"></span>');
         });
+
+        $("#nav-non-xs li").click(function(){
+            prevTab = $("li.active",this).text();
+        });
+
+        $("#nav-xs li").click(function(){
+            prevTav = $("li.active",this).text();
+        });
+
+        function getCurrentActiveTab()
+        {
+            var mode = checkMode();
+            if (mode == "xs")
+            {
+                return $("#nav-xs li.active").text();
+            }
+            else
+            {
+                return $("#nav-non-xs li.active").text();
+            }
+        }
     </script>
 {% endblock %}
