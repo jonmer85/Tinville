@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url, include
 from oscar.apps.dashboard import views
 from oscar.core.application import Application
 from oscar.core.loading import get_class
+import dashboard.views as jeffsview
 
 
 class DashboardApplication(Application):
@@ -11,7 +12,7 @@ class DashboardApplication(Application):
         'index': (['is_staff'], ['partner.dashboard_access']),
     }
 
-    index_view = views.IndexView
+    index_view = jeffsview.IndexView
     reports_app = get_class('dashboard.reports.app', 'application')
     orders_app = get_class('dashboard.orders.app', 'application')
     users_app = get_class('dashboard.users.app', 'application')
@@ -42,6 +43,5 @@ class DashboardApplication(Application):
             url(r'^comms/', include(self.comms_app.urls)),
         ]
         return self.post_process_urls(patterns('', *urls))
-
 
 application = DashboardApplication()

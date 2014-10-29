@@ -1,5 +1,6 @@
 from oscar.apps.dashboard.orders.views import OrderListView as CoreOrderListView
 from oscar.apps.dashboard.orders.views import OrderDetailView as CoreOrderDetailView
+from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailView
 from oscar.core.loading import get_model
 from django.views.generic import View
 
@@ -38,6 +39,9 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
+
+class LineDetailView(CoreLineDetailView):
+    template_name = 'templates/dashboard/orders/line_detail.html'
 
 
 

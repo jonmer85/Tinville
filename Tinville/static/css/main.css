@@ -1008,7 +1008,7 @@ textarea {
 
 /*Start mobile navbar*/
 @media (max-width: 768px) {
-.navbar {
+.navbar-main.navbar {
     position: fixed;
     height: 100%;
     width: auto;
@@ -1022,14 +1022,14 @@ textarea {
     -webkit-transition: all 1s ease;
 }
 
-.navbar .container{
+.navbar-main.navbar .container{
     width: 200px;
 }
 
 .banner img{
     padding-left: 0px;
 }
-.navbar .navbar-collapse{
+.navbar-main.navbar .navbar-collapse{
     margin-left: -15%;
     overflow-x: hidden;
 }
@@ -1047,7 +1047,7 @@ textarea {
   -webkit-transition: none;
 }
 
-.navbar h2{
+.navbar-main.navbar h2{
     padding: 20px 0px;
     columns: #e64a1c;
     text-align: center;
