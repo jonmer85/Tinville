@@ -4,15 +4,16 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden
+from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
 from crispy_forms.bootstrap import AppendedText
 from oscar.core.compat import urlparse
 
 from user.models import TinvilleUser
 from designer_shop.models import Shop
+from checkout.forms import PaymentInfoForm
 
 
 class TinvilleUserCreationForm(forms.ModelForm):
@@ -151,3 +152,15 @@ class LoginForm(AuthenticationForm):
 
     def clean_username(self):
             return self.cleaned_data['username'].lower()
+
+class PaymentInfoFormWithFullName(PaymentInfoForm):
+    full_legal_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'autofocus': 'autofocus'}))
+
+    def __init__(self, *args, **kwargs):
+        super(PaymentInfoFormWithFullName, self).__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Div(
+                Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
+                PaymentInfoForm.base_payment_layout
+            )
+        )

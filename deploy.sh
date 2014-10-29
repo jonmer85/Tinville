@@ -5,6 +5,6 @@ git push -f git@heroku.com:tinville-testing.git Sprint7:master
 ./initDataNoInput qatest
 ./qatest collectstatic --noinput
 
-git push -f git@heroku.com:tinville-dev.git Sprint7:master
-./initDataNoInput dev
-./dev collectstatic --noinput
+#git push -f git@heroku.com:tinville-dev.git Sprint7:master
+#./initDataNoInput dev
+#./dev collectstatic --noinput
