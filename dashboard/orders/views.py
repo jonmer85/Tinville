@@ -1,11 +1,14 @@
+from oscar.apps.dashboard.orders.views import *
 from oscar.apps.dashboard.orders.views import OrderListView as CoreOrderListView
 from oscar.apps.dashboard.orders.views import OrderDetailView as CoreOrderDetailView
 from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailView
+from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
+Line = get_model('order', 'Line')
 
 def queryset_orders_for_user(user):
     """
@@ -42,6 +45,21 @@ class OrderDetailView(CoreOrderDetailView):
 
 class LineDetailView(CoreLineDetailView):
     template_name = 'templates/dashboard/orders/line_detail.html'
+
+class OrderStatsView(CoreOrderStatsView):
+    template_name = 'templates/dashboard/orders/statistics.html'
+
+    def get_stats(self, filters):
+        orders = queryset_orders_for_user(self.request.user).filter(**filters)
+        stats = {
+            'total_orders': orders.count(),
+            'total_lines': Line.objects.filter(order__in=orders).count(),
+            'total_revenue': orders.aggregate(
+                Sum('total_incl_tax'))['total_incl_tax__sum'] or D('0.00'),
+            'order_status_breakdown': orders.order_by('status').values(
+                'status').annotate(freq=Count('id'))
+        }
+        return stats
 
 
 

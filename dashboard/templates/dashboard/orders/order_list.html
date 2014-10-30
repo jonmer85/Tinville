@@ -4,11 +4,6 @@
 {% load sorting_tags %}
 {% load i18n %}
 
-{% block css %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard/styles.css" xmlns="http://www.w3.org/1999/html"/>
-{% endblock css %}
-
 {% block body_class %}orders{% endblock %}
 
 {% block title %}
@@ -109,7 +104,6 @@
                         <td data-th="Order Number:">
                             {{ order.number }}
                             <a class="btn btn-info pull-right" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>
-{#                            <a class="btn btn-info" href="{% url 'dashboard:order-detail' number=order.number %}">{% trans "View" %}</a>#}
                         </td>
                     </tr>
                     <tr id="ordernumber_{{ order.number }}" class="dashboardCollapse collapse">
@@ -138,8 +132,8 @@
                     </tr>
                     {% endfor %}
                 </table>
-                {% include "dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
-                {% include "partials/pagination.html" %}
+                {% include "templates/dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
+                {% include "pagination.html" %}
             </form>
 
         {% else %}

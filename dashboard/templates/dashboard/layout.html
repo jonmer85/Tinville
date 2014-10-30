@@ -6,7 +6,8 @@
 {% load compress %}
 {% load staticfiles %}
 
-{#{% block mainstyles %}#}
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard/styles.css" xmlns="http://www.w3.org/1999/html"/>
 {#    {% compress css %}#}
 {#        <link rel="stylesheet" href="{% static "oscar/css/bootstrap.min.css" %}" />#}
 {#        {% if use_less %}#}
@@ -15,7 +16,7 @@
 {#            <link rel="stylesheet" type="text/css" href="{% static "oscar/css/dashboard.css" %}" />#}
 {#        {% endif %}#}
 {#    {% endcompress %}#}
-{#{% endblock %}#}
+{% endblock %}
 
 {#{% block extrastyles %}#}
 {#    {{ block.super }}#}
