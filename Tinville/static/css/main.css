@@ -1065,7 +1065,7 @@ textarea {
 
 /*Start mobile navbar*/
 @media (max-width: 768px) {
-.navbar {
+.navbar-main.navbar {
     position: fixed;
     height: 100%;
     width: auto;
@@ -1079,14 +1079,14 @@ textarea {
     -webkit-transition: all 1s ease;
 }
 
-.navbar .container{
+.navbar-main.navbar .container{
     width: 200px;
 }
 
 .banner img{
     padding-left: 0px;
 }
-.navbar .navbar-collapse{
+.navbar-main.navbar .navbar-collapse{
     margin-left: -15%;
     overflow-x: hidden;
 }
@@ -1104,7 +1104,7 @@ textarea {
   -webkit-transition: none;
 }
 
-.navbar h2{
+.navbar-main.navbar h2{
     padding: 20px 0px;
     columns: #e64a1c;
     text-align: center;
@@ -1205,4 +1205,29 @@ nav a:hover{
     font-size: 15px;
     text-align: left;
     margin-left: 4%;
+}
+/* colors used for pill navigation used throughout */
+
+.nav-pills>li.active>a {
+    background-color: #f46430;
+}
+
+.nav-pills > li.active > a:focus {
+    background-color: #f46430;
+}
+
+.nav-pills>li>a {
+    color: #5B595A;
+}
+
+.nav-pills>li.active>a:hover {
+    background-color: #f44b16;
+}
+
+.nav-pills>li>a {
+    color: #5B595A;
+}
+
+.nav-pills>li>a:hover {
+    background-color: #e7e5e6;
 }

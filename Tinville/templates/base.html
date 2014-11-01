@@ -15,8 +15,8 @@
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-{#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
@@ -104,7 +104,7 @@
 
     </div>
 
-    <nav class="navbar yamm navbar-default" role="navigation">
+    <nav class="navbar yamm navbar-default navbar-main" role="navigation">
         <div class="container">
             <div id="navHeader" class="navbar-header">
 
@@ -145,7 +145,7 @@
                                             </ul>
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Shoes</strong></p></li>
-                                               <li><a href="#">Boots</a></li>
+                                                <li><a href="#">Boots</a></li>
                                                     <li><a href="#">Heels</a></li>
                                                     <li><a href="#">Flats</a></li>
                                                     <li><a href="#">Booties</a></li>
@@ -468,9 +468,9 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.transit.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/velocity.js"></script>
-        <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
-        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+{#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
+{#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
@@ -478,6 +478,8 @@
         <script src="{{ STATIC_URL }}js/main.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
+{#        <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
     {% endblock javascript_library %}
 
@@ -900,6 +902,35 @@ function RemoveCartItem(itemId)
             </div>
             {% endverbatim %}
         </script>
+
+     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+     <script type="text/javascript">
+        window.ParsleyValidator
+          .addValidator('cardnum', function (value) {
+            return Stripe.card.validateCardNumber(value);
+          }, 32)
+          .addMessage('en', 'cardnum', 'Invalid card number');
+{#          .addMessage('fr', 'multiple', 'Cette valeur doit être un multiple de %s');#}
+        window.ParsleyValidator
+          .addValidator('cardexpiry', function (value) {
+            var month = $("[data-stripe='exp-month']")[0].value;
+            var year = $("[data-stripe='exp-year']")[0].value;
+            return Stripe.card.validateExpiry(month, year);
+          }, 33)
+          .addMessage('en', 'cardexpiry', 'Invalid card expiration date');
+        window.ParsleyValidator
+          .addValidator('cardcvc', function (value) {
+            return Stripe.card.validateCVC(value);
+          }, 34)
+          .addMessage('en', 'cardcvc', 'Invalid card verification code');
+
+     $("[data-parsley-group='cardexpiry']").keyup(function() {
+          $("[data-parsley-group='cardexpiry']").each( function() {
+              $( this ).parsley().validate();
+          })
+        });
+
+    </script>
 
     {% block javascript %}
     {% endblock javascript %}
