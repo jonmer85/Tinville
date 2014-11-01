@@ -64,7 +64,7 @@ class PaymentInfoForm(forms.Form):
     # helper.form_action = reverse_lazy('checkout:payment-details')
 
     header_payment_layout = Layout(
-        Div(HTML('<span class="payment-errors"></span>'))
+        Div(HTML('<span class="payment-errors bg-danger"></span>'), style="margin-bottom:10px")
     )
 
     base_payment_layout = Layout(
