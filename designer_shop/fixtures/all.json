@@ -1936,5 +1936,13 @@
             "code": "cancelled",
             "name": "Cancelled"
         }
+    },
+    {
+        "pk": 4,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "partially shipped",
+            "name": "Partially Shipped"
+        }
     }
 ]
