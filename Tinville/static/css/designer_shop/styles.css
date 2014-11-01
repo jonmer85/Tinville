@@ -461,28 +461,7 @@
     padding-top: 5px;
 }
 
-.nav-pills>li.active>a {
-    background-color: #f46430;
-}
 
-.nav-pills > li.active > a:focus {
-    background-color: #f46430;
-}
-
-.nav-pills>li>a {
-    color: #5B595A;
-}
-
-.nav-pills>li.active>a:hover {
-    background-color: #f44b16;
-}
-
-.nav-pills>li>a {
-    color: #5B595A;
-}
-
-.nav-pills>li>a:hover {
-    background-color: #e7e5e6;
 }
 
 #optionsXS {
