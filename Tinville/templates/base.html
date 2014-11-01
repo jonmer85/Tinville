@@ -800,10 +800,10 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
-    self = $(this)
-    url = "/delete_item_to_cart"
+    var self = $(this)
+    var url = "/delete_item_to_cart"
 
-    ajax_req = $.ajax({
+    var ajax_req = $.ajax({
             url: url,
             type: "POST",
             data: {
