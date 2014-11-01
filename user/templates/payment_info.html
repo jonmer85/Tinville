@@ -14,7 +14,6 @@
 
 <div class="container">
     <div class="col-xs-12 col-lg-6 col-lg-offset-3">
-        <span class="payment-errors"></span>
         <div>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -23,6 +22,9 @@
                     </h3>
                 </div>
                 <div class="panel-body">
+                    {% if last4 %}
+                    <h4>Your current card ending in <mark>{{ last4 }}</mark> will be overwritten</h4>
+                    {% endif %}
                     {% load crispy_forms_tags %}
                     {% crispy form %}
                 </div>
@@ -40,20 +42,33 @@
 <script type="text/javascript">
   // This identifies your website in the createToken call below
   Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
-  jQuery(function($) {
-    $('#payment-info-form').submit(function(event) {
-        var $form = $(this);
 
-        // Disable the submit button to prevent repeated clicks
-        $form.find('button').prop('disabled', true);
-
-        Stripe.createToken($form, stripeResponseHandler);
-
-        // Prevent the form from submitting with the default action
-        return false;
+  $("#payment-info-form").parsley({
+        successClass: 'has-success',
+        errorClass: 'has-error',
+        classHandler: function(el) {
+            return el.$element.closest(".form-group");
+        },
+        errorsWrapper: '<span class=\"help-block\"></span>',
+        errorTemplate: '<span></span>'
     });
 
-    var stripeResponseHandler = function(status, response) {
+  jQuery(function($) {
+      $('#payment-info-form').submit(function (event) {
+          var $form = $(this);
+
+          // Disable the submit button to prevent repeated clicks
+          $form.find('button').prop('disabled', true);
+
+          Stripe.createToken($form, stripeResponseHandler);
+
+          // Prevent the form from submitting with the default action
+          return false;
+      })
+  });
+
+
+    function stripeResponseHandler(status, response) {
       var $form = $('#payment-info-form');
 
       if (response.error) {
@@ -65,13 +80,10 @@
         var token = response.id;
         // Insert the token into the form so it gets submitted to the server
         $form.append($('<input type="hidden" name="stripe_token" />').val(token));
-        // Insert the last4 into the form so it gets submitted to the server
-        $form.append($('<input type="hidden" name="last4" />').val(response.card.last4));
         // and submit
         $form.get(0).submit();
       }
     };
-});
 </script>
 
 {% endblock javascript %}

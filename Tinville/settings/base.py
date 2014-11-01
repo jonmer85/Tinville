@@ -186,7 +186,7 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'oscar_stripe'
 ] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
 
