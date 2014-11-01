@@ -41,11 +41,11 @@
         <![endif]-->
 {#    {% load feedback_widget %}#}
 {#	{% feedback_widget %}#}
-    <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
     <div class="cartLocation" id="shoppingcartBtn">
         <li class="dropdown navbarLinkS " id="" >
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                  <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
+                  <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
                   <div id="cartCountId" class="cartCount">
                   </div>
               </a>
@@ -67,6 +67,36 @@
             <i class="fa fa-bars" style="font-size: large;"></i>
         </button>
 
+        {% if not user.is_authenticated %}
+            <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
+                <ul class="dropdown-menu loginPopupFormMobile">
+                    <li>
+                        <div class="yamm-content" style="padding-top: 2px">
+                            <div class="row">
+                                {%  include "login_form.html" with form_name="xs-Login" %}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+              </li>
+            </ul>
+        {% else %}
+            <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
+                          <a href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
+                              <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                          </a>
+                          <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
+                            <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                          </ul>
 
                     </li>
              </ul>
@@ -82,7 +112,7 @@
 {#                  <span class="input-group-addon">{{ user.name }}</span>#}
                   <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
                 </div>
-                <a id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+                <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
@@ -90,7 +120,8 @@
                         <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
                             <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>
                         </li>
-                        <li class=" dropdown navdropSize mobileDropBtnStyle">
+                        <li class="hidden
+                         +dropdown navdropSize mobileDropBtnStyle">
                             <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
                                 <i class="fa fa-female fa-fw"></i>&nbsp; Women
                             </a>
@@ -251,6 +282,7 @@
                           <ul class="dropdown-menu" >
                               {% for shop in shops %}
                                 <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
+                                <li class="divider"></li>
                               {% endfor %}
                           </ul>
                         </li>
@@ -449,6 +481,7 @@
         <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
 {#        <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -700,10 +733,12 @@
                         $('#cartCountId').text(data.count);
                         $('#cartCountId').removeClass("hidden");
                         $('#cartDropdown').removeClass("hidden");
+                        $('#tagIconId').addClass("tinvilleOrange");
                     }
                     else{
                         $('.cartCountId').addClass("hidden");
                         $('#cartDropdown').addClass("hidden");
+                        $('#tagIconId').removeClass("tinvilleOrange");
                     }
                 },
                 error: function(data, textStatus, jqXHR) {
