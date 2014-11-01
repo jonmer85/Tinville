@@ -248,7 +248,7 @@
                                         <td data-th="{% trans "Price excl tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_excl_tax|currency:order.currency }}</td>
                                         <td data-th="{% trans "Price inc tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}</td>
                                         <td data-th="{% trans "Actions" %}">
-                                            <a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}" class="btn btn-info">{% trans "View" %}</a>
+                                            <a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}" class="btn btn-primary">{% trans "View" %}</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -743,7 +743,7 @@
                                         <td data-th="{% trans "Message" %}">{{ note.message|linebreaks }}</td>
                                         <td class="col-md-2 col-xs-12">
                                             {% if note.is_editable %}
-                                                &nbsp;<a href="{% url 'dashboard:order-detail-note' number=order.number note_id=note.id %}#notes" class="btn btn-info">{% trans "Edit" %}</a>
+                                                &nbsp;<a href="{% url 'dashboard:order-detail-note' number=order.number note_id=note.id %}#notes" class="btn btn-primary">{% trans "Edit" %}</a>
                                                 <form action="." method="post" class="pull-left">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="order_action" value="delete_note" />
