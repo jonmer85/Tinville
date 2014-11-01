@@ -10,6 +10,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
 from crispy_forms.bootstrap import AppendedText
 from oscar.core.compat import urlparse
+from parsley.decorators import parsleyfy
 
 from user.models import TinvilleUser
 from designer_shop.models import Shop
@@ -153,6 +154,7 @@ class LoginForm(AuthenticationForm):
     def clean_username(self):
             return self.cleaned_data['username'].lower()
 
+@parsleyfy
 class PaymentInfoFormWithFullName(PaymentInfoForm):
     full_legal_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'autofocus': 'autofocus'}))
 
@@ -160,7 +162,9 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
         super(PaymentInfoFormWithFullName, self).__init__(*args, **kwargs)
         self.helper.layout = Layout(
             Div(
+                PaymentInfoForm.header_payment_layout,
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
-                PaymentInfoForm.base_payment_layout
+                PaymentInfoForm.base_payment_layout,
+                Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )

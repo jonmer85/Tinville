@@ -21,6 +21,12 @@ class DesignerPaymentInfoView(FormView):
     def get_context_data(self, **kwargs):
         context = super(DesignerPaymentInfoView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLISHABLE_KEY
+        user = self.request.user
+        if user.account_token:
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            token = stripe.Token.retrieve(user.account_token)
+            context['last4'] = token.card.last4
+
         return context
 
 
@@ -29,19 +35,32 @@ class DesignerPaymentInfoView(FormView):
         token = form.cleaned_data['stripe_token']
         full_legal_name = form.cleaned_data['full_legal_name']
 
-        # Create a Recipient
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        recipient = stripe.Recipient.create(
-          name=full_legal_name,
-          type="individual",
-          email=self.request.user.email,
-          card=token)
+        try:
+            # Create a Recipient
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            recipient = stripe.Recipient.create(
+              name=full_legal_name,
+              type="individual",
+              email=self.request.user.email,
+              card=token)
 
-        self.request.user.recipient_id = recipient.id
-        self.request.user.account_token = token
-        self.request.user.save()
+            self.request.user.recipient_id = recipient.id
+            self.request.user.account_token = token
+            self.request.user.save()
 
-        messages.success(self.request, "You have successfully added your payment info")
+            messages.success(self.request, "You have successfully added your payment info")
+
+        except (stripe.error.CardError, stripe.error.InvalidRequestError) as e:
+            # Since it's a decline, stripe.error.CardError will be caught
+            body = e.json_body
+            err  = body['error']
+
+            print "Status is: %s" % e.http_status
+            print "Type is: %s" % err['type']
+            print "Message is: %s" % err['message']
+
+            messages.error(self.request, err['message'])
+
 
         return super(DesignerPaymentInfoView, self).form_valid(form)
 
