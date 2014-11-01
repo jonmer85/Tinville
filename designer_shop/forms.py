@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
-from crispy_forms.bootstrap import PrependedText
+from crispy_forms.bootstrap import PrependedText, AccordionGroup, Accordion
 from south.orm import _FakeORM
 
 from tinymce.widgets import TinyMCE
@@ -47,27 +47,29 @@ class ProductCreationForm(forms.ModelForm):
         self.helper.form_show_labels = False
 
         self.helper.layout = Layout(
-            Div(
-                Fieldset('General',
-                         Field('title', placeholder='Title'),
-                         HTML("""<p>Description</p>"""),
-                         Field('description', placeholder='Description'),
-                         Field('category', placeholder='Choose a Category'),
-                         Field('price', placeholder='Price')
-                ),
-                Fieldset('Images',
-                         Field( 'product_image', css_id="id_productImage" ),
-                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
-                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
-                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
-                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
-                ),
-                Fieldset('Sizes and Colors',
-                         Field('sizeVariation', placeholder='Choose a variation'),
-                         Div(
-                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
-                         ,
-                         css_class="accordion", css_id="accordion2"),
+            Div(Accordion(
+                    AccordionGroup('General',
+                             Field('title', placeholder='Title'),
+                             HTML("""<p>Description</p>"""),
+                             Field('description', placeholder='Description'),
+                             Field('category', placeholder='Choose a Category'),
+                             Field('price', placeholder='Price')
+                    ),
+                    AccordionGroup('Images',
+                             HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
+                             Field( 'product_image', css_id="id_productImage" ),
+                             Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                             Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                             Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
+                    ),
+                    AccordionGroup('Sizes and Colors',
+                             Field('sizeVariation', placeholder='Choose a variation'),
+                             Div(
+                                 Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
+                             ,
+                             css_class="accordion", css_id="accordion2"),
+                    ),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
                 css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6",
                 css_id="addItemEditor"

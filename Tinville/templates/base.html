@@ -41,11 +41,11 @@
         <![endif]-->
 {#    {% load feedback_widget %}#}
 {#	{% feedback_widget %}#}
-    <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+    <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
     <div class="cartLocation" id="shoppingcartBtn">
         <li class="dropdown navbarLinkS " id="" >
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                  <i class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
+                  <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
                   <div id="cartCountId" class="cartCount">
                   </div>
               </a>
@@ -112,7 +112,7 @@
 {#                  <span class="input-group-addon">{{ user.name }}</span>#}
                   <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
                 </div>
-                <a id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+                <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
                 <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
@@ -120,7 +120,8 @@
                         <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
                             <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>
                         </li>
-                        <li class=" dropdown navdropSize mobileDropBtnStyle">
+                        <li class="hidden
+                         +dropdown navdropSize mobileDropBtnStyle">
                             <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
                                 <i class="fa fa-female fa-fw"></i>&nbsp; Women
                             </a>
@@ -144,7 +145,7 @@
                                             </ul>
                                             <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
                                                 <li><p><strong>Shoes</strong></p></li>
-                                                <li><a href="#">Boots</a></li>
+                                               <li><a href="#">Boots</a></li>
                                                     <li><a href="#">Heels</a></li>
                                                     <li><a href="#">Flats</a></li>
                                                     <li><a href="#">Booties</a></li>
@@ -281,6 +282,7 @@
                           <ul class="dropdown-menu" >
                               {% for shop in shops %}
                                 <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
+                                <li class="divider"></li>
                               {% endfor %}
                           </ul>
                         </li>
@@ -466,6 +468,7 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.transit.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/velocity.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
         <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
@@ -727,10 +730,12 @@
                         $('#cartCountId').text(data.count);
                         $('#cartCountId').removeClass("hidden");
                         $('#cartDropdown').removeClass("hidden");
+                        $('#tagIconId').addClass("tinvilleOrange");
                     }
                     else{
                         $('.cartCountId').addClass("hidden");
                         $('#cartDropdown').addClass("hidden");
+                        $('#tagIconId').removeClass("tinvilleOrange");
                     }
                 },
                 error: function(data, textStatus, jqXHR) {

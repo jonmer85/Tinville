@@ -147,7 +147,7 @@
 .comboBoxes{
     padding-top: 20px;
     padding-bottom: 20px;
-    /*margin-left: 35%;*/
+    /*padding-left: 13%;*/
 }
 
 .filterTabs {
@@ -383,7 +383,7 @@
 / * Tinville Dark Gray: #5B595A */
 
 #shopEditorWindow {
-    box-shadow: 0px -2px 10px -4px  #616161;
+    box-shadow: 0px -2px 10px -4px  #f46430;
 }
 
 @media (max-width: 768px) {
@@ -393,9 +393,6 @@
     }
 }
 
-#shopEditorWindow {
-    box-shadow: 0px -2px 10px -4px  #616161;
-}
 @media (max-width: 768px) {
     .nav-pills {
         font-size: 1.5em;
@@ -568,9 +565,9 @@
     }
 /*}*/
 
-.selectpicker {
-    color: #5B595A;
-}
+/*.selectpicker {*/
+    /*color: #5B595A;*/
+/*}*/
 
 .sociallogo {
     max-width: 67% !important;
@@ -626,10 +623,10 @@
     color: #f46430;
     text-decoration: none;
 }
-.shopItem a:link,
-.shopItem a:visited,
-.shopItem a:hover,
-.shopItem a:active
+.caption a:link,
+.caption a:visited,
+.caption a:hover,
+.caption a:active
 {
     color: #515151;
     text-decoration: none;
