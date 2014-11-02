@@ -133,12 +133,14 @@ class LoginForm(AuthenticationForm):
                 ),
 
 
-                HTML("""<div for="id_remember_me" id="rememberLoginLabel" class=" checkbox">
-                        <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
-                         type="checkbox" value="true">
-                        Remember Me </input>
+                HTML("""<div for="id_remember_me" id="rememberLoginLabel" class="checkbox">
+                        <label>
+                            <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
+                             type="checkbox" value="true">Remember Me
+                             </input>
+                        </label>
                     </div>"""),
-                Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton col-xs-12'),
+                Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton form-control'),
                 HTML("""<div class="formField pull-left loginForgot">
                         <p>Forgot
                         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
@@ -150,7 +152,6 @@ class LoginForm(AuthenticationForm):
                         <p>Don't have an Account?
                         <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>
                         </div>""")
-
             )
         )
 

@@ -7,7 +7,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Tinville</title>
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
@@ -49,15 +49,17 @@
                   <div id="cartCountId" class="cartCount">
                   </div>
               </a>
-              <ul class="dropdown-menu cartDropdown" id="cartDropdown">
+              <ul class="dropdown-menu cartDropdown container-fluid" id="cartDropdown">
                 <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
 
                 <li><div id="carttotal" class="carttotal"></div></li>
                 <li class="divider"></li>
 
-                <li><a id="shoppingcartcheckout" class="col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                <li class="row">
+                    <a id="shoppingcartcheckout" class="col-xs-offset-2 col-xs-8 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
                         Checkout
-                    </a></li>
+                    </a>
+                </li>
               </ul>
         </li>
     </div>
@@ -72,9 +74,9 @@
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
                 <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
                 <ul class="dropdown-menu loginPopupFormMobile">
-                    <li>
+                    <li class="container-fluid">
                         <div class="yamm-content" style="padding-top: 2px">
-                            <div class="row">
+                            <div>
                                 {%  include "login_form.html" with form_name="xs-Login" %}
                             </div>
                         </div>
@@ -315,7 +317,7 @@
                             <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
                                 <ul class="dropdown-menu loginPopupForm">
-                                    <li>
+                                    <li class="container-fluid">
                                         <div class="yamm-content" style="padding-top: 2px">
                                             {%  include "login_form.html" with form_name="md-Login" %}
                                         </div>
@@ -334,9 +336,11 @@
     </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="row slidingContent">
-        <div class="container footerRow hidden-xs">
-            <nav id="footerNavRight" class="col-sm-2 footer-nav">
+    <div id="footerContainer" class="container-fluid slidingContent">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
+            <div class="row">
+                <nav id="footerNavRight" class="col-sm-2 footer-nav">
                 <dl class="list-unstyled">
                     <li class="mainFooterListItem">Information</li>
                     <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
@@ -392,9 +396,12 @@
                     </li>
                 </dl>
             </nav>
+            </div>
         </div>
+    </div>
+
         <div class="panel-group footerRow hidden-sm hidden-md hidden-lg footerRow footer-nav">
-            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseInformation">
+            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseInformation">
                 <h4 id="tinvilleXSFooterHeaders">Information</h4>
             </button>
             <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
@@ -418,7 +425,7 @@
 {#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
 {#                </dl>#}
 {#            </div>#}
-            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseMyAccount">
+            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
                 <h4 id="tinvilleXSFooterHeaders">My Account</h4>
             </button>
             <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
@@ -930,6 +937,10 @@ function RemoveCartItem(itemId)
               $( this ).parsley().validate();
           })
         });
+
+     {% if debug %}
+        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+     {% endif %}
 
     </script>
 
