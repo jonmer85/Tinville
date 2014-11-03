@@ -781,7 +781,7 @@
     	"pk": 3,
     	"fields": {
     	    "product": 15,
-    	    "category": 13
+    	    "category": 28
     	}
     },
     {
@@ -1555,19 +1555,6 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 11,
-        "fields": {
-            "path": "000100010009",
-            "depth": 3,
-            "numchild": 0,
-            "name": "Skirts",
-            "slug": "women/clothing/skirts",
-            "full_name": "Women > Clothing > Skirts"
-
-        }
-    },
-    {
-        "model": "catalogue.Category",
         "pk": 12,
         "fields": {
             "path": "000100010010",
@@ -1911,6 +1898,19 @@
             "name": "Belts",
             "slug": "Women/accessories/belts",
             "full_name": "Women > Accessories > Belts"
+        }
+    },
+        {
+        "model": "catalogue.Category",
+        "pk": 39,
+        "fields": {
+            "path": "000100010009",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Skirts",
+            "slug": "women/clothing/skirts",
+            "full_name": "Women > Clothing > Skirts"
+
         }
     },
     {

@@ -22,7 +22,7 @@
                     {% if user.email == shop.user.email%}
                         <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
                     {% endif %}
-					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+					<li id="aboutTabLink"><a id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
                 </div>
 			</div>
@@ -34,7 +34,7 @@
                     {% if user.email == shop.user.email%}
                         <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
                     {% endif %}
-					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+					<li id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
         </div>

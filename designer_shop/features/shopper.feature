@@ -19,6 +19,7 @@ Feature: Designer Shop
     When I select the "filterGender" "Women"
     Then I should have "2" items in the demo shop
 
+
   Scenario: Type Filter Functionality
     Given the demo shop
     Given I have at least 3 items in the demo shop
