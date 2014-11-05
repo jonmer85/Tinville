@@ -34,13 +34,4 @@ Feature: Designer Shop
     When I select the "filterType" "Dresses"
     Then I should have "1" items in the demo shop
 
-  Scenario: No Search found with Combo Filter
-    Given the demo shop
-    Given I have at least 3 items in the demo shop
-    When I select the "filterGender" "Women"
-    Then I should have "2" items in the demo shop
-    When I select the "filterType" "Boots"
-    Then I should have "0" items in the demo shop
-    Then I should not see coming soon message
-
 

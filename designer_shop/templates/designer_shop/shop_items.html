@@ -14,7 +14,7 @@
                                     {% if editmode %}
                                         {% if product and product.is_top_level %}
                                             <a class="overlayEdit fa fa-pencil-square-o tinvilleOrange" href='{{ shop.get_absolute_url }}edit/{{ product.slug }}' data-toggle="tooltip" data-placement="left" title="Edit item"> </a>
-                                            <a id='{{ product.slug }}' onclick="DeleteConfirmation('{{ product.slug }}')"  >
+                                            <a id='{{ product.slug }}' class="itemDelete" onclick="DeleteConfirmation('{{ product.slug }}')"  >
                                                 <img class="overlayDelete" src='{{ STATIC_URL }}img/delete.png' data-toggle="tooltip" data-placement="right" title="Delete item" />
                                             </a>
                                         {% endif %}

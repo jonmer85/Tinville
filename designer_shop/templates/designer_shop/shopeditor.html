@@ -800,7 +800,7 @@ function resizeEditor() {
 }
 
 var jsonDel, delState;
- $('.btn.btn-primary.tinvilleButton.pull-left').click(function(e){
+ $('.itemDelete').click(function(e){
      var chevron, jsonDel, parentId, delState;
      delState = sessionStorage.getItem("del-state");
      jsonDel = JSON.parse(delState || "{}");
