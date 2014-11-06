@@ -37,7 +37,7 @@ def and_the_about_content_is_submitted(step):
 def the_about_content_is_saved(step):
     world.browser.maximize_window()
     minimize_shop_editor()
-    scroll_to_element(wait_for_element_with_id_to_be_clickable('aboutTabLink'))
-    wait_for_element_with_id_to_be_clickable('aboutTabLink').click()
-    aboutLocation = wait_for_element_with_css_selector_to_be_displayed('#aboutTab>p')
+    scroll_to_element(wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor'))
+    wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor').click()
+    aboutLocation = wait_for_element_with_css_selector_to_be_displayed('.aboutContent>p')
     assert aboutLocation.text == "Test About Content"

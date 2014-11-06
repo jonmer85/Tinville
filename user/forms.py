@@ -27,17 +27,19 @@ class TinvilleUserCreationForm(forms.ModelForm):
     
     helper.layout = Layout(
         Div(
-            HTML("""<div style="padding-top: 25px;"></div>"""),
-            Field('email', placeholder="Email"),
-            Field('password', placeholder="Password"),
-            Field('redirect_url'),
             Div(
-                Field('shop_name', placeholder="Shop name"),
-                id="shop_fields",
-            ), css_class="col-xs-12"
-        ),
-        Div(
-            Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4"
+                HTML("""<div style="padding-top: 25px;"></div>"""),
+                Field('email', placeholder="Email"),
+                Field('password', placeholder="Password"),
+                Field('redirect_url'),
+                Div(
+                    Field('shop_name', placeholder="Shop name"),
+                    id="shop_fields",
+                ), css_class="col-xs-12"
+            ),
+            Div(
+                Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4"
+            ), css_class="row"
         )
     )
 
@@ -133,10 +135,12 @@ class LoginForm(AuthenticationForm):
                 ),
 
 
-                HTML("""<div for="id_remember_me" id="rememberLoginLabel" class=" checkbox">
-                        <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
-                         type="checkbox" value="true">
-                        Remember Me </input>
+                HTML("""<div for="id_remember_me" id="rememberLoginLabel" class="checkbox">
+                        <label>
+                            <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
+                             type="checkbox" value="true">Remember Me
+                             </input>
+                        </label>
                     </div>"""),
                 Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton col-xs-12'),
                 # HTML("""<div class="formField pull-left loginForgot">
@@ -150,7 +154,6 @@ class LoginForm(AuthenticationForm):
                         <p>Don't have an Account?
                         <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>
                         </div>""")
-
             )
         )
 
