@@ -43,8 +43,8 @@
 {#	{% feedback_widget %}#}
     <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
     <div class="cartLocation" id="shoppingcartBtn">
-        <li class="dropdown navbarLinkS "  >
-              <a href="#" data-toggle="dropdown" class="dropdown-toggle" id="shoppingcart">
+        <li class="dropdown navbarLinkS " id="" >
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                   <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
                   <div id="cartCountId" class="cartCount">
                   </div>
@@ -484,9 +484,11 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>#}
+        <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -737,12 +739,18 @@
                     if (data.count > 0){
                         $('#cartCountId').text(data.count);
                         $('#cartCountId').removeClass("hidden");
-                        $('#cartDropdown').removeClass("hidden");
+                        $('#carttotal').removeClass("hidden");
+                        $('#divider').removeClass("hidden");
+                        $('#shoppingcartcheckout').removeClass("hidden");
+                        $('#noItem').addClass("hidden");
                         $('#tagIconId').addClass("tinvilleOrange");
                     }
                     else{
-                        $('.cartCountId').addClass("hidden");
-                        $('#cartDropdown').addClass("hidden");
+                        $('#cartCountId').addClass("hidden");
+                        $('#carttotal').addClass("hidden");
+                        $('#divider').addClass("hidden");
+                        $('#shoppingcartcheckout').addClass("hidden");
+                        $('#noItem').removeClass("hidden");
                         $('#tagIconId').removeClass("tinvilleOrange");
                     }
                 },
