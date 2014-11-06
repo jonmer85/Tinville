@@ -139,13 +139,13 @@ class LoginForm(AuthenticationForm):
                         Remember Me </input>
                     </div>"""),
                 Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton col-xs-12'),
-                HTML("""<div class="formField pull-left loginForgot">
-                        <p>Forgot
-                        <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
-                         or
-                        <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
-                        </div>"""),
-                Div(css_class='clearfix'),
+                # HTML("""<div class="formField pull-left loginForgot">
+                #         <p>Forgot
+                #         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
+                #          or
+                #         <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
+                #         </div>"""),
+                # Div(css_class='clearfix'),
                 HTML("""<div class="formField pull-left loginRegister">
                         <p>Don't have an Account?
                         <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>

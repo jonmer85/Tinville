@@ -62,7 +62,7 @@
                         {{ item.title }}
                     </div>
                     <div class="col-xs-12 col-sm-6 ">
-                        <div class="itemSelectedImage col-sm-12 col-md-offset-1 col-md-10 col-xs-12">
+                        <div class="itemSelectedImage col-sm-12 col-md-offset-0 col-md-10 col-xs-12">
                             {% if item.primary_image and item.primary_image.original.url %}
                                 {% with image=item.primary_image %}
                                     {% thumbnail image.original "400x500" upscale=True as thumb %}
@@ -77,14 +77,14 @@
                                     -
                             {% endif %}
                         </div>
-                        <div class="otherItemImages col-xs-12 col-sm-12 col-md-offset-1 col-md-2">
+                        <div class="otherItemImages col-xs-12 col-sm-12 col-md-offset-0 col-md-2">
                             {% for image in images %}
                                 {% if not image.is_primary %}
                                     {% thumbnail image.original "100x125" upscale=True as thumb %}
                                     <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
-        {#                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">#}
+                                        <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
                                             <img src="{{ image.original.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
-        {#                                </a>#}
+                                        </a>
                                     </div>
                                     {% endthumbnail %}
                                 {% endif %}
@@ -119,7 +119,7 @@
                             </div>
                             <div class="itemStockQuantity col-xs-12"></div>
                             <div class="addToCart col-xs-12">
-                                <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Cart</a>
+                                <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Bag</a>
                             </div>
                             <div class="itemDescription col-xs-12">
                                 {{ item.description | safe }}
