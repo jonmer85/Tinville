@@ -13,8 +13,7 @@
     }
 }
 .borderHighlight{
-    border-color: #f46430;
-    border-width: medium;
+    border: 1px solid #807E7E;
     background-color: #ffffff;
 }
 .orangeHeading {

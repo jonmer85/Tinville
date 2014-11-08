@@ -25,6 +25,7 @@ from oscar.apps.partner import strategy
 from common.utils import get_list_or_empty, get_or_none
 from django.utils.html import strip_tags
 from oscar.apps.basket import signals
+from designer_shop.views import get_single_variant
 
 Basket = get_model('basket', 'basket')
 Product = get_model('catalogue', 'product')
@@ -55,6 +56,7 @@ def load_cart(request):
         return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), mimetype='application/json')
 
 def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image):
+    color, size = get_single_variant(currentproduct)
     return {'Id': basketline.id,
                 'product_id': currentproduct.id,
                 'title': currentproduct.title,
@@ -63,6 +65,8 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'subtotal': float(stockrecord.price_excl_tax * qty),
                 'image': str(image[0].original),
                 'qty': qty,
+                'color': color,
+                'size': size,
                 'currentStock' : stockrecord.num_in_stock,
                 'total' : Decimal(basket.total_excl_tax),
                 'shop' : currentproduct.shop.name,
@@ -146,6 +150,10 @@ def cart_total(request):
     basket = request.basket
     return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), mimetype='application/json')
 
+def total_cart_items(request):
+    basket = request.basket
+    return HttpResponse(json.dumps({'count': basket.num_lines}), mimetype='application/json')
+
 def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']
     colorFilter = post['colorFilter']
@@ -154,7 +162,7 @@ def get_filtered_variant(itemId, post):
     if " x " in sizeFilter:
         sizeDim = sizeFilter.split(' x ')
         variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId,
-                                                                                                          attribute_values__attribute_id=2,
+                                                                                                           attribute_values__attribute_id=2,
                                                                                                           attribute_values__value_float=sizeDim[0]).filter(
             parent=itemId, attribute_values__attribute_id=3, attribute_values__value_float=sizeDim[1])[0]
     else:
