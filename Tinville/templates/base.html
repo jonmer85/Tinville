@@ -93,8 +93,10 @@
                             <li class="divider"></li>
                             <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
-                            <li class="divider"></li>
+                            {% if user.is_seller or user.is_staff %}
+                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
                             <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                           </ul>
 
@@ -305,8 +307,10 @@
                                     <li class="divider"></li>
                                     <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
-                                    <li class="divider"></li>
+                                    {% if user.is_seller or user.is_staff %}
+                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                   </ul>
 
