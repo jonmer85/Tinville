@@ -31,8 +31,7 @@ def When_Click_Mobile_Shopping_Cart_Button(step):
 
 @step(u'Then the Shopping cart opens')
 def Then_Shopping_Cart_Opens(step):
-    world.browser.find_element_by_css_selector('#shoppingcart.open')
-    assert contains == True
+    assert_selector_does_exist('#shoppingcart.open')
 
 @step(u'Then the Shopping cart closes')
 def Then_Shopping_Cart_Closes(step):

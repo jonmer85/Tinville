@@ -216,11 +216,11 @@ def sign_in(email, password):
         login_menu.find_element_by_name("username").send_keys(email)
         login_menu.find_element_by_name("password").send_keys(password)
         login_menu.find_element_by_name("submit").click()
-    elif world.browser.find_element_by_id("clickedLogin"):
-        wait_for_element_with_css_selector_to_be_displayed("#loginIcon")
-        wait_for_element_with_id_to_be_clickable("loginIcon")
-        wait_for_element_with_id_to_be_displayed("loginIcon")
-        wait_for_element_with_id_to_be_clickable("logout").click()
+    elif world.browser.find_element_by_id("clickedLogin-lg"):
+        scroll_to_element(world.browser.find_element_by_id("clickedLogin-lg"))
+        wait_for_element_with_css_selector_to_be_displayed("#clickedLogin-lg")
+        wait_for_element_with_id_to_be_clickable("loginIcon-lg").click()
+        wait_for_element_with_id_to_be_clickable("logout-lg").click()
     wait_for_ajax_to_complete()
 
 def go_home_page():

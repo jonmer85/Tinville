@@ -185,6 +185,10 @@ body {
     margin-top: -3px;
 }
 
+#lg-menuLogin {
+    margin-right: 25px;
+}
+
 #navLogout {
     font-size: 2em;
     margin-right: 5%;
