@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
@@ -53,12 +53,16 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_shop_name(self):
         shop_name = self.cleaned_data['shop_name']
-
+        shop_exists = True
         try:
             Shop.objects.get(name__iexact=shop_name)
         except ObjectDoesNotExist:
-            return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
-        raise forms.ValidationError('Shop name is already taken.')
+            shop_exists = False # return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
+        if shop_exists:
+            raise forms.ValidationError('Shop name is already taken.')
+        if resolve(urlparse.urlparse('/' + shop_name + '/')[2]).view_name != 'designer_shop.views.shopper':
+            raise forms.ValidationError('Not a valid shop name, please choose another')
+        return shop_name
 
     def save(self, commit=True):
         # Save the provided password in hashed format
