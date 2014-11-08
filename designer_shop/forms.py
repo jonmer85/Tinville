@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
-from crispy_forms.bootstrap import PrependedText
+from crispy_forms.bootstrap import PrependedText, Accordion, AccordionGroup
 from south.orm import _FakeORM
 
 from tinymce.widgets import TinyMCE
@@ -47,29 +47,31 @@ class ProductCreationForm(forms.ModelForm):
         self.helper.form_show_labels = False
 
         self.helper.layout = Layout(
-            Div(
-                Fieldset('General',
-                         Field('title', placeholder='Title'),
-                         HTML("""<p>Description</p>"""),
-                         Field('description', placeholder='Description'),
-                         Field('category', placeholder='Choose a Category'),
-                         Field('price', placeholder='Price')
-                ),
-                Fieldset('Images',
-                         Field( 'product_image', css_id="id_productImage" ),
-                         Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
-                         Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
-                         Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
-                         Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
-                ),
-                Fieldset('Sizes and Colors',
-                         Field('sizeVariation', placeholder='Choose a variation'),
-                         Div(
-                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden"))
-                         ,
-                         css_class="accordion", css_id="accordion2"),
+            Div(Accordion(
+                    AccordionGroup('General',
+                             Field('title', placeholder='Title'),
+                             HTML("""<p>Description</p>"""),
+                             Field('description', placeholder='Description'),
+                             Field('category', placeholder='Choose a Category'),
+                             Field('price', placeholder='Price')
+                    ),
+                    AccordionGroup('Images',
+                             HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
+                             Field( 'product_image', css_id="id_productImage" ),
+                             HTML("""<div class="img-preview"></div>"""),
+                             Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                             Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                             Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
+                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
+                    ),
+                    AccordionGroup('Sizes and Colors',
+                             Field('sizeVariation', placeholder='Choose a variation'),
+                             Div(
+                                 Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden")),
+                             css_class="accordion", css_id="accordion2"),
+                    ),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
-                css_class="container col-xs-12 col-lg-8",
+                css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6",
                 css_id="addItemEditor"
             )
 
@@ -349,16 +351,19 @@ def get_partner_from_shop(shop):
 class AboutBoxForm(forms.Form):
 
     aboutContent = forms.CharField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
     helper.form_show_labels = False
-    helper.form_class = 'aboutForm'
     helper.layout = Layout(
-        Div(
-            Fieldset('About',
-                    Field('aboutContent', placeholder="Enter Text Here")),
+        Div(Accordion(
+            AccordionGroup('About',
+                     HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
+                     Field('aboutImg', css_class="autoHeight"),
+                     Field('aboutContent', placeholder="Enter Text Here")),
+            ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
-            css_class="container"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 
 class DesignerShopColorPicker(forms.Form):
@@ -377,7 +382,7 @@ class DesignerShopColorPicker(forms.Form):
         Div(
             Field('color'),
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
-            css_class="container"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 
     def clean_color(self):
@@ -389,17 +394,22 @@ class DesignerShopColorPicker(forms.Form):
 class BannerUploadForm(forms.Form):
 
     banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
-
+    mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
     helper = FormHelper()
     helper.form_show_labels = False
 
     helper.layout = Layout(
-        Div(
-            Fieldset('Banner Image',
-                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
+        Div(Accordion(
+            AccordionGroup('Banner Image',
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
+                     <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
                      Field('banner', css_class="autoHeight")),
+            AccordionGroup('Mobile Banner Image',
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
+                     Field('mobileBanner', css_class="autoHeight")),
+            ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
-            css_class="container col-xs-12 col-sm-10"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
         ))
 
 class LogoUploadForm(forms.Form):
@@ -415,6 +425,6 @@ class LogoUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
                      Field('logo', css_class="autoHeight")),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
-            css_class="container col-xs-12 col-sm-10"
+            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 

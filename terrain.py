@@ -22,7 +22,6 @@ def set_browser(step):
     else:
         browser = webdriver.Firefox
     world.browser = browser()
-    world.browser.implicitly_wait(10)  # seconds JON M TBD - Implicit wait not working on Chrome Driver :(
 
 #@before.all
 # Jon M - Commented this out since sync-ing the DB all the time was slow. Manually sync the test DB as needed with

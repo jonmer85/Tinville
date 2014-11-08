@@ -31,7 +31,7 @@ def when_i_select_a_option(step, filterId, selection):
     Select(world.browser.find_element_by_id(str(filterId))).select_by_value(selection)
 
 @step(u'Then I should have "(\d+)" items in the demo shop')
-def then_my_color_is(step, amount):
+def then_i_should_have_x_items_in_the_shop(step, amount):
    # WebDriverWait(world.browser, 10).until(lambda s: s.find_elements_by_css_selector(".shopItem") == int(amount))
     hello = len(world.browser.find_elements_by_css_selector(".shopItem"))
     assert WebDriverWait(world.browser, 10).until(lambda s: len(s.find_elements_by_css_selector(".shopItem")) == int(amount)), "there are not " + amount + " items in the demo shop"

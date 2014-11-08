@@ -171,16 +171,16 @@ def shopeditor(request, shop_slug):
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
 
-@IsShopOwnerDecorator
-def ajax_about(request, slug):
-        if request.method == 'POST':
-            form = AboutBoxForm(request.POST)
-            currentshop = Shop.objects.get(slug__iexact=slug)
-            if request.is_ajax() and form.is_valid():
-                currentshop.aboutContent = form.cleaned_data["aboutContent"]
-                currentshop.save(update_fields=["aboutContent"])
-                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
-        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+# @IsShopOwnerDecorator
+# def about(request, slug):
+#         if request.method == 'POST':
+#             form = AboutBoxForm(request.POST)
+#             currentshop = Shop.objects.get(slug__iexact=slug)
+#             if request.is_ajax() and form.is_valid():
+#                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
+#                 currentshop.save(update_fields=["aboutContent"])
+#                 return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+#         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
@@ -194,6 +194,25 @@ def ajax_color(request, slug):
                 return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
 
         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+
+
+def get_types(request, shop_slug, group_by=None):
+        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+        shopCategoryNames = []
+        shopProductCategories = get_filter_lists(shop).shop_product_categories()
+        for productcategory in shopProductCategories:
+            if productcategory != None:
+                currentcategory = get_or_none(Category, id=productcategory.category.id)
+                if group_by != "All":
+                    if currentcategory.full_name.find(group_by) >= 0:
+                        if not shopCategoryNames.__contains__(currentcategory.name):
+                            shopCategoryNames.append(str(currentcategory.name))
+                else:
+                    if not shopCategoryNames.__contains__(currentcategory.name):
+                        shopCategoryNames.append(currentcategory.name)
+        types = {'types': shopCategoryNames}
+        return HttpResponse(json.dumps(types), mimetype='application/json')
+
 
 def get_variants(item, group=None):
     variants = get_list_or_empty(Product, parent=item.id)
@@ -263,6 +282,48 @@ def get_variants(item, group=None):
 
     addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
+
+def get_single_variant(variant, group=None):
+
+    if group is None:
+        colorsizequantitydict = []
+    else:
+        colorsizequantitydict = collections.defaultdict(list)
+
+    color = ""
+    sizeSet = ""
+    isSizeSet = False
+    sizeX = ""
+    sizeY = ""
+    sizeNum = ""
+    divider = ""
+    quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
+    price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
+    currency = get_or_none(StockRecords, product_id=variant.id).price_currency
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
+        color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
+        sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
+        sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
+        isSizeSet = True
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
+        sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=3) != None:
+        sizeY = get_or_none(Attributes, product_id=variant.id, attribute_id=3).value_as_text
+
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
+        sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
+
+    if sizeX != "" and sizeY != "":
+        divider = " x "
+    variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+    caseFunc = str.capitalize if not isSizeSet else str.upper
+
+    return str(color).capitalize(), caseFunc(variantsize)
 
 def get_sizetype(variants):
     for variant in variants:
@@ -379,7 +440,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
             'editItemMode': editItem,
             'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
                                                                      {
-                                                                         "banner": shop.banner
+                                                                         "banner": shop.banner,
+                                                                         "mobileBanner": shop.mobileBanner
                                                                      }),
             'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
                                                                {
@@ -391,7 +453,8 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                                                   }),
             'aboutBoxForm': aboutForm or AboutBoxForm(initial=
                                                       {
-                                                          "aboutContent": shop.aboutContent
+                                                          "aboutContent": shop.aboutContent,
+                                                          "aboutImg": shop.aboutImg
                                                       }),
             'colors': AttributeOption.objects.filter(group=2),
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
@@ -414,6 +477,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 shutil.rmtree(MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug), ignore_errors=True)
                 shop.banner = form.cleaned_data["banner"]
                 shop.save(update_fields=["banner"])
+                shop.mobileBanner = form.cleaned_data["mobileBanner"]
+                shop.save(update_fields=["mobileBanner"])
             return renderShopEditor(request, shop, bannerUploadForm=form)
         elif request.POST.__contains__('logoUploadForm'):
             form = LogoUploadForm(request.POST, request.FILES)
@@ -422,6 +487,15 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 shop.logo = form.cleaned_data["logo"]
                 shop.save(update_fields=["logo"])
             return renderShopEditor(request, shop, logoUploadForm=form)
+        elif request.POST.__contains__('aboutBoxForm'):
+            form = AboutBoxForm(request.POST, request.FILES)
+            if form.is_valid():
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug), ignore_errors=True)
+                shop.aboutContent = form.cleaned_data["aboutContent"]
+                shop.save(update_fields=["aboutContent"])
+                shop.aboutImg = form.cleaned_data["aboutImg"]
+                shop.save(update_fields=["aboutImg"])
+            return renderShopEditor(request, shop, aboutForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,
