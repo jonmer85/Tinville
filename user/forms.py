@@ -60,6 +60,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
             shop_exists = False # return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
         if shop_exists:
             raise forms.ValidationError('Shop name is already taken.')
+        # if the shop name resolves to a view that is not the shop.. it is trying to use a url that we already use.. dont let this happen!
         if resolve(urlparse.urlparse('/' + shop_name + '/')[2]).view_name != 'designer_shop.views.shopper':
             raise forms.ValidationError('Not a valid shop name, please choose another')
         return shop_name
