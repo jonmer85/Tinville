@@ -62,7 +62,10 @@ input[disabled] {
 	table.collapseTableXS tfoot td .btn{display:block;}
 }
 
-
+.navbar-primary
+{
+    z-index: 999 !important;
+}
 /* Taken from oscars dashboard css, copied because their dashboard css contains a copy */
 /* bootstrap2 */
 

@@ -200,8 +200,12 @@
                                         <td class="hidden-xs"><a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}">#{{ line.id }}</a></td>
                                         <td data-th="{% trans "Quantity" %}">{{ line.quantity }}</td>
                                         <td data-th="{% trans "Product" %}">
-                                            {% if line.product %}
-                                                <a href="{% url 'dashboard:catalogue-product' pk=line.product.id %}">{{ line.title }}</a>
+                                            {% if user.is_staff %}
+                                                {% if line.product %}
+                                                    <a href="{% url 'dashboard:catalogue-product' pk=line.product.id %}">{{ line.title }}</a>
+                                                {% else %}
+                                                    {{ line.title }}
+                                                {% endif %}
                                             {% else %}
                                                 {{ line.title }}
                                             {% endif %}
