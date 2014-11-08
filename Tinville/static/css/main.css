@@ -933,8 +933,8 @@ textarea {
     padding-top: 4px;
     padding-bottom: 6px;
     border-bottom: 2px #e2e1e1 solid;
-    padding-left: 7px;
-    width: 270px;
+    padding-left: 20px;
+    padding-right: 30px
 }
 
 .shoppingcartthumbnail {
@@ -986,7 +986,7 @@ textarea {
 .shoppingcartitemPrice {
     color:#f46430;
     position: absolute;
-    left: 82%;
+    left: 79%;
     top: 63%;
     font-size: 1.15em;
 }

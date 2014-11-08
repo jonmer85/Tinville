@@ -54,7 +54,7 @@
                 <li><div id="noItem" class="col-xs-offset-2 tinvilleOrange">No Item in your Bag</div></li>
                 <li><div id="carttotal" class="hidden carttotal"></div></li>
                 <li id="divider" class="hidden divider"></li>
-                <li><a id="shoppingcartcheckout" class="hidden col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                <li class="row"><a id="shoppingcartcheckout" class="hidden col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
                         Checkout
                     </a>
                 </li>
@@ -806,8 +806,11 @@ function cartToggleBtn()
 }
 function LoadCartItemDiv(cartItem)
 {
+    var rowdiv =  $('<div/>', {
+        'class':'row'
+    });
     var cartitemdiv =  $('<li/>', {
-        'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
+        'class':'shoppingcartitem col-xs-12',
         'id' : "lineId" + cartItem.Id
     });
 
@@ -840,7 +843,11 @@ function LoadCartItemDiv(cartItem)
     var price = '$' + cartItem.price;
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
-    cartitemdiv.appendTo("#shoppingcartitems");
+    cartitemdiv.appendTo(rowdiv);
+
+    rowdiv.appendTo("#shoppingcartitems");
+
+
 
      $(".shoppingcartitemTitle").text(function(index, currentText) {
             return currentText.substr(0, 15);
