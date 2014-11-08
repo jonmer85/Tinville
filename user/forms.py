@@ -35,11 +35,11 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 Div(
                     Field('shop_name', placeholder="Shop name"),
                     id="shop_fields",
-                ), css_class="col-xs-12"
+                ), css_class=""
             ),
             Div(
                 Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4"
-            ), css_class="row"
+            ), css_class=""
         )
     )
 
@@ -142,7 +142,7 @@ class LoginForm(AuthenticationForm):
                              </input>
                         </label>
                     </div>"""),
-                Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton col-xs-12'),
+                Submit('submit', 'Sign in', css_class='full-screen btn btn-primary tinvilleButton'),
                 # HTML("""<div class="formField pull-left loginForgot">
                 #         <p>Forgot
                 #         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
@@ -171,6 +171,6 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 PaymentInfoForm.header_payment_layout,
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
                 PaymentInfoForm.base_payment_layout,
-                Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
+                Submit('payment-info', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
             )
         )
