@@ -29,9 +29,8 @@ def and_i_fill_in_the_general_add_item_fields(step):
         wait_for_element_with_css_selector_to_be_clickable("a[href='#images']").click()
         wait_for_element_with_name_to_be_displayed("product_image").send_keys(file)
         wait_for_element_with_css_selector_to_be_clickable("a[href='#accordion2']").click()
-        sizeVariationElement = world.browser.find_element_by_name('sizeVariation')
-        scroll_to_element(sizeVariationElement)
-        Select(sizeVariationElement).select_by_value(itemfields['SizeVariation'])
+        scroll_to_element(wait_for_element_with_name_to_exist('sizeVariation'))
+        Select(wait_for_element_with_name_to_be_displayed('sizeVariation')).select_by_value(itemfields['SizeVariation'])
 
 @step(u'I choose the size (.*) with row number (\d+) and I fill the following quantities and colors')
 def i_choose_the_size_and_fill_colors_and_quantities(step, size_set, row_number):
