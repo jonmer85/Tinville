@@ -113,8 +113,8 @@ def then_product_is_removed(step):
 
 @step(u'And the shop editor refreshes in a minimized state')
 def and_shopEditor_refreshes_minimized(step):
-    assert world.browser.find_element_by_css_selector("#minMaxIcon.glyphicon-chevron-up").is_displayed() == True, "Because chevron should be facing up"
-    assert len(world.browser.find_elements_by_css_selector("#editorPanels.collapse")) == 1, "Because the editor panel should be collapsed"
+    wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
+    wait_for_element_with_css_selector_to_exist("#editorPanels.collapse")
 
 
 
