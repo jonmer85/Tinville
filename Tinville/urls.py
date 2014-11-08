@@ -7,6 +7,7 @@ from user.decorators import designer_required
 from user.views import ajax_login, register, DesignerPaymentInfoView
 from user.forms import LoginForm
 from oscar.core.loading import get_class
+
 from oscar.app import application
 # from oscar.app import application
 
@@ -45,20 +46,23 @@ urlpatterns += patterns('',
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     url(r'^load_cart$', 'basket.views.load_cart'),
-    url(r'^oscar/', include(application.urls)),
+    url(r'^dashboard/', include(get_class('dashboard.app', 'application').urls)),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
-    url(r'^(?P<shop_slug>[\w-]+)/edit$', 'designer_shop.views.shopeditor'),
-    url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
+    url(r'^(?P<shop_slug>[\w-]+)/edit/$', 'designer_shop.views.shopeditor'),
+    # url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)$', 'designer_shop.views.shopeditor_with_item'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/$', 'designer_shop.views.itemdetail'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/getVariants$', 'designer_shop.views.get_variants_httpresponse'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/getVariants/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_variants_httpresponse'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)/getVariants/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_variants_httpresponse'),
+    url(r'^(?P<shop_slug>[\w-]+)/getTypes/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_types'),
+    url(r'^(?P<shop_slug>[\w-]+)/edit/getTypes/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_types'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/delete_product/(?P<item_slug>[\w-]+)$', 'designer_shop.views.delete_product'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/add_item_to_cart$', 'basket.views.add_item_to_cart'),
     url(r'^update_cart_item$', 'basket.views.update_cart_item'),
     url(r'^cart_total$', 'basket.views.cart_total'),
+    url(r'^total_cart_items$', 'basket.views.total_cart_items'),
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     url(r'^load_cart$', 'basket.views.load_cart'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!

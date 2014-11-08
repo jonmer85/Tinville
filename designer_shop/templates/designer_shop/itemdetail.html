@@ -7,111 +7,161 @@
 
 {% block content %}
     {{ block.super }}
-<div class="container">
-    <form id="itemDetailForm" data-parsley-validate>
-        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Item</h4>
-                    </div>
-                    <div id="messageId" class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="shopItemDetail col-xs-12">
-            <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
-                {{ item.title }}
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="itemSelectedImage col-sm-12 col-md-10 col-xs-12">
-                    {% if item.primary_image and item.primary_image.original.url %}
-                        {% with image=item.primary_image %}
-                            {% thumbnail image.original "400x500" upscale=True as thumb %}
-                            <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage"/>
-                            </a>
-                            {% endthumbnail %}
-                        {% endwith %}
-                    {% else %}
-                            -
-                    {% endif %}
-                </div>
-                <div class="otherItemImages col-xs-12 col-sm-12 col-md-2">
-                    {% for image in images %}
-                        {% if not image.is_primary %}
-                            {% thumbnail image.original "100x125" upscale=True as thumb %}
-                            <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
-                                <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                    <img src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
-                                </a>
-                            </div>
-                            {% endthumbnail %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
 
-            <div class="itemPrice center col-xs-12 visible-xs">
-                From $ {{ item.min_variant_price_excl_tax }}
-            </div>
-            <div class="col-xs-12 col-sm-6" id="idItemDetail">
-                <div>
-                    <div class="itemTitle hidden-xs">
-                        {{ item.title }}
-                    </div>
-                    <div class="itemPrice hidden-xs">
-                        From $ {{ item.min_variant_price_excl_tax }}
-                    </div>
-                    <div class="itemColorSelection itemDetailBox col-xs-6">
-                        <select id="itemColorSelection" class="form-control selectpicker" required>
-                            <option value=""><i>Choose a Color</i></option>
-                        </select>
-                    </div>
-                    <div class="itemSizeSelection itemDetailBox col-xs-6">
-                        <select id="itemSizeSelection" class="form-control selectpicker" required>
-                            <option value=""><i>Choose a Size</i></option>
-                        </select>
-                    </div>
-                    <div class="itemBuyQuantity itemDetailBox col-xs-3">
-                        <label for="buyQuantity">Quantity:</label>
-                        <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
-                    </div>
-                    <div class="itemStockQuantity col-xs-12"></div>
-                    <div class="addToCart col-xs-12">
-                        <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Cart</a>
-                    </div>
-                    <div class="itemDescription col-xs-12">
-                        {{ item.description | safe }}
-                    </div>
-                    <div class="sharingiscaring col-xs-12">
-                        <div class="shareMeTitle">Share This Item</div>
-                        <div class="socialMediaLinks">
-                            <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="pull-right facebooklogo">
-                                <img id="facebooklogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/facebook-idle.png" style="">
-                            </a>
-                            <a id="twitterLink" href="www.twitter.com" target="_blank" class="pull-right twitterlogo">
-                                <img id="twitterlogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/twitter-idle.png">
-                            </a>
-                            <a id="pinterestLink" href="www.pinterest.com>" target="_blank" class="pull-right pinterestlogo">
-                                <img id="pinterestlogo" class="sociallogo" src="{{ STATIC_URL }}img/social_media/pinterest-idle.png">
-                            </a>
+
+    <div class="navbar2 navbar-default shopBackgroundColor">
+
+        <div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+
+				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
+                <div class=" collapse navbar-collapse" id="">
+                <ul class="visible-xs nav pull-right">
+					<li class="shopTabLink active" ><a data-toggle="tab" href="#itemTab">Edit</a></li>
+					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+				</ul>
+                </div>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="hidden-xs collapse navbar-collapse" id="">
+				<ul class="nav navbar-nav">
+					<li class="editTabLink active" ><a data-toggle="tab" href="#itemTab">Item</a></li>
+					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+         </div>
+    </div><!-- /.container-fluid -->
+</div><!-- /.container-fluid -->
+
+
+<!-- Tab panes -->
+<div class="tab-content ">
+
+    <div class=" tab-pane active" id="itemTab">
+        <div class="container">
+            <form id="itemDetailForm" data-parsley-validate>
+                <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Item</h4>
+                            </div>
+                            <div id="messageId" class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="shopItemDetail col-xs-12">
+                    <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
+                        {{ item.title }}
+                    </div>
+                    <div class="col-xs-12 col-sm-6 ">
+                        <div class="itemSelectedImage col-sm-12 col-md-offset-0 col-md-10 col-xs-12">
+                            {% if item.primary_image and item.primary_image.original.url %}
+                                {% with image=item.primary_image %}
+                                    {% thumbnail image.original "400x500" upscale=True as thumb %}
+                                        <div style = "width: 400px; height: 500px">
+{#                                    <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">#}
+                                        <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
+{#                                    </a>#}
+                                        </div>
+                                    {% endthumbnail %}
+                                {% endwith %}
+                            {% else %}
+                                    -
+                            {% endif %}
+                        </div>
+                        <div class="otherItemImages col-xs-12 col-sm-12 col-md-offset-0 col-md-2">
+                            {% for image in images %}
+                                {% if not image.is_primary %}
+                                    {% thumbnail image.original "100x125" upscale=True as thumb %}
+                                    <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
+                                        <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
+                                            <img src="{{ image.original.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                        </a>
+                                    </div>
+                                    {% endthumbnail %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="itemPrice center col-xs-12 visible-xs">
+                        From $ {{ item.min_variant_price_excl_tax }}
+                    </div>
+                    <div class="col-xs-12 col-sm-6" id="idItemDetail">
+                        <div>
+                            <div class="itemTitle hidden-xs">
+                                {{ item.title }}
+                            </div>
+                            <div class="itemPrice hidden-xs">
+                                From $ {{ item.min_variant_price_excl_tax }}
+                            </div>
+                            <div class="itemColorSelection itemDetailBox col-xs-5">
+                                <select id="itemColorSelection" class="form-control selectpicker" required>
+                                    <option value=""><i>Choose a Color</i></option>
+                                </select>
+                            </div>
+                            <div class="itemSizeSelection itemDetailBox col-xs-5" style="margin-left: 2.5%">
+                                <select id="itemSizeSelection" class="form-control selectpicker" required>
+                                    <option value=""><i>Choose a Size</i></option>
+                                </select>
+                            </div>
+                            <div class="itemBuyQuantity itemDetailBox col-xs-2">
+                                <label for="buyQuantity">Quantity:</label>
+                                <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
+                            </div>
+                            <div class="itemStockQuantity col-xs-12"></div>
+                            <div class="addToCart col-xs-12">
+                                <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Bag</a>
+                            </div>
+                            <div class="itemDescription col-xs-12">
+                                {{ item.description | safe }}
+                            </div>
+                            <div class="sharingiscaring col-xs-12">
+                                <div class="shareMeTitle">Share This Item</div>
+                                <div class="socialMediaLinks">
+                                    <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="facebooklogo">
+                                        <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
+                                    </a>
+                                    <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
+                                        <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
+                                    </a>
+                                    <a href="//www.pinterest.com/pin/create/button/"  target="_blank" class="pull-right pinterestlogo" data-pin-do="buttonBookmark"  data-pin-shape="round" data-pin-height="32"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class=" tab-pane" id="aboutTab">
+            <div class="container">
+                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
+                    {% if shop.aboutImg %}
+                        <img class="full-screen" src="{{shop.aboutImg.url}}"  />
+                    {% endif %}
+                </div>
+                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
+                    {{ shop.aboutContent | safe }}
+                </div>
             </div>
         </div>
-    </form>
-    </div>
+
+</div>
 {% endblock content%}
 
 {% block javascript_library %}
   {{ block.super }}
+<!-- Please call pinit.js only once per page -->
+<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
 
 {% endblock javascript_library %}
 
@@ -119,6 +169,11 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+
     refreshvariants();
 
     var myresponse;
@@ -220,9 +275,10 @@
 
     $("#itemColorSelection").change(updateQuantityPrice);
 
-    $(".otherImage").click(function (){
-
-    });
+{#    $(".otherImage").click(function (){#}
+{#        var src = $(this).attr("src");#}
+{#        $("#itemSelectedImage img").attr("src", src);#}
+{#    });#}
 
 
 
@@ -264,6 +320,7 @@
 
                             data.image = "{{ MEDIA_URL }}" + data.image
                             AddCartItem(data)
+                            cartCount()
                         }
                         else {
                             $('#messageId').html(data.msg)

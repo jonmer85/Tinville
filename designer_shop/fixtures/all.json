@@ -20,10 +20,12 @@
             "name": "Demo",
 			"slug": "demo",
             "banner": "images/banner.jpg",
-            "logo": "images/logo.jpg",
+            "mobileBanner": "images/mobileBanner.jpg",
+            "logo": "",
+            "aboutImg": "images/aboutImage.png",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
-            "color": "#663399"
+            "color": "#AED4EF"
         }
     },
     {
@@ -779,7 +781,7 @@
     	"pk": 3,
     	"fields": {
     	    "product": 15,
-    	    "category": 13
+    	    "category": 28
     	}
     },
     {
@@ -1441,9 +1443,9 @@
             "path": "00010002",
             "depth": 2,
             "numchild": 1,
-            "name": "Shoes",
-            "slug": "women/shoes",
-            "full_name": "Women > Shoes"
+            "name": "Footwear",
+            "slug": "women/footwear",
+            "full_name": "Women > Footwear"
 
         }
     },
@@ -1477,12 +1479,12 @@
         "model": "catalogue.Category",
         "pk": 7,
         "fields": {
-            "path": "000100020001",
+            "path": "000100010003",
             "depth": 3,
             "numchild": 0,
-            "name": "Boots",
-            "slug": "women/shoes/boots",
-            "full_name": "Women > Shoes > Boots"
+            "name": "Tops",
+            "slug": "women/clothing/tops",
+            "full_name": "Women > Clothing > Tops"
 
         }
     },
@@ -1490,18 +1492,122 @@
         "model": "catalogue.Category",
         "pk": 8,
         "fields": {
-            "path": "000100020002",
+            "path": "000100010004",
             "depth": 3,
             "numchild": 0,
-            "name": "Heels",
-            "slug": "women/shoes/heels",
-            "full_name": "Women > Shoes > Heels"
+            "name": "Sweaters",
+            "slug": "women/clothing/sweaters",
+            "full_name": "Women > Clothing > Sweaters"
 
         }
     },
     {
         "model": "catalogue.Category",
         "pk": 9,
+        "fields": {
+            "path": "000100010005",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Jeans",
+            "slug": "women/clothing/jeans",
+            "full_name": "Women > Clothing > Jeans"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 9,
+        "fields": {
+            "path": "000100010006",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Coats",
+            "slug": "women/clothing/coats",
+            "full_name": "Women > Clothing > Coats"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 10,
+        "fields": {
+            "path": "000100010007",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Shorts",
+            "slug": "women/clothing/shorts",
+            "full_name": "Women > Clothing > Shorts"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 11,
+        "fields": {
+            "path": "000100010008",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Pants",
+            "slug": "women/clothing/pants",
+            "full_name": "Women > Clothing > Pants"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 12,
+        "fields": {
+            "path": "000100010010",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Swimwear",
+            "slug": "women/clothing/swimwear",
+            "full_name": "Women > Clothing > Swimwear"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 13,
+        "fields": {
+            "path": "000100010011",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Intimates",
+            "slug": "women/clothing/intimates",
+            "full_name": "Women > Clothing > Intimates"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 14,
+        "fields": {
+            "path": "000100020001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Boots",
+            "slug": "women/footwear/boots",
+            "full_name": "Women > Footwear > Boots"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 15,
+        "fields": {
+            "path": "000100020002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Heels",
+            "slug": "women/footwear/heels",
+            "full_name": "Women > Footwear > Heels"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 16,
         "fields": {
             "path": "00020001",
             "depth": 2,
@@ -1514,20 +1620,20 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 10,
+        "pk": 17,
         "fields": {
             "path": "00020002",
             "depth": 2,
             "numchild": 1,
-            "name": "Shoes",
-            "slug": "men/shoes",
-            "full_name": "Men > Shoes"
+            "name": "Footwear",
+            "slug": "men/footwear",
+            "full_name": "Men > Footwear"
 
         }
     },
     {
         "model": "catalogue.Category",
-        "pk": 11,
+        "pk": 18,
         "fields": {
             "path": "000200010001",
             "depth": 3,
@@ -1540,7 +1646,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 12,
+        "pk": 19,
         "fields": {
             "path": "000200010002",
             "depth": 3,
@@ -1553,27 +1659,257 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 13,
+        "pk": 20,
         "fields": {
-            "path": "000200020001",
+            "path": "000200010003",
             "depth": 3,
             "numchild": 0,
-            "name": "Boots",
-            "slug": "Men/shoes/boots",
-            "full_name": "Men > Shoes > Boots"
+            "name": "Polos",
+            "slug": "Men/clothing/polos",
+            "full_name": "Men > Clothing > Polos"
 
         }
     },
     {
         "model": "catalogue.Category",
-        "pk": 14,
+        "pk": 21,
+        "fields": {
+            "path": "000200010004",
+            "depth": 3,
+            "numchild": 0,
+            "name": "T-Shirts",
+            "slug": "Men/clothing/t-shirts",
+            "full_name": "Men > Clothing > T-Shirts"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 22,
+        "fields": {
+            "path": "000200010005",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Sweaters",
+            "slug": "Men/clothing/sweaters",
+            "full_name": "Men > Clothing > Sweaters"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 23,
+        "fields": {
+            "path": "000200010006",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Pants",
+            "slug": "Men/clothing/pants",
+            "full_name": "Men > Clothing > Pants"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 24,
+        "fields": {
+            "path": "000200010007",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Jeans",
+            "slug": "Men/clothing/Jeans",
+            "full_name": "Men > Clothing > Jeans"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 25,
+        "fields": {
+            "path": "000200010008",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Shorts",
+            "slug": "Men/clothing/shorts",
+            "full_name": "Men > Clothing > Shorts"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 26,
+        "fields": {
+            "path": "000200010009",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Swimwear",
+            "slug": "Men/clothing/swimwear",
+            "full_name": "Men > Clothing > Swimwear"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 27,
+        "fields": {
+            "path": "000200010010",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Sleepwear",
+            "slug": "Men/clothing/sleepwear",
+            "full_name": "Men > Clothing > Sleepwear"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 28,
+        "fields": {
+            "path": "000200020001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Boots",
+            "slug": "Men/footwear/boots",
+            "full_name": "Men > Footwear > Boots"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 29,
         "fields": {
             "path": "000200020002",
             "depth": 3,
             "numchild": 0,
             "name": "Sneakers",
-            "slug": "Men/shoes/sneakers",
-            "full_name": "Men > Shoes > Sneakers"
+            "slug": "Men/footwear/sneakers",
+            "full_name": "Men > Footwear > Sneakers"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 30,
+        "fields": {
+            "path": "000200020003",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Flip flops",
+            "slug": "Men/footwear/flipflop",
+            "full_name": "Men > Footwear > Flip Flop"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 31,
+        "fields": {
+            "path": "00010003",
+            "depth": 2,
+            "numchild": 0,
+            "name": "Accessories",
+            "slug": "Women/accessories",
+            "full_name": "Women > Accessories"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 32,
+        "fields": {
+            "path": "00020003",
+            "depth": 2,
+            "numchild": 0,
+            "name": "Accessories",
+            "slug": "Men/accessories",
+            "full_name": "Men > Accessories"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 33,
+        "fields": {
+            "path": "000200030001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Wallets",
+            "slug": "Men/accessories/wallets",
+            "full_name": "Men > Accessories > Wallets"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 34,
+        "fields": {
+            "path": "000200030002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Watches",
+            "slug": "Men/accessories/watches",
+            "full_name": "Men > Accessories > Watches"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 35,
+        "fields": {
+            "path": "000200030003",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Belts",
+            "slug": "Men/accessories/belts",
+            "full_name": "Men > Accessories > Belts"
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 36,
+        "fields": {
+            "path": "000100030001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Purses",
+            "slug": "Women/accessories/purses",
+            "full_name": "Women > Accessories > Purses"
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 37,
+        "fields": {
+            "path": "000100030002",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Watches",
+            "slug": "Women/accessories/watches",
+            "full_name": "Women > Accessories > Watches"
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 38,
+        "fields": {
+            "path": "000100030003",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Belts",
+            "slug": "Women/accessories/belts",
+            "full_name": "Women > Accessories > Belts"
+        }
+    },
+        {
+        "model": "catalogue.Category",
+        "pk": 39,
+        "fields": {
+            "path": "000100010009",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Skirts",
+            "slug": "women/clothing/skirts",
+            "full_name": "Women > Clothing > Skirts"
 
         }
     },

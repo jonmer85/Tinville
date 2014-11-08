@@ -213,14 +213,14 @@ def sign_in(email, password):
     login_menu = wait_for_element_with_id_to_be_displayed("lg-menuLogin")
     if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
         wait_for_element_with_link_text_to_be_clickable("SIGN IN").click()
-    elif len(login_menu.find_elements_by_link_text("SIGN OUT")) > 0:
-        wait_for_element_with_link_text_to_be_clickable("SIGN OUT").click()
-        wait_for_element_with_link_text_to_be_displayed("SIGN IN")
-        time.sleep(.5)
-        login_menu.find_element_by_link_text("SIGN IN").click()
-    login_menu.find_element_by_name("username").send_keys(email)
-    login_menu.find_element_by_name("password").send_keys(password)
-    login_menu.find_element_by_name("submit").click()
+        login_menu.find_element_by_name("username").send_keys(email)
+        login_menu.find_element_by_name("password").send_keys(password)
+        login_menu.find_element_by_name("submit").click()
+    elif world.browser.find_element_by_id("clickedLogin-lg"):
+        scroll_to_element(world.browser.find_element_by_id("clickedLogin-lg"))
+        wait_for_element_with_css_selector_to_be_displayed("#clickedLogin-lg")
+        wait_for_element_with_id_to_be_clickable("loginIcon-lg").click()
+        wait_for_element_with_id_to_be_clickable("logout-lg").click()
     wait_for_ajax_to_complete()
 
 def go_home_page():
