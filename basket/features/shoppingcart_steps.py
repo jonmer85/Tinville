@@ -77,7 +77,7 @@ def When_click_Menu_button(step):
 
 @step(u'When I log in or out')
 def When_I_log_in(step):
-    sign_in('foo@bar.com', 'foobar')
+    sign_in(email='foo@bar.com', password='foobar')
 
 @step(u'Then all items are removed from my cart')
 def Then_all_items_removed_from_cart(step):
@@ -90,7 +90,7 @@ def when_i_register_for_a_shopper_account(step):
     submit_form_and_activate_user(form)
 
 def fill_in_user_form(email, password):
-    access_registration_url(step)
+    world.browser.get(lettuce.django.get_server().url('/register'))
     world.user_info = {
         "email": email,
         "password": password,
@@ -113,4 +113,4 @@ def submit_form_and_activate_user(form, expectSuccess=True):
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
-    sign_in()
+    sign_in(email='foo@bar.com', password='foobar')

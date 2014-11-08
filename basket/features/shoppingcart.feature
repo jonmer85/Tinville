@@ -9,6 +9,7 @@ Scenario: Add and Remove Cart Item
   Then the item is added to my cart
   When I remove an item from my cart
   Then the item is removed from my cart
+  When I add an item to my cart
   Then the item is added to my cart
   When I register for a shopper account
   And I sign in

@@ -44,7 +44,7 @@
     <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
     <div class="cartLocation" id="shoppingcartBtn">
         <li class="dropdown navbarLinkS " id="" >
-              <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+              <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle">
                   <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
                   <div id="cartCountId" class="cartCount">
                   </div>
@@ -85,8 +85,8 @@
         {% else %}
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
-                          <a href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                          <a id="loginIcon" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
+                              <span id="clickedLogin" class="glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
                             <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
@@ -95,7 +95,7 @@
                             <li class="divider"></li>
                             <li><a href="#">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
                             <li class="divider"></li>
-                            <li><a href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                            <li><a id="logout" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                           </ul>
 
                     </li>
@@ -297,8 +297,8 @@
 
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
-                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                                  <a id="loginIcon" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <span id="clickedLogin" class="glyphicon glyphicon-user" style="font-size: large;"></span>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
                                     <li><a href="#">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
@@ -307,7 +307,7 @@
                                     <li class="divider"></li>
                                     <li><a href="#">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
                                     <li class="divider"></li>
-                                    <li><a href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                    <li><a id="logout" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                   </ul>
 
                             </li>
