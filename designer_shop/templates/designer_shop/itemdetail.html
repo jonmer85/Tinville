@@ -68,7 +68,7 @@
                                     {% with image=item.primary_image %}
                                         {% thumbnail image.original "400x500" upscale=True as thumb %}
                                             <div style = "width: 400px; height: 500px">
-                                        <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                        <a id="itemSelectedImage" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
                                             <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
                                         </a>
                                             </div>
@@ -83,8 +83,8 @@
                                     {% if not image.is_primary %}
                                         {% thumbnail image.original "100x125" upscale=True as thumb %}
                                         <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
-                                            <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
-                                                <img src="{{ image.original.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                            <a href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                <img src="{{ MEDIA_URL }}{{ image.original }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
                                             </a>
                                         </div>
                                         {% endthumbnail %}
