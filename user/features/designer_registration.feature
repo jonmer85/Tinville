@@ -23,7 +23,6 @@ Feature: Designer Registration
      Or I try to register a shop named "fOO"
      Then I should get an error that the shop already exists
 
-
   Scenario Outline: I should not be able to register with a shopname that is a Tinville URL, no matter the capitalization
      When I try to register a shop named "<shopname>"
      Then I should get an error that the shop name is invalid
