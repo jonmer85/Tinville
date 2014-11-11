@@ -38,14 +38,12 @@ def when_i_register_for_a_shop(step, shop_name):
 def when_a_shop_already_exists(step, shop_name):
     register_basic_shop(shop_name, "cock@blocker.com", "test")
 
-
 def fill_out_designer_registration_form(password, shop_name, user):
     form = fill_in_user_form(email=user, password=password)
     world.user_info['shop_name'] = shop_name
     form.find_element_by_id("designer").click()
     form.find_element_by_name("shop_name").send_keys(shop_name)
     return form
-
 
 def register_basic_shop(shop_name, user, password):
     form = fill_out_designer_registration_form(password, shop_name, user)
@@ -77,7 +75,6 @@ def submit_form_and_activate_user(form, expectSuccess=True):
 def and_i_sign_in(step):
     sign_in_local()
 
-
 @step(u'When I fill in the login screen with email "([^"]*)" and password "([^"]*)"')
 def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
     world.user_info = {
@@ -85,8 +82,6 @@ def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
         "password": password,
     }
     sign_in_local()
-
-
 
 @step(u'Then I should see an error telling me that the email is required')
 def then_i_should_see_an_error_telling_me_that_email_is_required(step):
@@ -97,7 +92,10 @@ def then_i_should_see_an_error_telling_me_that_shop_exists(step):
     assert_selector_does_exist("#div_id_shop_name.has-error")
     assert_selector_contains_text("#error_1_id_shop_name strong", "Shop name is already taken.")
 
-
+@step(u'I should get an error that the shop name is invalid')
+def then_i_should_see_an_error_telling_me_that_shop_exists(step):
+    assert_selector_does_exist("#div_id_shop_name.has-error")
+    assert_selector_contains_text("#error_1_id_shop_name strong", "Not a valid shop name, please choose another")
 
 @step(u'Then I should be redirected to the home page')
 def then_i_should_be_redirected_to_the_home_page(step):
@@ -135,7 +133,6 @@ def then_i_should_not_see_validation_errors(step):
 def then_i_should_get_a_validation_error_on_email_address(step):
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register'))
     assert_class_exists('has-error')
-
 
 # Utilities
 

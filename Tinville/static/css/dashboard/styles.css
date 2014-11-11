@@ -85,10 +85,6 @@ h1 {
 h2 {
   font-size: 18px;
 }
-body {
-  font-family: "Open Sans", 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 12px;
-}
 label,
 input,
 button,
@@ -369,7 +365,7 @@ body {
 .navbar-accounts .navbar-inner .nav > li > a {
   color: #C1C1C1;
 }
-.navbar .nav > li span {
+.navbar .nav .navbar-primary > li span {
   display: block;
   padding: 10px;
 }
