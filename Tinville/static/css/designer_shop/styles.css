@@ -465,6 +465,15 @@
     padding-right: 0px;
     padding-left: 0px;
 }
+.itemDetailBoxSize {
+        margin-left: 0;
+}
+@media (min-width: 768px)
+{
+    .itemDetailBoxSize {
+        margin-left: 2.5%;
+    }
+}
 
 .itemDescription {
     font-size: 1.25em;
