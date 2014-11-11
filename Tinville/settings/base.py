@@ -1,8 +1,9 @@
-# Django settings for Tinville project.
+from __future__ import absolute_import
 
 import os.path
 import os
 from unipath import Path
+
 from django.utils.translation import ugettext_lazy as _
 
 from oscar import get_core_apps
@@ -187,7 +188,9 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django_basic_feedback',
     # 'debug_toolbar',
-    'oscar_stripe'
+    'oscar_stripe',
+    'kombu.transport.django',
+    'djcelery',
 ] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
 
 # A sample logging configuration. The only tangible logging
@@ -401,3 +404,15 @@ GOOGLE_ANALYTICS_TRACKING_ID = ''
 STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
 STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
 STRIPE_CURRENCY = 'USD'
+
+# Celery settings
+BROKER_URL = 'django://'
+import djcelery
+djcelery.setup_loader()
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_RESULT_BACKEND= 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
