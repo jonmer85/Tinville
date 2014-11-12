@@ -925,7 +925,11 @@ textarea {
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
 }
-
+@media (max-width: 768px) {
+    #shoppingcartitems {
+        max-height: 205px;
+    }
+}
 .shoppingcartitem {
     background-color:whitesmoke;
     /*border-bottom:2px solid #000000;*/
@@ -1055,9 +1059,14 @@ textarea {
     }
 }
 .cartDropdown{
-    margin-top: 19px;
+    margin-top: 15px;
     width: 275px;
     margin-left: -240px;
+}
+@media (max-width: 768px) {
+    .cartDropdown{
+        margin-top: 19px;
+    }
 }
 .footersociallogo {
    padding: 1px;
