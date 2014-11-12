@@ -186,7 +186,7 @@ body {
 }
 
 #lg-menuLogin {
-    margin-right: 25px;
+    /*margin-right: 25px;*/
 }
 
 #navLogout {
@@ -1067,6 +1067,13 @@ textarea {
     color: #f46430;
 }
 
+.tinvilleDrayGray{
+    color: #5B595A;
+}
+
+.tinvilleLightGray{
+    color: #e7e5e6;
+}
 /*Start mobile navbar*/
 @media (max-width: 768px) {
 .navbar-main.navbar {

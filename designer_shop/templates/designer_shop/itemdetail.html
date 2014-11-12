@@ -288,6 +288,7 @@ $( function()
 
 			arrowsOn = function( instance, selector )
 			{
+                $(".slidingContent").css("opacity", ".6");
 				var $arrows = $( '<button type="button" class="imagelightbox-arrow imagelightbox-arrow-left"></button><button type="button" class="imagelightbox-arrow imagelightbox-arrow-right"></button>' );
 
 				$arrows.appendTo( 'body' );
@@ -319,6 +320,7 @@ $( function()
 			},
 			arrowsOff = function()
 			{
+                $(".slidingContent").css("opacity", "1");
 				$( '.imagelightbox-arrow' ).remove();
 			};
 

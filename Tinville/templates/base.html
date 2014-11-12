@@ -86,7 +86,7 @@
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span id="clickedLogin-xs" class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
                             {% if user.is_seller or user.is_staff %}
@@ -739,6 +739,7 @@
                         $('#divider').removeClass("hidden");
                         $('#shoppingcartcheckout').removeClass("hidden");
                         $('#noItem').addClass("hidden");
+                        $('#tagIconId').removeClass("tinvilleDrayGray");
                         $('#tagIconId').addClass("tinvilleOrange");
                     }
                     else{
@@ -748,6 +749,7 @@
                         $('#shoppingcartcheckout').addClass("hidden");
                         $('#noItem').removeClass("hidden");
                         $('#tagIconId').removeClass("tinvilleOrange");
+                        $('#tagIconId').addClass("tinvilleDrayGray");
                     }
                 },
                 error: function(data, textStatus, jqXHR) {
