@@ -278,9 +278,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
                 return self.render_preview(
                     self.request, error=msg, **payment_kwargs)
 
-
-
-
         signals.post_payment.send_robust(sender=self, view=self)
 
         # If all is ok with payment, try and place order
