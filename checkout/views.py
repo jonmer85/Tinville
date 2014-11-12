@@ -101,8 +101,8 @@ class PaymentDetailsView(CorePaymentDetailsView):
             amount_debited=total.incl_tax,
             reference=stripe_ref)
         self.add_payment_source(source)
-
         self.add_payment_event(PAYMENT_EVENT_PURCHASE, total.incl_tax)
+
 
     def payment_description(self, order_number, total, **kwargs):
         # Jon M TODO - Add case for anonymous user with email
@@ -180,60 +180,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
         items_by_shop = {}
 
-        top_level_order = None
-        try:
-            top_level_order = self.handle_order_placement(
-                top_level_order_number, user, basket, shipping_address, shipping_method,
-                prices.Price(currency=basket.currency, excl_tax=basket.total_excl_tax, incl_tax=basket.total_excl_tax), **order_kwargs)
-        except UnableToPlaceOrder as e:
-            # It's possible that something will go wrong while trying to
-            # actually place an order.  Not a good situation to be in as a
-            # payment transaction may already have taken place, but needs
-            # to be handled gracefully.
-            msg = six.text_type(e)
-            logger.error("Order #%s: unable to place order - %s",
-                         top_level_order_number, msg, exc_info=True)
-            self.restore_frozen_basket()
-            return self.render_preview(
-                self.request, error=msg, **payment_kwargs)
-
-        # Collect information to split into an order for each shop
-        for line in basket.all_lines():
-            if(line.product.shop not in items_by_shop):
-                items_by_shop[line.product.shop] = {"products": [], "order_total": 0}
-            items_by_shop[line.product.shop]["products"].append(line.product),
-            items_by_shop[line.product.shop]["order_total"] += line.line_price_excl_tax
-
-        for shop in items_by_shop.keys():
-
-            # We generate the order number first as this will be used
-            # in payment requests (ie before the order model has been
-            # created).  We also save it in the session for multi-stage
-            # checkouts (eg where we redirect to a 3rd party site and place
-            # the order on a different request).
-            order_number = self.generate_order_number(basket, shop.id)
-            order = None
-
-            try:
-                order_kwargs['shop'] = shop
-                order = self.handle_order_placement(
-                    order_number, user, basket, shipping_address, shipping_method,
-                    prices.Price(currency=basket.currency, excl_tax=items_by_shop[shop]["order_total"],
-                                 incl_tax=items_by_shop[shop]["order_total"]),
-                                 **order_kwargs)
-            except UnableToPlaceOrder as e:
-                # It's possible that something will go wrong while trying to
-                # actually place an order.  Not a good situation to be in as a
-                # payment transaction may already have taken place, but needs
-                # to be handled gracefully.
-                msg = six.text_type(e)
-                logger.error("Order #%s: unable to place order - %s",
-                             order_number, msg, exc_info=True)
-                self.restore_frozen_basket()
-                return self.render_preview(
-                    self.request, error=msg, **payment_kwargs)
-
-
         try:
             self.handle_payment(top_level_order_number, order_total, **payment_kwargs)
         except RedirectRequired as e:
@@ -277,6 +223,63 @@ class PaymentDetailsView(CorePaymentDetailsView):
             self.restore_frozen_basket()
             return self.render_preview(
                 self.request, error=error_msg, **payment_kwargs)
+
+        top_level_order = None
+        try:
+            top_level_order = self.handle_order_placement(
+                top_level_order_number, user, basket, shipping_address, shipping_method,
+                prices.Price(currency=basket.currency, excl_tax=basket.total_excl_tax, incl_tax=basket.total_excl_tax), **order_kwargs)
+        except UnableToPlaceOrder as e:
+            # It's possible that something will go wrong while trying to
+            # actually place an order.  Not a good situation to be in as a
+            # payment transaction may already have taken place, but needs
+            # to be handled gracefully.
+            msg = six.text_type(e)
+            logger.error("Order #%s: unable to place order - %s",
+                         top_level_order_number, msg, exc_info=True)
+            self.restore_frozen_basket()
+            return self.render_preview(
+                self.request, error=msg, **payment_kwargs)
+
+        # Collect information to split into an order for each shop
+        for line in basket.all_lines():
+            if(line.product.shop not in items_by_shop):
+                items_by_shop[line.product.shop] = {"products": [], "order_total": 0}
+            items_by_shop[line.product.shop]["products"].append(line.product),
+            items_by_shop[line.product.shop]["order_total"] += line.line_price_excl_tax
+
+        for shop in items_by_shop.keys():
+
+            # We generate the order number first as this will be used
+            # in payment requests (ie before the order model has been
+            # created).  We also save it in the session for multi-stage
+            # checkouts (eg where we redirect to a 3rd party site and place
+            # the order on a different request).
+            order_number = self.generate_order_number(basket, shop.id)
+            order = None
+            # This is needed to clear the payment events as to not create the payment event on the sub orders
+            self._payment_events = []
+            try:
+                order_kwargs['shop'] = shop
+                order = self.handle_order_placement(
+                    order_number, user, basket, shipping_address, shipping_method,
+                    prices.Price(currency=basket.currency, excl_tax=items_by_shop[shop]["order_total"],
+                                 incl_tax=items_by_shop[shop]["order_total"]),
+                                 **order_kwargs)
+            except UnableToPlaceOrder as e:
+                # It's possible that something will go wrong while trying to
+                # actually place an order.  Not a good situation to be in as a
+                # payment transaction may already have taken place, but needs
+                # to be handled gracefully.
+                msg = six.text_type(e)
+                logger.error("Order #%s: unable to place order - %s",
+                             order_number, msg, exc_info=True)
+                self.restore_frozen_basket()
+                return self.render_preview(
+                    self.request, error=msg, **payment_kwargs)
+
+
+
 
         signals.post_payment.send_robust(sender=self, view=self)
 
