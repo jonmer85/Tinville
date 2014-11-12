@@ -257,8 +257,9 @@ class PaymentDetailsView(CorePaymentDetailsView):
             # the order on a different request).
             order_number = self.generate_order_number(basket, shop.id)
             order = None
-            # This is needed to clear the payment events as to not create the payment event on the sub orders
+            # This is needed to clear the payment events/sources as to not create the payment event/sources on the sub orders
             self._payment_events = []
+            self._payment_sources = []
             try:
                 order_kwargs['shop'] = shop
                 order = self.handle_order_placement(
