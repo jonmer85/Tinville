@@ -8,57 +8,68 @@
 {% block content %}
 {{ block.super }}
 <div id="shopEditor">
-    <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">
+    <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
                 <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">
                     <b>{{ shop.name }} - Shop Editor</b>
                     <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
                 </div>
-                <div id="editorPanels" class="panel-collapse collapse in">
-                    <div class="row">
-                        <div id="optionPanel" class=" col-sm-2 panel-body editorPanel shopEditorElementTop">
-                            <a id="optionsXS" class="hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
-                            <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
-                                <li class="active">
-                                    {% if editItemMode %}
-                                        <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
-                                    {% else %}
-                                        <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
-                                    {% endif %}
-                                </li>
-                                <li>
-                                    <a href="#banner" data-toggle="pill">Banner</a>
-                                </li>
-                                <li>
-                                    <a href="#color" data-toggle="pill">Color</a>
-                                </li>
-                                <li>
-                                    <a href="#about" data-toggle="pill">About</a>
-                                </li>
-                            </ul>
+            <div id="editorPanels" class="row panel-collapse collapse in">
+                <div id="optionPanel" class="container col-sm-2 panel-body editorPanel shopEditorElementTop">
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
+                    <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
+                        <li class="active">
+                            {% if editItemMode %}
+                                <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
+                            {% else %}
+                                <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
+                            {% endif %}
+                        </li>
+                        <li>
+                            <a href="#banner" data-toggle="pill">Banner</a>
+                        </li>
+{#                        <li>#}
+{#                            <a href="#logo" data-toggle="pill">Logo</a>#}
+{#                        </li>#}
+                        <li>
+                            <a href="#color" data-toggle="pill">Color</a>
+                        </li>
+                        <li>
+                            <a href="#about" data-toggle="pill">About</a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="secondColumn" class="container col-sm-10">
+                    <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
+                        <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
+                            <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy bannerUploadForm %}
+                            </form>
+{#                            S.Abbay - removing logo for now until we understand better way to place it#}
+{#                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">#}
+{#                                {% load crispy_forms_tags %}#}
+{#                                {% crispy logoUploadForm %}#}
+{#                            </form>#}
+                            <form class="tab-pane" id="color" action="ajax_color" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy designerShopColorPicker %}
+                            </form>
+                            <form class="tab-pane" id="about" enctype="multipart/form-data" method="post">
+                                 {% load crispy_forms_tags %}
+                                 {% crispy aboutBoxForm %}
+                            </form>
+                            <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                                {% load crispy_forms_tags %}
+                                {% crispy productCreationForm %}
+                            </form>
                         </div>
-                        <div id="secondColumn" class="container col-sm-10">
-                            <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
-                                <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                                    <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
-                                        {% load crispy_forms_tags %}
-                                        {% crispy bannerUploadForm %}
-                                    </form>
-                                    <form class="tab-pane" id="color" action="ajax_color" method="post">
-                                        {% load crispy_forms_tags %}
-                                        {% crispy designerShopColorPicker %}
-                                    </form>
-                                    <form class="tab-pane" id="about" enctype="multipart/form-data" method="post">
-                                         {% load crispy_forms_tags %}
-                                         {% crispy aboutBoxForm %}
-                                    </form>
-                                    <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
-                                        {% load crispy_forms_tags %}
-                                        {% crispy productCreationForm %}
-                                    </form>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="row-xs-height col-xs-12">
+                        <div id="buttonContainer" class="container col-xs-12 container-xs-height">
+                            <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>
+                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right hidden">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -67,8 +78,7 @@
     </div>
 </div>
 
-
-{% endblock content%}
+{% endblock %}
 
 {% block javascript_library %}
   {{ block.super }}
@@ -79,9 +89,6 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
-
-
         $('#id_product_image').change
         (
             function()

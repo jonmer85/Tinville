@@ -108,8 +108,8 @@
 
     </div>
 
-    <nav class="navbar yamm navbar-default navbar-main" role="navigation">
-        <div class="container">
+    <nav class="navbar yamm navbar-default navbar-main navbarSliding" role="navigation">
+        <div class="container ">
             <div id="navHeader" class="navbar-header">
 
                 <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >
@@ -119,13 +119,12 @@
                 <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
-                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
+                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle" style="margin-left: 0; margin-right: 0;">
                     <ul class="nav navbar-nav navButtonIconStyle">
                         <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
                             <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>
                         </li>
-                        <li class="hidden
-                         +dropdown navdropSize mobileDropBtnStyle">
+                        <li class="hiddem dropdown navdropSize mobileDropBtnStyle">
                             <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
                                 <i class="fa fa-female fa-fw"></i>&nbsp; Women
                             </a>
@@ -337,12 +336,13 @@
     </nav>
 
     <div class="slidingContent">
-        {% block content %}
-        {% endblock content %}
-    </div>
+        <div class="slidingContent2">
+            {% block content %}
+            {% endblock content %}
+        </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container-fluid slidingContent">
+    <div id="footerContainer" class="container-fluid">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
             <div class="row">
@@ -473,7 +473,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
@@ -586,7 +586,7 @@
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
 
-                $('.navbar').removeAttr( 'style' );
+                $('.navbarSliding').removeAttr( 'style' );
                 $('.slidingContent').removeAttr( 'style' );
             }
         });
@@ -626,37 +626,25 @@
         );
 
 
-{#        $("#shoppingcart").click(function(){#}
-{#            sessionStorage.setItem("cartClick","1")#}
-{#        });#}
-{##}
-{#        $(".loginPopupForm").click(function(){#}
-{#            sessionStorage.setItem("cartClick","1")#}
-{#        });#}
-
-
 
 
         $(document).ready(function() {
-{#            $("#shoppingcart").click(function() {#}
-{#                $("#shoppingcart").addClass("open");#}
-{#            });#}
 
                    var menu = "close";
 
                     $('.menu-toggle').click(function() {
                         if(menu == "close"){
-                            $('.slidingContent').css('-webkit-transform','translate(225px, 0)');
-                            $('.navbar').css('-webkit-transform','translate(0, 0)');
+                            $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');
 
                             menu="open";
                         }
                         else{
-                    $('.slidingContent').css('-webkit-transform','translate(0, 0)');
-                    $('.navbar').css('-webkit-transform','translate(-100%, 0)');
+                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');
 
-                    menu="close";
-                }
+                            menu="close";
+                        }
             });
             var self = $(this)
             var url = "/load_cart"
@@ -775,11 +763,6 @@ $(function() {
 
     var _IsOpen = cartJson["IsOpen"];
 
-{#    if(_IsOpen === undefined || _IsOpen === false)#}
-{#        $("#shoppingcart").hide();#}
-{##}
-{#    if(_IsOpen === true)#}
-{#        $("#shoppingcart").show();#}
 
 });
 
