@@ -285,7 +285,9 @@
                           <ul class="dropdown-menu" >
                               {% for shop in shops %}
                                 <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
-                                <li class="divider"></li>
+                                {% if not forloop.last %}
+                                   <li class="divider"></li>
+                                {% endif %}
                               {% endfor %}
                           </ul>
                         </li>
