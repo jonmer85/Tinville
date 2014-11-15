@@ -217,9 +217,9 @@ def sign_in(email, password):
         login_menu.find_element_by_name("password").send_keys(password)
         login_menu.find_element_by_name("submit").click()
     else:
-        wait_for_element_with_id_to_exist("clickedLogin-lg")
-        scroll_to_element(world.browser.find_element_by_id("clickedLogin-lg"))
-        wait_for_element_with_css_selector_to_be_displayed("#clickedLogin-lg")
+        wait_for_element_with_id_to_exist("clickedLogin-xs")
+        scroll_to_element(world.browser.find_element_by_id("clickedLogin-xs"))
+        wait_for_element_with_css_selector_to_be_displayed("#clickedLogin-xs")
         wait_for_element_with_id_to_be_clickable("loginIcon-lg").click()
         wait_for_element_with_id_to_be_clickable("logout-lg").click()
     wait_for_ajax_to_complete()
