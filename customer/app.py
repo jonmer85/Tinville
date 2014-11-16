@@ -3,9 +3,12 @@ from oscar.apps.customer.app import CustomerApplication as CoreCustomerApplicati
 
 from user.views import register # Jon M TODO migrate the user stuff to this Oscar overridden app
 
+from .views import AddressUpdateView
 
 class CustomerApplication(CoreCustomerApplication):
+    
     register_view = register
-    # payment_details_view  = PaymentDetailsView
+
+    address_update_view = AddressUpdateView
 
 application = CustomerApplication()
