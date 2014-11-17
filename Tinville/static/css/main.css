@@ -1059,11 +1059,6 @@ textarea {
     width: 275px;
     margin-left: -240px;
 }
-@media (max-width: 768px) {
-    .cartDropdown{
-        margin-top: 19px;
-    }
-}
 .footersociallogo {
    padding: 1px;
 }
