@@ -1059,6 +1059,11 @@ textarea {
     width: 275px;
     margin-left: -240px;
 }
+@media (max-width: 768px) {
+    .cartDropdown{
+        margin-top: 19px;
+    }
+}
 .footersociallogo {
    padding: 1px;
 }
@@ -1067,31 +1072,38 @@ textarea {
     color: #f46430;
 }
 
+.tinvilleDrayGray{
+    color: #5B595A;
+}
+
+.tinvilleLightGray{
+    color: #e7e5e6;
+}
 /*Start mobile navbar*/
 @media (max-width: 768px) {
 .navbar-main.navbar {
     position: fixed;
     height: 100%;
-    width: 70%;
-    /*top: 0px;*/
+    width: auto;
+    top: 0px;
     left: 0px;
     background-color: #f1eeef;
     overflow: hidden;
-    /*margin-top: 50px;*/
+    margin-top: 50px;
 
     -webkit-transform: translate(-100%, 0%);
     -webkit-transition: all 1s ease;
 }
 
 .navbar-main.navbar .container{
-    /*width: 200px;*/
+    width: 200px;
 }
 
 .banner img{
     padding-left: 0px;
 }
 .navbar-main.navbar .navbar-collapse{
-    /*margin-left: -15%;*/
+    margin-left: -15%;
     overflow-x: hidden;
 }
 
