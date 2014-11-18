@@ -186,7 +186,7 @@ body {
 }
 
 #lg-menuLogin {
-    /*margin-right: 25px;*/
+    margin-right: 25px;
 }
 
 #navLogout {
@@ -312,7 +312,7 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    margin-left: -290%;
+    margin-left: -200%;
     padding-left: 30px;
     padding-right: 30px;
     width: 220px;
