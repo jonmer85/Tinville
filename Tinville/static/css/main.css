@@ -925,11 +925,7 @@ textarea {
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
 }
-@media (max-width: 768px) {
-    #shoppingcartitems {
-        max-height: 205px;
-    }
-}
+
 .shoppingcartitem {
     background-color:whitesmoke;
     /*border-bottom:2px solid #000000;*/
