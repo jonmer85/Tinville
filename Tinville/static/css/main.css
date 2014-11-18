@@ -312,10 +312,10 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    margin-left: -290%;
+    margin-left: -200%;
     padding-left: 30px;
     padding-right: 30px;
-    width: 220px;
+    width: 200px;
 }
 
 .alignField {
@@ -925,11 +925,7 @@ textarea {
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
 }
-@media (max-width: 768px) {
-    #shoppingcartitems {
-        max-height: 205px;
-    }
-}
+
 .shoppingcartitem {
     background-color:whitesmoke;
     /*border-bottom:2px solid #000000;*/
@@ -937,8 +933,8 @@ textarea {
     padding-top: 4px;
     padding-bottom: 6px;
     border-bottom: 2px #e2e1e1 solid;
-    padding-left: 20px;
-    padding-right: 30px
+    padding-left: 7px;
+    width: 270px;
 }
 
 .shoppingcartthumbnail {
@@ -990,7 +986,7 @@ textarea {
 .shoppingcartitemPrice {
     color:#f46430;
     position: absolute;
-    left: 79%;
+    left: 82%;
     top: 63%;
     font-size: 1.15em;
 }
@@ -1059,7 +1055,7 @@ textarea {
     }
 }
 .cartDropdown{
-    margin-top: 15px;
+    margin-top: 19px;
     width: 275px;
     margin-left: -240px;
 }
@@ -1088,12 +1084,12 @@ textarea {
 .navbar-main.navbar {
     position: fixed;
     height: 100%;
-    width: 70%;
-    /*top: 0px;*/
+    width: auto;
+    top: 0px;
     left: 0px;
     background-color: #f1eeef;
     overflow: hidden;
-    /*margin-top: 50px;*/
+    margin-top: 50px;
 
     -webkit-transform: translate(-100%, 0%);
     -webkit-transition: all 1s ease;
