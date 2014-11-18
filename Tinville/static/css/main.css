@@ -186,7 +186,7 @@ body {
 }
 
 #lg-menuLogin {
-    margin-right: 25px;
+    /*margin-right: 25px;*/
 }
 
 #navLogout {
@@ -312,7 +312,7 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    margin-left: -200%;
+    margin-left: -290%;
     padding-left: 30px;
     padding-right: 30px;
     width: 220px;
@@ -925,7 +925,11 @@ textarea {
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
 }
-
+@media (max-width: 768px) {
+    #shoppingcartitems {
+        max-height: 205px;
+    }
+}
 .shoppingcartitem {
     background-color:whitesmoke;
     /*border-bottom:2px solid #000000;*/
@@ -934,7 +938,7 @@ textarea {
     padding-bottom: 6px;
     border-bottom: 2px #e2e1e1 solid;
     padding-left: 20px;
-    padding-right: 30px
+    padding-right: 30px;
 }
 
 .shoppingcartthumbnail {
@@ -1085,11 +1089,11 @@ textarea {
     position: fixed;
     height: 100%;
     width: 70%;
-    top: 0px;
+    /*top: 0px;*/
     left: 0px;
     background-color: #f1eeef;
     overflow: hidden;
-    margin-top: 50px;
+    /*margin-top: 50px;*/
 
     -webkit-transform: translate(-100%, 0%);
     -webkit-transition: all 1s ease;
