@@ -1085,11 +1085,11 @@ textarea {
     position: fixed;
     height: 100%;
     width: 70%;
-    /*top: 0px;*/
+    top: 0px;
     left: 0px;
     background-color: #f1eeef;
     overflow: hidden;
-    /*margin-top: 50px;*/
+    margin-top: 50px;
 
     -webkit-transform: translate(-100%, 0%);
     -webkit-transition: all 1s ease;
