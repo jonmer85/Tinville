@@ -1088,7 +1088,7 @@ textarea {
 .navbar-main.navbar {
     position: fixed;
     height: 100%;
-    width: 70%;
+    width: auto;
     top: 0px;
     left: 0px;
     background-color: #f1eeef;
