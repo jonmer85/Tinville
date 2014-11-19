@@ -67,11 +67,11 @@
                                         {% if item.primary_image and item.primary_image.original.url %}
                                             {% with image=item.primary_image %}
                                                 {% thumbnail image.original "400x500" upscale=True as thumb %}
-                                                    <div style = "max-width: 400px; max-height: 500px">
+{#                                                    <div style = "max-width: 400px; max-height: 500px">#}
                                                 <a id="itemSelectedImage" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
-                                                    <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
+                                                    <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" />
                                                 </a>
-                                                    </div>
+{#                                                    </div>#}
                                                 {% endthumbnail %}
                                             {% endwith %}
                                         {% else %}
