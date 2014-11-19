@@ -14,7 +14,8 @@ from oscar.core.loading import get_class, get_classes
 from oscar.core import prices
 
 from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView,\
-    ShippingAddressView as CoreShippingAddressView, ThankYouView as CoreThankYouView, GatewayForm, ShippingAddressForm
+    ShippingAddressView as CoreShippingAddressView, ThankYouView as CoreThankYouView, GatewayForm, ShippingAddressForm,\
+    UserAddressUpdateView as CoreUserAddressUpdateView, UserAddressForm
 from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 
@@ -325,3 +326,7 @@ class ShippingAddressView(CoreShippingAddressView):
 
 class ThankYouView(CoreThankYouView):
     template_name = 'thank-you.html'
+
+class UserAddressUpdateView(CoreUserAddressUpdateView):
+    template_name = 'edit_address.html'
+    form_class = UserAddressForm

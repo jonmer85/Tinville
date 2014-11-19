@@ -36,3 +36,12 @@
 .mobileTotals{
     float:left;
 }
+
+.editAddressAlign{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.editAddressAlign input{
+    width: 100%;
+}
