@@ -49,7 +49,7 @@ Feature: Item Detail
       Given I am on an item detail page
       When I select the color Blue
       When I select the size SM
-      When I select a quantity of 5
+      When I select a quantity of 4
       Then my quantity is 5
 
   Scenario: Item Stock Quantity
