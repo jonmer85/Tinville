@@ -114,7 +114,6 @@
             </tr>
         </tbody>
     </table>
-
     <div id="orderDetails" class="tabbable dashboard dashboardCollapse collapse">
         <ul id="nav-non-xs" class="nav nav-tabs nav-pills hidden-xs">
             {% block nav_tabs_nonxs %}
@@ -158,8 +157,47 @@
                 <div class="table-header">
                     <h3>{% trans "Items ordered" %}</h3>
                 </div>
+
                 <form id="order_lines_form" action="." method="post" class="form-inline">
                     {% csrf_token %}
+                    {% block line_actions %}
+{#                        <div class="well">#}
+                            <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="text" readonly="true" name="line_action" value="create_shipping_event" class="btn btn-group hidden"/>
+                                        <div class="btn-group">
+                                            {% for event_type in shipping_event_types %}
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Box it!</button>
+{#                                                <button type="submit" name="shipping_event_type" class="btn btn-primary" value="{{ event_type.code }}">{{ event_type.name }}</button>#}
+                                            {% endfor %}
+                                        </div>
+                                    <label class="radio list-inline hidden">
+                                        {% trans "with reference" %} <input type="text" name="reference" value="" />
+                                    </label>
+                                </div>
+{#                            </div>#}
+                        <!-- Split button -->
+                            </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                              </div>
+                              <div class="modal-body">
+                                ...
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    {% endblock line_actions %}
                     {% block order_lines %}
                         <table class="collapseTableXS table table-striped table-bordered table-hover">
                             <thead>
@@ -358,69 +396,69 @@
                         override this block to provide your own form widgets that suit your order processing
                         flow.  The default contents shows a range of widgets - more than is sensible really.
                     {% endcomment %}
-                    {% block line_actions %}
-                        <div class="well">
-                            <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
-                            {%  if user.is_staff %}
-                            <div class="control-group">
-                                <div class="controls">
-                                    <label class="radio list-inline">
-                                        <input type="radio" name="line_action" value="change_line_statuses" /> {% trans "Change status to" %}
-                                    </label>
-                                    <label class="radio list-inline">
-                                        <select name="new_status">
-                                            <option value=""> -- {% trans "choose new status" %} -- </option>
-                                            {% for status in line_statuses %}
-                                                <option>{{ status }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </label>
-                                </div>
-                            </div>
-                            {%  endif  %}
-                            <div class="control-group">
-                                <div class="controls">
-                                    <label class="radio list-inline">
-                                        <input type="radio" name="line_action" value="create_shipping_event" /> {% trans "Create shipping event" %}
-                                    </label>
-                                    <label class="radio list-inline">
-                                        <select name="shipping_event_type">
-                                            <option value=""> -- {% trans "choose event type" %} -- </option>
-                                            {% for event_type in shipping_event_types %}
-                                                {% if event_type.name != "Partially Shipped" %}
-                                                <option value="{{ event_type.code }}">{{ event_type.name }}</option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
-                                    </label>
-                                    <label class="radio list-inline">
-                                        {% trans "with reference" %} <input type="text" name="reference" value="" />
-                                    </label>
-                                </div>
-                            </div>
-                            {% if user.is_staff %}
-                            <div class="control-group">
-                                <div class="controls">
-                                    <label class="radio list-inline">
-                                        <input type="radio" name="line_action" value="create_payment_event" /> {% trans "Create payment event" %}
-                                    </label>
-                                    <label class="radio list-inline">
-                                        <select name="payment_event_type">
-                                            <option value=""> -- {% trans "choose event type" %} -- </option>
-                                            {% for event_type in payment_event_types %}
-                                                <option value="{{ event_type.code }}">{{ event_type.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </label>
-                                    <label class="radio list-inline">
-                                        {% trans "with amount" %} <input type="text" name="amount" value="" />
-                                    </label>
-                                </div>
-                            </div>
-                            {% endif %}
-                            <input type="submit" value="{% trans "Go!" %}" class="btn btn-primary" />
-                        </div>
-                    {% endblock line_actions %}
+{#                    {% block line_actions %}#}
+{#                        <div class="well">#}
+{#                            <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>#}
+{#                            {%  if user.is_staff %}#}
+{#                            <div class="control-group">#}
+{#                                <div class="controls">#}
+{#                                    <label class="radio list-inline">#}
+{#                                        <input type="radio" name="line_action" value="change_line_statuses" /> {% trans "Change status to" %}#}
+{#                                    </label>#}
+{#                                    <label class="radio list-inline">#}
+{#                                        <select name="new_status">#}
+{#                                            <option value=""> -- {% trans "choose new status" %} -- </option>#}
+{#                                            {% for status in line_statuses %}#}
+{#                                                <option>{{ status }}</option>#}
+{#                                            {% endfor %}#}
+{#                                        </select>#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            {%  endif  %}#}
+{#                            <div class="control-group">#}
+{#                                <div class="controls">#}
+{#                                    <label class="radio list-inline">#}
+{#                                        <input type="submit" name="line_action" value="create_shipping_event"/> {% trans "Create shipping event" %}#}
+{#                                    </label>#}
+{#                                    <label class="radio list-inline">#}
+{#                                        <select name="shipping_event_type">#}
+{#                                            <option value=""> -- {% trans "choose event type" %} -- </option>#}
+{#                                            {% for event_type in shipping_event_types %}#}
+{#                                                {% if event_type.name != "Partially Shipped" %}#}
+{#                                                <option value="{{ event_type.code }}">{{ event_type.name }}</option>#}
+{#                                                {% endif %}#}
+{#                                            {% endfor %}#}
+{#                                        </select>#}
+{#                                    </label>#}
+{#                                    <label class="radio list-inline">#}
+{#                                        {% trans "with reference" %} <input type="text" name="reference" value="" />#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            {% if user.is_staff %}#}
+{#                            <div class="control-group">#}
+{#                                <div class="controls">#}
+{#                                    <label class="radio list-inline">#}
+{#                                        <input type="radio" name="line_action" value="create_payment_event" /> {% trans "Create payment event" %}#}
+{#                                    </label>#}
+{#                                    <label class="radio list-inline">#}
+{#                                        <select name="payment_event_type">#}
+{#                                            <option value=""> -- {% trans "choose event type" %} -- </option>#}
+{#                                            {% for event_type in payment_event_types %}#}
+{#                                                <option value="{{ event_type.code }}">{{ event_type.name }}</option>#}
+{#                                            {% endfor %}#}
+{#                                        </select>#}
+{#                                    </label>#}
+{#                                    <label class="radio list-inline">#}
+{#                                        {% trans "with amount" %} <input type="text" name="amount" value="" />#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            {% endif %}#}
+{#                            <input type="submit" value="{% trans "Go!" %}" class="btn btn-primary" />#}
+{#                        </div>#}
+{#                    {% endblock line_actions %}#}
                 </form>
 
                 {% block shipping_events %}
