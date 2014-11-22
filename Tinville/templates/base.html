@@ -16,6 +16,7 @@
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+{#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
     {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
@@ -30,6 +31,7 @@
     {{ form.media }}
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/Utilities.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>
 </head>
@@ -484,6 +486,7 @@
 {#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
 {#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="{{ STATIC_URL }}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
@@ -959,9 +962,9 @@ function RemoveCartItem(itemId)
           })
         });
 
-     {% if debug %}
-        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
-     {% endif %}
+{#     {% if debug %}#}
+{#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
+{#     {% endif %}#}
 
     </script>
 
