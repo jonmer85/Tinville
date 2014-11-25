@@ -25,7 +25,7 @@ def queryset_orders_for_user(user):
         'shipping_address', 'shipping_address__country',
         'user'
         ).prefetch_related('lines')
-        return queryset
+        return queryset.exclude(number__contains="-")
     else:
         partners = Partner._default_manager.filter(users=user)
         orderlines = Line.objects.filter(partner__in=partners)
