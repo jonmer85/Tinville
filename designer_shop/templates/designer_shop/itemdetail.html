@@ -33,129 +33,148 @@
 			</div><!-- /.navbar-collapse -->
          </div>
     </div><!-- /.container-fluid -->
-</div><!-- /.container-fluid -->
+
 
 
 <!-- Tab panes -->
-<div class="tab-content ">
-
-    <div class=" tab-pane active" id="itemTab">
-        <div class="container">
-            <form id="itemDetailForm" data-parsley-validate>
-                <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Item</h4>
-                            </div>
-                            <div id="messageId" class="modal-body">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="shopItemDetail col-xs-12">
-                    <div id="itemTitle" class="itemTitle col-xs-12 visible-xs">
-                        {{ item.title }}
-                    </div>
-                    <div class="col-xs-12 col-sm-6 ">
-                        <div class="itemSelectedImage col-sm-12 col-md-offset-0 col-md-10 col-xs-12">
-                            {% if item.primary_image and item.primary_image.original.url %}
-                                {% with image=item.primary_image %}
-                                    {% thumbnail image.original "400x500" upscale=True as thumb %}
-                                        <div style = "width: 400px; height: 500px">
-{#                                    <a id="itemSelectedImage" href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">#}
-                                        <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
-{#                                    </a>#}
-                                        </div>
-                                    {% endthumbnail %}
-                                {% endwith %}
-                            {% else %}
-                                    -
-                            {% endif %}
-                        </div>
-                        <div class="otherItemImages col-xs-12 col-sm-12 col-md-offset-0 col-md-2">
-                            {% for image in images %}
-                                {% if not image.is_primary %}
-                                    {% thumbnail image.original "100x125" upscale=True as thumb %}
-                                    <div class="col-xs-3 col-sm-3 col-md-12 otherImage">
-                                        <a href="{{ image.original.url }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image">
-                                            <img src="{{ image.original.url }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
-                                        </a>
-                                    </div>
-                                    {% endthumbnail %}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="itemPrice center col-xs-12 visible-xs">
-                        From $ {{ item.min_variant_price_excl_tax }}
-                    </div>
-                    <div class="col-xs-12 col-sm-6" id="idItemDetail">
-                        <div>
-                            <div class="itemTitle hidden-xs">
-                                {{ item.title }}
-                            </div>
-                            <div class="itemPrice hidden-xs">
-                                From $ {{ item.min_variant_price_excl_tax }}
-                            </div>
-                            <div class="itemColorSelection itemDetailBox col-xs-5">
-                                <select id="itemColorSelection" class="form-control selectpicker" required>
-                                    <option value=""><i>Choose a Color</i></option>
-                                </select>
-                            </div>
-                            <div class="itemSizeSelection itemDetailBox col-xs-5" style="margin-left: 2.5%">
-                                <select id="itemSizeSelection" class="form-control selectpicker" required>
-                                    <option value=""><i>Choose a Size</i></option>
-                                </select>
-                            </div>
-                            <div class="itemBuyQuantity itemDetailBox col-xs-2">
-                                <label for="buyQuantity">Quantity:</label>
-                                <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
-                            </div>
-                            <div class="itemStockQuantity col-xs-12"></div>
-                            <div class="addToCart col-xs-12">
-                                <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Bag</a>
-                            </div>
-                            <div class="itemDescription col-xs-12">
-                                {{ item.description | safe }}
-                            </div>
-                            <div class="sharingiscaring col-xs-12">
-                                <div class="shareMeTitle">Share This Item</div>
-                                <div class="socialMediaLinks">
-                                    <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="facebooklogo">
-                                        <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
-                                    </a>
-                                    <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
-                                        <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
-                                    </a>
-                                    <a href="//www.pinterest.com/pin/create/button/"  target="_blank" class="pull-right pinterestlogo" data-pin-do="buttonBookmark"  data-pin-shape="round" data-pin-height="32"></a>
+    <div class="tab-content ">
+        <div class=" tab-pane active" id="itemTab">
+            <div class="container">
+                <form id="itemDetailForm" data-parsley-validate>
+                    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Item</h4>
+                                </div>
+                                <div id="messageId" class="modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                    <div class="shopItemDetail">
+                        <div id="itemTitle" class="itemTitle visible-xs">
+                            {{ item.title }}
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="row">
+                                    <div class="itemSelectedImage col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-9 ">
+                                        {% if item.primary_image and item.primary_image.original.url %}
+                                            {% with image=item.primary_image %}
+                                                {% thumbnail image.original "400x500" upscale=True as thumb %}
+                                                    <div style = "max-width: 400px; max-height: 500px">
+                                                <a id="itemSelectedImage" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                    <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
+                                                </a>
+                                                    </div>
+                                                {% endthumbnail %}
+                                            {% endwith %}
+                                        {% else %}
+                                                -
+                                        {% endif %}
+                                    </div>
+                                    <div class="otherItemImages col-xs-12 col-md-2">
+                                         <div class="row">
+                                            {% for image in images %}
+                                                {% if not image.is_primary %}
+                                                    {% thumbnail image.original "100x125" upscale=True as thumb %}
+
+                                                            <div class="col-xs-3 col-md-12 otherImage">
+                                                                <a href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                                    <img src="{{ MEDIA_URL }}{{ image.original }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                                                </a>
+                                                            </div>
+
+                                                    {% endthumbnail %}
+                                                {% endif %}
+                                            {% endfor %}
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="itemPrice center visible-xs col-xs-12">
+                                From $ {{ item.min_variant_price_excl_tax }}
+                            </div>
+                            <div class="col-xs-12 col-sm-6" id="idItemDetail">
+                                <div>
+                                    <div class="itemTitle hidden-xs">
+                                        {{ item.title }}
+                                    </div>
+                                    <div class="itemPrice hidden-xs">
+                                        From $ {{ item.min_variant_price_excl_tax }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
+                                            <select id="itemColorSelection" class="form-control selectpicker" required>
+                                                <option value=""><i>Choose a Color</i></option>
+                                            </select>
+                                        </div>
+                                        <div class="itemSizeSelection itemDetailBox itemDetailBoxSize col-xs-6 col-sm-5">
+                                            <select id="itemSizeSelection" class="form-control selectpicker" required>
+                                                <option value=""><i>Choose a Size</i></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemBuyQuantity itemDetailBox col-xs-2">
+                                            <label for="buyQuantity">Quantity:</label>
+                                            <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemStockQuantity col-xs-12"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="addToCart col-xs-12">
+                                            <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Bag</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemDescription col-xs-12">
+                                            {{ item.description | safe }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="sharingiscaring col-xs-12">
+                                            <div class="shareMeTitle">Share This Item</div>
+                                            <div class="socialMediaLinks">
+                                                <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="facebooklogo">
+                                                    <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
+                                                </a>
+                                                <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
+                                                    <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
+                                                </a>
+                                                <a href="//www.pinterest.com/pin/create/button/"  target="_blank" class="pull-right pinterestlogo" data-pin-do="buttonBookmark"  data-pin-shape="round" data-pin-height="32"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class=" tab-pane" id="aboutTab">
+        <div class=" tab-pane" id="aboutTab">
             <div class="container">
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
-                    {% if shop.aboutImg %}
-                        <img class="full-screen" src="{{shop.aboutImg.url}}"  />
-                    {% endif %}
-                </div>
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
-                    {{ shop.aboutContent | safe }}
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
+                        {% if shop.aboutImg %}
+                            <img class="full-screen" src="{{shop.aboutImg.url}}"  />
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
+                        {{ shop.aboutContent | safe }}
+                    </div>
                 </div>
             </div>
         </div>
-
-</div>
+    </div>
 {% endblock content%}
 
 {% block javascript_library %}
@@ -169,6 +188,229 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+
+
+
+$( function()
+	{
+			// ACTIVITY INDICATOR
+
+		var activityIndicatorOn = function()
+			{
+				$( '<div id="imagelightbox-loading"><div></div></div>' ).appendTo( 'body' );
+			},
+			activityIndicatorOff = function()
+			{
+				$( '#imagelightbox-loading' ).remove();
+			},
+
+
+			// OVERLAY
+
+			overlayOn = function()
+			{
+				$( '<div id="imagelightbox-overlay"></div>' ).appendTo( 'body' );
+			},
+			overlayOff = function()
+			{
+				$( '#imagelightbox-overlay' ).remove();
+			},
+
+
+			// CLOSE BUTTON
+
+			closeButtonOn = function( instance )
+			{
+				$( '<button type="button" id="imagelightbox-close" title="Close"></button>' ).appendTo( 'body' ).on( 'click touchend', function(){ $( this ).remove(); instance.quitImageLightbox(); return false; });
+			},
+			closeButtonOff = function()
+			{
+				$( '#imagelightbox-close' ).remove();
+			},
+
+
+			// CAPTION
+
+			captionOn = function()
+			{
+				var description = $( 'a[href="' + $( '#imagelightbox' ).attr( 'src' ) + '"] img' ).attr( 'alt' );
+				if( description.length > 0 )
+					$( '<div id="imagelightbox-caption">' + description + '</div>' ).appendTo( 'body' );
+			},
+			captionOff = function()
+			{
+				$( '#imagelightbox-caption' ).remove();
+			},
+
+
+			// NAVIGATION
+
+			navigationOn = function( instance, selector )
+			{
+				var images = $( selector );
+				if( images.length )
+				{
+					var nav = $( '<div id="imagelightbox-nav"></div>' );
+					for( var i = 0; i < images.length; i++ )
+						nav.append( '<button type="button"></button>' );
+
+					nav.appendTo( 'body' );
+					nav.on( 'click touchend', function(){ return false; });
+
+					var navItems = nav.find( 'button' );
+					navItems.on( 'click touchend', function()
+					{
+						var $this = $( this );
+						if( images.eq( $this.index() ).attr( 'href' ) != $( '#imagelightbox' ).attr( 'src' ) )
+							instance.switchImageLightbox( $this.index() );
+
+						navItems.removeClass( 'active' );
+						navItems.eq( $this.index() ).addClass( 'active' );
+
+						return false;
+					})
+					.on( 'touchend', function(){ return false; });
+				}
+			},
+			navigationUpdate = function( selector )
+			{
+				var items = $( '#imagelightbox-nav button' );
+				items.removeClass( 'active' );
+				items.eq( $( selector ).filter( '[href="' + $( '#imagelightbox' ).attr( 'src' ) + '"]' ).index( selector ) ).addClass( 'active' );
+			},
+			navigationOff = function()
+			{
+				$( '#imagelightbox-nav' ).remove();
+			},
+
+
+			// ARROWS
+
+			arrowsOn = function( instance, selector )
+			{
+                $(".slidingContent").css("opacity", ".6");
+				var $arrows = $( '<button type="button" class="imagelightbox-arrow imagelightbox-arrow-left"></button><button type="button" class="imagelightbox-arrow imagelightbox-arrow-right"></button>' );
+
+				$arrows.appendTo( 'body' );
+
+				$arrows.on( 'click touchend', function( e )
+				{
+					e.preventDefault();
+
+					var $this	= $( this ),
+						$target	= $( selector + '[href="' + $( '#imagelightbox' ).attr( 'src' ) + '"]' ),
+						index	= $target.index( selector );
+
+					if( $this.hasClass( 'imagelightbox-arrow-left' ) )
+					{
+						index = index - 1;
+						if( !$( selector ).eq( index ).length )
+							index = $( selector ).length;
+					}
+					else
+					{
+						index = index + 1;
+						if( !$( selector ).eq( index ).length )
+							index = 0;
+					}
+
+					instance.switchImageLightbox( index );
+					return false;
+				});
+			},
+			arrowsOff = function()
+			{
+                $(".slidingContent").css("opacity", "1");
+				$( '.imagelightbox-arrow' ).remove();
+			};
+
+
+		//	WITH ACTIVITY INDICATION
+
+		$( 'a[data-imagelightbox="a"]' ).imageLightbox(
+		{
+			onLoadStart:	function() { activityIndicatorOn(); },
+			onLoadEnd:		function() { activityIndicatorOff(); },
+			onEnd:	 		function() { activityIndicatorOff(); }
+		});
+
+
+		//	WITH OVERLAY & ACTIVITY INDICATION
+
+		$( 'a[data-imagelightbox="b"]' ).imageLightbox(
+		{
+			onStart: 	 function() { overlayOn(); },
+			onEnd:	 	 function() { overlayOff(); activityIndicatorOff(); },
+			onLoadStart: function() { activityIndicatorOn(); },
+			onLoadEnd:	 function() { activityIndicatorOff(); }
+		});
+
+
+		//	WITH "CLOSE" BUTTON & ACTIVITY INDICATION
+
+		var instanceC = $( 'a[data-imagelightbox="c"]' ).imageLightbox(
+		{
+			quitOnDocClick:	false,
+			onStart:		function() { closeButtonOn( instanceC ); },
+			onEnd:			function() { closeButtonOff(); activityIndicatorOff(); },
+			onLoadStart: 	function() { activityIndicatorOn(); },
+			onLoadEnd:	 	function() { activityIndicatorOff(); }
+		});
+
+
+		//	WITH CAPTION & ACTIVITY INDICATION
+
+		$( 'a[data-imagelightbox="d"]' ).imageLightbox(
+		{
+			onLoadStart: function() { captionOff(); activityIndicatorOn(); },
+			onLoadEnd:	 function() { captionOn(); activityIndicatorOff(); },
+			onEnd:		 function() { captionOff(); activityIndicatorOff(); }
+		});
+
+
+		//	WITH ARROWS & ACTIVITY INDICATION
+
+		var selectorG = 'a[data-imagelightbox="g"]';
+		var instanceG = $( selectorG ).imageLightbox(
+		{
+			onStart:		function(){ arrowsOn( instanceG, selectorG ); },
+			onEnd:			function(){ arrowsOff(); activityIndicatorOff(); },
+			onLoadStart: 	function(){ activityIndicatorOn(); },
+			onLoadEnd:	 	function(){ $( '.imagelightbox-arrow' ).css( 'display', 'block' ); activityIndicatorOff(); }
+		});
+
+
+		//	WITH NAVIGATION & ACTIVITY INDICATION
+
+		var selectorE = 'a[data-imagelightbox="e"]';
+		var instanceE = $( selectorE ).imageLightbox(
+		{
+			onStart:	 function() { navigationOn( instanceE, selectorE ); },
+			onEnd:		 function() { navigationOff(); activityIndicatorOff(); },
+			onLoadStart: function() { activityIndicatorOn(); },
+			onLoadEnd:	 function() { navigationUpdate( selectorE ); activityIndicatorOff(); }
+		});
+
+
+		//	ALL COMBINED
+
+		var selectorF = 'a[data-imagelightbox="f"]';
+		var instanceF = $( selectorF ).imageLightbox(
+		{
+			onStart:		function() { overlayOn(); closeButtonOn( instanceF ); arrowsOn( instanceF, selectorF ); },
+			onEnd:			function() { overlayOff(); captionOff(); closeButtonOff(); arrowsOff(); activityIndicatorOff(); },
+			onLoadStart: 	function() { captionOff(); activityIndicatorOn(); },
+			onLoadEnd:	 	function() { captionOn(); activityIndicatorOff(); $( '.imagelightbox-arrow' ).css( 'display', 'block' ); }
+		});
+
+	});
+
+
+
+
+
+
+
 
     !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
     $(".shopColor").css("color", "{{ shop.color }}");
