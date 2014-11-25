@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from oscar.core.application import Application
 from oscar.apps.dashboard.orders import views
 from dashboard.orders import views as jeffsviews
+from dashboard.orders.views import ShipmentView as shipmentview
 
 
 class OrdersDashboardApplication(Application):
@@ -30,6 +31,8 @@ class OrdersDashboardApplication(Application):
                 name='order-stats'),
             url(r'^(?P<number>[-\w]+)/$',
                 self.order_detail_view.as_view(), name='order-detail'),
+            url(r'^(?P<number>[-\w]+)/ViewShipment/$',
+                shipmentview.as_view(), name='shipment'),
             url(r'^(?P<number>[-\w]+)/notes/(?P<note_id>\d+)/$',
                 self.order_detail_view.as_view(), name='order-detail-note'),
             url(r'^(?P<number>[-\w]+)/lines/(?P<line_id>\d+)/$',
@@ -39,6 +42,5 @@ class OrdersDashboardApplication(Application):
                 name='order-shipping-address'),
         ]
         return self.post_process_urls(patterns('', *urls))
-
 
 application = OrdersDashboardApplication()

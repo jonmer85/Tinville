@@ -5,6 +5,8 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
+from django.views.generic.base import View as baseView
+import easypost
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -43,6 +45,85 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
+
+    def create_shipping_event(self, request, order, lines, quantities):
+        code = request.POST['shipping_event_type']
+        try:
+            event_type = ShippingEventType._default_manager.get(code=code)
+        except ShippingEventType.DoesNotExist:
+            messages.error(request, _("The event type '%s' is not valid")
+                           % code)
+            return self.reload_page_response()
+
+        reference = request.POST.get('reference', None)
+        response = HttpResponse()
+        try:
+            EventHandler().handle_shipping_event(order, event_type, lines,
+                                                 quantities, request, response,
+                                                 reference=reference)
+        except InvalidShippingEvent as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except InvalidStatus as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except PaymentError as e:
+            messages.error(request, _("Unable to create shipping event due to"
+                                      " payment error: %s") % e)
+        else:
+            messages.success(request, ("Shipping event created"))
+        return self.reload_page_response()
+
+class ShipmentView(baseView):
+    easypost.api_key = settings.EASYPOST_API_KEY
+    def post(self,request, order):
+
+        try:
+            #from_address = self._GetShopAddress(request)
+            from_address = self._EasyPostAddressFormatter(order.shipping_address)
+
+        except ValueError as e:
+            #TODO Redirect to Shop's Address Form Page rather than home
+            return HttpResponseRedirect(reverse('home'))
+
+        to_address = self._EasyPostAddressFormatter(order.shipping_address)
+
+        try:
+            shipment = easypost.Shipment.create(
+                to_address=to_address,
+                from_address=from_address,
+                parcel={   'predefined_package' : 'FlatRateEnvelope',
+                           'weight' : 10
+                }
+            )
+        except Exception as e:
+            #TODO Handle a failed Shipment Create
+            pass
+
+        #TODO: validate shipment response try catch?
+        return HttpResponse(shipment)
+
+    def _GetShopAddress(self,request):
+        partners = Partner._default_manager.filter(users=request.user)
+        #TODO do something with this broken logic...
+        for partner in partners:
+            shop_address = self._EasyPostAddressFormatter(partner.addresses.instance.primary_address)
+            return shop_address
+
+    def _EasyPostAddressFormatter(self, address):
+        #TODO Validate address
+        if(address == None):
+            raise ValueError("Address is Empty.")
+        #TODO check for multiple Address Lines
+        _address = {
+            'name': address.name,
+            'street1': address.line1,
+            'city': address.city,
+            'state': address.state,
+            'zip': address.postcode
+        }
+        return _address
+
 
 class LineDetailView(CoreLineDetailView):
     template_name = 'templates/dashboard/orders/line_detail.html'
