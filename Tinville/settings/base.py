@@ -15,6 +15,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
+    ('Jon Meran', 'jon.meran@tinville.com')
 )
 
 MANAGERS = ADMINS
@@ -251,6 +252,7 @@ HAYSTACK_CONNECTIONS = {
 }
 
 # DJANGO OSCAR SETTINGS
+OSCAR_HOMEPAGE = "/"
 OSCAR_DEFAULT_CURRENCY = '$'
 OSCAR_INITIAL_ORDER_STATUS = 'Pending'
 OSCAR_INITIAL_LINE_STATUS = 'Pending'

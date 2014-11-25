@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
@@ -35,11 +35,11 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 Div(
                     Field('shop_name', placeholder="Shop name"),
                     id="shop_fields",
-                ), css_class="col-xs-12"
+                ), css_class=""
             ),
-            Div(
-                Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4"
-            ), css_class="row"
+            Div(Div(
+                Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-3 col-sm-4"
+            ), css_class="row")
         )
     )
 
@@ -53,12 +53,17 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_shop_name(self):
         shop_name = self.cleaned_data['shop_name']
-
+        shop_exists = True
         try:
             Shop.objects.get(name__iexact=shop_name)
         except ObjectDoesNotExist:
-            return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
-        raise forms.ValidationError('Shop name is already taken.')
+            shop_exists = False # return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
+        if shop_exists:
+            raise forms.ValidationError('Shop name is already taken.')
+        # if the shop name resolves to a view that is not the shop.. it is trying to use a url that we already use.. dont let this happen!
+        if len(shop_name) > 0 and resolve(urlparse.urlparse('/' + shop_name.lower() + '/')[2]).view_name != 'designer_shop.views.shopper':
+            raise forms.ValidationError('Not a valid shop name, please choose another')
+        return shop_name
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -142,7 +147,7 @@ class LoginForm(AuthenticationForm):
                              </input>
                         </label>
                     </div>"""),
-                Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton col-xs-12'),
+                Submit('submit', 'Sign in', css_class='full-screen btn btn-primary tinvilleButton'),
                 # HTML("""<div class="formField pull-left loginForgot">
                 #         <p>Forgot
                 #         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
@@ -171,6 +176,6 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 PaymentInfoForm.header_payment_layout,
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
                 PaymentInfoForm.base_payment_layout,
-                Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
+                Submit('payment-info', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
             )
         )

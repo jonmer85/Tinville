@@ -43,34 +43,36 @@
     <div class="tab-content ">
         <div class=" tab-pane active" id="shopTab">
             <div class="container comboBoxes">
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-3 col-md-offset-3 col-md-2">
-                    <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
-                        <option value="View All">View All</option>
-                        {% for genders in shopgenders %}
-                            <option value="{{ genders.name }}">{{ genders.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-3 col-md-offset-3 col-md-2">
+                        <select class="select form-control filterTabs" id="filterGender" name="genderFilter">
+                            <option value="View All">View All</option>
+                            {% for genders in shopgenders %}
+                                <option value="{{ genders.name }}">{{ genders.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
-                    <select class="select form-control filterTabs" id="filterType" name="typeFilter">
-                        <option value="View All Types">View All Types</option>
-                        {% for category in shopcategories %}
-                            <option value="{{ category }}">{{ category }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
+                        <select class="select form-control filterTabs" id="filterType" name="typeFilter">
+                            <option value="View All Types">View All Types</option>
+                            {% for category in shopcategories %}
+                                <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
-                    <select class="select form-control filterTabs" id="filterSort" name="sortFilter">
-                        <option value="no-sort">No Sorting</option>
-                        <option value="date-asc">Newest First</option>
-                        <option value="date-dsc">Oldest First</option>
-                        <option value="price-asc">Price: Low to High</option>
-                        <option value="price-dsc">Price: High to Low</option>
-                        <option value="pop-asc">Popularity: Low to High</option>
-                        <option value="pop-dsc">Popularity: High to Low</option>
-                    </select>
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-3 col-md-2">
+                        <select class="select form-control filterTabs" id="filterSort" name="sortFilter">
+                            <option value="no-sort">No Sorting</option>
+                            <option value="date-asc">Newest First</option>
+                            <option value="date-dsc">Oldest First</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-dsc">Price: High to Low</option>
+                            <option value="pop-asc">Popularity: Low to High</option>
+                            <option value="pop-dsc">Popularity: High to Low</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="container">
@@ -79,17 +81,18 @@
         </div>
         <div class=" tab-pane" id="aboutTab">
             <div class="container">
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
-                    {% if shop.aboutImg %}
-                        <img class="full-screen" src="{{shop.aboutImg.url}}"  />
-                    {% endif %}
-                </div>
-                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
-                    {{ shop.aboutContent | safe }}
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
+                        {% if shop.aboutImg %}
+                            <img class="full-screen" src="{{shop.aboutImg.url}}"  />
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
+                        {{ shop.aboutContent | safe }}
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 {#</div>#}
 

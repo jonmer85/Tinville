@@ -315,7 +315,7 @@ body {
     margin-left: -200%;
     padding-left: 30px;
     padding-right: 30px;
-    width: 200px;
+    width: 220px;
 }
 
 .alignField {
@@ -925,7 +925,11 @@ textarea {
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
 }
-
+@media (max-width: 768px) {
+    #shoppingcartitems {
+        max-height: 205px;
+    }
+}
 .shoppingcartitem {
     background-color:whitesmoke;
     /*border-bottom:2px solid #000000;*/
@@ -933,8 +937,8 @@ textarea {
     padding-top: 4px;
     padding-bottom: 6px;
     border-bottom: 2px #e2e1e1 solid;
-    padding-left: 7px;
-    width: 270px;
+    padding-left: 20px;
+    padding-right: 30px;
 }
 
 .shoppingcartthumbnail {
@@ -986,7 +990,7 @@ textarea {
 .shoppingcartitemPrice {
     color:#f46430;
     position: absolute;
-    left: 82%;
+    left: 79%;
     top: 63%;
     font-size: 1.15em;
 }
@@ -1055,9 +1059,14 @@ textarea {
     }
 }
 .cartDropdown{
-    margin-top: 19px;
+    margin-top: 15px;
     width: 275px;
     margin-left: -240px;
+}
+@media (max-width: 768px) {
+    .cartDropdown{
+        margin-top: 19px;
+    }
 }
 .footersociallogo {
    padding: 1px;
@@ -1067,6 +1076,13 @@ textarea {
     color: #f46430;
 }
 
+.tinvilleDrayGray{
+    color: #5B595A;
+}
+
+.tinvilleLightGray{
+    color: #e7e5e6;
+}
 /*Start mobile navbar*/
 @media (max-width: 768px) {
 .navbar-main.navbar {
@@ -1083,15 +1099,15 @@ textarea {
     -webkit-transition: all 1s ease;
 }
 
-.navbar-main.navbar .container{
-    width: 200px;
-}
+/*.navbar-main.navbar .container{*/
+    /*width: 200px;*/
+/*}*/
 
 .banner img{
     padding-left: 0px;
 }
 .navbar-main.navbar .navbar-collapse{
-    margin-left: -15%;
+    /*margin-left: -15%;*/
     overflow-x: hidden;
 }
 
