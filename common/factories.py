@@ -1,6 +1,7 @@
 from decimal import Decimal as D
 import random
 import datetime
+from designer_shop.models import Shop
 
 from django.conf import settings
 from django.utils import timezone
@@ -9,6 +10,7 @@ from oscar.core.loading import get_model
 from oscar.apps.partner import strategy, availability, prices
 from oscar.core.loading import get_class
 from oscar.apps.offer import models
+from user.models import TinvilleUser
 
 Basket = get_model('basket', 'Basket')
 Free = get_class('shipping.methods', 'Free')
@@ -61,15 +63,19 @@ def create_product(upc=None, title=u"Dummy title",
                    product_class=u"Dummy item class",
                    partner_name=None, partner_sku=None, price=None,
                    num_in_stock=None, attributes=None,
-                   partner_users=None, **kwargs):
+                   partner_users=None, shop=None, **kwargs):
     """
     Helper method for creating products that are used in tests.
     """
     product_class, __ = ProductClass._default_manager.get_or_create(
         name=product_class)
+    if partner_users is None:
+        partner_users = [TinvilleUser.objects.create(email="john@doe.com")]
+    if shop is None:
+        shop = Shop.objects.create(name='Test shop', user=partner_users[0])
     product = product_class.products.model(
         product_class=product_class,
-        title=title, upc=upc, **kwargs)
+        title=title, upc=upc, shop=shop, **kwargs)
     if attributes:
         for code, value in attributes.items():
             # Ensure product attribute exists
@@ -118,6 +124,7 @@ def create_order(number=None, basket=None, user=None, shipping_address=None,
         shipping_method = Free()
     if total is None:
         total = OrderTotalCalculator().calculate(basket, shipping_method)
+    kwargs['shop'] = product.shop
     order = OrderCreator().place_order(
         order_number=number,
         user=user,

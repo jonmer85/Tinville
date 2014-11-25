@@ -72,4 +72,8 @@ class OrderCreator(CoreOrderCreator):
 
         return order
 
+def get_designer_payout_amount(original_amount):
+    # We take 10% of sales. Jon M TODO abstract the sales percentage to settings
+    return original_amount - (original_amount * settings.TINVILLE_ORDER_SALES_CUT)
+
 
