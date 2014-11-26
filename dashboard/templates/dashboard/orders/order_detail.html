@@ -161,7 +161,6 @@
                 <form id="order_lines_form" action="." method="post" class="form-inline">
                     {% csrf_token %}
                     {% block line_actions %}
-{#                        <div class="well">#}
                             <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
                             <div class="control-group">
                                 <div class="controls">
@@ -176,8 +175,6 @@
                                         {% trans "with reference" %} <input type="text" name="reference" value="" />
                                     </label>
                                 </div>
-{#                            </div>#}
-                        <!-- Split button -->
                             </div>
                         <!-- Modal -->
                         <div class="modal fade" id="boxItModal" tabindex="-1" role="dialog" aria-labelledby="boxItModalLabel" aria-hidden="true">
@@ -188,18 +185,42 @@
                                         <h4 class="modal-title" id="boxItModalLabel">Select Shipping Option</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="well">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-                                                    <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">bladfas</a></li>
-{#                                                            {% for box_type in box_types %}#}
-{#                                                        <li><a name={{ box_type.type }}href="#">{{ box_type.name }}</a></li>#}
-{#                                                            {% endfor %}#}
-                                                </ul>
-                                            </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+                                                <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" id="shippingOptionSelect" label="hi">
+                                                {% for box_type in view.box_types %}
+                                                    <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.price != "0.00" %} (${{ box_type.price }}){% endif %}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">The Financials</div>
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Order Total</td>
+                                                        <td id="orderTotal">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>New Shipping Costs</td>
+                                                        <td id="newShippingCosts">$0.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Other Shipping Costs</td>
+                                                        <td id="otherShippingCosts">$5.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total Transaction Fees</td>
+                                                        <td id="totalTransactionFees">$5.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Take Home</td>
+                                                        <td id="takeHome">$0.00</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -838,4 +859,30 @@
     {{ block.super }}
     oscar.dashboard.orders.initTabs();
     oscar.dashboard.orders.initTable();
+{% endblock %}
+
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+
+    $( "#shippingOptionSelect" ).on( 'click', 'li', function() {
+        var selectedShippingOption = $(this).find('a').attr('name');
+        var box_types = JSON.parse("{{ view.box_types_json|escapejs }}");
+        for (var box_type in box_types)
+        {
+            if (box_types[box_type].type == selectedShippingOption)
+            {
+                $("#newShippingCosts").text("$" + box_types[box_type].price)
+                $("#takeHome").text("$" +
+                    ($("#orderTotal").text().substring(1)-
+                    $("#newShippingCosts").text().substring(1)-
+                    $("#otherShippingCosts").text().substring(1)-
+                    $("#totalTransactionFees").text().substring(1)).toFixed(2)
+                )
+            }
+        }
+    });
+
+    </script>
 {% endblock %}
