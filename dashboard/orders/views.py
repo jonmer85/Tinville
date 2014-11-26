@@ -5,7 +5,7 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
-from django.views.generic.base import View as baseView
+import json
 import easypost
 
 Order = get_model('order', 'Order')
@@ -45,6 +45,9 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
+    box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
+    box_types_json = json.dumps(box_types)
+    easypost.api_key = settings.EASYPOST_API_KEY
 
     def create_shipping_event(self, request, order, lines, quantities):
         code = request.POST['shipping_event_type']
@@ -74,9 +77,8 @@ class OrderDetailView(CoreOrderDetailView):
             messages.success(request, ("Shipping event created"))
         return self.reload_page_response()
 
-class ShipmentView(baseView):
-    easypost.api_key = settings.EASYPOST_API_KEY
-    def post(self,request, order):
+   
+    def get_shipment_context(self,request, order):
 
         try:
             #from_address = self._GetShopAddress(request)
@@ -139,7 +141,7 @@ class OrderStatsView(CoreOrderStatsView):
             'total_revenue': orders.aggregate(
                 Sum('total_incl_tax'))['total_incl_tax__sum'] or D('0.00'),
             'order_status_breakdown': orders.order_by('status').values(
-                'status').annotate(freq=Count('id'))
+                'status').annotate(freq=Count('id')),
         }
         return stats
 
