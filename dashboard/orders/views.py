@@ -77,10 +77,27 @@ class OrderDetailView(CoreOrderDetailView):
             messages.success(request, ("Shipping event created"))
         return self.reload_page_response()
 
-   
-    def get_shipment_context(self,request, order):
+    def get_context_data(self, **kwargs):
+        ctx = super(OrderDetailView, self).get_context_data(**kwargs)
+        ctx['box_types'] = self.get_shipment_context(**kwargs)
+        return ctx
 
+    def get_shipment_context(self, **kwargs):
+        shipment_collection = []
+        parcelType = {
+                        'predefined_package' : 'FlatRateEnvelope',
+                        'weight' : 10
+                    }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        return shipment_collection
+
+    def get_specific_shipment(self, kwargs, parcelType):
+
+        order = kwargs['object']
         try:
+
+            #TODO: Get current user
             #from_address = self._GetShopAddress(request)
             from_address = self._EasyPostAddressFormatter(order.shipping_address)
 
@@ -94,16 +111,36 @@ class OrderDetailView(CoreOrderDetailView):
             shipment = easypost.Shipment.create(
                 to_address=to_address,
                 from_address=from_address,
-                parcel={   'predefined_package' : 'FlatRateEnvelope',
-                           'weight' : 10
-                }
+                parcel=parcelType
             )
         except Exception as e:
             #TODO Handle a failed Shipment Create
             pass
 
-        #TODO: validate shipment response try catch?
-        return HttpResponse(shipment)
+        #TODO: Add appropriate logging/Exception message for shipment validation
+        if(shipment == None):
+            raise ValueError("Shipment is empty")
+
+        if(shipment.parcel == None):
+            raise ValueError("Parcel is empty")
+
+        if(shipment.parcel.predefined_package == None):
+            raise ValueError("Parcel type is empty")
+
+        if(shipment.rates == None):
+            raise ValueError("Shipping rates is empty")
+
+        rates = []
+        for current in range(0, len(shipment.rates)):
+            rate = {
+                'carrier': shipment.rates[current].carrier,
+                'rate': shipment.rates[current].rate,
+                'service': shipment.rates[current].service
+            }
+            rates.append(rate)
+
+        basic_shipment = {'name': shipment.parcel.predefined_package, 'rates' : rates}
+        return basic_shipment
 
     def _GetShopAddress(self,request):
         partners = Partner._default_manager.filter(users=request.user)
