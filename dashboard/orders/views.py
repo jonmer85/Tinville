@@ -6,6 +6,7 @@ from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsVi
 from oscar.core.loading import get_model
 from django.views.generic import View
 import json
+import easypost
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -46,6 +47,122 @@ class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
     box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
     box_types_json = json.dumps(box_types)
+    easypost.api_key = settings.EASYPOST_API_KEY
+
+    def create_shipping_event(self, request, order, lines, quantities):
+        code = request.POST['shipping_event_type']
+        try:
+            event_type = ShippingEventType._default_manager.get(code=code)
+        except ShippingEventType.DoesNotExist:
+            messages.error(request, _("The event type '%s' is not valid")
+                           % code)
+            return self.reload_page_response()
+
+        reference = request.POST.get('reference', None)
+        response = HttpResponse()
+        try:
+            EventHandler().handle_shipping_event(order, event_type, lines,
+                                                 quantities, request, response,
+                                                 reference=reference)
+        except InvalidShippingEvent as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except InvalidStatus as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except PaymentError as e:
+            messages.error(request, _("Unable to create shipping event due to"
+                                      " payment error: %s") % e)
+        else:
+            messages.success(request, ("Shipping event created"))
+        return self.reload_page_response()
+
+    def get_context_data(self, **kwargs):
+        ctx = super(OrderDetailView, self).get_context_data(**kwargs)
+        ctx['box_types'] = self.get_shipment_context(**kwargs)
+        return ctx
+
+    def get_shipment_context(self, **kwargs):
+        shipment_collection = []
+        parcelType = {
+                        'predefined_package' : 'FlatRateEnvelope',
+                        'weight' : 10
+                    }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        return shipment_collection
+
+    def get_specific_shipment(self, kwargs, parcelType):
+
+        order = kwargs['object']
+        try:
+
+            #TODO: Get current user
+            #from_address = self._GetShopAddress(request)
+            from_address = self._EasyPostAddressFormatter(order.shipping_address)
+
+        except ValueError as e:
+            #TODO Redirect to Shop's Address Form Page rather than home
+            return HttpResponseRedirect(reverse('home'))
+
+        to_address = self._EasyPostAddressFormatter(order.shipping_address)
+
+        try:
+            shipment = easypost.Shipment.create(
+                to_address=to_address,
+                from_address=from_address,
+                parcel=parcelType
+            )
+        except Exception as e:
+            #TODO Handle a failed Shipment Create
+            pass
+
+        #TODO: Add appropriate logging/Exception message for shipment validation
+        if(shipment == None):
+            raise ValueError("Shipment is empty")
+
+        if(shipment.parcel == None):
+            raise ValueError("Parcel is empty")
+
+        if(shipment.parcel.predefined_package == None):
+            raise ValueError("Parcel type is empty")
+
+        if(shipment.rates == None):
+            raise ValueError("Shipping rates is empty")
+
+        rates = []
+        for current in range(0, len(shipment.rates)):
+            rate = {
+                'carrier': shipment.rates[current].carrier,
+                'rate': shipment.rates[current].rate,
+                'service': shipment.rates[current].service
+            }
+            rates.append(rate)
+
+        basic_shipment = {'name': shipment.parcel.predefined_package, 'rates' : rates}
+        return basic_shipment
+
+    def _GetShopAddress(self,request):
+        partners = Partner._default_manager.filter(users=request.user)
+        #TODO do something with this broken logic...
+        for partner in partners:
+            shop_address = self._EasyPostAddressFormatter(partner.addresses.instance.primary_address)
+            return shop_address
+
+    def _EasyPostAddressFormatter(self, address):
+        #TODO Validate address
+        if(address == None):
+            raise ValueError("Address is Empty.")
+        #TODO check for multiple Address Lines
+        _address = {
+            'name': address.name,
+            'street1': address.line1,
+            'city': address.city,
+            'state': address.state,
+            'zip': address.postcode
+        }
+        return _address
+
 
 class LineDetailView(CoreLineDetailView):
     template_name = 'templates/dashboard/orders/line_detail.html'

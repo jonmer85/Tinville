@@ -1944,5 +1944,13 @@
             "code": "partially shipped",
             "name": "Partially Shipped"
         }
+    },
+    {
+        "pk": 5,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "boxed",
+            "name": "Boxed"
+        }
     }
 ]

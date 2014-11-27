@@ -40,5 +40,4 @@ class OrdersDashboardApplication(Application):
         ]
         return self.post_process_urls(patterns('', *urls))
 
-
 application = OrdersDashboardApplication()
