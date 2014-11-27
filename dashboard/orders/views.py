@@ -90,6 +90,30 @@ class OrderDetailView(CoreOrderDetailView):
                     }
         shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
 
+        parcelType = {
+            'predefined_package' : 'FlatRatePaddedEnvelope',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'SmallFlatRateBox',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'MediumFlatRateBox',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'LargeFlatRateBox',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
         return shipment_collection
 
     def get_specific_shipment(self, kwargs, parcelType):
@@ -98,7 +122,7 @@ class OrderDetailView(CoreOrderDetailView):
         try:
 
             #TODO: Get current user
-            #from_address = self._GetShopAddress(request)
+            #from_address = self._GetShopAddress(order.number)
             from_address = self._EasyPostAddressFormatter(order.shipping_address)
 
         except ValueError as e:
@@ -132,12 +156,13 @@ class OrderDetailView(CoreOrderDetailView):
 
         rates = []
         for current in range(0, len(shipment.rates)):
-            rate = {
-                'carrier': shipment.rates[current].carrier,
-                'rate': shipment.rates[current].rate,
-                'service': shipment.rates[current].service
-            }
-            rates.append(rate)
+            if(shipment.rates[current].service == 'Priority'):
+                rate = {
+                    'carrier': shipment.rates[current].carrier,
+                    'rate': shipment.rates[current].rate,
+                    'service': shipment.rates[current].service
+                }
+                rates.append(rate)
 
         basic_shipment = {'name': shipment.parcel.predefined_package, 'rates' : rates}
         return basic_shipment
