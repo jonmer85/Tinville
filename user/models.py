@@ -107,6 +107,7 @@ class TinvilleUser(AbstractUser):
 class DesignerPayout(models.Model):
     designer = models.ForeignKey('TinvilleUser')
     datetime = models.DateTimeField(auto_now=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=12)
 
     # The reference should refer to the transaction ID of the payment gateway
     # that was used for this event.

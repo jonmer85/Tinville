@@ -44,7 +44,7 @@ def pay_designers():
                 amount_to_payout = Decimal(0.0)
 
                 # Create a Designer Payout record to mark the total amount paid
-                payout = DesignerPayout.objects.create(designer=designer)
+                payout = DesignerPayout.objects.create(designer=designer, amount=0.00)
 
                 for in_transit_event in payments_by_designer[designer]:
                     amount_to_pay_for_shipping_event = Decimal(0.0)
@@ -95,6 +95,7 @@ def pay_designers():
 
                 # And save the payout record with the stripe reference
                 payout.reference = result.id
+                payout.amount = amount_to_payout
                 payout.save()
 
 

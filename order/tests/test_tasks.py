@@ -22,9 +22,10 @@ class PayDesignersTests(TestCase):
     def setUp(self):
         self.user = TinvilleUser.objects.create(email="joe@schmoe.com")
         # Create a Stripe recipient so we can pay the user
-        stripe.api_key = settings.STRIPE_SECRET_KEY
+        self.stripe = stripe
+        self.stripe.api_key = settings.STRIPE_SECRET_KEY
 
-        result = stripe.Recipient.create(
+        result = self.stripe.Recipient.create(
             name="Joe Schmoe",
             type="individual",
             card= {
@@ -47,9 +48,9 @@ class PayDesignersTests(TestCase):
         rp.delete()
 
     def test_no_designers_to_pay(self):
-        self.assertIs(len(PaymentEvent.objects.all()), 0, "No payments should exist")
+        self.assertEqual(len(PaymentEvent.objects.all()), 0, "No payments should exist")
         pay_designers()
-        self.assertIs(len(PaymentEvent.objects.all()), 0,
+        self.assertEqual(len(PaymentEvent.objects.all()), 0,
                       "No payments should exist since there were no shipping events from any designer")
 
     def test_no_payout_if_shipped_but_not_in_transit(self):
@@ -63,13 +64,13 @@ class PayDesignersTests(TestCase):
 
         pay_designers()
 
-        self.assertIs(len(PaymentEvent.objects.all()), 0,
+        self.assertEqual(len(PaymentEvent.objects.all()), 0,
                       "No payments should exist since there were no 'in transit' events from any designer")
 
 
     def test_payout_on_one_full_order(self):
-        self.assertIs(len(PaymentEvent.objects.all()), 0, "No payments should exist")
-        self.assertIs(len(DesignerPayout.objects.all()), 0, "No designer payout should be recorded yet")
+        self.assertEqual(len(PaymentEvent.objects.all()), 0, "No payments should exist")
+        self.assertEqual(len(DesignerPayout.objects.all()), 0, "No designer payout should be recorded yet")
 
         shipped_event = self.order.shipping_events.create(
             event_type=ShippingEventType.objects.get(code="shipped"), group=1)
@@ -94,12 +95,12 @@ class PayDesignersTests(TestCase):
 
         pay_designers()
 
-        self.assertIs(len(PaymentEvent.objects.all()), 2,
+        self.assertEqual(len(PaymentEvent.objects.all()), 2,
                       "Another payment event should exist showing that the 1 shipping event was paid out")
 
         # There should be 1 payment event since there was only 1 shipped package to payout
         designer_payment_event = PaymentEvent.objects.get(event_type=PaymentEventType.objects.get(code="paid_designer"))
-        self.assertIs(
+        self.assertEqual(
             designer_payment_event.group, 1, "Designer payment event should be of the same group as the shipping paid event")
 
         self.assertAlmostEqual(
@@ -109,13 +110,20 @@ class PayDesignersTests(TestCase):
             msg="The amount paid should be the item amount minus shipping and tinville fees")
 
         designer_payout = DesignerPayout.objects.all()[0]
-        self.assertIs(len(DesignerPayout.objects.all()), 1, "Designer payout should be recorded for this period")
+        self.assertEqual(len(DesignerPayout.objects.all()), 1, "Designer payout should be recorded for this period")
+        self.assertAlmostEqual(
+            designer_payout.amount,
+            Decimal(6.29),
+            places=2)
 
 
         # Make sure all designer payment events are linked to the designer payout record
         self.assertEqual(designer_payment_event.reference, str(designer_payout.id), "Designer payment event should reference aggegate designer payout record")
 
-        # assert stripe info
+        # Confirm info in Stripe is as expected
+        stripe_transfer = self.stripe.Transfer.retrieve(designer_payout.reference)
+        self.assertEqual((designer_payout.amount * 100), stripe_transfer.amount)
+        self.assertEqual(self.user.recipient_id, stripe_transfer.recipient)
 
     # def test_no_payout_if_shipping_not_paid(self):
     #     pass
