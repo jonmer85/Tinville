@@ -75,7 +75,8 @@ def pay_designers():
                     # Now create a payment event to mark that the designer has been paid for these shipping events
                     paid_designer_event = in_transit_event.order.payment_events.create(
                         amount=amount_to_pay_for_shipping_event, group=shipping_payment_event.group,
-                        event_type=PaymentEventType.objects.get(code="paid_designer"), reference=payout.id)
+                        event_type=PaymentEventType.objects.get(code="paid_designer"), reference=payout.id,
+                        shipping_event=in_transit_event)
                     for line in in_transit_event.order.lines.all():
                         paid_designer_event.line_quantities.create(
                             line=line, quantity=line.quantity)
@@ -105,6 +106,5 @@ def pay_designers():
             logger.error(
                 "Unhandled exception while paying designer (%s) payment (%s)",
                 designer, e, exc_info=True)
-            logger.error("Unable to pay designer due to unknown error")
 #
 

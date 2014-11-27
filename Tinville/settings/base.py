@@ -238,7 +238,7 @@ LOGGING = {
             'propagate': True,
             'level':'DEBUG',
         },
-        'Tinville': {
+        '': {
             'handlers': ['file'],
             'level': 'DEBUG',
         }
