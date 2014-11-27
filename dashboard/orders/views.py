@@ -45,8 +45,8 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
-    box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
-    box_types_json = json.dumps(box_types)
+    # box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
+    # box_types_json = json.dumps(box_types)
     easypost.api_key = settings.EASYPOST_API_KEY
 
     def create_shipping_event(self, request, order, lines, quantities):

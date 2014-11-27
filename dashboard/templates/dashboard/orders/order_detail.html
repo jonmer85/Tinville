@@ -191,7 +191,7 @@
                                                 <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu" id="shippingOptionSelect">
-                                                {% for box_type in view.box_types %}
+                                                {% for box_type in box_types %}
                                                     <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.price != "0.00" %} (${{ box_type.price }}){% endif %}</a></li>
                                                 {% endfor %}
                                             </ul>
@@ -869,7 +869,7 @@
 
     $( "#shippingOptionSelect" ).on( 'click', 'li', function() {
         var selectedShippingOption = $(this).find('a').attr('name');
-        var box_types = JSON.parse("{{ view.box_types_json|escapejs }}");
+        var box_types = JSON.parse("{{ box_types_json|escapejs }}");
         for (var box_type in box_types)
         {
             if (box_types[box_type].type == selectedShippingOption)
