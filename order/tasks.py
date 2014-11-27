@@ -103,7 +103,7 @@ def pay_designers():
 
 
         except Exception as e:
-            logger.warning(
+            logger.error(
                 "Unhandled exception while paying designer (%s) payment (%s)",
                 designer, e, exc_info=True)
 #

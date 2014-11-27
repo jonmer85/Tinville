@@ -47,8 +47,9 @@ class PayDesignersTests(TestCase):
 
     def tearDown(self):
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        rp = stripe.Recipient.retrieve(self.user.recipient_id)
-        rp.delete()
+        if self.user.recipient_id:
+            rp = stripe.Recipient.retrieve(self.user.recipient_id)
+            rp.delete()
 
     def test_no_designers_to_pay(self):
         pay_designers()
