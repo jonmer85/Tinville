@@ -1,11 +1,13 @@
 from decimal import Decimal
 from designer_shop.models import Shop
 from django.conf import settings
+from django.db.models import Max
+from django.db.models.query_utils import Q
 from django.test import TestCase
 from order.tasks import pay_designers
 from oscar.core.loading import get_model
 
-from common.factories import create_order
+from common.factories import create_order, create_product, create_basket_with_products
 import stripe
 from user.models import TinvilleUser, DesignerPayout
 
@@ -40,7 +42,6 @@ class PayDesignersTests(TestCase):
         self.user.save()
 
         self.shop = Shop.objects.create(name='SchmoeVille', user=self.user)
-        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
 
         self.assertEqual(len(PaymentEvent.objects.all()), 0, "No payments should exist")
         self.assertEqual(len(DesignerPayout.objects.all()), 0, "No designer payout should be recorded yet")
@@ -52,11 +53,14 @@ class PayDesignersTests(TestCase):
             rp.delete()
 
     def test_no_designers_to_pay(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
+
         pay_designers()
         self.assertEqual(len(PaymentEvent.objects.all()), 0,
                       "No payments should exist since there were no shipping events from any designer")
 
     def test_no_payout_if_shipped_but_not_in_transit(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
 
         # Event marked as shipped, but not in transit, no payment made
         shipped_event = self.order.shipping_events.create(
@@ -71,69 +75,93 @@ class PayDesignersTests(TestCase):
                       "No payments should exist since there were no 'in transit' events from any designer")
 
 
-    def create_shipping_events(self):
+    def create_shipping_events(self, lines=None, line_quantities=None):
+        max_query = ShippingEvent.objects.all().aggregate(Max('group'))['group__max']
+        group = (max_query+1) if max_query is not None else 0
         shipped_event = self.order.shipping_events.create(
-            event_type=ShippingEventType.objects.get(code="shipped"), group=1)
-        for line in self.order.lines.all():
-            shipped_event.line_quantities.create(line=line, quantity=line.quantity)
+            event_type=ShippingEventType.objects.get(code="shipped"), group=group)
+        if lines and line_quantities:
+            for line, quantity in zip(lines, line_quantities):
+                shipped_event.line_quantities.create(line=line, quantity=quantity)
+        else:
+            # No specified lines, use all lines from the order
+            for line in self.order.lines.all():
+                shipped_event.line_quantities.create(line=line, quantity=line.quantity)
 
 
         # Event marked as "in transit", payment should be made
         in_transit_event = self.order.shipping_events.create(
-            event_type=ShippingEventType.objects.get(code="in transit"), group=1)
-        for line in self.order.lines.all():
-            in_transit_event.line_quantities.create(line=line, quantity=line.quantity)
-        return shipped_event
+            event_type=ShippingEventType.objects.get(code="in transit"), group=shipped_event.group)
+        if lines and line_quantities:
+            for line, quantity in zip(lines, line_quantities):
+                in_transit_event.line_quantities.create(line=line, quantity=quantity)
+        else:
+            # No specified lines, use all lines from the order
+            for line in self.order.lines.all():
+                in_transit_event.line_quantities.create(line=line, quantity=line.quantity)
+        return shipped_event, in_transit_event
 
-    def create_shipping_paid_payment_event(self, shipped_event):
+    def create_shipping_paid_payment_event(self, shipped_event, price, lines, line_quantities):
         shipping_paid_event = self.order.payment_events.create(
             event_type=PaymentEventType.objects.get(code="paid_shipping"),
-            amount=3.00, shipping_event=shipped_event, group=1)
-        for line in self.order.lines.all():
-            shipping_paid_event.line_quantities.create(
-                line=line, quantity=line.quantity)
+            amount=price, shipping_event=shipped_event, group=shipped_event.group)
+        if lines and line_quantities:
+            for line, quantity in zip(lines, line_quantities):
+                shipping_paid_event.line_quantities.create(line=line, quantity=quantity)
+        else:
+            # No specified lines, use all lines from the order
+            for line in self.order.lines.all():
+                shipping_paid_event.line_quantities.create(
+                    line=line, quantity=line.quantity)
 
-    def test_payout_on_one_full_order(self):
-
-        shipped_event = self.create_shipping_events()
-
-        self.create_shipping_paid_payment_event(shipped_event)
-
-        self.assertEqual(len(PaymentEvent.objects.all()), 1, "1 payment should exist for the payment of shipping")
-
-        pay_designers()
-
-        self.assertEqual(len(PaymentEvent.objects.all()), 2,
-                      "Another payment event should exist showing that the 1 shipping event was paid out")
-
+    def assert_proper_payment_events(self, total_payment_events, payment_event_group, payout_total):
+        self.assertEqual(len(PaymentEvent.objects.all()), total_payment_events,
+                         "Another payment event should exist showing that the 1 shipping event was paid out")
         # There should be 1 payment event since there was only 1 shipped package to payout
-        designer_payment_event = PaymentEvent.objects.get(event_type=PaymentEventType.objects.get(code="paid_designer"))
+        designer_payment_event = PaymentEvent.objects.get(
+            Q(event_type=PaymentEventType.objects.get(code="paid_designer")) &
+            Q(group=payment_event_group))
         self.assertEqual(
-            designer_payment_event.group, 1, "Designer payment event should be of the same group as the shipping paid event")
-
+            designer_payment_event.group, payment_event_group,
+            "Designer payment event should be of the same group as the shipping paid event")
         self.assertAlmostEqual(
             designer_payment_event.amount,
-            Decimal(6.29),
+            Decimal(payout_total),
             places=2,
             msg="The amount paid should be the item amount minus shipping and tinville fees")
+        return designer_payment_event
 
-        designer_payout = DesignerPayout.objects.all()[0]
-        self.assertEqual(len(DesignerPayout.objects.all()), 1, "Designer payout should be recorded for this period")
+    def assert_proper_payout_records(self, total_payout_records, payment_event_ref, payout_total):
+        designer_payout = DesignerPayout.objects.get(id=payment_event_ref)
+        self.assertEqual(len(DesignerPayout.objects.all()), total_payout_records)
         self.assertAlmostEqual(
             designer_payout.amount,
-            Decimal(6.29),
+            Decimal(payout_total),
             places=2)
+        return designer_payout
 
 
-        # Make sure all designer payment events are linked to the designer payout record
-        self.assertEqual(designer_payment_event.reference, str(designer_payout.id), "Designer payment event should reference aggegate designer payout record")
-
-        # Confirm info in Stripe is as expected
+    def assert_proper_stripe_records(self, designer_payout):
         stripe_transfer = self.stripe.Transfer.retrieve(designer_payout.reference)
         self.assertEqual((designer_payout.amount * 100), stripe_transfer.amount)
         self.assertEqual(self.user.recipient_id, stripe_transfer.recipient)
 
+    def test_payout_on_one_full_order(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
+        shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
+
+        pay_designers()
+
+        designer_payment_event = self.assert_proper_payment_events(
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=6.30)
+
+        designer_payout = self.assert_proper_payout_records(
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=6.30)
+
+        self.assert_proper_stripe_records(designer_payout)
+
     def test_no_payout_if_shipping_not_paid(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
         self.create_shipping_events()
         self.assertEqual(len(PaymentEvent.objects.all()), 0, "0 payments should exist since shipping not paid")
 
@@ -154,23 +182,70 @@ class PayDesignersTests(TestCase):
         self.assertEqual(len(DesignerPayout.objects.all()), 1, "No new payouts should exist")
 
 
+    def create_basic_shipping_and_payment_events(self, shipping_price=3.00, lines=None, line_quantities=None):
+        shipped_event, in_transit_event = self.create_shipping_events(lines, line_quantities)
+        self.create_shipping_paid_payment_event(shipped_event, shipping_price, lines, line_quantities)
+        return shipped_event, in_transit_event
+
     def test_no_payout_due_to_no_stripe_recipient_id_for_designer(self):
-        shipped_event = self.create_shipping_events()
-        self.create_shipping_paid_payment_event(shipped_event)
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
+        self.create_basic_shipping_and_payment_events()
+        pay_designers()
 
-        self.assertEqual(len(PaymentEvent.objects.all()), 1)
 
-        self.user.recipient_id = ''
-        self.user.save()
+
+
+    def test_payout_of_partial_order_full_line_item(self):
+
+        # Create an order with two line items, but only ship one
+        products = [
+            create_product(title="Graphic T", product_class="Shirts", price=20.00,
+                           num_in_stock=5, partner_users=[self.user], shop=self.shop),
+            create_product(title="Fancy pants", product_class="Bottoms", price=40.00,
+                           num_in_stock=10, partner_users=[self.user], shop=self.shop)
+        ]
+
+        self.order = create_order(number="2-10001", basket=create_basket_with_products(products),
+                                  user=self.user, shop=self.shop)
+
+        # Designer only shipped first item
+        first_item = self.order.lines.get(product=products[0])
+        shipped_event, in_transit_event = \
+            self.create_basic_shipping_and_payment_events(
+                shipping_price=5.00, lines=[first_item], line_quantities=[first_item.quantity])
 
         pay_designers()
 
-        self.assertEqual(len(PaymentEvent.objects.all()), 1, "No new payments should exist since the user has no stripe info")
-        self.assertEqual(len(DesignerPayout.objects.all()), 0, "Designer payout should not be recorded for this period")
+        designer_payment_event = self.assert_proper_payment_events(
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=13.50)
 
-    # def test_partial_payout_of_order(self):
+        designer_payout = self.assert_proper_payout_records(
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=13.50)
+
+        self.assert_proper_stripe_records(designer_payout)
+
+        # Now ship the next item and pay the designers again
+        second_item = self.order.lines.get(product=products[1])
+        shipped_event2, in_transit_event2 = \
+            self.create_basic_shipping_and_payment_events(
+                shipping_price=10.00, lines=[second_item], line_quantities=[second_item.quantity])
+
+        pay_designers()
+
+        designer_payment_event2 = self.assert_proper_payment_events(
+            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=27.00)
+
+        designer_payout2 = self.assert_proper_payout_records(
+            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=27.00)
+
+        self.assert_proper_stripe_records(designer_payout2)
+
+    # def test_payout_of_partial_order_partial_quantity_line_item(self):
     #     pass
     #
+    # def test_payout_of_multiple_orders(self):
+    #     pass
+
     # def test_payout_then_another_pay_period_does_not_pay_again(self):
     #     pass
     #

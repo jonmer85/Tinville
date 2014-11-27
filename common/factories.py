@@ -104,6 +104,13 @@ def create_basket(empty=False):
         basket.add_product(product)
     return basket
 
+def create_basket_with_products(products):
+    basket = Basket.objects.create()
+    basket.strategy = strategy.Default()
+    for product in products:
+        basket.add_product(product)
+    return basket
+
 
 def create_order(number=None, basket=None, user=None, shipping_address=None,
                  shipping_method=None, billing_address=None,
