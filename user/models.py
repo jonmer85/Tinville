@@ -103,3 +103,11 @@ class TinvilleUser(AbstractUser):
     #     "Is the user a member of staff?"
     #     # Simplest possible answer: All admins are staff
     #     return self.is_admin
+
+class DesignerPayout(models.Model):
+    designer = models.ForeignKey('TinvilleUser')
+    datetime = models.DateTimeField(auto_now=True)
+
+    # The reference should refer to the transaction ID of the payment gateway
+    # that was used for this event.
+    reference = models.CharField("Reference", max_length=128, blank=True)

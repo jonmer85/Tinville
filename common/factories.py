@@ -107,14 +107,15 @@ def create_basket(empty=False):
 
 def create_order(number=None, basket=None, user=None, shipping_address=None,
                  shipping_method=None, billing_address=None,
-                 total=None, **kwargs):
+                 total=None, shop=None, **kwargs):
     """
     Helper method for creating an order for testing
     """
+
     if not basket:
         basket = Basket.objects.create()
         basket.strategy = strategy.Default()
-        product = create_product()
+        product = create_product(partner_users=[user], shop=shop)
         create_stockrecord(
             product, num_in_stock=10, price_excl_tax=D('10.00'))
         basket.add_product(product)
@@ -124,7 +125,7 @@ def create_order(number=None, basket=None, user=None, shipping_address=None,
         shipping_method = Free()
     if total is None:
         total = OrderTotalCalculator().calculate(basket, shipping_method)
-    kwargs['shop'] = product.shop
+    kwargs['shop'] = shop
     order = OrderCreator().place_order(
         order_number=number,
         user=user,

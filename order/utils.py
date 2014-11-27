@@ -5,7 +5,7 @@ from oscar.apps.shipping.methods import Free
 from oscar.core.loading import get_model, get_class
 from django.utils.translation import ugettext_lazy as _
 
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_FLOOR
 
 Order = get_model('order', 'Order')
 Line = get_model('order', 'Line')
@@ -74,6 +74,7 @@ class OrderCreator(CoreOrderCreator):
 
 def get_designer_payout_amount(original_amount):
     # We take 10% of sales. Jon M TODO abstract the sales percentage to settings
-    return original_amount - (original_amount * settings.TINVILLE_ORDER_SALES_CUT)
+    return (original_amount -
+            (original_amount * settings.TINVILLE_ORDER_SALES_CUT)).quantize(D('0.01'), rounding=ROUND_FLOOR)
 
 

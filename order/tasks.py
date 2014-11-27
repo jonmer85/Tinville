@@ -1,12 +1,15 @@
 from collections import defaultdict
 import logging
+from decimal import Decimal
 from celery import task
 from designer_shop.models import Shop
 from django.conf import settings
+from django.db import transaction
 from django.db.models import Q
 from order.utils import get_designer_payout_amount
 from oscar.core.loading import get_model
 import stripe
+from user.models import DesignerPayout
 
 
 PaymentEvent = get_model('order', 'PaymentEvent')
@@ -29,7 +32,6 @@ def pay_designers():
 
     # Group payments to make by designer
     payments_by_designer = defaultdict(list)
-    pay_designer_event = PaymentEventType.objects.get(code="paid_designer")
     for payment in payments_to_make.order_by('order__number'):
         shop_id = int(payment.order.number[0:payment.order.number.find("-")])
         designer = Shop.objects.get(id=shop_id).user
@@ -37,40 +39,65 @@ def pay_designers():
 
     for designer in payments_by_designer.keys():
         try:
-            amount_to_pay = 0.0
-            for shipping_event in payments_by_designer[designer]:
-                for line in shipping_event.lines:
-                    amount_to_pay += line.line_price_incl_tax
+            # This is done within a DB transaction so any payment events created are rolled back if there is any exception
+            with transaction.atomic():
+                amount_to_payout = Decimal(0.0)
+
+                # Create a Designer Payout record to mark the total amount paid
+                payout = DesignerPayout.objects.create(designer=designer)
+
+                for in_transit_event in payments_by_designer[designer]:
+                    amount_to_pay_for_shipping_event = Decimal(0.0)
+                    for line in in_transit_event.lines.all():
+                        amount_to_pay_for_shipping_event += line.line_price_incl_tax
 
                     # There should be a payment event for the shipping paid for this line
+
+                    # Get the "Shipped" event that caused the payment event, it should have the same group id as our
+                    # "In transit" event
+                    shipped_event = \
+                        ShippingEvent.objects.get(Q(group=in_transit_event.group) &
+                                                  Q(event_type=ShippingEventType.objects.get(code="shipped")))
+
                     shipping_payment_event = \
-                        PaymentEvent.objects.get(Q(shipping_event=line.id) &
-                                                 Q(event_type=ShippingEventType.objects.get(code="paid_shipping")))
+                        PaymentEvent.objects.get(Q(shipping_event=shipped_event.id) &
+                                                 Q(event_type=PaymentEventType.objects.get(code="paid_shipping")))
 
                     # Deduct the shipping cost
-                    amount_to_pay -= shipping_payment_event.amount
+                    amount_to_pay_for_shipping_event -= shipping_payment_event.amount
 
                     # Deduct our sales cut
-                    amount_to_pay = get_designer_payout_amount(amount_to_pay)
+                    amount_to_pay_for_shipping_event = get_designer_payout_amount(amount_to_pay_for_shipping_event)
 
-            # Transfer the amount to designer's Stripe account
-            stripe.api_key = settings.STRIPE_SECRET_KEY
+                    # Add this to the total payout
+                    amount_to_payout += amount_to_pay_for_shipping_event
 
-            result = stripe.Transfer.create(
-              amount=amount_to_pay,
-              currency="usd",
-              recipient=designer.recipient_id,
-              description=("Payout to designer (%s)", designer)
-            )
-            logger.debug(result)
+                    # Now create a payment event to mark that the designer has been paid for these shipping events
+                    paid_designer_event = in_transit_event.order.payment_events.create(
+                        amount=amount_to_pay_for_shipping_event, group=shipping_payment_event.group,
+                        event_type=PaymentEventType.objects.get(code="paid_designer"), reference=payout.id)
+                    for line in in_transit_event.order.lines.all():
+                        paid_designer_event.line_quantities.create(
+                            line=line, quantity=line.quantity)
 
-            # Now create a payment event to mark that the designer has been paid for these shipping events
-            for shipping_event in payments_by_designer[designer]:
-                paid_designer_event = shipping_event.order.payment_events.create(
-                    event_type=PaymentEventType.objects.get(code="paid_designer"), reference=result.id)
 
-                paid_designer_event.lines = shipping_event.lines
-                paid_designer_event.save()
+
+                # Transfer the amount to designer's Stripe account
+                stripe.api_key = settings.STRIPE_SECRET_KEY
+
+                result = stripe.Transfer.create(
+                  amount=int(amount_to_payout * 100),  # Amount expected in cents
+                  currency="usd",
+                  recipient=designer.recipient_id,
+                  description="Payout to designer %s " % designer
+                )
+                logger.debug(result)
+
+                # And save the payout record with the stripe reference
+                payout.reference = result.id
+                payout.save()
+
+
 
 
         except Exception as e:
@@ -78,5 +105,5 @@ def pay_designers():
                 "Unhandled exception while paying designer (%s) payment (%s)",
                 designer, e, exc_info=True)
             logger.error("Unable to pay designer due to unknown error")
-
+#
 

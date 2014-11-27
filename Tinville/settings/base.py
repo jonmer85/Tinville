@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from decimal import Decimal
 
 import os.path
 import os
@@ -440,4 +441,4 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND= 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
-TINVILLE_ORDER_SALES_CUT = 0.1  # Tinville takes 10% of designer sales
+TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
