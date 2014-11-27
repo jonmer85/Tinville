@@ -5,6 +5,7 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
+import re
 import json
 import easypost
 
@@ -80,6 +81,7 @@ class OrderDetailView(CoreOrderDetailView):
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
         ctx['box_types'] = self.get_shipment_context(**kwargs)
+        ctx['box_types_json'] = json.dumps(ctx['box_types'])
         return ctx
 
     def get_shipment_context(self, **kwargs):
@@ -164,7 +166,7 @@ class OrderDetailView(CoreOrderDetailView):
                 }
                 rates.append(rate)
 
-        basic_shipment = {'name': shipment.parcel.predefined_package, 'rates' : rates}
+        basic_shipment = {'type': shipment.parcel.predefined_package, 'name': re.sub(r'((?<=[a-z])[A-Z]|(?<!\A)[A-Z](?=[a-z]))', r' \1', shipment.parcel.predefined_package).replace('Flat Rate','Flat-Rate'), 'rates' : rates}
         return basic_shipment
 
     def _GetShopAddress(self,request):

@@ -192,7 +192,7 @@
                                             </button>
                                             <ul class="dropdown-menu" role="menu" id="shippingOptionSelect">
                                                 {% for box_type in box_types %}
-                                                    <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.price != "0.00" %} (${{ box_type.price }}){% endif %}</a></li>
+                                                    <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.rates.0.rate != "0.00" %} (${{ box_type.rates.0.rate }}){% endif %}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -874,8 +874,8 @@
         {
             if (box_types[box_type].type == selectedShippingOption)
             {
-                $("#selectedBoxType").attr("value", box_types[box_type].type);
-                $("#newShippingCosts").text("$" + box_types[box_type].price)
+                $("#selectedBoxType").attr("value", box_types[box_type].name);
+                $("#newShippingCosts").text("$" + box_types[box_type].rates[0].rate)
                 var totalTakeHome = ($("#orderTotal").text().substring(1)-
                     $("#newShippingCosts").text().substring(1)-
                     $("#otherShippingCosts").text().substring(1)-
