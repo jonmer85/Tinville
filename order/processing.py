@@ -1,3 +1,4 @@
+from django.db.models import Max
 from oscar.apps.order import processing
 from oscar.apps.payment import exceptions
 from oscar.core.loading import get_model
@@ -6,6 +7,7 @@ from django.conf import settings
 
 Partner = get_model('partner', 'Partner')
 PartnerAddress = get_model('partner', 'PartnerAddress')
+ShippingEvent = get_model('order', 'ShippingEvent')
 
 class EventHandler(processing.EventHandler):
 
@@ -16,7 +18,12 @@ class EventHandler(processing.EventHandler):
 
         payment_event = None
 
+        group = None
+
         if event_type.name == 'Shipped':
+            max_query = ShippingEvent.objects.all().aggregate(Max('group'))['group__max']
+            group = (max_query+1) if max_query is not None else 0
+
             self.consume_stock_allocations(
                 order, lines, line_quantities)
             for line, quantity in zip(lines, line_quantities):
@@ -30,6 +37,7 @@ class EventHandler(processing.EventHandler):
                         line.set_status("Shipped")
                     else:
                         line.set_status("Partially Shipped")
+
 
         shipping_event = self.create_shipping_event(
             order, event_type, lines, line_quantities,
