@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 @task
 def pay_designers():
     # Get all shipping events that are in transit or received
-    potential_payments = ShippingEvent.objects.filter(event_type__code='in transit')
+    potential_payments = ShippingEvent.objects.filter(event_type__code='in_transit')
 
     # Remove all payments that have been paid already
     potential_payment_ids = [p.id for p in potential_payments]
@@ -48,8 +48,8 @@ def pay_designers():
 
                 for in_transit_event in payments_by_designer[designer]:
                     amount_to_pay_for_shipping_event = Decimal(0.0)
-                    for line in in_transit_event.lines.all():
-                        amount_to_pay_for_shipping_event += line.line_price_incl_tax
+                    for line, quantity in zip(in_transit_event.lines.all(), in_transit_event.line_quantities.all()):
+                        amount_to_pay_for_shipping_event += line.unit_price_excl_tax * quantity.quantity
 
                     # There should be a payment event for the shipping paid for this line
 

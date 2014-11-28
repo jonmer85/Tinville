@@ -7,7 +7,7 @@ from django.test import TestCase
 from order.tasks import pay_designers
 from oscar.core.loading import get_model
 
-from common.factories import create_order, create_product, create_basket_with_products
+from common.factories import create_order, create_product, create_basket_with_products, create_basket
 import stripe
 from user.models import TinvilleUser, DesignerPayout
 
@@ -91,7 +91,7 @@ class PayDesignersTests(TestCase):
 
         # Event marked as "in transit", payment should be made
         in_transit_event = self.order.shipping_events.create(
-            event_type=ShippingEventType.objects.get(code="in transit"), group=shipped_event.group)
+            event_type=ShippingEventType.objects.get(code="in_transit"), group=shipped_event.group)
         if lines and line_quantities:
             for line, quantity in zip(lines, line_quantities):
                 in_transit_event.line_quantities.create(line=line, quantity=quantity)
@@ -240,9 +240,52 @@ class PayDesignersTests(TestCase):
 
         self.assert_proper_stripe_records(designer_payout2)
 
-    # def test_payout_of_partial_order_partial_quantity_line_item(self):
-    #     pass
-    #
+    def test_payout_of_partial_order_partial_quantity_line_item(self):
+        # Create an order with two line items, but ship only the partial quantities of both
+        products = [
+            create_product(title="Graphic T", product_class="Shirts", price=20.00,
+                           num_in_stock=5, partner_users=[self.user], shop=self.shop),
+            create_product(title="Fancy pants", product_class="Bottoms", price=40.00,
+                           num_in_stock=10, partner_users=[self.user], shop=self.shop)
+        ]
+        basket = create_basket(empty=True)
+        basket.add_product(products[0], quantity=3)
+        basket.add_product(products[1], quantity=4)
+
+        self.order = create_order(number="2-10001", basket=basket,
+                                  user=self.user, shop=self.shop)
+
+        # Designer only shipped partial quantities of both items
+        shipped_event, in_transit_event = \
+            self.create_basic_shipping_and_payment_events(
+                shipping_price=5.00, lines=self.order.lines.all(), line_quantities=[2, 3])
+
+        pay_designers()
+
+        designer_payment_event = self.assert_proper_payment_events(
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=139.50)
+
+        designer_payout = self.assert_proper_payout_records(
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=139.50)
+
+        self.assert_proper_stripe_records(designer_payout)
+
+        # Now ship the remaining quantities
+        shipped_event2, in_transit_event2 = \
+            self.create_basic_shipping_and_payment_events(
+                shipping_price=5.00, lines=self.order.lines.all(), line_quantities=[1, 1])
+
+        pay_designers()
+
+        designer_payment_event2 = self.assert_proper_payment_events(
+            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=49.50)
+
+        designer_payout2 = self.assert_proper_payout_records(
+            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=49.50)
+
+        self.assert_proper_stripe_records(designer_payout2)
+
+
     # def test_payout_of_multiple_orders(self):
     #     pass
 

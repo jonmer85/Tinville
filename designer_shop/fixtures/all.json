@@ -1941,7 +1941,7 @@
         "pk": 4,
         "model": "order.shippingeventtype",
         "fields": {
-            "code": "partially shipped",
+            "code": "partially_shipped",
             "name": "Partially Shipped"
         }
     },
@@ -1949,7 +1949,7 @@
         "pk": 5,
         "model": "order.shippingeventtype",
         "fields": {
-            "code": "in transit",
+            "code": "in_transit",
             "name": "In Transit"
         }
     },
