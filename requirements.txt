@@ -57,3 +57,4 @@ sure==1.2.3
 testtools==0.9.34
 wsgiref==0.1.2
 simplejson==3.5.0
+easypost==2.0.11

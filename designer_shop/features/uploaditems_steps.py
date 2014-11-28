@@ -26,10 +26,11 @@ def and_i_fill_in_the_general_add_item_fields(step):
         scroll_to_element(wait_for_element_with_name_to_exist("category"))
         wait_for_element_with_name_to_be_displayed("category").send_keys(itemfields["Category"])
         file = os.path.join(MEDIA_ROOT, itemfields["Image1"])
+        wait_for_element_with_css_selector_to_be_clickable("a[href='#images']").click()
         wait_for_element_with_name_to_be_displayed("product_image").send_keys(file)
-        sizeVariationElement = world.browser.find_element_by_name('sizeVariation')
-        scroll_to_element(sizeVariationElement)
-        Select(sizeVariationElement).select_by_value(itemfields['SizeVariation'])
+        wait_for_element_with_css_selector_to_be_clickable("a[href='#accordion2']").click()
+        scroll_to_element(wait_for_element_with_name_to_exist('sizeVariation'))
+        Select(wait_for_element_with_name_to_be_displayed('sizeVariation')).select_by_value(itemfields['SizeVariation'])
 
 @step(u'I choose the size (.*) with row number (\d+) and I fill the following quantities and colors')
 def i_choose_the_size_and_fill_colors_and_quantities(step, size_set, row_number):
@@ -95,8 +96,7 @@ def my_color_quantity_and_size_selections_are(step):
 @step(u'When I click the delete button for the product')
 def when_I_click_delete_button_product(step):
     minimize_shop_editor()
-    wait_for_element_with_link_text_to_be_displayed("Delete")
-    world.browser.find_element_by_link_text("Delete").click()
+    wait_for_element_with_id_to_be_clickable("testsizesetitem").click()
 
 @step(u'And I click ok on the confirmation')
 def and_I_click_ok_confirmation(step):
@@ -105,15 +105,15 @@ def and_I_click_ok_confirmation(step):
 @step(u'Then the product is removed')
 def then_product_is_removed(step):
     try:
-        world.browser.find_element_by_css_selector("a[href='/Demo/edit/delete_product/TestSizeSetItem']")
+        world.browser.find_element_by_css_selector("a[href='/demo/testsizesetitem']")
     except NoSuchElementException:
         return True
     return False
 
 @step(u'And the shop editor refreshes in a minimized state')
 def and_shopEditor_refreshes_minimized(step):
-    assert world.browser.find_element_by_css_selector("#minMaxIcon.glyphicon-chevron-up").is_displayed() == True, "Because chevron should be facing up"
-    assert len(world.browser.find_elements_by_css_selector("#editorPanels.collapse")) == 1, "Because the editor panel should be collapsed"
+    wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
+    wait_for_element_with_css_selector_to_exist("#editorPanels.collapse")
 
 
 

@@ -11,12 +11,12 @@
     <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
-                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="panel-title">
-                    <b>Pimp my Shop - {{ shop.name }}</b>
+                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">
+                    <b>{{ shop.name }} - Shop Editor</b>
                     <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
                 </div>
             <div id="editorPanels" class="row panel-collapse collapse in">
-                <div id="optionPanel" class="container col-sm-3 panel-body editorPanel shopEditorElementTop">
+                <div id="optionPanel" class="container col-sm-2 panel-body editorPanel shopEditorElementTop">
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
@@ -29,9 +29,9 @@
                         <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
-                        <li>
-                            <a href="#logo" data-toggle="pill">Logo</a>
-                        </li>
+{#                        <li>#}
+{#                            <a href="#logo" data-toggle="pill">Logo</a>#}
+{#                        </li>#}
                         <li>
                             <a href="#color" data-toggle="pill">Color</a>
                         </li>
@@ -40,22 +40,23 @@
                         </li>
                     </ul>
                 </div>
-                <div id="secondColumn" class="container col-sm-9">
+                <div id="secondColumn" class="container col-sm-10">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
                             <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
-                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">
-                                {% load crispy_forms_tags %}
-                                {% crispy logoUploadForm %}
-                            </form>
-                            <form class="tab-pane" id="color" action="edit/ajax_color" method="post">
+{#                            S.Abbay - removing logo for now until we understand better way to place it#}
+{#                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">#}
+{#                                {% load crispy_forms_tags %}#}
+{#                                {% crispy logoUploadForm %}#}
+{#                            </form>#}
+                            <form class="tab-pane" id="color" action="ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane" id="about" action="edit/ajax_about" method="post">
+                            <form class="tab-pane" id="about" enctype="multipart/form-data" method="post">
                                  {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
@@ -120,9 +121,12 @@
             }
         );
 
-        $(".emptyShop").css("border-style", "dashed");
-        $(".emptyShop").css("border-color", "darkgray");
-        $("#editLink").css("visibility", "hidden");
+        $("#emptyShopCon").css("border-style", "dashed");
+        $("#emptyShopCon").css("border-color", "darkgray");
+        $("#emptyShopCon").css("margin-bottom", "30px");
+        $("#shopTabLink").removeClass("active");
+        $("#aboutTabLink").removeClass("active");
+        $("#editLink").addClass("active");
 
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
@@ -144,41 +148,6 @@
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors("#color");
-                        document.getElementById('shopEditor_message_area').innerHTML = ""
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function(index, value) {
-                            if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
-                            } else {
-                                apply_form_field_error(self[0].id, index, value);
-                            }
-                        });
-                    }
-                });
-        });
-        $(document).on("submit", "#about", function(e) {
-            e.preventDefault();
-            var self = $(this)
-            var url = self.attr("action")
-
-            var ajax_req = $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {
-                        aboutContent: document.getElementById("id_aboutContent").value
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors("#about");
-					    document.getElementById('aboutTab').innerHTML = document.getElementById("id_aboutContent").value
-                        $("#collapseOneTitle").removeClass( "collapsed").addClass("");
-                        $("#collapseOne").removeClass( "collapse" ).addClass( "in" );
-                        $("#collapseOne").css("height", "auto");
-                        document.getElementById('shopEditor_message_area').innerHTML = "New about has been applied"
-					},
-                    error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors("#about");
                         document.getElementById('shopEditor_message_area').innerHTML = ""
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
@@ -231,7 +200,7 @@ var htmlString = "<div>\
 </div>";
 
 var colorQuantityTableHead = "" +
-"<div class='accordion-body collapse collapse-colors-quantity col-xs-8 col-xs-offset-4'>" +
+"<div class='accordion-body collapse collapse-colors-quantity col-xs-8 '>" +
     "<div class='accordion-inner table-responsive'>" +
         "<table class='table'>" +
             "<thead>" +
@@ -260,7 +229,9 @@ function sizeSetTemplate(required) {
                     "</select>" +
                 "</div>" +
                 "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+                    "<button id='id_clearSizes' class='shoppingcartBtn' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                    "</button>" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -274,14 +245,16 @@ function sizeDimensionTemplate(required) {
         "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
             "<div class='controls row'>" +
                 "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='number' placeholder = 'Type a width'" + required +">" +
+                    "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='decimal' placeholder = 'Type a width'" + required +">" +
                 "</div>" +
                 "<div class='col-xs-2 dimensionSplit'>X</div>"+
                 "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='number' placeholder = 'Type a length'" + required +">" +
+                    "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='decimal' placeholder = 'Type a length'" + required +">" +
                 "</div>" +
                 "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+                    "<button id='id_clearSizes' class='shoppingcartBtn'  value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                    "</button>" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -295,10 +268,12 @@ function sizeNumberTemplate(required){
         "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
             "<div class='controls row'>" +
                 "<div class='col-xs-10'>" +
-                    "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='demical' placeholder = 'Type a size'>" +
+                    "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='decimal' placeholder = 'Type a size'>" +
                 "</div>" +
                 "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>Clear</button>" +
+                    "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                    "</button>" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -334,7 +309,9 @@ function rowColorQuantityTemplate(required){
             "</div>" +
         "</td>" +
         "<td>" +
-            "<button id='id_clearColorQuantity' value='Clear' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>Clear</button>" +
+            "<button id='id_clearColorQuantity' value='Clear' class='shoppingcartBtn' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>" +
+                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20' />" +
+            "</button>" +
         "</td>" +
     "</tr>"
     return rowColorQuantityTemplate;
@@ -823,7 +800,7 @@ function resizeEditor() {
 }
 
 var jsonDel, delState;
- $('.btn.btn-primary.tinvilleButton.pull-left').click(function(e){
+ $('.itemDelete').click(function(e){
      var chevron, jsonDel, parentId, delState;
      delState = sessionStorage.getItem("del-state");
      jsonDel = JSON.parse(delState || "{}");

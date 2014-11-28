@@ -49,7 +49,7 @@ def and_every_item_should_have_an_image(step):
 def and_every_item_should_have_a_price(step):
     assert_text_of_every_selector('.shopItems .shopItem .price', '$3.42')
 
-@step(u'Given the demo shop$')
+@step(u'Given the demo shop')
 def given_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
 
@@ -199,7 +199,7 @@ def and_a_banner_is_submitted(step):
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
     minimize_shop_editor()
-    assert_selector_contains('#id_BannerImage', 'src', '/media/shops/demo/banner/banner.jpg')
+    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner.jpg')
 
 
 @step(u'And the tinville orange color f46430 is submitted')

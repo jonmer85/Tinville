@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
@@ -27,15 +27,20 @@ class TinvilleUserCreationForm(forms.ModelForm):
     
     helper.layout = Layout(
         Div(
-            Field('email', placeholder="Email"),
-            Field('password', placeholder="Password"),
-            Field('redirect_url'),
             Div(
-                Field('shop_name', placeholder="Shop name"),
-                id="shop_fields",
-            ), css_class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2"
-        ),
-        Submit('userForm', 'Register')
+                HTML("""<div style="padding-top: 25px;"></div>"""),
+                Field('email', placeholder="Email"),
+                Field('password', placeholder="Password"),
+                Field('redirect_url'),
+                Div(
+                    Field('shop_name', placeholder="Shop name"),
+                    id="shop_fields",
+                ), css_class=""
+            ),
+            Div(Div(
+                Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-3 col-sm-4"
+            ), css_class="row")
+        )
     )
 
     def __init__(self, *args, **kwargs):
@@ -48,12 +53,17 @@ class TinvilleUserCreationForm(forms.ModelForm):
 
     def clean_shop_name(self):
         shop_name = self.cleaned_data['shop_name']
-
+        shop_exists = True
         try:
             Shop.objects.get(name__iexact=shop_name)
         except ObjectDoesNotExist:
-            return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
-        raise forms.ValidationError('Shop name is already taken.')
+            shop_exists = False # return shop_name  # if shop_name doesn't exist, this is good. We can create the shop
+        if shop_exists:
+            raise forms.ValidationError('Shop name is already taken.')
+        # if the shop name resolves to a view that is not the shop.. it is trying to use a url that we already use.. dont let this happen!
+        if len(shop_name) > 0 and resolve(urlparse.urlparse('/' + shop_name.lower() + '/')[2]).view_name != 'designer_shop.views.shopper':
+            raise forms.ValidationError('Not a valid shop name, please choose another')
+        return shop_name
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -130,24 +140,25 @@ class LoginForm(AuthenticationForm):
                 ),
 
 
-                HTML("""<div for="id_remember_me" id="rememberLoginLabel" class=" checkbox">
-                        <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
-                         type="checkbox" value="true">
-                        Remember Me </input>
+                HTML("""<div for="id_remember_me" id="rememberLoginLabel" class="checkbox">
+                        <label>
+                            <input checked="checked" class=" checkboxinput" id="id_remember_me" name="remember_me"
+                             type="checkbox" value="true">Remember Me
+                             </input>
+                        </label>
                     </div>"""),
-                Submit('submit', 'Sign in', css_class='btn btn-primary tinvilleButton col-xs-12'),
-                HTML("""<div class="formField pull-left loginForgot">
-                        <p>Forgot
-                        <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
-                         or
-                        <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
-                        </div>"""),
-                Div(css_class='clearfix'),
+                Submit('submit', 'Sign in', css_class='full-screen btn btn-primary tinvilleButton'),
+                # HTML("""<div class="formField pull-left loginForgot">
+                #         <p>Forgot
+                #         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
+                #          or
+                #         <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
+                #         </div>"""),
+                # Div(css_class='clearfix'),
                 HTML("""<div class="formField pull-left loginRegister">
                         <p>Don't have an Account?
                         <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>
                         </div>""")
-
             )
         )
 
@@ -165,6 +176,6 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 PaymentInfoForm.header_payment_layout,
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
                 PaymentInfoForm.base_payment_layout,
-                Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
+                Submit('payment-info', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
             )
         )

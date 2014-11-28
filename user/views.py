@@ -16,7 +16,7 @@ from user.models import TinvilleUser
 class DesignerPaymentInfoView(FormView):
     template_name = 'payment_info.html'
     form_class = PaymentInfoFormWithFullName
-    success_url = reverse_lazy('payment-info-form')
+    success_url = reverse_lazy('designer-payment-info')
 
     def get_context_data(self, **kwargs):
         context = super(DesignerPaymentInfoView, self).get_context_data(**kwargs)

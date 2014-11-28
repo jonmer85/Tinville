@@ -7,28 +7,32 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Tinville</title>
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinville1.png">
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+{#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
     {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/feedback.css" />
-
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/imagelightbox.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/cropper.css" />
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
 
     {% block css %}{% endblock %}
     {{ form.media }}
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/Utilities.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>
 </head>
@@ -38,58 +42,96 @@
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
-    {% load feedback_widget %}
-	{% feedback_widget %}
-    <a id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+{#    {% load feedback_widget %}#}
+{#	{% feedback_widget %}#}
+    <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
+    <div class="cartLocation" id="shoppingcartBtn">
+        <li class="dropdown navbarLinkS " id="" >
+              <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle">
+                  <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
+                  <div id="cartCountId" class="cartCount">
+                  </div>
+              </a>
+              <ul class="dropdown-menu cartDropdown container-fluid" id="cartDropdown">
+                <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
+                <li><div id="noItem" class="col-xs-offset-2 tinvilleOrange">No Item in your Bag</div></li>
+                <li><div id="carttotal" class="hidden carttotal"></div></li>
+                <li id="divider" class="hidden divider"></li>
+                <li class="row"><a id="shoppingcartcheckout" class="hidden col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
+                        Checkout
+                    </a>
+                </li>
+              </ul>
+        </li>
+    </div>
  {% include "notification.html" %}
     <div class="navbar-header">
-        <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="navButton navbar-toggle collapsed menu-toggle">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+        <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="mobileNavButton navButton navbar-toggle collapsed menu-toggle">
+            <i class="fa fa-bars" style="font-size: large;"></i>
         </button>
 
+        {% if not user.is_authenticated %}
+            <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
+                <ul class="dropdown-menu loginPopupFormMobile">
+                    <li class="">
+                        <div class="yamm-content" style="padding-top: 2px">
+                            <div>
+                                {%  include "login_form.html" with form_name="xs-Login" %}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+              </li>
+            </ul>
+        {% else %}
+            <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
+                          <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
+                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>
+                          </a>
+                          <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
+                            {% if user.is_seller or user.is_staff %}
+                                <li><a href="#">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            {% if user.is_seller or user.is_staff %}
+                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                          </ul>
 
-                {% if not user.is_authenticated %}
-                    <ul id="signInButtonMobile" class="nav ">
-                      <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
-                        <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in fa-4"></i></a>
-                        <ul class="dropdown-menu loginPopupFormMobile">
-                            <li>
-                                <div class="yamm-content" style="padding-top: 2px">
-                                    <div class="row">
-                                        {%  include "login_form.html" with form_name="xs-Login" %}
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                      </li>
-                    </ul>
-                {% else %}
-                    <a class="navbar-link navbar-text visible-xs pull-right xs-navbar-text" href="/logout" id="navLogout"><i class="fa fa-sign-out fa-4"></i></a>
-                {% endif %}
-                <li class="dropdown navdropSize mobileDropBtnStyle visible-xs">
-                    <button type="button" id="shoppingcartMobileBtn" class="shoppingcartBtn">
-                        <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
-                    </button>
-                </li>
+                    </li>
+             </ul>
+        {% endif %}
+
     </div>
 
-    <nav class="navbar yamm navbar-default navbar-main" role="navigation">
-        <div class="container">
+    <nav class="navbar yamm navbar-default navbar-main navbarSliding" role="navigation">
+        <div class="container ">
             <div id="navHeader" class="navbar-header">
 
-                <div class="input-group margin-bottom-sm visible-xs ">
-                  <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-                  <input class="form-control" type="text" placeholder="Search">
+                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >
+{#                  <span class="input-group-addon">{{ user.name }}</span>#}
+                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
                 </div>
+                <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
-                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle">
+                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle" style="margin-left: 0; margin-right: 0;">
                     <ul class="nav navbar-nav navButtonIconStyle">
-                        <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">WOMEN <b class="visible-xs"> + </b></a>
-
+                        <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
+                            <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>
+                        </li>
+                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-female fa-fw"></i>&nbsp; Women
+                            </a>
+                            <a href="#"  data-toggle="dropdown" class="hidden-xs dropdown-toggle">WOMEN</a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
@@ -156,9 +198,11 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">MEN <b class="visible-xs"> + </b></a>
+                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-male fa-fw"></i>&nbsp; Men
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">MEN</a>
                             <ul class="dropdown-menu navdropstyle ">
                                 <li>
                                     <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
@@ -224,48 +268,66 @@
                                             </ul>
                                         </div>
                                     </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="hidden dropdown yamm-fw mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-female fa-fw"></i>&nbsp; Shop
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">SHOP</a>
+                        </li>
 
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DESIGNERS <b class="visible-xs"> + </b></a>
-                        </li>
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">SHOP <b class="visible-xs"> + </b></a>
-                            <ul class="dropdown-menu navdropstyle ">
-                                <li>
-                                    <div class="yamm-content navbarLinkStyle ">
-                                        <div class="row">
-                                            <ul class="col-sm-12 list-unstyled mobileDropListStyle mobileDropItemStyle">
-                                                {% for shop in shops %}
-                                                    <li><a href='{{ shop.get_absolute_url }}' >{{ shop.name }}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                          <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
+                          </a>
+                          <a href="#" class="hidden-xs dropdown-toggle " data-toggle="dropdown">
+                              DESIGNERS
+                          </a>
+                          <ul class="dropdown-menu" >
+                              {% for shop in shops %}
+                                <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
+                                {% if not forloop.last %}
+                                   <li class="divider"></li>
+                                {% endif %}
+                              {% endfor %}
+                          </ul>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">BLOG <b class="visible-xs"> + </b></a>
+                            <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
+                                <i class="fa fa-rss fa-fw"></i>&nbsp; Blog
+                            </a>
+                            <a class="hidden-xs" href="http://blog.tinville.com" target="_blank">BLOG</a>
                         </li>
 
                         {% if user.is_authenticated %}
 
-                            <li class="dropdown yamm-fw navbarLinkS" id="lg-menuLogin" >
-                                <a href="/logout" class="pull-right navbar-link hidden-xs">SIGN OUT</a>
-{#                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ user.first_name|upper }} <b class="caret"></b></a>#}
-{#                                <ul class="dropdown-menu navdropstyle ">#}
-{#                                    <li><a href="#" class="pull-right navbar-link">My ACCOUNT</a></li>#}
-{#                                    <li><a href="/logout" class="pull-right navbar-link">SIGN OUT</a></li>#}
-{#                                </ul>#}
+                            <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
+
+                                  <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <span id="clickedLogin-lg" class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                                  </a>
+                                  <ul class="dropdown-menu" style="right: 0;">
+                                    {% if user.is_seller or user.is_staff %}
+                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                    {% if user.is_seller or user.is_staff %}
+                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                  </ul>
+
                             </li>
                         {% else %}
-                            <li class="dropdown yamm-fw" id="lg-menuLogin" >
+                            <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
                                 <ul class="dropdown-menu loginPopupForm">
-                                    <li>
+                                    <li class="">
                                         <div class="yamm-content" style="padding-top: 2px">
                                             {%  include "login_form.html" with form_name="md-Login" %}
                                         </div>
@@ -273,88 +335,84 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li class="hidden-xs">
-                            <button type="button" id="shoppingcartBtn" class="shoppingcartBtn">
-                                <img src="{{ STATIC_URL }}img/shoppingCartLogo.png" width="25" height="25"/>
-                           </button>
-                        </li>
                     </ul>
                 </div>
             </div>
     </nav>
 
-                   <div id="shoppingcart" class="col-xs-11 col-sm-5 col-md-4 pull-right">
-                   <div id="shoppingcartSlimJeff">
-                    <div id="shoppingcartitems" class="slimScrollBar col-xs-11 col-sm-12 col-md-12">
-                     </div>
-                   </div>
-                       <div>
-                        <button id="shoppingcartcheckout" type="button" class="btn btn-default btn-sm">
-                           <a href="{% url 'cartdetail' %}" class="glyphicon glyphicon-check"></a>
-                        </button>
-                         <div id="carttotal">
-
-                         </div>
-                       </div>
-
-                   </div>
-
     <div class="slidingContent">
-        {% block content %}
-        {% endblock content %}
-    </div>
+        <div class="slidingContent2">
+            {% block content %}
+            {% endblock content %}
+        </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="row slidingContent">
-        <div class="row footerRow hidden-xs">
-            <nav id="footerNavRight" class="col-sm-2 col-sm-offset-1 col-lg-offset-2 footer-nav">
+    <div id="footerContainer" class="container-fluid">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
+            <div class="row">
+                <nav id="footerNavRight" class="col-sm-2 footer-nav">
                 <dl class="list-unstyled">
                     <li class="mainFooterListItem">Information</li>
                     <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
-                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
+{#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
                     <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
                     <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </nav>
-            <nav id="footerNavRight" class="footer-nav col-sm-2">
-                <dl class="list-unstyled">
-                    <li class="mainFooterListItem">Why Buy From Us</li>
-                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
-                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>
-                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>
-                    <li class="mainFooterListItem"><a href="#">Designers</a></li>
-                    <li class="mainFooterListItem"><a href="#">The Network</a></li>
-                </dl>
-            </nav>
-            <nav class="footer-nav col-sm-2">
+{#            <nav id="footerNavRight" class="footer-nav col-sm-2">#}
+{#                <dl class="list-unstyled">#}
+{#                    <li class="mainFooterListItem">Why Buy From Us</li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
+{#                </dl>#}
+{#            </nav>#}
+            <nav class="footer-nav col-sm-offset-2 col-sm-2">
                 <dl class="list-unstyled">
                     <li class="mainFooterListItem">My Account</li>
-                    <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
-                            <a href="/logout">Sign Out</a>
+                            <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
                         {% else %}
-                            <a id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a>
+                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
+                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
                         {% endif %}
-                    </li>
-                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>
-                    <li class="mainFooterListItem"><a href="#">Help</a></li>
+{#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
                 </dl>
             </nav>
-            <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-1 col-lg-offset-1">
+            <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-2">
                 <dl class="list-unstyled">
                     <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2013</li>
+                    <li id="tinvilleFooterListItemChild">2011-2014</li>
                     <li id="tinvilleFooterListItemPrimary">Contact Us</li>
                     <li id="tinvilleFooterListItemChild">
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
                     <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+                    <li Id="tinvilleFooterListItemPrimary">
+                        <div class="footersocialMediaLinks">
+                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
+                            </a>
+                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
+                            </a>
+                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
+                            </a>
+                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
+                            </a>
+                        </div>
+                    </li>
                 </dl>
             </nav>
+            </div>
         </div>
+    </div>
+
         <div class="panel-group footerRow hidden-sm hidden-md hidden-lg footerRow footer-nav">
-            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseInformation">
+            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseInformation">
                 <h4 id="tinvilleXSFooterHeaders">Information</h4>
             </button>
             <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
@@ -366,19 +424,19 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </div>
-            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseWhyBuyFromUs">
-                <h4 id="tinvilleXSFooterHeaders">Why Buy From Us</h4>
-            </button>
-            <div id="collapseWhyBuyFromUs" class="panel-collapse collapse footerPanelPadding">
-                <dl class="list-unstyled">
-                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>
-                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>
-                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>
-                    <li class="mainFooterListItem"><a href="#">Designers</a></li>
-                    <li class="mainFooterListItem"><a href="#">The Network</a></li>
-                </dl>
-            </div>
-            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseMyAccount">
+{#            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseWhyBuyFromUs">#}
+{#                <h4 id="tinvilleXSFooterHeaders">Why Buy From Us</h4>#}
+{#            </button>#}
+{#            <div id="collapseWhyBuyFromUs" class="panel-collapse collapse footerPanelPadding">#}
+{#                <dl class="list-unstyled">#}
+{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
+{#                </dl>#}
+{#            </div>#}
+            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
                 <h4 id="tinvilleXSFooterHeaders">My Account</h4>
             </button>
             <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
@@ -387,11 +445,12 @@
                         {% if user.is_authenticated %}
                             <a href="/logout">Sign Out</a>
                         {% else %}
-                            <a id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a>
+                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
+                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
                         {% endif %}
                     </li>
-                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>
-                    <li class="mainFooterListItem"><a href="#">Help</a></li>
+{#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
                 </dl>
             </div>
             <div>
@@ -403,11 +462,23 @@
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
                     <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+                    <li Id="tinvilleFooterListItemChild">
+                        <div class="footersocialMediaLinks">
+                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
+                            </a>
+                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
+                            </a>
+                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
+                            </a>
+                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
+                            </a>
+                        </div>
+                    </li>
                 </dl>
             </div>
         </div>
     </div>
-
+</div>
 
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
@@ -418,6 +489,7 @@
 {#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
 {#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="{{ STATIC_URL }}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
@@ -426,7 +498,12 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>#}
+        <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -490,6 +567,7 @@
 
 
 
+
         $("#goToTopOfPage").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
         })
@@ -515,7 +593,7 @@
                 $("#nonMobileWomenContent").css("display","");
                 $("#mobileWomenContent").css("display","none");
 
-                $('.navbar').removeAttr( 'style' );
+                $('.navbarSliding').removeAttr( 'style' );
                 $('.slidingContent').removeAttr( 'style' );
             }
         });
@@ -555,33 +633,7 @@
         );
 
 
-        $("#shoppingcart").click(function(){
-            sessionStorage.setItem("cartClick","1")
-        });
 
-        $(".loginPopupForm").click(function(){
-            sessionStorage.setItem("cartClick","1")
-        });
-
-
-        $(document).on('click',function () {
-            var cartClick = sessionStorage.getItem("cartClick");
-            if(cartClick === undefined)
-                cartClick = "0";
-
-            if (cartClick==="0"){
-                var mode = checkMode();
-                if(mode == 'xs')
-                    $("#shoppingcart").animate({width:'hide'},350);
-                else
-                    $("#shoppingcart").animate({height:'hide'},350);
-                cartState = sessionStorage.getItem("cartState");
-                cartJson = JSON.parse(cartState || "{}");
-                cartJson["IsOpen"] = false;
-                sessionStorage.setItem("cartState", JSON.stringify(cartJson));
-            }
-            sessionStorage.setItem("cartClick","0");
-        });
 
         $(document).ready(function() {
 
@@ -589,17 +641,17 @@
 
                     $('.menu-toggle').click(function() {
                         if(menu == "close"){
-                            $('.slidingContent').css('-webkit-transform','translate(225px, 0)');
-                            $('.navbar').css('-webkit-transform','translate(0, 0)');
+                            $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');
 
                             menu="open";
                         }
                         else{
-                    $('.slidingContent').css('-webkit-transform','translate(0, 0)');
-                    $('.navbar').css('-webkit-transform','translate(-100%, 0)');
+                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');
 
-                    menu="close";
-                }
+                            menu="close";
+                        }
             });
             var self = $(this)
             var url = "/load_cart"
@@ -613,6 +665,7 @@
                             if (item.msg == ''){
                                 item.image = "{{ MEDIA_URL }}" + item.image
                                 AddCartItem(item)
+                                cartCount()
                             }
                             else {
                                 $('#messageId').html(item.msg)
@@ -624,6 +677,7 @@
                     }
                 });
 
+            cartCount();
 
         });
 
@@ -679,6 +733,36 @@
  cartState = sessionStorage.getItem("cartState");
  cartJson = JSON.parse(cartState || "{}");
 
+      function cartCount()
+      {
+          ajax_req = $.ajax({
+                url: "/total_cart_items",
+                type: "GET",
+                success: function(data, textStatus, jqXHR) {
+                    if (data.count > 0){
+                        $('#cartCountId').text(data.count);
+                        $('#cartCountId').removeClass("hidden");
+                        $('#carttotal').removeClass("hidden");
+                        $('#divider').removeClass("hidden");
+                        $('#shoppingcartcheckout').removeClass("hidden");
+                        $('#noItem').addClass("hidden");
+                        $('#tagIconId').removeClass("tinvilleDrayGray");
+                        $('#tagIconId').addClass("tinvilleOrange");
+                    }
+                    else{
+                        $('#cartCountId').addClass("hidden");
+                        $('#carttotal').addClass("hidden");
+                        $('#divider').addClass("hidden");
+                        $('#shoppingcartcheckout').addClass("hidden");
+                        $('#noItem').removeClass("hidden");
+                        $('#tagIconId').removeClass("tinvilleOrange");
+                        $('#tagIconId').addClass("tinvilleDrayGray");
+                    }
+                },
+                error: function(data, textStatus, jqXHR) {
+                }
+            });
+      }
 $(function() {
 
     cartState = sessionStorage.getItem("cartState");
@@ -688,11 +772,6 @@ $(function() {
 
     var _IsOpen = cartJson["IsOpen"];
 
-    if(_IsOpen === undefined || _IsOpen === false)
-        $("#shoppingcart").hide();
-
-    if(_IsOpen === true)
-        $("#shoppingcart").show();
 
 });
 
@@ -703,7 +782,7 @@ $("#mobileNavButton").click(function()
 
 function navbarClicked()
 {
-    $("#shoppingcart").hide();
+{#    $("#shoppingcart").hide();#}
     cartState = sessionStorage.getItem("cartState");
     cartJson = JSON.parse(cartState || "{}");
     var IsOpen = false;
@@ -711,20 +790,6 @@ function navbarClicked()
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
-
-$("#shoppingcartBtn").click(function()
-{
-    sessionStorage.setItem("cartClick","1")
-    $("#shoppingcart").animate({height:'toggle'},350);
-    cartToggleBtn();
-});
-
-$("#shoppingcartMobileBtn").click(function()
-{
-    sessionStorage.setItem("cartClick","1")
-    $("#shoppingcart").animate({width:'toggle'},350);
-    cartToggleBtn();
-});
 
 function cartToggleBtn()
 {
@@ -739,11 +804,13 @@ function cartToggleBtn()
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
-
 function LoadCartItemDiv(cartItem)
 {
-    var cartitemdiv =  $('<div/>', {
-        'class':'shoppingcartitem col-xs-12 col-sm-12 col-md-12',
+    var rowdiv =  $('<div/>', {
+        'class':'row'
+    });
+    var cartitemdiv =  $('<li/>', {
+        'class':'shoppingcartitem col-xs-12',
         'id' : "lineId" + cartItem.Id
     });
 
@@ -754,16 +821,21 @@ function LoadCartItemDiv(cartItem)
 
     var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
 
-    var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle','text':cartItem.title});
+    var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
     itemTitle.appendTo(itemInfoDiv);
 
-    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':cartItem.description});
+    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color: " + cartItem.color});
     itemDescription.appendTo(itemInfoDiv);
+    var itemSize = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Size: " + cartItem.size});
+    itemSize.appendTo(itemInfoDiv);
+
+    var itemQty = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
+    itemQty.appendTo(itemInfoDiv);
 
     itemInfoDiv.appendTo(cartitemdiv);
     var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
     var delBtnId = 'deleteBtnId_' + cartItem.Id;
-    var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
+    var removeBtn = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
         'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
     });
     removeBtn.appendTo(removeBtnDiv);
@@ -771,9 +843,17 @@ function LoadCartItemDiv(cartItem)
     var price = '$' + cartItem.price;
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
-    cartitemdiv.appendTo("#shoppingcartitems");
+    cartitemdiv.appendTo(rowdiv);
 
+    rowdiv.appendTo("#shoppingcartitems");
+
+
+
+     $(".shoppingcartitemTitle").text(function(index, currentText) {
+            return currentText.substr(0, 15);
+        });
 }
+
 
 function aggregateTotal()
 {
@@ -796,6 +876,7 @@ function AddCartItem(cartItem)
         aggregateTotal();
     }
 
+
 }
 
 function RemoveCartItem(itemId)
@@ -815,12 +896,13 @@ function RemoveCartItem(itemId)
             }
         });
 
-    $('#'+itemId).remove();
+    $('#lineId'+itemId).remove();
 
     aggregateTotal();
+    cartCount();
 }
 
-    $("#shoppingcartSlimJeff").slimScroll({});
+    $("#shoppingcartitems").slimScroll({});
 
 
     </script>
@@ -868,6 +950,10 @@ function RemoveCartItem(itemId)
               $( this ).parsley().validate();
           })
         });
+
+{#     {% if debug %}#}
+{#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
+{#     {% endif %}#}
 
     </script>
 

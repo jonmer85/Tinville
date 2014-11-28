@@ -3,8 +3,10 @@
 from .base import *  # Start with base settings
 
 # HEROKU Change!!!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = ['tinville-testing.herokuapp.com']
 
 DATABASES = {
   'default': {

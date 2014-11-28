@@ -2,23 +2,89 @@
 {% load i18n %}
 {% block body_class %}{{ block.super }} home{% endblock %}
 
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
+{% endblock css %}
+
 {% block content %}
     {{ block.super }}
-    <span data-picture class="banner">
-        <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-        <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
-        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-        <noscript>
-            <img src="{{ STATIC_URL }}img/banner-xs.jpg">
-        </noscript>
-    </span>
+{#    <span data-picture class="banner">#}
+{#        <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>#}
+{#        <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>#}
+{#        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->#}
+{#        <noscript>#}
+{#            <img src="{{ STATIC_URL }}img/banner-xs.jpg">#}
+{#        </noscript>#}
+{#    </span>#}
 
-    <img class="img-responsive col-xs-12 col-sm-12 col-md-8" src="{{ STATIC_URL }}img/sale-item-main.jpg"/>
-    <img class="img-responsive col-xs-6 col-sm-6 col-md-4" src="{{ STATIC_URL }}img/sale-item-1.jpg"/>
-    <img class="img-responsive col-xs-6 col-sm-6 col-md-4" src="{{ STATIC_URL }}img/sale-item-2.jpg"/>
-
+    <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#thumbnail-preview-indicators" data-slide-to="0" class="active">
+{#              <div class="thumbnail">#}
+{#                <img class="img-responsive" src="{{ STATIC_URL }}img/banner-xl.jpg">#}
+{#              </div>#}
+            </li>
+            <li data-target="#thumbnail-preview-indicators" data-slide-to="1">
+{#            <div class="thumbnail">#}
+{#                <img class="img-responsive" src="https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg">#}
+{#              </div>#}
+            </li>
+            <li data-target="#thumbnail-preview-indicators" data-slide-to="2">
+{#            <div class="thumbnail">#}
+{#                <img class="img-responsive" src="https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg">#}
+{#              </div>#}
+            </li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="item slides active">
+              <div class="slide-1"></div>
+              <div class="container">
+                <div class="carousel-caption">
+{#                  <p><a class="btn btn-lg btn-primary" href="/register" role="button">Sign up today</a></p>#}
+                </div>
+              </div>
+            </div>
+            <div class="item slides">
+              <div class="slide-2"></div>
+              <div class="container">
+                <div class="carousel-caption">
+                  <h1>Another example headline.</h1>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                </div>
+              </div>
+            </div>
+            <div class="item slides">
+              <div class="slide-3"></div>
+              <div class="container">
+                <div class="carousel-caption">
+                  <h1>One more for good measure.</h1>
+                  <p>Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+      </div>
+    <div style="height: 300px"></div>
 {% endblock %}
 
 {% block bottomContent %}
     <div id="villageOfShops"></div>
+{% endblock %}
+
+{% block javascript_library %}
+  {{ block.super }}
+{% endblock javascript_library %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.jpg)");
+    </script>
+
 {% endblock %}
