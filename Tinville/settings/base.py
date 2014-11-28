@@ -1,4 +1,5 @@
 # Django settings for Tinville project.
+from decimal import Decimal
 
 import os.path
 import os
