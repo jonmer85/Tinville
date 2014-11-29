@@ -5,6 +5,9 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
+import json
+import re
+import easypost
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -43,6 +46,154 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
+    # box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
+    # box_types_json = json.dumps(box_types)
+    easypost.api_key = settings.EASYPOST_API_KEY
+
+    def create_shipping_event(self, request, order, lines, quantities):
+        code = request.POST['shipping_event_type']
+        try:
+            event_type = ShippingEventType._default_manager.get(code=code)
+        except ShippingEventType.DoesNotExist:
+            messages.error(request, _("The event type '%s' is not valid")
+                           % code)
+            return self.reload_page_response()
+
+        reference = request.POST.get('reference', None)
+        response = HttpResponse()
+        try:
+            EventHandler().handle_shipping_event(order, event_type, lines,
+                                                 quantities, request, response,
+                                                 reference=reference)
+        except InvalidShippingEvent as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except InvalidStatus as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except PaymentError as e:
+            messages.error(request, _("Unable to create shipping event due to"
+                                      " payment error: %s") % e)
+        else:
+            messages.success(request, ("Shipping event created"))
+        return self.reload_page_response()
+
+    def get_context_data(self, **kwargs):
+        ctx = super(OrderDetailView, self).get_context_data(**kwargs)
+        try:
+            ctx['box_types'] = self.get_shipment_context(**kwargs)
+            ctx['box_types_json'] = json.dumps(ctx['box_types'])
+        except ValueError as e:
+            #NOTE: If get shipment context fails we return empty box types
+            ctx['box_types'] = []
+            ctx['box_types_json'] = []
+        return ctx
+
+    def get_shipment_context(self, **kwargs):
+        shipment_collection = []
+        parcelType = {
+                        'predefined_package' : 'FlatRateEnvelope',
+                        'weight' : 10
+                    }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'FlatRatePaddedEnvelope',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'SmallFlatRateBox',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'MediumFlatRateBox',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        parcelType = {
+            'predefined_package' : 'LargeFlatRateBox',
+            'weight' : 10
+        }
+        shipment_collection.append(self.get_specific_shipment(kwargs, parcelType))
+
+        return shipment_collection
+
+    def get_specific_shipment(self, kwargs, parcelType):
+
+        order = kwargs['object']
+
+        from_address = self._GetShopAddress(order.number)
+        to_address = self._EasyPostAddressFormatter(order.shipping_address)
+
+        try:
+            shipment = easypost.Shipment.create(
+                to_address=to_address,
+                from_address=from_address,
+                parcel=parcelType
+            )
+        except Exception as e:
+            #TODO Handle a failed Shipment Create
+            pass
+
+        #TODO: Add appropriate logging/Exception message for shipment validation
+        if(shipment == None):
+            raise ValueError("Shipment is empty")
+
+        if(shipment.parcel == None):
+            raise ValueError("Parcel is empty")
+
+        if(shipment.parcel.predefined_package == None):
+            raise ValueError("Parcel type is empty")
+
+        if(shipment.rates == None):
+            raise ValueError("Shipping rates is empty")
+
+        rates = []
+        for current in range(0, len(shipment.rates)):
+            if(shipment.rates[current].service == 'Priority'):
+                rate = {
+                    'carrier': shipment.rates[current].carrier,
+                    'rate': shipment.rates[current].rate,
+                    'service': shipment.rates[current].service
+                }
+                rates.append(rate)
+
+        basic_shipment = {'type': shipment.parcel.predefined_package, 'name': re.sub(r'((?<=[a-z])[A-Z]|(?<!\A)[A-Z](?=[a-z]))', r' \1', shipment.parcel.predefined_package).replace('Flat Rate','Flat-Rate'), 'rates' : rates}
+        return basic_shipment
+
+    def _GetShopAddress(self,orderId):
+
+        shopIdMatch = re.search('^([0-9]+)',orderId)
+        shopId = shopIdMatch.group()
+        shop = Shop.objects.get(pk=shopId)
+        userId = shop.user.id
+
+        partners = Partner._default_manager.filter(users=userId)
+        if(partners == None or len(partners) == 0):
+            raise ValueError("Partners Address is empty")
+
+        shop_address = self._EasyPostAddressFormatter(partners[0].addresses.instance.primary_address)
+        return shop_address
+
+    def _EasyPostAddressFormatter(self, address):
+        #TODO Validate address
+        if(address == None):
+            raise ValueError("Address is Empty.")
+        #TODO check for multiple Address Lines
+        _address = {
+            'name': address.name,
+            'street1': address.line1,
+            'city': address.city,
+            'state': address.state,
+            'zip': address.postcode
+        }
+        return _address
+
 
 class LineDetailView(CoreLineDetailView):
     template_name = 'templates/dashboard/orders/line_detail.html'
@@ -58,7 +209,7 @@ class OrderStatsView(CoreOrderStatsView):
             'total_revenue': orders.aggregate(
                 Sum('total_incl_tax'))['total_incl_tax__sum'] or D('0.00'),
             'order_status_breakdown': orders.order_by('status').values(
-                'status').annotate(freq=Count('id'))
+                'status').annotate(freq=Count('id')),
         }
         return stats
 

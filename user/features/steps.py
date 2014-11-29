@@ -138,5 +138,3 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 
 def sign_in_local():
     sign_in(world.user_info["email"], world.user_info["password"])
-
-

@@ -1941,8 +1941,48 @@
         "pk": 4,
         "model": "order.shippingeventtype",
         "fields": {
-            "code": "partially shipped",
+            "code": "partially_shipped",
             "name": "Partially Shipped"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "in_transit",
+            "name": "In Transit"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "received",
+            "name": "Received"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "boxed",
+            "name": "Boxed"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "order.paymenteventtype",
+        "fields": {
+            "code": "paid_designer",
+            "name": "Paid Designer"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "order.paymenteventtype",
+        "fields": {
+            "code": "paid_shipping",
+            "name": "Paid Shipping"
         }
     }
 ]

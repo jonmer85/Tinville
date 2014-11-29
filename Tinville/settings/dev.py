@@ -6,6 +6,8 @@ from .base import *  # Start with base settings
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
+
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
