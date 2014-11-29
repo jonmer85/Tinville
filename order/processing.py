@@ -13,7 +13,7 @@ ShippingEvent = get_model('order', 'ShippingEvent')
 class EventHandler(processing.EventHandler):
 
     def handle_shipping_event(self, order, event_type, lines,
-                              line_quantities, request, response, **kwargs):
+                              line_quantities, request, response, shipment_info, **kwargs):
         self.validate_shipping_event(
             order, event_type, lines, line_quantities, **kwargs)
 
@@ -40,8 +40,19 @@ class EventHandler(processing.EventHandler):
                         line.set_status("Partially Shipped")
 
 
+        shipping_event = self._create_shipping_event(
+            order, event_type, lines, line_quantities, shipment_info, group,
+            kwargs.get('reference', None))
+
+
+    def _create_shipping_event(self, order, event_type, lines, line_quantities, shipment_info, group,
+                              ref):
         shipping_event = self.create_shipping_event(
             order, event_type, lines, line_quantities,
-            reference=kwargs.get('reference', None))
-        order.shipping_excl_tax += order.shipping_excl_tax + D('5.00')
+            reference=ref)
 
+        shipping_event.label_url = shipment_info["labelUrl"]
+        shipping_event.tracking_code = shipment_info["tracking"]
+        shipping_event.group = group
+
+        shipping_event.save()

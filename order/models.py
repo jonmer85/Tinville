@@ -30,6 +30,8 @@ class ShippingEvent(AbstractShippingEvent):
     # The reference should refer to the transaction ID of the payment gateway
     # that was used for this event.
     reference = models.CharField("Reference", max_length=128, blank=True)
+    label_url = models.URLField("Label_Url", null=True)
+    tracking_code = models.TextField("tracking_code", null=True)
 
 class PaymentEvent(AbstractPaymentEvent):
     group = models.IntegerField(null=True)
