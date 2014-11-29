@@ -49,7 +49,7 @@ def and_every_item_should_have_an_image(step):
 def and_every_item_should_have_a_price(step):
     assert_text_of_every_selector('.shopItems .shopItem .price', '$3.42')
 
-@step(u'Given the demo shop')
+@step(u'Given the demo shop$')
 def given_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
 
