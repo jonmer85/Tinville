@@ -5,7 +5,9 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
+from designer_shop.models import Shop
 import json
+import re
 import easypost
 
 Order = get_model('order', 'Order')
@@ -79,11 +81,16 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
-        ctx['box_types'] = self.get_shipment_context(**kwargs)
+        try:
+            ctx['box_types'] = self.get_shipment_context(**kwargs)
+        except ValueError as e:
+            #NOTE: If get shipment context fails we return empty box types
+            ctx['box_types'] = []
         return ctx
 
     def get_shipment_context(self, **kwargs):
         shipment_collection = []
+
         parcelType = {
                         'predefined_package' : 'FlatRateEnvelope',
                         'weight' : 10
@@ -119,16 +126,8 @@ class OrderDetailView(CoreOrderDetailView):
     def get_specific_shipment(self, kwargs, parcelType):
 
         order = kwargs['object']
-        try:
 
-            #TODO: Get current user
-            #from_address = self._GetShopAddress(order.number)
-            from_address = self._EasyPostAddressFormatter(order.shipping_address)
-
-        except ValueError as e:
-            #TODO Redirect to Shop's Address Form Page rather than home
-            return HttpResponseRedirect(reverse('home'))
-
+        from_address = self._GetShopAddress(order.number)
         to_address = self._EasyPostAddressFormatter(order.shipping_address)
 
         try:
@@ -167,12 +166,19 @@ class OrderDetailView(CoreOrderDetailView):
         basic_shipment = {'name': shipment.parcel.predefined_package, 'rates' : rates}
         return basic_shipment
 
-    def _GetShopAddress(self,request):
-        partners = Partner._default_manager.filter(users=request.user)
-        #TODO do something with this broken logic...
-        for partner in partners:
-            shop_address = self._EasyPostAddressFormatter(partner.addresses.instance.primary_address)
-            return shop_address
+    def _GetShopAddress(self,orderId):
+
+        shopIdMatch = re.search('^([0-9]+)',orderId)
+        shopId = shopIdMatch.group()
+        shop = Shop.objects.get(pk=shopId)
+        userId = shop.user.id
+
+        partners = Partner._default_manager.filter(users=userId)
+        if(partners == None or len(partners) == 0):
+            raise ValueError("Partners Address is empty")
+
+        shop_address = self._EasyPostAddressFormatter(partners[0].addresses.instance.primary_address)
+        return shop_address
 
     def _EasyPostAddressFormatter(self, address):
         #TODO Validate address
