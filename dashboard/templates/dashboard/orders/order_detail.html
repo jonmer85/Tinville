@@ -185,44 +185,48 @@
                                         <h4 class="modal-title" id="boxItModalLabel">Select Shipping Option</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="btn-group">
-                                            <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="selected_box_type" value="noneSelected"/>
-                                            <button type="button" id="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
-                                                <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu" id="shippingOptionSelect">
-                                                {% for box_type in box_types %}
-                                                    <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.rates.0.rate != "0.00" %} (${{ box_type.rates.0.rate }}){% endif %}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">The Financials</div>
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Order Total</td>
-                                                        <td id="orderTotal">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>New Shipping Costs</td>
-                                                        <td id="newShippingCosts">$0.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Other Shipping Costs</td>
-                                                        <td id="otherShippingCosts">$5.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Total Transaction Fees</td>
-                                                        <td id="totalTransactionFees">$5.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Take Home</td>
-                                                        <td id="takeHome">$0.00</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        {% if box_types %}
+                                            <div class="btn-group">
+                                                <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="selected_box_type" value="noneSelected"/>
+                                                <button type="button" id="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+                                                    <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
+                                                </button>
+                                                    <ul class="dropdown-menu" role="menu" id="shippingOptionSelect">
+                                                        {% for box_type in box_types %}
+                                                            <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.rates.0.rate != "0.00" %} (${{ box_type.rates.0.rate }}){% endif %}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">The Financials</div>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Order Total</td>
+                                                            <td id="orderTotal">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>New Shipping Costs</td>
+                                                            <td id="newShippingCosts">$0.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Other Shipping Costs</td>
+                                                            <td id="otherShippingCosts">{{ order.shipping_excl_tax|currency:order.currency }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total Transaction Fees</td>
+                                                            <td id="totalTransactionFees">{{ order.estimated_total_transaction_fees|currency:order.currency }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Take Home</td>
+                                                            <td id="takeHome">{{ order.estimated_designer_cut|currency:order.currency }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        {% else %}
+                                            <p>YOU SUCK, GIVE US YOUR ADDRESS!!</p>
+                                        {% endif %}
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
