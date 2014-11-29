@@ -5,7 +5,6 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
-from designer_shop.models import Shop
 import json
 import re
 import easypost
@@ -47,8 +46,8 @@ class OrderListView(CoreOrderListView):
 
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
-    box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
-    box_types_json = json.dumps(box_types)
+    # box_types = [{'type':'flat-rate envelope', 'name':'Flat-Rate Envelope', 'price':'5.99'},{'type':'flat-rate box', 'name':'Flat-Rate Box', 'price':'7.99'}]
+    # box_types_json = json.dumps(box_types)
     easypost.api_key = settings.EASYPOST_API_KEY
 
     def create_shipping_event(self, request, order, lines, quantities):
@@ -83,14 +82,15 @@ class OrderDetailView(CoreOrderDetailView):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
         try:
             ctx['box_types'] = self.get_shipment_context(**kwargs)
+            ctx['box_types_json'] = json.dumps(ctx['box_types'])
         except ValueError as e:
             #NOTE: If get shipment context fails we return empty box types
             ctx['box_types'] = []
+            ctx['box_types_json'] = []
         return ctx
 
     def get_shipment_context(self, **kwargs):
         shipment_collection = []
-
         parcelType = {
                         'predefined_package' : 'FlatRateEnvelope',
                         'weight' : 10
@@ -163,7 +163,7 @@ class OrderDetailView(CoreOrderDetailView):
                 }
                 rates.append(rate)
 
-        basic_shipment = {'name': shipment.parcel.predefined_package, 'rates' : rates}
+        basic_shipment = {'type': shipment.parcel.predefined_package, 'name': re.sub(r'((?<=[a-z])[A-Z]|(?<!\A)[A-Z](?=[a-z]))', r' \1', shipment.parcel.predefined_package).replace('Flat Rate','Flat-Rate'), 'rates' : rates}
         return basic_shipment
 
     def _GetShopAddress(self,orderId):

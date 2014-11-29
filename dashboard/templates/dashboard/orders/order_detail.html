@@ -161,21 +161,21 @@
                 <form id="order_lines_form" action="." method="post" class="form-inline">
                     {% csrf_token %}
                     {% block line_actions %}
-                            <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
-                            <div class="control-group">
-                                <div class="controls">
-                                    <input type="text" readonly="true" name="line_action" value="create_shipping_event" class="btn btn-group hidden"/>
-                                        <div class="btn-group">
+                        <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" readonly="true" name="line_action" value="create_shipping_event" class="btn btn-group hidden"/>
+                                    <div class="btn-group">
 {#                                            {% for event_type in shipping_event_types %}#}
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boxItModal">Box it!</button>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boxItModal">Box it!</button>
 {#                                                <button type="submit" name="shipping_event_type" class="btn btn-primary" value="{{ event_type.code }}">{{ event_type.name }}</button>#}
 {#                                            {% endfor %}#}
-                                        </div>
-                                    <label class="radio list-inline hidden">
-                                        {% trans "with reference" %} <input type="text" name="reference" value="" />
-                                    </label>
-                                </div>
+                                    </div>
+                                <label class="radio list-inline hidden">
+                                    {% trans "with reference" %} <input type="text" name="reference" value="" />
+                                </label>
                             </div>
+                        </div>
                         <!-- Modal -->
                         <div class="modal fade" id="boxItModal" tabindex="-1" role="dialog" aria-labelledby="boxItModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-sm">
@@ -186,12 +186,13 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+                                            <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="selected_box_type" value="noneSelected"/>
+                                            <button type="button" id="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
                                                 <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
                                             </button>
-                                            <ul class="dropdown-menu" role="menu" id="shippingOptionSelect" label="hi">
-                                                {% for box_type in view.box_types %}
-                                                    <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.price != "0.00" %} (${{ box_type.price }}){% endif %}</a></li>
+                                            <ul class="dropdown-menu" role="menu" id="shippingOptionSelect">
+                                                {% for box_type in box_types %}
+                                                    <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.rates.0.rate != "0.00" %} (${{ box_type.rates.0.rate }}){% endif %}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
@@ -868,18 +869,25 @@
 
     $( "#shippingOptionSelect" ).on( 'click', 'li', function() {
         var selectedShippingOption = $(this).find('a').attr('name');
-        var box_types = JSON.parse("{{ view.box_types_json|escapejs }}");
+        var box_types = JSON.parse("{{ box_types_json|escapejs }}");
         for (var box_type in box_types)
         {
             if (box_types[box_type].type == selectedShippingOption)
             {
-                $("#newShippingCosts").text("$" + box_types[box_type].price)
-                $("#takeHome").text("$" +
-                    ($("#orderTotal").text().substring(1)-
+                $("#selectedBoxType").attr("value", box_types[box_type].name);
+                $("#newShippingCosts").text("$" + box_types[box_type].rates[0].rate)
+                var totalTakeHome = ($("#orderTotal").text().substring(1)-
                     $("#newShippingCosts").text().substring(1)-
                     $("#otherShippingCosts").text().substring(1)-
                     $("#totalTransactionFees").text().substring(1)).toFixed(2)
-                )
+                if(totalTakeHome >= 0)
+                {
+                    $("#takeHome").text("$" + totalTakeHome)
+                }
+                else
+                {
+                    $("#takeHome").text("-$" + Math.abs(totalTakeHome).toFixed(2))
+                }
             }
         }
     });

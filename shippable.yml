@@ -23,7 +23,7 @@ script:
   - ./initDataNoInput test
   - coverage run --source='Tinville,basket,common,designer_shop,extensions,catalogue,user' manage.py harvest --with-xunit --xunit-file=shippable/testresults/lettucetests.xml --settings=Tinville.settings.test
   - coverage xml -o shippable/codecoverage/coverage_lettuce.xml
-  - coverage run --source='Tinville,basket,common,designer_shop,extensions,catalogue,user' manage.py test --with-xunit --xunit-file=shippable/testresults/unittests.xml --settings=Tinville.settings.test
+  - coverage run --source='Tinville,basket,common,designer_shop,extensions,catalogue,user' manage.py test --nocapture --with-xunit --xunit-file=shippable/testresults/unittests.xml --settings=Tinville.settings.test
   - coverage xml -o shippable/codecoverage/coverage_unittests.xml
 
 after_script:
