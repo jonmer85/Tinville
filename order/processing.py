@@ -14,6 +14,7 @@ class EventHandler(processing.EventHandler):
 
     def handle_shipping_event(self, order, event_type, lines,
                               line_quantities, request, response, shipment_info, **kwargs):
+                              line_quantities, request, response, shipment_info, **kwargs):
         self.validate_shipping_event(
             order, event_type, lines, line_quantities, **kwargs)
 
@@ -47,9 +48,26 @@ class EventHandler(processing.EventHandler):
 
     def _create_shipping_event(self, order, event_type, lines, line_quantities, shipment_info, group,
                               ref):
+        shipping_event = self._create_shipping_event(
+            order, event_type, lines, line_quantities, shipment_info, group,
+            kwargs.get('reference', None))
+        
+        order.shipping_excl_tax += order.shipping_excl_tax + D('5.00')
+
+
+    def _create_shipping_event(self, order, event_type, lines, line_quantities, shipment_info, group,
+                              ref):
         shipping_event = self.create_shipping_event(
             order, event_type, lines, line_quantities,
             reference=ref)
+            reference=ref)
+            reference=kwargs.get('reference', None))
+
+        shipping_event.label_url = shipment_info["labelUrl"]
+        shipping_event.tracking_code = shipment_info["tracking"]
+        shipping_event.group = group
+
+        shipping_event.save()
 
         shipping_event.label_url = shipment_info["labelUrl"]
         shipping_event.tracking_code = shipment_info["tracking"]
