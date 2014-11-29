@@ -71,10 +71,10 @@ class OrderDetailView(CoreOrderDetailView):
                     'predefined_package' : 'FlatRateEnvelope',
                     'weight' : 10
                 }
-                self.post_specific_shipment(order, parcelType)
+                shipment_info = self.post_specific_shipment(order, parcelType)
 
             EventHandler().handle_shipping_event(order, event_type, lines,
-                                                 quantities, request, response,
+                                                 quantities, request, response, shipment_info,
                                                  reference=reference)
         except InvalidShippingEvent as e:
             messages.error(request,
@@ -96,11 +96,12 @@ class OrderDetailView(CoreOrderDetailView):
         except Exception as e:
             logger.error(e)
 
-        #TODO: Save postage Label and add to context
-        shipment.postage_label.label_url
+        shipment_info = {
+            "labelUrl" : shipment.postage_label.label_url,
+            "tracking" : shipment.tracking_code
+        }
 
-        #TODO: Save tracking code and add to context
-        shipment.tracking_code
+        return shipment_info
 
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
