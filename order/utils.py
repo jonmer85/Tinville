@@ -72,9 +72,5 @@ class OrderCreator(CoreOrderCreator):
 
         return order
 
-def get_designer_payout_amount(original_amount):
-    # We take 10% of sales.
-    return (original_amount -
-            (original_amount * settings.TINVILLE_ORDER_SALES_CUT).quantize(D('0.01'), rounding=ROUND_FLOOR))
 
 

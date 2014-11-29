@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from autoslug.utils import slugify
-from lettuce import step
 from lettuce import *
 from django.core.management import call_command
 import lettuce.django
 import os
 import time
 import math
-
 from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
 from user.models import TinvilleUser

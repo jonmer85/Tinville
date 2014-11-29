@@ -187,7 +187,7 @@
                                     <div class="modal-body">
                                         {% if box_types %}
                                             <div class="btn-group">
-                                                <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="selected_box_type" value="noneSelected"/>
+                                                <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="parcel" value="noneSelected"/>
                                                 <button type="button" id="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
                                                     <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
                                                 </button>
@@ -252,7 +252,7 @@
                                     {% if user.is_staff %}<th>{% trans "Supplier SKU" %}</th>{% endif %}
                                     <th>{% trans "Est. delivery date" %}</th>
                                     <th>{% trans "Price excl tax (before discounts)" %}</th>
-                                    <th>{% trans "Price inc tax (before discounts)" %}</th>
+{#                                    <th>{% trans "Price inc tax (before discounts)" %}</th>#}
                                     <th>{% trans "Actions" %}</th>
                                 </tr>
                             </thead>
@@ -326,7 +326,7 @@
                                         {% if user.is_staff %}<td data-th="{% trans "Supplier SKU" %}">{{ line.partner_sku }}</td>{% endif %}
                                         <td data-th="{% trans "Est. delivery date" %}">{{ line.est_dispatch_date|default:"-" }}</td>
                                         <td data-th="{% trans "Price excl tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_excl_tax|currency:order.currency }}</td>
-                                        <td data-th="{% trans "Price inc tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}</td>
+{#                                        <td data-th="{% trans "Price inc tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}</td>#}
                                         <td data-th="{% trans "Actions" %}">
                                             <a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}" class="btn btn-primary">{% trans "View" %}</a>
                                         </td>
@@ -339,7 +339,7 @@
                                     <td class="hidden-xs" colspan="7"></td>
                                     <th class="hidden-xs">{% trans "Discount" %}</th>
                                     <td data-th="{% trans "Discount" %} excl tax" style="text-align: right">{{ order.total_discount_excl_tax|currency:order.currency }}</td>
-                                    <td data-th="{% trans "Discount" %} incl tax" style="text-align: right">{{ order.total_discount_incl_tax|currency:order.currency }}</td>
+{#                                    <td data-th="{% trans "Discount" %} incl tax" style="text-align: right">{{ order.total_discount_incl_tax|currency:order.currency }}</td>#}
                                     <td class="hidden-xs"></td>
                                 </tr>
                                 {% with discounts=order.basket_discounts %}
@@ -348,7 +348,7 @@
                                             <td class="hidden-xs" colspan="7"></td>
                                             <th class="hidden-xs">{% trans "Basket total (excl. discounts)" %}</th>
                                             <td data-th="{% trans "Basket total (excl. discounts)" %} excl tax" style="text-align: right">{{ order.basket_total_before_discounts_excl_tax|currency:order.currency }}</td>
-                                            <td data-th="{% trans "Basket total (excl. discounts)" %} incl tax" style="text-align: right">{{ order.basket_total_before_discounts_incl_tax|currency:order.currency }}</td>
+{#                                            <td data-th="{% trans "Basket total (excl. discounts)" %} incl tax" style="text-align: right">{{ order.basket_total_before_discounts_incl_tax|currency:order.currency }}</td>#}
                                             <td class="hidden-xs"></td>
                                         </tr>
                                         {% for discount in discounts %}
@@ -367,7 +367,7 @@
                                             <td class="hidden-xs" colspan="7"></td>
                                             <th class="hidden-xs">{% trans "Basket total (inc. discounts)" %}</th>
                                             <td class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+{#                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
                                             <td class="hidden-xs"></td>
                                         </tr>
                                     {% else %}
@@ -375,7 +375,7 @@
                                             <td class="hidden-xs" colspan="7"></td>
                                             <th class="hidden-xs">{% trans "Basket total" %}</th>
                                             <td data-th="{% trans "Basket total" %} excl tax" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-                                            <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+{#                                            <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
                                             <td class="hidden-xs"></td>
                                         </tr>
                                     {% endif %}
@@ -386,7 +386,7 @@
                                         <td class="hidden-xs" colspan="7"></td>
                                         <td class="hidden-xs">{% trans "Shipping total (excl. discounts)" %}</td>
                                         <td data-th="{% trans "Shipping total (excl. discounts) excl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_excl_tax|currency:order.currency }}</td>
-                                        <td data-th="{% trans "Shipping total (excl. discounts) incl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_incl_tax|currency:order.currency }}</td>
+{#                                        <td data-th="{% trans "Shipping total (excl. discounts) incl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_incl_tax|currency:order.currency }}</td>#}
                                         <td class="hidden-xs"></td>
                                     </tr>
                                     {% for discount in order.shipping_discounts %}
@@ -405,7 +405,7 @@
                                         <td class="hidden-xs" colspan="7"></td>
                                         <th class="hidden-xs">{% trans "Shipping total (inc. discounts)" %}</th>
                                         <td data-th="{% trans "Shipping total (inc. discounts)" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
-                                        <td data-th="{% trans "Shipping total (inc. discounts)" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>
+{#                                        <td data-th="{% trans "Shipping total (inc. discounts)" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
                                         <td class="hidden-xs"></td>
                                     </tr>
                                 {% else %}
@@ -413,7 +413,7 @@
                                         <td class="hidden-xs" colspan="7"></td>
                                         <th class="hidden-xs" >{% trans "Shipping total" %}</th>
                                         <td data-th="{% trans "Shipping total" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
-                                        <td data-th="{% trans "Shipping total" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>
+{#                                        <td data-th="{% trans "Shipping total" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
                                         <td class="hidden-xs" ></td>
                                     </tr>
                                 {% endif %}
@@ -422,7 +422,7 @@
                                     <td class="hidden-xs" colspan="7"></td>
                                     <th class="hidden-xs">{% trans "Order total" %}</th>
                                     <td data-th="{% trans "Order total" %} excl tax" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
-                                    <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>
+{#                                    <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>#}
                                     <td class="hidden-xs"></td>
                                 </tr>
                             </tbody>
