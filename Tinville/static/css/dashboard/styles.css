@@ -90,7 +90,6 @@ input[disabled] {
 .printLabel {
     height:6.5in;
     width:4in;
-    overflow: hidden !important;
 }
 
 /* Taken from oscars dashboard css, copied because their dashboard css contains a copy */

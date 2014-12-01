@@ -3,6 +3,7 @@ from oscar.apps.order import processing
 from oscar.apps.payment import exceptions
 from oscar.core.loading import get_model
 from django.conf import settings
+from order.exceptions import *
 
 # from .models import PaymentEventType
 from decimal import Decimal as D
@@ -52,7 +53,6 @@ class EventHandler(processing.EventHandler):
             order, event_type, lines, line_quantities, shipment_info, group,
             kwargs.get('reference', None))
 
-
     def _create_shipping_event(self, order, event_type, lines, line_quantities, shipment_info, group,
                               ref):
         shipping_event = self.create_shipping_event(
@@ -65,7 +65,6 @@ class EventHandler(processing.EventHandler):
 
         shipping_event.save()
         # add to the shipping costs of the order
-
 
     def _create_payment_event(self, order, event_type, amount, lines, line_quantities, group):
         payment_event = self.create_payment_event(order, event_type, amount, lines, line_quantities)

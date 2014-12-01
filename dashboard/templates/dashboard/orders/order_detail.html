@@ -187,7 +187,7 @@
                                     <div class="modal-body">
                                         {% if box_types %}
                                             <div class="btn-group">
-                                                <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="parcel" value="noneSelected"/>
+                                                <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="parcel_type" value="noneSelected"/>
                                                 <button type="button" id="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
                                                     <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
                                                 </button>
@@ -342,44 +342,15 @@
 {#                                    <td data-th="{% trans "Discount" %} incl tax" style="text-align: right">{{ order.total_discount_incl_tax|currency:order.currency }}</td>#}
                                     <td class="hidden-xs"></td>
                                 </tr>
-                                {% with discounts=order.basket_discounts %}
-                                    {% if discounts %}
-                                        <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="6"></td>
-                                            <th class="hidden-xs">{% trans "Basket total (excl. discounts)" %}</th>
-                                            <td data-th="{% trans "Basket total (excl. discounts)" %} excl tax" style="text-align: right">{{ order.basket_total_before_discounts_excl_tax|currency:order.currency }}</td>
-{#                                            <td data-th="{% trans "Basket total (excl. discounts)" %} incl tax" style="text-align: right">{{ order.basket_total_before_discounts_incl_tax|currency:order.currency }}</td>#}
-                                            <td class="hidden-xs"></td>
-                                        </tr>
-                                        {% for discount in discounts %}
-                                            <tr class="ordertotals dashboardCollapse collapse">
-                                                <td class="hidden-xs" colspan="6"></td>
-                                                <td>
-                                                    <span class="label label-success">{% trans "Discount" %}</span>
-                                                    {{ discount.offer_name }}
-                                                </td>
-                                                <td style="text-align: right"></td>
-                                                <td data-th="{% trans "Discount" %}" style="text-align: right">- {{ discount.amount|currency:order.currency }}</td>
-                                                <td class="hidden-xs"></td>
-                                            </tr>
-                                        {% endfor %}
-                                        <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="6"></td>
-                                            <th class="hidden-xs">{% trans "Basket total (inc. discounts)" %}</th>
-                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-{#                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
-                                            <td class="hidden-xs"></td>
-                                        </tr>
-                                    {% else %}
-                                        <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="6"></td>
-                                            <th class="hidden-xs">{% trans "Basket total" %}</th>
-                                            <td data-th="{% trans "Basket total" %} excl tax" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
-{#                                            <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
-                                            <td class="hidden-xs"></td>
-                                        </tr>
-                                    {% endif %}
-                                {% endwith %}
+
+                                <tr class="ordertotals dashboardCollapse collapse">
+                                    <td class="hidden-xs" colspan="6"></td>
+                                    <th class="hidden-xs">{% trans "Order total" %}</th>
+                                    <td data-th="{% trans "Order total" %} excl tax" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
+{#                                    <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>#}
+                                    <td class="hidden-xs"></td>
+                                </tr>
+
 
                                 {% if order.has_shipping_discounts %}
                                     <tr class="ordertotals dashboardCollapse collapse">
@@ -412,91 +383,66 @@
                                     <tr class="ordertotals dashboardCollapse collapse">
                                         <td class="hidden-xs" colspan="6"></td>
                                         <th class="hidden-xs" >{% trans "Shipping total" %}</th>
-                                        <td data-th="{% trans "Shipping total" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
+                                        <td data-th="{% trans "Shipping total" %}" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
                                         <td class="hidden-xs" ></td>
                                     </tr>
                                 {% endif %}
-
                                 <tr class="ordertotals dashboardCollapse collapse">
                                     <td class="hidden-xs" colspan="6"></td>
-                                    <th class="hidden-xs">{% trans "Order total" %}</th>
-                                    <td data-th="{% trans "Order total" %} excl tax" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
-{#                                    <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>#}
+                                    <th class="hidden-xs">{% trans "Tinville cut total" %}</th>
+                                    <td data-th="{% trans "Tinville cut total" %}" style="text-align: right">{{ order.estimated_tinville_cut|currency:order.currency }}</td>
                                     <td class="hidden-xs"></td>
                                 </tr>
+                                <tr class="ordertotals dashboardCollapse collapse">
+                                    <td class="hidden-xs" colspan="6"></td>
+                                    <th class="hidden-xs">{% trans "Take home total" %}</th>
+                                    <td data-th="{% trans "Take home total" %}" style="text-align: right">{{ order.estimated_designer_cut|currency:order.currency }}</td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                {% if discounts %}
+                                    {% with discounts=order.basket_discounts %}
+                                        {% if discounts %}
+                                            <tr class="ordertotals dashboardCollapse collapse">
+                                                <td class="hidden-xs" colspan="6"></td>
+                                                <th class="hidden-xs">{% trans "Basket total (excl. discounts)" %}</th>
+                                                <td data-th="{% trans "Basket total (excl. discounts)" %}" style="text-align: right">{{ order.basket_total_before_discounts_excl_tax|currency:order.currency }}</td>
+    {#                                            <td data-th="{% trans "Basket total (excl. discounts)" %} incl tax" style="text-align: right">{{ order.basket_total_before_discounts_incl_tax|currency:order.currency }}</td>#}
+                                                <td class="hidden-xs"></td>
+                                            </tr>
+                                            {% for discount in discounts %}
+                                                <tr class="ordertotals dashboardCollapse collapse">
+                                                    <td class="hidden-xs" colspan="6"></td>
+                                                    <td>
+                                                        <span class="label label-success">{% trans "Discount" %}</span>
+                                                        {{ discount.offer_name }}
+                                                    </td>
+                                                    <td style="text-align: right"></td>
+                                                    <td data-th="{% trans "Discount" %}" style="text-align: right">- {{ discount.amount|currency:order.currency }}</td>
+                                                    <td class="hidden-xs"></td>
+                                                </tr>
+                                            {% endfor %}
+                                            <tr class="ordertotals dashboardCollapse collapse">
+                                                <td class="hidden-xs" colspan="6"></td>
+                                                <th class="hidden-xs">{% trans "Basket total (inc. discounts)" %}</th>
+                                                <td class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+    {#                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
+                                                <td class="hidden-xs"></td>
+                                            </tr>
+                                        {% else %}
+                                            <tr class="ordertotals dashboardCollapse collapse">
+                                                <td class="hidden-xs" colspan="6"></td>
+                                                <th class="hidden-xs">{% trans "Basket total" %}</th>
+                                                <td data-th="{% trans "Basket total" %}" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+    {#                                            <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
+                                                <td class="hidden-xs"></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endif %}
                             </tbody>
                         </table>
                     {% endblock order_lines %}
-
-                    {% comment %}
-                        This is the important block within this template: you will almost certainly want to
-                        override this block to provide your own form widgets that suit your order processing
-                        flow.  The default contents shows a range of widgets - more than is sensible really.
-                    {% endcomment %}
-{#                    {% block line_actions %}#}
-{#                        <div class="well">#}
-{#                            <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>#}
-{#                            {%  if user.is_staff %}#}
-{#                            <div class="control-group">#}
-{#                                <div class="controls">#}
-{#                                    <label class="radio list-inline">#}
-{#                                        <input type="radio" name="line_action" value="change_line_statuses" /> {% trans "Change status to" %}#}
-{#                                    </label>#}
-{#                                    <label class="radio list-inline">#}
-{#                                        <select name="new_status">#}
-{#                                            <option value=""> -- {% trans "choose new status" %} -- </option>#}
-{#                                            {% for status in line_statuses %}#}
-{#                                                <option>{{ status }}</option>#}
-{#                                            {% endfor %}#}
-{#                                        </select>#}
-{#                                    </label>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            {%  endif  %}#}
-{#                            <div class="control-group">#}
-{#                                <div class="controls">#}
-{#                                    <label class="radio list-inline">#}
-{#                                        <input type="submit" name="line_action" value="create_shipping_event"/> {% trans "Create shipping event" %}#}
-{#                                    </label>#}
-{#                                    <label class="radio list-inline">#}
-{#                                        <select name="shipping_event_type">#}
-{#                                            <option value=""> -- {% trans "choose event type" %} -- </option>#}
-{#                                            {% for event_type in shipping_event_types %}#}
-{#                                                {% if event_type.name != "Partially Shipped" %}#}
-{#                                                <option value="{{ event_type.code }}">{{ event_type.name }}</option>#}
-{#                                                {% endif %}#}
-{#                                            {% endfor %}#}
-{#                                        </select>#}
-{#                                    </label>#}
-{#                                    <label class="radio list-inline">#}
-{#                                        {% trans "with reference" %} <input type="text" name="reference" value="" />#}
-{#                                    </label>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            {% if user.is_staff %}#}
-{#                            <div class="control-group">#}
-{#                                <div class="controls">#}
-{#                                    <label class="radio list-inline">#}
-{#                                        <input type="radio" name="line_action" value="create_payment_event" /> {% trans "Create payment event" %}#}
-{#                                    </label>#}
-{#                                    <label class="radio list-inline">#}
-{#                                        <select name="payment_event_type">#}
-{#                                            <option value=""> -- {% trans "choose event type" %} -- </option>#}
-{#                                            {% for event_type in payment_event_types %}#}
-{#                                                <option value="{{ event_type.code }}">{{ event_type.name }}</option>#}
-{#                                            {% endfor %}#}
-{#                                        </select>#}
-{#                                    </label>#}
-{#                                    <label class="radio list-inline">#}
-{#                                        {% trans "with amount" %} <input type="text" name="amount" value="" />#}
-{#                                    </label>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            {% endif %}#}
-{#                            <input type="submit" value="{% trans "Go!" %}" class="btn btn-primary" />#}
-{#                        </div>#}
-{#                    {% endblock line_actions %}#}
                 </form>
 
                 {% block shipping_events %}
@@ -885,12 +831,15 @@
             {
                 if (box_types[box_type].type == selectedShippingOption)
                 {
-                    $("#selectedBoxType").attr("value", box_types[box_type].name);
+                    $("#selectedBoxType").attr("value", box_types[box_type].type);
                     $("#newShippingCosts").text("$" + box_types[box_type].rates[0].rate)
+                    var totalTransactionFees = (($("#orderTotal").text().substring(1)-
+                        $("#newShippingCosts").text().substring(1)-
+                        $("#otherShippingCosts").text().substring(1))*0.1).toFixed(2)
                     var totalTakeHome = ($("#orderTotal").text().substring(1)-
                         $("#newShippingCosts").text().substring(1)-
                         $("#otherShippingCosts").text().substring(1)-
-                        $("#totalTransactionFees").text().substring(1)).toFixed(2)
+                        totalTransactionFees).toFixed(2)
                     if(totalTakeHome >= 0)
                     {
                         $("#takeHome").text("$" + totalTakeHome)
@@ -899,6 +848,8 @@
                     {
                         $("#takeHome").text("-$" + Math.abs(totalTakeHome).toFixed(2))
                     }
+
+                    $("#totalTransactionFees").text("$" + totalTransactionFees)
                 }
             }
         });
