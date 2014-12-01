@@ -9,6 +9,7 @@ from decimal import Decimal as D
 Partner = get_model('partner', 'Partner')
 PartnerAddress = get_model('partner', 'PartnerAddress')
 ShippingEvent = get_model('order', 'ShippingEvent')
+PaymentEventType = get_model('order', 'PaymentEventType')
 
 class EventHandler(processing.EventHandler):
 
@@ -17,7 +18,7 @@ class EventHandler(processing.EventHandler):
         self.validate_shipping_event(
             order, event_type, lines, line_quantities, **kwargs)
 
-        payment_event = None
+        # payment_event = None
 
         group = None
 
@@ -39,6 +40,13 @@ class EventHandler(processing.EventHandler):
                     else:
                         line.set_status("Partially Shipped")
 
+            # if they are shipping, they should have payed for shipping (at least for now).. create that payment event here..
+            #TODO add support here for shipping not using easypost (aka.. ignore this next section)
+            payment_event_type = PaymentEventType._default_manager.get(code='paid_shipping')
+            parcel_cost = shipment_info['rate']
+            payment_event = self._create_payment_event(order, payment_event_type, parcel_cost, lines, line_quantities, group)
+            order.shipping_excl_tax += D(parcel_cost)
+            order.save()
 
         shipping_event = self._create_shipping_event(
             order, event_type, lines, line_quantities, shipment_info, group,
@@ -56,3 +64,10 @@ class EventHandler(processing.EventHandler):
         shipping_event.group = group
 
         shipping_event.save()
+        # add to the shipping costs of the order
+
+
+    def _create_payment_event(self, order, event_type, amount, lines, line_quantities, group):
+        payment_event = self.create_payment_event(order, event_type, amount, lines, line_quantities)
+        payment_event.group = group
+        payment_event.save()

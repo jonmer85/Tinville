@@ -97,8 +97,9 @@ class OrderDetailView(CoreOrderDetailView):
             logger.error(e)
 
         shipment_info = {
-            "labelUrl" : shipment.postage_label.label_url,
-            "tracking" : shipment.tracking_code
+            "labelUrl": shipment.postage_label.label_url,
+            "tracking": shipment.tracking_code,
+            "rate": shipment.selected_rate.rate
         }
 
         return shipment_info

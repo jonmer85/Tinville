@@ -66,6 +66,33 @@ input[disabled] {
 {
     z-index: 999 !important;
 }
+
+@media screen {
+  #printSection {
+      display: none;
+  }
+}
+
+@media print {
+    body * {
+        visibility:hidden;
+    }
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+}
+
+.printLabel {
+    height:6.5in;
+    width:4in;
+    overflow: hidden !important;
+}
+
 /* Taken from oscars dashboard css, copied because their dashboard css contains a copy */
 /* bootstrap2 */
 

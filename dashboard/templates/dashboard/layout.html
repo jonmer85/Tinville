@@ -244,13 +244,31 @@
             }
         }
 
-       $( document.body ).on( 'click', '.dropdown-menu li', function( event ) {
-           var $target = $( event.currentTarget );
-           $target.closest( '.btn-group' )
+        $( document.body ).on( 'click', '.dropdown-menu li', function( event ) {
+            var $target = $( event.currentTarget );
+            $target.closest( '.btn-group' )
                .find( '[data-bind="label"]' ).text( $target.text() )
                .end()
                .children( '.dropdown-toggle' ).dropdown( 'toggle' );
-           return false;
-       });
+            return false;
+        })
+
+        function printElement(elem) {
+            var domClone = elem.cloneNode(true);
+
+            var $printSection = document.getElementById("printSection");
+
+            if (!$printSection) {
+                var $printSection = document.createElement("div");
+                $printSection.id = "printSection";
+                document.body.appendChild($printSection);
+            }
+
+            $printSection.innerHTML = "";
+
+            $printSection.appendChild(domClone);
+        }
+
+
     </script>
 {% endblock %}

@@ -167,7 +167,7 @@
                                 <input type="text" readonly="true" name="line_action" value="create_shipping_event" class="btn btn-group hidden"/>
                                     <div class="btn-group">
 {#                                            {% for event_type in shipping_event_types %}#}
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boxItModal">Box it!</button>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship it!</button>
 {#                                                <button type="submit" name="shipping_event_type" class="btn btn-primary" value="{{ event_type.code }}">{{ event_type.name }}</button>#}
 {#                                            {% endfor %}#}
                                     </div>
@@ -177,12 +177,12 @@
                             </div>
                         </div>
                         <!-- Modal -->
-                        <div class="modal fade" id="boxItModal" tabindex="-1" role="dialog" aria-labelledby="boxItModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="shipItModal" tabindex="-1" role="dialog" aria-labelledby="shipItModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-sm">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                        <h4 class="modal-title" id="boxItModalLabel">Select Shipping Option</h4>
+                                        <h4 class="modal-title" id="shipItModalLabel">Select Shipping Option</h4>
                                     </div>
                                     <div class="modal-body">
                                         {% if box_types %}
@@ -203,7 +203,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>Order Total</td>
-                                                            <td id="orderTotal">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
+                                                            <td id="orderTotal">{{ order.total_excl_tax|currency:order.currency }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>New Shipping Costs</td>
@@ -215,7 +215,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Total Transaction Fees</td>
-                                                            <td id="totalTransactionFees">{{ order.estimated_total_transaction_fees|currency:order.currency }}</td>
+                                                            <td id="totalTransactionFees">{{ order.estimated_tinville_cut|currency:order.currency }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Take Home</td>
@@ -250,7 +250,7 @@
                                     <th>{% trans "Status" %}</th>
                                     {% if user.is_staff %}<th>{% trans "Supplier" %}</th>{% endif %}
                                     {% if user.is_staff %}<th>{% trans "Supplier SKU" %}</th>{% endif %}
-                                    <th>{% trans "Est. delivery date" %}</th>
+{#                                    <th>{% trans "Est. delivery date" %}</th>#}
                                     <th>{% trans "Price excl tax (before discounts)" %}</th>
 {#                                    <th>{% trans "Price inc tax (before discounts)" %}</th>#}
                                     <th>{% trans "Actions" %}</th>
@@ -324,7 +324,7 @@
                                         </td>
                                         {% endif %}
                                         {% if user.is_staff %}<td data-th="{% trans "Supplier SKU" %}">{{ line.partner_sku }}</td>{% endif %}
-                                        <td data-th="{% trans "Est. delivery date" %}">{{ line.est_dispatch_date|default:"-" }}</td>
+{#                                        <td data-th="{% trans "Est. delivery date" %}">{{ line.est_dispatch_date|default:"-" }}</td>#}
                                         <td data-th="{% trans "Price excl tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Price inc tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}</td>#}
                                         <td data-th="{% trans "Actions" %}">
@@ -336,7 +336,7 @@
                                      <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }} (expand for details)</td>
                                 </tr>
                                 <tr class="ordertotals dashboardCollapse collapse">
-                                    <td class="hidden-xs" colspan="7"></td>
+                                    <td class="hidden-xs" colspan="6"></td>
                                     <th class="hidden-xs">{% trans "Discount" %}</th>
                                     <td data-th="{% trans "Discount" %} excl tax" style="text-align: right">{{ order.total_discount_excl_tax|currency:order.currency }}</td>
 {#                                    <td data-th="{% trans "Discount" %} incl tax" style="text-align: right">{{ order.total_discount_incl_tax|currency:order.currency }}</td>#}
@@ -345,7 +345,7 @@
                                 {% with discounts=order.basket_discounts %}
                                     {% if discounts %}
                                         <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="7"></td>
+                                            <td class="hidden-xs" colspan="6"></td>
                                             <th class="hidden-xs">{% trans "Basket total (excl. discounts)" %}</th>
                                             <td data-th="{% trans "Basket total (excl. discounts)" %} excl tax" style="text-align: right">{{ order.basket_total_before_discounts_excl_tax|currency:order.currency }}</td>
 {#                                            <td data-th="{% trans "Basket total (excl. discounts)" %} incl tax" style="text-align: right">{{ order.basket_total_before_discounts_incl_tax|currency:order.currency }}</td>#}
@@ -353,7 +353,7 @@
                                         </tr>
                                         {% for discount in discounts %}
                                             <tr class="ordertotals dashboardCollapse collapse">
-                                                <td class="hidden-xs" colspan="7"></td>
+                                                <td class="hidden-xs" colspan="6"></td>
                                                 <td>
                                                     <span class="label label-success">{% trans "Discount" %}</span>
                                                     {{ discount.offer_name }}
@@ -364,7 +364,7 @@
                                             </tr>
                                         {% endfor %}
                                         <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="7"></td>
+                                            <td class="hidden-xs" colspan="6"></td>
                                             <th class="hidden-xs">{% trans "Basket total (inc. discounts)" %}</th>
                                             <td class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
 {#                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
@@ -372,7 +372,7 @@
                                         </tr>
                                     {% else %}
                                         <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="7"></td>
+                                            <td class="hidden-xs" colspan="6"></td>
                                             <th class="hidden-xs">{% trans "Basket total" %}</th>
                                             <td data-th="{% trans "Basket total" %} excl tax" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
 {#                                            <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
@@ -383,7 +383,7 @@
 
                                 {% if order.has_shipping_discounts %}
                                     <tr class="ordertotals dashboardCollapse collapse">
-                                        <td class="hidden-xs" colspan="7"></td>
+                                        <td class="hidden-xs" colspan="6"></td>
                                         <td class="hidden-xs">{% trans "Shipping total (excl. discounts)" %}</td>
                                         <td data-th="{% trans "Shipping total (excl. discounts) excl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total (excl. discounts) incl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_incl_tax|currency:order.currency }}</td>#}
@@ -391,7 +391,7 @@
                                     </tr>
                                     {% for discount in order.shipping_discounts %}
                                         <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="7"></td>
+                                            <td class="hidden-xs" colspan="6"></td>
                                             <td>
                                                 <span class="label label-success">{% trans "Discount" %}</span>
                                                 {{ discount.offer_name }}
@@ -402,7 +402,7 @@
                                         </tr>
                                     {% endfor %}
                                     <tr class="ordertotals dashboardCollapse collapse">
-                                        <td class="hidden-xs" colspan="7"></td>
+                                        <td class="hidden-xs" colspan="6"></td>
                                         <th class="hidden-xs">{% trans "Shipping total (inc. discounts)" %}</th>
                                         <td data-th="{% trans "Shipping total (inc. discounts)" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total (inc. discounts)" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
@@ -410,7 +410,7 @@
                                     </tr>
                                 {% else %}
                                     <tr class="ordertotals dashboardCollapse collapse">
-                                        <td class="hidden-xs" colspan="7"></td>
+                                        <td class="hidden-xs" colspan="6"></td>
                                         <th class="hidden-xs" >{% trans "Shipping total" %}</th>
                                         <td data-th="{% trans "Shipping total" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
@@ -419,7 +419,7 @@
                                 {% endif %}
 
                                 <tr class="ordertotals dashboardCollapse collapse">
-                                    <td class="hidden-xs" colspan="7"></td>
+                                    <td class="hidden-xs" colspan="6"></td>
                                     <th class="hidden-xs">{% trans "Order total" %}</th>
                                     <td data-th="{% trans "Order total" %} excl tax" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
 {#                                    <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>#}
@@ -511,7 +511,8 @@
                                         <th>{% trans "Date" %}</th>
                                         <th>{% trans "Event" %}</th>
                                         <th>{% trans "Lines" %}</th>
-                                        <th>{% trans "Reference" %}</th>
+                                        <th>{% trans "Tracking Code" %}</th>
+                                        <th>{% trans "Actions" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -535,7 +536,13 @@
                                                         </a>
                                                     {% endfor %}
                                                 </td>
-                                                <td data-th="{% trans "Reference" %}">{{ event.notes|default:"-" }}</td>
+                                                <td data-th="Tracking Number">{{ event.tracking_code|default:"-" }}</td>
+                                                <td data-th="{% trans "Actions" %}">
+                                                    {% if event.event_type.code == 'shipped' %}
+                                                        <button id="print_label_{{ event.id }}" class="btn btn-primary">{% trans "Print Label" %}</button>
+                                                        <img src="{{ event.label_url }}" class="hidden printLabel">
+                                                    {% endif %}
+                                                </td>
                                             </tr>
                                         {% endwith %}
                                     {% endfor %}
@@ -551,7 +558,7 @@
                     {% endwith %}
                 {% endblock %}
 
-                {% if user.is_staff %}
+{#                {% if user.is_staff %}#}
                     {% block payment_events %}
                         <div class="table-header">
                             <h3 >{% trans "Payment Events" %}</h3>
@@ -599,7 +606,7 @@
                             </table>
                         {% endwith %}
                     {% endblock %}
-                {% endif %}
+{#                {% endif %}#}
             </div>
 
             <div class="tab-pane {% if active_tab == 'shipping' %}active{% endif %}" id="shipping">
@@ -871,30 +878,38 @@
     {{ block.super }}
     <script>
 
-    $( "#shippingOptionSelect" ).on( 'click', 'li', function() {
-        var selectedShippingOption = $(this).find('a').attr('name');
-        var box_types = JSON.parse("{{ box_types_json|escapejs }}");
-        for (var box_type in box_types)
-        {
-            if (box_types[box_type].type == selectedShippingOption)
+        $( "#shippingOptionSelect" ).on( 'click', 'li', function() {
+            var selectedShippingOption = $(this).find('a').attr('name');
+            var box_types = JSON.parse("{{ box_types_json|escapejs }}");
+            for (var box_type in box_types)
             {
-                $("#selectedBoxType").attr("value", box_types[box_type].name);
-                $("#newShippingCosts").text("$" + box_types[box_type].rates[0].rate)
-                var totalTakeHome = ($("#orderTotal").text().substring(1)-
-                    $("#newShippingCosts").text().substring(1)-
-                    $("#otherShippingCosts").text().substring(1)-
-                    $("#totalTransactionFees").text().substring(1)).toFixed(2)
-                if(totalTakeHome >= 0)
+                if (box_types[box_type].type == selectedShippingOption)
                 {
-                    $("#takeHome").text("$" + totalTakeHome)
-                }
-                else
-                {
-                    $("#takeHome").text("-$" + Math.abs(totalTakeHome).toFixed(2))
+                    $("#selectedBoxType").attr("value", box_types[box_type].name);
+                    $("#newShippingCosts").text("$" + box_types[box_type].rates[0].rate)
+                    var totalTakeHome = ($("#orderTotal").text().substring(1)-
+                        $("#newShippingCosts").text().substring(1)-
+                        $("#otherShippingCosts").text().substring(1)-
+                        $("#totalTransactionFees").text().substring(1)).toFixed(2)
+                    if(totalTakeHome >= 0)
+                    {
+                        $("#takeHome").text("$" + totalTakeHome)
+                    }
+                    else
+                    {
+                        $("#takeHome").text("-$" + Math.abs(totalTakeHome).toFixed(2))
+                    }
                 }
             }
-        }
-    });
+        });
+
+        $("[id^='print_label_']").click(function (){
+            myprintlabel = this.nextElementSibling;
+            printElement(myprintlabel);
+            var modThis = document.querySelector("#printSection .printLabel");
+            modThis.className = "printLabel";
+            window.print();
+        });
 
     </script>
 {% endblock %}
