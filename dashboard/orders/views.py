@@ -6,6 +6,7 @@ from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsVi
 from oscar.core.loading import get_model
 from django.views.generic import View
 from designer_shop.models import Shop
+from order.exceptions import *
 import json
 import re
 import easypost
@@ -65,10 +66,10 @@ class OrderDetailView(CoreOrderDetailView):
         response = HttpResponse()
         try:
             if event_type.name == 'Shipped':
-                #TODO: extract parcelType from request.POST['parcel']
-                #TODO: validate parcelType
+                parcelType = request.POST.get('parcel_type', None)
+                self.validate_parcel_type(parcelType)
                 parcelType = {
-                    'predefined_package' : 'FlatRateEnvelope',
+                    'predefined_package' : parcelType,
                     'weight' : 10
                 }
                 shipment_info = self.post_specific_shipment(order, parcelType)
@@ -85,6 +86,9 @@ class OrderDetailView(CoreOrderDetailView):
         except PaymentError as e:
             messages.error(request, _("Unable to create shipping event due to"
                                       " payment error: %s") % e)
+        except InvalidParcelType as e:
+            messages.error(request, ("Unable to create shipping event due to"
+                                      " unsupported Parcel Type: %s") % e)
         else:
             messages.success(request, ("Shipping event created"))
         return self.reload_page_response()
@@ -118,36 +122,10 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment_context(self, order):
         shipment_collection = []
-        parcelType = {
-                        'predefined_package' : 'FlatRateEnvelope',
-                        'weight' : 10
-                    }
-        shipment_collection.append(self.get_specific_shipment(order, parcelType))
-
-        parcelType = {
-            'predefined_package' : 'FlatRatePaddedEnvelope',
-            'weight' : 10
-        }
-        shipment_collection.append(self.get_specific_shipment(order, parcelType))
-
-        parcelType = {
-            'predefined_package' : 'SmallFlatRateBox',
-            'weight' : 10
-        }
-        shipment_collection.append(self.get_specific_shipment(order, parcelType))
-
-        parcelType = {
-            'predefined_package' : 'MediumFlatRateBox',
-            'weight' : 10
-        }
-        shipment_collection.append(self.get_specific_shipment(order, parcelType))
-
-        parcelType = {
-            'predefined_package' : 'LargeFlatRateBox',
-            'weight' : 10
-        }
-        shipment_collection.append(self.get_specific_shipment(order, parcelType))
-
+        for parcel_type in self.get_supported_parcel_types():
+            parcelType = { 'predefined_package': parcel_type,
+                           'weight': 10 }
+            shipment_collection.append(self.get_specific_shipment(order, parcelType))
         return shipment_collection
 
     def get_shipment(self, order, parcelType):
@@ -195,6 +173,16 @@ class OrderDetailView(CoreOrderDetailView):
                           'name': re.sub(r'((?<=[a-z])[A-Z]|(?<!\A)[A-Z](?=[a-z]))', r' \1', shipment.parcel.predefined_package).replace('Flat Rate','Flat-Rate'),
                           'rates' : rates}
         return basic_shipment
+
+    def get_supported_parcel_types(self):
+        return ['FlatRateEnvelope', 'FlatRatePaddedEnvelope',
+                'SmallFlatRateBox', 'MediumFlatRateBox',
+                'LargeFlatRateBox']
+
+    def validate_parcel_type(self, parcel_type):
+        if parcel_type not in self.get_supported_parcel_types():
+            msg = (parcel_type)
+            raise InvalidParcelType(msg)
 
     def _GetShopAddress(self,orderId):
 
