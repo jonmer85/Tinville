@@ -36,6 +36,7 @@ django-storages==1.1.6
 django-tinymce==1.5.2
 django-treebeard==2.0b2
 duvet==0.1.2
+easy-thumbnails==2.2
 extras==0.0.3
 fuzzywuzzy==0.2
 gunicorn==0.17.4
