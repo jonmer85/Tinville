@@ -187,6 +187,9 @@ INSTALLED_APPS = [
     'tinymce',
     'sorl.thumbnail',
     'django_basic_feedback',
+    'image_cropping',
+    'easy_thumbnails',
+    'ajaximage',
     # 'debug_toolbar',
     'oscar_stripe'
 ] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
@@ -403,3 +406,10 @@ GOOGLE_ANALYTICS_TRACKING_ID = ''
 STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
 STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
 STRIPE_CURRENCY = 'USD'
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+AJAXIMAGE_AUTH_TEST = lambda u: True

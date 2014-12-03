@@ -15,14 +15,14 @@
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 
-				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
+				<a class="navbar-brand shopForeColor" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
                 <div class=" collapse navbar-collapse" id="">
                 <ul class="visible-xs nav pull-right">
-					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
+					<li class="shopTabLink shopForeColor active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
                     {% if user.email == shop.user.email%}
-                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
+                        <li class="shopForeColor" id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
                     {% endif %}
-					<li id="aboutTabLink"><a id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+					<li class="shopForeColor" id="aboutTabLink"><a id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
                 </div>
 			</div>
@@ -30,11 +30,11 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="hidden-xs collapse navbar-collapse" id="">
 				<ul class="nav navbar-nav">
-					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
+					<li class="shopTabLink shopForeColor active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
                     {% if user.email == shop.user.email%}
-                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
+                        <li class="shopForeColor" id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
                     {% endif %}
-					<li id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+					<li class="shopForeColor" id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
         </div>

@@ -4,7 +4,6 @@ import shutil
 from operator import itemgetter
 from functools import wraps
 
-from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
@@ -171,16 +170,6 @@ def shopeditor(request, shop_slug):
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
 
-# @IsShopOwnerDecorator
-# def about(request, slug):
-#         if request.method == 'POST':
-#             form = AboutBoxForm(request.POST)
-#             currentshop = Shop.objects.get(slug__iexact=slug)
-#             if request.is_ajax() and form.is_valid():
-#                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
-#                 currentshop.save(update_fields=["aboutContent"])
-#                 return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
-#         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
@@ -475,10 +464,12 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             form = BannerUploadForm(request.POST, request.FILES)
             if form.is_valid():
                 shutil.rmtree(MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug), ignore_errors=True)
+                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/mobileBanner'.format(shop.slug), ignore_errors=True)
                 shop.banner = form.cleaned_data["banner"]
-                shop.save(update_fields=["banner"])
+                shop.cropBanner = form.cleaned_data["cropBanner"]
                 shop.mobileBanner = form.cleaned_data["mobileBanner"]
-                shop.save(update_fields=["mobileBanner"])
+                shop.cropmobileBanner = form.cleaned_data["cropmobileBanner"]
+                shop.save(update_fields=["mobileBanner", "banner", "cropBanner", "cropmobileBanner"])
             return renderShopEditor(request, shop, bannerUploadForm=form)
         elif request.POST.__contains__('logoUploadForm'):
             form = LogoUploadForm(request.POST, request.FILES)

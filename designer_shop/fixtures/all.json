@@ -21,6 +21,8 @@
 			"slug": "demo",
             "banner": "images/banner.jpg",
             "mobileBanner": "images/mobileBanner.jpg",
+            "cropBanner": " ",
+            "cropmobileBanner": " ",
             "logo": "",
             "aboutImg": "images/aboutImage.png",
             "user": 2,

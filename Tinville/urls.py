@@ -25,6 +25,7 @@ urlpatterns = patterns('django.contrib.flatpages.views',
 )
 
 urlpatterns += patterns('',
+    url(r'^ajaximage/', include('ajaximage.urls')),
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
     url(r'^register$', 'user.views.register'),

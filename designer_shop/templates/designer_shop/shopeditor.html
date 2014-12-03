@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
     <script src="http://tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
+    {{ bannerUploadForm.media }}
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -144,6 +145,12 @@
 					    $(".shopColor").css("color", document.getElementById("id_color").value);
                         $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
                         document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
+                        var BGColor = $("#id_color").val();
+                        var color = new RGBColor(BGColor);
+                        if (color.ok) { // 'ok' is true when the parsing was a success
+                            var brightness = calcBrightness(color);
+                            var foreColor = (brightness < 130) ? "#FFFFFF" : "#000000";
+                        }
 					},
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
@@ -864,6 +871,8 @@ function DeleteConfirmation(slug) {
         window.location =  href + event.data.param1;
     });
 }
+
+
 
 </script>
 

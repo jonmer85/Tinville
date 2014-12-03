@@ -15,11 +15,11 @@ from color_utils import widgets
 from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
 
-from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES, Shop
 from common.utils import get_or_none
 from common.widgets import AdvancedFileInput
-
-
+from image_cropping import ImageCropField, ImageRatioField
+from image_cropping import ImageCropWidget
 
 SIZE_TYPES_AND_EMPTY = [('', 'How is this item sized?')] + SIZE_TYPES
 
@@ -391,22 +391,34 @@ class DesignerShopColorPicker(forms.Form):
             raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
         return tinville_color
 
-class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
-    mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+class BannerUploadForm(forms.ModelForm):
+    class Meta:
+        model = Shop
+        fields = ['banner', 'cropBanner', 'mobileBanner', 'cropmobileBanner']
+
+
+    # banner = forms.ImageField(required=False, max_length=255, widget=ImageCropWidget)
+    # banner = ImageCropField(blank=True, null=True, upload_to='uploaded_images')
+    # size is "width x height"
+    # cropping = ImageRatioField('banner', '430x360')
+    # mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    # images = forms.URLField(widget=AjaxImageWidget(upload_to='form-uploads'))
     helper = FormHelper()
     helper.form_show_labels = False
 
     helper.layout = Layout(
         Div(Accordion(
             AccordionGroup('Banner Image',
-                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
-                     <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
-                     Field('banner', css_class="autoHeight")),
+                     HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
+                     Field('banner', css_class=" autoHeight"),
+                     Field('cropBanner'),
+            ),
             AccordionGroup('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
-                     Field('mobileBanner', css_class="autoHeight")),
+                     Field('mobileBanner', css_class="autoHeight"),
+                     Field('cropmobileBanner'),
+            ),
             ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
