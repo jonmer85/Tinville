@@ -3,7 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from tinymce.models import HTMLField
 from django.core.validators import RegexValidator
-from .fields import AjaxCropImageField
+# from .fields import AjaxCropImageField
 from image_cropping import ImageRatioField, ImageCropField
 # Create your models here.
 
