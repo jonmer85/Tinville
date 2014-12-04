@@ -161,10 +161,7 @@ PROJECT_APPS = [
     'Tinville',
     'user',
     'designer_shop',
-    'common',
-    'basket',
-    'dashboard',
-    'dashboard.orders'
+    'common'
 ]
 
 INSTALLED_APPS = [
@@ -172,6 +169,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.flatpages',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
@@ -180,20 +178,23 @@ INSTALLED_APPS = [
     'crispy_forms',
     'braces',
     'parsley',
-    'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
     'fixture_media',
     'django_extensions',
     'compressor',
     'tinymce',
-    'sorl.thumbnail',
+    # 'sorl.thumbnail',
     'django_basic_feedback',
     # 'debug_toolbar',
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
-] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
+] + PROJECT_APPS + get_core_apps(['Tinville.oscar.apps.catalogue',
+                                  'Tinville.oscar.apps.checkout',
+                                  'Tinville.oscar.apps.dashboard',
+                                  'Tinville.oscar.apps.dashboard.orders',
+                                  'Tinville.oscar.apps.order'])
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

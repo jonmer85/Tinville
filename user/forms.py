@@ -1,4 +1,5 @@
 from datetime import datetime
+import urlparse
 
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
@@ -9,12 +10,12 @@ from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
 from crispy_forms.bootstrap import AppendedText
-from oscar.core.compat import urlparse
+
 from parsley.decorators import parsleyfy
 
 from user.models import TinvilleUser
 from designer_shop.models import Shop
-from checkout.forms import PaymentInfoForm
+from Tinville.oscar.apps.checkout.forms import PaymentInfoForm
 
 
 class TinvilleUserCreationForm(forms.ModelForm):
