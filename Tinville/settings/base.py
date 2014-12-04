@@ -191,7 +191,7 @@ INSTALLED_APPS = [
     'kombu.transport.django',
     'djcelery',
 ] + PROJECT_APPS + get_core_apps(['Tinville.oscar.apps.catalogue',
-                                  'Tinville.oscar.apps.checkout',
+                                  # 'Tinville.oscar.apps.checkout',
                                   'Tinville.oscar.apps.dashboard',
                                   'Tinville.oscar.apps.dashboard.orders',
                                   'Tinville.oscar.apps.order'])

@@ -3,6 +3,7 @@ import collections
 import shutil
 from operator import itemgetter
 from functools import wraps
+from Tinville.oscar.apps.catalogue.models import Product
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -20,7 +21,7 @@ from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
-from catalogue.models import Product
+
 from common.utils import get_list_or_empty, get_or_none
 
 
