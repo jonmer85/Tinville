@@ -3,7 +3,7 @@ import collections
 import shutil
 from operator import itemgetter
 from functools import wraps
-from Tinville.oscar.apps.catalogue.models import Product
+from Tinville.custom_oscar.apps.catalogue.models import Product
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -154,9 +154,9 @@ def get_sort_order(filteredobjects, sortfilter):
     elif sortfilter == 'date-dsc':
         return filteredobjects.order_by('date_created')
     elif sortfilter == 'price-asc':
-        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax)
+        return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax)
     elif sortfilter == 'price-dsc':
-        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax, reverse=True)
+        return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax, reverse=True)
     elif sortfilter == 'pop-asc':
         return filteredobjects.order_by('?')
     elif sortfilter == 'pop-dsc':
@@ -337,7 +337,7 @@ def get_sizetype(variants):
        return "0"
 
 def get_min_price(item):
-    return str(item.min_variant_price_excl_tax)
+    return str(item.min_child_price_excl_tax)
 
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)

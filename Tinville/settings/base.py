@@ -190,11 +190,12 @@ INSTALLED_APPS = [
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
-] + PROJECT_APPS + get_core_apps(['Tinville.oscar.apps.catalogue',
-                                  # 'Tinville.oscar.apps.checkout',
-                                  'Tinville.oscar.apps.dashboard',
-                                  'Tinville.oscar.apps.dashboard.orders',
-                                  'Tinville.oscar.apps.order'])
+] + PROJECT_APPS + get_core_apps(['Tinville.custom_oscar.apps.catalogue',
+                                  # 'Tinville.custom_oscar.apps.basket',
+                                  # 'Tinville.custom_oscar.apps.checkout',
+                                  'Tinville.custom_oscar.apps.dashboard',
+                                  'Tinville.custom_oscar.apps.dashboard.orders',
+                                  'Tinville.custom_oscar.apps.order'])
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

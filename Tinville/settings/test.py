@@ -26,7 +26,8 @@ LETTUCE_APPS = (
 
 INSTALLED_APPS = INSTALLED_APPS + ['lettuce',  'django_nose',] + ['extensions',]
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 ########## TEST SETTINGS
 #TEST_RUNNER = "discover_runner.DiscoverRunner"
