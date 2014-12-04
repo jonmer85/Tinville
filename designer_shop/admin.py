@@ -4,11 +4,13 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.admin.sites import NotRegistered
 from django.contrib.contenttypes import generic
+from image_cropping import ImageCroppingMixin
 
 class ImageInline(generic.GenericTabularInline):
     model = Shop
 
-class ShopAdmin(admin.ModelAdmin):
+class ShopAdmin(ImageCroppingMixin, admin.ModelAdmin):
+    pass
     # inlines = [
     #     ImageInline,
     # ]

@@ -3,6 +3,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from tinymce.models import HTMLField
 from django.core.validators import RegexValidator
+# from .fields import AjaxCropImageField
+from image_cropping import ImageRatioField, ImageCropField
 # Create your models here.
 
 
@@ -11,10 +13,15 @@ class Shop(models.Model):
     name = models.CharField(verbose_name="Shop name", unique=True, blank=False, null=False, db_index=True,
                             default=None, max_length=100)
     slug = models.SlugField()
-    banner = models.ImageField(default='images/banner.jpg',
+    # banner = AjaxCropImageField(upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
+    banner = ImageCropField(default='images/banner.jpg',
                                upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
-    mobileBanner = models.ImageField(default='images/banner.jpg',
+    mobileBanner = ImageCropField(default='images/banner.jpg',
                                upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
+    cropBanner = ImageRatioField('banner', '430x360')
+    cropmobileBanner = ImageRatioField('mobileBanner', '430x360')
+
+
     logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename), max_length=255)
     aboutImg = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/aboutImg/{1}'.format(instance.slug, filename), max_length=255)
     aboutContent = HTMLField()

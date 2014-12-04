@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
     <script src="http://tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
+    {{ bannerUploadForm.media }}
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -864,6 +865,8 @@ function DeleteConfirmation(slug) {
         window.location =  href + event.data.param1;
     });
 }
+
+
 
 </script>
 
