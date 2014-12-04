@@ -42,7 +42,6 @@ easypost==2.0.11
 extras==0.0.3
 fuzzywuzzy==0.2
 gunicorn==0.17.4
-hiredis==0.1.5
 kombu==3.0.21
 logilab-common==0.60.0
 lxml==3.2.4
