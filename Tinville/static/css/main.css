@@ -312,7 +312,7 @@ body {
     padding-bottom: 1%;
     border-radius: 8px;
     font-size: small;
-    margin-left: -290%;
+    margin-left: -200%;
     padding-left: 30px;
     padding-right: 30px;
     width: 220px;
@@ -1089,11 +1089,12 @@ textarea {
     position: fixed;
     height: 100%;
     width: auto;
-    /*top: 0px;*/
+    top: 0px;
     left: 0px;
     background-color: #f1eeef;
     overflow: hidden;
-    /*margin-top: 50px;*/
+    margin-top: 50px;
+
     -webkit-transform: translate(-100%, 0%);
     -webkit-transition: all 1s ease;
 }
