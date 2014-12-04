@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from oscar.apps.dashboard.orders.views import *
 from oscar.apps.dashboard.orders.views import OrderListView as CoreOrderListView
 from oscar.apps.dashboard.orders.views import OrderDetailView as CoreOrderDetailView
@@ -122,11 +123,15 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment_context(self, order):
         shipment_collection = []
-        for parcel_type in self.get_supported_parcel_types():
-            parcelType = { 'predefined_package': parcel_type,
-                           'weight': 10 }
-            shipment_collection.append(self.get_specific_shipment(order, parcelType))
-        return shipment_collection
+        if cache.get('parcel_types') == None:
+            for parcel_type in self.get_supported_parcel_types():
+                parcelType = { 'predefined_package': parcel_type,
+                               'weight': 10 }
+                shipment_collection.append(self.get_specific_shipment(order, parcelType))
+            cache.set('parcel_types', shipment_collection, 60)
+            return shipment_collection
+        else:
+            return cache.get('parcel_types')
 
     def get_shipment(self, order, parcelType):
         from_address = self._GetShopAddress(order.number)
