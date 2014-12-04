@@ -109,8 +109,4 @@ class IndexView(CoreIndexView):
                 'status'
             ).values('status').annotate(freq=Count('id'))
         }
-        total = 0
-        for order in orders:
-            print order.total_incl_tax + total
-            total = total + order.total_incl_tax
         return stats
