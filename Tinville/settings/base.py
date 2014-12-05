@@ -187,7 +187,6 @@ INSTALLED_APPS = [
     # 'sorl.thumbnail',
     'django_basic_feedback',
     # 'debug_toolbar',
-    'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
 ] + PROJECT_APPS + get_core_apps(['Tinville.custom_oscar.apps.catalogue',
