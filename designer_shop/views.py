@@ -192,9 +192,9 @@ def ajax_color(request, slug):
             if request.is_ajax() and form.is_valid():
                 currentShop.color = form.cleaned_data["color"]
                 currentShop.save(update_fields=["color"])
-                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+                return HttpResponse(json.dumps({'errors': form.errors}), content_type='application/json')
 
-        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+        return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
 
 def get_types(request, shop_slug, group_by=None):
@@ -212,7 +212,7 @@ def get_types(request, shop_slug, group_by=None):
                     if not shopCategoryNames.__contains__(currentcategory.name):
                         shopCategoryNames.append(currentcategory.name)
         types = {'types': shopCategoryNames}
-        return HttpResponse(json.dumps(types), mimetype='application/json')
+        return HttpResponse(json.dumps(types), content_type='application/json')
 
 
 def get_variants(item, group=None):
@@ -343,7 +343,7 @@ def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
     # if request.is_ajax():
-    return HttpResponse(get_variants(item, group_by), mimetype='application/json')
+    return HttpResponse(get_variants(item, group_by), content_type='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
