@@ -4,7 +4,7 @@
         "pk": 2,
         "fields": {
             "email": "demo@user.com",
-            "password": "pbkdf2_sha256$12000$LyCRPn5i8lbC$sD0Sfps7UNPwAHyNWVHTzrY/40QDUDunWUD2ODhB8fs=",
+            "password": "pbkdf2_sha256$12000$aWMeM0nAdxhb$q8kVZ5rVvPveWkgHYQKG5dL/fLRoPWpcqimKQdzLMRg=",
 			"slug": "demousercom",
             "is_admin": false,
             "is_active": true,

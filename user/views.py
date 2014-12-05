@@ -136,7 +136,7 @@ def ajax_login(request, *args, **kwargs):
 
         data = auth_view_login(request, form)
         logged_in = True
-        return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), mimetype='application/json')
+        return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), content_type='application/json')
 
     return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
