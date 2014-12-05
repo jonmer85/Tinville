@@ -12,7 +12,7 @@ Line = get_model('order', 'Line')
 order_placed = get_class('order.signals', 'order_placed')
 
 class OrderCreator(CoreOrderCreator):
-    def place_order(self, basket, total,
+    def place_order(self, basket, total, shipping_charge,
                     user=None, shipping_method=None, shipping_address=None,
                     billing_address=None, order_number=None, status=None,
                     **kwargs):
@@ -37,7 +37,7 @@ class OrderCreator(CoreOrderCreator):
 
         # Ok - everything seems to be in order, let's place the order
         order = self.create_order_model(
-            user, basket, shipping_address, shipping_method, billing_address,
+            user, basket, shipping_address, shipping_method, shipping_charge, billing_address,
             total, order_number, status, **kwargs)
         for line in basket.all_lines():
             if shop is None or line.product.shop.id == shop.id:
