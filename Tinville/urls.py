@@ -3,10 +3,10 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.base import RedirectView, TemplateView
+from oscar.core.loading import get_class
 from user.decorators import designer_required
 from user.views import ajax_login, register, DesignerPaymentInfoView
 from user.forms import LoginForm
-from oscar.core.loading import get_class
 
 from oscar.app import application
 # from oscar.app import application
