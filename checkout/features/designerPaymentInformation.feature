@@ -7,7 +7,6 @@ Feature: Designer Payment Information
 
 
 
-@wipmerve
   Scenario: Navigate to Designer Payment Form
     Given a designer is logged in
     When designer clicks on user icon
@@ -15,7 +14,6 @@ Feature: Designer Payment Information
     Then click on My Payment Info
     Then payment info form is displayed
 
-@wipmerve
   Scenario: Payment Form Display
     Given the payment info form
     And  the 'full_legal_name' 'text' is displayed
@@ -35,47 +33,70 @@ Feature: Designer Payment Information
     When submit the form
     Then message should be pop up
 
-
+@wipmerve
   Scenario Outline: I should not be able to submit form
-
-  When '<full_legal_name>' '<card_number>' '<expiration_month>' '<expiration_year>' '<cvc>' '<error>'
-  Scenarios:
-  | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error              |
-  | Merve T         | 4242424242424242 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 4012888888881881 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 5555555555554444 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 5105105105105100 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 378282246310005  | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 371449635398431  | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 6011111111111117 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 6011000990139424 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 30569309025904   | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 38520000023237   | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 3530111333300000 | 12               | 15              | 123 | "not a debit card" |
-  | Merve T         | 3566002020360505 | 12               | 15              | 123 | "not a debit card" |
-
-
-
-  Scenario Outline: Payment Info Form Validation
     Given the payment info form
-    When I enter '<value>' in the '<field>'
+    When I fill the form with
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
+    | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
+    And I submit the form
     Then I should see an error that states '<error>'
 
   Scenarios:
-    | value                 | field           | error                  |
-    | -4000000000000002     | card number     | "card_declined"        |
-    | 4242424242424241      | card number     | "incorrect_number"     |
-    | 13                    | expiration_month| "invalid_expiry_month" |
-    | 1970                  | expiration_year | "invalid_expiry_year"  |
-    | 99                    | cvc             |  "invalid_cvc"         |
+  | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error                                                             |
+  | Merve T         | 4242424242424242 | 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
+  | Merve T         | 4012888888881881 | 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
+  | Merve T         | 5555555555554444 | 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
+  | Merve T         | 5105105105105100 | 12               | 15              | 123 | "This card appears to be a prepaid debit card."                   |
+  | Merve T         | 378282246310005  | 12               | 15              | 123 | "This card doesn't appear to be a Visa or MasterCard debit card." |
+  | Merve T         | 371449635398431  | 12               | 15              | 123 | "This card doesn't appear to be a Visa or MasterCard debit card." |
+  | Merve T         | 6011111111111117 | 12               | 15              | 123 | "This card doesn't appear to be a Visa or MasterCard debit card." |
+  | Merve T         | 6011000990139424 | 12               | 15              | 123 | "This card doesn't appear to be a Visa or MasterCard debit card." |
+  | Merve T         | 30569309025904   | 12               | 15              | 123 | "This card doesn't appear to be a US debit card."                 |
+  | Merve T         | 38520000023237   | 12               | 15              | 123 | "This card doesn't appear to be a US debit card."                 |
+  | Merve T         | 3530111333300000 | 12               | 15              | 123 | "This card doesn't appear to be a US debit card."                 |
+  | Merve T         | 3566002020360505 | 12               | 15              | 123 | "This card doesn't appear to be a US debit card."                 |
+  | Merve           | 4000056655665556 | 12               | 15              | 123 | "Name must contain first name and last name."                     |
+  | Merve T         | -4000000000000002| 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
+  | Merve T         | 4242424242424241 | 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
+
+  Scenario Outline: The following field errors should be seen immediately
+    Given the payment info form
+    When I fill the form with
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
+    | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
+
+    Then I should see the following '<error>' immediately
+
+  Scenarios:
+
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error                 |
+    | Merve T         | 4000056655665556 | 13               | 15              | 123 | ""                    |
+    | Merve T         | 4000056655665556 | 12               | 70              | 123 | " "                   |
+    | Merve T         | 4000056655665556 | 12               | 15              | 99  | ""                    |
+|
 
 
-  Scenario Outline: Payment Info Stripe Validation
+
+
+
+
+  Scenario Outline: Payment Info Success
     Given the payment info form
     When I enter the following information
-    | fieldname        |       value        |
-    | full_legal_name  | <full_legal_name>  |
-   Then I should see an error that states '<error>'
+    When I fill the form with
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error    |
+    | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>| <error>  |
+    And I submit the form
+    Then I should see success message that states '<success>'
+
+  Scenarios:
+  |full_legal_name  | card_number       | expiration_month | expiration_year | cvc  | success                                         |
+  | Merve T         | 4000056655665556  | 12               | 15              | 123  | "You have successfully added your payment info" |
+  | Merve T         | 5200828282828210  | 12               | 15              | 123  | "You have successfully added your payment info" |
+
+
+
 
 
 
