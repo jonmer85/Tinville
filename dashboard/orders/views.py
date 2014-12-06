@@ -6,11 +6,13 @@ from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsVi
 from oscar.core.loading import get_model
 from django.views.generic import View
 from designer_shop.models import Shop
+from order.models import ShippingEvent
 from order.exceptions import *
 import json
 import re
 import easypost
 import logging
+from common.utils import isNoneOrEmptyOrWhitespace
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -211,6 +213,62 @@ class OrderDetailView(CoreOrderDetailView):
             'zip': address.postcode
         }
         return _address
+
+
+def packageStatus(request):
+
+        response = HttpResponse()
+        if(isNoneOrEmptyOrWhitespace(request.body) == False):
+            response.reason_phrase = 'BadRequest'
+            response.status_code = 400
+            return response
+
+        package = json.loads(request.body)
+
+        if('result' not in package):
+            response.reason_phrase = 'BadRequest'
+            response.status_code = 400
+            return response
+
+        result = package['result']
+
+        if(result is None):
+            response.reason_phrase = 'BadRequest'
+            response.status_code = 400
+            return response
+
+        if('status' not in result):
+            response.reason_phrase = 'BadRequest'
+            response.status_code = 400
+            return response
+
+        if(isNoneOrEmptyOrWhitespace(result['status']) == False):
+            response.reason_phrase = 'BadRequest'
+            response.status_code = 400
+            return response
+
+        if result['status'] == 'in_transit':
+            if('tracking_code' not in result):
+                response.reason_phrase = 'BadRequest'
+                response.status_code = 400
+                return response
+
+            tracking_code = result['tracking_code']
+
+            if(isNoneOrEmptyOrWhitespace(tracking_code) == False):
+                response.reason_phrase = 'BadRequest'
+                response.status_code = 400
+                return response
+
+            try:
+                EventHandler()._create_shipping_event(tracking_code)
+            except:
+                pass
+
+        response.status_code = 200
+        response.reason_phrase = 'OK'
+
+        return response
 
 
 class LineDetailView(CoreLineDetailView):
