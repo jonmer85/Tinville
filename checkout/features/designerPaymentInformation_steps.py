@@ -10,7 +10,7 @@ def designer_is_logged_in(step):
 @step("designer clicks on user icon")
 def step_impl(step):
     assert_selector_does_exist('#clickedLogin-lg') #this verifies if the icon exists
-    world.browser.find_element_by_css_selector('#clickedLogin-lg').click() #this clicks the icon
+    world.browser.find_element_by_css_selector('#clickedLogin-lg').click() #clicking on the icon
 
 @step("drop down menu is displayed")
 def drop_down_menu_displayed(step):
@@ -32,66 +32,17 @@ def given_the_payment_info(step):
     step.then('click on My Payment Info')
     step.then('payment info form is displayed')
 
-@step("the '(.*)' '(.*)' is displayed")
+@step("the '(.*)' '(.*)' is displayed") #Payment Form Display, given the payment info form
 def step_impl(step, name, fieldtype):
     field = world.browser.find_element_by_name(name)
     assert field.is_displayed()==True
     assert field.get_attribute('type')==fieldtype, "fieldtype should be " + fieldtype + " but is " + field.tag_name
 
 
+@step("the payment info form")
+def payment_info_form(step)
 
 
-@step("the card number field is displayed")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
-
-@step("enter name as it seems on your debit card or bank account")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
 
 
-@step("enter 16-digits card number")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
-
-
-@step("enter expiration date in MM YY format")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
-
-
-@step("enter CVC -the last three digits appears on the back of card")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
-
-
-@step("the format entered is correct")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
-
-
-@step("submit the form")
-def step_impl(step):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
 

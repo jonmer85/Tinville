@@ -22,8 +22,6 @@ def given_the_shipping_address_page(step):
 
 
 
-
-
 @step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')

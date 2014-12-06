@@ -162,7 +162,8 @@ PROJECT_APPS = [
     'common',
     'basket',
     'dashboard',
-    'dashboard.orders'
+    'dashboard.orders',
+    'checkout'
 ]
 
 INSTALLED_APPS = [
