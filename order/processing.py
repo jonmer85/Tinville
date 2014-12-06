@@ -20,7 +20,7 @@ class EventHandler(processing.EventHandler):
         self.validate_shipping_event(
             order, event_type, lines, line_quantities, **kwargs)
 
-        # payment_event = None
+        payment_event = None
 
         group = None
 
@@ -54,6 +54,11 @@ class EventHandler(processing.EventHandler):
             order, event_type, lines, line_quantities, shipment_info, group,
             kwargs.get('reference', None))
 
+        # If there was a payment event created before the shipment event, attach these events
+        if payment_event != None:
+            payment_event.shipping_event = shipping_event
+            payment_event.save()
+
     def _create_shipping_event(self, order, event_type, lines, line_quantities, shipment_info, group,
                               ref):
         shipping_event = self.create_shipping_event(
@@ -64,6 +69,7 @@ class EventHandler(processing.EventHandler):
         shipping_event.group = group
 
         shipping_event.save()
+        return shipping_event
         # add to the shipping costs of the order
 
     def _create_shipping_event(self,tracking_code):
@@ -87,3 +93,4 @@ class EventHandler(processing.EventHandler):
         payment_event = self.create_payment_event(order, event_type, amount, lines, line_quantities)
         payment_event.group = group
         payment_event.save()
+        return payment_event
