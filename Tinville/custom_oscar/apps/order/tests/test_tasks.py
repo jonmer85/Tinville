@@ -188,9 +188,19 @@ class PayDesignersTests(TestCase):
         return shipped_event, in_transit_event
 
     def test_no_payout_due_to_no_stripe_recipient_id_for_designer(self):
+        self.user.recipient_id = ''
+        self.user.save()
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
         self.create_basic_shipping_and_payment_events()
+
+
         pay_designers()
+
+        # Make sure the exception rolled back any payment and payout events caused
+        with self.assertRaises(PaymentEvent.DoesNotExist):
+            PaymentEvent.objects.get(event_type=PaymentEventType.objects.get(code="paid_designer"))
+        self.assertEquals(len(DesignerPayout.objects.all()), 0)
+
 
 
 
@@ -286,15 +296,39 @@ class PayDesignersTests(TestCase):
         self.assert_proper_stripe_records(designer_payout2)
 
 
-    # def test_payout_of_multiple_orders(self):
-    #     pass
+    def test_payout_of_multiple_orders(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
+        self.order = create_order(number="2-10002", user=self.user, shop=self.shop)
+        self.order = create_order(number="2-10003", user=self.user, shop=self.shop)
 
-    # def test_payout_then_another_pay_period_does_not_pay_again(self):
-    #     pass
-    #
-    # def test_multiple_payouts_if_multiple_orders_between_pay_periods(self):
-    #     pass
+        shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
 
-    # def test_transaction_is_rolled_back_on_exception(self):
-    #     pass
+        pay_designers()
 
+        designer_payment_event = self.assert_proper_payment_events(
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=6.30)
+
+        designer_payout = self.assert_proper_payout_records(
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=6.30)
+
+        self.assert_proper_stripe_records(designer_payout)
+
+
+    def test_multiple_payouts_if_orders_between_pay_periods(self):
+        self.test_payout_on_one_full_order()
+        self.assertEqual(len(PaymentEvent.objects.all()), 2)
+        self.assertEqual(len(DesignerPayout.objects.all()), 1, "1 payout should exist for first payout")
+
+        # Create another order and make sure it is paid in the next pay period
+        self.order = create_order(number="2-10002", user=self.user, shop=self.shop)
+        shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
+
+        pay_designers()
+
+        designer_payment_event = self.assert_proper_payment_events(
+            total_payment_events=4, payment_event_group=in_transit_event.group, payout_total=6.30)
+
+        designer_payout = self.assert_proper_payout_records(
+            total_payout_records=2, payment_event_ref=designer_payment_event.reference, payout_total=6.30)
+
+        self.assert_proper_stripe_records(designer_payout)
