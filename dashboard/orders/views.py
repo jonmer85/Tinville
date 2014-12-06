@@ -128,7 +128,7 @@ class OrderDetailView(CoreOrderDetailView):
                 parcelType = { 'predefined_package': parcel_type,
                                'weight': 10 }
                 shipment_collection.append(self.get_specific_shipment(order, parcelType))
-            cache.set('parcel_types', shipment_collection, 60)
+            cache.set('parcel_types', shipment_collection, 7200)
             return shipment_collection
         else:
             return cache.get('parcel_types')
