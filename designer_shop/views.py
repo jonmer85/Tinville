@@ -3,7 +3,7 @@ import collections
 import shutil
 from operator import itemgetter
 from functools import wraps
-from Tinville.custom_oscar.apps.catalogue.models import Product
+from custom_oscar.apps.catalogue.models import Product
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect

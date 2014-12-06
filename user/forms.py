@@ -15,7 +15,7 @@ from parsley.decorators import parsleyfy
 
 from user.models import TinvilleUser
 from designer_shop.models import Shop
-from Tinville.custom_oscar.apps.checkout.forms import PaymentInfoForm
+from custom_oscar.apps.checkout.forms import PaymentInfoForm
 
 
 class TinvilleUserCreationForm(forms.ModelForm):
