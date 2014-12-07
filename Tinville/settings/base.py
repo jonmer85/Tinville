@@ -160,6 +160,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 PROJECT_APPS = [
     'Tinville',
     'user',
+    'basket',
     'designer_shop',
     'common'
 ]
