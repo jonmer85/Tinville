@@ -10,6 +10,7 @@ from decimal import Decimal as D
 Partner = get_model('partner', 'Partner')
 PartnerAddress = get_model('partner', 'PartnerAddress')
 ShippingEvent = get_model('order', 'ShippingEvent')
+ShippingEventType = get_model('order', 'ShippingEventType')
 PaymentEventType = get_model('order', 'PaymentEventType')
 
 class EventHandler(processing.EventHandler):
@@ -63,7 +64,6 @@ class EventHandler(processing.EventHandler):
         shipping_event = self.create_shipping_event(
             order, event_type, lines, line_quantities,
             reference=ref)
-
         shipping_event.label_url = shipment_info["labelUrl"]
         shipping_event.tracking_code = shipment_info["tracking"]
         shipping_event.group = group
@@ -71,6 +71,23 @@ class EventHandler(processing.EventHandler):
         shipping_event.save()
         return shipping_event
         # add to the shipping costs of the order
+
+    def _create_shipping_event(self,tracking_code):
+        try:
+            shipping_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="shipped"),tracking_code=tracking_code)
+
+            shipping_event_intransit = ShippingEvent.objects.create(order=shipping_event.order,
+                                                    event_type=ShippingEventType.objects.get(code="in_transit"),
+                                                    reference=shipping_event.reference,
+                                                    group=shipping_event.group,
+                                                    tracking_code=shipping_event.tracking_code,
+                                                    notes=" ")
+            shipping_event_intransit.save()
+        except ShippingEvent.DoesNotExist:
+            #TODO: Use Logger for logging "Tracking code does not exist", tracking_code
+            pass
+        except Exception as e:
+            pass
 
     def _create_payment_event(self, order, event_type, amount, lines, line_quantities, group):
         payment_event = self.create_payment_event(order, event_type, amount, lines, line_quantities)
