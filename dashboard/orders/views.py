@@ -52,7 +52,8 @@ class OrderListView(CoreOrderListView):
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
     easypost.api_key = settings.EASYPOST_API_KEY
-
+    order_actions = ('save_note', 'delete_note', 'change_order_status',
+                     'create_order_payment_event', 'calculate_shipping_cost')
 
     def create_shipping_event(self, request, order, lines, quantities):
         code = request.POST['shipping_event_type']
@@ -68,10 +69,14 @@ class OrderDetailView(CoreOrderDetailView):
         try:
             if event_type.name == 'Shipped':
                 parcelType = request.POST.get('parcel_type', None)
+                if parcelType == "Parcel":
+                    weight = float(request.POST.get('weight', None))*16
+                else:
+                    weight = 10
                 self.validate_parcel_type(parcelType)
                 parcelType = {
                     'predefined_package' : parcelType,
-                    'weight' : 10
+                    'weight' : weight
                 }
                 shipment_info = self.post_specific_shipment(order, parcelType)
 
@@ -99,6 +104,7 @@ class OrderDetailView(CoreOrderDetailView):
         try:
             shipment.buy(rate=shipment.lowest_rate(carriers=['USPS'], services=['Priority']))
         except Exception as e:
+            messages.error("Failed to buy shipping label, please try again.")
             logger.error(e)
 
         shipment_info = {
@@ -111,6 +117,7 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
+        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost()
         try:
             order = kwargs['object']
             ctx['box_types'] = self.get_shipment_context(order)
@@ -123,15 +130,20 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment_context(self, order):
         shipment_collection = []
-        if cache.get('parcel_types') == None:
-            for parcel_type in self.get_supported_parcel_types():
-                parcelType = { 'predefined_package': parcel_type,
+        # if cache.get('parcel_types') == None:
+        for parcel_type in self.get_supported_parcel_types():
+            if parcel_type['type'] == 'flatrate':
+                parcelType = { 'predefined_package': parcel_type['easypostname'],
                                'weight': 10 }
                 shipment_collection.append(self.get_specific_shipment(order, parcelType))
-            cache.set('parcel_types', shipment_collection, 7200)
-            return shipment_collection
-        else:
-            return cache.get('parcel_types')
+            elif parcel_type['type'] == 'calculated':
+                shipment_collection.append({'type': parcel_type['easypostname'],
+                                            'name':parcel_type['displayname'],
+                                            'rates': [{'rate': '0.00'}]})
+            # cache.set('parcel_types', shipment_collection, 7200)
+        return shipment_collection
+        # else:
+        #     return cache.get('parcel_types')
 
     def get_shipment(self, order, parcelType):
         from_address = self._GetShopAddress(order.number)
@@ -160,9 +172,7 @@ class OrderDetailView(CoreOrderDetailView):
         return shipment
 
     def get_specific_shipment(self, order, parcelType):
-
         shipment = self.get_shipment(order, parcelType)
-
         rates = []
         for current in range(0, len(shipment.rates)):
             #NOTE: Only append priority service
@@ -180,17 +190,33 @@ class OrderDetailView(CoreOrderDetailView):
         return basic_shipment
 
     def get_supported_parcel_types(self):
-        return ['FlatRateEnvelope', 'FlatRatePaddedEnvelope',
-                'SmallFlatRateBox', 'MediumFlatRateBox',
-                'LargeFlatRateBox']
+        return [
+                {'type': 'calculated', 'easypostname': 'Parcel', 'displayname': 'Weight Based'},
+                {'type': 'flatrate', 'easypostname': 'FlatRateEnvelope', 'displayname': 'Flat-Rate Envelope'},
+                {'type': 'flatrate', 'easypostname': 'FlatRatePaddedEnvelope', 'displayname': 'Flat-Rate Padded Envelope'},
+                {'type': 'flatrate', 'easypostname': 'SmallFlatRateBox', 'displayname': 'Small Flat-Rate Box'},
+                {'type': 'flatrate', 'easypostname': 'MediumFlatRateBox', 'displayname': 'Medium Flat-Rate Box'},
+                {'type': 'flatrate', 'easypostname': 'LargeFlatRateBox', 'displayname': 'Large Flat-Rate Box'}]
 
     def validate_parcel_type(self, parcel_type):
-        if parcel_type not in self.get_supported_parcel_types():
+        validtypes = []
+        for types in self.get_supported_parcel_types():
+            validtypes.append(types['easypostname'])
+        if parcel_type not in validtypes:
             msg = (parcel_type)
             raise InvalidParcelType(msg)
 
-    def _GetShopAddress(self,orderId):
+    def calculate_shipping_cost(self, request=None, order=None):
+        if request == None:
+            return 0.00
+        else:
+            parcelType = { 'predefined_package': request.POST['parcel_type'],
+                           'weight': request.POST['weight'] }
+            shipment = self.get_specific_shipment(order, parcelType)
+            shippingcost = shipment['rates'][0]['rate']
+            return HttpResponse(shippingcost, mimetype='application/json')
 
+    def _GetShopAddress(self,orderId):
         shopIdMatch = re.search('^([0-9]+)',orderId)
         shopId = shopIdMatch.group()
         shop = Shop.objects.get(pk=shopId)

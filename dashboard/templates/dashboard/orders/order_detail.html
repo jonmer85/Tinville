@@ -158,19 +158,16 @@
                     <h3>{% trans "Items ordered" %}</h3>
                 </div>
 
-                <form id="order_lines_form" action="." method="post" class="form-inline">
+                <form id="order_lines_form" name="order_lines_form" action="." method="post" class="form-inline">
                     {% csrf_token %}
                     {% block line_actions %}
                         <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
                         <div class="control-group">
                             <div class="controls">
-                                <input type="text" readonly="true" name="line_action" value="create_shipping_event" class="btn btn-group hidden"/>
-                                    <div class="btn-group">
-{#                                            {% for event_type in shipping_event_types %}#}
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship it!</button>
-{#                                                <button type="submit" name="shipping_event_type" class="btn btn-primary" value="{{ event_type.code }}">{{ event_type.name }}</button>#}
-{#                                            {% endfor %}#}
-                                    </div>
+                                <input type="text" readonly="true" name="shipping_event_type" value="shipped" class="btn btn-group hidden"/>
+                                <div class="btn-group">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship it!</button>
+                                </div>
                                 <label class="radio list-inline hidden">
                                     {% trans "with reference" %} <input type="text" name="reference" value="" />
                                 </label>
@@ -196,6 +193,10 @@
                                                         <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.rates.0.rate != "0.00" %} (${{ box_type.rates.0.rate }}){% endif %}</a></li>
                                                     {% endfor %}
                                                 </ul>
+                                                <div id="weight-input" class="form-actions hidden">
+                                                    <input type="text" class="form-control" name="weight" value="" placeholder="Enter Weight (pounds)">
+                                                    <button type="button" value="calculate_shipping_cost" name="order_action" id="calculateShipping" class="btn btn-primary">Calculate</button>
+                                                </div>
                                             </div>
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">The Financials</div>
@@ -207,7 +208,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>New Shipping Costs</td>
-                                                            <td id="newShippingCosts">$0.00</td>
+                                                            <td id="newShippingCosts">{{ calculated_shipping_cost|currency:order.currency }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Other Shipping Costs</td>
@@ -230,7 +231,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="submit" name="shipping_event_type" class="btn btn-primary" value="shipped" data-toggle="modal" data-target="#processing-modal">Confirm Shipping Option</button>
+                                        <button type="submit"  name="line_action" value="create_shipping_event" class="btn btn-primary" data-toggle="modal" data-target="#processing-modal">Confirm Shipping Option</button>
                                     </div>
                                 </div>
                             </div>
@@ -827,7 +828,7 @@
     {{ block.super }}
     <script>
 
-        $( "#shippingOptionSelect" ).on( 'click', 'li', function() {
+        $("#shippingOptionSelect").on( 'click', 'li', function() {
             var selectedShippingOption = $(this).find('a').attr('name');
             var box_types = JSON.parse("{{ box_types_json|escapejs }}");
             for (var box_type in box_types)
@@ -835,24 +836,16 @@
                 if (box_types[box_type].type == selectedShippingOption)
                 {
                     $("#selectedBoxType").attr("value", box_types[box_type].type);
-                    $("#newShippingCosts").text("$" + box_types[box_type].rates[0].rate)
-                    var totalTransactionFees = (($("#orderTotal").text().substring(1)-
-                        $("#newShippingCosts").text().substring(1)-
-                        $("#otherShippingCosts").text().substring(1))*0.1).toFixed(2)
-                    var totalTakeHome = ($("#orderTotal").text().substring(1)-
-                        $("#newShippingCosts").text().substring(1)-
-                        $("#otherShippingCosts").text().substring(1)-
-                        totalTransactionFees).toFixed(2)
-                    if(totalTakeHome >= 0)
-                    {
-                        $("#takeHome").text("$" + totalTakeHome)
-                    }
-                    else
-                    {
-                        $("#takeHome").text("-$" + Math.abs(totalTakeHome).toFixed(2))
-                    }
-
-                    $("#totalTransactionFees").text("$" + totalTransactionFees)
+                    setModalCosts(box_types[box_type].rates[0].rate)
+                }
+                if (selectedShippingOption == "Parcel")
+                {
+                    $("#weight-input").removeClass("hidden");
+                }
+                else
+                {
+                    $("#weight-input").addClass("hidden");
+                    $("[name='weight").val('');
                 }
             }
         });
@@ -865,5 +858,34 @@
             window.print();
         });
 
+        function setModalCosts(newShippingCost) {
+            $("#newShippingCosts").text("$" + newShippingCost)
+            var totalTransactionFees = (($("#orderTotal").text().substring(1)-
+                $("#newShippingCosts").text().substring(1)-
+                $("#otherShippingCosts").text().substring(1))*0.1).toFixed(2)
+            var totalTakeHome = ($("#orderTotal").text().substring(1)-
+                $("#newShippingCosts").text().substring(1)-
+                $("#otherShippingCosts").text().substring(1)-
+                totalTransactionFees).toFixed(2)
+            if(totalTakeHome >= 0)
+            {
+                $("#takeHome").text("$" + totalTakeHome)
+            }
+            else
+            {
+                $("#takeHome").text("-$" + Math.abs(totalTakeHome).toFixed(2))
+            }
+            $("#totalTransactionFees").text("$" + totalTransactionFees)
+        }
+        $("#calculateShipping").click(function(){
+            var postData = $( "#order_lines_form" ).serialize()
+            postData = postData + "&order_action=calculate_shipping_cost"
+            $("#calculateShipping").html('<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Calculating...')
+            $.post("", postData)
+                .done(function(data){
+                    $("#calculateShipping").html('Calculate')
+                    setModalCosts(data)
+                });
+        });
     </script>
 {% endblock %}
