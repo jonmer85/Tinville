@@ -212,8 +212,9 @@ class OrderDetailView(CoreOrderDetailView):
         if request == None:
             return 0.00
         else:
+            weight = float(request.POST['weight']) * 16
             parcelType = { 'predefined_package': request.POST['parcel_type'],
-                           'weight': request.POST['weight'] }
+                           'weight': weight }
             shipment = self.get_specific_shipment(order, parcelType)
             shippingcost = shipment['rates'][0]['rate']
             return HttpResponse(shippingcost, mimetype='application/json')
