@@ -293,7 +293,7 @@ def packageStatus(request):
                 return response
 
             try:
-                EventHandler()._create_shipping_event(tracking_code)
+                EventHandler().create_inTransit_event(tracking_code)
             except:
                 pass
 

@@ -72,22 +72,24 @@ class EventHandler(processing.EventHandler):
         return shipping_event
         # add to the shipping costs of the order
 
-    def _create_shipping_event(self,tracking_code):
+    def create_inTransit_event(self,tracking_code):
         try:
-            shipping_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="shipped"),tracking_code=tracking_code)
-
-            shipping_event_intransit = ShippingEvent.objects.create(order=shipping_event.order,
-                                                    event_type=ShippingEventType.objects.get(code="in_transit"),
-                                                    reference=shipping_event.reference,
-                                                    group=shipping_event.group,
-                                                    tracking_code=shipping_event.tracking_code,
-                                                    notes=" ")
-            shipping_event_intransit.save()
+            isIntransit = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code=tracking_code)
         except ShippingEvent.DoesNotExist:
-            #TODO: Use Logger for logging "Tracking code does not exist", tracking_code
-            pass
-        except Exception as e:
-            pass
+            try:
+                shipping_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="shipped"),tracking_code=tracking_code)
+
+
+                shipping_event_intransit = ShippingEvent.objects.create(order=shipping_event.order,
+                                                                event_type=ShippingEventType.objects.get(code="in_transit"),
+                                                                reference=shipping_event.reference,
+                                                                group=shipping_event.group,
+                                                                tracking_code=shipping_event.tracking_code,
+                                                                notes=" ")
+                shipping_event_intransit.save()
+            except ShippingEvent.DoesNotExist:
+                #TODO Log Shipped event does not exist
+                pass
 
     def _create_payment_event(self, order, event_type, amount, lines, line_quantities, group):
         payment_event = self.create_payment_event(order, event_type, amount, lines, line_quantities)
