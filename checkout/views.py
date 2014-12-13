@@ -14,7 +14,8 @@ from oscar.core.loading import get_class, get_classes
 from oscar.core import prices
 
 from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsView, IndexView as CoreIndexView,\
-    ShippingAddressView as CoreShippingAddressView, ThankYouView as CoreThankYouView, GatewayForm, ShippingAddressForm
+    ShippingAddressView as CoreShippingAddressView, ThankYouView as CoreThankYouView, GatewayForm, ShippingAddressForm,\
+    UserAddressUpdateView as CoreUserAddressUpdateView, UserAddressForm
 from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 
@@ -105,10 +106,10 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
 
     def payment_description(self, order_number, total, **kwargs):
-        # Jon M TODO - Add case for anonymous user with email
-        return self.request.user.email
-        # return self.request.POST[STRIPE_EMAIL]
-
+        if not self.request.user.is_authenticated():
+            return kwargs['guest_email']
+        else:
+            return self.request.user.email
 
     def payment_metadata(self, order_number, total, **kwargs):
         return {'order_number': order_number}
@@ -179,6 +180,9 @@ class PaymentDetailsView(CorePaymentDetailsView):
                         top_level_order_number, basket.id)
 
         items_by_shop = {}
+
+        if 'guest_email' in order_kwargs:
+            payment_kwargs['guest_email'] = order_kwargs['guest_email']
 
         try:
             self.handle_payment(top_level_order_number, order_total, **payment_kwargs)
@@ -325,3 +329,7 @@ class ShippingAddressView(CoreShippingAddressView):
 
 class ThankYouView(CoreThankYouView):
     template_name = 'thank-you.html'
+
+class UserAddressUpdateView(CoreUserAddressUpdateView):
+    template_name = 'edit_address.html'
+    form_class = UserAddressForm
