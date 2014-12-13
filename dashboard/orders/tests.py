@@ -79,13 +79,17 @@ class PackageStatusTest(TestCase):
         self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code)
         self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type)
 
-    # def test_duplicate_package_status(self):
-    #     result = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
-    #     self.assertEqual(result.status_code, 200, "Because the service should return a 200")
-    #     self.assertEqual(result.reason_phrase, 'OK', "Because the service should return OK")
-    #
-    #     result2 = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
-    #     in_transit_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code='EZ4000000004')
+    def test_duplicate_package_status(self):
+         result = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
+         self.assertEqual(result.status_code, 200, "Because the service should return a 200")
+         self.assertEqual(result.reason_phrase, 'OK', "Because the service should return OK")
+
+         result2 = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
+         in_transit_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code='EZ4000000004')
+         self.assertEqual(self.shipped_event.group, in_transit_event.group)
+         self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code)
+         self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type)
+
 
     def test_StringEmpty_package(self):
         result = self.client.post(self.requestUrl, "", content_type="application/json")

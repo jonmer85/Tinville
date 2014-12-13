@@ -72,7 +72,7 @@ class EventHandler(processing.EventHandler):
         return shipping_event
         # add to the shipping costs of the order
 
-    def _create_shipping_event(self,tracking_code):
+    def create_inTransit_event(self,tracking_code):
         try:
             shipping_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="shipped"),tracking_code=tracking_code)
 
