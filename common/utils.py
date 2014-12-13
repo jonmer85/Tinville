@@ -1,5 +1,6 @@
 from django.conf import settings
 from decimal import Decimal as D, ROUND_FLOOR
+import string
 
 def get_or_none(model, **kwargs):
     try:
@@ -20,7 +21,7 @@ def get_designer_payout_amount(original_amount):
 
 def isNoneOrEmptyOrWhitespace (validateString):
     if validateString:
-        if validateString == ' ':
+        if validateString.isspace():
             return False
         else:
             return True

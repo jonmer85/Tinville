@@ -4,6 +4,7 @@ from oscar.apps.payment import exceptions
 from oscar.core.loading import get_model
 from django.conf import settings
 from order.exceptions import *
+import logging
 
 # from .models import PaymentEventType
 from decimal import Decimal as D
@@ -12,6 +13,7 @@ PartnerAddress = get_model('partner', 'PartnerAddress')
 ShippingEvent = get_model('order', 'ShippingEvent')
 ShippingEventType = get_model('order', 'ShippingEventType')
 PaymentEventType = get_model('order', 'PaymentEventType')
+logger = logging.getLogger(__name__)
 
 class EventHandler(processing.EventHandler):
 
@@ -88,8 +90,7 @@ class EventHandler(processing.EventHandler):
                                                                 notes=" ")
                 shipping_event_intransit.save()
             except ShippingEvent.DoesNotExist:
-                #TODO Log Shipped event does not exist
-                pass
+                logger.error("Shipped event does not exist")
 
     def _create_payment_event(self, order, event_type, amount, lines, line_quantities, group):
         payment_event = self.create_payment_event(order, event_type, amount, lines, line_quantities)

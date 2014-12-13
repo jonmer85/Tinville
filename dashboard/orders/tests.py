@@ -4,10 +4,13 @@ import json
 from common.factories import create_order
 from user.models import TinvilleUser
 from designer_shop.models import Shop
+from oscar.apps.address.abstract_models import AbstractAddress
+from dashboard.orders.views import EasyPostAddressFormatter
 
 
 ShippingEvent = get_model('order', 'ShippingEvent')
 ShippingEventType = get_model('order', 'ShippingEventType')
+
 
 class PackageStatusTest(TestCase):
     fixtures = ['all.json']
@@ -75,9 +78,9 @@ class PackageStatusTest(TestCase):
         self.assertEqual(result.reason_phrase, 'OK', "Because the service should return OK")
 
         in_transit_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code='EZ4000000004')
-        self.assertEqual(self.shipped_event.group, in_transit_event.group)
-        self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code)
-        self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type)
+        self.assertEqual(self.shipped_event.group, in_transit_event.group, "Because the groups should be the same")
+        self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code, "Because the tracking code should be equal")
+        self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type, "Because the Event Type should be in transit")
 
     def test_duplicate_package_status(self):
          result = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
@@ -86,9 +89,9 @@ class PackageStatusTest(TestCase):
 
          result2 = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
          in_transit_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code='EZ4000000004')
-         self.assertEqual(self.shipped_event.group, in_transit_event.group)
-         self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code)
-         self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type)
+         self.assertEqual(self.shipped_event.group, in_transit_event.group, "Because the groups should be the same")
+         self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code, "Because the tracking code should be equal")
+         self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type, "Because the Event Type should be in transit")
 
 
     def test_StringEmpty_package(self):
@@ -120,3 +123,100 @@ class PackageStatusTest(TestCase):
         result = self.client.post(self.requestUrl, json.dumps({"result": { "tracking_code": None, "status": "in_transit"}}), content_type="application/json")
         self.assertEqual(result.status_code, 400, "Because the service should return a 400")
         self.assertEqual(result.reason_phrase, 'BadRequest', "Because the service should return BadRequest")
+
+class EasyPostAddressTest(TestCase):
+
+    def Valid_Address(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line1='800 Federal St', line2='', line4='Andover', state='MA', postcode='01810')
+
+        easyPostAdddress = EasyPostAddressFormatter(address)
+        self.assertIn('name', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['name'], address.name)
+        self.assertIn('street1', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['street1'], address.line1)
+        self.assertIn('street2', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['street2'], address.line2)
+        self.assertIn('city', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['city'], address.city)
+        self.assertIn('state', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['state'], address.state)
+        self.assertIn('zip', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['zip'], address.postcode)
+
+    def None_Name_Property(self):
+        address = AbstractAddress(line1='800 Federal St', line2='', line4='Andover', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Empty_Name_Property(self):
+        address = AbstractAddress(first_name='', last_name='',line1='800 Federal St', line2='', line4='Andover', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Whitespace_Name_Property(self):
+        address = AbstractAddress(first_name=' ', last_name=' ',line1='800 Federal St', line2='', line4='Andover', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def None_Line1_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line2='', line4='Andover', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Empty_Line1_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line1='', line2='', line4='Andover', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Whitespace_Line1_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line1=' ', line2='', line4='Andover', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def None_Line2_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line1='123 elm', line4='Andover', state='MA', postcode='01810')
+        easyPostAdddress = EasyPostAddressFormatter(address)
+        self.assertIn('street2', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['street2'], address.line2)
+
+    def Empty_Line2_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line1='123 elm', line2='', line4='Andover', state='MA', postcode='01810')
+        easyPostAdddress = EasyPostAddressFormatter(address)
+        self.assertIn('street2', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['street2'], address.line2)
+
+    def Whitespace_Line2_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel', line1='123 elm', line2=' ', line4='Andover', state='MA', postcode='01810')
+        easyPostAdddress = EasyPostAddressFormatter(address)
+        self.assertIn('street2', easyPostAdddress)
+        self.assertEqual(easyPostAdddress['street2'], address.line2)
+
+    def None_City_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Empty_City_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Whitespace_City_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4=' ', state='MA', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def None_State_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='Andover', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Empty_State_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='Andover', state='', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Whitespace_State_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='Andover', state=' ', postcode='01810')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def None_PostCode_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='Andover', state='MA')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Empty_PostCode_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='Andover', state='MA', postcode='')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)
+
+    def Whitespace_PostCode_Property(self):
+        address = AbstractAddress(first_name='Bob', last_name='Doel',line1='800 Federal St', line2='', line4='Andover', state='MA', postcode=' ')
+        self.assertRaises(ValueError, EasyPostAddressFormatter, address=address)

@@ -149,7 +149,7 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment(self, order, parcelType):
         from_address = self._GetShopAddress(order.number)
-        to_address = self._EasyPostAddressFormatter(order.shipping_address)
+        to_address = EasyPostAddressFormatter(order.shipping_address)
         try:
             shipment = easypost.Shipment.create(
                 to_address=to_address,
@@ -229,17 +229,33 @@ class OrderDetailView(CoreOrderDetailView):
         if(partners == None or len(partners) == 0):
             raise ValueError("Partners Address is empty")
 
-        shop_address = self._EasyPostAddressFormatter(partners[0].addresses.instance.primary_address)
+        shop_address = EasyPostAddressFormatter(partners[0].addresses.instance.primary_address)
         return shop_address
 
-    def _EasyPostAddressFormatter(self, address):
+def EasyPostAddressFormatter(address):
 
         if(address == None):
             raise ValueError("Address is Empty.")
-        #TODO check for multiple Address Lines
+
+        if not hasattr(address, 'name') or not isNoneOrEmptyOrWhitespace(address.name):
+            raise ValueError("Missing Name for Address")
+
+        if not hasattr(address, 'line1') or not isNoneOrEmptyOrWhitespace(address.line1):
+            raise ValueError("Missing line1 for Address")
+
+        if not hasattr(address, 'city') or not isNoneOrEmptyOrWhitespace(address.city):
+            raise ValueError("Missing City for Address")
+
+        if not hasattr(address, 'state') or not isNoneOrEmptyOrWhitespace(address.state):
+            raise ValueError("Missing State for Address")
+
+        if not hasattr(address, 'postcode') or not isNoneOrEmptyOrWhitespace(address.postcode):
+            raise ValueError("Missing postcode for Address")
+
         _address = {
             'name': address.name,
             'street1': address.line1,
+            'street2': address.line2,
             'city': address.city,
             'state': address.state,
             'zip': address.postcode
@@ -295,7 +311,9 @@ def packageStatus(request):
             try:
                 EventHandler().create_inTransit_event(tracking_code)
             except:
-                pass
+                response.reason_phrase = 'BadRequest'
+                response.status_code = 400
+                return response
 
         response.status_code = 200
         response.reason_phrase = 'OK'
