@@ -119,7 +119,7 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
-        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost()
+        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost(kwargs['object'])
         try:
             order = kwargs['object']
             ctx['box_types'] = self.get_shipment_context(order)
@@ -132,20 +132,20 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment_context(self, order):
         shipment_collection = []
-        # if cache.get('parcel_types') == None:
-        for parcel_type in self.get_supported_parcel_types():
-            if parcel_type['type'] == 'flatrate':
-                parcelType = { 'predefined_package': parcel_type['easypostname'],
-                               'weight': 10 }
-                shipment_collection.append(self.get_specific_shipment(order, parcelType))
-            elif parcel_type['type'] == 'calculated':
-                shipment_collection.append({'type': parcel_type['easypostname'],
-                                            'name':parcel_type['displayname'],
-                                            'rates': [{'rate': '0.00'}]})
-            # cache.set('parcel_types', shipment_collection, 7200)
-        return shipment_collection
-        # else:
-        #     return cache.get('parcel_types')
+        if cache.get('parcel_types') == None:
+            for parcel_type in self.get_supported_parcel_types():
+                if parcel_type['type'] == 'flatrate':
+                    parcelType = { 'predefined_package': parcel_type['easypostname'],
+                                   'weight': 10 }
+                    shipment_collection.append(self.get_specific_shipment(order, parcelType))
+                elif parcel_type['type'] == 'calculated':
+                    shipment_collection.append({'type': parcel_type['easypostname'],
+                                                'name':parcel_type['displayname'],
+                                                'rates': [{'rate': '0.00'}]})
+                cache.set('parcel_types', shipment_collection, 7200)
+            return shipment_collection
+        else:
+            return cache.get('parcel_types')
 
     def get_shipment(self, order, parcelType):
         from_address = self._GetShopAddress(order.number)
@@ -208,13 +208,25 @@ class OrderDetailView(CoreOrderDetailView):
             msg = (parcel_type)
             raise InvalidParcelType(msg)
 
-    def calculate_shipping_cost(self, request=None, order=None):
+    def calculate_shipping_cost(self, order, request=None):
         if request == None:
             return 0.00
         else:
-            weight = float(request.POST['weight']) * 16
-            parcelType = { 'predefined_package': request.POST['parcel_type'],
-                           'weight': weight }
+            if 'weight' in request.POST and is_number(request.POST['weight']) and request.POST['weight'] > 0:
+                weight = float(request.POST['weight']) * 16
+            else:
+                raise "Blame Andy"
+            if 'parcel_type' in request.POST:
+                try:
+                    self.validate_parcel_type(request.POST['parcel_type'])
+                except InvalidParcelType as e:
+                    messages.error(request, ("Unable to create shipping event due to"
+                                      " unsupported Parcel Type: %s") % e)
+                    return self.reload_page_response()
+                parcelType = { 'predefined_package': request.POST['parcel_type'],
+                               'weight': weight }
+            else:
+                raise "Blame Andy"
             shipment = self.get_specific_shipment(order, parcelType)
             shippingcost = shipment['rates'][0]['rate']
             return HttpResponse(shippingcost, mimetype='application/json')
@@ -320,6 +332,12 @@ def packageStatus(request):
 
         return response
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 class LineDetailView(CoreLineDetailView):
     template_name = 'templates/dashboard/orders/line_detail.html'

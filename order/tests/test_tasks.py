@@ -193,8 +193,6 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
 
-
-
     def test_payout_of_partial_order_full_line_item(self):
 
         # Create an order with two line items, but only ship one
