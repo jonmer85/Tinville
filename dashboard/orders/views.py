@@ -119,7 +119,7 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
-        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost()
+        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost(kwargs['object'])
         try:
             order = kwargs['object']
             ctx['box_types'] = self.get_shipment_context(order)
@@ -208,7 +208,7 @@ class OrderDetailView(CoreOrderDetailView):
             msg = (parcel_type)
             raise InvalidParcelType(msg)
 
-    def calculate_shipping_cost(self, request=None, order=None):
+    def calculate_shipping_cost(self, order, request=None):
         if request == None:
             return 0.00
         else:
