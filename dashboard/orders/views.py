@@ -212,9 +212,21 @@ class OrderDetailView(CoreOrderDetailView):
         if request == None:
             return 0.00
         else:
-            weight = float(request.POST['weight']) * 16
-            parcelType = { 'predefined_package': request.POST['parcel_type'],
-                           'weight': weight }
+            if 'weight' in request.POST and request.POST['weight'] > 0:
+                weight = float(request.POST['weight']) * 16
+            else:
+                raise "Blame Andy"
+            if 'parcel_type' in request.POST:
+                try:
+                    self.validate_parcel_type(request.POST['parcel_type'])
+                except InvalidParcelType as e:
+                    messages.error(request, ("Unable to create shipping event due to"
+                                      " unsupported Parcel Type: %s") % e)
+                    return self.reload_page_response()
+                parcelType = { 'predefined_package': request.POST['parcel_type'],
+                               'weight': weight }
+            else:
+                raise "Blame Andy"
             shipment = self.get_specific_shipment(order, parcelType)
             shippingcost = shipment['rates'][0]['rate']
             return HttpResponse(shippingcost, mimetype='application/json')
