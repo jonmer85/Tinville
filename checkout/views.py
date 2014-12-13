@@ -106,10 +106,10 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
 
     def payment_description(self, order_number, total, **kwargs):
-        # Jon M TODO - Add case for anonymous user with email
-        return self.request.user.email
-        # return self.request.POST[STRIPE_EMAIL]
-
+        if not self.request.user.is_authenticated():
+            return kwargs['guest_email']
+        else:
+            return self.request.user.email
 
     def payment_metadata(self, order_number, total, **kwargs):
         return {'order_number': order_number}
@@ -180,6 +180,9 @@ class PaymentDetailsView(CorePaymentDetailsView):
                         top_level_order_number, basket.id)
 
         items_by_shop = {}
+
+        if 'guest_email' in order_kwargs:
+            payment_kwargs['guest_email'] = order_kwargs['guest_email']
 
         try:
             self.handle_payment(top_level_order_number, order_total, **payment_kwargs)
