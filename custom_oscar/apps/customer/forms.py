@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from oscar.apps.address.forms import UserAddressForm as CoreUserAddressForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden, Fieldset
+from crispy_forms.layout import Layout, Field
 
 
 class UserAddressForm(CoreUserAddressForm):

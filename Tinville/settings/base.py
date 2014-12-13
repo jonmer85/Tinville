@@ -193,6 +193,7 @@ INSTALLED_APPS = [
     'djcelery',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
+                                  'custom_oscar.apps.customer',
                                   'custom_oscar.apps.checkout',
                                   'custom_oscar.apps.dashboard',
                                   'custom_oscar.apps.dashboard.orders',

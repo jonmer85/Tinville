@@ -1,3 +1,4 @@
+from custom_oscar.apps.customer.views import AddressChangeStatusView
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
@@ -41,6 +42,10 @@ urlpatterns += patterns('',
     url(r'^checkout/', include(checkout_app.urls)),
     url(r'^accounts/register', 'user.views.register', name='register'),
     url(r'^accounts/payment_info', designer_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),
+    url(r'^accounts/addresses/(?P<pk>\d+)/'
+                r'(?P<action>default_for_(billing|shipping|shop))/$',
+                login_required(AddressChangeStatusView.as_view()),
+                name='address-change-status'),
     url(r'^accounts/', include(customer_app.urls)),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item
