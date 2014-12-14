@@ -54,9 +54,17 @@ def submit_form(step):
 @step("I should see an error that states '(.*)'") #check if a card entered is not a debit card/or missing name info
 def error_not_debit_card(step, error):
     if error.startswith('"') and error.endswith('"'):
-        error = error[1:-1]
+        error = error[1:-1] #subracting first and last characters in string -quotes in this case
     wait_for_element_with_css_selector_to_be_displayed('#messagesModal')
     assert_selector_contains_text("#messagesModal .alert-error", error)
+
+@step("Expiration month and year validation '(.*)'")
+def expiration_month_year(step, error):
+    wait_for_element_with_css_selector_to_be_displayed('#parsley-id-7947')
+    assert_selector_contains_text("#parsley-id-7947 .alert-error", error)
+
+
+
 
 
 

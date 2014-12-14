@@ -34,9 +34,9 @@ Feature: Designer Payment Information
     Then message should be pop up
 
 @wipmerve
-  Scenario Outline: I should not be able to submit form
+  Scenario Outline: I should not be able to receive a success message
     Given the payment info form
-    When I fill the form with
+    When  I fill the form with
     | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
     | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
     And I submit the form
@@ -60,33 +60,37 @@ Feature: Designer Payment Information
   | Merve T         | -4000000000000002| 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
   | Merve T         | 4242424242424241 | 12               | 15              | 123 | "This card doesn't appear to be a debit card."                    |
 
-  Scenario Outline: The following field errors should be seen immediately
+  Scenario Outline: Expiration month and year validation
     Given the payment info form
     When I fill the form with
     | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
     | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
-
     Then I should see the following '<error>' immediately
 
   Scenarios:
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error                        |
+    | Merve T         | 4000056655665556 | 13               | 15              | 123 | Invalid card expiration date |
+    | Merve T         | 4000056655665556 | 12               | 70              | 123 | Invalid card expiration date |
 
-    | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error                 |
-    | Merve T         | 4000056655665556 | 13               | 15              | 123 | ""                    |
-    | Merve T         | 4000056655665556 | 12               | 70              | 123 | " "                   |
-    | Merve T         | 4000056655665556 | 12               | 15              | 99  | ""                    |
-|
+  Scenario Outline: CVC error check
+    Given the payment info form
+    When I fill the form with
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
+    | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
+    And I submit the form
+    Then I should see the following '<error>' immediately
 
-
-
-
+  Scenarios:
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error                          |
+    | Merve T         | 4000056655665556 | 13               | 15              | 123 | Invalid card verification code |
 
 
   Scenario Outline: Payment Info Success
     Given the payment info form
     When I enter the following information
     When I fill the form with
-    | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error    |
-    | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>| <error>  |
+    | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
+    | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
     And I submit the form
     Then I should see success message that states '<success>'
 
@@ -97,11 +101,8 @@ Feature: Designer Payment Information
 
 
 
-
-
-
-    #check both stripe validation and form validation for each debit card type Master,Visa, American Express etc.
-   #success scenarios should be a separate one
+#check both stripe validation and form validation for each debit card type Master,Visa, American Express etc.
+#success scenarios should be a separate one
 
 
 
