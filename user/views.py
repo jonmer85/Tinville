@@ -77,6 +77,7 @@ def register(request):
             #create initial entry for User object
             user = form.save()
             user.generate_activation_information()
+            user.generate_access_code()
             user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
             # Can't do super() here because it would save the instance again
             msg = """An e-mail has been sent to %s. Please check your mail and click on the confirmation link in the
