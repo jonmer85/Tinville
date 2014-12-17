@@ -23,6 +23,8 @@ from common.widgets import AdvancedFileInput
 
 SIZE_TYPES_AND_EMPTY = [('', 'How is this item sized?')] + SIZE_TYPES
 
+Product = get_model("catalogue", "Product")
+
 @parsleyfy
 class ProductCreationForm(forms.ModelForm):
 
@@ -95,6 +97,9 @@ class ProductCreationForm(forms.ModelForm):
                                                          initial=self.get_value_if_in_edit_mode('category', None))
         self.fields['price'].label = ""
 
+        # Jon M TBD - Right now we only use 1 product class - "Apparel"
+        self.instance.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
+
         if sizes:
             for i, size in enumerate(sizes):
                 if "sizeSet" in sizes[i] and sizes[i]["sizeSet"]:
@@ -138,6 +143,7 @@ class ProductCreationForm(forms.ModelForm):
         variantProduct = canonical
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
         variantProduct.parent_id = canonicalId
+        variantProduct.structure = Product.CHILD
         variantProduct.pk = None
         variantProduct.id = None
         variantProduct.description = canonical.description
@@ -168,7 +174,7 @@ class ProductCreationForm(forms.ModelForm):
 
     def clean_title(self):
         title = self.cleaned_data['title']
-        products = get_model('catalogue', 'Product')
+        products = Product
 
         if self.instance.pk and self.get_value_from_instance("title") == title:
             return title  # Ok to have the same title if this is an edit
@@ -185,8 +191,8 @@ class ProductCreationForm(forms.ModelForm):
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
-        # Jon M TBD - Right now we only use 1 product class - "Apparel"
-        canonicalProduct.product_class = get_model('catalogue', 'ProductClass').objects.all()[:1].get()
+        canonicalProduct.structure = Product.PARENT
+
         canonicalProduct.save()
         canonicalId = canonicalProduct.id
 
@@ -198,7 +204,7 @@ class ProductCreationForm(forms.ModelForm):
 
         if is_edit:
             # Remove all variants since they will get recreated below
-            get_model('catalogue', 'Product').objects.filter(parent=canonicalId).delete()
+            Product.objects.filter(parent=canonicalId).delete()
 
 
         #if not is_edit:
@@ -329,10 +335,8 @@ class ProductCreationForm(forms.ModelForm):
             return getattr(self.instance, field_name)
 
     class Meta:
-        model = get_model('catalogue', 'Product')
-        exclude = ('slug', 'status', 'score',
-                   'recommended_products', 'product_options',
-                   'attributes', 'categories', 'shop', 'product_class')
+        model = Product
+        fields = ['title', 'description']
         # fields = ['title', 'description', 'product_class']
 
 

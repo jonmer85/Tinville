@@ -24,7 +24,7 @@ LETTUCE_APPS = (
     'basket',
 )
 
-INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',  'django_nose',] + ['extensions',]
+INSTALLED_APPS = INSTALLED_APPS + ['lettuce',  'django_nose',] + ['extensions',]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

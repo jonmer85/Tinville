@@ -3,6 +3,7 @@ import collections
 import shutil
 from operator import itemgetter
 from functools import wraps
+from custom_oscar.apps.catalogue.models import Product
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -20,7 +21,7 @@ from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
-from catalogue.models import Product
+
 from common.utils import get_list_or_empty, get_or_none
 
 
@@ -153,9 +154,9 @@ def get_sort_order(filteredobjects, sortfilter):
     elif sortfilter == 'date-dsc':
         return filteredobjects.order_by('date_created')
     elif sortfilter == 'price-asc':
-        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax)
+        return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax)
     elif sortfilter == 'price-dsc':
-        return sorted(filteredobjects, key=lambda i: i.min_variant_price_excl_tax, reverse=True)
+        return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax, reverse=True)
     elif sortfilter == 'pop-asc':
         return filteredobjects.order_by('?')
     elif sortfilter == 'pop-dsc':
@@ -191,9 +192,9 @@ def ajax_color(request, slug):
             if request.is_ajax() and form.is_valid():
                 currentShop.color = form.cleaned_data["color"]
                 currentShop.save(update_fields=["color"])
-                return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
+                return HttpResponse(json.dumps({'errors': form.errors}), content_type='application/json')
 
-        return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+        return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
 
 def get_types(request, shop_slug, group_by=None):
@@ -211,7 +212,7 @@ def get_types(request, shop_slug, group_by=None):
                     if not shopCategoryNames.__contains__(currentcategory.name):
                         shopCategoryNames.append(currentcategory.name)
         types = {'types': shopCategoryNames}
-        return HttpResponse(json.dumps(types), mimetype='application/json')
+        return HttpResponse(json.dumps(types), content_type='application/json')
 
 
 def get_variants(item, group=None):
@@ -336,13 +337,13 @@ def get_sizetype(variants):
        return "0"
 
 def get_min_price(item):
-    return str(item.min_variant_price_excl_tax)
+    return str(item.min_child_price_excl_tax)
 
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
-    if request.is_ajax():
-        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
-        item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
-        return HttpResponse(get_variants(item, group_by), mimetype='application/json')
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+    item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
+    # if request.is_ajax():
+    return HttpResponse(get_variants(item, group_by), content_type='application/json')
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:

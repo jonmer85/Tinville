@@ -159,11 +159,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 PROJECT_APPS = [
     'Tinville',
     'user',
-    'designer_shop',
-    'common',
     'basket',
-    'dashboard',
-    'dashboard.orders'
+    'designer_shop',
+    'common'
 ]
 
 INSTALLED_APPS = [
@@ -171,6 +169,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.flatpages',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
@@ -179,20 +178,25 @@ INSTALLED_APPS = [
     'crispy_forms',
     'braces',
     'parsley',
-    'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
     'fixture_media',
     'django_extensions',
     'compressor',
     'tinymce',
-    'sorl.thumbnail',
+    # 'sorl.thumbnail',
     'django_basic_feedback',
     # 'debug_toolbar',
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
-] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
+] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
+                                  # 'custom_oscar.apps.basket',
+                                  'custom_oscar.apps.customer',
+                                  'custom_oscar.apps.checkout',
+                                  'custom_oscar.apps.dashboard',
+                                  'custom_oscar.apps.dashboard.orders',
+                                  'custom_oscar.apps.order'])
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
