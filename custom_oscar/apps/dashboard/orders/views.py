@@ -7,8 +7,8 @@ from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsVi
 from oscar.core.loading import get_model
 from django.views.generic import View
 from designer_shop.models import Shop
-from order.models import ShippingEvent
-from order.exceptions import *
+from custom_oscar.apps.order.models import ShippingEvent
+from custom_oscar.apps.order.exceptions import *
 import json
 import re
 import easypost
