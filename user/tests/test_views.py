@@ -24,6 +24,14 @@ class RegistrationTest(TestCase):
     def test_is_shopper(self):
         self.assertFalse(self.post_request_user(is_seller=False).is_seller)
 
+    def test_designer_access_code(self):
+        self.assertNotNone(self.post_request_user(is_seller=True).access_code)
+
+
+    def test_user_access_code_none(self):
+        self.assertNone(self.post_request_user(is_seller=False).access_code)
+
+
     ### Utilities
     def get_request(self):
         response = self.client.get(self.registration_url, {
@@ -43,3 +51,5 @@ class RegistrationTest(TestCase):
             'shop_name': shop_name,
         })
         return TinvilleUser.objects.get(email=email)
+
+
