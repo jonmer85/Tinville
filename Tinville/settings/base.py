@@ -1,10 +1,9 @@
-from __future__ import absolute_import
+# Django settings for Tinville project.
 from decimal import Decimal
 
 import os.path
 import os
 from unipath import Path
-
 from django.utils.translation import ugettext_lazy as _
 
 from oscar import get_core_apps
@@ -131,7 +130,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
-    PROJECT_DIR.parent.child("dashboard"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
 )
@@ -204,8 +203,6 @@ INSTALLED_APPS = [
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -432,6 +429,11 @@ GOOGLE_ANALYTICS_TRACKING_ID = ''
 STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
 STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
 STRIPE_CURRENCY = 'USD'
+
+#TODO change easy post api key
+EASYPOST_API_TEST_KEY = 'vSkSFMakSAJaEBTfE04JZg'
+EASYPOST_API_LIVE_KEY = ''
+EASYPOST_API_KEY = EASYPOST_API_TEST_KEY
 
 # Celery settings
 BROKER_URL = 'django://'
