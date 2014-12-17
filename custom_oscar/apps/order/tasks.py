@@ -6,7 +6,7 @@ from designer_shop.models import Shop
 from django.conf import settings
 from django.db import transaction
 from django.db.models import Q
-from custom_oscar.apps.order.utils import get_designer_payout_amount
+from common.utils import get_designer_payout_amount
 from oscar.core.loading import get_model
 import stripe
 from user.models import DesignerPayout

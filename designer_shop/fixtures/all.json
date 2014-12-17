@@ -1962,6 +1962,14 @@
         }
     },
     {
+        "pk": 7,
+        "model": "order.shippingeventtype",
+        "fields": {
+            "code": "boxed",
+            "name": "Boxed"
+        }
+    },
+    {
         "pk": 1,
         "model": "order.paymenteventtype",
         "fields": {
