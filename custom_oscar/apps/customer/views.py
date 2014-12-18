@@ -25,7 +25,8 @@ class AddressListView(CoreAddressListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(AddressListView, self).get_context_data(**kwargs)
-        ctx['shop_shipping_address_pk'] = self._get_shipping_address_pk_that_is_shop_shipping_address()
+        if self.request.user.is_seller:
+            ctx['shop_shipping_address_pk'] = self._get_shipping_address_pk_that_is_shop_shipping_address()
         return ctx
 
     def _get_shipping_address_pk_that_is_shop_shipping_address(self):
