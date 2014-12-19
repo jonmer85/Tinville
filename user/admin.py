@@ -1,4 +1,5 @@
-from user.models import TinvilleUser
+from django.contrib.admin import ModelAdmin
+from user.models import TinvilleUser, DesignerPayout
 from user.forms import TinvilleUserCreationForm, TinvilleUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
@@ -33,6 +34,31 @@ class TinvilleUserAdmin(UserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
+
+
+@admin.register(DesignerPayout)
+class DesignerPayoutAdmin(ModelAdmin):
+
+    list_display = ('designer',
+                    'amount',
+                    'reference',
+                    'datetime',
+                    )
+    list_filter = ('designer',)
+    fieldsets = (
+        (None, {'fields': ('designer', 'amount', 'reference', 'datetime')}),
+    )
+    readonly_fields = ('designer', 'amount', 'reference', 'datetime')
+    # add_fieldsets = (
+    #     (None, {
+    #         'classes': ('wide',),
+    #         'fields': ('email', 'password')}
+    #     ),
+    # )
+    # search_fields = ('email',)
+    # ordering = ('email',)
+    # filter_horizontal = ()
+
 
 # Now register the new UserAdmin...
 admin.site.register(TinvilleUser, TinvilleUserAdmin)
