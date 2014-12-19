@@ -59,9 +59,11 @@ def i_mark_the_address_as_a_type(step, type):
 
 @step(u'the shipping address badge is shown')
 def the_shipping_address_badge_is_shown(step):
+    wait_for_element_with_css_selector_to_be_displayed('.label-success')
     assert_selector_contains_text('.label-success', 'Default shipping address')
 
 @step(u'the shop address badge is shown')
 def the_shop_address_badge_is_shown(step):
+    wait_for_element_with_css_selector_to_be_displayed('.label-primary')
     assert_selector_contains_text('.label-primary', 'Default shop shipping address')
 
