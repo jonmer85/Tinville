@@ -1,5 +1,6 @@
 # Django settings for Tinville project.
 from decimal import Decimal
+from celery.schedules import crontab
 
 import os.path
 import os
@@ -446,5 +447,17 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_RESULT_BACKEND= 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERYBEAT_SCHEDULE = {
+    # Pay designers twice a week, Tuesday at midnight, and Fridays at 11:45 am
+    'pay-designers-on-tuesdays-midnight': {
+        'task': 'custom_oscar.apps.order.tasks.pay_designers',
+        'schedule': crontab(hour=0, minute=0, day_of_week=2)
+    },
+    'pay-designers-on-friday-by-noon': {
+        'task': 'custom_oscar.apps.order.tasks.pay_designers',
+        'schedule': crontab(hour=11, minute=45, day_of_week=5)
+    },
+}
 
 TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
