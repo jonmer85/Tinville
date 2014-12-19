@@ -22,6 +22,8 @@ class PackageStatusTest(TestCase):
 
         self.shipped_event = self.order.shipping_events.create(
             event_type=ShippingEventType.objects.get(code="shipped"), group=0, tracking_code='EZ4000000004', reference='foo')
+        for line in self.order.lines.all():
+                self.shipped_event.line_quantities.create(line=line, quantity=line.quantity)
         validEasyPostRequest = {
             "id": "evt_qatAiJDM",
             "object": "Event",
@@ -78,6 +80,8 @@ class PackageStatusTest(TestCase):
         self.assertEqual(result.reason_phrase, 'OK', "Because the service should return OK")
 
         in_transit_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code='EZ4000000004')
+        self.assertEqual(len(in_transit_event.lines.all()), len(self.shipped_event.lines.all()), "Because in transit event should have the same lines as shipped event")
+        self.assertGreater(len(in_transit_event.lines.all()), 0, "Because in transit event should have at least 1 line")
         self.assertEqual(self.shipped_event.group, in_transit_event.group, "Because the groups should be the same")
         self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code, "Because the tracking code should be equal")
         self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type, "Because the Event Type should be in transit")
@@ -89,6 +93,7 @@ class PackageStatusTest(TestCase):
 
          result2 = self.client.post(self.requestUrl, self.validEasyPostRequest, content_type="application/json")
          in_transit_event = ShippingEvent.objects.get(event_type=ShippingEventType.objects.get(code="in_transit"), tracking_code='EZ4000000004')
+
          self.assertEqual(self.shipped_event.group, in_transit_event.group, "Because the groups should be the same")
          self.assertEqual(self.shipped_event.tracking_code, in_transit_event.tracking_code, "Because the tracking code should be equal")
          self.assertEqual(ShippingEventType.objects.get(code="in_transit"), in_transit_event.event_type, "Because the Event Type should be in transit")

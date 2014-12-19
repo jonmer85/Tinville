@@ -89,6 +89,9 @@ class EventHandler(processing.EventHandler):
                                                                 tracking_code=shipping_event.tracking_code,
                                                                 notes=" ")
                 shipping_event_intransit.save()
+                for line in shipping_event.lines.all():
+                    shipping_event_intransit.line_quantities.create(line=line, quantity=line.quantity)
+
             except ShippingEvent.DoesNotExist:
                 logger.error("Shipped event does not exist")
 

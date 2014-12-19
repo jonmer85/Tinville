@@ -1,4 +1,5 @@
 from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
 from oscar.apps.dashboard.orders.views import *
 from oscar.apps.dashboard.orders.views import OrderListView as CoreOrderListView
 from oscar.apps.dashboard.orders.views import OrderDetailView as CoreOrderDetailView
@@ -274,7 +275,7 @@ def EasyPostAddressFormatter(address):
         }
         return _address
 
-
+@csrf_exempt
 def packageStatus(request):
 
         response = HttpResponse()
