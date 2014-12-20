@@ -464,6 +464,8 @@ CELERYBEAT_SCHEDULE = {
 
 TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
 
+# Sentry Logging parameters
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN', None),
 }
+SENTRY_AUTO_LOG_STACKS = True

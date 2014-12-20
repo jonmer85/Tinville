@@ -73,7 +73,6 @@ class DesignerPaymentInfoView(FormView):
 
 
 def register(request):
-    f = 1/0
     if request.method == 'POST':
         form = TinvilleUserCreationForm(request.POST)
 
