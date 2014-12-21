@@ -33,7 +33,6 @@ Feature: Designer Payment Information
     When submit the form
     Then message should be pop up
 
-@wipmerve
   Scenario Outline: I should not be able to receive a success message
     Given the payment info form
     When  I fill the form with
@@ -82,7 +81,7 @@ Feature: Designer Payment Information
 
   Scenarios:
     | full_legal_name | card_number      | expiration_month | expiration_year | cvc | error                          |
-    | Merve T         | 4000056655665556 | 13               | 15              | 123 | Invalid card verification code |
+    | Merve T         | 4000056655665556 | 13               | 15              | 99  | Invalid card verification code |
 
 
   Scenario Outline: Payment Info Success
@@ -98,6 +97,24 @@ Feature: Designer Payment Information
   |full_legal_name  | card_number       | expiration_month | expiration_year | cvc  | success                                         |
   | Merve T         | 4000056655665556  | 12               | 15              | 123  | "You have successfully added your payment info" |
   | Merve T         | 5200828282828210  | 12               | 15              | 123  | "You have successfully added your payment info" |
+
+
+@wipmerve
+  Scenario Outline: Payment Info wrong month,year,cvc failure
+   Given the payment info form
+   When I enter the following information with wrong month,year,cvc information
+   | full_legal_name | card_number      | expiration_month | expiration_year | cvc |
+   | <full_legal_name>| <card_number>   |<expiration_month>|<expiration_year>|<cvc>|
+   Then I should see the following '<failure>' messages
+
+  Scenarios:
+    |full_legal_name  | card_number       | expiration_month | expiration_year  | cvc  | failure                                                       |
+    | X Y             | 4000056655665556  | 12               | demo@user.com    | 123  | "parameter should be an integer (instead, is demo@user.com)." |
+    | X Y             | 4000056655665556  | 12               | 99               | 123  | "Your card's expiration year is invalid."                     |
+    | X Y             | 4000056655665556  | 65               | 15               | 123  | "Your card's expiration month is invalid."                    |
+
+
+
 
 
 
