@@ -63,6 +63,9 @@ def expiration_month_year(step, error):
     wait_for_element_with_css_selector_to_be_displayed('#parsley-id-7947')
     assert_selector_contains_text("#parsley-id-7947 .alert-error", error)
 
+@step("Payment Info wrong month,year,cvc failure")
+def when_i_enter_the_following_information_with_wrong_month_year_cvc_information(step,failure):
+    assert_selector_contains_text("#messagesModal .alert-error", failure)
 
 
 
