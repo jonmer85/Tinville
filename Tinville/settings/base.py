@@ -1,7 +1,7 @@
 # Django settings for Tinville project.
 from decimal import Decimal
 from celery.schedules import crontab
-from django.core.exceptions import ImproperlyConfigured
+from getenv import env
 
 import os.path
 import os
@@ -10,14 +10,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from oscar import get_core_apps
 from oscar.defaults import *
-
-def get_env_variable(var_name):
-    """ Get the environment variable or return exception """
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = "Set the %s environment variable" % var_name
-    raise ImproperlyConfigured(error_msg)
 
 # HEROKU Change!!!
 DEBUG = False
@@ -103,7 +95,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = get_env_variable('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -409,10 +401,10 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'w
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
-EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
-EMAIL_HOST = get_env_variable('EMAIL_HOST')
-EMAIL_PORT = get_env_variable('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/'
@@ -438,13 +430,13 @@ TINYMCE_PASTE = True
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
-STRIPE_PUBLISHABLE_KEY = get_env_variable('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = get_env_variable('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 
 #TODO change easy post api key
-EASYPOST_API_TEST_KEY = get_env_variable('EASYPOST_API_TEST_KEY')
-EASYPOST_API_LIVE_KEY = get_env_variable('EASYPOST_API_LIVE_KEY')
+EASYPOST_API_TEST_KEY = env('EASYPOST_API_TEST_KEY')
+EASYPOST_API_LIVE_KEY = env('EASYPOST_API_LIVE_KEY')
 EASYPOST_API_KEY = EASYPOST_API_TEST_KEY
 
 # Celery settings
@@ -475,6 +467,6 @@ TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {
-    'dsn': get_env_variable('SENTRY_DSN'),
+    'dsn': env('SENTRY_DSN'),
 }
 SENTRY_AUTO_LOG_STACKS = True
