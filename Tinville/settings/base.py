@@ -114,6 +114,7 @@ MIDDLEWARE_CLASSES = (
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
+    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -191,6 +192,7 @@ INSTALLED_APPS = [
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
+    'raven.contrib.django.raven_compat',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -199,52 +201,52 @@ INSTALLED_APPS = [
                                   'custom_oscar.apps.dashboard.orders',
                                   'custom_oscar.apps.order'])
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
     },
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
     },
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'tinville.log',
-            'formatter': 'verbose'
-        },
-        'mail_admins': {
+        'sentry': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         }
     },
     'loggers': {
-        'django': {
-            'handlers':['file'],
-            'propagate': True,
-            'level':'DEBUG',
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
         },
-        '': {
-            'handlers': ['file'],
+        'raven': {
             'level': 'DEBUG',
-        }
-    }
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'celery': {
+            'level': 'WARNING',
+            'handlers': ['sentry'],
+            'propagate': False,
+        },
+    },
 }
 
 # For django-oscar search
@@ -461,3 +463,9 @@ CELERYBEAT_SCHEDULE = {
 }
 
 TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
+
+# Sentry Logging parameters
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN', None),
+}
+SENTRY_AUTO_LOG_STACKS = True
