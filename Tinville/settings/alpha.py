@@ -2,16 +2,8 @@
 
 from .base import *  # Start with base settings
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'd16di73hdn2fpc',
-    'HOST': 'ec2-54-235-250-41.compute-1.amazonaws.com',
-    'PORT': 5432,
-    'USER': 'htoivplvisbcjh',
-    'PASSWORD': '6yphOtV57xayRDtMCPMd79Fth4'
-  }
-}
+import dj_database_url
+DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 
 GOOGLE_ANALYTICS_TRACKING_ID = 'UA-47214215-2'
 

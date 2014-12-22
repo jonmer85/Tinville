@@ -8,16 +8,8 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['tinville-testing.herokuapp.com']
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'd2c638gaii8jv7',
-    'HOST': 'ec2-23-23-211-161.compute-1.amazonaws.com',
-    'PORT': 5432,
-    'USER': 'xmrcaidzbiewqs',
-    'PASSWORD': 'jqnzeIdyhXy9mmfYa6cwleCONg'
-  }
-}
+import dj_database_url
+DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
