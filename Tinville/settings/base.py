@@ -1,6 +1,7 @@
 # Django settings for Tinville project.
 from decimal import Decimal
 from celery.schedules import crontab
+from getenv import env
 
 import os.path
 import os
@@ -94,7 +95,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '=5sic^#9yx+r9o5khng_8#!41y=5f8z8218bvpb)mu%p0q0xs3'
+SECRET_KEY = env('SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -400,10 +401,10 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'w
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
-EMAIL_HOST_USER = 'registration@tinville.com'
-EMAIL_HOST_PASSWORD = 'Vill3Cr3w!2014'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/'
@@ -429,13 +430,13 @@ TINYMCE_PASTE = True
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
-STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 
 #TODO change easy post api key
-EASYPOST_API_TEST_KEY = 'vSkSFMakSAJaEBTfE04JZg'
-EASYPOST_API_LIVE_KEY = ''
+EASYPOST_API_TEST_KEY = env('EASYPOST_API_TEST_KEY')
+EASYPOST_API_LIVE_KEY = env('EASYPOST_API_LIVE_KEY')
 EASYPOST_API_KEY = EASYPOST_API_TEST_KEY
 
 # Celery settings
@@ -466,6 +467,6 @@ TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN', None),
+    'dsn': env('SENTRY_DSN'),
 }
 SENTRY_AUTO_LOG_STACKS = True

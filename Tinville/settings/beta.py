@@ -3,13 +3,12 @@
 from .base import *  # Start with base settings
 
 import dj_database_url
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 
-# HEROKU Change!!!
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 
-ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
+GOOGLE_ANALYTICS_TRACKING_ID = env('GOOGLE_ANALYTICS_TRACKING_ID')
+
+ALLOWED_HOSTS = ['tinville-beta.herokuapp.com', 'www.beta.tinville.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
@@ -23,6 +22,3 @@ S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
-
-BROKER_URL=env('REDISTOGO_URL')
-CELERY_RESULT_BACKEND=env('REDISTOGO_URL')
