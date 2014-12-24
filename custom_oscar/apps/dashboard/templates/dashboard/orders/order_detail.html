@@ -182,7 +182,7 @@
                                         <h4 class="modal-title" id="shipItModalLabel">Select Shipping Option</h4>
                                     </div>
                                     <div class="modal-body">
-                                        {% if box_types %}
+                                        {% if box_types and partner_address_exists %}
                                             <div class="btn-group">
                                                 <input id="selectedBoxType" type="text" readonly="true"  class="hidden" name="parcel_type" value="noneSelected"/>
                                                 <button type="button" id="selectedShippingOption" name="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
@@ -230,7 +230,7 @@
                                                 </table>
                                             </div>
                                         {% else %}
-                                            <p>No Shipping from Address found. Please set up a new Shipping from Address.</p>
+                                            <p>No shop shipping address found. Please <a href="{% url 'customer:address-list' %}">set up a new shipping address for your shop.</a></p>
                                         {% endif %}
                                     </div>
                                     <div class="modal-footer">
