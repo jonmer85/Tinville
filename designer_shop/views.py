@@ -2,6 +2,7 @@ import json
 import collections
 import shutil
 import datetime
+from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
@@ -24,6 +25,7 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
     LogoUploadForm
 
 from common.utils import get_list_or_empty, get_or_none
+from user.models import TinvilleUser
 
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
@@ -103,14 +105,18 @@ def shopper(request, slug):
             'shopProductCount': len(products)
         })
 
-def test_cookie(request):
+def check_access_code(request):
     if 'beta_access' in request.COOKIES:
-        cookie_id = request.COOKIES['id']
-        return HttpResponse('Got cookie with id=%s' % cookie_id)
+        #check against every designer
+        access_id = request.COOKIES['beta_access']
+        if TinvilleUser.objects.get(access_code = access_id) is not None:
+            return True
+        else:
+            return False #HttpResponseRedirect('/beta_access/')
     else:
-        response = HttpResponse('No beat access cookie! Sending cookie to client')
-        response.set_cookie('beta_access', max_age=  60 * 60 * 24 * 7 * 52)
-        return response
+        # response = HttpResponse('No beat access cookie! Sending cookie to client')
+        # response.set_cookie('beta_access', max_age=  60 * 60 * 24 * 7 * 52)
+        return False #HttpResponseRedirect('/beta_access/')
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
