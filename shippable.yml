@@ -8,7 +8,11 @@ addons:
 env:
   global:
     - secure: jehthi/l/7ZUoan6S8bjqnd73uwEONO7HOiVYNo1pDENkilezwWdUOjlKub3W56dGKzGFy4ufhhqrVoEKMJBPQCP2juPitUJHW6grWb3eYABNo+kcTERnQO6Hvlv4axDoVnLs5jwN5sk71T9Hy0ogsZYbHve37Euwy47TX0t/1gQvM/VnqLU2r1c7blTaeBQHRZcfp8o6343+VB38XG+i3QW+fmgGGt5QP6uFKe/lk4iPzmmmQ+fk4Ep6E7PMYh1PyJt2teGWFpfkRSJ9A+jtgACS6wVgf3bvz37GbL9lAVXsqRlV+vlt6/iyGci48x/mSaaIDolkF4D+Cy/4+Hju4xTGqSsrGhL3KzCVkJB8JW7XNm+ZiS1Zwu+GJs3Fn8u7Qqqx0ygyE75l7KvDAWgl0xiqJMMz0OD7AktI44Ojcr4AO/njLqfpOzUiz+NgY33XNmnGcig5ByO4q4IUB32WaJbx+XaugUFxHhparpNix5xQ+cMSoeBkObacsrl4y2PbxE1NSrYxGPfY6h/S1j7X+VBm6qNVYbwmRVX4M69AVC2bd7uLZWPNOK8rc/iCgDJWxr2FeZYFixTtuVMjfFVTBvnS4U4Va7Fe8XwhqwR8hQhjtQYWsteZI1w5uFvNhXMyuWoLESnQmsfrjyMuOHYYaninFoyRO5NJSYobQZC1qA=
+    - secure: M+jhgdrD1aPr33piB7A14Z8cWFbsaq3CsrGBVc0yk9KBTif0yopQRnvURkffpcRgX8wIG6N0odh2NON31whlbKHPisBHXNFT0+IQVg182UHZWSD5b3UGPIlHDV+rQPzcch6uBL3CME9KC2peDRLDNyC4N0mNPj3uytJwOj8TZeHlM/6x/FNmD+iiyIsu+XN+JQO6fFTI1cgK1ihSlsK+WKtmywYWAQ39Fnt8Zu8fEKrFKEGdkS+Z4LURrFKzB4N5ckDpdABdFK3ZN3KwynitRyPwTGJoeDwcZEFuXRjeqR+ZLoVWiVompQDZ0fLPAOMejeG6lPBbMILWMWIyZ/iR9w==
     - DISPLAY=:99.0
+
+before_install:
+  - which heroku || wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 
 install:
   - pip install -r requirements.txt
@@ -32,4 +36,5 @@ after_script:
 
 after_success :
   - echo $BRANCH
+  - test -f ~/.ssh/id_rsa.heroku || ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.heroku && heroku keys:add ~/.ssh/id_rsa.heroku
   - ./deploy.sh
