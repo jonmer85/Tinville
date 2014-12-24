@@ -1,6 +1,7 @@
 import json
 import collections
 import shutil
+import datetime
 from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
@@ -101,6 +102,15 @@ def shopper(request, slug):
             'products': products,
             'shopProductCount': len(products)
         })
+
+def test_cookie(request):
+    if 'beta_access' in request.COOKIES:
+        cookie_id = request.COOKIES['id']
+        return HttpResponse('Got cookie with id=%s' % cookie_id)
+    else:
+        response = HttpResponse('No beat access cookie! Sending cookie to client')
+        response.set_cookie('beta_access', max_age=  60 * 60 * 24 * 7 * 52)
+        return response
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
