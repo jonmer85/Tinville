@@ -8,7 +8,7 @@ DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 
 GOOGLE_ANALYTICS_TRACKING_ID = env('GOOGLE_ANALYTICS_TRACKING_ID')
 
-ALLOWED_HOSTS = ['tinville-beta.herokuapp.com', 'www.beta.tinville.com']
+ALLOWED_HOSTS = ['tinville-beta.herokuapp.com', 'www.beta.tinville.com', 'beta.tinville.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
@@ -18,7 +18,7 @@ AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_SECURE_URLS = False
 
-S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY

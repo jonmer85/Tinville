@@ -15,11 +15,11 @@
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
 {#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
     {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
@@ -31,7 +31,7 @@
     {% block css %}{% endblock %}
     {{ form.media }}
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/Utilities.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>
@@ -486,7 +486,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="text-center">
-                    <img src="http://www.travislayne.com/images/loading.gif" class="icon" />
+                    <img src="{{ STATIC_URL }}images/loading.gif" class="icon" />
                     <h4>Processing...</h4>
                 </div>
             </div>
@@ -503,7 +503,7 @@
 {#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
 {#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-        <script src="{{ STATIC_URL }}/js/bootstrap.min.js"></script>
+{#        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>#}
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
