@@ -1,9 +1,12 @@
 # Django settings for Tinville project.
+from decimal import Decimal
+from celery.schedules import crontab
 
 import os.path
 import os
 from unipath import Path
 from django.utils.translation import ugettext_lazy as _
+
 
 from oscar import get_core_apps
 from oscar.defaults import *
@@ -160,8 +163,7 @@ PROJECT_APPS = [
     'user',
     'basket',
     'designer_shop',
-    'common',
-    'checkout'
+    'common'
 ]
 
 INSTALLED_APPS = [
