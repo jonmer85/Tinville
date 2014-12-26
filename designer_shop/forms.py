@@ -1,5 +1,6 @@
 import uuid
 from django import forms
+from django_bleach.forms import BleachField
 from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
@@ -8,8 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
 from crispy_forms.bootstrap import PrependedText, Accordion, AccordionGroup
-from south.orm import _FakeORM
-
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
@@ -354,7 +353,7 @@ def get_partner_from_shop(shop):
 
 class AboutBoxForm(forms.Form):
 
-    aboutContent = forms.CharField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
     aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
 
     helper = FormHelper()
