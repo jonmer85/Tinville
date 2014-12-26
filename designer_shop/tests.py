@@ -224,5 +224,5 @@ class DesignerShopTests(TestCase):
                                      'title': 'TestTitle'
                                     })
         self.assertNotContains(response, bad_script)
-        response = self.client.get('/demo/')
+        response = self.client.get('/demo/testtitle/')
         self.assertNotContains(response, bad_script)

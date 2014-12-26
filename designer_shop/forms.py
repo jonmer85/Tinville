@@ -90,6 +90,7 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
                                                          widget=forms.ClearableFileInput)
 
+        self.fields['description'] = BleachField()
         self.fields['description'].widget = TinyMCE()
         self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3),
                                                          empty_label="Choose a Category", required=True,
