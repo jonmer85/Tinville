@@ -129,7 +129,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
-    PROJECT_DIR.parent.child("dashboard"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
 )
@@ -158,11 +158,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 PROJECT_APPS = [
     'Tinville',
     'user',
+    'basket',
     'designer_shop',
     'common',
-    'basket',
-    'dashboard',
-    'dashboard.orders',
     'checkout'
 ]
 
@@ -171,6 +169,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.flatpages',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
@@ -179,18 +178,25 @@ INSTALLED_APPS = [
     'crispy_forms',
     'braces',
     'parsley',
-    'django.contrib.flatpages',
     'django_mobile',
     'django_jenkins',
     'fixture_media',
     'django_extensions',
     'compressor',
     'tinymce',
-    'sorl.thumbnail',
+    # 'sorl.thumbnail',
     'django_basic_feedback',
     # 'debug_toolbar',
-    'oscar_stripe'
-] + PROJECT_APPS + get_core_apps(['catalogue', 'checkout', 'dashboard', 'dashboard.orders', 'order'])
+    'oscar_stripe',
+    'kombu.transport.django',
+    'djcelery',
+] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
+                                  # 'custom_oscar.apps.basket',
+                                  'custom_oscar.apps.customer',
+                                  'custom_oscar.apps.checkout',
+                                  'custom_oscar.apps.dashboard',
+                                  'custom_oscar.apps.dashboard.orders',
+                                  'custom_oscar.apps.order'])
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -205,7 +211,22 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'tinville.log',
+            'formatter': 'verbose'
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -213,11 +234,15 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers':['file'],
             'propagate': True,
+            'level':'DEBUG',
         },
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        }
     }
 }
 
@@ -404,3 +429,34 @@ GOOGLE_ANALYTICS_TRACKING_ID = ''
 STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
 STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
 STRIPE_CURRENCY = 'USD'
+
+#TODO change easy post api key
+EASYPOST_API_TEST_KEY = 'vSkSFMakSAJaEBTfE04JZg'
+EASYPOST_API_LIVE_KEY = ''
+EASYPOST_API_KEY = EASYPOST_API_TEST_KEY
+
+# Celery settings
+BROKER_URL = 'django://'
+import djcelery
+djcelery.setup_loader()
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_RESULT_BACKEND= 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERYBEAT_SCHEDULE = {
+    # Pay designers twice a week, Tuesday at midnight, and Fridays at 11:45 am
+    'pay-designers-on-tuesdays-midnight': {
+        'task': 'custom_oscar.apps.order.tasks.pay_designers',
+        'schedule': crontab(hour=0, minute=0, day_of_week=2)
+    },
+    'pay-designers-on-friday-by-noon': {
+        'task': 'custom_oscar.apps.order.tasks.pay_designers',
+        'schedule': crontab(hour=11, minute=45, day_of_week=5)
+    },
+}
+
+TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales

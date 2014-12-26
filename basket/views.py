@@ -53,7 +53,7 @@ def load_cart(request):
                 cartInfo = cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, basketline.quantity, image)
                 cartItems.append(cartInfo)
 
-        return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), mimetype='application/json')
+        return HttpResponse(json.dumps(sorted(cartItems, key=lambda k: k['shop'])), content_type='application/json')
 
 def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image):
     color, size = get_single_variant(currentproduct)
@@ -79,9 +79,9 @@ def addBasket(request, product_id, qty):
     stockrecord = get_object_or_404(StockRecords, product_id=product_id)
     if(qty > stockrecord.num_in_stock):
         errorMsg = "Quantity is greater than {0}.".format(stockrecord.num_in_stock)
-        return HttpResponseBadRequest(json.dumps({'errors': errorMsg}), mimetype='application/json')
+        return HttpResponseBadRequest(json.dumps({'errors': errorMsg}), content_type='application/json')
     if(qty < 1):
-        return HttpResponseBadRequest(json.dumps({'errors': "Quantity cannot be less than 1."}), mimetype='application/json')
+        return HttpResponseBadRequest(json.dumps({'errors': "Quantity cannot be less than 1."}), content_type='application/json')
 
     currentproduct = get_object_or_404(Product, id=product_id)
     parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
@@ -107,7 +107,7 @@ def addBasket(request, product_id, qty):
 
     cartInfo = cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, qty, image)
 
-    return HttpResponse(json.dumps(cartInfo, use_decimal=True), mimetype='application/json')
+    return HttpResponse(json.dumps(cartInfo, use_decimal=True), content_type='application/json')
 
 
 def add_item_to_cart(request, shop_slug, item_slug):
@@ -120,9 +120,9 @@ def add_item_to_cart(request, shop_slug, item_slug):
         qty = int(request.POST['qtyFilter'])
         msg = ''
         if request.POST['colorFilter'] == '':
-            return HttpResponseBadRequest(json.dumps({'errors': 'Please select a color!'}), mimetype='application/json')
+            return HttpResponseBadRequest(json.dumps({'errors': 'Please select a color!'}), content_type='application/json')
         if request.POST['sizeFilter'] == '':
-            return HttpResponseBadRequest(json.dumps({'errors': 'Please select a size!'}), mimetype='application/json')
+            return HttpResponseBadRequest(json.dumps({'errors': 'Please select a size!'}), content_type='application/json')
         # varItem = Product.objects.filter(attribute_values__value_option_id=2)
         currentproduct = get_filtered_variant(item.id, request.POST)
         image = get_list_or_empty(ProductImages, product_id=item.id)
@@ -136,10 +136,10 @@ def add_item_to_cart(request, shop_slug, item_slug):
 #        quantity    -- The number of the product which cannot be less than 1 or greater than current stock
 def update_cart_item(request):
     if(not 'product_id' in request.POST):
-        return HttpResponseBadRequest(json.dumps({'errors':'Product Id is required.'}), mimetype='application/json')
+        return HttpResponseBadRequest(json.dumps({'errors':'Product Id is required.'}), content_type='application/json')
 
     if(not 'quantity' in request.POST):
-        return HttpResponseBadRequest(json.dumps({'errors':'Quantity is required.'}), mimetype='application/json')
+        return HttpResponseBadRequest(json.dumps({'errors':'Quantity is required.'}), content_type='application/json')
 
     quantity = int(request.POST['quantity'])
 
@@ -148,11 +148,11 @@ def update_cart_item(request):
 # Purpose: Get cart total
 def cart_total(request):
     basket = request.basket
-    return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), mimetype='application/json')
+    return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), content_type='application/json')
 
 def total_cart_items(request):
     basket = request.basket
-    return HttpResponse(json.dumps({'count': basket.num_lines}), mimetype='application/json')
+    return HttpResponse(json.dumps({'count': basket.num_lines}), content_type='application/json')
 
 def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']
@@ -178,4 +178,4 @@ def get_filtered_variant(itemId, post):
 def delete_item_to_cart(request):
     cartId = request.POST['Id']
     basketline = Line.objects.get(pk=cartId).delete()
-    return HttpResponse(json.dumps({'deleted': True}, {'errors': 'error'}), mimetype='application/json')
+    return HttpResponse(json.dumps({'deleted': True}, {'errors': 'error'}), content_type='application/json')

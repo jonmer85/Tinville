@@ -22,10 +22,12 @@ LETTUCE_APPS = (
     'designer_shop',
     'user',
     'basket',
+    'custom_oscar.apps.customer',
+    'custom_oscar.apps.checkout'
     'checkout',
 )
 
-INSTALLED_APPS = INSTALLED_APPS + ['lettuce.django',  'django_nose',] + ['extensions',]
+INSTALLED_APPS = INSTALLED_APPS + ['lettuce',  'django_nose',] + ['extensions',]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

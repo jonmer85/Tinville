@@ -8,10 +8,13 @@ from django.contrib.auth.views import login as auth_view_login
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render
+from oscar.core.loading import get_model
 import stripe
 
 from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName
 from user.models import TinvilleUser
+
+Partner = get_model('partner', 'Partner')
 
 class DesignerPaymentInfoView(FormView):
     template_name = 'payment_info.html'
@@ -78,6 +81,13 @@ def register(request):
             user = form.save()
             user.generate_activation_information()
             user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
+
+            # Create a Partner model if this is a designer
+            if user.is_seller:
+                partner = Partner(name=user.email, code=user.slug)
+                partner.save()
+                partner.users.add(user)
+
             # Can't do super() here because it would save the instance again
             msg = """An e-mail has been sent to %s. Please check your mail and click on the confirmation link in the
                 message to complete your registration. If the e-mail address provided is incorrect, contact Tinville
@@ -136,8 +146,8 @@ def ajax_login(request, *args, **kwargs):
 
         data = auth_view_login(request, form)
         logged_in = True
-        return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), mimetype='application/json')
+        return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), content_type='application/json')
 
-    return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
+    return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
 

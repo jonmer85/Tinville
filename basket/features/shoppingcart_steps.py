@@ -23,7 +23,8 @@ def Given_mobile_shopper(step):
 
 @step(u'When I click the Desktop Shopping cart button')
 def When_Click_Desktop_Shopping_Cart_Button(step):
-    world.browser.find_element_by_css_selector("#shoppingcartBtn").click()
+    scroll_to_element(wait_for_element_with_css_selector_to_exist("#shoppingcartBtn"))
+    wait_for_element_with_css_selector_to_be_clickable("#shoppingcartBtn #shoppingcart").click()
 
 @step(u'When I click the Mobile Shopping cart button')
 def When_Click_Mobile_Shopping_Cart_Button(step):
@@ -49,7 +50,8 @@ def When_add_item_to_cart(step):
 
 @step(u'Then the item is added to my cart')
 def Then_item_added_to_cart(step):
-    assert_id_exists("lineId1")
+    wait_for_element_with_css_selector_to_exist(".shoppingcartitem[id^=lineId]")
+    assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 1)
 
 @step(u'Then add another item is still in my cart')
 def add_and_still_in_my_cart(step):
@@ -58,17 +60,17 @@ def add_and_still_in_my_cart(step):
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
     scroll_to_element(wait_for_element_with_css_selector_to_exist("#id_AddToCart"))
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
-    assert_id_exists("lineId2")
+    wait_for_javascript_to_complete()
+    wait_for_element_with_css_selector_to_exist(".shoppingcartitem[id^=lineId]")
+    assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 2)
 
 @step(u'When I remove an item from my cart')
 def When_remove_item_from_cart(step):
-    jon = world.browser.find_element_by_id("shoppingcart")
-    jon.click()
-    world.browser.find_element_by_css_selector("#deleteBtnId_1").click()
+    wait_for_element_with_css_selector_to_be_clickable("a[id^=deleteBtnId_]").click()
 
 @step(u'Then the item is removed from my cart')
 def Then_item_removed_from_cart(step):
-    assert_id_does_not_exist("lineId1")
+    assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 0)
 
 @step(u'When I click the Menu button')
 def When_click_Menu_button(step):
@@ -80,8 +82,7 @@ def When_I_log_in(step):
 
 @step(u'Then all items are removed from my cart')
 def Then_all_items_removed_from_cart(step):
-    assert_id_does_not_exist("lineId1")
-    assert_id_does_not_exist("lineId2")
+    assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 0)
 
 @step(u'When I register for a shopper account')
 def when_i_register_for_a_shopper_account(step):

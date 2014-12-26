@@ -1,12 +1,13 @@
+from custom_oscar.apps.customer.views import AddressChangeStatusView
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.base import RedirectView, TemplateView
+from oscar.core.loading import get_class
 from user.decorators import designer_required
 from user.views import ajax_login, register, DesignerPaymentInfoView
 from user.forms import LoginForm
-from oscar.core.loading import get_class
 
 from oscar.app import application
 # from oscar.app import application
@@ -28,6 +29,7 @@ urlpatterns += patterns('',
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
     url(r'^register$', 'user.views.register'),
+    url(r'^packageStatus$', 'custom_oscar.apps.dashboard.orders.views.packageStatus'),
     url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
@@ -41,6 +43,10 @@ urlpatterns += patterns('',
     url(r'^checkout/', include(checkout_app.urls)),
     url(r'^accounts/register', 'user.views.register', name='register'),
     url(r'^accounts/payment_info', designer_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),
+    url(r'^accounts/addresses/(?P<pk>\d+)/'
+                r'(?P<action>default_for_(billing|shipping|shop))/$',
+                login_required(AddressChangeStatusView.as_view()),
+                name='address-change-status'),
     url(r'^accounts/', include(customer_app.urls)),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     # Jon M TODO We should change these ajax URL's to a different scheme that doesnt conflict with edit item

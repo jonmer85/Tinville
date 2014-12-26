@@ -1,6 +1,5 @@
 import httplib
 import datetime
-from django.utils import unittest
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.forms import ValidationError

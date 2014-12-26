@@ -27,7 +27,7 @@ def set_browser(step):
 # Jon M - Commented this out since sync-ing the DB all the time was slow. Manually sync the test DB as needed with
 # ./test syncdb as needed
 def setup_database():
-    call_command('syncdb', interactive=False, verbosity=0)
+    call_command('migrate', interactive=False, verbosity=0)
 
 @before.each_scenario
 def add_context_to_scenario(scenario):
