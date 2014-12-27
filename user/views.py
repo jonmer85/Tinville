@@ -154,3 +154,8 @@ def ajax_login(request, *args, **kwargs):
 class BetaAccessView(FormView):
     template_name = 'beta_access.html'
     form_class = BetaAccessForm
+
+    def get_context_data(self, **kwargs):
+        context = super(BetaAccessView, self).get_context_data(**kwargs)
+
+        return context

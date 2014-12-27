@@ -1,16 +1,11 @@
-
 {% extends "base.html" %}
 {% load i18n %}
-{% block body_class %}{{ block.super }} register{% endblock %}
-{% block css %}
-  {{ block.super }}
-{#    <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" xmlns="http://www.w3.org/1999/html"/>#}
-{% endblock css %}
+
 {% block content %}
-        <div class="" style="height: 500px; background-image: url('{{ STATIC_URL }}img/register.jpg');">
+
             <div class="container">
                 <div class="row" style="margin-top: 50px">
-                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-7 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
+                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-7 col-md-4">
                         <form id="" class="" action="/access_code" method="post">
                             {% load crispy_forms_tags %}
                             {% crispy form %}
@@ -18,8 +13,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
 
 {% endblock %}
 {% block javascript %}
