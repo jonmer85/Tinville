@@ -2,8 +2,10 @@ from designer_shop.views import *
 from django.test import TestCase
 import json
 
-class ItemVarientService(TestCase):
+class DesignerShopTests(TestCase):
     fixtures = ['all.json',]
+
+    #Item Variant Service Tests
 
     def test_nofiltersizeset(self):
         thecorrectresponse =json.loads('''{"variants": [{"color": "Red", "currency": "$", "sizeorder": 1, "price": "12.99", "quantity": 10, "size": "XXS"},
@@ -189,3 +191,38 @@ class ItemVarientService(TestCase):
         item = get_object_or_404(Product, slug__iexact=itemname, shop_id=1, parent__isnull=True)
         mybaseresponse = json.loads(get_variants(item, filtergroup))
         self.assertEqual(mybaseresponse, correctresponse, "the response was not as expected" )
+
+
+    # Escaped Javascript tests
+    def test_escaped_javascript_in_shop_about_editor(self):
+        bad_script = "<script>alert('PWND!')</script>"
+        self.client.login(username='demo@user.com', password='tinville')
+        response = self.client.post('/demo/edit/', {'aboutBoxForm': 'Submit', 'aboutContent': bad_script})
+        self.assertNotContains(response, bad_script)
+        response = self.client.get('/demo/')
+        self.assertNotContains(response, bad_script)
+
+    def test_escaped_javascript_in_shop_item_editor(self):
+        bad_script = "<script>alert('PWND!')</script>"
+        self.client.login(username='demo@user.com', password='tinville')
+        response = self.client.post('/demo/edit/',
+                                    {'category': '37',
+                                     'description': bad_script,
+                                     'price': '3.00',
+                                     'product_image': '',
+                                     'product_image1': '',
+                                     'product_image2': '',
+                                     'product_image3': '',
+                                     'product_image4': '',
+                                     'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                     'sizeSetSelectionTemplate0_colorSelection1': '',
+                                     'sizeSetSelectionTemplate0_quantityField0': '1',
+                                     'sizeSetSelectionTemplate0_quantityField1': '1',
+                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                     'sizeVariation': '1',
+                                     'title': 'TestTitle'
+                                    })
+        self.assertNotContains(response, bad_script)
+        response = self.client.get('/demo/testtitle/')
+        self.assertNotContains(response, bad_script)
