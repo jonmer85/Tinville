@@ -190,7 +190,7 @@ class BetaAccessForm(forms.Form):
 
     helper.layout = Layout(
         Div(
-            Field('access_code', placeholder="Beta access Code"),
+            Field('access_code', placeholder="Beta Access Code"),
             Submit('betaForm', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
         )
     )

@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block css %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/checkout/styles.css" />
+{% endblock css %}
 
 {% block content %}
 
-            <div class="container">
-                <div class="row" style="margin-top: 50px">
-                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-7 col-md-4">
+            <div class="container betaAccessAlign">
+                <h3>Please Enter You Access Code</h3>
+                <div class="row ">
+                    <div class="well well-info">
                         <form id="" class="" action="/access_code" method="post">
                             {% load crispy_forms_tags %}
                             {% crispy form %}
