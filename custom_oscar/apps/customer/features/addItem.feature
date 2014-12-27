@@ -14,6 +14,8 @@ Feature: Add item to the shopping bag
     And  I click on the submit button
     Then The checkout form should be displayed
 
+    #out of stock issues?
+
     #question: does each scenario perform one big task?
     #should I call this file checkout?
   #should I give specific numbers like below or say general like items
