@@ -11,7 +11,7 @@ from django.shortcuts import render
 from oscar.core.loading import get_model
 import stripe
 
-from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName
+from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName, BetaAccessForm
 from user.models import TinvilleUser
 
 Partner = get_model('partner', 'Partner')
@@ -151,4 +151,6 @@ def ajax_login(request, *args, **kwargs):
 
     return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
-
+class BetaAccessView(FormView):
+    template_name = 'beta_access.html'
+    form_class = BetaAccessForm

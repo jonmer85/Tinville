@@ -41,6 +41,7 @@ urlpatterns += patterns('',
     url(r'^feedback/', include('django_basic_feedback.urls')),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
+    url(r'^access_code/$', TemplateView.as_view(template_name='beta_access.html'), name = 'beta_access'),
     url(r'^accounts/register', 'user.views.register', name='register'),
     url(r'^accounts/payment_info', designer_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),
     url(r'^accounts/addresses/(?P<pk>\d+)/'

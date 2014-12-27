@@ -180,3 +180,17 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 Submit('payment-info', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
             )
         )
+
+@parsleyfy
+class BetaAccessForm(forms.Form):
+    access_code = forms.CharField(max_length=5)
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+
+    helper.layout = Layout(
+        Div(
+            Field('access_code', placeholder="Beta access Code"),
+            Submit('betaForm', 'Submit')
+        )
+    )
