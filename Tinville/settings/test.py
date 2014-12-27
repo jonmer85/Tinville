@@ -3,7 +3,7 @@
 from .base import *  # Start with base settings
 from tempfile import NamedTemporaryFile
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
@@ -30,6 +30,7 @@ INSTALLED_APPS = INSTALLED_APPS + ['lettuce',  'django_nose',] + ['extensions',]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
+
 ########## TEST SETTINGS
 #TEST_RUNNER = "discover_runner.DiscoverRunner"
 #TEST_DISCOVER_TOP_LEVEL = PROJECT_DIR
@@ -38,3 +39,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 ########## IN-MEMORY TEST DATABASE
 
 SSLIFY_DISABLE = True
+
+CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+BROKER_BACKEND = 'memory'

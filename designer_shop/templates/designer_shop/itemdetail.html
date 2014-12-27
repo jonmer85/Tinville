@@ -1,5 +1,6 @@
 {% extends "designer_shop/shopperbase.html" %}
 {% load thumbnail %}
+{% load bleach_tags %}
 
 {% block css %}
     {{ block.super }}
@@ -136,7 +137,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="itemDescription col-xs-12">
-                                            {{ item.description | safe }}
+                                            {{ item.description | bleach }}
                                         </div>
                                     </div>
                                     <div class="row">

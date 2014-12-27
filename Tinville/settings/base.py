@@ -101,7 +101,6 @@ SECRET_KEY = env('SECRET_KEY')
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    'django_mobile.loader.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
@@ -113,10 +112,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django_mobile.middleware.MobileDetectionMiddleware',
-    'django_mobile.middleware.SetFlavourMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
     'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -147,7 +145,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
-    'django_mobile.context_processors.flavour',
     'user.context_processors.include_login_form',
     'oscar.apps.search.context_processors.search_form',
     'oscar.apps.promotions.context_processors.promotions',
@@ -182,7 +179,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'braces',
     'parsley',
-    'django_mobile',
     'django_jenkins',
     'fixture_media',
     'django_extensions',
@@ -195,6 +191,7 @@ INSTALLED_APPS = [
     'kombu.transport.django',
     'djcelery',
     'raven.contrib.django.raven_compat',
+    'django_bleach',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -474,3 +471,23 @@ SENTRY_AUTO_LOG_STACKS = True
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Which HTML tags are allowed
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
+
+# Which HTML attributes are allowed
+BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
+
+# Which CSS properties are allowed in 'style' attributes (assuming
+# style is an allowed attribute)
+BLEACH_ALLOWED_STYLES = [
+    'font-family', 'font-weight', 'text-decoration', 'font-variant']
+
+# Strip unknown tags if True, replace with HTML escaped characters if
+# False
+BLEACH_STRIP_TAGS = True
+
+# Strip comments, or leave them in.
+BLEACH_STRIP_COMMENTS = True
+
+BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
