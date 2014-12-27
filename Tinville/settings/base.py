@@ -1,5 +1,7 @@
 # Django settings for Tinville project.
 from decimal import Decimal
+from celery.schedules import crontab
+from getenv import env
 
 import os.path
 import os
@@ -93,26 +95,26 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '=5sic^#9yx+r9o5khng_8#!41y=5f8z8218bvpb)mu%p0q0xs3'
+SECRET_KEY = env('SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    'django_mobile.loader.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
+    'sslify.middleware.SSLifyMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django_mobile.middleware.MobileDetectionMiddleware',
-    'django_mobile.middleware.SetFlavourMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
+    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -143,7 +145,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
-    'django_mobile.context_processors.flavour',
     'user.context_processors.include_login_form',
     'oscar.apps.search.context_processors.search_form',
     'oscar.apps.promotions.context_processors.promotions',
@@ -178,7 +179,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'braces',
     'parsley',
-    'django_mobile',
     'django_jenkins',
     'fixture_media',
     'django_extensions',
@@ -190,6 +190,8 @@ INSTALLED_APPS = [
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
+    'raven.contrib.django.raven_compat',
+    'django_bleach',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -198,52 +200,52 @@ INSTALLED_APPS = [
                                   'custom_oscar.apps.dashboard.orders',
                                   'custom_oscar.apps.order'])
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
     },
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
         },
     },
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'tinville.log',
-            'formatter': 'verbose'
-        },
-        'mail_admins': {
+        'sentry': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         }
     },
     'loggers': {
-        'django': {
-            'handlers':['file'],
-            'propagate': True,
-            'level':'DEBUG',
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
         },
-        '': {
-            'handlers': ['file'],
+        'raven': {
             'level': 'DEBUG',
-        }
-    }
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'celery': {
+            'level': 'WARNING',
+            'handlers': ['sentry'],
+            'propagate': False,
+        },
+    },
 }
 
 # For django-oscar search
@@ -397,10 +399,10 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'w
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
-EMAIL_HOST_USER = 'registration@tinville.com'
-EMAIL_HOST_PASSWORD = 'Vill3Cr3w!2014'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/'
@@ -426,13 +428,13 @@ TINYMCE_PASTE = True
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_lxcDBw1osRxoju89EG9T5uS5'
-STRIPE_SECRET_KEY = 'sk_test_uN49VakfMajXYBdTS4FM64VM'
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 
 #TODO change easy post api key
-EASYPOST_API_TEST_KEY = 'vSkSFMakSAJaEBTfE04JZg'
-EASYPOST_API_LIVE_KEY = ''
+EASYPOST_API_TEST_KEY = env('EASYPOST_API_TEST_KEY')
+EASYPOST_API_LIVE_KEY = env('EASYPOST_API_LIVE_KEY')
 EASYPOST_API_KEY = EASYPOST_API_TEST_KEY
 
 # Celery settings
@@ -447,4 +449,45 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND= 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
+CELERYBEAT_SCHEDULE = {
+    # Pay designers twice a week, Tuesday at midnight, and Fridays at 11:45 am
+    'pay-designers-on-tuesdays-midnight': {
+        'task': 'custom_oscar.apps.order.tasks.pay_designers',
+        'schedule': crontab(hour=0, minute=0, day_of_week=2)
+    },
+    'pay-designers-on-friday-by-noon': {
+        'task': 'custom_oscar.apps.order.tasks.pay_designers',
+        'schedule': crontab(hour=11, minute=45, day_of_week=5)
+    },
+}
+
 TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
+
+# Sentry Logging parameters
+RAVEN_CONFIG = {
+    'dsn': env('SENTRY_DSN'),
+}
+SENTRY_AUTO_LOG_STACKS = True
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Which HTML tags are allowed
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
+
+# Which HTML attributes are allowed
+BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
+
+# Which CSS properties are allowed in 'style' attributes (assuming
+# style is an allowed attribute)
+BLEACH_ALLOWED_STYLES = [
+    'font-family', 'font-weight', 'text-decoration', 'font-variant']
+
+# Strip unknown tags if True, replace with HTML escaped characters if
+# False
+BLEACH_STRIP_TAGS = True
+
+# Strip comments, or leave them in.
+BLEACH_STRIP_COMMENTS = True
+
+BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'

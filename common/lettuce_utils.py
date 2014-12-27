@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from lxml import html
+from user.models import TinvilleUser
 
 
 def wait_for_ajax_to_complete():
@@ -226,3 +227,33 @@ def sign_in(email, password):
 
 def go_home_page():
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
+
+def register_a_designer_account(email, password, shop_name):
+    world.browser.get(lettuce.django.get_server().url('/register'))
+    form = wait_for_element_with_id_to_exist("registrationForm")
+    form.find_element_by_name("email").send_keys(email)
+    form.find_element_by_name("password").send_keys(password)
+    form.find_element_by_id("designer").click()
+    form.find_element_by_name("shop_name").send_keys(shop_name)
+    form.submit()
+
+    activate_user(email)
+
+def register_a_shopper_account(email, password):
+    world.browser.get(lettuce.django.get_server().url('/register'))
+    form = wait_for_element_with_id_to_exist("registrationForm")
+    form.find_element_by_name("email").send_keys(email)
+    form.find_element_by_name("password").send_keys(password)
+    form.submit()
+
+    activate_user(email)
+
+def activate_user(email):
+    wait_for_element_with_id_to_exist("messagesModal")
+    assert_selector_contains_text("#messagesModal .alert-success", email)
+    wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
+    wait_for_element_with_id_to_not_be_displayed("messagesModal")
+    user = TinvilleUser.objects.get(email=email)
+    user.is_active = True
+    user.save()
+

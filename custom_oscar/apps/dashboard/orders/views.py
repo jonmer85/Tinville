@@ -1,4 +1,6 @@
 from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import ugettext_lazy as _
 from oscar.apps.dashboard.orders.views import *
 from oscar.apps.dashboard.orders.views import OrderListView as CoreOrderListView
 from oscar.apps.dashboard.orders.views import OrderDetailView as CoreOrderDetailView
@@ -64,7 +66,7 @@ class OrderDetailView(CoreOrderDetailView):
         except ShippingEventType.DoesNotExist:
             messages.error(request, _("The event type '%s' is not valid")
                            % code)
-            return self.reload_page_response()
+            return self.reload_page()
 
         reference = request.POST.get('reference', None)
         response = HttpResponse()
@@ -99,7 +101,7 @@ class OrderDetailView(CoreOrderDetailView):
                                       " unsupported Parcel Type: %s") % e)
         else:
             messages.success(request, ("Shipping event created"))
-        return self.reload_page_response()
+        return self.reload_page()
 
     def post_specific_shipment(self, order, parcelType):
         shipment = self.get_shipment(order, parcelType)
@@ -119,7 +121,8 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
-        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost(kwargs['object'])
+        ctx['calculated_shipping_cost'] = self.calculate_shipping_cost(None, kwargs['object'])
+        ctx['partner_address_exists'] = self._partner_address_exists()
         try:
             order = kwargs['object']
             ctx['box_types'] = self.get_shipment_context(order)
@@ -208,7 +211,7 @@ class OrderDetailView(CoreOrderDetailView):
             msg = (parcel_type)
             raise InvalidParcelType(msg)
 
-    def calculate_shipping_cost(self, order, request=None):
+    def calculate_shipping_cost(self, request, order):
         if request == None:
             return 0.00
         else:
@@ -222,14 +225,14 @@ class OrderDetailView(CoreOrderDetailView):
                 except InvalidParcelType as e:
                     messages.error(request, ("Unable to create shipping event due to"
                                       " unsupported Parcel Type: %s") % e)
-                    return self.reload_page_response()
+                    return self.reload_page()
                 parcelType = { 'predefined_package': request.POST['parcel_type'],
                                'weight': weight }
             else:
                 raise "Blame Andy"
             shipment = self.get_specific_shipment(order, parcelType)
             shippingcost = shipment['rates'][0]['rate']
-            return HttpResponse(shippingcost, mimetype='application/json')
+            return HttpResponse(shippingcost, content_type='application/json')
 
     def _GetShopAddress(self,orderId):
         shopIdMatch = re.search('^([0-9]+)',orderId)
@@ -243,6 +246,12 @@ class OrderDetailView(CoreOrderDetailView):
 
         shop_address = EasyPostAddressFormatter(partners[0].addresses.instance.primary_address)
         return shop_address
+
+    def _partner_address_exists(self):
+        partners = Partner._default_manager.filter(users=self.request.user.id)
+        if(partners == None or len(partners) == 0 or partners[0].addresses.instance.primary_address == None):
+            return False
+        return True
 
 def EasyPostAddressFormatter(address):
 
@@ -274,7 +283,7 @@ def EasyPostAddressFormatter(address):
         }
         return _address
 
-
+@csrf_exempt
 def packageStatus(request):
 
         response = HttpResponse()
