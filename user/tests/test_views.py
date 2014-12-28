@@ -1,5 +1,6 @@
 import httplib
 import datetime
+from designer_shop.models import Shop
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.forms import ValidationError
@@ -23,6 +24,15 @@ class RegistrationTest(TestCase):
 
     def test_is_shopper(self):
         self.assertFalse(self.post_request_user(is_seller=False).is_seller)
+
+    def test_is_seller(self):
+        self.assertTrue(self.post_request_user(is_seller=True, shop_name="SchmoeShop").is_seller)
+
+    def test_is_seller_shop_name_with_spaces(self):
+        user = self.post_request_user(is_seller=True, shop_name='Casa de Schmoe')
+        shop = Shop.objects.get(user=user)
+        self.assertEquals(shop.name, 'Casa de Schmoe')
+        self.assertEquals(shop.slug, 'casa-de-schmoe')
 
     ### Utilities
     def get_request(self):
