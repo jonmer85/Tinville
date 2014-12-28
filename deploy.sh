@@ -2,9 +2,9 @@
 if [ $BRANCH != 'Sprint8' ]; then exit 0; fi
 if [ $PULL_REQUEST != 'false' ]; then exit 0; fi
 git push -f git@heroku.com:tinville-testing.git Sprint8:master
-./initDataNoInput qatest
-./qatest collectstatic --noinput
+heroku run ./initDataNoInput qatest --app tinville-testing
+heroku run ./qatest collectstatic --noinput --app tinville-testing
 
 git push -f git@heroku.com:tinville-dev.git Sprint8:master
-./initDataNoInput dev
-./dev collectstatic --noinput
+heroku run ./initDataNoInput dev --app tinville-dev
+heroku run ./dev collectstatic --noinput --app tinville-dev

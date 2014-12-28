@@ -1,5 +1,6 @@
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import ugettext_lazy as _
 from oscar.apps.dashboard.orders.views import *
 from oscar.apps.dashboard.orders.views import OrderListView as CoreOrderListView
 from oscar.apps.dashboard.orders.views import OrderDetailView as CoreOrderDetailView
@@ -121,6 +122,7 @@ class OrderDetailView(CoreOrderDetailView):
     def get_context_data(self, **kwargs):
         ctx = super(OrderDetailView, self).get_context_data(**kwargs)
         ctx['calculated_shipping_cost'] = self.calculate_shipping_cost(None, kwargs['object'])
+        ctx['partner_address_exists'] = self._partner_address_exists()
         try:
             order = kwargs['object']
             ctx['box_types'] = self.get_shipment_context(order)
@@ -244,6 +246,12 @@ class OrderDetailView(CoreOrderDetailView):
 
         shop_address = EasyPostAddressFormatter(partners[0].addresses.instance.primary_address)
         return shop_address
+
+    def _partner_address_exists(self):
+        partners = Partner._default_manager.filter(users=self.request.user.id)
+        if(partners == None or len(partners) == 0 or partners[0].addresses.instance.primary_address == None):
+            return False
+        return True
 
 def EasyPostAddressFormatter(address):
 
