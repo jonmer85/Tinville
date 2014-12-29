@@ -7,7 +7,7 @@ from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
+from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button, Hidden
 from crispy_forms.bootstrap import PrependedText, Accordion, AccordionGroup
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
@@ -399,6 +399,8 @@ class BannerUploadForm(forms.Form):
 
     banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
     mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    bannerCropped = forms.CharField(required=False)
+    mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
     helper.form_show_labels = False
 
@@ -407,10 +409,23 @@ class BannerUploadForm(forms.Form):
             AccordionGroup('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
-                     Field('banner', css_class="autoHeight")),
+                     Field('banner', css_class="autoHeight"),
+                     Field('bannerCropped', css_class='hidden'),
+                     Div(
+                         HTML("<img id='banner_preview'></img>"),
+                         css_class='img-container'
+                     )),
+
+
+
             AccordionGroup('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
-                     Field('mobileBanner', css_class="autoHeight")),
+                     Field('mobileBanner', css_class="autoHeight"),
+                     Field('mobileBannerCropped', css_class='hidden'),
+                     Div(
+                         HTML("<img id='mobile_banner_preview'></img>"),
+                         css_class='img-container'
+                     )),
             ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"

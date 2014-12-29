@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
     <script src="//tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
+    <link href="{{ STATIC_URL }}css/cropper.css" rel="stylesheet">
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -82,7 +83,9 @@
 
 {% block javascript_library %}
   {{ block.super }}
+  <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+
 
 {% endblock javascript_library %}
 
@@ -864,6 +867,64 @@ function DeleteConfirmation(slug) {
         window.location =  href + event.data.param1;
     });
 }
+
+
+    function readURL(input, preview) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+
+            reader.onload = function (e) {
+
+                if(preview.siblings(".cropper-container").length){
+                    preview.cropper("destroy");
+                }
+
+                preview.attr('src', e.target.result);
+                preview.cropper({
+                  aspectRatio: 1779 / 364,
+{#                  autoCropArea: 0.6, // Center 60%#}
+                  multiple: false,
+                  dragCrop: false,
+                  dashed: true,
+                  movable: true,
+                  resizable: true,
+{#                  built: function () {#}
+{#                    $(this).cropper("zoom", 0.5);#}
+{#                  }#}
+                });
+
+
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#id_banner").change(function(){
+        readURL(this, $('#banner_preview'));
+
+    });
+
+    $("#id_mobileBanner").change(function(){
+        readURL(this, $('#mobile_banner_preview'));
+    });
+
+    $("#banner").submit(function(){
+        if($("#banner_preview").siblings(".cropper-container").length) {
+            var banner_img_data =$('#banner_preview').cropper("getDataURL").replace("data:image/png;base64,", "");
+            $("#id_bannerCropped").val(banner_img_data);
+        }
+
+        if($("#mobile_banner_preview").siblings(".cropper-container").length) {
+            var mobile_banner_img_data =$('#mobile_banner_preview').cropper("getDataURL").replace("data:image/png;base64,", "");
+            $("#id_mobileBannerCropped").val(mobile_banner_img_data);
+        }
+
+    });
+
+
+
 
 </script>
 
