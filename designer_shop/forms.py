@@ -356,6 +356,7 @@ class AboutBoxForm(forms.Form):
 
     aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
     aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    aboutImgCropped = forms.CharField(required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -364,6 +365,11 @@ class AboutBoxForm(forms.Form):
             AccordionGroup('About',
                      HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
                      Field('aboutImg', css_class="autoHeight"),
+                     Field('aboutImgCropped', css_class='hidden'),
+                     Div(
+                         HTML("<img id='aboutImg_preview'></img>"),
+                         css_class='img-container'
+                     ),
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),

@@ -869,7 +869,7 @@ function DeleteConfirmation(slug) {
 }
 
 
-    function readURL(input, preview) {
+    function readURL(input, preview, aspectRatio) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
@@ -882,14 +882,13 @@ function DeleteConfirmation(slug) {
 
                 preview.attr('src', e.target.result);
                 preview.cropper({
-                  aspectRatio: 1779 / 364,
+                  aspectRatio: aspectRatio,
 {#                  autoCropArea: 0.6, // Center 60%#}
-                  multiple: false,
+                  multiple: true,
                   dragCrop: false,
                   dashed: true,
                   movable: true,
                   resizable: true,
-                  minHeight: 364,
 {#                  built: function () {#}
 {#                    $(this).cropper("zoom", 0.5);#}
 {#                  }#}
@@ -903,26 +902,33 @@ function DeleteConfirmation(slug) {
     }
 
     $("#id_banner").change(function(){
-        readURL(this, $('#banner_preview'));
+        readURL(this, $('#banner_preview'), 1779 / 364);
 
     });
 
     $("#id_mobileBanner").change(function(){
-        readURL(this, $('#mobile_banner_preview'));
+        readURL(this, $('#mobile_banner_preview'), 968 / 642);
+    });
+
+    $("#id_aboutImg").change(function(){
+        readURL(this, $('#aboutImg_preview'), 1);
     });
 
     $("#banner").submit(function(){
-        if($("#banner_preview").siblings(".cropper-container").length) {
-            var banner_img_data =$('#banner_preview').cropper("getDataURL").replace("data:image/png;base64,", "");
-            $("#id_bannerCropped").val(banner_img_data);
-        }
-
-        if($("#mobile_banner_preview").siblings(".cropper-container").length) {
-            var mobile_banner_img_data =$('#mobile_banner_preview').cropper("getDataURL").replace("data:image/png;base64,", "");
-            $("#id_mobileBannerCropped").val(mobile_banner_img_data);
-        }
-
+        populateCroppedField($("#banner_preview"), $("#id_bannerCropped"));
+        populateCroppedField($("#mobile_banner_preview"), $("#id_mobileBannerCropped"));
     });
+
+    $("#about").submit(function(){
+        populateCroppedField($("#aboutImg_preview"), $("#id_aboutImgCropped"));
+    });
+
+    function populateCroppedField($preview, $croppedField) {
+        if($preview.siblings(".cropper-container").length) {
+            var img_data =$preview.cropper("getDataURL").replace("data:image/png;base64,", "");
+            $croppedField.val(img_data);
+        }
+    }
 
 
 

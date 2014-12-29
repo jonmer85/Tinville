@@ -502,11 +502,16 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         elif request.POST.__contains__('aboutBoxForm'):
             form = AboutBoxForm(request.POST, request.FILES)
             if form.is_valid():
-                shutil.rmtree(settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug), ignore_errors=True)
+                aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
+                aboutImgFullPath = aboutImgFullPrefix + "/about.png"
+                aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.png'.format(shop.slug)
+
+                if _replaceCroppedFile(form, aboutImgFullPrefix, aboutImgFullPath, "aboutImgCropped"):
+                    shop.aboutImg = aboutImgUrl
+                    shop.save(update_fields=["aboutImg"])
+
                 shop.aboutContent = form.cleaned_data["aboutContent"]
                 shop.save(update_fields=["aboutContent"])
-                shop.aboutImg = form.cleaned_data["aboutImg"]
-                shop.save(update_fields=["aboutImg"])
             return renderShopEditor(request, shop, aboutForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
