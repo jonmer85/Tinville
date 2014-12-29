@@ -949,7 +949,7 @@ function DeleteConfirmation(slug) {
 
     function populateCroppedField($preview, $croppedField) {
         if($preview.siblings(".cropper-container").length) {
-            var img_data =$preview.cropper("getDataURL").replace("data:image/png;base64,", "");
+            var img_data =$preview.cropper("getDataURL", "image/jpeg").replace("data:image/jpeg;base64,", "");
             $croppedField.val(img_data);
         }
     }

@@ -478,10 +478,10 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             if form.is_valid():
                 bannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug)
                 mobileBannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/mobileBanner'.format(shop.slug)
-                bannerFullPath = bannerFullPrefix + "/banner.png"
-                bannerUrl = settings.MEDIA_URL + 'shops/{0}/banner/banner.png'.format(shop.slug)
-                mobileBannerFullPath = mobileBannerFullPrefix + "/mobileBanner.png"
-                mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/mobileBanner/mobileBanner.png'.format(shop.slug)
+                bannerFullPath = bannerFullPrefix + "/banner.jpg"
+                bannerUrl = settings.MEDIA_URL + 'shops/{0}/banner/banner.jpg'.format(shop.slug)
+                mobileBannerFullPath = mobileBannerFullPrefix + "/mobileBanner.jpg"
+                mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/mobileBanner/mobileBanner.jpg'.format(shop.slug)
 
                 if _replaceCroppedFile(form, bannerFullPrefix, bannerFullPath, "bannerCropped"):
                     shop.banner = bannerUrl
@@ -503,8 +503,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             form = AboutBoxForm(request.POST, request.FILES)
             if form.is_valid():
                 aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
-                aboutImgFullPath = aboutImgFullPrefix + "/about.png"
-                aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.png'.format(shop.slug)
+                aboutImgFullPath = aboutImgFullPrefix + "/about.jpg"
+                aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.jpg'.format(shop.slug)
 
                 if _replaceCroppedFile(form, aboutImgFullPrefix, aboutImgFullPath, "aboutImgCropped"):
                     shop.aboutImg = aboutImgUrl
