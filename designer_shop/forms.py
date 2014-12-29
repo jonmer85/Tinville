@@ -1,5 +1,6 @@
 import uuid
 from django import forms
+from django.core.files.base import ContentFile
 from django_bleach.forms import BleachField
 from oscar.apps.catalogue.models import ProductImage
 
@@ -15,7 +16,7 @@ from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
-from common.utils import get_or_none
+from common.utils import get_or_none, CroppedFieldLayout
 from common.widgets import AdvancedFileInput
 
 
@@ -29,6 +30,12 @@ class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title",max_length=80)
+
+    product_image_cropped = forms.CharField(required=False)
+    product_image1_cropped = forms.CharField(required=False)
+    product_image2_cropped = forms.CharField(required=False)
+    product_image3_cropped = forms.CharField(required=False)
+    product_image4_cropped = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
@@ -59,11 +66,15 @@ class ProductCreationForm(forms.ModelForm):
                     AccordionGroup('Images',
                              HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
                              Field( 'product_image', css_id="id_productImage" ),
-                             HTML("""<div class="img-preview"></div>"""),
+                             CroppedFieldLayout('product_image_cropped', 'product_image_preview'),
                              Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                             CroppedFieldLayout('product_image1_cropped', 'product_image1_preview'),
                              Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                             CroppedFieldLayout('product_image2_cropped', 'product_image2_preview'),
                              Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
-                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
+                             CroppedFieldLayout('product_image3_cropped', 'product_image3_preview'),
+                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden'),
+                             CroppedFieldLayout('product_image4_cropped', 'product_image4_preview'),
                     ),
                     AccordionGroup('Sizes and Colors',
                              Field('sizeVariation', placeholder='Choose a variation'),
@@ -286,8 +297,10 @@ class ProductCreationForm(forms.ModelForm):
                     existing = get_or_none(ProductImage, display_order=display_order, product=product)
                     if existing:
                         existing.delete()
+                    img_string = self.cleaned_data[image_field + '_cropped']
+                    img_data = img_string.decode("base64")
                     productImage = ProductImage(product=product, display_order=display_order)
-                    productImage.original = self.cleaned_data[image_field]
+                    productImage.original.save(self.cleaned_data[image_field].name, ContentFile(img_data))
                     productImage.save()
 
     def load_image(self, product, display_order):
@@ -365,11 +378,7 @@ class AboutBoxForm(forms.Form):
             AccordionGroup('About',
                      HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
                      Field('aboutImg', css_class="autoHeight"),
-                     Field('aboutImgCropped', css_class='hidden'),
-                     Div(
-                         HTML("<img id='aboutImg_preview'></img>"),
-                         css_class='img-container'
-                     ),
+                     CroppedFieldLayout('aboutImgCropped', 'aboutImg_preview'),
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
@@ -416,22 +425,12 @@ class BannerUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
                      Field('banner', css_class="autoHeight"),
-                     Field('bannerCropped', css_class='hidden'),
-                     Div(
-                         HTML("<img id='banner_preview'></img>"),
-                         css_class='img-container'
-                     )),
-
-
+                     CroppedFieldLayout('bannerCropped', 'banner_preview')),
 
             AccordionGroup('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
-                     Field('mobileBannerCropped', css_class='hidden'),
-                     Div(
-                         HTML("<img id='mobile_banner_preview'></img>"),
-                         css_class='img-container'
-                     )),
+                     CroppedFieldLayout('mobileBannerCropped', 'mobile_banner_preview')),
             ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"

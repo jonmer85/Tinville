@@ -914,6 +914,22 @@ function DeleteConfirmation(slug) {
         readURL(this, $('#aboutImg_preview'), 1);
     });
 
+    $("#id_product_image").change(function(){
+        readURL(this, $('#product_image_preview'), 400 / 500);
+    });
+    $("#id_product_image1").change(function(){
+        readURL(this, $('#product_image1_preview'), 400 / 500);
+    });
+    $("#id_product_image2").change(function(){
+        readURL(this, $('#product_image2_preview'), 400 / 500);
+    });
+    $("#id_product_image3").change(function(){
+        readURL(this, $('#product_image3_preview'), 400 / 500);
+    });
+    $("#id_product_image4").change(function(){
+        readURL(this, $('#product_image4_preview'), 400 / 500);
+    });
+
     $("#banner").submit(function(){
         populateCroppedField($("#banner_preview"), $("#id_bannerCropped"));
         populateCroppedField($("#mobile_banner_preview"), $("#id_mobileBannerCropped"));
@@ -921,6 +937,14 @@ function DeleteConfirmation(slug) {
 
     $("#about").submit(function(){
         populateCroppedField($("#aboutImg_preview"), $("#id_aboutImgCropped"));
+    });
+
+    $("#addOrEditItem").submit(function(){
+        populateCroppedField($("#product_image_preview"), $("#id_product_image_cropped"));
+        populateCroppedField($("#product_image1_preview"), $("#id_product_image1_cropped"));
+        populateCroppedField($("#product_image2_preview"), $("#id_product_image2_cropped"));
+        populateCroppedField($("#product_image3_preview"), $("#id_product_image3_cropped"));
+        populateCroppedField($("#product_image4_preview"), $("#id_product_image4_cropped"));
     });
 
     function populateCroppedField($preview, $croppedField) {
