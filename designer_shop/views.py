@@ -477,20 +477,17 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             form = BannerUploadForm(request.POST, request.FILES)
             if form.is_valid():
                 bannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug)
+                mobileBannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/mobileBanner'.format(shop.slug)
                 bannerFullPath = bannerFullPrefix + "/banner.png"
                 bannerUrl = settings.MEDIA_URL + 'shops/{0}/banner/banner.png'.format(shop.slug)
-                mobileBannerFullPath = bannerFullPrefix + "/mobileBanner.png"
-                mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/banner/mobileBanner.png'.format(shop.slug)
-
-                shutil.rmtree(bannerFullPrefix, ignore_errors=True)
-                if not os.path.exists(bannerFullPrefix):
-                    os.makedirs(bannerFullPrefix)
+                mobileBannerFullPath = mobileBannerFullPrefix + "/mobileBanner.png"
+                mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/mobileBanner/mobileBanner.png'.format(shop.slug)
 
                 if _replaceCroppedFile(form, bannerFullPrefix, bannerFullPath, "bannerCropped"):
                     shop.banner = bannerUrl
                     shop.save(update_fields=["banner"])
 
-                if _replaceCroppedFile(form, bannerFullPrefix, mobileBannerFullPath, "mobileBannerCropped"):
+                if _replaceCroppedFile(form, mobileBannerFullPrefix, mobileBannerFullPath, "mobileBannerCropped"):
                     shop.mobileBanner = mobileBannerUrl
                     shop.save(update_fields=["mobileBanner"])
 
@@ -538,6 +535,9 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
 def _replaceCroppedFile(form, dirFolderPath, fileFullPath, croppedField):
     if form.cleaned_data[croppedField] and len(form.cleaned_data[croppedField]) > 0:
 
+        shutil.rmtree(dirFolderPath, ignore_errors=True)
+        if not os.path.exists(dirFolderPath):
+            os.makedirs(dirFolderPath)
         img_string = form.cleaned_data[croppedField]
         img_data = img_string.decode("base64")
         img_file = open(fileFullPath, "w+b")
