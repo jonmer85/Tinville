@@ -47,4 +47,4 @@ def the_about_content_is_saved(step):
     aboutLocation = wait_for_element_with_css_selector_to_be_displayed('.aboutContent>p')
     assert aboutLocation.text == "Test About Content"
     wait_for_element_with_id_to_be_displayed("displayedAboutImg")
-    assert_every_selector_contains("#displayedAboutImg", "src", "about.jpg")
+    assert_every_selector_contains("#displayedAboutImg", "src", "about")

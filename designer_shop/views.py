@@ -5,6 +5,7 @@ from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
 from django.conf import settings
+from django.core.files.base import ContentFile
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -502,14 +503,14 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         elif request.POST.__contains__('aboutBoxForm'):
             form = AboutBoxForm(request.POST, request.FILES)
             if form.is_valid():
-                aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
-                aboutImgFullPath = aboutImgFullPrefix + "/about.jpg"
-                aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.jpg'.format(shop.slug)
-
-                if _replaceCroppedFile(form, aboutImgFullPrefix, aboutImgFullPath, "aboutImgCropped"):
-                    shop.aboutImg = aboutImgUrl
-                    shop.save(update_fields=["aboutImg"])
-
+                shop.aboutImg.save('about.jpg', ContentFile(form.cleaned_data['aboutImgCropped']))
+                # aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
+                # aboutImgFullPath = aboutImgFullPrefix + "/about.jpg"
+                # aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.jpg'.format(shop.slug)
+                #
+                # if _replaceCroppedFile(form, aboutImgFullPrefix, aboutImgFullPath, "aboutImgCropped"):
+                #     shop.aboutImg = aboutImgUrl
+                #     shop.save(update_fields=["aboutImg"])
                 shop.aboutContent = form.cleaned_data["aboutContent"]
                 shop.save(update_fields=["aboutContent"])
             return renderShopEditor(request, shop, aboutForm=form)
