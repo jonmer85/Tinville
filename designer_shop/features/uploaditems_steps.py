@@ -1,3 +1,4 @@
+from django.conf import settings
 import os
 import time
 
@@ -25,9 +26,10 @@ def and_i_fill_in_the_general_add_item_fields(step):
         wait_for_element_with_name_to_be_displayed("price").send_keys(itemfields["Price"])
         scroll_to_element(wait_for_element_with_name_to_exist("category"))
         wait_for_element_with_name_to_be_displayed("category").send_keys(itemfields["Category"])
-        file = os.path.join(MEDIA_ROOT, itemfields["Image1"])
+        file = os.path.join(settings.MEDIA_ROOT, itemfields["Image1"])
         wait_for_element_with_css_selector_to_be_clickable("a[href='#images']").click()
         wait_for_element_with_name_to_be_displayed("product_image").send_keys(file)
+        scroll_to_element(wait_for_element_with_css_selector_to_exist("a[href='#accordion2']"))
         wait_for_element_with_css_selector_to_be_clickable("a[href='#accordion2']").click()
         scroll_to_element(wait_for_element_with_name_to_exist('sizeVariation'))
         Select(wait_for_element_with_name_to_be_displayed('sizeVariation')).select_by_value(itemfields['SizeVariation'])

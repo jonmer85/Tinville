@@ -1,3 +1,4 @@
+from crispy_forms.layout import Layout, Field, Div, HTML
 from django.conf import settings
 from decimal import Decimal as D, ROUND_FLOOR
 import string
@@ -26,3 +27,13 @@ def isNoneOrEmptyOrWhitespace (validateString):
         else:
             return True
     return False
+
+def CroppedFieldLayout(croppedField, preview):
+    return \
+        Layout(
+            Field(croppedField, css_class='hidden'),
+            Div(
+                HTML(str.format("<img id='{0}'></img>", preview)),
+                css_class='img-container'
+            )
+        )
