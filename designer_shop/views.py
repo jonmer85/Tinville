@@ -112,11 +112,13 @@ def check_access_code(request):
         if TinvilleUser.objects.get(access_code = access_id) is not None:
             return True
         else:
-            return False #HttpResponseRedirect('/beta_access/')
+            HttpResponseRedirect('/access_code/')
+            return False
     else:
-        # response = HttpResponse('No beat access cookie! Sending cookie to client')
+        # response = HttpResponse('No beta access cookie! Sending cookie to client')
         # response.set_cookie('beta_access', max_age=  60 * 60 * 24 * 7 * 52)
-        return False #HttpResponseRedirect('/beta_access/')
+        HttpResponseRedirect('/access_code/')
+        return False
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)

@@ -80,11 +80,11 @@ def register(request):
             #create initial entry for User object
             user = form.save()
             user.generate_activation_information()
-            user.generate_access_code()
             user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
 
             # Create a Partner model if this is a designer
             if user.is_seller:
+                user.generate_access_code()
                 partner = Partner(name=user.email, code=user.slug)
                 partner.save()
                 partner.users.add(user)
