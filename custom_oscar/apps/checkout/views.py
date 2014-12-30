@@ -287,6 +287,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
         basket.submit()
 
+        #TODO: Inject email to designer into handle successful order
         return self.handle_successful_order(top_level_order)
 
     def generate_order_number(self, basket, shop_id=None):
