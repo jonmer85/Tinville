@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from django.utils.timezone import utc
+from django.core.exceptions import ObjectDoesNotExist
 from autoslug import AutoSlugField
 
 from Tinville.settings.base import EMAIL_HOST_USER
@@ -63,10 +64,16 @@ class TinvilleUser(AbstractUser):
 
     def generate_access_code(self):
          # Generates random access code for shop
-        access_code_candidate = get_random_string(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+        access_code_candidate = None
+        while True:
+            access_code_candidate = get_random_string(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 
-        while(TinvilleUser.objects.get(access_code = access_code_candidate) is not None): #keep regenerating code until not a duplicate
-            access_code_candidate = get_random_string(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+            try:
+                TinvilleUser.objects.get(access_code = access_code_candidate)
+                pass
+            except ObjectDoesNotExist:
+                break
+
 
         self.access_code = access_code_candidate
         self.save()

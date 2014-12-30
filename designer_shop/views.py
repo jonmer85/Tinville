@@ -2,6 +2,7 @@ import json
 import collections
 import shutil
 import datetime
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
@@ -12,6 +13,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 import os
 
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
@@ -88,6 +90,10 @@ class get_filter_lists:
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     products = get_list_or_empty(Product, shop=shop.id)
+
+    if not check_access_code(request):
+        return HttpResponseRedirect(reverse('beta_access'))
+
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
@@ -107,19 +113,13 @@ def shopper(request, slug):
         })
 
 def check_access_code(request):
-    if 'beta_access' in request.COOKIES:
-        #check against every designer
-        access_id = request.COOKIES['beta_access']
-        if TinvilleUser.objects.get(access_code = access_id) is not None:
+        access_id = None#request.COOKIES['beta_access']
+
+        try:
+            TinvilleUser.objects.get(access_code = access_id)
             return True
-        else:
-            HttpResponseRedirect('/access_code/')
+        except ObjectDoesNotExist:
             return False
-    else:
-        # response = HttpResponse('No beta access cookie! Sending cookie to client')
-        # response.set_cookie('beta_access', max_age=  60 * 60 * 24 * 7 * 52)
-        HttpResponseRedirect('/access_code/')
-        return False
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
