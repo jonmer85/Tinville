@@ -503,7 +503,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         elif request.POST.__contains__('aboutBoxForm'):
             form = AboutBoxForm(request.POST, request.FILES)
             if form.is_valid():
-                shop.aboutImg.save('about.jpg', ContentFile(form.cleaned_data['aboutImgCropped']))
+                shop.aboutImg.save('about.jpg', ContentFile(form.cleaned_data['aboutImgCropped'].decode("base64")))
                 # aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
                 # aboutImgFullPath = aboutImgFullPrefix + "/about.jpg"
                 # aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.jpg'.format(shop.slug)
