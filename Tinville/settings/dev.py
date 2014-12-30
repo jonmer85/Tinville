@@ -14,7 +14,8 @@ ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/media'
+
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
