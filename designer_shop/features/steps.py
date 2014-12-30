@@ -210,11 +210,10 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
     # world.browser.find_element_by_id("minMaxIcon").click()
     wait_for_element_with_id_to_be_displayed("shopColorPicker")
     world.browser.find_element_by_id("shopColorPicker").click()
-    wait_for_ajax_to_complete()
 
 @step(u'Then an exception Tinville Branding is not Allowed to be Used is thrown')
 def then_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
-    assert_selector_does_exist("#div_id_color.has-error")
+    wait_for_element_with_css_selector_to_exist("#div_id_color.has-error")
     assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
 @step(u'(?:When|And) I sign in')

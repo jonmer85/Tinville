@@ -134,7 +134,7 @@
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
-            var url = self.attr("action")
+            var url = self.attr("action");
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -151,7 +151,7 @@
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors("#color");
-                        document.getElementById('shopEditor_message_area').innerHTML = ""
+                        document.getElementById('shopEditor_message_area').innerHTML = "";
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
