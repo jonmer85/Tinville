@@ -215,7 +215,7 @@ LOGGING = {
     },
     'handlers': {
         'sentry': {
-            'level': 'ERROR',
+            'level': env('LOGGING_HANDLER_SENTRY_LEVEL', 'WARNING'),
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
         'console': {
@@ -225,9 +225,19 @@ LOGGING = {
         }
     },
     'loggers': {
+        'django.request': {
+            'level': env('LOGGING_LOGGER_DJANGO_REQUEST_LEVEL', 'WARNING'),
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        },
         'django.db.backends': {
-            'level': 'ERROR',
-            'handlers': ['console'],
+            'level': env('LOGGING_LOGGER_DJANGO_DB_BACKENDS_LEVEL', 'WARNING'),
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        },
+        'django.security': {
+            'level': env('LOGGING_LOGGER_DJANGO_SECURITY_LEVEL', 'WARNING'),
+            'handlers': ['console', 'sentry'],
             'propagate': False,
         },
         'raven': {

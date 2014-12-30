@@ -9,5 +9,5 @@ Feature: Designer Shop About Content Selection
     When the about tab is selected
     Then the about text field box is displayed
     And the submit about content button is displayed
-    And the about content is submitted
+    And the about content and image is submitted
     Then The about content is saved

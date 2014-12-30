@@ -6,11 +6,13 @@ from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
+from django.conf import settings
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
+import os
 
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
@@ -19,7 +21,6 @@ from oscar.apps.catalogue.models import ProductImage as ProductImages
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 
-from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
@@ -211,8 +212,8 @@ def ajax_color(request, slug):
                 currentShop.color = form.cleaned_data["color"]
                 currentShop.save(update_fields=["color"])
                 return HttpResponse(json.dumps({'errors': form.errors}), content_type='application/json')
-
-        return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
+            return HttpResponseBadRequest(json.dumps(form.errors), content_type='application/json')
+        return HttpResponseBadRequest()
 
 
 def get_types(request, shop_slug, group_by=None):
@@ -493,27 +494,42 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         if request.POST.__contains__('bannerUploadForm'):
             form = BannerUploadForm(request.POST, request.FILES)
             if form.is_valid():
-                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug), ignore_errors=True)
-                shop.banner = form.cleaned_data["banner"]
-                shop.save(update_fields=["banner"])
-                shop.mobileBanner = form.cleaned_data["mobileBanner"]
-                shop.save(update_fields=["mobileBanner"])
+                bannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug)
+                mobileBannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/mobileBanner'.format(shop.slug)
+                bannerFullPath = bannerFullPrefix + "/banner.jpg"
+                bannerUrl = settings.MEDIA_URL + 'shops/{0}/banner/banner.jpg'.format(shop.slug)
+                mobileBannerFullPath = mobileBannerFullPrefix + "/mobileBanner.jpg"
+                mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/mobileBanner/mobileBanner.jpg'.format(shop.slug)
+
+                if _replaceCroppedFile(form, bannerFullPrefix, bannerFullPath, "bannerCropped"):
+                    shop.banner = bannerUrl
+                    shop.save(update_fields=["banner"])
+
+                if _replaceCroppedFile(form, mobileBannerFullPrefix, mobileBannerFullPath, "mobileBannerCropped"):
+                    shop.mobileBanner = mobileBannerUrl
+                    shop.save(update_fields=["mobileBanner"])
+
             return renderShopEditor(request, shop, bannerUploadForm=form)
         elif request.POST.__contains__('logoUploadForm'):
             form = LogoUploadForm(request.POST, request.FILES)
             if form.is_valid():
-                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/logo'.format(shop.slug), ignore_errors=True)
+                shutil.rmtree(settings.MEDIA_ROOT + '/shops/{0}/logo'.format(shop.slug), ignore_errors=True)
                 shop.logo = form.cleaned_data["logo"]
                 shop.save(update_fields=["logo"])
             return renderShopEditor(request, shop, logoUploadForm=form)
         elif request.POST.__contains__('aboutBoxForm'):
             form = AboutBoxForm(request.POST, request.FILES)
             if form.is_valid():
-                shutil.rmtree(MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug), ignore_errors=True)
+                aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
+                aboutImgFullPath = aboutImgFullPrefix + "/about.jpg"
+                aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.jpg'.format(shop.slug)
+
+                if _replaceCroppedFile(form, aboutImgFullPrefix, aboutImgFullPath, "aboutImgCropped"):
+                    shop.aboutImg = aboutImgUrl
+                    shop.save(update_fields=["aboutImg"])
+
                 shop.aboutContent = form.cleaned_data["aboutContent"]
                 shop.save(update_fields=["aboutContent"])
-                shop.aboutImg = form.cleaned_data["aboutImg"]
-                shop.save(update_fields=["aboutImg"])
             return renderShopEditor(request, shop, aboutForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
@@ -538,6 +554,21 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
         return renderShopEditor(request, shop, item=item)
+
+def _replaceCroppedFile(form, dirFolderPath, fileFullPath, croppedField):
+    if form.cleaned_data[croppedField] and len(form.cleaned_data[croppedField]) > 0:
+
+        shutil.rmtree(dirFolderPath, ignore_errors=True)
+        if not os.path.exists(dirFolderPath):
+            os.makedirs(dirFolderPath)
+        img_string = form.cleaned_data[croppedField]
+        img_data = img_string.decode("base64")
+        img_file = open(fileFullPath, "w+b")
+        img_file.write(img_data)
+        img_file.close()
+        return True
+    return False
+
 
 @IsShopOwnerDecoratorUsingItem
 def delete_product(request, shop_slug, item_slug):
