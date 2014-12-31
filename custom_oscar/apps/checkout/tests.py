@@ -8,7 +8,7 @@ class SendOrderMixinTests(TestCase):
     fixtures = ['all.json']
 
     def setUp(self):
-        self.user = TinvilleUser.objects.create(email="andrewfdabrowski@gmail.com")
+        self.user = TinvilleUser.objects.create(email="foo@123.com")
         self.shop = Shop.objects.create(name='SchmoeVille', user=self.user)
         self.order = create_order(number="2-10011",user=self.user, shop=self.shop)
 
