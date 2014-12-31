@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load i18n %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock css %}
+{% block content %}
+    {{ block.super }}
+        {% if shop_list %}
+            <ul class="container" style="padding-top: 50px">
+            {% for shop in shop_list %}
+{#                <li class="shoplistLi"><a class="" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>#}
+                <li id="{{ shop.name }}Id" class="col-xs-12 shoplistLi"><a href='{{ shop.get_absolute_url }}' rel="" title="Click here to go to {{ shop.name }}">
+                    <img id="" class="shoplistStyle" src="{{shop.banner.url}}" />
+                </a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+{% endblock %}
+
+{% block javascript_library %}
+  {{ block.super }}
+{% endblock javascript_library %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+
+    </script>
+
+{% endblock %}

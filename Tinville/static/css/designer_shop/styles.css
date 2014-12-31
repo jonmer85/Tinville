@@ -639,3 +639,12 @@
     display: block;
 
 }
+
+.shoplistLi{
+    font-size: 1.5em;
+    list-style-type: none;
+}
+.shoplistStyle {
+    width: 100%;
+    height: 250px;
+}
