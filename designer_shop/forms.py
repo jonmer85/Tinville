@@ -289,19 +289,28 @@ class ProductCreationForm(forms.ModelForm):
             if not self.cleaned_data[image_field]:
                 # False means that the clear checkbox was checked
                 existing = get_or_none(ProductImage, display_order=display_order, product=product)
-                existing.delete()
+                if existing is not None:
+                    existing.delete()
 
             else:
-                newFileExists = get_or_none(ProductImage, original=self.cleaned_data[image_field].name, product=product)
-                if not newFileExists:
+                croppedImgField = self.cleaned_data[image_field + '_cropped']
+                newFileExists = croppedImgField is not None and croppedImgField != ""
+                if newFileExists:
                     existing = get_or_none(ProductImage, display_order=display_order, product=product)
                     if existing:
-                        existing.delete()
+                        existing.display_order = 999999 # temp value to not collide with replacement display_order
+                        existing.save()
+
                     img_string = self.cleaned_data[image_field + '_cropped']
                     img_data = img_string.decode("base64")
                     productImage = ProductImage(product=product, display_order=display_order)
                     productImage.original.save(self.cleaned_data[image_field].name, ContentFile(img_data))
                     productImage.save()
+
+                    if existing:
+                        existing.delete()
+
+
 
     def load_image(self, product, display_order):
         image = get_or_none(ProductImage, product=product, display_order=display_order)
