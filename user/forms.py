@@ -184,7 +184,18 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
 
 @parsleyfy
 class BetaAccessForm(forms.Form):
+    def clean_access_code(self):
+        access_code_candidate = self.cleaned_data['access_code']
+
+        try:
+            TinvilleUser.objects.get(access_code = access_code_candidate)
+        except ObjectDoesNotExist:
+            raise forms.ValidationError('Incorrect Access Code')
+        return access_code_candidate
+
+
     access_code = forms.CharField(max_length=5)
+    shop = forms.CharField(widget=forms.HiddenInput, required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -192,6 +203,7 @@ class BetaAccessForm(forms.Form):
     helper.layout = Layout(
         Div(
             Field('access_code', placeholder="Beta Access Code"),
+            HTML('<input type="hidden" name="shop" value="{{ shop }}">'),
             Submit('betaForm', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
         )
     )

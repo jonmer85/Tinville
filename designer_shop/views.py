@@ -28,6 +28,7 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
     LogoUploadForm
 
 from common.utils import get_list_or_empty, get_or_none
+from user.forms import BetaAccessForm
 from user.models import TinvilleUser
 
 
@@ -92,7 +93,7 @@ def shopper(request, slug):
     products = get_list_or_empty(Product, shop=shop.id)
 
     if not check_access_code(request):
-        return HttpResponseRedirect(reverse('beta_access'))
+        return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
@@ -113,13 +114,14 @@ def shopper(request, slug):
         })
 
 def check_access_code(request):
-        access_id = None#request.COOKIES['beta_access']
-
+    if 'beta_access' in request.COOKIES:
+        access_id = request.COOKIES['beta_access']
         try:
             TinvilleUser.objects.get(access_code = access_id)
             return True
         except ObjectDoesNotExist:
             return False
+    return False
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
