@@ -279,7 +279,7 @@ body
         left       : 32%;
         z-index    : 1001; /* 1 higher than Bootstrap nav pop-ups*/
         height     : 24px;
-        margin-top : 0px;
+        margin-top : 0;
     }
 }
 
@@ -301,7 +301,7 @@ body
   *      sign-in button.
   * Solution:
   *     Added margins to keep the loginPopupForm aligned with the sign-in button
-  *         0px-767px    : width set to 100% no margins needed
+  *         0-767px    : width set to 100% no margins needed
   *         768px-991px  : right-margin of 4%
   *         992px-1200px : right-margin of 3%
   *         1200px+      : right-margin of 2%
@@ -345,7 +345,7 @@ body
 .loginPopupForm
 {
     background-color : #E7E7E7;
-    padding-top      : 0%;
+    padding-top      : 0;
     padding-bottom   : 1%;
     border-radius    : 8px;
     font-size        : small;
@@ -354,7 +354,7 @@ body
 .loginPopupFormMobile
 {
     background-color : #E7E7E7;
-    padding-top      : 0%;
+    padding-top      : 0;
     padding-bottom   : 1%;
     border-radius    : 8px;
     font-size        : small;
@@ -367,8 +367,8 @@ body
 .alignField
 {
 
-    padding-right : 0%;
-    padding-left  : 0%;
+    padding-right : 0;
+    padding-left  : 0;
 }
 
 .messageError
@@ -879,8 +879,8 @@ textarea
 .container-xs-height
 {
     display       : table;
-    padding-left  : 0px;
-    padding-right : 0px;
+    padding-left  : 0;
+    padding-right : 0;
 }
 
 .row-xs-height
@@ -899,8 +899,8 @@ textarea
     .container-sm-height
     {
         display       : table;
-        padding-left  : 0px;
-        padding-right : 0px;
+        padding-left  : 0;
+        padding-right : 0;
     }
 
     .row-sm-height
@@ -920,8 +920,8 @@ textarea
     .container-md-height
     {
         display       : table;
-        padding-left  : 0px;
-        padding-right : 0px;
+        padding-left  : 0;
+        padding-right : 0;
     }
 
     .row-md-height
@@ -941,8 +941,8 @@ textarea
     .container-lg-height
     {
         display       : table;
-        padding-left  : 0px;
-        padding-right : 0px;
+        padding-left  : 0;
+        padding-right : 0;
     }
 
     .row-lg-height
@@ -979,8 +979,8 @@ textarea
 .container-xs-height
 {
     display       : table;
-    padding-left  : 0px;
-    padding-right : 0px;
+    padding-left  : 0;
+    padding-right : 0;
 }
 
 .row-xs-height
@@ -999,8 +999,8 @@ textarea
     .container-sm-height
     {
         display       : table;
-        padding-left  : 0px;
-        padding-right : 0px;
+        padding-left  : 0;
+        padding-right : 0;
     }
 
     .row-sm-height
@@ -1020,8 +1020,8 @@ textarea
     .container-md-height
     {
         display       : table;
-        padding-left  : 0px;
-        padding-right : 0px;
+        padding-left  : 0;
+        padding-right : 0;
     }
 
     .row-md-height
@@ -1041,8 +1041,8 @@ textarea
     .container-lg-height
     {
         display       : table;
-        padding-left  : 0px;
-        padding-right : 0px;
+        padding-left  : 0;
+        padding-right : 0;
     }
 
     .row-lg-height
@@ -1077,7 +1077,7 @@ textarea
 {
     /*line-height:3em;*/
     /*height:260px;*/
-    padding    : 0px;
+    padding    : 0;
     color      : #714D03;
     width      : 300px;
     max-height : 270px;
@@ -1189,7 +1189,7 @@ textarea
 {
     float          : right;
     padding-top    : 4px;
-    padding-bottom : 0px;
+    padding-bottom : 0;
     border         : none;
     background     : none;
 }
@@ -1310,13 +1310,13 @@ textarea
         position           : fixed;
         height             : 100%;
         width              : auto;
-        top                : 0px;
-        left               : 0px;
+        top                : 0;
+        left               : 0;
         background-color   : #F1EEEF;
         overflow           : hidden;
         margin-top         : 50px;
 
-        -webkit-transform  : translate(-100%, 0%);
+        -webkit-transform  : translate(-100%, 0);
         -webkit-transition : all 1s ease;
     }
 
@@ -1325,7 +1325,7 @@ textarea
     /*}*/
     .banner img
     {
-        padding-left : 0px;
+        padding-left : 0;
     }
 
     .navbar-main.navbar .navbar-collapse
@@ -1352,7 +1352,7 @@ textarea
 
     .navbar-main.navbar h2
     {
-        padding    : 20px 0px;
+        padding    : 20px 0;
         columns    : #E64A1C;
         text-align : center;
     }
