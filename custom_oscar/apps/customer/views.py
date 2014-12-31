@@ -4,6 +4,7 @@ from oscar.apps.customer.views import AddressUpdateView as CoreAddressUpdateView
 from oscar.apps.customer.views import AddressCreateView as CoreAddressCreateView
 from oscar.apps.customer.views import AddressListView as CoreAddressListView
 from oscar.apps.customer.views import AddressChangeStatusView as CoreAddressChangeStatusView
+from oscar.apps.customer.views import AddressDeleteView as CoreAddressDeleteView
 from oscar.core.loading import get_model
 
 Partner = get_model('partner', 'Partner')
@@ -25,30 +26,9 @@ class AddressListView(CoreAddressListView):
 
     def get_context_data(self, **kwargs):
         ctx = super(AddressListView, self).get_context_data(**kwargs)
-        ctx['shop_shipping_address_pk'] = self._get_shipping_address_pk_that_is_shop_shipping_address()
+        if self.request.user.is_seller:
+            ctx['shop_shipping_address_pk'] = _get_shipping_address_pk_that_is_shop_shipping_address(self.request)
         return ctx
-
-    def _get_shipping_address_pk_that_is_shop_shipping_address(self):
-        addresses = UserAddress._default_manager.filter(user=self.request.user)
-        partners = get_list_or_404(Partner, users__pk=self.request.user.pk)
-
-        if partners is not None:
-            partner_address = partners[0].primary_address
-            if partner_address is not None:
-                for address in addresses:
-                    if partner_address.title == address.title \
-                    and partner_address.first_name == address.first_name \
-                    and partner_address.last_name == address.last_name \
-                    and partner_address.line1 == address.line1 \
-                    and partner_address.line2 == address.line2 \
-                    and partner_address.line3 == address.line3 \
-                    and partner_address.line4 == address.line4 \
-                    and partner_address.state == address.state \
-                    and partner_address.postcode == address.postcode \
-                    and partner_address.country == address.country \
-                    and partner_address.search_text == address.search_text:
-                        return address.pk
-        return None
 
 
 class AddressChangeStatusView(CoreAddressChangeStatusView):
@@ -71,4 +51,46 @@ class AddressChangeStatusView(CoreAddressChangeStatusView):
 
         return super(AddressChangeStatusView, self).get(
             request, pk, action, *args, **kwargs)
+
+class AddressDeleteView(CoreAddressDeleteView):
+
+    def delete(self, request, *args, **kwargs):
+        # Delete any partner address (shop shipping address) associated with this address
+        address_pk = kwargs['pk']
+
+        shop_address_pk = _get_shipping_address_pk_that_is_shop_shipping_address(self.request)
+
+        if shop_address_pk is not None and shop_address_pk == int(address_pk):
+            partners = get_list_or_404(Partner, users__pk=self.request.user.pk)
+
+            for partner in partners:
+                partner_address = partner.primary_address
+                if partner_address is not None:
+                    partner_address.delete()
+        return super(AddressDeleteView, self).delete(request, *args, **kwargs)
+
+
+
+
+def _get_shipping_address_pk_that_is_shop_shipping_address(request):
+    addresses = UserAddress._default_manager.filter(user=request.user)
+    partners = get_list_or_404(Partner, users__pk=request.user.pk)
+
+    if partners is not None:
+        partner_address = partners[0].primary_address
+        if partner_address is not None:
+            for address in addresses:
+                if partner_address.title == address.title \
+                and partner_address.first_name == address.first_name \
+                and partner_address.last_name == address.last_name \
+                and partner_address.line1 == address.line1 \
+                and partner_address.line2 == address.line2 \
+                and partner_address.line3 == address.line3 \
+                and partner_address.line4 == address.line4 \
+                and partner_address.state == address.state \
+                and partner_address.postcode == address.postcode \
+                and partner_address.country == address.country \
+                and partner_address.search_text == address.search_text:
+                    return address.pk
+    return None
 

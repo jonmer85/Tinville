@@ -1,5 +1,6 @@
 from datetime import datetime
 import urlparse
+from autoslug.utils import slugify
 
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
@@ -62,7 +63,7 @@ class TinvilleUserCreationForm(forms.ModelForm):
         if shop_exists:
             raise forms.ValidationError('Shop name is already taken.')
         # if the shop name resolves to a view that is not the shop.. it is trying to use a url that we already use.. dont let this happen!
-        if len(shop_name) > 0 and resolve(urlparse.urlparse('/' + shop_name.lower() + '/')[2]).view_name != 'designer_shop.views.shopper':
+        if len(shop_name) > 0 and resolve(urlparse.urlparse('/' + slugify(shop_name.lower()) + '/')[2]).view_name != 'designer_shop.views.shopper':
             raise forms.ValidationError('Not a valid shop name, please choose another')
         return shop_name
 

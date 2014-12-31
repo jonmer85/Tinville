@@ -2,8 +2,9 @@
 {% load i18n %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-    <script src="http://tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
+    <script src="//tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
+    <link href="{{ STATIC_URL }}css/cropper.css" rel="stylesheet">
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -82,7 +83,9 @@
 
 {% block javascript_library %}
   {{ block.super }}
+  <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+
 
 {% endblock javascript_library %}
 
@@ -131,7 +134,7 @@
         $(document).on("submit", "#color", function(e) {
             e.preventDefault();
             var self = $(this)
-            var url = self.attr("action")
+            var url = self.attr("action");
             var ajax_req = $.ajax({
                     url: url,
                     type: "POST",
@@ -148,7 +151,7 @@
                     error: function(data, textStatus, jqXHR) {
                         clear_django_messages(self.find("#shopEditor_message_area"));
                         clear_form_field_errors("#color");
-                        document.getElementById('shopEditor_message_area').innerHTML = ""
+                        document.getElementById('shopEditor_message_area').innerHTML = "";
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function(index, value) {
                             if (index === "__all__") {
@@ -864,6 +867,95 @@ function DeleteConfirmation(slug) {
         window.location =  href + event.data.param1;
     });
 }
+
+
+    function readURL(input, preview, aspectRatio) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+
+            reader.onload = function (e) {
+
+                if(preview.siblings(".cropper-container").length){
+                    preview.cropper("destroy");
+                }
+
+                preview.attr('src', e.target.result);
+                preview.cropper({
+                  aspectRatio: aspectRatio,
+{#                  autoCropArea: 0.6, // Center 60%#}
+                  multiple: true,
+                  dragCrop: false,
+                  dashed: true,
+                  movable: true,
+                  resizable: true,
+{#                  built: function () {#}
+{#                    $(this).cropper("zoom", 0.5);#}
+{#                  }#}
+                });
+
+
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#id_banner").change(function(){
+        readURL(this, $('#banner_preview'), 1779 / 364);
+
+    });
+
+    $("#id_mobileBanner").change(function(){
+        readURL(this, $('#mobile_banner_preview'), 968 / 642);
+    });
+
+    $("#id_aboutImg").change(function(){
+        readURL(this, $('#aboutImg_preview'), 1);
+    });
+
+    $("#id_product_image").change(function(){
+        readURL(this, $('#product_image_preview'), 400 / 500);
+    });
+    $("#id_product_image1").change(function(){
+        readURL(this, $('#product_image1_preview'), 400 / 500);
+    });
+    $("#id_product_image2").change(function(){
+        readURL(this, $('#product_image2_preview'), 400 / 500);
+    });
+    $("#id_product_image3").change(function(){
+        readURL(this, $('#product_image3_preview'), 400 / 500);
+    });
+    $("#id_product_image4").change(function(){
+        readURL(this, $('#product_image4_preview'), 400 / 500);
+    });
+
+    $("#banner").submit(function(){
+        populateCroppedField($("#banner_preview"), $("#id_bannerCropped"));
+        populateCroppedField($("#mobile_banner_preview"), $("#id_mobileBannerCropped"));
+    });
+
+    $("#about").submit(function(){
+        populateCroppedField($("#aboutImg_preview"), $("#id_aboutImgCropped"));
+    });
+
+    $("#addOrEditItem").submit(function(){
+        populateCroppedField($("#product_image_preview"), $("#id_product_image_cropped"));
+        populateCroppedField($("#product_image1_preview"), $("#id_product_image1_cropped"));
+        populateCroppedField($("#product_image2_preview"), $("#id_product_image2_cropped"));
+        populateCroppedField($("#product_image3_preview"), $("#id_product_image3_cropped"));
+        populateCroppedField($("#product_image4_preview"), $("#id_product_image4_cropped"));
+    });
+
+    function populateCroppedField($preview, $croppedField) {
+        if($preview.siblings(".cropper-container").length) {
+            var img_data =$preview.cropper("getDataURL", "image/jpeg").replace("data:image/jpeg;base64,", "");
+            $croppedField.val(img_data);
+        }
+    }
+
+
+
 
 </script>
 

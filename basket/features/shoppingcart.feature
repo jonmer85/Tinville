@@ -2,7 +2,6 @@ Feature: Shopping Cart
 
   As a shopper, I would like to manipulate my shopping cart.
 
-@jon
 Scenario: Add and Remove Cart Item
   Given a desktop shopper
   When I add an item to my cart

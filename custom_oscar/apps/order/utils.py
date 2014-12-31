@@ -12,10 +12,10 @@ Line = get_model('order', 'Line')
 order_placed = get_class('order.signals', 'order_placed')
 
 class OrderCreator(CoreOrderCreator):
-    def place_order(self, basket, total, shipping_charge,
-                    user=None, shipping_method=None, shipping_address=None,
-                    billing_address=None, order_number=None, status=None,
-                    **kwargs):
+    def place_order(self, basket, total,  # noqa (too complex (12))
+                    shipping_method, shipping_charge, user=None,
+                    shipping_address=None, billing_address=None,
+                    order_number=None, status=None, **kwargs):
         """
         Placing an order involves creating all the relevant models based on the
         basket and session data.
@@ -72,9 +72,5 @@ class OrderCreator(CoreOrderCreator):
 
         return order
 
-def get_designer_payout_amount(original_amount):
-    # We take 10% of sales.
-    return (original_amount -
-            (original_amount * settings.TINVILLE_ORDER_SALES_CUT).quantize(D('0.01'), rounding=ROUND_FLOOR))
 
 

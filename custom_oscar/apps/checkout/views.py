@@ -120,12 +120,12 @@ class PaymentDetailsView(CorePaymentDetailsView):
         if not basket.is_shipping_required():
             return NoShippingRequired()
 
-        method = Free
+        method = Free()
 
         return method
 
     def submit(self, user, basket, shipping_address, shipping_method,  # noqa (too complex (10))
-               order_total, payment_kwargs=None, order_kwargs=None):
+               shipping_charge, billing_address, order_total, payment_kwargs=None, order_kwargs=None):
         """
         Submit a basket for order placement.
 
@@ -152,7 +152,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
         # Taxes must be known at this point
         assert basket.is_tax_known, (
             "Basket tax must be set before a user can place an order")
-        assert shipping_method.is_tax_known, (
+        assert shipping_charge.is_tax_known, (
             "Shipping method tax must be set before a user can place an order")
 
         # Freeze the basket so it cannot be manipulated while the customer is
@@ -227,8 +227,8 @@ class PaymentDetailsView(CorePaymentDetailsView):
         top_level_order = None
         try:
             top_level_order = self.handle_order_placement(
-                top_level_order_number, user, basket, shipping_address, shipping_method,
-                prices.Price(currency=basket.currency, excl_tax=basket.total_excl_tax, incl_tax=basket.total_excl_tax), **order_kwargs)
+                top_level_order_number, user, basket, shipping_address, shipping_method, shipping_charge, order_total,
+                billing_address, **order_kwargs)
         except UnableToPlaceOrder as e:
             # It's possible that something will go wrong while trying to
             # actually place an order.  Not a good situation to be in as a
@@ -263,9 +263,9 @@ class PaymentDetailsView(CorePaymentDetailsView):
             try:
                 order_kwargs['shop'] = shop
                 order = self.handle_order_placement(
-                    order_number, user, basket, shipping_address, shipping_method,
+                    order_number, user, basket, shipping_address, shipping_method, shipping_charge,
                     prices.Price(currency=basket.currency, excl_tax=items_by_shop[shop]["order_total"],
-                                 incl_tax=items_by_shop[shop]["order_total"]),
+                                 incl_tax=items_by_shop[shop]["order_total"]), billing_address,
                                  **order_kwargs)
             except UnableToPlaceOrder as e:
                 # It's possible that something will go wrong while trying to
@@ -300,7 +300,8 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
     def handle_order_placement(self, order_number, user, basket,
                                shipping_address, shipping_method,
-                               total, **kwargs):
+                               shipping_charge, order_total,
+                               billing_address, **kwargs):
         """
         Write out the order models and return the appropriate HTTP response
 
@@ -309,9 +310,10 @@ class PaymentDetailsView(CorePaymentDetailsView):
         can happen when a basket gets frozen.
         """
         order = self.place_order(
-            order_number, user, basket, shipping_address, shipping_method,
-            total, **kwargs)
-
+            order_number=order_number, user=user, basket=basket,
+            shipping_address=shipping_address, shipping_method=shipping_method,
+            shipping_charge=shipping_charge, order_total=order_total,
+            billing_address=billing_address, **kwargs)
         return order
 
 
