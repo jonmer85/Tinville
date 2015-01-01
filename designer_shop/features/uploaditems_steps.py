@@ -50,8 +50,8 @@ def i_add_a_new_color_to_the_size_set_product(step):
 
 @step(u'I change the quantity of one of the colors of the size set product')
 def i_change_the_quantity_of_one_of_the_colors_of_the_size_set_product(self):
-    scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate1_id_quantityField1'))
-    quantityField = wait_for_element_with_id_to_be_displayed('sizeSetSelectionTemplate1_id_quantityField1')
+    scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate2_id_quantityField1'))
+    quantityField = wait_for_element_with_id_to_be_displayed('sizeSetSelectionTemplate2_id_quantityField1')
     quantityField.clear()
     quantityField.send_keys("4")
 

@@ -55,9 +55,9 @@ the content for this basic editor should include the following fields:
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |
     | Blue   | XXS   | 10       |
-    | Red    | XS    | 4        |
+    | Red    | XS    | 10       |
     | Blue   | XS    | 10       |
-    | Red    | SM    | 10       |
+    | Red    | SM    | 4        |
     | Blue   | SM    | 10       |
     | White  | SM    | 1        |
     | Black  | XL    | 8        |
