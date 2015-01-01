@@ -69,7 +69,7 @@
                                             {% with image=item.primary_image %}
                                                 {% thumbnail image.original "400x500" upscale=True as thumb %}
                                                     <div style = "max-width: 400px; max-height: 500px">
-                                                <a id="itemSelectedImage" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                <a id="itemSelectedImageLink" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
                                                     <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
                                                 </a>
                                                     </div>

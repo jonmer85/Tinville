@@ -140,49 +140,49 @@ def change_viewport_lg():
     world.browser.set_window_size(1920, 1080)
 
 def wait_for_element_with_id_to_exist(id):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_id(id))
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_id(id))
     return world.browser.find_element_by_id(id)
 
 def wait_for_element_with_css_selector_to_exist(css_selector):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_css_selector(css_selector))
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_css_selector(css_selector))
     return world.browser.find_element_by_css_selector(css_selector)
 
 def wait_for_element_with_name_to_exist(name):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_name(name))
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_name(name))
     return world.browser.find_element_by_name(name)
 
 def wait_for_element_with_id_to_be_displayed(id):
-    WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.ID, id)))
+    WebDriverWait(world.browser, 15).until(EC.visibility_of_element_located((By.ID, id)))
     return world.browser.find_element_by_id(id)
 
 def wait_for_element_with_id_to_not_be_displayed(id):
-    WebDriverWait(world.browser, 10).until(lambda s: not id_exists(id) or not s.find_element_by_id(id).is_displayed())
+    WebDriverWait(world.browser, 15).until(lambda s: not id_exists(id) or not s.find_element_by_id(id).is_displayed())
 
 def wait_for_element_with_id_to_be_clickable(id):
-    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.ID, id)))
+    WebDriverWait(world.browser, 15).until(EC.element_to_be_clickable((By.ID, id)))
     return world.browser.find_element_by_id(id)
 
 def wait_for_element_with_name_to_be_displayed(name):
-    WebDriverWait(world.browser, 10).until(EC.visibility_of_element_located((By.NAME, name)))
+    WebDriverWait(world.browser, 15).until(EC.visibility_of_element_located((By.NAME, name)))
     return world.browser.find_element_by_name(name)
 
 def wait_for_element_with_css_selector_to_be_displayed(css_selector):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_css_selector(css_selector).is_displayed())
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_css_selector(css_selector).is_displayed())
     return world.browser.find_element_by_css_selector(css_selector)
 
 def wait_for_element_with_css_selector_to_be_clickable(css_selector):
-    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_selector)))
+    WebDriverWait(world.browser, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_selector)))
     return world.browser.find_element_by_css_selector(css_selector)
 
 def wait_for_element_with_class_to_be_displayed(class_name):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
     return world.browser.find_element_by_class_name(class_name)
 
 def wait_for_element_with_link_text_to_be_displayed(link_text):
-    WebDriverWait(world.browser, 10).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
 
 def wait_for_element_with_link_text_to_be_clickable(link_text):
-    WebDriverWait(world.browser, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
+    WebDriverWait(world.browser, 15).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
     return world.browser.find_element_by_link_text(link_text)
 
 def assert_page_exist(url):
@@ -257,3 +257,6 @@ def activate_user(email):
     user.is_active = True
     user.save()
 
+def clear_and_send_keys(element, keys):
+    element.clear()
+    element.send_keys(keys)
