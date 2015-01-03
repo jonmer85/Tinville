@@ -516,3 +516,5 @@ def show_toolbar(request):
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'Tinville.settings.base.show_toolbar'
 }
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
