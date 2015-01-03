@@ -12,33 +12,53 @@
 
 {#<div class="container">#}
     <div class="navbar2 navbar-default shopBackgroundColor">
-        <div class="container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
+{#        <div class="container row-xs-height ">#}
+{#			<div id="buttonContainer" class="container col-xs-12 container-xs-height">#}
+{#                <!-- Brand and toggle get grouped for better mobile display -->#}
+{#                <div class="col-xs-2">#}
+{#                    <a class="shopMenuBar" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>#}
+{#                </div>#}
+{#                <div class="col-xs-offset-6 col-xs-2">#}
+{#                    <a class="shopTabLink active" data-toggle="tab" href="#shopTab">Shop</a>#}
+{#                </div>#}
+{#                <div class="col-xs-2">#}
+{#                    {% if user.email == shop.user.email%}#}
+{#                        <a id="editLink" href="{{ shop.get_absolute_url }}edit">Edit Shop</a>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                <div class="col-xs-2">#}
+{#                    <a id="aboutTabLink" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>#}
+{#                </div>#}
+{#            </div>#}
+            <div class="navbar-header">
 
 				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
-                <div class=" collapse navbar-collapse" id="">
-                <ul class="visible-xs nav pull-right">
-					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
-                    {% if user.email == shop.user.email%}
-                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
-                    {% endif %}
-					<li id="aboutTabLink"><a id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
-				</ul>
+                <div class="shopMenuBar">
+                    <a class="navbar-brand" data-toggle="tab" href="#shopTab">Shop</a>
+                    <a class="navbar-brand" id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
                 </div>
+{#                <div class=" collapse navbar-collapse" id="">#}
+{#                <ul class="visible-xs nav pull-right">#}
+{#					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>#}
+{#                    {% if user.email == shop.user.email%}#}
+{#                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>#}
+{#                    {% endif %}#}
+{#					<li id="aboutTabLink"><a id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>#}
+{#				</ul>#}
+{#                </div>#}
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="hidden-xs collapse navbar-collapse" id="">
-				<ul class="nav navbar-nav">
-					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
-                    {% if user.email == shop.user.email%}
-                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>
-                    {% endif %}
-					<li id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
-				</ul>
-			</div><!-- /.navbar-collapse -->
-        </div>
+{#			<div class="collapse navbar-collapse" id="">#}
+{#				<ul class="nav navbar-nav">#}
+{#					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>#}
+{#                    {% if user.email == shop.user.email%}#}
+{#                        <li id="editLink"><a  href="{{ shop.get_absolute_url }}edit">Edit Shop</a></li>#}
+{#                    {% endif %}#}
+{#					<li id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>#}
+{#				</ul>#}
+{#			</div><!-- /.navbar-collapse -->#}
+{#        </div>#}
     </div><!-- /.container-fluid -->
 
     <div class="tab-content ">
