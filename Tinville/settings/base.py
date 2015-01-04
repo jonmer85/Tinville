@@ -110,6 +110,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
@@ -152,7 +153,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
     'Tinville.context_processors.google_analytics_id',
-    'Tinville.context_processors.include_shops'
+    'Tinville.context_processors.include_shops',
+    'user.context_processors.get_user_shop'
     )
 
 # Actual Tinville business logic
@@ -186,7 +188,7 @@ INSTALLED_APPS = [
     'tinymce',
     # 'sorl.thumbnail',
     'django_basic_feedback',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
@@ -501,3 +503,21 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = True
 
 BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
+
+
+# Django Debug Toolbar
+def show_toolbar(request):
+    if env('SHOW_DEBUG_TOOLBAR_FOR_ALL', False):
+        return True
+    if request.user.is_authenticated():
+        return request.user.is_staff and env('SHOW_DEBUG_TOOLBAR_FOR_STAFF', False)
+    else:
+        return False
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'Tinville.settings.base.show_toolbar'
+}
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
