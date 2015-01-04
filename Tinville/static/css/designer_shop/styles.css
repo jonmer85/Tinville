@@ -640,6 +640,24 @@
 
 }
 
+.shopMenuBar {
+  float: right;
+    font-size: 13px;
+  /*padding: 15px 15px;*/
+  /*font-size: 18px;*/
+  /*line-height: 20px;*/
+}
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  /*color: #ffffff;*/
+  /*background-color: white !important;*/
+}
+
+.shopMenuActiveColor {
+    background-color: #dcdcdc;
+}
+
+
 .shoplistLi{
     font-size: 1.5em;
     list-style-type: none;

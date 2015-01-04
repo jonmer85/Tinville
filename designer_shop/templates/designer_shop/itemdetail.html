@@ -11,31 +11,24 @@
 
 
     <div class="navbar2 navbar-default shopBackgroundColor">
-
         <div class="container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-
+            <div class="navbar-header">
 				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
-                <div class=" collapse navbar-collapse" id="">
-                <ul class="visible-xs nav pull-right">
-					<li class="shopTabLink active" ><a data-toggle="tab" href="#itemTab">Edit</a></li>
-					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
-				</ul>
+                <div class="visible-xs shopMenuBar">
+                    <a class="navbar-brand shopMenuActiveColor" id="itemTabLinkXS" data-toggle="tab" href="#itemTab">Item</a>
+                    <a class="navbar-brand" id="aboutTabItemAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
                 </div>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="hidden-xs collapse navbar-collapse" id="">
 				<ul class="nav navbar-nav">
-					<li class="editTabLink active" ><a data-toggle="tab" href="#itemTab">Item</a></li>
-					<li id="aboutTabLink"><a href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+					<li class="itemTabLink active" ><a data-toggle="tab" href="#itemTab">Item</a></li>
+					<li id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
-         </div>
+        </div>
     </div><!-- /.container-fluid -->
-
-
 
 <!-- Tab panes -->
     <div class="tab-content ">
@@ -69,7 +62,7 @@
                                             {% with image=item.primary_image %}
                                                 {% thumbnail image.original "400x500" upscale=True as thumb %}
                                                     <div style = "max-width: 400px; max-height: 500px">
-                                                <a id="itemSelectedImage" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                <a id="itemSelectedImageLink" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
                                                     <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
                                                 </a>
                                                     </div>
@@ -189,7 +182,14 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-
+    $("#itemTabLinkXS").click(function(){
+        $("#itemTabLinkXS").addClass("shopMenuActiveColor");
+        $("#aboutTabItemAnchorXS").removeClass("shopMenuActiveColor");
+    });
+    $("#aboutTabItemAnchorXS").click(function(){
+        $("#itemTabLinkXS").removeClass("shopMenuActiveColor");
+        $("#aboutTabItemAnchorXS").addClass("shopMenuActiveColor");
+    });
 
 
 $( function()

@@ -5,6 +5,7 @@ from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
 from django.conf import settings
+from django.core.files.base import ContentFile
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -489,35 +490,27 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 mobileBannerFullPath = mobileBannerFullPrefix + "/mobileBanner.jpg"
                 mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/mobileBanner/mobileBanner.jpg'.format(shop.slug)
 
-                if _replaceCroppedFile(form, bannerFullPrefix, bannerFullPath, "bannerCropped"):
-                    shop.banner = bannerUrl
+                if _replaceCroppedFile(form, shop.banner, 'banner.jpg', "bannerCropped"):
                     shop.save(update_fields=["banner"])
 
-                if _replaceCroppedFile(form, mobileBannerFullPrefix, mobileBannerFullPath, "mobileBannerCropped"):
-                    shop.mobileBanner = mobileBannerUrl
+                if _replaceCroppedFile(form, shop.mobileBanner, 'mobileBanner.jpg', "mobileBannerCropped"):
                     shop.save(update_fields=["mobileBanner"])
 
             return renderShopEditor(request, shop, bannerUploadForm=form)
-        elif request.POST.__contains__('logoUploadForm'):
-            form = LogoUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                shutil.rmtree(settings.MEDIA_ROOT + '/shops/{0}/logo'.format(shop.slug), ignore_errors=True)
-                shop.logo = form.cleaned_data["logo"]
-                shop.save(update_fields=["logo"])
-            return renderShopEditor(request, shop, logoUploadForm=form)
+        # Jon M TODO - Put back and cleanup if we support Logo again
+        # elif request.POST.__contains__('logoUploadForm'):
+        #     form = LogoUploadForm(request.POST, request.FILES)
+        #     if form.is_valid():
+        #         shutil.rmtree(settings.MEDIA_ROOT + '/shops/{0}/logo'.format(shop.slug), ignore_errors=True)
+        #         shop.logo = form.cleaned_data["logo"]
+        #         shop.save(update_fields=["logo"])
+        #     return renderShopEditor(request, shop, logoUploadForm=form)
         elif request.POST.__contains__('aboutBoxForm'):
             form = AboutBoxForm(request.POST, request.FILES)
             if form.is_valid():
-                aboutImgFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/aboutImg'.format(shop.slug)
-                aboutImgFullPath = aboutImgFullPrefix + "/about.jpg"
-                aboutImgUrl = settings.MEDIA_URL + 'shops/{0}/aboutImg/about.jpg'.format(shop.slug)
-
-                if _replaceCroppedFile(form, aboutImgFullPrefix, aboutImgFullPath, "aboutImgCropped"):
-                    shop.aboutImg = aboutImgUrl
-                    shop.save(update_fields=["aboutImg"])
-
+                _replaceCroppedFile(form, shop.aboutImg, 'about.jpg', 'aboutImgCropped')
                 shop.aboutContent = form.cleaned_data["aboutContent"]
-                shop.save(update_fields=["aboutContent"])
+                shop.save(update_fields=["aboutContent", "aboutImg"])
             return renderShopEditor(request, shop, aboutForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
@@ -543,17 +536,9 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
     else:
         return renderShopEditor(request, shop, item=item)
 
-def _replaceCroppedFile(form, dirFolderPath, fileFullPath, croppedField):
-    if form.cleaned_data[croppedField] and len(form.cleaned_data[croppedField]) > 0:
-
-        shutil.rmtree(dirFolderPath, ignore_errors=True)
-        if not os.path.exists(dirFolderPath):
-            os.makedirs(dirFolderPath)
-        img_string = form.cleaned_data[croppedField]
-        img_data = img_string.decode("base64")
-        img_file = open(fileFullPath, "w+b")
-        img_file.write(img_data)
-        img_file.close()
+def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
+    if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
+        file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
         return True
     return False
 

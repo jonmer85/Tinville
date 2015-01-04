@@ -280,14 +280,14 @@ function sizeNumberTemplate(required){
                 "</div>" +
             "</div>" +
         "</div>" +
-    "</div>" + colorQuantityTableHead
+    "</div>" + colorQuantityTableHead;
     return sizeNumberTemplate;
 }
 
 function rowColorQuantityTemplate(required){
     numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
     if (required === "")
-        numRequired = ""
+        numRequired = "";
     var rowColorQuantityTemplate = "" +
     "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
         "<td>" +
@@ -361,11 +361,10 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
     sizesFieldSet.on("change", sizeSelectionClass, function(e) {
 
-        rowQtyRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
+
         if($(this).closest('.accordion-group').next().length == "0") {
-            addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+            addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"), false);
         }
-        rowQtyRequired="";
 
         var selectedValue = eval(selectedValueType);
         var sizesFieldSet = $("#sizesFieldSet");
@@ -388,7 +387,7 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
         if (selectedValue[0].value != 0) {
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
             if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
-                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable, false);
                 currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
                 $('#formContent').animate({scrollTop: currentPanel  }, 500);
             }
@@ -401,8 +400,7 @@ var arColorRows = [] ;
 var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
 var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
 var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-var rowQtyRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
-        function clearColorRow( strRowToClear )
+function clearColorRow( strRowToClear )
 {
         var strRowId = "#" + strRowToClear ;
         var indexToRemove = arColorRows.indexOf(strRowToClear) ;
@@ -524,7 +522,13 @@ function addNewSizeRow(sizeType) {
     return $newSizeSelection;
 }
 
-function addNewColorAndQuantityRow(prefix, appendTo) {
+function addNewColorAndQuantityRow(prefix, appendTo, required) {
+
+    if(typeof(required)==='undefined') required = true;
+
+    var rowQtyRequired = "";
+    if(required === true)
+        rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required";
 
     var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
     colorsAndQuantities.collapse('show');
@@ -651,7 +655,7 @@ function populateProductVariantsInfo() {
                 var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
                 populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
             });
-            addNewColorAndQuantityRow(prefix, appendTo);
+            addNewColorAndQuantityRow(prefix, appendTo, false);
         });
         addNewSizeRow(sizeTypeString);
 
