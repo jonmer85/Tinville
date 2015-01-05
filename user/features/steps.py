@@ -38,39 +38,6 @@ def when_i_register_for_a_shop(step, shop_name):
 def when_a_shop_already_exists(step, shop_name):
     register_basic_shop(shop_name, "cock@blocker.com", "test")
 
-def fill_out_designer_registration_form(password, shop_name, user):
-    form = fill_in_user_form(email=user, password=password)
-    world.user_info['shop_name'] = shop_name
-    form.find_element_by_id("designer").click()
-    form.find_element_by_name("shop_name").send_keys(shop_name)
-    return form
-
-def register_basic_shop(shop_name, user, password):
-    form = fill_out_designer_registration_form(password, shop_name, user)
-    submit_form_and_activate_user(form)
-
-def fill_in_user_form(email, password):
-    access_registration_url(step)
-    world.user_info = {
-        "email": email,
-        "password": password,
-    }
-    form = world.browser.find_element_by_id("registrationForm")
-    form.find_element_by_name("email").send_keys(email)
-    form.find_element_by_name("password").send_keys(password)
-    return form
-
-def submit_form_and_activate_user(form, expectSuccess=True):
-    form.submit()
-    if(expectSuccess):
-        wait_for_element_with_id_to_exist("messagesModal")
-        assert_selector_contains_text("#messagesModal .alert-success", world.user_info['email'])
-        wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
-        wait_for_element_with_id_to_not_be_displayed("messagesModal")
-        user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
-        user.is_active = True
-        user.save()
-
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
     sign_in_local()
@@ -136,5 +103,3 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 
 # Utilities
 
-def sign_in_local():
-    sign_in(world.user_info["email"], world.user_info["password"])
