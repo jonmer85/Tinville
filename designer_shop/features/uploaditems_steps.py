@@ -48,6 +48,23 @@ def i_add_a_new_color_to_the_size_set_product(step):
     scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate2_id_colorSelection2'))
     Select(wait_for_element_with_id_to_be_displayed('sizeSetSelectionTemplate2_id_colorSelection2')).select_by_visible_text("White")
 
+@step(u'I expand the sizes group')
+def i_expand_the_sizes_group(step):
+    scroll_to_element(wait_for_element_with_css_selector_to_exist("a[href='#accordion2']"))
+    wait_for_element_with_css_selector_to_be_clickable("a[href='#accordion2']").click()
+
+@step(u'I delete an existing size')
+def i_delete_an_existing_size(step):
+    change_viewport_lg()
+    scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate2_id_clearSizes'))
+    wait_for_element_with_id_to_be_clickable('sizeSetSelectionTemplate2_id_clearSizes').click()
+
+@step(u'I delete an existing color')
+def i_delete_an_existing_color(step):
+    scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate2_id_clearColorQuantity1'))
+    wait_for_element_with_id_to_be_clickable('sizeSetSelectionTemplate2_id_clearColorQuantity1').click()
+
+
 @step(u'I change the quantity of one of the colors of the size set product')
 def i_change_the_quantity_of_one_of_the_colors_of_the_size_set_product(self):
     scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate2_id_quantityField1'))
@@ -57,6 +74,7 @@ def i_change_the_quantity_of_one_of_the_colors_of_the_size_set_product(self):
 
 @step(u'I add a new size to the size set product')
 def i_add_a_new_size_to_the_size_set_product(step):
+    change_viewport_lg()
     scroll_to_element(world.browser.find_element_by_id('sizeSetSelectionTemplate3_id_sizeSetSelection'))
     Select(wait_for_element_with_id_to_be_displayed('sizeSetSelectionTemplate3_id_sizeSetSelection')).select_by_visible_text("XL")
     Select(wait_for_element_with_id_to_be_displayed('sizeSetSelectionTemplate3_id_colorSelection0')).select_by_visible_text("Black")

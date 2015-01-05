@@ -35,6 +35,7 @@ the content for this basic editor should include the following fields:
     | Green  | LG    | 3        |
     And my primary image is visible
 
+  @jon
   Scenario: Edit Basic Item on Demo Shop using size sets
 	Given the demo shop editor
     And I plan to change the default image of the size set product
@@ -62,6 +63,49 @@ the content for this basic editor should include the following fields:
     | White  | SM    | 1        |
     | Black  | XL    | 8        |
     And my primary image is different from the original
+
+
+  Scenario: Delete a color/quantity row on basic item from Demo Shop
+	Given the demo shop editor
+	Then I should see 3 product total
+    When I click the edit button on the basic size set product
+    And the edit item tab is selected
+    And I expand the sizes group
+    And I add a new color to the size set product
+    And I delete an existing color
+    And I submit this item
+    Then I should see a confirmation message stating that the item was updated
+	Then I should see 3 product total
+    When I click on the "TestSizeSetItem" item
+    Then my color, quantity, and size selections are
+    | Color  | Size  | Quantity |
+    | Red    | XXS   | 10       |
+    | Blue   | XXS   | 10       |
+    | Red    | XS    | 10       |
+    | Blue   | XS    | 10       |
+    | Blue   | SM    | 10       |
+    | White  | SM    | 1        |
+
+
+  Scenario: Delete a size row on basic item from Demo Shop
+	Given the demo shop editor
+	Then I should see 3 product total
+    When I click the edit button on the basic size set product
+    And the edit item tab is selected
+    And I expand the sizes group
+    And I add a new size to the size set product
+    And I delete an existing size
+    And I submit this item
+    Then I should see a confirmation message stating that the item was updated
+	Then I should see 3 product total
+    When I click on the "TestSizeSetItem" item
+    Then my color, quantity, and size selections are
+    | Color  | Size  | Quantity |
+    | Red    | XXS   | 10       |
+    | Blue   | XXS   | 10       |
+    | Red    | XS    | 10       |
+    | Blue   | XS    | 10       |
+    | Black  | XL    | 8        |
 
 
   Scenario: Delete Basic Item
