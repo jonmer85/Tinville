@@ -5,6 +5,7 @@ from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
 from django.conf import settings
+from django.core.exceptions import SuspiciousOperation
 from django.core.files.base import ContentFile
 
 from django.db.models import Q
@@ -24,7 +25,7 @@ from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
 
-from common.utils import get_list_or_empty, get_or_none
+from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation
 
 from django.views.generic import ListView
 
@@ -34,6 +35,7 @@ class ShopListView(ListView):
     template_name = "shoplist.html"
     model = Shop
     context_object_name = "shop_list"
+
 
 class IsShopOwnerDecorator(object):
     def __init__(self, view_func):
@@ -56,9 +58,11 @@ class IsShopOwnerDecorator(object):
     def __call__(self, request, shop_slug):
         return self.authenticate(request, shop_slug, None)
 
+
 class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
     def __call__(self, request, shop_slug, item_slug):
         return self.authenticate(request, shop_slug, item_slug)
+
 
 class get_filter_lists:
     def __init__(self, shop):
@@ -89,6 +93,7 @@ class get_filter_lists:
             shopGenders.add(get_or_none(Category, path=category.path[:4]))
         return shopGenders
 
+
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     products = get_list_or_empty(Product, shop=shop.id)
@@ -109,6 +114,7 @@ def shopper(request, slug):
             'products': products,
             'shopProductCount': len(products)
         })
+
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
@@ -133,17 +139,21 @@ def itemdetail(request, shop_slug, item_slug=None):
         # What what in the butt (Tom Bowman) 6-22-14
     })
 
+
 def get_filtered_products(shop, post):
-    genderfilter = post['genderfilter']
-    itemtypefilter = post['typefilter']
-    sortfilter = post['sortfilter']
-    filteredProductList = get_sort_order(Product.objects.filter(Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)), sortfilter)
+    genderfilter = get_dict_value_or_suspicious_operation(post, 'genderfilter')
+    itemtypefilter = get_dict_value_or_suspicious_operation(post, 'typefilter')
+    sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
+    filteredProductList = get_sort_order(Product.objects.filter(
+        Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
+                                         sortfilter)
     return filteredProductList
+
 
 def get_valid_categories_for_filter(gender, type):
     filter = list()
     if gender != "View All":
-         filter.append(Q(categories__full_name__startswith=gender + ' >'))
+        filter.append(Q(categories__full_name__startswith=gender + ' >'))
     if type != "View All Types":
         filter.append(Q(categories__full_name__contains='> ' + type))
     qs = filter
@@ -155,6 +165,7 @@ def get_valid_categories_for_filter(gender, type):
         query = Q(parent__isnull=True)
 
     return query
+
 
 def get_sort_order(filteredobjects, sortfilter):
     if sortfilter == 'date-asc':
@@ -172,17 +183,20 @@ def get_sort_order(filteredobjects, sortfilter):
     else:
         return filteredobjects.order_by('?')
 
+
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
     return processShopEditorForms(request, shop_slug)
+
 
 @IsShopOwnerDecoratorUsingItem
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
 
+
 # @IsShopOwnerDecorator
 # def about(request, slug):
-#         if request.method == 'POST':
+# if request.method == 'POST':
 #             form = AboutBoxForm(request.POST)
 #             currentshop = Shop.objects.get(slug__iexact=slug)
 #             if request.is_ajax() and form.is_valid():
@@ -193,34 +207,34 @@ def shopeditor_with_item(request, shop_slug, item_slug):
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
-        if request.method == 'POST':
-            currentShop = Shop.objects.get(slug__iexact=slug)
-            form = DesignerShopColorPicker(request.POST)
+    if request.method == 'POST':
+        currentShop = Shop.objects.get(slug__iexact=slug)
+        form = DesignerShopColorPicker(request.POST)
 
-            if request.is_ajax() and form.is_valid():
-                currentShop.color = form.cleaned_data["color"]
-                currentShop.save(update_fields=["color"])
-                return HttpResponse(json.dumps({'errors': form.errors}), content_type='application/json')
-            return HttpResponseBadRequest(json.dumps(form.errors), content_type='application/json')
-        return HttpResponseBadRequest()
+        if request.is_ajax() and form.is_valid():
+            currentShop.color = form.cleaned_data["color"]
+            currentShop.save(update_fields=["color"])
+            return HttpResponse(json.dumps({'errors': form.errors}), content_type='application/json')
+        return HttpResponseBadRequest(json.dumps(form.errors), content_type='application/json')
+    return HttpResponseBadRequest()
 
 
 def get_types(request, shop_slug, group_by=None):
-        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
-        shopCategoryNames = []
-        shopProductCategories = get_filter_lists(shop).shop_product_categories()
-        for productcategory in shopProductCategories:
-            if productcategory != None:
-                currentcategory = get_or_none(Category, id=productcategory.category.id)
-                if group_by != "All":
-                    if currentcategory.full_name.find(group_by) >= 0:
-                        if not shopCategoryNames.__contains__(currentcategory.name):
-                            shopCategoryNames.append(str(currentcategory.name))
-                else:
+    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+    shopCategoryNames = []
+    shopProductCategories = get_filter_lists(shop).shop_product_categories()
+    for productcategory in shopProductCategories:
+        if productcategory != None:
+            currentcategory = get_or_none(Category, id=productcategory.category.id)
+            if group_by != "All":
+                if currentcategory.full_name.find(group_by) >= 0:
                     if not shopCategoryNames.__contains__(currentcategory.name):
-                        shopCategoryNames.append(currentcategory.name)
-        types = {'types': shopCategoryNames}
-        return HttpResponse(json.dumps(types), content_type='application/json')
+                        shopCategoryNames.append(str(currentcategory.name))
+            else:
+                if not shopCategoryNames.__contains__(currentcategory.name):
+                    shopCategoryNames.append(currentcategory.name)
+    types = {'types': shopCategoryNames}
+    return HttpResponse(json.dumps(types), content_type='application/json')
 
 
 def get_variants(item, group=None):
@@ -265,18 +279,21 @@ def get_variants(item, group=None):
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
         caseFunc = str.capitalize if not isSizeSet else str.upper
 
-
         if group is None:
             if isSizeSet == True:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
+                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                                'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
+                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                                'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
             if isSizeSet == True:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
+                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                             'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity, 'price': price, 'currency': currency}
+                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                             'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
             quantitysize = groupdict
@@ -289,11 +306,12 @@ def get_variants(item, group=None):
             elif group == 'size':
                 colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('color'))
 
-    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict, 'minprice': get_min_price(item)}
+    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict,
+                   'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
 
-def get_single_variant(variant, group=None):
 
+def get_single_variant(variant, group=None):
     if group is None:
         colorsizequantitydict = []
     else:
@@ -334,24 +352,33 @@ def get_single_variant(variant, group=None):
 
     return str(color).capitalize(), caseFunc(variantsize)
 
+
 def get_sizetype(variants):
     for variant in variants:
-       if hasattr(variant.attr, 'size_set'):
-           return SIZE_SET
-       elif hasattr(variant.attr, 'size_dimension_x') or hasattr(variant.attr, 'size_dimension_y'):
-           return SIZE_DIM
-       elif hasattr(variant.attr, 'size_number'):
-           return SIZE_NUM
-       return "0"
+        if hasattr(variant.attr, 'size_set'):
+            return SIZE_SET
+        elif hasattr(variant.attr, 'size_dimension_x') or hasattr(variant.attr, 'size_dimension_y'):
+            return SIZE_DIM
+        elif hasattr(variant.attr, 'size_number'):
+            return SIZE_NUM
+        return "0"
+
 
 def get_min_price(item):
     return str(item.min_child_price_excl_tax)
+
 
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
     # if request.is_ajax():
     return HttpResponse(get_variants(item, group_by), content_type='application/json')
+
+
+def confirm_at_least_one(i):
+    if i == 0:
+        raise SuspiciousOperation()  # Should have at least one size
+
 
 def get_sizes_colors_and_quantities(sizeType, post):
     if sizeType == SIZE_SET:
@@ -374,19 +401,22 @@ def get_sizes_colors_and_quantities(sizeType, post):
                         if post[color] and post[quantity]:
                             sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
                     else:
+                        confirm_at_least_one(j)
                         break
                     j += 1
                 i += 1
             else:
+                confirm_at_least_one(i)
                 break
         return sizes
 
     if sizeType == SIZE_DIM:
         sizes = {}
-        i=0
+        i = 0
         while (True):
             sizeDimensionTemplate = "sizeDimensionSelectionTemplate" + str(i)
-            sizeDimensionSelection = {"x": sizeDimensionTemplate + "_sizeDimWidth", "y": sizeDimensionTemplate + "_sizeDimLength"}
+            sizeDimensionSelection = {"x": sizeDimensionTemplate + "_sizeDimWidth",
+                                      "y": sizeDimensionTemplate + "_sizeDimLength"}
             if sizeDimensionSelection["x"] in post and sizeDimensionSelection["y"] in post:
                 sizes[i] = {
                     "sizeX": post[sizeDimensionSelection["x"]],
@@ -402,10 +432,12 @@ def get_sizes_colors_and_quantities(sizeType, post):
                         if post[color] and post[quantity]:
                             sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
                     else:
+                        confirm_at_least_one(j)
                         break
                     j += 1
                 i += 1
             else:
+                confirm_at_least_one(i)
                 break
         return sizes
 
@@ -429,49 +461,53 @@ def get_sizes_colors_and_quantities(sizeType, post):
                         if post[color] and post[quantity]:
                             sizes[i]["colorsAndQuantities"].append({"color": post[color], "quantity": post[quantity]})
                     else:
+                        confirm_at_least_one(j)
                         break
                     j += 1
                 i += 1
             else:
+                confirm_at_least_one(i)
                 break
         return sizes
+
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None, item=None):
-        editItem = item is not None
-        shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
-        products = get_list_or_empty(Product, shop=shop.id)
-        return render(request, 'designer_shop/shopeditor.html', {
-            'editmode': True,
-            'shop': shop,
-            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
-            'editItemMode': editItem,
-            'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
-                                                                     {
-                                                                         "banner": shop.banner,
-                                                                         "mobileBanner": shop.mobileBanner
-                                                                     }),
-            'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
-                                                               {
-                                                                   "logo": shop.logo
-                                                               }),
-            'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
-                                                                                  {
-                                                                                      "color": shop.color
-                                                                                  }),
-            'aboutBoxForm': aboutForm or AboutBoxForm(initial=
-                                                      {
-                                                          "aboutContent": shop.aboutContent,
-                                                          "aboutImg": shop.aboutImg
-                                                      }),
-            'colors': AttributeOption.objects.filter(group=2),
-            'sizeSetOptions': AttributeOption.objects.filter(group=1),
-            'shopcategories': shopCategoryNames,
-            'shopgenders': get_filter_lists(shop).genderlist(),
-            'products': products,
-            'shopProductCount': len(products)
-        })
+    editItem = item is not None
+    shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
+    products = get_list_or_empty(Product, shop=shop.id)
+    return render(request, 'designer_shop/shopeditor.html', {
+        'editmode': True,
+        'shop': shop,
+        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+        'editItemMode': editItem,
+        'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
+                                                                 {
+                                                                     "banner": shop.banner,
+                                                                     "mobileBanner": shop.mobileBanner
+                                                                 }),
+        'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
+                                                           {
+                                                               "logo": shop.logo
+                                                           }),
+        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
+                                                                              {
+                                                                                  "color": shop.color
+                                                                              }),
+        'aboutBoxForm': aboutForm or AboutBoxForm(initial=
+                                                  {
+                                                      "aboutContent": shop.aboutContent,
+                                                      "aboutImg": shop.aboutImg
+                                                  }),
+        'colors': AttributeOption.objects.filter(group=2),
+        'sizeSetOptions': AttributeOption.objects.filter(group=1),
+        'shopcategories': shopCategoryNames,
+        'shopgenders': get_filter_lists(shop).genderlist(),
+        'products': products,
+        'shopProductCount': len(products)
+    })
+
 
 #private method no Auth
 def processShopEditorForms(request, shop_slug, item_slug=None):
@@ -521,20 +557,23 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             })
         else:
             if request.method == 'POST':
-                sizeVariationType = request.POST["sizeVariation"]
+                sizeVariationType = get_dict_value_or_suspicious_operation(request.POST, "sizeVariation")
                 sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
                 is_create = item is None
                 if is_create:
                     form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
                 else:
-                    form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None, sizes=sizes)
+                    form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
+                                               sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop)
                     form = ProductCreationForm()
-                    messages.success(request, ("Item has been successfully {0}!").format("created" if is_create else "updated"))
+                    messages.success(request,
+                                     ("Item has been successfully {0}!").format("created" if is_create else "updated"))
             return renderShopEditor(request, shop, productCreationForm=form)
     else:
         return renderShopEditor(request, shop, item=item)
+
 
 def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
     if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:

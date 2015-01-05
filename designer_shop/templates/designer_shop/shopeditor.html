@@ -363,7 +363,7 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
 
 
         if($(this).closest('.accordion-group').next().length == "0") {
-            addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"), false);
+            addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
         }
 
         var selectedValue = eval(selectedValueType);
