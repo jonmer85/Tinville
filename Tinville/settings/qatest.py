@@ -3,29 +3,29 @@
 from .base import *  # Start with base settings
 
 # HEROKU Change!!!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'd2c638gaii8jv7',
-    'HOST': 'ec2-23-23-211-161.compute-1.amazonaws.com',
-    'PORT': 5432,
-    'USER': 'xmrcaidzbiewqs',
-    'PASSWORD': 'jqnzeIdyhXy9mmfYa6cwleCONg'
-  }
-}
+ALLOWED_HOSTS = ['tinville-testing.herokuapp.com']
+
+import dj_database_url
+DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
 
-AWS_ACCESS_KEY_ID = 'AKIAJJLBU23GKJZH6SQA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'tinville-testing'
-AWS_S3_SECURE_URLS = False
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SECURE_URLS = True
 
-S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
+
+BROKER_URL=os.environ.get('REDISTOGO_URL', None)
+CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', None)
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

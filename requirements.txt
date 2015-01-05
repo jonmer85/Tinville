@@ -1,15 +1,22 @@
 -e git://github.com/gabrielfalcao/lettuce.git@6e7a5566f13f01192d65b1fc010659d88a27a546#egg=lettuce
 -e git://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins
--e git://github.com/maraujop/django-crispy-forms@d096de1a365d14761deb7f5ef3ba09bfaf57fd5d#egg=django-crispy-forms
 -e git://github.com/jonmer85/django-color-utils.git#egg=color_utils
+-e git://github.com/jonmer85/django-basic-feedback.git@10ca27c5824886fabe6a9dd74cf52284b3b34674#egg=django_basic_feedback-dev
+-e git://github.com/jonmer85/django-oscar.git@ecc56fcbb6a54cc0f3a5cb3eb528cc75c3addd02#egg=django-oscar
+-e git://github.com/jonmer85/django-oscar-stripe.git#egg=oscar_stripe
+amqp==1.4.6
+anyjson==0.3.3
 Babel==1.3
-Django==1.6
+Django==1.7.1
 South==0.8.4
 Unidecode==0.04.14
 Unipath==1.0
 argparse==1.2.1
 astroid==1.0.0
+billiard==3.3.0.18
+bleach==1.4.1
 boto==2.8.0
+celery==3.1.16
 coverage==3.6
 cssselect==0.9.1
 distribute==0.6.31
@@ -17,35 +24,51 @@ dj-database-url==0.2.1
 django-appconf==0.6
 django-autoslug==1.7.1
 django-backbone==0.3.1
+django-bleach==0.3.0
 django-braces==1.2.2
-django-compressor==1.3
+django-celery==3.1.16
+django-compressor==1.4
+django-crispy-forms==1.4.0
+django-debug-toolbar==1.2.1
+django-dotenv==1.3.0
 django-extensions==1.3.2
 django-extra-views==0.6.3
 django-fixture-media==0.1.4
+django-getenv==1.3.1
 django-haystack==2.1.0
-django-mobile==0.3.0
-django-oscar==0.6.1
-django-selenium==0.9.6
+django-nose==1.2
+django-parsley==0.5
+django-redis-cache==0.13.0
+django-selenium==0.9.7
+django-sslify>=0.2.0
 django-storages==1.1.6
+django-tables2==0.15.0
 django-tinymce==1.5.2
 django-treebeard==2.0b2
+duvet==0.1.2
+easypost==2.0.11
 extras==0.0.3
 fuzzywuzzy==0.2
 gunicorn==0.17.4
+html5lib==0.999
+kombu==3.0.21
 logilab-common==0.60.0
 lxml==3.2.4
 nose==1.3.0
 Pillow==2.4.0
 phonenumbers==5.9.2
 psycopg2==2.4.6
-purl==0.8
+purl==1.0.1
 pylint==1.0.0
 python-mimeparse==0.1.4
 python-subunit==0.0.16
 pytz==2013b
-selenium==2.39.0
+raven>=3
+redis==2.10.3
+selenium==2.42.1
 six==1.3.0
-sorl-thumbnail==11.12
+sorl-thumbnail==11.12.1b
 sure==1.2.3
 testtools==0.9.34
 wsgiref==0.1.2
+simplejson==3.5.0

@@ -10,4 +10,6 @@ Tinville/static/js/tiny_mce/plugins/*
 Tinville/static/js/tiny_mce/themes/*
 reports/
 *.DS_Store
+Tinville/Tinville.iml
 /nbproject/private/
+.env

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load i18n %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock css %}
+{% block content %}
+    {{ block.super }}
+      {% if shop.banner and shop.logo %}
+          <div class="full-screen">
+              <img id="id_BannerImage" src="{{shop.banner.url}}" />
+              <a href='{{ shop.get_absolute_url }}' data-toggle="tooltip" data-placement="right" title="Click here to go to {{ shop.name }}">
+                <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />
+              </a>
+          </div>
+      {% elif not shop.banner and shop.logo %}
+          <div class="full-screen shopBackgroundColor">
+            <a href='{{ shop.get_absolute_url }}' data-toggle="tooltip" data-placement="right" title="Click here to go to {{ shop.name }}">
+              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
+            </a>
+          </div>
+      {% elif shop.banner and not shop.logo %}
+            <span data-picture class="banner">
+                {% if shop.mobileBanner %}
+                    <span data-src="{{shop.mobileBanner.url}}"></span>
+                {% else %}
+                    <span data-src="{{shop.banner.url}}"></span>
+                {% endif %}
+                <span data-src="{{shop.banner.url}}" data-media="(min-width: 768px)"></span>
+            </span>
+
+      {% else %}
+          <div class=" shopBanner shopBackgroundColor">
+          </div>
+      {% endif %}
+
+{% endblock %}
+
+{% block javascript_library %}
+  {{ block.super }}
+{% endblock javascript_library %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+
+    $("#tinvilleTagBanner").css("height", "50px");
+    $("#tinvilleTagBanner").css("top", "0px");
+    $("#tinvilleTagBanner").css("margin-top", "0px");
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    $("a.name").text(function(index, currentText) {
+        if (currentText.length > 20){
+            $('a.name').attr('rel', 'tooltip');
+        }
+        return currentText.substr(0, 20);
+    });
+
+    </script>
+
+{% endblock %}
