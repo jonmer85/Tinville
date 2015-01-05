@@ -283,6 +283,9 @@ def fill_in_user_form(email, password):
     form.find_element_by_name("password").send_keys(password)
     return form
 
+def access_registration_url(step):
+    world.browser.get(lettuce.django.get_server().url('/register'))
+
 def submit_form_and_activate_user(form, expectSuccess=True):
     form.submit()
     if(expectSuccess):
@@ -296,3 +299,4 @@ def submit_form_and_activate_user(form, expectSuccess=True):
 
 def sign_in_local():
     sign_in(world.user_info["email"], world.user_info["password"])
+
