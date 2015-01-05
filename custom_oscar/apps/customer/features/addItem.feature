@@ -5,6 +5,7 @@ Feature: Add item to the shopping bag
   I would like to add as many as items to my shopping bag
   So that I can checkout and pay for them
 
+
   Scenario: Adding an item to the empty shopping bag
     Given An empty shopping bag
     When I add an item to the shopping bag
@@ -45,6 +46,31 @@ Feature: Add item to the shopping bag
   Scenario: Checkout
     Given A shopping bag with items
     When I click on checkout button
+    Then The shipping address form should be displayed
+    And I click on Ship to This address
     Then The payment form should be displayed
+    And I enter correct form credentials
+
+
+  #Scenario: Checking out with empty basket 'You need to add some items to your basket to checkout'
+  #Scenario: Check payment form
+
+
+  #Scenario: Filling out address form
+  #Scenario: Adding empty address
+  #use the added address to checkout
+
+
+  #This is not a valid local or international phone format.
+
+  #Scenario: Attempting to Checkout when not logged in
+
+
+
+
+
+
+
+
 
 
