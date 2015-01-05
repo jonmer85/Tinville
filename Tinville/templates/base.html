@@ -283,20 +283,10 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                          <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                            <a href="/shoplist/"  class="visible-xs list-group-item slideMenuText">
                                 <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
-                          </a>
-                          <a href="#" class="hidden-xs dropdown-toggle " data-toggle="dropdown">
-                              DESIGNERS
-                          </a>
-                          <ul class="dropdown-menu" >
-                              {% for shop in shops %}
-                                <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
-                                {% if not forloop.last %}
-                                   <li class="divider"></li>
-                                {% endif %}
-                              {% endfor %}
-                          </ul>
+                            </a>
+                            <a class="hidden-xs" href="/shoplist/">DESIGNERS</a>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
