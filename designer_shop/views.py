@@ -386,8 +386,8 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
             if m is not None:
                 colorRowNum = m.group()
 
-        quantity = next((q for q in postCopy.keys() if prefix in q
-                         and "_quantityField" in q and q.endswith(colorRowNum)), None)
+            quantity = next((q for q in postCopy.keys() if prefix in q
+                             and "_quantityField" in q and q.endswith(colorRowNum)), None)
 
         if color is not None and quantity is not None:
             if postCopy[color] and postCopy[quantity]:
