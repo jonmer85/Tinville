@@ -408,22 +408,6 @@ function clearColorRow( strRowToClear )
         $(strRowId).remove();
         arColorRows.splice(indexToRemove, 1);
 
-
-{#        // Reset the ID's so they are contiguous numbers. The server expects this#}
-{#        for (var i = 0; i < arColorRows.length; i++) {#}
-{##}
-{#            var $row = $("#" + arColorRows[i]);#}
-{#            var $rowColor = $row.find(".colorSelect");#}
-{#            var $rowQuantity = $row.find(".quantityField");#}
-{#            var counter = GetNewCounter($row, "rowColorQuantityTemplate", 0);#}
-{#            $row.attr('id', ReplaceNumberAtEndOfString($row.attr('id'), counter));#}
-{#            $rowColor.attr('id', ReplaceNumberAtEndOfString($rowColor.attr('id'), counter));#}
-{#            $rowColor.attr('name', ReplaceNumberAtEndOfString($rowColor.attr('name'), counter));#}
-{#            $rowQuantity.attr('id', ReplaceNumberAtEndOfString($rowQuantity.attr('id'), counter));#}
-{#            $rowQuantity.attr('name', ReplaceNumberAtEndOfString($rowQuantity.attr('name'), counter));#}
-{#            arColorRows[i] = $row.attr('id');#}
-{#        }#}
-
 }
 
 function clearSizeRow( strRowToClear )
@@ -435,18 +419,6 @@ function clearSizeRow( strRowToClear )
     $(strRowId).remove();
     arSizeRows.splice(indexToRemove, 1);
 
-{#    var selectedValue = $("#id_sizeVariation option:selected");#}
-{#    var sizeType = selectedValue[0].value;#}
-{#    var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];#}
-{##}
-{#    // Reset the ID's so they are contiguous numbers. The server expects this#}
-{#    for (var i = 0; i < arSizeRows.length; i++) {#}
-{##}
-{#        var $row = $("#" + arSizeRows[i]);#}
-{#        var counter = GetNewCounter($row, sizeTemplateClass, 0);#}
-{#        $row.attr('id', ReplaceNumberAtEndOfString($row.attr('id'), counter));#}
-{#        arSizeRows[i] = $row.attr('id');#}
-{#    }#}
 
 }
 
