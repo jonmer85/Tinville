@@ -35,7 +35,7 @@ the content for this basic editor should include the following fields:
     | Green  | LG    | 3        |
     And my primary image is visible
 
-  @jon
+
   Scenario: Edit Basic Item on Demo Shop using size sets
 	Given the demo shop editor
     And I plan to change the default image of the size set product

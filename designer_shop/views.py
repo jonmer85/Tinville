@@ -1,5 +1,6 @@
 import json
 import collections
+import re
 import shutil
 from operator import itemgetter
 from functools import wraps
@@ -379,12 +380,25 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
     while (True):
         color = next((c for c in postCopy.keys() if prefix in c
                       and "_colorSelection" in c), None)
+        colorRowNum = None
+        if color:
+            m = re.search(r'\d+$', color)
+            if m is not None:
+                colorRowNum = m.group()
+
         quantity = next((q for q in postCopy.keys() if prefix in q
-                         and "_quantityField" in q), None)
+                         and "_quantityField" in q and q.endswith(colorRowNum)), None)
 
         if color is not None and quantity is not None:
             if postCopy[color] and postCopy[quantity]:
-                sizes[i]["colorsAndQuantities"].append({"color": postCopy[color], "quantity": postCopy[quantity]})
+                sizes[i]["colorsAndQuantities"].append(
+                    {
+                        "color": postCopy[color],
+                        "colorFieldName": color,
+                        "quantity": postCopy[quantity],
+                        "quantityFieldName": quantity
+                    }
+                )
         else:
             confirm_at_least_one(j)
             break
@@ -407,6 +421,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
                     sizes.append(
                         {
                             "sizeSet": postCopy[set],
+                            "sizeFieldName": set,
                             "colorsAndQuantities": []
                         }
                     )
@@ -421,47 +436,55 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
     if sizeType == SIZE_DIM:
         sizes = {}
-        i = 0
+        numSizes = 0
         while (True):
             sizeDimensionSelection = {"x": next((x for x in postCopy.keys() if "sizeDimensionSelectionTemplate" in x
                                             and "_sizeDimWidth" in x), None),
                                       "y": next((y for y in postCopy.keys() if "sizeDimensionSelectionTemplate" in y
                                             and "_sizeDimLength" in y), None)}
-            if sizeDimensionSelection["x"] and sizeDimensionSelection["y"] and postCopy[sizeDimensionSelection["x"]]\
-                    and postCopy[sizeDimensionSelection["y"]]:
-                sizes[i] = {
-                    "sizeX": postCopy[sizeDimensionSelection["x"]],
-                    "sizeY": postCopy[sizeDimensionSelection["y"]],
-                    "colorsAndQuantities": []
-                }
-                prefix = sizeDimensionSelection["x"][0:sizeDimensionSelection["x"].find("_")]
-                _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes)
-                i += 1
+            if sizeDimensionSelection["x"] and sizeDimensionSelection["y"]:
+                if postCopy[sizeDimensionSelection["x"]] and postCopy[sizeDimensionSelection["y"]]:
+                    sizes.append(
+                        {
+                            "sizeX": postCopy[sizeDimensionSelection["x"]],
+                            "sizeY": postCopy[sizeDimensionSelection["y"]],
+                            "sizeFieldNameX": sizeDimensionSelection["x"],
+                            "sizeFieldNameY": sizeDimensionSelection["y"],
+                            "colorsAndQuantities": []
+                        }
+                    )
+                    prefix = sizeDimensionSelection["x"][0:sizeDimensionSelection["x"].find("_")]
+                    _populateColorsAndQuantitiesForSize(numSizes, postCopy, prefix, sizes)
+                    numSizes += 1
                 postCopy.pop(sizeDimensionSelection["x"])
                 postCopy.pop(sizeDimensionSelection["y"])
             else:
-                confirm_at_least_one(i)
+                confirm_at_least_one(numSizes)
                 break
         return sizes
 
     if sizeType == SIZE_NUM:
         sizes = {}
-        i = 0
+        numSizes = 0
         while (True):
             # Find a size set, there should be at least one
             number = next((n for n in postCopy.keys() if "sizeNumberSelectionTemplate" in n
                         and "_sizeNumberSelection" in n), None)
-            if number and postCopy[number]:
-                sizes[i] = {
-                    "sizeNum": postCopy[number],
-                    "colorsAndQuantities": []
-                }
-                prefix = set[0:number.find("_")]
-                _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes)
-                i += 1
+            if number:
+                if postCopy[number]:
+                    sizes.append(
+                        {
+                            "sizeNum": postCopy[number],
+                            "sizeFieldName": number,
+                            "colorsAndQuantities": []
+                        }
+                    )
+                    prefix = set[0:number.find("_")]
+                    _populateColorsAndQuantitiesForSize(numSizes, postCopy, prefix, sizes)
+                    numSizes += 1
                 postCopy.pop(number)
             else:
-                confirm_at_least_one(i)
+                confirm_at_least_one(numSizes)
                 break
         return sizes
 
@@ -561,7 +584,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                     form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
                                                sizes=sizes)
                 if form.is_valid():
-                    canonicalProduct = form.save(shop)
+                    canonicalProduct = form.save(shop, sizes, sizeVariationType)
                     form = ProductCreationForm()
                     messages.success(request,
                                      ("Item has been successfully {0}!").format("created" if is_create else "updated"))

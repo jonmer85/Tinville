@@ -114,39 +114,40 @@ class ProductCreationForm(forms.ModelForm):
         if sizes:
             for i, size in enumerate(sizes):
                 if "sizeSet" in sizes[i] and sizes[i]["sizeSet"]:
-                    self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+                    self.fields[sizes[i]["sizeFieldName"]] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=1), empty_label="Choose a size...", required=True, initial=sizes[i]["sizeSet"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                      objects.filter(group=2), empty_label="Choose a color...",
-                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                        self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
-                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+                        if colorAndQuantity['color'] and colorAndQuantity['quantity']:
+                            self.fields[colorAndQuantity['colorFieldName']] \
+                            = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                          objects.filter(group=2), empty_label="Choose a color...",
+                                                     initial=sizes[i]["colorsAndQuantities"][j]["color"], required=False)
+                            self.fields[colorAndQuantity['quantityFieldName']] \
+                            = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], required=False)
 
                 elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
-                    self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
+                    self.fields[sizes[i]["sizeFieldNameX"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeX"])
-                    self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
+                    self.fields[sizes[i]["sizeFieldNameY"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeY"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['colorFieldName']] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                        self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
                 elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
-                    self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
+                    self.fields[sizes[i]["sizeFieldName"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['colorFieldName']] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                        self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
 
@@ -196,7 +197,7 @@ class ProductCreationForm(forms.ModelForm):
             return title
         raise forms.ValidationError('Item name already exist.')
 
-    def save(self, shop):
+    def save(self, shop, sizes, sizeType):
         is_edit = self.instance.pk is not None
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
@@ -226,62 +227,48 @@ class ProductCreationForm(forms.ModelForm):
         self.save_image_if_needed(canonicalProduct, "product_image3", 3)
         self.save_image_if_needed(canonicalProduct, "product_image4", 4)
 
-        i = 0
-        while True:
-            if ('sizeSetSelectionTemplate%s_sizeSetSelection' % i) in self.cleaned_data:
-                sizeSet = self.cleaned_data['sizeSetSelectionTemplate%s_sizeSetSelection' % i]
-                j = 0
-                while True:
-                    if ('sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
-                            'sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
-                        color = self.cleaned_data['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)]
-                        quantity = self.cleaned_data['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
-                                                                   color=color, quantity=quantity)
-                    else:
-                        if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet)
-                        break
-                    j += 1
-                i += 1
+        for size in sizes:
+            if sizeType == SIZE_SET:
+                if size["sizeFieldName"] in self.cleaned_data:
+                    sizeSet = self.cleaned_data[size["sizeFieldName"]]
+                    for colorQuantity in size["colorsAndQuantities"]:
+                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                            quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
+                                                                       color=color, quantity=quantity)
+                        else:
+                            # Jon M TBD Should we allow no color/quantity?
+                            # For now ignore it
+                            pass
             # Tom Bowman was here 5-25-14
-            elif ('sizeDimensionSelectionTemplate%s_sizeDimWidth' % i) in self.cleaned_data and\
-                            ('sizeDimensionSelectionTemplate%s_sizeDimLength' % i) in self.cleaned_data:
-                sizeDimX = self.cleaned_data['sizeDimensionSelectionTemplate%s_sizeDimWidth' % i]
-                sizeDimY = self.cleaned_data['sizeDimensionSelectionTemplate%s_sizeDimLength' % i]
-                j = 0
-                while True:
-                    if ('sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
-                            'sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
-                        color = self.cleaned_data['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)]
-                        quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
-                                                                        "y": sizeDimY}, color=color, quantity=quantity)
-                    else:
-                        if not j:
+            elif sizeType == SIZE_DIM:
+                if size["sizeFieldNameX"] in self.cleaned_data and size["sizeFieldNameY"] in self.cleaned_data:
+                    sizeDimX = self.cleaned_data[size["sizeFieldNameX"]]
+                    sizeDimY = self.cleaned_data[size["sizeFieldNameY"]]
+                    for colorQuantity in size["colorsAndQuantities"]:
+                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                            quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
-                                                                                                    "y": sizeDimY})
-                        break
-                    j += 1
-                i += 1
-            elif ('sizeNumberSelectionTemplate%s_sizeNumberSelection' % i) in self.cleaned_data:
-                sizeNum = self.cleaned_data['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i]
-                j = 0
-                while True:
-                    if ('sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
-                            'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
-                        color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
-                        quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
-                                                                   color=color, quantity=quantity)
-                    else:
-                        if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId,  shop, sizeNum=sizeNum)
-                        break
-                    j += 1
-                i += 1
-            else:
-                break
+                                                                            "y": sizeDimY}, color=color, quantity=quantity)
+                        else:
+                            # Jon M TBD Should we allow no color/quantity?
+                            # For now ignore it
+                            pass
+            elif sizeType == SIZE_NUM:
+                if size["sizeFieldName"] in self.cleaned_data:
+                    sizeNum = self.cleaned_data[size["sizeFieldName"]]
+                    for colorQuantity in size["colorsAndQuantities"]:
+                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                            quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
+                                                                       color=color, quantity=quantity)
+                        else:
+                            # Jon M TBD Should we allow no color/quantity?
+                            # For now ignore it
+                            pass
         return canonicalProduct
 
     def save_image_if_needed(self, product, image_field, display_order):
