@@ -91,7 +91,17 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-    $("#shopTabLinkXS").click(function(){
+        $(function(){
+            var tabType = "{{ tab }}";
+            if(tabType !== null && tabType == 'about')
+            {
+                $("#aboutTabAnchor").click();
+                $("#aboutTabAnchorXS").click();
+                $("#minMaxIcon").click();
+            }
+        });
+
+        $("#shopTabLinkXS").click(function(){
         $("#shopTabLinkXS").addClass("shopMenuActiveColor");
         $("#aboutTabAnchorXS").removeClass("shopMenuActiveColor");
     });
