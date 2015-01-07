@@ -134,6 +134,7 @@ def activation(request, **kwargs):
 
 def ajax_login(request, *args, **kwargs):
     ud_dict = {'username':str(request.POST['username']).lower()}
+    ud_dict['username'] = ud_dict['username'].strip()
 
     request.POST = request.POST.copy()
     request.POST.update(ud_dict)

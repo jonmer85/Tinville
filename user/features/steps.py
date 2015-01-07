@@ -134,6 +134,11 @@ def then_i_should_get_a_validation_error_on_email_address(step):
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register'))
     assert_class_exists('has-error')
 
+@step(u'I should be logged in')
+def then_i_should_be_logged_in(step):
+    assert_id_exists('clickedLogin-lg')
+
+
 # Utilities
 
 def sign_in_local():
