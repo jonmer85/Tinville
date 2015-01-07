@@ -138,7 +138,7 @@ def ajax_login(request, *args, **kwargs):
     request.POST = request.POST.copy()
     request.POST.update(ud_dict)
 
-    form = LoginForm(data=request.POST)
+    form = LoginForm(request=request, data=request.POST)
     logged_in = False
     data = {}
 
