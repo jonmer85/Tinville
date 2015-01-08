@@ -991,6 +991,17 @@ function RemoveCartItem(itemId)
           })
         });
 
+
+     $(".parsley-form").parsley({
+        successClass: 'has-success',
+        errorClass: 'has-error',
+        classHandler: function(el) {
+            return el.$element.closest(".form-group");
+        },
+        errorsWrapper: '<span class=\"help-block\"></span>',
+        errorTemplate: '<span></span>'
+    });
+
 {#     {% if debug %}#}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
 {#     {% endif %}#}
