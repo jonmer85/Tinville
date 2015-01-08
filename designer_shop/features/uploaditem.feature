@@ -27,7 +27,7 @@ the content for this basic editor should include the following fields:
     Then I should see a confirmation message stating that the item was created
 	Then I should see 4 product total
     When I click on the "TestItem1" item
-    Then my color, quantity, and size set selections are
+    Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | SM    | 7        |
     | Blue   | SM    | 2        |
@@ -106,7 +106,7 @@ the content for this basic editor should include the following fields:
     Then I should see a confirmation message stating that the item was updated
 	Then I should see 3 product total
     When I click on the "TestSizeSetItem" item
-    Then my color, quantity, and size set selections are
+    Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |
     | Blue   | XXS   | 10       |
@@ -131,7 +131,7 @@ the content for this basic editor should include the following fields:
     Then I should see a confirmation message stating that the item was updated
 	Then I should see 3 product total
     When I click on the "TestSizeSetItem" item
-    Then my color, quantity, and size set selections are
+    Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |
     | Blue   | XXS   | 10       |
@@ -153,7 +153,7 @@ the content for this basic editor should include the following fields:
     Then I should see a confirmation message stating that the item was updated
 	Then I should see 3 product total
     When I click on the "TestSizeSetItem" item
-    Then my color, quantity, and size set selections are
+    Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |
     | Blue   | XXS   | 10       |
