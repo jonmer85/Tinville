@@ -60,6 +60,7 @@ class PaymentInfoForm(forms.Form):
 
     helper = FormHelper()
     helper.form_id = 'payment-info-form'
+    helper.form_class = 'parsley-form'
     helper.form_show_labels = False
     # helper.form_action = reverse_lazy('checkout:payment-details')
 
@@ -70,15 +71,18 @@ class PaymentInfoForm(forms.Form):
     base_payment_layout = Layout(
         Div(
             Field('card_number', placeholder="Valid Card Number"),
+            # Jon - IMPORTANT! DO not remove, this is to trick Chrome into "autofilling" hidden fields since it ignores autofill="off"
+            HTML('<input type="text" name="prevent_autofill" id="prevent_autofill" value="" style="display:none;" />'),
+            HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
             Div(
                 Fieldset('Expiration Date',
-                    Div(Field('expiration_month', placeholder="MM"), css_class='col-xs-5', style='padding-left: 0'),
-                    Div(Field('expiration_year', placeholder="YY"), css_class=' col-xs-offset-2 col-xs-5', style='padding-right: 0'),
-                    css_class='col-xs-5', style='padding-left: 0'
+                    Div(Field('expiration_month', placeholder="MM"), css_class='col-xs-6', style='padding-left: 0', autocomplete='off'),
+                    Div(Field('expiration_year', placeholder="YY"), css_class='col-xs-6', style='padding-right: 0', autocomplete='off'),
+                    css_class='col-xs-7', style='padding-left: 0'
                 ),
                 Fieldset('CV Code',
-                    Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-8', style='padding-left: 0'),
-                    css_class='col-xs-offset-2 col-xs-5', style='padding-right: 0')
+                    Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', style='padding-left: 0', autocomplete='off'),
+                    css_class='col-xs-5', style='padding-right: 0')
             ),
 
         )
