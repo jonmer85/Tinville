@@ -65,296 +65,278 @@
         </li>
     </div>
  {% include "notification.html" %}
+    <div class="navbar-header">
+        <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="mobileNavButton navButton navbar-toggle collapsed menu-toggle">
+            <i class="fa fa-bars" style="font-size: large;"></i>
+        </button>
 
-    <header role="banner" class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <div class="navbar-header">
-          <button data-toggle="collapse-side" data-target=".side-collapse" data-target-2=".side-collapse-container" type="button" class="navbar-toggle pull-left"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-        </div>
-        <div class="navbar-inverse side-collapse in">
-          <nav role="navigation" class="navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="#Home">Home</a></li>
-              <li><a href="#users">Users</a></li>
-              <li><a href="http://placesforlove.com">Places</a></li>
+        {% if not user.is_authenticated %}
+            <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
+                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
+                <ul class="dropdown-menu loginPopupFormMobile">
+                    <li class="">
+                        <div class="yamm-content" style="padding-top: 2px">
+                            <div>
+                                {%  include "login_form.html" with form_name="xs-Login" %}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+              </li>
             </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
+        {% else %}
+            <ul id="signInButtonMobile" class="nav ">
+              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
+                          <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
+                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>
+                          </a>
+                          <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
+                            {% if user.is_seller or user.is_staff %}
+                                <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            {%  if user.is_seller %}
+                                <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            {% if user.is_seller or user.is_staff %}
+                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                          </ul>
 
-{#    <div class="navbar-header">#}
-{#        <button id = "mobileNavButton" type="button" data-target="#navbar-collapse-1" data-toggle="collapse" class="mobileNavButton navButton navbar-toggle collapsed menu-toggle">#}
-{#            <i class="fa fa-bars" style="font-size: large;"></i>#}
-{#        </button>#}
-{##}
-{#        {% if not user.is_authenticated %}#}
-{#            <ul id="signInButtonMobile" class="nav ">#}
-{#              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >#}
-{#                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>#}
-{#                <ul class="dropdown-menu loginPopupFormMobile">#}
-{#                    <li class="">#}
-{#                        <div class="yamm-content" style="padding-top: 2px">#}
-{#                            <div>#}
-{#                                {%  include "login_form.html" with form_name="xs-Login" %}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </li>#}
-{#                </ul>#}
-{#              </li>#}
-{#            </ul>#}
-{#        {% else %}#}
-{#            <ul id="signInButtonMobile" class="nav ">#}
-{#              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">#}
-{#                          <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">#}
-{#                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>#}
-{#                          </a>#}
-{#                          <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">#}
-{#                            {% if user.is_seller or user.is_staff %}#}
-{#                                <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>#}
-{#                                <li class="divider"></li>#}
-{#                            {% endif %}#}
-{#                            {%  if user.is_seller %}#}
-{#                                <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>#}
-{#                                <li class="divider"></li>#}
-{#                            {% endif %}#}
-{#                            <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>#}
-{#                            <li class="divider"></li>#}
-{#                            {% if user.is_seller or user.is_staff %}#}
-{#                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>#}
-{#                                <li class="divider"></li>#}
-{#                            {% endif %}#}
-{#                            <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>#}
-{#                          </ul>#}
-{##}
-{#                    </li>#}
-{#             </ul>#}
-{#        {% endif %}#}
-{##}
-{#    </div>#}
-{##}
-{#    <nav class="navbar yamm navbar-default navbar-main navbarSliding" role="navigation">#}
-{#        <div class="container ">#}
-{#            <div id="navHeader" class="navbar-header">#}
-{##}
-{#                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >#}
+                    </li>
+             </ul>
+        {% endif %}
+
+    </div>
+
+    <nav class="navbar yamm navbar-default navbar-main navbarSliding" role="navigation">
+        <div class="container ">
+            <div id="navHeader" class="navbar-header">
+
+                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >
 {#                  <span class="input-group-addon">{{ user.name }}</span>#}
-{#                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">#}
-{#                </div>#}
-{#                <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>#}
-{#            </div>#}
-{##}
-{#                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle" style="margin-left: 0; margin-right: 0;">#}
-{#                    <ul class="nav navbar-nav navButtonIconStyle">#}
-{#                        <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">#}
-{#                            <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>#}
-{#                        </li>#}
-{#                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">#}
-{#                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">#}
-{#                                <i class="fa fa-female fa-fw"></i>&nbsp; Women#}
-{#                            </a>#}
-{#                            <a href="#"  data-toggle="dropdown" class="hidden-xs dropdown-toggle">WOMEN</a>#}
-{#                            <ul class="dropdown-menu navdropstyle ">#}
-{#                                <li>#}
-{#                                    <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">#}
-{#                                        <div class="row">#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">#}
-{#                                                <li><p><strong>Clothing</strong></p></li>#}
-{#                                                <li><a href="#" >Outerwear</a></li>#}
-{#                                                <li><a href="#">Jackets & Blazers</a></li>#}
-{#                                                <li><a href="#">Shirts</a></li>#}
-{#                                                <li><a href="#">Pants</a></li>#}
-{#                                                <li><a href="#">Sweaters</a></li>#}
-{#                                                <li><a href="#">Suits</a></li>#}
-{#                                                <li><a href="#">Dresses</a></li>#}
-{#                                                <li><a href="#">Athletic Clothing</a></li>#}
-{#                                                <li><a href="#">Intimates</a></li>#}
-{#                                                <li><a href="#"><b>All</b></a></li>#}
-{#                                            </ul>#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">#}
-{#                                                <li><p><strong>Shoes</strong></p></li>#}
-{#                                                <li><a href="#">Boots</a></li>#}
-{#                                                    <li><a href="#">Heels</a></li>#}
-{#                                                    <li><a href="#">Flats</a></li>#}
-{#                                                    <li><a href="#">Booties</a></li>#}
-{#                                                    <li><a href="#">Wedges</a></li>#}
-{#                                                    <li><a href="#">Athletic</a></li>#}
-{#                                                    <li><a href="#">Sandals</a></li>#}
-{#                                                    <li><a href="#">Loafers</a></li>#}
-{#                                                    <li><a href="#">Oxfords</a></li>#}
-{#                                                    <li><a href="#"><strong>All</strong></a></li>#}
-{#                                            </ul>#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">#}
-{#                                                <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>#}
-{#                                                <li><a href="#">Handbags</a></li>#}
-{#                                                <li><a href="#">Fine Jewelry</a></li>#}
-{#                                                <li><a href="#">Fashion Jewelry</a></li>#}
-{#                                                <li><a href="#">Watches</a></li>#}
-{#                                                <li><a href="#">Sunglasses</a></li>#}
-{#                                                <li><a href="#">Scarves & Wraps</a></li>#}
-{#                                                <li><a href="#">Gloves</a></li>#}
-{#                                                <li><a href="#">Belts</a></li>#}
-{#                                                <li><a href="#">Designer Store</a></li>#}
-{#                                                <li><a href="#"><strong>All</strong></a></li>#}
-{#                                            </ul>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{##}
-{#                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle xs-navbar-text">#}
-{#                                        <div class="row">#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >#}
-{#                                                <li><a href="#">Dresses</a></li>#}
-{#                                                <li><a href="#">Tops</a></li>#}
-{#                                                <li><a href="#">Sweaters</a></li>#}
-{#                                                <li><a href="#">Jeans</a></li>#}
-{#                                                <li><a href="#">Jackets</a></li>#}
-{#                                                <li><a href="#">Shorts</a></li>#}
-{#                                                <li><a href="#">Pants</a></li>#}
-{#                                                <li><a href="#">Skirts</a></li>#}
-{#                                                <li><a href="#">Intimates</a></li>#}
-{#                                                <li><a href="#">Footwear</a></li>#}
-{#                                                <li><a href="#">Accessories</a></li>#}
-{#                                            </ul>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{#                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">#}
-{#                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">#}
-{#                                <i class="fa fa-male fa-fw"></i>&nbsp; Men#}
-{#                            </a>#}
-{#                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">MEN</a>#}
-{#                            <ul class="dropdown-menu navdropstyle ">#}
-{#                                <li>#}
-{#                                    <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">#}
-{#                                        <div class="row">#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">#}
-{#                                                <li><p><strong>Clothing</strong></p></li>#}
-{#                                                <li><a href="#" >Outerwear</a></li>#}
-{#                                                <li><a href="#">Jackets & Blazers</a></li>#}
-{#                                                <li><a href="#">Shirts</a></li>#}
-{#                                                <li><a href="#">Pants</a></li>#}
-{#                                                <li><a href="#">Sweaters</a></li>#}
-{#                                                <li><a href="#">Suits</a></li>#}
-{#                                                <li><a href="#">Dresses</a></li>#}
-{#                                                <li><a href="#">Athletic Clothing</a></li>#}
-{#                                                <li><a href="#">Intimates</a></li>#}
-{#                                                <li><a href="#"><b>All</b></a></li>#}
-{#                                            </ul>#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">#}
-{#                                                <li><p><strong>Shoes</strong></p></li>#}
-{#                                                <li><a href="#">Boots</a></li>#}
-{#                                                    <li><a href="#">Heels</a></li>#}
-{#                                                    <li><a href="#">Flats</a></li>#}
-{#                                                    <li><a href="#">Booties</a></li>#}
-{#                                                    <li><a href="#">Wedges</a></li>#}
-{#                                                    <li><a href="#">Athletic</a></li>#}
-{#                                                    <li><a href="#">Sandals</a></li>#}
-{#                                                    <li><a href="#">Loafers</a></li>#}
-{#                                                    <li><a href="#">Oxfords</a></li>#}
-{#                                                    <li><a href="#"><strong>All</strong></a></li>#}
-{#                                            </ul>#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">#}
-{#                                                <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>#}
-{#                                                <li><a href="#">Handbags</a></li>#}
-{#                                                <li><a href="#">Fine Jewelry</a></li>#}
-{#                                                <li><a href="#">Fashion Jewelry</a></li>#}
-{#                                                <li><a href="#">Watches</a></li>#}
-{#                                                <li><a href="#">Sunglasses</a></li>#}
-{#                                                <li><a href="#">Scarves & Wraps</a></li>#}
-{#                                                <li><a href="#">Gloves</a></li>#}
-{#                                                <li><a href="#">Belts</a></li>#}
-{#                                                <li><a href="#">Designer Store</a></li>#}
-{#                                                <li><a href="#"><strong>All</strong></a></li>#}
-{#                                            </ul>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{##}
-{#                                    <div  id="mobileMenContent" class="yamm-content navbarLinkStyle">#}
-{#                                        <div class="row">#}
-{#                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >#}
-{#                                                <li><a href="#">Suits and Sportcoats</a></li>#}
-{#                                                <li><a href="#">Dress Shirts</a></li>#}
-{#                                                <li><a href="#">Polos</a></li>#}
-{#                                                <li><a href="#">T-Shirts</a></li>#}
-{#                                                <li><a href="#">Sweaters & Sweatshirts</a></li>#}
-{#                                                <li><a href="#">Coats & Jackets</a></li>#}
-{#                                                <li><a href="#">Pants</a></li>#}
-{#                                                <li><a href="#">Jeans</a></li>#}
-{#                                                <li><a href="#">Shorts</a></li>#}
-{#                                                <li><a href="#">Swimwear</a></li>#}
-{#                                                <li><a href="#">Sleepwear</a></li>#}
-{#                                                <li><a href="#">Footwear</a></li>#}
-{#                                                <li><a href="#">Accessories</a></li>#}
-{#                                            </ul>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{#                        <li class="hidden dropdown yamm-fw mobileDropBtnStyle">#}
-{#                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">#}
-{#                                <i class="fa fa-female fa-fw"></i>&nbsp; Shop#}
-{#                            </a>#}
-{#                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">SHOP</a>#}
-{#                        </li>#}
-{##}
-{#                        <li class="dropdown navdropSize mobileDropBtnStyle">#}
-{#                            <a href="/shoplist/"  class="visible-xs list-group-item slideMenuText">#}
-{#                                <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers#}
-{#                            </a>#}
-{#                            <a class="hidden-xs" href="/shoplist/">DESIGNERS</a>#}
-{#                        </li>#}
-{#                        <li class="dropdown yamm-fw mobileDropBtnStyle">#}
-{#                            <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">#}
-{#                                <i class="fa fa-rss fa-fw"></i>&nbsp; Blog#}
-{#                            </a>#}
-{#                            <a class="hidden-xs" href="http://blog.tinville.com" target="_blank">BLOG</a>#}
-{#                        </li>#}
-{##}
-{#                        {% if user.is_authenticated %}#}
-{##}
-{#                            <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >#}
-{##}
-{#                                  <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">#}
-{#                                      <span id="clickedLogin-lg" class="glyphicon glyphicon-user" style="font-size: large;"></span>#}
-{#                                  </a>#}
-{#                                  <ul class="dropdown-menu" style="right: 0;">#}
-{#                                    {% if user.is_seller or user.is_staff %}#}
-{#                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>#}
-{#                                        <li class="divider"></li>#}
-{#                                    {% endif %}#}
-{#                                    {%  if user.is_seller %}#}
-{#                                        <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>#}
-{#                                        <li class="divider"></li>#}
-{#                                    {% endif %}#}
-{#                                    <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>#}
-{#                                    <li class="divider"></li>#}
-{#                                    {% if user.is_seller or user.is_staff %}#}
-{#                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>#}
-{#                                        <li class="divider"></li>#}
-{#                                    {% endif %}#}
-{#                                    <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>#}
-{#                                  </ul>#}
-{##}
-{#                            </li>#}
-{#                        {% else %}#}
-{#                            <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >#}
-{#                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>#}
-{#                                <ul class="dropdown-menu loginPopupForm">#}
-{#                                    <li class="">#}
-{#                                        <div class="yamm-content" style="padding-top: 2px">#}
-{#                                            {%  include "login_form.html" with form_name="md-Login" %}#}
-{#                                        </div>#}
-{#                                    </li>#}
-{#                                </ul>#}
-{#                            </li>#}
-{#                        {% endif %}#}
-{#                    </ul>#}
-{#                </div>#}
-{#            </div>#}
-{#    </nav>#}
+                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
+                </div>
+                <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+            </div>
+
+                <div id="navbar-collapse-1" class="navbar-collapse collapse navdropTopTextStyle" style="margin-left: 0; margin-right: 0;">
+                    <ul class="nav navbar-nav navButtonIconStyle">
+                        <li class="visible-xs dropdown navdropSize mobileDropBtnStyle">
+                            <a class="list-group-item slideMenuText" href="/"><i class="fa fa-home fa-fw tinvilleOrange"></i></i>&nbsp; Home</a>
+                        </li>
+                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-female fa-fw"></i>&nbsp; Women
+                            </a>
+                            <a href="#"  data-toggle="dropdown" class="hidden-xs dropdown-toggle">WOMEN</a>
+                            <ul class="dropdown-menu navdropstyle ">
+                                <li>
+                                    <div id="nonMobileWomenContent" class="yamm-content navbarLinkStyle ">
+                                        <div class="row">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li><p><strong>Clothing</strong></p></li>
+                                                <li><a href="#" >Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All</b></a></li>
+                                            </ul>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li><p><strong>Shoes</strong></p></li>
+                                                <li><a href="#">Boots</a></li>
+                                                    <li><a href="#">Heels</a></li>
+                                                    <li><a href="#">Flats</a></li>
+                                                    <li><a href="#">Booties</a></li>
+                                                    <li><a href="#">Wedges</a></li>
+                                                    <li><a href="#">Athletic</a></li>
+                                                    <li><a href="#">Sandals</a></li>
+                                                    <li><a href="#">Loafers</a></li>
+                                                    <li><a href="#">Oxfords</a></li>
+                                                    <li><a href="#"><strong>All</strong></a></li>
+                                            </ul>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All</strong></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div  id="mobileWomenContent" class="yamm-content navbarLinkStyle xs-navbar-text">
+                                        <div class="row">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Tops</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Jeans</a></li>
+                                                <li><a href="#">Jackets</a></li>
+                                                <li><a href="#">Shorts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Skirts</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#">Footwear</a></li>
+                                                <li><a href="#">Accessories</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="hidden dropdown navdropSize mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-male fa-fw"></i>&nbsp; Men
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">MEN</a>
+                            <ul class="dropdown-menu navdropstyle ">
+                                <li>
+                                    <div id="nonMobileMenContent" class="yamm-content navbarLinkStyle ">
+                                        <div class="row">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li><p><strong>Clothing</strong></p></li>
+                                                <li><a href="#" >Outerwear</a></li>
+                                                <li><a href="#">Jackets & Blazers</a></li>
+                                                <li><a href="#">Shirts</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Sweaters</a></li>
+                                                <li><a href="#">Suits</a></li>
+                                                <li><a href="#">Dresses</a></li>
+                                                <li><a href="#">Athletic Clothing</a></li>
+                                                <li><a href="#">Intimates</a></li>
+                                                <li><a href="#"><b>All</b></a></li>
+                                            </ul>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li><p><strong>Shoes</strong></p></li>
+                                                <li><a href="#">Boots</a></li>
+                                                    <li><a href="#">Heels</a></li>
+                                                    <li><a href="#">Flats</a></li>
+                                                    <li><a href="#">Booties</a></li>
+                                                    <li><a href="#">Wedges</a></li>
+                                                    <li><a href="#">Athletic</a></li>
+                                                    <li><a href="#">Sandals</a></li>
+                                                    <li><a href="#">Loafers</a></li>
+                                                    <li><a href="#">Oxfords</a></li>
+                                                    <li><a href="#"><strong>All</strong></a></li>
+                                            </ul>
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle">
+                                                <li id="mobileDdEnbl" class=""><p><strong>Accessories</strong></p></li>
+                                                <li><a href="#">Handbags</a></li>
+                                                <li><a href="#">Fine Jewelry</a></li>
+                                                <li><a href="#">Fashion Jewelry</a></li>
+                                                <li><a href="#">Watches</a></li>
+                                                <li><a href="#">Sunglasses</a></li>
+                                                <li><a href="#">Scarves & Wraps</a></li>
+                                                <li><a href="#">Gloves</a></li>
+                                                <li><a href="#">Belts</a></li>
+                                                <li><a href="#">Designer Store</a></li>
+                                                <li><a href="#"><strong>All</strong></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div  id="mobileMenContent" class="yamm-content navbarLinkStyle">
+                                        <div class="row">
+                                            <ul class="col-sm-4 list-unstyled mobileDropListStyle mobileDropItemStyle" >
+                                                <li><a href="#">Suits and Sportcoats</a></li>
+                                                <li><a href="#">Dress Shirts</a></li>
+                                                <li><a href="#">Polos</a></li>
+                                                <li><a href="#">T-Shirts</a></li>
+                                                <li><a href="#">Sweaters & Sweatshirts</a></li>
+                                                <li><a href="#">Coats & Jackets</a></li>
+                                                <li><a href="#">Pants</a></li>
+                                                <li><a href="#">Jeans</a></li>
+                                                <li><a href="#">Shorts</a></li>
+                                                <li><a href="#">Swimwear</a></li>
+                                                <li><a href="#">Sleepwear</a></li>
+                                                <li><a href="#">Footwear</a></li>
+                                                <li><a href="#">Accessories</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="hidden dropdown yamm-fw mobileDropBtnStyle">
+                            <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                                <i class="fa fa-female fa-fw"></i>&nbsp; Shop
+                            </a>
+                            <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">SHOP</a>
+                        </li>
+
+                        <li class="dropdown navdropSize mobileDropBtnStyle">
+                            <a href="/shoplist/"  class="visible-xs list-group-item slideMenuText">
+                                <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
+                            </a>
+                            <a class="hidden-xs" href="/shoplist/">DESIGNERS</a>
+                        </li>
+                        <li class="dropdown yamm-fw mobileDropBtnStyle">
+                            <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
+                                <i class="fa fa-rss fa-fw"></i>&nbsp; Blog
+                            </a>
+                            <a class="hidden-xs" href="http://blog.tinville.com" target="_blank">BLOG</a>
+                        </li>
+
+                        {% if user.is_authenticated %}
+
+                            <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
+
+                                  <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <span id="clickedLogin-lg" class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                                  </a>
+                                  <ul class="dropdown-menu" style="right: 0;">
+                                    {% if user.is_seller or user.is_staff %}
+                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    {%  if user.is_seller %}
+                                        <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                    {% if user.is_seller or user.is_staff %}
+                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                  </ul>
+
+                            </li>
+                        {% else %}
+                            <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
+                                <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
+                                <ul class="dropdown-menu loginPopupForm">
+                                    <li class="">
+                                        <div class="yamm-content" style="padding-top: 2px">
+                                            {%  include "login_form.html" with form_name="md-Login" %}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+    </nav>
 
     <div class="slidingContent">
         <div class="slidingContent2">
@@ -669,30 +651,20 @@
 
                    var menu = "close";
 
-{#                    $('.menu-toggle').click(function() {#}
-{#                        if(menu == "close"){#}
-{#                            $('.slidingContent').css('-webkit-transform','translate(70%, 0)');#}
-{#                            $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');#}
-{##}
-{#                            menu="open";#}
-{#                        }#}
-{#                        else{#}
-{#                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');#}
-{#                            $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');#}
-{##}
-{#                            menu="close";#}
-{#                        }#}
-{#            });#}
+                    $('.menu-toggle').click(function() {
+                        if(menu == "close"){
+                            $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');
 
-            var sideslider = $('[data-toggle=collapse-side]');
-            var sel = sideslider.attr('data-target');
-            var sel2 = sideslider.attr('data-target-2');
-            sideslider.click(function(event){
-                $(sel).toggleClass('in');
-                $(sel2).toggleClass('out');
+                            menu="open";
+                        }
+                        else{
+                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');
+
+                            menu="close";
+                        }
             });
-
-
             var self = $(this)
             var url = "/load_cart"
                 ajax_req = $.ajax({
