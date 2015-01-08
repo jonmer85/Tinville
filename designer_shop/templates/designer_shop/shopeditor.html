@@ -359,7 +359,7 @@ $("#id_sizeVariation").change(function() {
 
 function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-    sizesFieldSet.on("change", sizeSelectionClass, function(e) {
+    sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
 
 
         if($(this).closest('.accordion-group').next().length == "0") {
@@ -442,7 +442,7 @@ function addNewSizeRow(sizeType) {
             sizeNumRequired="";
             break
     }
-    $("#sizesFieldSet").append(templateName)
+    $("#sizesFieldSet").append(templateName);
     var $newSizeSelection = $("#"+sizeTemplateName);
     // Get the number at the end of the ID, increment it, and replace the old id
     var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);

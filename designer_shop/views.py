@@ -415,9 +415,9 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
 
 def get_sizes_colors_and_quantities(sizeType, post):
     postCopy = post.copy()
+    sizes = []
+    numSizes = 0
     if sizeType == SIZE_SET:
-        sizes = []
-        numSizes = 0
         while (True):
             # Find a size set, there should be at least one
             set = next((s for s in postCopy.keys() if "sizeSetSelectionTemplate" in s
@@ -441,13 +441,17 @@ def get_sizes_colors_and_quantities(sizeType, post):
         return sizes
 
     if sizeType == SIZE_DIM:
-        sizes = {}
-        numSizes = 0
         while (True):
-            sizeDimensionSelection = {"x": next((x for x in postCopy.keys() if "sizeDimensionSelectionTemplate" in x
-                                            and "_sizeDimWidth" in x), None),
-                                      "y": next((y for y in postCopy.keys() if "sizeDimensionSelectionTemplate" in y
-                                            and "_sizeDimLength" in y), None)}
+            sizeX = next((x for x in postCopy.keys() if "sizeDimensionSelectionTemplate" in x
+                                            and "_sizeDimWidth" in x), None)
+            sizeY = None
+            if sizeX:
+                sizeY = sizeX.replace("Width", "Length")
+
+            sizeDimensionSelection = {
+                                        "x": sizeX,
+                                        "y": sizeY
+                                     }
             if sizeDimensionSelection["x"] and sizeDimensionSelection["y"]:
                 if postCopy[sizeDimensionSelection["x"]] and postCopy[sizeDimensionSelection["y"]]:
                     sizes.append(
@@ -470,8 +474,6 @@ def get_sizes_colors_and_quantities(sizeType, post):
         return sizes
 
     if sizeType == SIZE_NUM:
-        sizes = {}
-        numSizes = 0
         while (True):
             # Find a size set, there should be at least one
             number = next((n for n in postCopy.keys() if "sizeNumberSelectionTemplate" in n
@@ -485,7 +487,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
                             "colorsAndQuantities": []
                         }
                     )
-                    prefix = set[0:number.find("_")]
+                    prefix = number[0:number.find("_")]
                     _populateColorsAndQuantitiesForSize(numSizes, postCopy, prefix, sizes)
                     numSizes += 1
                 postCopy.pop(number)
