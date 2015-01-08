@@ -43,15 +43,6 @@
   // This identifies your website in the createToken call below
   Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
 
-  $("#payment-info-form").parsley({
-        successClass: 'has-success',
-        errorClass: 'has-error',
-        classHandler: function(el) {
-            return el.$element.closest(".form-group");
-        },
-        errorsWrapper: '<span class=\"help-block\"></span>',
-        errorTemplate: '<span></span>'
-    });
 
   jQuery(function($) {
       $('#payment-info-form').submit(function (event) {

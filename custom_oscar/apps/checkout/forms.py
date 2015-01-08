@@ -60,6 +60,7 @@ class PaymentInfoForm(forms.Form):
 
     helper = FormHelper()
     helper.form_id = 'payment-info-form'
+    helper.form_class = 'parsley-form'
     helper.form_show_labels = False
     # helper.form_action = reverse_lazy('checkout:payment-details')
 
