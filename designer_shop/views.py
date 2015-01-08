@@ -28,8 +28,14 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
 
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation
 
+from django.views.generic import ListView
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
+
+class ShopListView(ListView):
+    template_name = "shoplist.html"
+    model = Shop
+    context_object_name = "shop_list"
 
 
 class IsShopOwnerDecorator(object):
