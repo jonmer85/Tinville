@@ -63,7 +63,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
     def post(self, request, *args, **kwargs):
 
         error_msg = (
-            "A problem occurred communicating with PayPal "
+            "A problem occurred communicating with Stripe "
             "- please try again later"
         )
         try:

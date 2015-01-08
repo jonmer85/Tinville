@@ -405,22 +405,8 @@ function clearColorRow( strRowToClear )
         var strRowId = "#" + strRowToClear ;
         var indexToRemove = arColorRows.indexOf(strRowToClear) ;
 
-        //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
-        if( indexToRemove == arColorRows.length - 1)
-        {
-
-            var colorRowNum = strRowId.slice( -1 ) ;
-            var tempStr = strRowId.replace( "rowColorQuantityTemplate" + colorRowNum, "") ;
-            $(tempStr + "id_quantityField" + colorRowNum).val("");
-
-        }
-        else
-        {
-
-            $( strRowId ).empty();
-            arColorRows.splice( indexToRemove, 1 ) ;
-
-        }
+        $(strRowId).remove();
+        arColorRows.splice(indexToRemove, 1);
 
 }
 
@@ -430,39 +416,9 @@ function clearSizeRow( strRowToClear )
     var strRowId = "#" + strRowToClear ;
     var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
 
-    if( indexToRemove == arSizeRows.length - 1) //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
-    {
+    $(strRowId).remove();
+    arSizeRows.splice(indexToRemove, 1);
 
-        //Clear the sizeSelection template
-        if( strRowToClear.indexOf("Selection") != -1 )
-        {
-            $(strRowId + "id_sizeSetSelection").val("");
-
-        }
-
-        //Clear the dimensionSelection template
-        if( strRowToClear.indexOf("Dimension") != -1 )
-        {
-
-            $(strRowId + "_id_sizeDimensionSelectionWidth").val("");
-            $(strRowId + "_id_sizeDimensionSelectionLength").val("");
-
-        }
-
-        //Clear the numberSelection template
-        if( strRowToClear.indexOf("Number") != -1 )
-        {
-            $(strRowId + "id_sizeNumberSelection").val("");
-        }
-
-    }
-    else
-    {
-
-        $( strRowId ).remove();
-        arSizeRows.splice( indexToRemove, 1 ) ;
-
-    }
 
 }
 
@@ -607,6 +563,12 @@ function GetNewCounter($element, classFromPrevious, initial){
     }
     return counter;
 }
+
+function ReplaceNumberAtEndOfString(string, newNumber) {
+    var newString = string.replace(/[_0-9]+$/, newNumber);
+    return newString
+}
+
 
 function appendSuffixToAttribute(element, attr, suffix){
     element.attr(attr, element.attr(attr) + suffix);
