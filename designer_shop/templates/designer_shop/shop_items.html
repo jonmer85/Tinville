@@ -7,7 +7,7 @@
             {% for product in products %}
                 {% purchase_info_for_product request product as session %}
                 {% if product.is_top_level %}
-                    <div class="col-xs-offset-1 col-xs-5 col-sm-offset-0 col-sm-4 col-md-2" style="padding-top: 1%; padding-bottom: 1%;">
+                    <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-4 col-md-2" style="padding-top: 1%; padding-bottom: 1%;">
                         <div class="row-xs-height">
                             <div class="container-xs-height">
                                 <div class="thumbnail shopItem shopBorderColor col-middle col-xs-height" style="border: none;">
@@ -38,10 +38,10 @@
                                     {% endif %}
                                     {% if product.primary_image and product.primary_image.original.url %}
                                         {% with image=product.primary_image %}
-                                            {% thumbnail image.original "150x185" upscale=False as thumb %}
-                                                <div class="Item" style = "width: 150px; height: 185px">
+                                            {% thumbnail image.original "120x148" upscale=False as thumb %}
+                                                <div class="Item">
                                                     <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
-                                                        <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="itemSize" style="max-width: 150px; width: 150px; height: 185px"/>
+                                                        <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="itemSize" />
                                                     </a>
                                                 </div>
                                             {% endthumbnail %}
