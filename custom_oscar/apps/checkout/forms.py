@@ -32,7 +32,7 @@ class ShippingAddressForm(CoreShippingAddressForm):
         Field('line4', placeholder="City"),
         Field('state', placeholder="State"),
         Field('postcode', placeholder="Zip code"),
-        Field('country', placeholder="Country"),
+        # Field('country', placeholder="Country"),
         Field('phone_number', placeholder="Phone Number")
     )
 
