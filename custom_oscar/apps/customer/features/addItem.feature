@@ -7,8 +7,10 @@ Feature: Add item to the shopping bag
 
 
   Scenario: Adding an item to the empty shopping bag
-    Given An empty shopping bag
-    When I add an item to the shopping bag
+    Given Demo page
+    When The shopping bag is empty
+    Then I click on an item
+    Then I add it to bag
     Then The bag icon should show the number of the item
     And  I click on the bag icon
     Then The checkout drop down is displayed
@@ -16,6 +18,7 @@ Feature: Add item to the shopping bag
     Then The checkout form should be displayed
 
     #out of stock issues?
+   #chekout when logged in and not logged in
 
     #question: does each scenario perform one big task?
     #should I call this file checkout?
