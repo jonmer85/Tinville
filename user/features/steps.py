@@ -50,6 +50,11 @@ def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
     }
     sign_in_local()
 
+@step(u'And I should have my email visible "([^"]*)"')
+def and_i_should_my_email_visible(step, email):
+    change_viewport_lg()
+    assert_selector_contains_text(".menuEmail",email)
+
 @step(u'Then I should see an error telling me that the email is required')
 def then_i_should_see_an_error_telling_me_that_email_is_required(step):
     assert_selector_does_exist("#lg-menuLogin #div_id_username.has-error")
