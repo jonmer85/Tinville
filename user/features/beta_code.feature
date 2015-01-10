@@ -1,6 +1,6 @@
 Feature: Beta Code
 
-  As a New Designer
+  As a Designer
   I would like to register
   So that I may receive a beta code
 
@@ -10,16 +10,12 @@ Feature: Beta Code
   So that my cookie is set
 
   @yori
-  Scenario: New Designer
+  Scenario: Form entry and user first and second access
     When I register for a shop named "BetaShop"
-    Then My shop is given a beta code
-
-  Scenario: User first access
+    And I can visit my shop at "/BetaShop/"
     Given the beta shop
     Then the access code page is displayed
     And I enter the access code
     Then I should be redirected to the beta shop
-
-  Scenario: Returning user
-    Given the BetaShop
+    Given the beta shop
     Then I should be redirected to the beta shop
