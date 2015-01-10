@@ -79,6 +79,7 @@
                     </div>
                     <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
                         {{ shop.aboutContent | bleach }}
+                        <div id="aboutHighlight"/>
                     </div>
                 </div>
             </div>
@@ -91,7 +92,26 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-    $("#shopTabLinkXS").click(function(){
+        $(function(){
+            var tabType = "{{ tab }}";
+            $("#aboutHighlight").toggle();
+            if(tabType !== null && tabType == 'about')
+            {
+                $("#aboutTabAnchor").click();
+                $("#aboutTabAnchorXS").click();
+                $("#minMaxIcon").click();
+                setTimeout(function () {
+                            $("#aboutHighlight").toggle("highlight");
+                        }, 1000
+                );
+                setTimeout(function () {
+                            $("#aboutHighlight").toggle("highlight");
+                        }, 8000
+                );
+            }
+        });
+
+        $("#shopTabLinkXS").click(function(){
         $("#shopTabLinkXS").addClass("shopMenuActiveColor");
         $("#aboutTabAnchorXS").removeClass("shopMenuActiveColor");
     });
