@@ -110,6 +110,10 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 def then_i_should_be_logged_in(step):
     assert_id_exists('clickedLogin-lg')
 
-
+@step(u'Visit and confirm the flatpages "([^"]*)"')
+def then_i_can_visit_my_shop(step, url):
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    assert_page_exist(url)
 # Utilities
 
