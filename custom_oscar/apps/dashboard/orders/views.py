@@ -108,7 +108,7 @@ class OrderDetailView(CoreOrderDetailView):
         try:
             shipment.buy(rate=shipment.lowest_rate(carriers=['USPS'], services=['Priority']))
         except Exception as e:
-            messages.error("Failed to buy shipping label, please try again.")
+            messages.error(self.request, "Failed to buy shipping label, please try again.")
             logger.error(e)
 
         shipment_info = {
