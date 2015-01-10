@@ -359,7 +359,7 @@ $("#id_sizeVariation").change(function() {
 
 function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-    sizesFieldSet.on("change", sizeSelectionClass, function(e) {
+    sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
 
 
         if($(this).closest('.accordion-group').next().length == "0") {
@@ -442,7 +442,7 @@ function addNewSizeRow(sizeType) {
             sizeNumRequired="";
             break
     }
-    $("#sizesFieldSet").append(templateName)
+    $("#sizesFieldSet").append(templateName);
     var $newSizeSelection = $("#"+sizeTemplateName);
     // Get the number at the end of the ID, increment it, and replace the old id
     var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
@@ -693,6 +693,8 @@ $("#optionContent li").click(function (){
     resizeEditor();
 });
 
+optionsXSMargin = 20;
+
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
     var maxFormHeight;
@@ -700,7 +702,7 @@ $("#optionsXS").click(function() {
     currentFormPanelHeight = $("#secondColumn").outerHeight();
     maxFormHeight = Math.round($(window).height()*0.90);
     $("#optionContent").height(maxFormHeight-
-            $("#optionsXS").outerHeight()-
+            $("#optionsXS").outerHeight()+ optionsXSMargin -
             $("#buttonContainer").outerHeight()-
             $("#shopEditorTitle").outerHeight()-
             parseInt($("#cornerRadius").css('border-top-width'))-
@@ -710,7 +712,7 @@ $("#optionsXS").click(function() {
             parseInt($("#formPanel").css('padding-bottom')));
             transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
 
-    if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
+    if ($("#optionPanel").outerHeight() == $("#optionsXS").outerHeight() + optionsXSMargin)
     {
         $("#optionPanel").velocity({height: transitionHeight},{duration: 300});
         $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});
@@ -738,7 +740,7 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
         $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        optionPanelHeight = $("#optionsXS").outerHeight();
+        optionPanelHeight = $("#optionsXS").outerHeight() + optionsXSMargin; /* Account for top margin, note the handler in $("#optionsXS").click accounts for the same margin */
         editorHeight = 0.90;
         maxFormHeight = $(window).height()*editorHeight;
         formTransitionHeight = maxFormHeight-optionPanelHeight-

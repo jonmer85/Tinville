@@ -106,7 +106,10 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
     def payment_description(self, order_number, total, **kwargs):
         # Jon M TODO - Add case for anonymous user with email
-        return self.request.user.email
+        if self.request.user.is_authenticated():
+            return self.request.user.email
+        else:
+            return self.checkout_session.get_guest_email()
         # return self.request.POST[STRIPE_EMAIL]
 
 

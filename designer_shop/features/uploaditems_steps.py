@@ -34,14 +34,35 @@ def and_i_fill_in_the_general_add_item_fields(step):
         scroll_to_element(wait_for_element_with_name_to_exist('sizeVariation'))
         Select(wait_for_element_with_name_to_be_displayed('sizeVariation')).select_by_value(itemfields['SizeVariation'])
 
+
+def select_colors_and_quantities(sizePrefix, step):
+    for (counter, colorQuantity) in enumerate(step.hashes):
+        Select(wait_for_element_with_id_to_be_clickable(
+            sizePrefix + "colorSelection" + unicode(counter))).select_by_visible_text(colorQuantity["Color"])
+        clear_and_send_keys(wait_for_element_with_id_to_be_clickable(sizePrefix + "quantityField" + unicode(counter)), colorQuantity["Quantity"])
+
+
 @step(u'I choose the size (.*) with row number (\d+) and I fill the following quantities and colors')
 def i_choose_the_size_and_fill_colors_and_quantities(step, size_set, row_number):
     row_number = unicode(int(row_number) - 1)  # 0-bias it for indexing
     sizeSetPrefix = "sizeSetSelectionTemplate{0}_id_".format(row_number)
     Select(world.browser.find_element_by_id(sizeSetPrefix + "sizeSetSelection")).select_by_visible_text(size_set)
-    for (counter, colorQuantity) in enumerate(step.hashes):
-        Select(wait_for_element_with_id_to_be_clickable(sizeSetPrefix + "colorSelection" + unicode(counter))).select_by_visible_text(colorQuantity["Color"])
-        wait_for_element_with_id_to_be_clickable(sizeSetPrefix + "quantityField" + unicode(counter)).send_keys(colorQuantity["Quantity"])
+    select_colors_and_quantities(sizeSetPrefix, step)
+
+@step(u'I choose the sizeX (\d*\.?\d*) and the sizeY (\d*\.?\d*) with row number (\d+) and I fill the following quantities and colors')
+def i_choose_the_size_dims_and_fill_colors_and_quantities(step, dimX, dimY, row_number):
+    row_number = unicode(int(row_number) - 1)  # 0-bias it for indexing
+    sizeDimPrefix = "sizeDimensionSelectionTemplate{0}_id_".format(row_number)
+    wait_for_element_with_id_to_be_displayed(sizeDimPrefix + "sizeDimensionSelectionWidth").send_keys(dimX)
+    wait_for_element_with_id_to_be_displayed(sizeDimPrefix + "sizeDimensionSelectionLength").send_keys(dimY)
+    select_colors_and_quantities(sizeDimPrefix, step)
+
+@step(u'I choose the sizenumber (\d*\.?\d*) with row number (\d+) and I fill the following quantities and colors')
+def i_choose_the_size_num_and_fill_colors_and_quantities(step, size_number, row_number):
+    row_number = unicode(int(row_number) - 1)  # 0-bias it for indexing
+    sizeNumPrefix = "sizeNumberSelectionTemplate{0}_id_".format(row_number)
+    wait_for_element_with_id_to_be_displayed(sizeNumPrefix + "sizeNumberSelection").send_keys(size_number)
+    select_colors_and_quantities(sizeNumPrefix, step)
 
 @step(u'I add a new color to the size set product')
 def i_add_a_new_color_to_the_size_set_product(step):
