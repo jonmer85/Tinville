@@ -50,6 +50,11 @@ def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
     }
     sign_in_local()
 
+@step(u'And I should have my email visible "([^"]*)"')
+def and_i_should_my_email_visible(step, email):
+    change_viewport_lg()
+    assert_selector_contains_text(".menuEmail",email)
+
 @step(u'Then I should see an error telling me that the email is required')
 def then_i_should_see_an_error_telling_me_that_email_is_required(step):
     assert_selector_does_exist("#lg-menuLogin #div_id_username.has-error")
@@ -105,6 +110,10 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 def then_i_should_be_logged_in(step):
     assert_id_exists('clickedLogin-lg')
 
-
+@step(u'Visit and confirm the flatpages "([^"]*)"')
+def then_i_can_visit_my_shop(step, url):
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    assert_page_exist(url)
 # Utilities
 

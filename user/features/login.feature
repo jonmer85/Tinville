@@ -8,6 +8,7 @@ Feature: Login
     When I register for a shopper account with email "foo@bar.com" and password "foobar"
     And I sign in
     Then I should be redirected to the home page
+    And I should have my email visible "foo@bar.com"
 
   Scenario: Login error appears when no email is supplied
     When I access the home page

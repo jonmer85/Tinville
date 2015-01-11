@@ -89,7 +89,7 @@
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>
+                              <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
                             {% if user.is_seller or user.is_staff %}
@@ -296,14 +296,16 @@
                         </li>
 
                         {% if user.is_authenticated %}
-
+                            <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
+                                <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                            </li>
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span id="clickedLogin-lg" class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                                      <span id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
-                                    {% if user.is_seller or user.is_staff %}
+                                      {% if user.is_seller or user.is_staff %}
                                         <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                                         <li class="divider"></li>
                                     {% endif %}
@@ -318,9 +320,13 @@
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                    <li class="hidden-md hidden-lg divider"></li>
+                                    <li class="hidden-md hidden-lg logEmail">{{ user.email }}</li>
+
                                   </ul>
 
                             </li>
+
                         {% else %}
                             <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -852,7 +858,7 @@ function LoadCartItemDiv(cartItem)
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
-    var price = '$' + cartItem.price;
+    var price = '$' + (cartItem.qty * cartItem.price);
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo(rowdiv);

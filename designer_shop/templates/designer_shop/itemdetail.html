@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="addToCart col-xs-12">
-                                            <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart">Add to Bag</a>
+                                            <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart"><i id="okButton" class="glyphicon "></i> Add to Bag</a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -504,6 +504,7 @@ $( function()
                 $('.itemPrice').text(variantprice);
                 $('.itemStockQuantity').text(variantquantity);
                 $('#buyQuantity').attr('max', numberquantity)
+                $("#id_AddToCart").text("Add to bag");
                 return false
             }
             if (variantprice === "")
@@ -563,7 +564,11 @@ $( function()
 
                             data.image = "{{ MEDIA_URL }}" + data.image
                             AddCartItem(data)
-                            cartCount()
+                            cartCount();
+                            $("#id_AddToCart").text("");
+                            var txt1 = "<i id='okButton' class='glyphicon glyphicon-ok'></i>";
+                            var txt2 = "  Added to bag";  // Create text with jQuery
+                            $("#id_AddToCart").append(txt1, txt2);
                         }
                         else {
                             $('#messageId').html(data.msg)
