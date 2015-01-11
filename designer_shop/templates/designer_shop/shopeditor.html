@@ -8,8 +8,8 @@
 {% endblock css %}
 {% block content %}
 {{ block.super }}
-<div id="shopEditor">
-    <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
+<div id="shopEditor" class="container">
+    <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
                 <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">
@@ -44,7 +44,7 @@
                 <div id="secondColumn" class="container col-sm-10">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
@@ -53,11 +53,11 @@
 {#                                {% load crispy_forms_tags %}#}
 {#                                {% crispy logoUploadForm %}#}
 {#                            </form>#}
-                            <form class="tab-pane" id="color" action="ajax_color" method="post">
+                            <form class="tab-pane row" id="color" action="ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane" id="about" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane row" id="about" enctype="multipart/form-data" method="post">
                                  {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>

@@ -128,12 +128,14 @@ body
 
 /* Sticky footer styles
 -------------------------------------------------- */
+@media (min-width : 768px) {
 
-.footer {
-    position: absolute;
-    margin: 0;
-    width: 100%;
+    .footer {
+        position: absolute;
+        margin: 0;
+        width: 100%;
 
+    }
 }
 
 
@@ -1619,4 +1621,8 @@ textarea
     background: #ccc;
     z-index: 10;
     opacity: 0.5;
+}
+
+.paymentInfo {
+    margin-top: 10%
 }
