@@ -628,10 +628,16 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
 
 
 def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
-    if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
-        file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
+    if not form.cleaned_data[file_field.field.attname]:
+        # False means that the clear checkbox was checked
+        if file_field is not None:
+            file_field.delete()
         return True
-    return False
+    else:
+        if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
+            file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
+            return True
+        return False
 
 
 @IsShopOwnerDecoratorUsingItem

@@ -580,17 +580,14 @@
         });
 
         function stickyFooter() {
-            if(checkMode != "xs")
-            var $docH = $(document).height();
-            // The document height will grow as the content on the page grows.
-            $('.footer').css({
-                /*
-                 The default height of .navbar is 50px with a 1px border,
-                 change this 52 if you change the height of your footer.
-                 */
-                top: (
-                $docH - $('#footerContainer').height()) + 'px'
-            });
+            if (checkMode() != "xs") {
+                if ($(document).height() <= $(window).height()) {
+                    $('.slidingContent2').height
+                    (
+                            $(window).height() - $('.footer').height()
+                    );
+                }
+            }
         }
 
 

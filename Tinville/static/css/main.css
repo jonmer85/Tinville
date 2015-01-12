@@ -126,18 +126,6 @@ body
     cursor      : default;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-@media (min-width : 768px) {
-
-    .footer {
-        position: absolute;
-        margin: 0;
-        width: 100%;
-
-    }
-}
-
 
 @media (min-width : 768px)
 {
@@ -1378,6 +1366,7 @@ textarea
         -webkit-transition : all 1s ease;
     }
 
+
     .navButtonIconStyle b
     {
         float         : right;
@@ -1625,4 +1614,10 @@ textarea
 
 .paymentInfo {
     margin-top: 10%
+}
+
+
+.slidingContent2
+{
+    /*min-height: 600px !important;*/
 }

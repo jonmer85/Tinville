@@ -364,7 +364,7 @@ def get_partner_from_shop(shop):
 class AboutBoxForm(forms.Form):
 
     aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
-    aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
     aboutImgCropped = forms.CharField(required=False)
 
     helper = FormHelper()
@@ -408,8 +408,8 @@ class DesignerShopColorPicker(forms.Form):
 
 class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
-    mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
     bannerCropped = forms.CharField(required=False)
     mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
@@ -419,7 +419,7 @@ class BannerUploadForm(forms.Form):
         Div(Accordion(
             AccordionGroup('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
-                     <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
+                     <div rel="tooltip" title="info here"></div>"""),
                      Field('banner', css_class="autoHeight"),
                      CroppedFieldLayout('bannerCropped', 'banner_preview')),
 
