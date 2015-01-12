@@ -126,6 +126,19 @@ body
     cursor      : default;
 }
 
+/* Sticky footer styles
+-------------------------------------------------- */
+@media (min-width : 768px) {
+
+    .footer {
+        position: absolute;
+        margin: 0;
+        width: 100%;
+
+    }
+}
+
+
 @media (min-width : 768px)
 {
     .navbar-nav
@@ -597,6 +610,8 @@ body
 {
     padding-top : .5em;
 }
+
+
 
 textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus
 {
@@ -1606,4 +1621,8 @@ textarea
     background: #ccc;
     z-index: 10;
     opacity: 0.5;
+}
+
+.paymentInfo {
+    margin-top: 10%
 }

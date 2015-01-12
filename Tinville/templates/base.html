@@ -351,7 +351,7 @@
         </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container-fluid">
+    <div id="footerContainer" class="container-fluid footer">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
             <div class="row">
@@ -428,18 +428,6 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </div>
-{#            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseWhyBuyFromUs">#}
-{#                <h4 id="tinvilleXSFooterHeaders">Why Buy From Us</h4>#}
-{#            </button>#}
-{#            <div id="collapseWhyBuyFromUs" class="panel-collapse collapse footerPanelPadding">#}
-{#                <dl class="list-unstyled">#}
-{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
-{#                </dl>#}
-{#            </div>#}
             <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
                 <h4 id="tinvilleXSFooterHeaders">My Account</h4>
             </button>
@@ -582,6 +570,28 @@
                 }
             }
         });
+
+        $(document).ready(function () {
+            stickyFooter();
+        });
+
+        $(window).on('resize', function () {
+            stickyFooter();
+        });
+
+        function stickyFooter() {
+            if(checkMode != "xs")
+            var $docH = $(document).height();
+            // The document height will grow as the content on the page grows.
+            $('.footer').css({
+                /*
+                 The default height of .navbar is 50px with a 1px border,
+                 change this 52 if you change the height of your footer.
+                 */
+                top: (
+                $docH - $('#footerContainer').height()) + 'px'
+            });
+        }
 
 
 
@@ -980,11 +990,17 @@ function RemoveCartItem(itemId)
         errorTemplate: '<span></span>'
     });
 
-{#     {% if debug %}#}
-{#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
-{#     {% endif %}#}
+     {% if debug %}
+        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+     {% endif %}
+     //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
+    $('.pull-down').each(function() {
+        $(this).css('margin-top', $(this).parent().height()-$(this).height())
+    });
 
     </script>
+
+
 
     {% block javascript %}
     {% endblock javascript %}
