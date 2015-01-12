@@ -199,7 +199,7 @@ def and_a_banner_is_submitted(step):
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
     minimize_shop_editor()
-    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner.jpg')
+    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner')
 
 
 @step(u'And the tinville orange color f46430 is submitted')
