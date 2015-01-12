@@ -580,17 +580,16 @@
         });
 
         function stickyFooter() {
-            if(checkMode != "xs")
-            var $docH = $(document).height();
-            // The document height will grow as the content on the page grows.
-            $('.footer').css({
-                /*
-                 The default height of .navbar is 50px with a 1px border,
-                 change this 52 if you change the height of your footer.
-                 */
-                top: (
-                $docH - $('#footerContainer').height()) + 'px'
-            });
+{#            if (checkMode() != "xs") {#}
+{#                if ($(document).height() > $(window).height()) {#}
+{#                    $('.slidingContent2').height#}
+{#                    (#}
+{#                            $(window).height() - $('.footer').height()#}
+{#                    );#}
+{#                }#}
+                // Jon M TBD - Temp hack until we can find a better sticky footer solution :(
+                $('.slidingContent2').css('min-height', $(window).height() *.75);
+{#            }#}
         }
 
 
@@ -598,11 +597,11 @@
 
         $("#goToTopOfPage").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
 
         $("#goToTopOfPageXS").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
         $(window).resize(function(){
              var mode = checkMode();
 
@@ -649,7 +648,7 @@
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
             {% if messages %}
-                $('#messagesModal').modal()
+                $('#messagesModal').modal();
             {% endif %}
         });
 
@@ -681,8 +680,8 @@
                             menu="close";
                         }
             });
-            var self = $(this)
-            var url = "/load_cart"
+            var self = $(this);
+            var url = "/load_cart";
                 ajax_req = $.ajax({
                     url: url,
                     type: "GET",
@@ -691,12 +690,12 @@
                         $.each(data, function(index, item)
                         {
                             if (item.msg == ''){
-                                item.image = "{{ MEDIA_URL }}" + item.image
-                                AddCartItem(item)
+                                item.image = "{{ MEDIA_URL }}" + item.image;
+                                AddCartItem(item);
                                 cartCount()
                             }
                             else {
-                                $('#messageId').html(item.msg)
+                                $('#messageId').html(item.msg);
                                 $('#messageModal').modal('show');
                             }
                         });
@@ -885,7 +884,7 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-    var url = "/cart_total"
+    var url = "/cart_total";
     ajax_req = $.ajax({
         url: url,
         type: "GET",
@@ -909,8 +908,8 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
-    var self = $(this)
-    var url = "/delete_item_to_cart"
+    var self = $(this);
+    var url = "/delete_item_to_cart";
 
     var ajax_req = $.ajax({
             url: url,
@@ -991,12 +990,18 @@ function RemoveCartItem(itemId)
     });
 
      {% if debug %}
-        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+{#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
      {% endif %}
-     //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
+    //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
     $('.pull-down').each(function() {
         $(this).css('margin-top', $(this).parent().height()-$(this).height())
     });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        stickyFooter();
+    });
+
+
 
     </script>
 

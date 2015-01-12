@@ -193,13 +193,14 @@ def and_the_submit_banner_button_is_displayed(step):
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
     bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner.jpg"))
+    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitBanner"))
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
     minimize_shop_editor()
-    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner.jpg')
+    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner')
 
 
 @step(u'And the tinville orange color f46430 is submitted')
