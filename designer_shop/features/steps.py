@@ -116,7 +116,7 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-up').click()
     time.sleep(0.4)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.8)) <= 1
 
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
