@@ -350,126 +350,7 @@
             {% endblock content %}
         </div>
 
-{#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container-fluid footer">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
-            <div class="row">
-                <nav id="footerNavRight" class="col-sm-2 footer-nav">
-                <dl class="list-unstyled">
-                    <li class="mainFooterListItem">Information</li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
-{#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
-                    <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
-                </dl>
-            </nav>
-{#            <nav id="footerNavRight" class="footer-nav col-sm-2">#}
-{#                <dl class="list-unstyled">#}
-{#                    <li class="mainFooterListItem">Why Buy From Us</li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
-{#                </dl>#}
-{#            </nav>#}
-            <nav class="footer-nav col-sm-offset-2 col-sm-2">
-                <dl class="list-unstyled">
-                    <li class="mainFooterListItem">My Account</li>
-                        {% if user.is_authenticated %}
-                            <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
-                        {% else %}
-                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
-                        {% endif %}
-{#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
-                </dl>
-            </nav>
-            <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-2">
-                <dl class="list-unstyled">
-                    <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2014</li>
-                    <li id="tinvilleFooterListItemPrimary">Contact Us</li>
-                    <li id="tinvilleFooterListItemChild">
-                        <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
-                    </li>
-                    <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
-                    <li Id="tinvilleFooterListItemPrimary">
-                        <div class="footersocialMediaLinks">
-                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
-                            </a>
-                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
-                            </a>
-                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
-                            </a>
-                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
-                            </a>
-                        </div>
-                    </li>
-                </dl>
-            </nav>
-            </div>
-        </div>
-    </div>
 
-        <div class="panel-group footerRow hidden-sm hidden-md hidden-lg footerRow footer-nav">
-            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseInformation">
-                <h4 id="tinvilleXSFooterHeaders">Information</h4>
-            </button>
-            <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
-                <dl class="list-unstyled">
-                    <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
-                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
-                </dl>
-            </div>
-            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
-                <h4 id="tinvilleXSFooterHeaders">My Account</h4>
-            </button>
-            <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
-                <dl class="list-unstyled listPadding">
-                    <li class="mainFooterListItem">
-                        {% if user.is_authenticated %}
-                            <a href="/logout">Sign Out</a>
-                        {% else %}
-                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
-                        {% endif %}
-                    </li>
-{#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
-                </dl>
-            </div>
-            <div>
-                <dl class="list-unstyled listPadding">
-                    <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2013</li>
-                    <li id="tinvilleFooterListItemPrimary">Contact Us</li>
-                    <li id="tinvilleFooterListItemChild">
-                        <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
-                    </li>
-                    <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
-                    <li Id="tinvilleFooterListItemChild">
-                        <div class="footersocialMediaLinks">
-                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
-                            </a>
-                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
-                            </a>
-                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
-                            </a>
-                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
-                            </a>
-                        </div>
-                    </li>
-                </dl>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Static Modal -->
@@ -581,12 +462,13 @@
 
         function stickyFooter() {
             if (checkMode() != "xs") {
-                if ($(document).height() <= $(window).height()) {
-                    $('.slidingContent2').height
-                    (
-                            $(window).height() - $('.footer').height()
-                    );
-                }
+{#                if ($(document).height() > $(window).height()) {#}
+{#                    $('.slidingContent2').height#}
+{#                    (#}
+{#                            $(window).height() - $('.footer').height()#}
+{#                    );#}
+{#                }#}
+                $('body').css('margin-bottom', $('.footer').height());
             }
         }
 
@@ -595,11 +477,11 @@
 
         $("#goToTopOfPage").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
 
         $("#goToTopOfPageXS").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
         $(window).resize(function(){
              var mode = checkMode();
 
@@ -646,7 +528,7 @@
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
             {% if messages %}
-                $('#messagesModal').modal()
+                $('#messagesModal').modal();
             {% endif %}
         });
 
@@ -678,8 +560,8 @@
                             menu="close";
                         }
             });
-            var self = $(this)
-            var url = "/load_cart"
+            var self = $(this);
+            var url = "/load_cart";
                 ajax_req = $.ajax({
                     url: url,
                     type: "GET",
@@ -688,12 +570,12 @@
                         $.each(data, function(index, item)
                         {
                             if (item.msg == ''){
-                                item.image = "{{ MEDIA_URL }}" + item.image
-                                AddCartItem(item)
+                                item.image = "{{ MEDIA_URL }}" + item.image;
+                                AddCartItem(item);
                                 cartCount()
                             }
                             else {
-                                $('#messageId').html(item.msg)
+                                $('#messageId').html(item.msg);
                                 $('#messageModal').modal('show');
                             }
                         });
@@ -882,7 +764,7 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-    var url = "/cart_total"
+    var url = "/cart_total";
     ajax_req = $.ajax({
         url: url,
         type: "GET",
@@ -906,8 +788,8 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
-    var self = $(this)
-    var url = "/delete_item_to_cart"
+    var self = $(this);
+    var url = "/delete_item_to_cart";
 
     var ajax_req = $.ajax({
             url: url,
@@ -988,12 +870,18 @@ function RemoveCartItem(itemId)
     });
 
      {% if debug %}
-        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+{#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
      {% endif %}
-     //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
+    //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
     $('.pull-down').each(function() {
         $(this).css('margin-top', $(this).parent().height()-$(this).height())
     });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        stickyFooter();
+    });
+
+
 
     </script>
 
@@ -1003,4 +891,124 @@ function RemoveCartItem(itemId)
     {% endblock javascript %}
 {% endblock body %}
 </body>
+{#The footer HTML is below.. Links still needed to completed#}
+    <div id="footerContainer" class="container-fluid footer">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
+            <div class="row">
+                <nav id="footerNavRight" class="col-sm-2 footer-nav">
+                <dl class="list-unstyled">
+                    <li class="mainFooterListItem">Information</li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
+{#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
+                    <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+                </dl>
+            </nav>
+{#            <nav id="footerNavRight" class="footer-nav col-sm-2">#}
+{#                <dl class="list-unstyled">#}
+{#                    <li class="mainFooterListItem">Why Buy From Us</li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
+{#                </dl>#}
+{#            </nav>#}
+            <nav class="footer-nav col-sm-offset-2 col-sm-2">
+                <dl class="list-unstyled">
+                    <li class="mainFooterListItem">My Account</li>
+                        {% if user.is_authenticated %}
+                            <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
+                        {% else %}
+                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
+                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                        {% endif %}
+{#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
+                </dl>
+            </nav>
+            <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-2">
+                <dl class="list-unstyled">
+                    <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
+                    <li id="tinvilleFooterListItemChild">2011-2014</li>
+                    <li id="tinvilleFooterListItemPrimary">Contact Us</li>
+                    <li id="tinvilleFooterListItemChild">
+                        <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
+                    </li>
+                    <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+                    <li Id="tinvilleFooterListItemPrimary">
+                        <div class="footersocialMediaLinks">
+                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
+                            </a>
+                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
+                            </a>
+                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
+                            </a>
+                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
+                            </a>
+                        </div>
+                    </li>
+                </dl>
+            </nav>
+            </div>
+        </div>
+    </div>
+
+        <div class="panel-group footerRow hidden-sm hidden-md hidden-lg footerRow footer-nav">
+            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseInformation">
+                <h4 id="tinvilleXSFooterHeaders">Information</h4>
+            </button>
+            <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
+                <dl class="list-unstyled">
+                    <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
+                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
+                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+                </dl>
+            </div>
+            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
+                <h4 id="tinvilleXSFooterHeaders">My Account</h4>
+            </button>
+            <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
+                <dl class="list-unstyled listPadding">
+                    <li class="mainFooterListItem">
+                        {% if user.is_authenticated %}
+                            <a href="/logout">Sign Out</a>
+                        {% else %}
+                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
+                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                        {% endif %}
+                    </li>
+{#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
+                </dl>
+            </div>
+            <div>
+                <dl class="list-unstyled listPadding">
+                    <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
+                    <li id="tinvilleFooterListItemChild">2011-2013</li>
+                    <li id="tinvilleFooterListItemPrimary">Contact Us</li>
+                    <li id="tinvilleFooterListItemChild">
+                        <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
+                    </li>
+                    <li Id="tinvilleFooterListItemPrimary">Follow Us On:</li>
+                    <li Id="tinvilleFooterListItemChild">
+                        <div class="footersocialMediaLinks">
+                            <a id="footerfacebookLink" href="http://www.facebook.com/Tinville1" target="_blank" class="fa fa-facebook fa-lg footersociallogo">
+                            </a>
+                            <a id="footertwitterLink" href="http://www.twitter.com/Tinville1" target="_blank" class="fa fa-twitter fa-lg footersociallogo">
+                            </a>
+                            <a id="footerpinterestLink" href="http://www.pinterest.com/tinville1/" target="_blank" class="fa fa-pinterest fa-lg footersociallogo">
+                            </a>
+                            <a id="footerinstagramLink" href="http://instagram.com/Tinville" target="_blank" class="fa fa-instagram fa-lg footersociallogo">
+                            </a>
+                        </div>
+                    </li>
+                </dl>
+            </div>
+        </div>
+    </div>
 </html>
