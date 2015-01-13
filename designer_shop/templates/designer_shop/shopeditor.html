@@ -8,8 +8,8 @@
 {% endblock css %}
 {% block content %}
 {{ block.super }}
-<div id="shopEditor">
-    <div id ="shopEditorWindow" class="row col-sm-12 panel-group navbar-fixed-bottom" id="accordion">
+<div id="shopEditor" class="container">
+    <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
             <div id="shopEditorHeading" class="panel-heading">
                 <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">
@@ -44,7 +44,7 @@
                 <div id="secondColumn" class="container col-sm-10">
                     <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <form class="tab-pane" id="banner" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy bannerUploadForm %}
                             </form>
@@ -53,11 +53,11 @@
 {#                                {% load crispy_forms_tags %}#}
 {#                                {% crispy logoUploadForm %}#}
 {#                            </form>#}
-                            <form class="tab-pane" id="color" action="ajax_color" method="post">
+                            <form class="tab-pane row" id="color" action="ajax_color" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane" id="about" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane row" id="about" enctype="multipart/form-data" method="post">
                                  {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
@@ -203,7 +203,7 @@ var htmlString = "<div>\
 </div>";
 
 var colorQuantityTableHead = "" +
-"<div class='accordion-body collapse collapse-colors-quantity col-xs-8 '>" +
+"<div class='accordion-body collapse collapse-colors-quantity col-xs-12' style='padding-right: 0; '>" +
     "<div class='accordion-inner table-responsive'>" +
         "<table class='table'>" +
             "<thead>" +
@@ -694,13 +694,14 @@ $("#optionContent li").click(function (){
 });
 
 optionsXSMargin = 20;
+editorHeightRatio = 0.85;
 
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
     var maxFormHeight;
     var transitionHeight;
     currentFormPanelHeight = $("#secondColumn").outerHeight();
-    maxFormHeight = Math.round($(window).height()*0.90);
+    maxFormHeight = Math.round($(window).height()*editorHeightRatio);
     $("#optionContent").height(maxFormHeight-
             $("#optionsXS").outerHeight()+ optionsXSMargin -
             $("#buttonContainer").outerHeight()-
@@ -741,8 +742,7 @@ function resizeEditor() {
         $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
         $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
         optionPanelHeight = $("#optionsXS").outerHeight() + optionsXSMargin; /* Account for top margin, note the handler in $("#optionsXS").click accounts for the same margin */
-        editorHeight = 0.90;
-        maxFormHeight = $(window).height()*editorHeight;
+        maxFormHeight = $(window).height()*editorHeightRatio;
         formTransitionHeight = maxFormHeight-optionPanelHeight-
                 $("#shopEditorTitle").outerHeight()-
                 $("#buttonContainer").outerHeight()-
@@ -757,7 +757,7 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
         $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-        editorPanelHeight = 0.85;
+        editorPanelHeight = 0.80;
         excess =  $("#shopEditorTitle").outerHeight()+
                 parseInt($("#cornerRadius").css('border-top-width'))+
                 parseInt($("#cornerRadius").css('border-bottom-width'))+
