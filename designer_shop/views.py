@@ -1,5 +1,6 @@
 import json
 import collections
+import re
 import shutil
 import datetime
 from django.core.urlresolvers import reverse
@@ -8,7 +9,7 @@ from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
 from django.conf import settings
-
+from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -193,17 +194,6 @@ def shopeditor(request, shop_slug):
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
 
-# @IsShopOwnerDecorator
-# def about(request, slug):
-#         if request.method == 'POST':
-#             form = AboutBoxForm(request.POST)
-#             currentshop = Shop.objects.get(slug__iexact=slug)
-#             if request.is_ajax() and form.is_valid():
-#                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
-#                 currentshop.save(update_fields=["aboutContent"])
-#                 return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
-#         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
-
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
         if request.method == 'POST':
@@ -357,8 +347,10 @@ def get_sizetype(variants):
            return SIZE_NUM
        return "0"
 
+
 def get_min_price(item):
     return str(item.min_child_price_excl_tax)
+
 
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
@@ -568,8 +560,17 @@ def _replaceCroppedFile(form, dirFolderPath, fileFullPath, croppedField):
         img_file = open(fileFullPath, "w+b")
         img_file.write(img_data)
         img_file.close()
+def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
+    if not form.cleaned_data[file_field.field.attname]:
+        # False means that the clear checkbox was checked
+        if file_field is not None:
+            file_field.delete()
         return True
-    return False
+    else:
+        if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
+            file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
+            return True
+        return False
 
 
 @IsShopOwnerDecoratorUsingItem
