@@ -32,6 +32,8 @@ SSLIFY_DISABLE = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
+redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6959'))
+
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
