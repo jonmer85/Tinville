@@ -89,11 +89,15 @@
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>
+                              <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
                             {% if user.is_seller or user.is_staff %}
-                                <li><a href="#">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            {%  if user.is_seller %}
+                                <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
@@ -279,20 +283,10 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                          <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                            <a href="/shoplist/"  class="visible-xs list-group-item slideMenuText">
                                 <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
-                          </a>
-                          <a href="#" class="hidden-xs dropdown-toggle " data-toggle="dropdown">
-                              DESIGNERS
-                          </a>
-                          <ul class="dropdown-menu" >
-                              {% for shop in shops %}
-                                <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
-                                {% if not forloop.last %}
-                                   <li class="divider"></li>
-                                {% endif %}
-                              {% endfor %}
-                          </ul>
+                            </a>
+                            <a class="hidden-xs" href="/shoplist/">DESIGNERS</a>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
@@ -302,15 +296,21 @@
                         </li>
 
                         {% if user.is_authenticated %}
-
+                            <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
+                                <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                            </li>
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span id="clickedLogin-lg" class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                                      <span id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
-                                    {% if user.is_seller or user.is_staff %}
+                                      {% if user.is_seller or user.is_staff %}
                                         <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    {%  if user.is_seller %}
+                                        <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
@@ -320,9 +320,13 @@
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                    <li class="hidden-md hidden-lg divider"></li>
+                                    <li class="hidden-md hidden-lg logEmail">{{ user.email }}</li>
+
                                   </ul>
 
                             </li>
+
                         {% else %}
                             <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -854,7 +858,7 @@ function LoadCartItemDiv(cartItem)
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
-    var price = '$' + cartItem.price;
+    var price = '$' + (cartItem.qty * cartItem.price);
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo(rowdiv);
@@ -964,6 +968,17 @@ function RemoveCartItem(itemId)
               $( this ).parsley().validate();
           })
         });
+
+
+     $(".parsley-form").parsley({
+        successClass: 'has-success',
+        errorClass: 'has-error',
+        classHandler: function(el) {
+            return el.$element.closest(".form-group");
+        },
+        errorsWrapper: '<span class=\"help-block\"></span>',
+        errorTemplate: '<span></span>'
+    });
 
 {#     {% if debug %}#}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}

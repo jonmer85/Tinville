@@ -226,3 +226,94 @@ class DesignerShopTests(TestCase):
         self.assertNotContains(response, bad_script)
         response = self.client.get('/demo/testtitle/')
         self.assertNotContains(response, bad_script)
+
+    def test_exception_on_missing_size_variation_info(self):
+        self.client.login(username='demo@user.com', password='tinville')
+        initial_products = len(Product.objects.all())
+        response = self.client.post('/demo/edit/',
+                                {
+                                 'category': '37',
+                                 'description': 'Test Description',
+                                 'price': '3.00',
+                                 'product_image': '',
+                                 'product_image1': '',
+                                 'product_image2': '',
+                                 'product_image3': '',
+                                 'product_image4': '',
+                                 'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                 'sizeSetSelectionTemplate0_colorSelection1': '',
+                                 'sizeSetSelectionTemplate0_quantityField0': '1',
+                                 'sizeSetSelectionTemplate0_quantityField1': '1',
+                                 'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                 'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                 'title': 'TestTitle'
+                                })
+
+        self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
+        self.assertEquals(response.status_code, 400)
+
+    def test_exception_on_missing_sizes(self):
+        self.client.login(username='demo@user.com', password='tinville')
+        initial_products = len(Product.objects.all())
+        response = self.client.post('/demo/edit/',
+                                {
+                                 'category': '37',
+                                 'description': 'Test Description',
+                                 'price': '3.00',
+                                 'product_image': '',
+                                 'product_image1': '',
+                                 'product_image2': '',
+                                 'product_image3': '',
+                                 'product_image4': '',
+                                 'sizeVariation': '1',
+                                 'title': 'TestTitle'
+                                })
+        self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
+        self.assertEquals(response.status_code, 400)
+
+
+    def test_exception_on_missing_color(self):
+        self.client.login(username='demo@user.com', password='tinville')
+        initial_products = len(Product.objects.all())
+        response = self.client.post('/demo/edit/',
+                                    {'category': '37',
+                                     'description': 'Test Description',
+                                     'price': '3.00',
+                                     'product_image': '',
+                                     'product_image1': '',
+                                     'product_image2': '',
+                                     'product_image3': '',
+                                     'product_image4': '',
+                                     'sizeSetSelectionTemplate0_quantityField0': '1',
+                                     'sizeSetSelectionTemplate0_quantityField1': '1',
+                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                     'sizeVariation': '1',
+                                     'title': 'TestTitle'
+                                    })
+        self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
+        self.assertEquals(response.status_code, 400)
+
+
+    def test_exception_on_missing_quantities(self):
+        self.client.login(username='demo@user.com', password='tinville')
+        initial_products = len(Product.objects.all())
+        response = self.client.post('/demo/edit/',
+                                    {'category': '37',
+                                     'description': 'Test Description',
+                                     'price': '3.00',
+                                     'product_image': '',
+                                     'product_image1': '',
+                                     'product_image2': '',
+                                     'product_image3': '',
+                                     'product_image4': '',
+                                     'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                     'sizeSetSelectionTemplate0_colorSelection1': '',
+                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                     'sizeVariation': '1',
+                                     'title': 'TestTitle'
+                                    })
+        self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
+        self.assertEquals(response.status_code, 400)
+

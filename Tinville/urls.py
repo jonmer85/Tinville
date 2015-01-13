@@ -8,6 +8,7 @@ from oscar.core.loading import get_class
 from user.decorators import designer_required
 from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
 from user.forms import LoginForm
+from designer_shop.views import ShopListView
 
 from oscar.app import application
 # from oscar.app import application
@@ -23,6 +24,11 @@ urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
     url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
     url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
+)
+
+import debug_toolbar
+urlpatterns += patterns('',
+    url(r'^__debug__/', include(debug_toolbar.urls)),
 )
 
 urlpatterns += patterns('',
@@ -42,6 +48,7 @@ urlpatterns += patterns('',
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
     url(r'^access_code', BetaAccessView.as_view(), name = 'beta_access'),
+    url(r'^shoplist', ShopListView.as_view(template_name='shoplist.html'), name='shoplist'),
     url(r'^accounts/register', 'user.views.register', name='register'),
     url(r'^accounts/payment_info', designer_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),
     url(r'^accounts/addresses/(?P<pk>\d+)/'

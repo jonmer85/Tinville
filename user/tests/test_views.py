@@ -1,12 +1,17 @@
 import httplib
 import datetime
+from designer_shop.models import Shop
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.forms import ValidationError
+from oscar.core.loading import get_model
 import pytz
 from user.models import TinvilleUser
 from Tinville.settings.base import TIME_ZONE
 import re
+
+Partner = get_model('partner', 'Partner')
 
 class RegistrationTest(TestCase):
     def setUp(self):
@@ -32,6 +37,14 @@ class RegistrationTest(TestCase):
         shop = Shop.objects.get(user=user)
         self.assertEquals(shop.name, 'Casa de Schmoe')
         self.assertEquals(shop.slug, 'casa-de-schmoe')
+
+    def test_delete_seller_deletes_partner(self):
+        user = self.post_request_user(is_seller=True, shop_name='Casa de Schmoe')
+        assert Partner.objects.get(name=user.email) is not None
+        user.delete()
+        with self.assertRaises(ObjectDoesNotExist):
+            Partner.objects.get(name=user.email)
+
 
     def test_designer_access_code(self):
         self.assertNotNone(self.post_request_user(is_seller=True).access_code)

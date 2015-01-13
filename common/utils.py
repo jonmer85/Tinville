@@ -2,6 +2,8 @@ from crispy_forms.layout import Layout, Field, Div, HTML
 from django.conf import settings
 from decimal import Decimal as D, ROUND_FLOOR
 import string
+from django.core.exceptions import ValidationError, SuspiciousOperation
+
 
 def get_or_none(model, **kwargs):
     try:
@@ -14,6 +16,18 @@ def get_list_or_empty(model, **kwargs):
         return list(model.objects.filter(**kwargs))
     except model.DoesNotExist:
         return []
+
+def get_dict_value_or_validation_error(dict, key):
+    if key in dict:
+        return dict[key]
+    else:
+        raise ValidationError('No key %s in %s' % (key, dict))
+
+def get_dict_value_or_suspicious_operation(dict, key):
+    if key in dict:
+        return dict[key]
+    else:
+        raise SuspiciousOperation('No key %s in %s' % (key, dict))
 
 def get_designer_payout_amount(original_amount):
     # We take 10% of sales.

@@ -53,6 +53,10 @@ def Then_item_added_to_cart(step):
     wait_for_element_with_css_selector_to_exist(".shoppingcartitem[id^=lineId]")
     assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 1)
 
+@step(u'And check the Added to bag button')
+def And_check_added_to_bag(step):
+    assert_selector_contains_text("#id_AddToCart","Added to bag")
+
 @step(u'Then add another item is still in my cart')
 def add_and_still_in_my_cart(step):
     world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))

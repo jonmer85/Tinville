@@ -280,14 +280,14 @@ function sizeNumberTemplate(required){
                 "</div>" +
             "</div>" +
         "</div>" +
-    "</div>" + colorQuantityTableHead
+    "</div>" + colorQuantityTableHead;
     return sizeNumberTemplate;
 }
 
 function rowColorQuantityTemplate(required){
     numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
     if (required === "")
-        numRequired = ""
+        numRequired = "";
     var rowColorQuantityTemplate = "" +
     "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
         "<td>" +
@@ -359,13 +359,12 @@ $("#id_sizeVariation").change(function() {
 
 function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
     //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-    sizesFieldSet.on("change", sizeSelectionClass, function(e) {
+    sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
 
-        rowQtyRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
+
         if($(this).closest('.accordion-group').next().length == "0") {
             addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
         }
-        rowQtyRequired="";
 
         var selectedValue = eval(selectedValueType);
         var sizesFieldSet = $("#sizesFieldSet");
@@ -388,7 +387,7 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
         if (selectedValue[0].value != 0) {
             var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
             if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
-                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable);
+                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable, false);
                 currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
                 $('#formContent').animate({scrollTop: currentPanel  }, 500);
             }
@@ -401,28 +400,13 @@ var arColorRows = [] ;
 var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
 var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
 var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-var rowQtyRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
-        function clearColorRow( strRowToClear )
+function clearColorRow( strRowToClear )
 {
         var strRowId = "#" + strRowToClear ;
         var indexToRemove = arColorRows.indexOf(strRowToClear) ;
 
-        //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
-        if( indexToRemove == arColorRows.length - 1)
-        {
-
-            var colorRowNum = strRowId.slice( -1 ) ;
-            var tempStr = strRowId.replace( "rowColorQuantityTemplate" + colorRowNum, "") ;
-            $(tempStr + "id_quantityField" + colorRowNum).val("");
-
-        }
-        else
-        {
-
-            $( strRowId ).empty();
-            arColorRows.splice( indexToRemove, 1 ) ;
-
-        }
+        $(strRowId).remove();
+        arColorRows.splice(indexToRemove, 1);
 
 }
 
@@ -432,39 +416,9 @@ function clearSizeRow( strRowToClear )
     var strRowId = "#" + strRowToClear ;
     var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
 
-    if( indexToRemove == arSizeRows.length - 1) //indexOf starts at 0 while length starts at 1 so we have to reduce the length by 1 to make this work
-    {
+    $(strRowId).remove();
+    arSizeRows.splice(indexToRemove, 1);
 
-        //Clear the sizeSelection template
-        if( strRowToClear.indexOf("Selection") != -1 )
-        {
-            $(strRowId + "id_sizeSetSelection").val("");
-
-        }
-
-        //Clear the dimensionSelection template
-        if( strRowToClear.indexOf("Dimension") != -1 )
-        {
-
-            $(strRowId + "_id_sizeDimensionSelectionWidth").val("");
-            $(strRowId + "_id_sizeDimensionSelectionLength").val("");
-
-        }
-
-        //Clear the numberSelection template
-        if( strRowToClear.indexOf("Number") != -1 )
-        {
-            $(strRowId + "id_sizeNumberSelection").val("");
-        }
-
-    }
-    else
-    {
-
-        $( strRowId ).remove();
-        arSizeRows.splice( indexToRemove, 1 ) ;
-
-    }
 
 }
 
@@ -488,7 +442,7 @@ function addNewSizeRow(sizeType) {
             sizeNumRequired="";
             break
     }
-    $("#sizesFieldSet").append(templateName)
+    $("#sizesFieldSet").append(templateName);
     var $newSizeSelection = $("#"+sizeTemplateName);
     // Get the number at the end of the ID, increment it, and replace the old id
     var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
@@ -524,7 +478,13 @@ function addNewSizeRow(sizeType) {
     return $newSizeSelection;
 }
 
-function addNewColorAndQuantityRow(prefix, appendTo) {
+function addNewColorAndQuantityRow(prefix, appendTo, required) {
+
+    if(typeof(required)==='undefined') required = true;
+
+    var rowQtyRequired = "";
+    if(required === true)
+        rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required";
 
     var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
     colorsAndQuantities.collapse('show');
@@ -604,6 +564,12 @@ function GetNewCounter($element, classFromPrevious, initial){
     return counter;
 }
 
+function ReplaceNumberAtEndOfString(string, newNumber) {
+    var newString = string.replace(/[_0-9]+$/, newNumber);
+    return newString
+}
+
+
 function appendSuffixToAttribute(element, attr, suffix){
     element.attr(attr, element.attr(attr) + suffix);
 }
@@ -651,7 +617,7 @@ function populateProductVariantsInfo() {
                 var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
                 populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
             });
-            addNewColorAndQuantityRow(prefix, appendTo);
+            addNewColorAndQuantityRow(prefix, appendTo, false);
         });
         addNewSizeRow(sizeTypeString);
 
@@ -727,6 +693,8 @@ $("#optionContent li").click(function (){
     resizeEditor();
 });
 
+optionsXSMargin = 20;
+
 $("#optionsXS").click(function() {
     var currentFormPanelHeight;
     var maxFormHeight;
@@ -734,7 +702,7 @@ $("#optionsXS").click(function() {
     currentFormPanelHeight = $("#secondColumn").outerHeight();
     maxFormHeight = Math.round($(window).height()*0.90);
     $("#optionContent").height(maxFormHeight-
-            $("#optionsXS").outerHeight()-
+            $("#optionsXS").outerHeight()+ optionsXSMargin -
             $("#buttonContainer").outerHeight()-
             $("#shopEditorTitle").outerHeight()-
             parseInt($("#cornerRadius").css('border-top-width'))-
@@ -744,7 +712,7 @@ $("#optionsXS").click(function() {
             parseInt($("#formPanel").css('padding-bottom')));
             transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
 
-    if ($("#optionPanel").outerHeight()==$("#optionsXS").outerHeight())
+    if ($("#optionPanel").outerHeight() == $("#optionsXS").outerHeight() + optionsXSMargin)
     {
         $("#optionPanel").velocity({height: transitionHeight},{duration: 300});
         $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});
@@ -772,7 +740,7 @@ function resizeEditor() {
     {
         $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
         $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        optionPanelHeight = $("#optionsXS").outerHeight();
+        optionPanelHeight = $("#optionsXS").outerHeight() + optionsXSMargin; /* Account for top margin, note the handler in $("#optionsXS").click accounts for the same margin */
         editorHeight = 0.90;
         maxFormHeight = $(window).height()*editorHeight;
         formTransitionHeight = maxFormHeight-optionPanelHeight-

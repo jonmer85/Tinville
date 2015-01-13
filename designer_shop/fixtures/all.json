@@ -105,7 +105,7 @@
         "pk": 6,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/walken.jpg",
             "display_order": 4,
             "date_created": "2014-06-28 18:03:32.910457"
         }

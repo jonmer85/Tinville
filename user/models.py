@@ -12,10 +12,12 @@ from django.utils.timezone import utc
 from django.core.exceptions import ObjectDoesNotExist
 from autoslug import AutoSlugField
 
-from Tinville.settings.base import EMAIL_HOST_USER
 from oscar.apps.customer.abstract_models import UserManager, AbstractUser
+from oscar.core.loading import get_model
 
+from Tinville.settings.base import EMAIL_HOST_USER
 
+Partner = get_model("partner", "Partner")
 
 class TinvilleUserManager(UserManager):
 
@@ -78,9 +80,12 @@ class TinvilleUser(AbstractUser):
         self.access_code = access_code_candidate
         self.save()
 
-    def save(self, *args, **kwargs):
-
-        super(TinvilleUser, self).save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        if self.is_seller:
+            partner = Partner.objects.get(name=self.email)
+            if partner is not None:
+                partner.delete()
+        super(TinvilleUser, self).delete(*args, **kwargs)
 
     def get_full_name(self):
         # The user is identified by their email address

@@ -178,7 +178,7 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 PaymentInfoForm.header_payment_layout,
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
                 PaymentInfoForm.base_payment_layout,
-                Submit('payment-info', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
+                Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
 
