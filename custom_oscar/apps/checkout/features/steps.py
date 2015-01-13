@@ -22,6 +22,8 @@ def given_the_shipping_address_page(step):
 
 
 
+
+
 @step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
@@ -46,6 +48,12 @@ def and_a_panel_with_the_panel(step):
 @step(u'And a global submit button')
 def and_a_global_submit_button(step):
     assert world.browser.find_element_by_css_selector('button.tinvilleButton.pull-right')
+
+@step(u'And the shop editor is 85% of the window size by default')
+def and_the_shop_editor_is_85(step):
+    time.sleep(1)
+    shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
 
 @step(u'Given the demo shop editor')
 def give_demo_shop_editor(step):
@@ -75,7 +83,7 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-up').click()
     time.sleep(0.4)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.80)) <= 1
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
 
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
@@ -150,10 +158,8 @@ def and_the_submit_banner_button_is_displayed(step):
 
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
-    change_viewport_lg()
     bannerUploader = world.browser.find_element_by_id("id_banner")
     bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner.jpg"))
-    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitBanner"))
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 

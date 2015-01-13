@@ -17,7 +17,6 @@ def then_the_access_code_page_is_displayed(step):
 
 @step(u'And I enter the access code')
 def and_i_enter_the_access_code(step):
-    # user = TinvilleUser.objects.get(name = 'joe@schmoe.com')
     user = TinvilleUser.objects.get(email="joe@schmoe.com")
     form = fill_in_access_form(access_code=user.access_code)
     form.submit()

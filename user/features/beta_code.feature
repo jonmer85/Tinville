@@ -1,7 +1,7 @@
 Feature: Beta Code
 
   As a Designer
-  I would like to register
+  I would like to register a shop
   So that I may receive a beta code
 
   As a User

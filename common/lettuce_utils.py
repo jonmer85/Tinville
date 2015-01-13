@@ -211,7 +211,6 @@ def maximize_shop_editor():
         wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-down")
 
 def sign_in(email, password):
-    change_viewport_lg()
     login_menu = wait_for_element_with_id_to_be_displayed("lg-menuLogin")
     if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
         wait_for_element_with_link_text_to_be_clickable("SIGN IN").click()
