@@ -658,10 +658,10 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 function showImageFields() {
 
     var visibleImages = [
-        $('#product_image-clear_id').is(':visible'),
-        $('#product_image1-clear_id').is(':visible'),
-        $('#product_image2-clear_id').is(':visible'),
-        $('#product_image3-clear_id').is(':visible'),
+        $('#product_image-clear_id').length,
+        $('#product_image1-clear_id').length,
+        $('#product_image2-clear_id').length,
+        $('#product_image3-clear_id').length
     ];
 
     if(visibleImages[0]) {
