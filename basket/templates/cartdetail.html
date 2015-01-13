@@ -85,6 +85,12 @@
             var itemDescription = $('<p/>', {'text':cartItem.description});
             itemDescription.appendTo(itemInfoDiv);
 
+            var itemColor = $('<p/>', {'text':'Color: ' + cartItem.color});
+            itemColor.appendTo(itemInfoDiv);
+
+            var itemSize= $('<p/>', {'text':'Size: ' + cartItem.size});
+            itemSize.appendTo(itemInfoDiv);
+
             itemInfoDiv.appendTo(cartprodrow);
             cartitemtd.appendTo(cartitemtr);
             var price = '$' + cartItem.price;

@@ -8,6 +8,8 @@ from custom_oscar.apps.catalogue.models import Product
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.core.files.base import ContentFile
+from django.http.response import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -116,7 +118,6 @@ def shopper(request, slug):
             'shopProductCount': len(products)
         })
 
-
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
@@ -193,18 +194,6 @@ def shopeditor(request, shop_slug):
 @IsShopOwnerDecoratorUsingItem
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
-
-
-# @IsShopOwnerDecorator
-# def about(request, slug):
-# if request.method == 'POST':
-#             form = AboutBoxForm(request.POST)
-#             currentshop = Shop.objects.get(slug__iexact=slug)
-#             if request.is_ajax() and form.is_valid():
-#                 currentshop.aboutContent = form.cleaned_data["aboutContent"]
-#                 currentshop.save(update_fields=["aboutContent"])
-#                 return HttpResponse(json.dumps({'errors': form.errors}), mimetype='application/json')
-#         return HttpResponseBadRequest(json.dumps(form.errors), mimetype="application/json")
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
@@ -534,6 +523,43 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'shopProductCount': len(products)
     })
 
+def shopEditorContext(shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
+                      bannerUploadForm=None, item=None, tab=None):
+    editItem = item is not None
+    products = get_list_or_empty(Product, shop=shop.id)
+    shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
+    return {
+            'editmode': True,
+            'shop': shop,
+            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+            'editItemMode': editItem,
+            'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
+                                                                     {
+                                                                         "banner": shop.banner,
+                                                                         "mobileBanner": shop.mobileBanner
+                                                                     }),
+            'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
+                                                               {
+                                                                   "logo": shop.logo
+                                                               }),
+            'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
+                                                                                  {
+                                                                                      "color": shop.color
+                                                                                  }),
+            'aboutBoxForm': aboutForm or AboutBoxForm(initial=
+                                                      {
+                                                          "aboutContent": shop.aboutContent,
+                                                          "aboutImg": shop.aboutImg
+                                                      }),
+            'colors': AttributeOption.objects.filter(group=2),
+            'sizeSetOptions': AttributeOption.objects.filter(group=1),
+            'shopcategories': shopCategoryNames,
+            'shopgenders': get_filter_lists(shop).genderlist(),
+            'products': products,
+            'shopProductCount': len(products),
+            'tab' : tab or 'Default'
+    }
+
 
 #private method no Auth
 def processShopEditorForms(request, shop_slug, item_slug=None):
@@ -573,7 +599,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 _replaceCroppedFile(form, shop.aboutImg, 'about.jpg', 'aboutImgCropped')
                 shop.aboutContent = form.cleaned_data["aboutContent"]
                 shop.save(update_fields=["aboutContent", "aboutImg"])
-            return renderShopEditor(request, shop, aboutForm=form)
+            return render(request, 'designer_shop/shopeditor.html', shopEditorContext(shop, tab='about'))
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,
@@ -602,10 +628,16 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
 
 
 def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
-    if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
-        file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
+    if not form.cleaned_data[file_field.field.attname]:
+        # False means that the clear checkbox was checked
+        if file_field is not None:
+            file_field.delete()
         return True
-    return False
+    else:
+        if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
+            file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
+            return True
+        return False
 
 
 @IsShopOwnerDecoratorUsingItem
