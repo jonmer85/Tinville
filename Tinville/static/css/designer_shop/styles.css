@@ -327,7 +327,6 @@
     padding-right: 0px;
     padding-left: 0px;
     margin-left: 0px;
-    margin-bottom: 0px;
 }
 
 @media (max-width: 768px) {
@@ -585,20 +584,19 @@
     padding-left: 10px;
 }
 
-.itemDelete{
-  /*position:absolute;*/
-  /*bottom: 0;*/
-}
-
 .overlayDelete{
-  width: 17px;
-  height: 13px;
+  position: absolute;
+  bottom: 17px;
+  left: 130px;
+  width: 16px;
+  height: 25px;
   z-index: 10;
 }
 
 .overlayEdit{
-  /*position:absolute;*/
-  /*bottom: 0;*/
+  position: absolute;
+  bottom: 10px;
+  left: 40px;
   width: 25px;
   height: 25px;
   z-index: 10;

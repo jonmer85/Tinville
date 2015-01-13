@@ -2,6 +2,9 @@ import json
 import collections
 import re
 import shutil
+import datetime
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
 from custom_oscar.apps.catalogue.models import Product
@@ -15,6 +18,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 import os
 
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
@@ -28,6 +32,9 @@ from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm
 
+from common.utils import get_list_or_empty, get_or_none
+from user.forms import BetaAccessForm
+from user.models import TinvilleUser
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation
 
 from django.views.generic import ListView
@@ -100,6 +107,10 @@ class get_filter_lists:
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     products = get_list_or_empty(Product, shop=shop.id)
+
+    if not check_access_code(request):
+        return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
+
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
@@ -117,6 +128,16 @@ def shopper(request, slug):
             'products': products,
             'shopProductCount': len(products)
         })
+
+def check_access_code(request):
+    if 'beta_access' in request.COOKIES:
+        access_id = request.COOKIES['beta_access']
+        try:
+            TinvilleUser.objects.get(access_code = access_id)
+            return True
+        except ObjectDoesNotExist:
+            return False
+    return False
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
@@ -628,16 +649,10 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
 
 
 def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
-    if not form.cleaned_data[file_field.field.attname]:
-        # False means that the clear checkbox was checked
-        if file_field is not None:
-            file_field.delete()
+    if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
+        file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
         return True
-    else:
-        if form.cleaned_data[cropped_field_name] and len(form.cleaned_data[cropped_field_name]) > 0:
-            file_field.save(file_name, ContentFile(form.cleaned_data[cropped_field_name].decode("base64")))
-            return True
-        return False
+    return False
 
 
 @IsShopOwnerDecoratorUsingItem

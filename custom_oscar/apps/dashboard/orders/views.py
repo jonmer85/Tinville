@@ -38,7 +38,7 @@ def queryset_orders_for_user(user):
         return queryset.exclude(number__contains="-")
     else:
         partners = Partner._default_manager.filter(users=user)
-        orderlines = [l.order_id for l in Line.objects.filter(partner__in=partners)]
+        orderlines = Line.objects.filter(partner__in=partners)
         return Order.objects.filter(id__in=orderlines).distinct().filter(number__contains="-")
 
 class OrderListView(CoreOrderListView):

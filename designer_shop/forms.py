@@ -93,13 +93,13 @@ class ProductCreationForm(forms.ModelForm):
             = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
                                widget=AdvancedFileInput)
         self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
         self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=forms.ClearableFileInput)
 
         self.fields['description'] = BleachField(required=False)
         self.fields['description'].widget = TinyMCE()
@@ -364,7 +364,7 @@ def get_partner_from_shop(shop):
 class AboutBoxForm(forms.Form):
 
     aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
-    aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
     aboutImgCropped = forms.CharField(required=False)
 
     helper = FormHelper()
@@ -408,8 +408,8 @@ class DesignerShopColorPicker(forms.Form):
 
 class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
     bannerCropped = forms.CharField(required=False)
     mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
@@ -419,7 +419,7 @@ class BannerUploadForm(forms.Form):
         Div(Accordion(
             AccordionGroup('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
-                     <div rel="tooltip" title="info here"></div>"""),
+                     <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
                      Field('banner', css_class="autoHeight"),
                      CroppedFieldLayout('bannerCropped', 'banner_preview')),
 

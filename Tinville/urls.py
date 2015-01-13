@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.base import RedirectView, TemplateView
 from oscar.core.loading import get_class
 from user.decorators import designer_required
-from user.views import ajax_login, register, DesignerPaymentInfoView
+from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
 from user.forms import LoginForm
 from designer_shop.views import ShopListView
 
@@ -47,6 +47,7 @@ urlpatterns += patterns('',
     url(r'^feedback/', include('django_basic_feedback.urls')),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
+    url(r'^access_code', BetaAccessView.as_view(), name = 'beta_access'),
     url(r'^shoplist', ShopListView.as_view(template_name='shoplist.html'), name='shoplist'),
     url(r'^accounts/register', 'user.views.register', name='register'),
     url(r'^accounts/payment_info', designer_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),

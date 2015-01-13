@@ -429,7 +429,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'height': "250px",
     'font-size': '22',
     'plugins': "spellchecker, paste, searchreplace, advimage",  
-    'theme_advanced_buttons1': "fontsizeselect, separator, bold, italic, underline, separator, outdent, indent",
+    'theme_advanced_buttons1': "fontsizeselect, separator, bold, italic, underline, separator, outdent, indent, separator, bullist",
     'cleaup_on_startup': True,
     'theme_advanced_path': False
     
