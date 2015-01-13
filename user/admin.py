@@ -17,12 +17,13 @@ class TinvilleUserAdmin(UserAdmin):
     list_display = ('email',
                     'is_admin',
                     'is_seller',
-                    'is_active'
+                    'is_active',
+                    'is_staff'
                     )
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password', 'is_seller')}),
-        ('Permissions', {'fields': ('is_admin', 'is_active')}),
+        ('Permissions', {'fields': ('is_admin', 'is_active', 'is_staff')}),
         # ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
