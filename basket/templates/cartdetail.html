@@ -100,7 +100,7 @@
             var actions  = $('<td/>', {'class':'actions', 'data-th': ''});
             var delBtnId = 'deleteBtnId_' + cartItem.Id;
 
-            var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCheckoutItem(' + cartItem.Id + ')', 'id' : delBtnId,
+            var removeBtn = $('<button/>', { 'type' : 'button', 'onclick' : 'RemoveCheckoutItem(' + cartItem.Id + ',' + cartItem.shopSlug +')', 'id' : delBtnId,
                 'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
             });
             removeBtn.appendTo(actions);
@@ -122,10 +122,12 @@
             }
         }
 
-        function RemoveCheckoutItem(Id)
+        function RemoveCheckoutItem(Id, shopSlug)
         {
             RemoveCartItem(Id);
             $('#'+Id).remove();
+            if($('#'+shopSlug.id).length == 1)
+                $('#'+shopSlug.id).remove();
             aggregateCheckoutTotal();
         }
 
