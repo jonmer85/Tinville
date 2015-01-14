@@ -622,7 +622,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                     form = ProductCreationForm()
                     messages.success(request,
                                      ("Item has been successfully {0}!").format("created" if is_create else "updated"))
-            return renderShopEditor(request, shop, productCreationForm=form)
+            return renderShopEditor(request, shop, productCreationForm=form, item=item)
     else:
         return renderShopEditor(request, shop, item=item)
 
