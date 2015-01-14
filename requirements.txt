@@ -2,7 +2,7 @@
 -e git://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins
 -e git://github.com/jonmer85/django-color-utils.git#egg=color_utils
 -e git://github.com/jonmer85/django-basic-feedback.git@10ca27c5824886fabe6a9dd74cf52284b3b34674#egg=django_basic_feedback-dev
--e git://github.com/jonmer85/django-oscar.git@ecc56fcbb6a54cc0f3a5cb3eb528cc75c3addd02#egg=django-oscar
+-e git://github.com/jonmer85/django-oscar.git@c471205736ce0c04c9ab169ee81c05a9361b1b6a#egg=django-oscar
 -e git://github.com/jonmer85/django-oscar-stripe.git#egg=oscar_stripe
 amqp==1.4.6
 anyjson==0.3.3
