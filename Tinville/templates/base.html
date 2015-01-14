@@ -92,12 +92,12 @@
                               <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
-                            {% if user.is_seller or user.is_staff %}
-                                <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
-                                <li class="divider"></li>
-                            {% endif %}
                             {%  if user.is_seller %}
                                 <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
+                            {% if user.is_seller or user.is_staff %}
+                                <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
@@ -107,6 +107,9 @@
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+
                           </ul>
 
                     </li>
@@ -305,12 +308,12 @@
                                       <span id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
-                                      {% if user.is_seller or user.is_staff %}
-                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
-                                        <li class="divider"></li>
-                                    {% endif %}
                                     {%  if user.is_seller %}
                                         <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
+                                    {% if user.is_seller or user.is_staff %}
+                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
@@ -321,7 +324,7 @@
                                     {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                     <li class="hidden-md hidden-lg divider"></li>
-                                    <li class="hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                                    <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
 
                                   </ul>
 
@@ -669,9 +672,9 @@
                     $('.menu-toggle').click(function() {
                         if(menu == "close"){
                             $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
-                            $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');
+                            $('.navbarSliding').css('-webkit-transform','translate(0px, 0)');
                             $('.slidingContent').css('-transform','translate(70%, 0)');
-                            $('.navbarSliding').css('-transform','translate(-9px, 0)');
+                            $('.navbarSliding').css('-transform','translate(0px, 0)');
                             menu="open";
                         }
                         else{
