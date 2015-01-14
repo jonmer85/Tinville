@@ -126,7 +126,7 @@
         {
             RemoveCartItem(Id);
             $('#'+Id).remove();
-            if($('#'+shopSlug.id).length == 1)
+            if($('#'+shopSlug.id).children().length == 1)
                 $('#'+shopSlug.id).remove();
             aggregateCheckoutTotal();
         }
