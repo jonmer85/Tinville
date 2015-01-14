@@ -186,7 +186,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'compressor',
     'tinymce',
-    # 'sorl.thumbnail',
+    'sorl.thumbnail',
     'django_basic_feedback',
     'debug_toolbar',
     'oscar_stripe',

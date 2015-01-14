@@ -67,7 +67,7 @@ raven>=3
 redis==2.10.3
 selenium==2.42.1
 six==1.3.0
-sorl-thumbnail==11.12.1b
+sorl-thumbnail==12.2
 sure==1.2.3
 testtools==0.9.34
 wsgiref==0.1.2
