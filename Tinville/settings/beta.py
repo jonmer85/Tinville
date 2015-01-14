@@ -1,6 +1,7 @@
 # Django settings for Tinville project.
 
 from .base import *  # Start with base settings
+import urlparse
 
 import dj_database_url
 
