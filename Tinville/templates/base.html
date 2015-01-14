@@ -119,10 +119,10 @@
         <div class="container ">
             <div id="navHeader" class="navbar-header">
 
-                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >
+{#                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >#}
 {#                  <span class="input-group-addon">{{ user.name }}</span>#}
-                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
-                </div>
+{#                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">#}
+{#                </div>#}
                 <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
@@ -351,7 +351,7 @@
         </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container-fluid">
+    <div id="footerContainer" class="container-fluid footer">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
             <div class="row">
@@ -428,18 +428,6 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </div>
-{#            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseWhyBuyFromUs">#}
-{#                <h4 id="tinvilleXSFooterHeaders">Why Buy From Us</h4>#}
-{#            </button>#}
-{#            <div id="collapseWhyBuyFromUs" class="panel-collapse collapse footerPanelPadding">#}
-{#                <dl class="list-unstyled">#}
-{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
-{#                </dl>#}
-{#            </div>#}
             <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
                 <h4 id="tinvilleXSFooterHeaders">My Account</h4>
             </button>
@@ -583,16 +571,37 @@
             }
         });
 
+        $(document).ready(function () {
+            stickyFooter();
+        });
+
+        $(window).on('resize', function () {
+            stickyFooter();
+        });
+
+        function stickyFooter() {
+{#            if (checkMode() != "xs") {#}
+{#                if ($(document).height() > $(window).height()) {#}
+{#                    $('.slidingContent2').height#}
+{#                    (#}
+{#                            $(window).height() - $('.footer').height()#}
+{#                    );#}
+{#                }#}
+                // Jon M TBD - Temp hack until we can find a better sticky footer solution :(
+                $('.slidingContent2').css('min-height', $(window).height() *.75);
+{#            }#}
+        }
+
 
 
 
         $("#goToTopOfPage").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
 
         $("#goToTopOfPageXS").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
         $(window).resize(function(){
              var mode = checkMode();
 
@@ -639,7 +648,7 @@
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
             {% if messages %}
-                $('#messagesModal').modal()
+                $('#messagesModal').modal();
             {% endif %}
         });
 
@@ -661,18 +670,20 @@
                         if(menu == "close"){
                             $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
                             $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');
-
+                            $('.slidingContent').css('-transform','translate(70%, 0)');
+                            $('.navbarSliding').css('-transform','translate(-9px, 0)');
                             menu="open";
                         }
                         else{
                             $('.slidingContent').css('-webkit-transform','translate(0, 0)');
                             $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');
-
+                            $('.slidingContent').css('-transform','translate(0, 0)');
+                            $('.navbarSliding').css('-transform','translate(-100%, 0)');
                             menu="close";
                         }
             });
-            var self = $(this)
-            var url = "/load_cart"
+            var self = $(this);
+            var url = "/load_cart";
                 ajax_req = $.ajax({
                     url: url,
                     type: "GET",
@@ -681,12 +692,12 @@
                         $.each(data, function(index, item)
                         {
                             if (item.msg == ''){
-                                item.image = "{{ MEDIA_URL }}" + item.image
-                                AddCartItem(item)
+                                item.image = "{{ MEDIA_URL }}" + item.image;
+                                AddCartItem(item);
                                 cartCount()
                             }
                             else {
-                                $('#messageId').html(item.msg)
+                                $('#messageId').html(item.msg);
                                 $('#messageModal').modal('show');
                             }
                         });
@@ -875,7 +886,7 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-    var url = "/cart_total"
+    var url = "/cart_total";
     ajax_req = $.ajax({
         url: url,
         type: "GET",
@@ -899,8 +910,8 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
-    var self = $(this)
-    var url = "/delete_item_to_cart"
+    var self = $(this);
+    var url = "/delete_item_to_cart";
 
     var ajax_req = $.ajax({
             url: url,
@@ -980,11 +991,23 @@ function RemoveCartItem(itemId)
         errorTemplate: '<span></span>'
     });
 
-{#     {% if debug %}#}
+     {% if debug %}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
-{#     {% endif %}#}
+     {% endif %}
+    //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
+    $('.pull-down').each(function() {
+        $(this).css('margin-top', $(this).parent().height()-$(this).height())
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        stickyFooter();
+    });
+
+
 
     </script>
+
+
 
     {% block javascript %}
     {% endblock javascript %}

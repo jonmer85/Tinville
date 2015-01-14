@@ -18,7 +18,8 @@ def when_the_add_item_tab_is_selected(step):
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
-    world.browser.maximize_window()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
+
+    change_viewport_lg()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
     for itemfields in step.hashes:
         clear_and_send_keys(world.browser.find_element_by_name("title"), itemfields["Title"])
         # TinyMCE uses iframes so need to use their javascript API to set the content

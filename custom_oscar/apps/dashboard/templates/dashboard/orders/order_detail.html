@@ -133,7 +133,7 @@
         </ul>
         <ul id="nav-xs" class="nav nav-pills nav-stacked visible-xs">
             <li class="text-center dropdown active"><a id="orderContentDropdownHead" href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order contents" %} <span class="caret"></span></a>
-                <ul id="orderContentDropdown" class="dropdown-menu" roll="menu">
+                <ul id="orderContentDropdown" class="dropdown-menu specialDropdown" roll="menu">
                 {% block nav_tabs_xs %}
                     <li class="text-center {% if active_tab == 'lines' %}active{% endif %}"><a href="#lines" data-toggle="tab">{% trans "Order contents" %}</a></li>
                     <li class="text-center {% if active_tab == 'shipping' %}active{% endif %}"><a href="#shipping" data-toggle="tab">{% trans "Shipping" %}</a></li>
@@ -188,7 +188,7 @@
                                                 <button type="button" id="selectedShippingOption" name="selectedShippingOption" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
                                                     <span data-bind="label">Select One</span>&nbsp;<span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu" role="menu" id="shippingOptionSelect">
+                                                <ul class="dropdown-menu specialDropdown" role="menu" id="shippingOptionSelect">
                                                     {% for box_type in box_types %}
                                                         <li><a name="{{ box_type.type }}" href="#">{{ box_type.name }} {% if box_type.rates.0.rate != "0.00" %} (${{ box_type.rates.0.rate }}){% endif %}</a></li>
                                                     {% endfor %}

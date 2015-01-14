@@ -6,7 +6,7 @@ Feature: Shop Editor Shell
     And a panel for options
     And a panel with the panel
     And a global submit button
-    And the shop editor is 85% of the window size by default
+    And the shop editor is 80% of the window size by default
 
   Scenario: Shop Editor Shell non-XS size control
     Given the demo shop editor
