@@ -46,8 +46,25 @@ def CroppedFieldLayout(croppedField, preview):
     return \
         Layout(
             Field(croppedField, css_class='hidden'),
+            HTML(str.format("""
+                    <div class="docs-toolbar hidden">
+                      <div class="btn-group">
+                        <button class="btn btn-primary" data-method="zoom" data-option="0.1" type="button" title="Zoom In" onclick="$('#{0}').cropper(&quot;zoom&quot;, 0.1)">
+                            <span class="glyphicon glyphicon-zoom-in"></span>
+                        </button>
+                        <button class="btn btn-primary" data-method="zoom" data-option="-0.1" type="button" title="Zoom Out" onclick="$('#{0}').cropper(&quot;zoom&quot;, -0.1)">
+                            <span class="glyphicon glyphicon-zoom-out"></span>
+                        </button>
+                        <button class="btn btn-primary" data-method="rotate" data-option="-90" type="button" title="Rotate Left" onclick="$('#{0}').cropper(&quot;rotate&quot;, -90)">
+                            <span class="glyphicon glyphicon-share-alt gly-flip-horizontal"></span>
+                        </button>
+                        <button class="btn btn-primary" data-method="rotate" data-option="90" type="button" title="Rotate Right" onclick="$('#{0}').cropper(&quot;rotate&quot;, 90)">
+                            <span class="glyphicon glyphicon-share-alt"></span>
+                        </button>
+                      </div>
+                    </div>""", preview)),
             Div(
                 HTML(str.format("<img id='{0}'></img>", preview)),
-                css_class='img-container'
+                css_class='img-container', style="margin-top: 5px; margin-bottom: 10px"
             )
         )
