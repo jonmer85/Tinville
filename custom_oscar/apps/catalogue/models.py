@@ -2,6 +2,8 @@ from django.db import models
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct
 
+from image_cropping import ImageRatioField
+
 from designer_shop.models import Shop
 
 class Product(AbstractProduct):
@@ -37,5 +39,8 @@ class Product(AbstractProduct):
                 'original': self.get_missing_image(),
                 'caption': '',
                 'is_missing': True}
+
+class ProductImage(AbstractProductImage):
+    cropping = ImageRatioField('original', '400x500', box_max_width=200)
 
 from oscar.apps.catalogue.models import *

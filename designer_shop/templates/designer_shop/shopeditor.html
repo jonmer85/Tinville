@@ -5,6 +5,7 @@
     <script src="//tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
     <link href="{{ STATIC_URL }}css/cropper.css" rel="stylesheet">
+    {{ aboutBoxForm.media }}
 {% endblock css %}
 {% block content %}
 {{ block.super }}
@@ -835,32 +836,13 @@ function DeleteConfirmation(slug) {
 }
 
 
-    function readURL(input, preview, aspectRatio) {
+    function readURL(input, cropping_img) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
 
             reader.onload = function (e) {
-
-                if(preview.siblings(".cropper-container").length){
-                    preview.cropper("destroy");
-                }
-
-                preview.attr('src', e.target.result);
-                preview.cropper({
-                  aspectRatio: aspectRatio,
-{#                  autoCropArea: 0.6, // Center 60%#}
-                  multiple: true,
-                  dragCrop: false,
-                  dashed: true,
-                  movable: true,
-                  resizable: true,
-{#                  built: function () {#}
-{#                    $(this).cropper("zoom", 0.5);#}
-{#                  }#}
-                });
-
-
+                jcrop[cropping_img].setImage(reader.result);
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -868,18 +850,18 @@ function DeleteConfirmation(slug) {
     }
 
     $("#id_banner").change(function(){
-        $('#banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#banner_preview'), 1779 / 364);
+{#        $('#banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
+        readURL(this, 'id_bannerCropping-image');
     });
 
     $("#id_mobileBanner").change(function(){
-        $('#mobile_banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#mobile_banner_preview'), 968 / 642);
+{#        $('#mobile_banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
+        readURL(this, 'id_mobileBannerCropping-image');
     });
 
     $("#id_aboutImg").change(function(){
-        $('#aboutImg_preview').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#aboutImg_preview'), 1);
+{#        $('#aboutImg_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
+        readURL(this, 'id_aboutImgCropping-image');
     });
 
     $("#id_product_image").change(function(){
@@ -914,7 +896,7 @@ function DeleteConfirmation(slug) {
     });
 
     $("#about").submit(function(){
-        populateCroppedField($("#aboutImg_preview"), $("#id_aboutImgCropped"));
+{#        populateCroppedField($("#aboutImg_preview"), $("#id_aboutImgCropped"));#}
     });
 
     $("#addOrEditItem").submit(function(){
@@ -927,7 +909,7 @@ function DeleteConfirmation(slug) {
 
     function populateCroppedField($preview, $croppedField) {
         if($preview.siblings(".cropper-container").length) {
-            var img_data =$preview.cropper("getDataURL", "image/jpeg").replace("data:image/jpeg;base64,", "");
+            var img_data =$preview.cropper("getData");
             $croppedField.val(img_data);
         }
     }

@@ -194,6 +194,9 @@ INSTALLED_APPS = [
     'djcelery',
     'raven.contrib.django.raven_compat',
     'django_bleach',
+    'easy_thumbnails',
+    'image_cropping',
+    'smart_load_tag',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -521,3 +524,8 @@ DEBUG_TOOLBAR_CONFIG = {
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS

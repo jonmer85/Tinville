@@ -14,8 +14,9 @@ from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
+from image_cropping import ImageCropWidget
 
-from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES, Shop
 from common.utils import get_or_none, CroppedFieldLayout
 from common.widgets import AdvancedFileInput
 
@@ -31,11 +32,11 @@ class ProductCreationForm(forms.ModelForm):
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title",max_length=80)
 
-    product_image_cropped = forms.CharField(required=False)
-    product_image1_cropped = forms.CharField(required=False)
-    product_image2_cropped = forms.CharField(required=False)
-    product_image3_cropped = forms.CharField(required=False)
-    product_image4_cropped = forms.CharField(required=False)
+    # product_image_cropped = forms.CharField(required=False)
+    # product_image1_cropped = forms.CharField(required=False)
+    # product_image2_cropped = forms.CharField(required=False)
+    # product_image3_cropped = forms.CharField(required=False)
+    # product_image4_cropped = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
@@ -93,13 +94,13 @@ class ProductCreationForm(forms.ModelForm):
             = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
                                widget=AdvancedFileInput)
         self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=ImageCropWidget)
         self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=ImageCropWidget)
         self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=ImageCropWidget)
         self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
-                                                         widget=AdvancedFileInput)
+                                                         widget=ImageCropWidget)
 
         self.fields['description'] = BleachField(required=False)
         self.fields['description'].widget = TinyMCE()
@@ -361,11 +362,11 @@ def get_partner_from_shop(shop):
         partner.users.add(shop_owner)
         return partner
 
-class AboutBoxForm(forms.Form):
+class AboutBoxForm(forms.ModelForm):
 
-    aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
-    aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    aboutImgCropped = forms.CharField(required=False)
+    # aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    # aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    # aboutImgCropped = forms.CharField(required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -374,12 +375,23 @@ class AboutBoxForm(forms.Form):
             AccordionGroup('About',
                      HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
                      Field('aboutImg', css_class="autoHeight"),
-                     CroppedFieldLayout('aboutImgCropped', 'aboutImg_preview'),
+                     Field('aboutImgCropping'),
+                     # CroppedFieldLayout('aboutImgCropped', 'aboutImg_preview'),
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
+
+    def __init__(self, *args, **kwargs):
+        super(AboutBoxForm, self).__init__(*args, **kwargs)
+
+        self.fields['aboutContent'].widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 })
+
+
+    class Meta:
+        model = Shop
+        fields = ['aboutImg', 'aboutContent', 'aboutImgCropping']
 
 class DesignerShopColorPicker(forms.Form):
 
@@ -406,12 +418,12 @@ class DesignerShopColorPicker(forms.Form):
             raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
         return tinville_color
 
-class BannerUploadForm(forms.Form):
+class BannerUploadForm(forms.ModelForm):
 
-    banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    bannerCropped = forms.CharField(required=False)
-    mobileBannerCropped = forms.CharField(required=False)
+    # banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    # mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    # bannerCropped = forms.CharField(required=False)
+    # mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
     helper.form_show_labels = False
 
@@ -421,16 +433,20 @@ class BannerUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"></div>"""),
                      Field('banner', css_class="autoHeight"),
-                     CroppedFieldLayout('bannerCropped', 'banner_preview')),
+                     Field('bannerCropping')),
 
             AccordionGroup('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
-                     CroppedFieldLayout('mobileBannerCropped', 'mobile_banner_preview')),
+                     Field('mobileBannerCropping')),
             ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
         ))
+
+    class Meta:
+        model = Shop
+        fields = ['banner', 'mobileBanner', 'bannerCropping', 'mobileBannerCropping']
 
 class LogoUploadForm(forms.Form):
 

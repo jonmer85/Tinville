@@ -488,7 +488,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                     bannerUploadForm=None, item=None):
+                     bannerUploadForm=None, item=None, tab=None):
     editItem = item is not None
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
     products = get_list_or_empty(Product, shop=shop.id)
@@ -497,11 +497,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
         'editItemMode': editItem,
-        'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
-                                                                 {
-                                                                     "banner": shop.banner,
-                                                                     "mobileBanner": shop.mobileBanner
-                                                                 }),
+        'bannerUploadForm': bannerUploadForm or BannerUploadForm(instance=shop),
         'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
                                                            {
                                                                "logo": shop.logo
@@ -510,55 +506,15 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                                               {
                                                                                   "color": shop.color
                                                                               }),
-        'aboutBoxForm': aboutForm or AboutBoxForm(initial=
-                                                  {
-                                                      "aboutContent": shop.aboutContent,
-                                                      "aboutImg": shop.aboutImg
-                                                  }),
+        'aboutBoxForm': aboutForm or AboutBoxForm(instance=shop),
         'colors': AttributeOption.objects.filter(group=2),
         'sizeSetOptions': AttributeOption.objects.filter(group=1),
         'shopcategories': shopCategoryNames,
         'shopgenders': get_filter_lists(shop).genderlist(),
         'products': products,
-        'shopProductCount': len(products)
+        'shopProductCount': len(products),
+        'tab' : tab or 'Default'
     })
-
-def shopEditorContext(shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                      bannerUploadForm=None, item=None, tab=None):
-    editItem = item is not None
-    products = get_list_or_empty(Product, shop=shop.id)
-    shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
-    return {
-            'editmode': True,
-            'shop': shop,
-            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
-            'editItemMode': editItem,
-            'bannerUploadForm': bannerUploadForm or BannerUploadForm(initial=
-                                                                     {
-                                                                         "banner": shop.banner,
-                                                                         "mobileBanner": shop.mobileBanner
-                                                                     }),
-            'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
-                                                               {
-                                                                   "logo": shop.logo
-                                                               }),
-            'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
-                                                                                  {
-                                                                                      "color": shop.color
-                                                                                  }),
-            'aboutBoxForm': aboutForm or AboutBoxForm(initial=
-                                                      {
-                                                          "aboutContent": shop.aboutContent,
-                                                          "aboutImg": shop.aboutImg
-                                                      }),
-            'colors': AttributeOption.objects.filter(group=2),
-            'sizeSetOptions': AttributeOption.objects.filter(group=1),
-            'shopcategories': shopCategoryNames,
-            'shopgenders': get_filter_lists(shop).genderlist(),
-            'products': products,
-            'shopProductCount': len(products),
-            'tab' : tab or 'Default'
-    }
 
 
 #private method no Auth
@@ -567,23 +523,12 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
 
     form = None
     item = get_object_or_404(Product, slug__iexact=item_slug, parent__isnull=True) if item_slug else None
+    is_create = item is None
     if request.method == 'POST':
         if request.POST.__contains__('bannerUploadForm'):
-            form = BannerUploadForm(request.POST, request.FILES)
+            form = BannerUploadForm(request.POST, request.FILES, instance=shop)
             if form.is_valid():
-                bannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/banner'.format(shop.slug)
-                mobileBannerFullPrefix = settings.MEDIA_ROOT + '/shops/{0}/mobileBanner'.format(shop.slug)
-                bannerFullPath = bannerFullPrefix + "/banner.jpg"
-                bannerUrl = settings.MEDIA_URL + 'shops/{0}/banner/banner.jpg'.format(shop.slug)
-                mobileBannerFullPath = mobileBannerFullPrefix + "/mobileBanner.jpg"
-                mobileBannerUrl = settings.MEDIA_URL + 'shops/{0}/mobileBanner/mobileBanner.jpg'.format(shop.slug)
-
-                if _replaceCroppedFile(form, shop.banner, 'banner.jpg', "bannerCropped"):
-                    shop.save(update_fields=["banner"])
-
-                if _replaceCroppedFile(form, shop.mobileBanner, 'mobileBanner.jpg', "mobileBannerCropped"):
-                    shop.save(update_fields=["mobileBanner"])
-
+                form.save()
             return renderShopEditor(request, shop, bannerUploadForm=form)
         # Jon M TODO - Put back and cleanup if we support Logo again
         # elif request.POST.__contains__('logoUploadForm'):
@@ -594,12 +539,11 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
         #         shop.save(update_fields=["logo"])
         #     return renderShopEditor(request, shop, logoUploadForm=form)
         elif request.POST.__contains__('aboutBoxForm'):
-            form = AboutBoxForm(request.POST, request.FILES)
+            form = AboutBoxForm(request.POST, request.FILES, instance=shop)
             if form.is_valid():
-                _replaceCroppedFile(form, shop.aboutImg, 'about.jpg', 'aboutImgCropped')
-                shop.aboutContent = form.cleaned_data["aboutContent"]
-                shop.save(update_fields=["aboutContent", "aboutImg"])
-            return render(request, 'designer_shop/shopeditor.html', shopEditorContext(shop, tab='about'))
+                form.save()
+
+            return renderShopEditor(request, shop, aboutForm=form, tab='about')
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,
@@ -611,7 +555,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             if request.method == 'POST':
                 sizeVariationType = get_dict_value_or_suspicious_operation(request.POST, "sizeVariation")
                 sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
-                is_create = item is None
+
                 if is_create:
                     form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
                 else:
