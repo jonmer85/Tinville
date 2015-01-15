@@ -11,7 +11,7 @@ from django.shortcuts import render
 from oscar.core.loading import get_model
 import stripe
 
-from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName
+from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName, BetaAccessForm
 from user.models import TinvilleUser
 
 Partner = get_model('partner', 'Partner')
@@ -84,6 +84,7 @@ def register(request):
 
             # Create a Partner model if this is a designer
             if user.is_seller:
+                user.generate_access_code()
                 partner = Partner(name=user.email, code=user.slug)
                 partner.save()
                 partner.users.add(user)
@@ -151,4 +152,30 @@ def ajax_login(request, *args, **kwargs):
 
     return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
+class BetaAccessView(FormView):
+    template_name = 'beta_access.html'
+    form_class = BetaAccessForm
+    access_code = None
 
+    def get_context_data(self, **kwargs):
+        context = super(BetaAccessView, self).get_context_data(**kwargs)
+        context['shop'] = self.request.GET.get('shop', reverse('home'))
+        return context
+
+    def get_success_url(self):
+        shop = self.request.POST.get('shop',None)
+        if shop:
+            return reverse('designer_shop.views.shopper', kwargs = {'slug': shop})
+        else :
+            return reverse(reverse(''))
+
+    def form_valid(self, form):
+        form.cleaned_data['access_code']
+        self.access_code = form.cleaned_data['access_code']
+        return super(BetaAccessView,self).form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(BetaAccessView, self).dispatch(request, *args, **kwargs)
+        if self.access_code is not None:
+            response.set_cookie(key='beta_access',value = self.access_code, max_age = 365 * 24 * 60 * 60)#set cookie here
+        return response
