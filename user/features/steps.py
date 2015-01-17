@@ -77,7 +77,12 @@ def then_i_should_be_redirected_to_the_home_page(step):
 def then_i_can_visit_my_shop(step, url):
     absoluteUrl = lettuce.django.get_server().url(url)
     world.browser.get(absoluteUrl)
-    assert_page_exist(url)
+    redirect = '/access_code?shop=' + url
+    wait_for_browser_to_have_url(lettuce.django.get_server().url(redirect))
+    user = TinvilleUser.objects.get(email="joe@schmoe.com")
+    form = fill_in_access_form(access_code=user.access_code)
+    form.submit()
+    assert_page_exist(absoluteUrl)
 
 @step(u'I should see a confirmation notification prompting me to activate the account via email instructions to "([^"]*)"')
 def i_should_see_a_confirmation_notification(step, email):
