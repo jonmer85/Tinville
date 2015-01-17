@@ -38,7 +38,7 @@ def queryset_orders_for_user(user):
         return queryset.exclude(number__contains="-")
     else:
         partners = Partner._default_manager.filter(users=user)
-        orderlines = Line.objects.filter(partner__in=partners)
+        orderlines = [l.order_id for l in Line.objects.filter(partner__in=partners)]
         return Order.objects.filter(id__in=orderlines).distinct().filter(number__contains="-")
 
 class OrderListView(CoreOrderListView):
@@ -108,7 +108,7 @@ class OrderDetailView(CoreOrderDetailView):
         try:
             shipment.buy(rate=shipment.lowest_rate(carriers=['USPS'], services=['Priority']))
         except Exception as e:
-            messages.error("Failed to buy shipping label, please try again.")
+            messages.error(self.request, "Failed to buy shipping label, please try again.")
             logger.error(e)
 
         shipment_info = {

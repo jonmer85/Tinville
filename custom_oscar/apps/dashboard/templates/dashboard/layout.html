@@ -244,7 +244,7 @@
             }
         }
 
-        $( document.body ).on( 'click', '.dropdown-menu li', function( event ) {
+        $( document.body ).on( 'click', '.dropdown-menu.specialDropdown li', function( event ) {
             var $target = $( event.currentTarget );
             $target.closest( '.btn-group' )
                .find( '[data-bind="label"]' ).text( $target.text() )

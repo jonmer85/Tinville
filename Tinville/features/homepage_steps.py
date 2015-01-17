@@ -13,6 +13,7 @@ def goto_Demo_page_first(step):
 
 @step(u'When I click the Tinville Tag')
 def When_I_click_the_Tinville_Tag(step):
+    change_viewport_lg()
     wait_for_element_with_css_selector_to_be_clickable("#tinvilletagId").click()
 
 @step(u'Then I should be redirected to the home page')

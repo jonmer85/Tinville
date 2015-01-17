@@ -89,11 +89,15 @@
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span id="clickedLogin-xs" class="tinvilleDrayGray glyphicon glyphicon-user" style="font-size: large;"></span>
+                              <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
+                            {%  if user.is_seller %}
+                                <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                <li class="divider"></li>
+                            {% endif %}
                             {% if user.is_seller or user.is_staff %}
-                                <li><a href="#">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
@@ -103,6 +107,9 @@
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                            <li class="divider"></li>
+                            <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+
                           </ul>
 
                     </li>
@@ -115,10 +122,10 @@
         <div class="container ">
             <div id="navHeader" class="navbar-header">
 
-                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >
+{#                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >#}
 {#                  <span class="input-group-addon">{{ user.name }}</span>#}
-                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">
-                </div>
+{#                  <input class="form-control" type="text" placeholder="Search" style="width: 88%; margin-left: 4%">#}
+{#                </div>#}
                 <a class="hidden-xs" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
             </div>
 
@@ -279,20 +286,10 @@
                         </li>
 
                         <li class="dropdown navdropSize mobileDropBtnStyle">
-                          <a href="#"  data-toggle="dropdown" class="visible-xs list-group-item slideMenuText dropdown-toggle">
+                            <a href="/shoplist/"  class="visible-xs list-group-item slideMenuText">
                                 <i class="fa fa-pencil fa-fw"></i>&nbsp; Designers
-                          </a>
-                          <a href="#" class="hidden-xs dropdown-toggle " data-toggle="dropdown">
-                              DESIGNERS
-                          </a>
-                          <ul class="dropdown-menu" >
-                              {% for shop in shops %}
-                                <li><a href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>
-                                {% if not forloop.last %}
-                                   <li class="divider"></li>
-                                {% endif %}
-                              {% endfor %}
-                          </ul>
+                            </a>
+                            <a class="hidden-xs" href="/shoplist/">DESIGNERS</a>
                         </li>
                         <li class="dropdown yamm-fw mobileDropBtnStyle">
                             <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
@@ -302,15 +299,21 @@
                         </li>
 
                         {% if user.is_authenticated %}
-
+                            <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
+                                <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                            </li>
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span id="clickedLogin-lg" class="glyphicon glyphicon-user" style="font-size: large;"></span>
+                                      <span id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
+                                    {%  if user.is_seller %}
+                                        <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                        <li class="divider"></li>
+                                    {% endif %}
                                     {% if user.is_seller or user.is_staff %}
-                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                        <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
@@ -320,9 +323,13 @@
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                    <li class="hidden-md hidden-lg divider"></li>
+                                    <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+
                                   </ul>
 
                             </li>
+
                         {% else %}
                             <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                                 <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -347,7 +354,7 @@
         </div>
 
 {#The footer HTML is below.. Links still needed to completed#}
-    <div id="footerContainer" class="container-fluid">
+    <div id="footerContainer" class="container-fluid footer">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 footerRow hidden-xs">
             <div class="row">
@@ -424,18 +431,6 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </div>
-{#            <button class="footerPanelTitle footerSectionTitle footerButton" data-toggle="collapse" data-target="#collapseWhyBuyFromUs">#}
-{#                <h4 id="tinvilleXSFooterHeaders">Why Buy From Us</h4>#}
-{#            </button>#}
-{#            <div id="collapseWhyBuyFromUs" class="panel-collapse collapse footerPanelPadding">#}
-{#                <dl class="list-unstyled">#}
-{#                    <li class="mainFooterListItem"><a href="#">Shipping & Returns</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Secure Shopping</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Group Sales</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">Designers</a></li>#}
-{#                    <li class="mainFooterListItem"><a href="#">The Network</a></li>#}
-{#                </dl>#}
-{#            </div>#}
             <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
                 <h4 id="tinvilleXSFooterHeaders">My Account</h4>
             </button>
@@ -579,16 +574,37 @@
             }
         });
 
+        $(document).ready(function () {
+            stickyFooter();
+        });
+
+        $(window).on('resize', function () {
+            stickyFooter();
+        });
+
+        function stickyFooter() {
+{#            if (checkMode() != "xs") {#}
+{#                if ($(document).height() > $(window).height()) {#}
+{#                    $('.slidingContent2').height#}
+{#                    (#}
+{#                            $(window).height() - $('.footer').height()#}
+{#                    );#}
+{#                }#}
+                // Jon M TBD - Temp hack until we can find a better sticky footer solution :(
+                $('.slidingContent2').css('min-height', $(window).height() *.75);
+{#            }#}
+        }
+
 
 
 
         $("#goToTopOfPage").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
 
         $("#goToTopOfPageXS").click(function(){
              $('html, body').animate({ scrollTop: 0 }, 'slow');
-        })
+        });
         $(window).resize(function(){
              var mode = checkMode();
 
@@ -635,7 +651,7 @@
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
             {% if messages %}
-                $('#messagesModal').modal()
+                $('#messagesModal').modal();
             {% endif %}
         });
 
@@ -656,19 +672,21 @@
                     $('.menu-toggle').click(function() {
                         if(menu == "close"){
                             $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
-                            $('.navbarSliding').css('-webkit-transform','translate(-10px, 0)');
-
+                            $('.navbarSliding').css('-webkit-transform','translate(0px, 0)');
+                            $('.slidingContent').css('-transform','translate(70%, 0)');
+                            $('.navbarSliding').css('-transform','translate(0px, 0)');
                             menu="open";
                         }
                         else{
                             $('.slidingContent').css('-webkit-transform','translate(0, 0)');
                             $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');
-
+                            $('.slidingContent').css('-transform','translate(0, 0)');
+                            $('.navbarSliding').css('-transform','translate(-100%, 0)');
                             menu="close";
                         }
             });
-            var self = $(this)
-            var url = "/load_cart"
+            var self = $(this);
+            var url = "/load_cart";
                 ajax_req = $.ajax({
                     url: url,
                     type: "GET",
@@ -677,12 +695,12 @@
                         $.each(data, function(index, item)
                         {
                             if (item.msg == ''){
-                                item.image = "{{ MEDIA_URL }}" + item.image
-                                AddCartItem(item)
+                                item.image = "{{ MEDIA_URL }}" + item.image;
+                                AddCartItem(item);
                                 cartCount()
                             }
                             else {
-                                $('#messageId').html(item.msg)
+                                $('#messageId').html(item.msg);
                                 $('#messageModal').modal('show');
                             }
                         });
@@ -854,7 +872,7 @@ function LoadCartItemDiv(cartItem)
     });
     removeBtn.appendTo(removeBtnDiv);
     removeBtnDiv.appendTo(cartitemdiv);
-    var price = '$' + cartItem.price;
+    var price = '$' + (cartItem.qty * cartItem.price);
     var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
     priceDiv.appendTo(cartitemdiv);
     cartitemdiv.appendTo(rowdiv);
@@ -871,7 +889,7 @@ function LoadCartItemDiv(cartItem)
 
 function aggregateTotal()
 {
-    var url = "/cart_total"
+    var url = "/cart_total";
     ajax_req = $.ajax({
         url: url,
         type: "GET",
@@ -895,8 +913,8 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
-    var self = $(this)
-    var url = "/delete_item_to_cart"
+    var self = $(this);
+    var url = "/delete_item_to_cart";
 
     var ajax_req = $.ajax({
             url: url,
@@ -965,11 +983,34 @@ function RemoveCartItem(itemId)
           })
         });
 
-{#     {% if debug %}#}
+
+     $(".parsley-form").parsley({
+        successClass: 'has-success',
+        errorClass: 'has-error',
+        classHandler: function(el) {
+            return el.$element.closest(".form-group");
+        },
+        errorsWrapper: '<span class=\"help-block\"></span>',
+        errorTemplate: '<span></span>'
+    });
+
+     {% if debug %}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
-{#     {% endif %}#}
+     {% endif %}
+    //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
+    $('.pull-down').each(function() {
+        $(this).css('margin-top', $(this).parent().height()-$(this).height())
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        stickyFooter();
+    });
+
+
 
     </script>
+
+
 
     {% block javascript %}
     {% endblock javascript %}

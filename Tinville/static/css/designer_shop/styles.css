@@ -327,6 +327,7 @@
     padding-right: 0px;
     padding-left: 0px;
     margin-left: 0px;
+    margin-bottom: 0px;
 }
 
 @media (max-width: 768px) {
@@ -584,19 +585,20 @@
     padding-left: 10px;
 }
 
+.itemDelete{
+  /*position:absolute;*/
+  /*bottom: 0;*/
+}
+
 .overlayDelete{
-  position: absolute;
-  bottom: 17px;
-  left: 130px;
-  width: 16px;
-  height: 25px;
+  width: 17px;
+  height: 13px;
   z-index: 10;
 }
 
 .overlayEdit{
-  position: absolute;
-  bottom: 10px;
-  left: 40px;
+  /*position:absolute;*/
+  /*bottom: 0;*/
   width: 25px;
   height: 25px;
   z-index: 10;
@@ -638,4 +640,32 @@
     box-sizing: border-box;
     display: block;
 
+}
+
+.shopMenuBar {
+  float: right;
+    font-size: 13px;
+  /*padding: 15px 15px;*/
+  /*font-size: 18px;*/
+  /*line-height: 20px;*/
+}
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  /*color: #ffffff;*/
+  /*background-color: white !important;*/
+}
+
+.shopMenuActiveColor {
+    background-color: #dcdcdc;
+}
+
+
+.shoplistLi{
+    font-size: 1em;
+    list-style-type: none;
+    margin-top: 10px;
+}
+.shoplistStyle {
+    width: 100%;
+    height: 250px;
 }
