@@ -116,7 +116,7 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-up').click()
     time.sleep(0.4)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.8)) <= 1
 
 @step(u'When the color tab is selected')
 def when_the_color_tab_is_selected(step):
@@ -193,13 +193,14 @@ def and_the_submit_banner_button_is_displayed(step):
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
     bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner.jpg"))
+    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitBanner"))
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
     minimize_shop_editor()
-    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner.jpg')
+    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner')
 
 
 @step(u'And the tinville orange color f46430 is submitted')
@@ -210,11 +211,10 @@ def and_the_tinville_orange_color_f46430_is_submitted(step):
     # world.browser.find_element_by_id("minMaxIcon").click()
     wait_for_element_with_id_to_be_displayed("shopColorPicker")
     world.browser.find_element_by_id("shopColorPicker").click()
-    wait_for_ajax_to_complete()
 
 @step(u'Then an exception Tinville Branding is not Allowed to be Used is thrown')
 def then_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
-    assert_selector_does_exist("#div_id_color.has-error")
+    wait_for_element_with_css_selector_to_exist("#div_id_color.has-error")
     assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
 @step(u'(?:When|And) I sign in')

@@ -1,5 +1,6 @@
 import uuid
 from django import forms
+from django.core.files.base import ContentFile
 from django_bleach.forms import BleachField
 from oscar.apps.catalogue.models import ProductImage
 
@@ -7,7 +8,7 @@ from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button
+from crispy_forms.layout import Layout, Field, Submit, Div, Fieldset, HTML, Button, Hidden
 from crispy_forms.bootstrap import PrependedText, Accordion, AccordionGroup
 from tinymce.widgets import TinyMCE
 from color_utils import widgets
@@ -15,7 +16,7 @@ from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
 
 from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
-from common.utils import get_or_none
+from common.utils import get_or_none, CroppedFieldLayout
 from common.widgets import AdvancedFileInput
 
 
@@ -29,6 +30,12 @@ class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title",max_length=80)
+
+    product_image_cropped = forms.CharField(required=False)
+    product_image1_cropped = forms.CharField(required=False)
+    product_image2_cropped = forms.CharField(required=False)
+    product_image3_cropped = forms.CharField(required=False)
+    product_image4_cropped = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
@@ -59,11 +66,15 @@ class ProductCreationForm(forms.ModelForm):
                     AccordionGroup('Images',
                              HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
                              Field( 'product_image', css_id="id_productImage" ),
-                             HTML("""<div class="img-preview"></div>"""),
+                             CroppedFieldLayout('product_image_cropped', 'product_image_preview'),
                              Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
+                             CroppedFieldLayout('product_image1_cropped', 'product_image1_preview'),
                              Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
+                             CroppedFieldLayout('product_image2_cropped', 'product_image2_preview'),
                              Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
-                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden')
+                             CroppedFieldLayout('product_image3_cropped', 'product_image3_preview'),
+                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden'),
+                             CroppedFieldLayout('product_image4_cropped', 'product_image4_preview'),
                     ),
                     AccordionGroup('Sizes and Colors',
                              Field('sizeVariation', placeholder='Choose a variation'),
@@ -82,13 +93,13 @@ class ProductCreationForm(forms.ModelForm):
             = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
                                widget=AdvancedFileInput)
         self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
-                                                         widget=forms.ClearableFileInput)
+                                                         widget=AdvancedFileInput)
         self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
-                                                         widget=forms.ClearableFileInput)
+                                                         widget=AdvancedFileInput)
         self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
-                                                         widget=forms.ClearableFileInput)
+                                                         widget=AdvancedFileInput)
         self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
-                                                         widget=forms.ClearableFileInput)
+                                                         widget=AdvancedFileInput)
 
         self.fields['description'] = BleachField(required=False)
         self.fields['description'].widget = TinyMCE()
@@ -103,39 +114,40 @@ class ProductCreationForm(forms.ModelForm):
         if sizes:
             for i, size in enumerate(sizes):
                 if "sizeSet" in sizes[i] and sizes[i]["sizeSet"]:
-                    self.fields['sizeSetSelectionTemplate%s_sizeSetSelection' % i] \
+                    self.fields[sizes[i]["sizeFieldName"]] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=1), empty_label="Choose a size...", required=True, initial=sizes[i]["sizeSet"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)] \
-                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
-                                                      objects.filter(group=2), empty_label="Choose a color...",
-                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                        self.fields['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)] \
-                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+                        if colorAndQuantity['color'] and colorAndQuantity['quantity']:
+                            self.fields[colorAndQuantity['colorFieldName']] \
+                            = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                          objects.filter(group=2), empty_label="Choose a color...",
+                                                     initial=sizes[i]["colorsAndQuantities"][j]["color"], required=False)
+                            self.fields[colorAndQuantity['quantityFieldName']] \
+                            = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], required=False)
 
                 elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
-                    self.fields['sizeDimensionSelectionTemplate%s_sizeDimWidth' %i] \
+                    self.fields[sizes[i]["sizeFieldNameX"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeX"])
-                    self.fields['sizeDimensionSelectionTemplate%s_sizeDimLength' %i] \
+                    self.fields[sizes[i]["sizeFieldNameY"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeY"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['colorFieldName']] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                        self.fields['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
                 elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
-                    self.fields['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i] \
+                    self.fields[sizes[i]["sizeFieldName"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['colorFieldName']] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
-                        self.fields['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)] \
+                        self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
 
 
@@ -185,7 +197,7 @@ class ProductCreationForm(forms.ModelForm):
             return title
         raise forms.ValidationError('Item name already exist.')
 
-    def save(self, shop):
+    def save(self, shop, sizes, sizeType):
         is_edit = self.instance.pk is not None
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
@@ -215,62 +227,48 @@ class ProductCreationForm(forms.ModelForm):
         self.save_image_if_needed(canonicalProduct, "product_image3", 3)
         self.save_image_if_needed(canonicalProduct, "product_image4", 4)
 
-        i = 0
-        while True:
-            if ('sizeSetSelectionTemplate%s_sizeSetSelection' % i) in self.cleaned_data:
-                sizeSet = self.cleaned_data['sizeSetSelectionTemplate%s_sizeSetSelection' % i]
-                j = 0
-                while True:
-                    if ('sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
-                            'sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
-                        color = self.cleaned_data['sizeSetSelectionTemplate{}_colorSelection{}'.format(i, j)]
-                        quantity = self.cleaned_data['sizeSetSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
-                                                                   color=color, quantity=quantity)
-                    else:
-                        if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet)
-                        break
-                    j += 1
-                i += 1
+        for size in sizes:
+            if sizeType == SIZE_SET:
+                if size["sizeFieldName"] in self.cleaned_data:
+                    sizeSet = self.cleaned_data[size["sizeFieldName"]]
+                    for colorQuantity in size["colorsAndQuantities"]:
+                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                            quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
+                                                                       color=color, quantity=quantity)
+                        else:
+                            # Jon M TBD Should we allow no color/quantity?
+                            # For now ignore it
+                            pass
             # Tom Bowman was here 5-25-14
-            elif ('sizeDimensionSelectionTemplate%s_sizeDimWidth' % i) in self.cleaned_data and\
-                            ('sizeDimensionSelectionTemplate%s_sizeDimLength' % i) in self.cleaned_data:
-                sizeDimX = self.cleaned_data['sizeDimensionSelectionTemplate%s_sizeDimWidth' % i]
-                sizeDimY = self.cleaned_data['sizeDimensionSelectionTemplate%s_sizeDimLength' % i]
-                j = 0
-                while True:
-                    if ('sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
-                            'sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
-                        color = self.cleaned_data['sizeDimensionSelectionTemplate{}_colorSelection{}'.format(i, j)]
-                        quantity = self.cleaned_data['sizeDimensionSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
-                                                                        "y": sizeDimY}, color=color, quantity=quantity)
-                    else:
-                        if not j:
+            elif sizeType == SIZE_DIM:
+                if size["sizeFieldNameX"] in self.cleaned_data and size["sizeFieldNameY"] in self.cleaned_data:
+                    sizeDimX = self.cleaned_data[size["sizeFieldNameX"]]
+                    sizeDimY = self.cleaned_data[size["sizeFieldNameY"]]
+                    for colorQuantity in size["colorsAndQuantities"]:
+                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                            quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
-                                                                                                    "y": sizeDimY})
-                        break
-                    j += 1
-                i += 1
-            elif ('sizeNumberSelectionTemplate%s_sizeNumberSelection' % i) in self.cleaned_data:
-                sizeNum = self.cleaned_data['sizeNumberSelectionTemplate%s_sizeNumberSelection' % i]
-                j = 0
-                while True:
-                    if ('sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data and
-                            'sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j) in self.cleaned_data):
-                        color = self.cleaned_data['sizeNumberSelectionTemplate{}_colorSelection{}'.format(i, j)]
-                        quantity = self.cleaned_data['sizeNumberSelectionTemplate{}_quantityField{}'.format(i, j)]
-                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
-                                                                   color=color, quantity=quantity)
-                    else:
-                        if not j:
-                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId,  shop, sizeNum=sizeNum)
-                        break
-                    j += 1
-                i += 1
-            else:
-                break
+                                                                            "y": sizeDimY}, color=color, quantity=quantity)
+                        else:
+                            # Jon M TBD Should we allow no color/quantity?
+                            # For now ignore it
+                            pass
+            elif sizeType == SIZE_NUM:
+                if size["sizeFieldName"] in self.cleaned_data:
+                    sizeNum = self.cleaned_data[size["sizeFieldName"]]
+                    for colorQuantity in size["colorsAndQuantities"]:
+                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                            quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
+                                                                       color=color, quantity=quantity)
+                        else:
+                            # Jon M TBD Should we allow no color/quantity?
+                            # For now ignore it
+                            pass
         return canonicalProduct
 
     def save_image_if_needed(self, product, image_field, display_order):
@@ -278,17 +276,28 @@ class ProductCreationForm(forms.ModelForm):
             if not self.cleaned_data[image_field]:
                 # False means that the clear checkbox was checked
                 existing = get_or_none(ProductImage, display_order=display_order, product=product)
-                existing.delete()
+                if existing is not None:
+                    existing.delete()
 
             else:
-                newFileExists = get_or_none(ProductImage, original=self.cleaned_data[image_field].name, product=product)
-                if not newFileExists:
+                croppedImgField = self.cleaned_data[image_field + '_cropped']
+                newFileExists = croppedImgField is not None and croppedImgField != ""
+                if newFileExists:
                     existing = get_or_none(ProductImage, display_order=display_order, product=product)
                     if existing:
-                        existing.delete()
+                        existing.display_order = 999999 # temp value to not collide with replacement display_order
+                        existing.save()
+
+                    img_string = self.cleaned_data[image_field + '_cropped']
+                    img_data = img_string.decode("base64")
                     productImage = ProductImage(product=product, display_order=display_order)
-                    productImage.original = self.cleaned_data[image_field]
+                    productImage.original.save(self.cleaned_data[image_field].name, ContentFile(img_data))
                     productImage.save()
+
+                    if existing:
+                        existing.delete()
+
+
 
     def load_image(self, product, display_order):
         image = get_or_none(ProductImage, product=product, display_order=display_order)
@@ -355,7 +364,8 @@ def get_partner_from_shop(shop):
 class AboutBoxForm(forms.Form):
 
     aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
-    aboutImg = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    aboutImgCropped = forms.CharField(required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -364,6 +374,7 @@ class AboutBoxForm(forms.Form):
             AccordionGroup('About',
                      HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
                      Field('aboutImg', css_class="autoHeight"),
+                     CroppedFieldLayout('aboutImgCropped', 'aboutImg_preview'),
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
@@ -397,8 +408,10 @@ class DesignerShopColorPicker(forms.Form):
 
 class BannerUploadForm(forms.Form):
 
-    banner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
-    mobileBanner = forms.ImageField(required=False, max_length=255, widget=forms.FileInput)
+    banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    bannerCropped = forms.CharField(required=False)
+    mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
     helper.form_show_labels = False
 
@@ -406,11 +419,14 @@ class BannerUploadForm(forms.Form):
         Div(Accordion(
             AccordionGroup('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
-                     <div rel="tooltip" title="info here"><i class="fa fa-question-circle"></i></div>"""),
-                     Field('banner', css_class="autoHeight")),
+                     <div rel="tooltip" title="info here"></div>"""),
+                     Field('banner', css_class="autoHeight"),
+                     CroppedFieldLayout('bannerCropped', 'banner_preview')),
+
             AccordionGroup('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
-                     Field('mobileBanner', css_class="autoHeight")),
+                     Field('mobileBanner', css_class="autoHeight"),
+                     CroppedFieldLayout('mobileBannerCropped', 'mobile_banner_preview')),
             ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"

@@ -111,6 +111,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
@@ -153,7 +154,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
     'Tinville.context_processors.google_analytics_id',
-    'Tinville.context_processors.include_shops'
+    'Tinville.context_processors.include_shops',
+    'user.context_processors.get_user_shop'
     )
 
 # Actual Tinville business logic
@@ -187,7 +189,7 @@ INSTALLED_APPS = [
     'tinymce',
     # 'sorl.thumbnail',
     'django_basic_feedback',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'oscar_stripe',
     'kombu.transport.django',
     'djcelery',
@@ -216,7 +218,7 @@ LOGGING = {
     },
     'handlers': {
         'sentry': {
-            'level': 'ERROR',
+            'level': env('LOGGING_HANDLER_SENTRY_LEVEL', 'WARNING'),
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
         'console': {
@@ -226,9 +228,19 @@ LOGGING = {
         }
     },
     'loggers': {
+        'django.request': {
+            'level': env('LOGGING_LOGGER_DJANGO_REQUEST_LEVEL', 'WARNING'),
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        },
         'django.db.backends': {
-            'level': 'ERROR',
-            'handlers': ['console'],
+            'level': env('LOGGING_LOGGER_DJANGO_DB_BACKENDS_LEVEL', 'WARNING'),
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        },
+        'django.security': {
+            'level': env('LOGGING_LOGGER_DJANGO_SECURITY_LEVEL', 'WARNING'),
+            'handlers': ['console', 'sentry'],
             'propagate': False,
         },
         'raven': {
@@ -418,7 +430,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'height': "250px",
     'font-size': '22',
     'plugins': "spellchecker, paste, searchreplace, advimage",  
-    'theme_advanced_buttons1': "fontsizeselect, separator, bold, italic, underline, separator, bullist, separator, outdent, indent, separator, undo, redo, separator, link",
+    'theme_advanced_buttons1': "fontsizeselect, separator, bold, italic, underline, separator, outdent, indent",
     'cleaup_on_startup': True,
     'theme_advanced_path': False
     
@@ -492,3 +504,22 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = True
 
 BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
+BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
+
+
+# Django Debug Toolbar
+def show_toolbar(request):
+    if env('SHOW_DEBUG_TOOLBAR_FOR_ALL', False):
+        return True
+    if request.user.is_authenticated():
+        return request.user.is_staff and env('SHOW_DEBUG_TOOLBAR_FOR_STAFF', False)
+    else:
+        return False
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'Tinville.settings.base.show_toolbar'
+}
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)

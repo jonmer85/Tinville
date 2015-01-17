@@ -1,6 +1,7 @@
 # Django settings for Tinville project.
 
 from .base import *  # Start with base settings
+import urlparse
 
 import dj_database_url
 DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
@@ -31,3 +32,16 @@ SSLIFY_DISABLE = False
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6959'))
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+        'OPTIONS': {
+            'DB': 0,
+            'PASSWORD': redis_url.password,
+        }
+    }
+}

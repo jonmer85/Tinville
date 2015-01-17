@@ -38,39 +38,6 @@ def when_i_register_for_a_shop(step, shop_name):
 def when_a_shop_already_exists(step, shop_name):
     register_basic_shop(shop_name, "cock@blocker.com", "test")
 
-def fill_out_designer_registration_form(password, shop_name, user):
-    form = fill_in_user_form(email=user, password=password)
-    world.user_info['shop_name'] = shop_name
-    form.find_element_by_id("designer").click()
-    form.find_element_by_name("shop_name").send_keys(shop_name)
-    return form
-
-def register_basic_shop(shop_name, user, password):
-    form = fill_out_designer_registration_form(password, shop_name, user)
-    submit_form_and_activate_user(form)
-
-def fill_in_user_form(email, password):
-    access_registration_url(step)
-    world.user_info = {
-        "email": email,
-        "password": password,
-    }
-    form = world.browser.find_element_by_id("registrationForm")
-    form.find_element_by_name("email").send_keys(email)
-    form.find_element_by_name("password").send_keys(password)
-    return form
-
-def submit_form_and_activate_user(form, expectSuccess=True):
-    form.submit()
-    if(expectSuccess):
-        wait_for_element_with_id_to_exist("messagesModal")
-        assert_selector_contains_text("#messagesModal .alert-success", world.user_info['email'])
-        wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
-        wait_for_element_with_id_to_not_be_displayed("messagesModal")
-        user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
-        user.is_active = True
-        user.save()
-
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
     sign_in_local()
@@ -82,6 +49,11 @@ def when_i_fill_in_login_screen_with_email_and_password(step, email, password):
         "password": password,
     }
     sign_in_local()
+
+@step(u'And I should have my email visible "([^"]*)"')
+def and_i_should_my_email_visible(step, email):
+    change_viewport_lg()
+    assert_selector_contains_text(".menuEmail",email)
 
 @step(u'Then I should see an error telling me that the email is required')
 def then_i_should_see_an_error_telling_me_that_email_is_required(step):
@@ -134,7 +106,14 @@ def then_i_should_get_a_validation_error_on_email_address(step):
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register'))
     assert_class_exists('has-error')
 
+@step(u'I should be logged in')
+def then_i_should_be_logged_in(step):
+    assert_id_exists('clickedLogin-lg')
+
+@step(u'Visit and confirm the flatpages "([^"]*)"')
+def then_i_can_visit_my_shop(step, url):
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    assert_page_exist(url)
 # Utilities
 
-def sign_in_local():
-    sign_in(world.user_info["email"], world.user_info["password"])

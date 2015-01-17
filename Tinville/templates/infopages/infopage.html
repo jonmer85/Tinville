@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 {% load i18n %}
 {% block body_class %}{{ block.super }} about{% endblock %}
@@ -18,7 +17,7 @@
     </span>
     <div class="container" style="height: 2px"></div>
     <div class="container">
-        <div class="row">
+        <div class="">
             <div class="hidden-md hidden-lg orangeBanner">{{ flatpage.title }}</div>
             <div class="hidden-md hidden-lg orangeLine"/>
         </div>
@@ -35,7 +34,7 @@
                 </nav>
             </div>
 
-            <div class="col-xs-10 col-sm-10 col-xs-offset-1 col-sm-offset-1 col-md-8 infoPageContent">{{ flatpage.content }}</div>
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 infoPageContent">{{ flatpage.content }}</div>
 
         </div>
 

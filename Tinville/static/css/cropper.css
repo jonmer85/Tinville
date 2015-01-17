@@ -1,4 +1,14 @@
+/*!
+ * Cropper v0.7.7
+ * https://github.com/fengyuanchen/cropper
+ *
+ * Copyright 2014-2015 Fengyuan Chen
+ * Released under the MIT license
+ */
+
 .cropper-container {
+  position: relative;
+  overflow: hidden;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -8,15 +18,13 @@
   -webkit-touch-callout: none;
 }
 
-.cropper-container {
-  position: relative;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-.cropper-container > img {
+.cropper-container img {
   width: 100%;
+  min-width: 0 !important;
+  max-width: none !important;
   height: 100%;
+  min-height: 0 !important;
+  max-height: none !important;
 }
 
 .cropper-modal,
@@ -57,11 +65,6 @@
   outline-style: solid;
   outline-color: #69f;
   outline-color: rgba(51, 102, 255, .75);
-}
-
-.cropper-viewer > img {
-  max-width: none !important;
-  max-height: none !important;
 }
 
 .cropper-dashed {
