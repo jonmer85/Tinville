@@ -13,15 +13,10 @@ Feature: Add item to the shopping bag
     Then The bag icon should show the number of the item
     And  I click on the bag icon
     Then The checkout drop down is displayed
-    And  I click on the submit button
+    And  I click on the checkout button
     Then The checkout form should be displayed
 
-    #out of stock issues?
-   #chekout when logged in and not logged in
 
-    #question: does each scenario perform one big task?
-    #should I call this file checkout?
-  #should I give specific numbers like below or say general like items
   Scenario: Checkout page using arrows to control number of items
     Given Checkout page with an item to checkout
     When I increase the number of items by 2 using arrow
