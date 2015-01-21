@@ -15,7 +15,7 @@ import json
 import re
 import easypost
 import logging
-from common.utils import isNoneOrEmptyOrWhitespace
+from common.utils import isNoneOrEmptyOrWhitespace, ExtractDesignerIdFromOrderId
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -235,10 +235,7 @@ class OrderDetailView(CoreOrderDetailView):
             return HttpResponse(shippingcost, content_type='application/json')
 
     def _GetShopAddress(self,orderId):
-        shopIdMatch = re.search('^([0-9]+)',orderId)
-        shopId = shopIdMatch.group()
-        shop = Shop.objects.get(pk=shopId)
-        userId = shop.user.id
+        userId = ExtractDesignerIdFromOrderId(orderId)
 
         partners = Partner._default_manager.filter(users=userId)
         if(partners == None or len(partners) == 0):
