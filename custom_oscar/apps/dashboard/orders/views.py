@@ -141,7 +141,7 @@ class OrderDetailView(CoreOrderDetailView):
                     parcelType = { 'predefined_package': parcel_type['easypostname'],
                                   'weight': 10 }
                     flatrate_type = self.get_specific_shipment(order, parcelType)
-                    logger.info("flatrate_type: " + parcelType + "=" + flatrate_type)
+                    logger.info("flatrate_type: " + str(parcelType) + "=" + str(flatrate_type))
                     if flatrate_type != None:
                         shipment_collection.append(flatrate_type)
                         cache.set('flatrate_types', True, 7200)
