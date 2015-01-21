@@ -15,4 +15,5 @@ Tinville/Tinville.iml
 .env
 *.iml
 *.env
+Tinville/.env
 
