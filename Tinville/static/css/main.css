@@ -383,7 +383,7 @@ body
     padding-bottom   : 1%;
     border-radius    : 8px;
     font-size        : small;
-    margin-left      : -200%;
+    margin-left      : -300%;
     padding-left     : 30px;
     padding-right    : 30px;
     width            : 220px;
@@ -1332,13 +1332,18 @@ textarea
 /*Start mobile navbar*/
 @media (max-width : 768px)
 {
+    .navbarSliding
+    {
+        width: 0;
+        left: 0;
+    }
     .navbar-main.navbar
     {
         position           : fixed;
         height             : 100%;
-        width              : 70%;
+        /*width              : 70%;*/
         top                : 0;
-        left               : 0;
+        /*left               : 0;*/
         background-color   : #F1EEEF;
         overflow           : hidden;
         margin-top         : 58px;
@@ -1367,6 +1372,9 @@ textarea
     {
         -webkit-transition : all 1s ease;
         transition : all 1s ease;
+        width: 100%;
+        left: 0;
+        position: relative;
     }
 
 
