@@ -1985,5 +1985,19 @@
             "code": "paid_shipping",
             "name": "Paid Shipping"
         }
+    },
+    {
+        "pk": 1,
+        "model": "customer.communicationeventtype",
+        "fields": {
+            "code": "DESIGNER_ORDER_PLACED",
+            "name": "Designer Order Placed",
+            "category": "Order related",
+            "email_subject_template": "New Customer Order Placed",
+            "email_body_template": "Hello, /n You have a new order available.",
+            "email_body_html_template" : "<html><div>Hello,</div><div> You have a new order available.</div></html>",
+            "date_created": "2015-01-17 20:31:49.481761",
+            "date_updated": "2015-01-17 20:31:49.481761"
+        }
     }
 ]
