@@ -1587,6 +1587,7 @@ textarea
 {
     -animation        : spin .7s infinite linear;
     -webkit-animation : spin2 .7s infinite linear;
+    -moz-animation: spin2 .7s infinite linear;
 }
 
 @-webkit-keyframes spin2
@@ -1601,6 +1602,11 @@ textarea
         -webkit-transform : rotate(360deg);
         transform : rotate(360deg);
     }
+}
+
+@-moz-keyframes spin2 {
+  from { -moz-transform: rotate(0deg);}
+  to { -moz-transform: rotate(360deg);}
 }
 
 @keyframes spin
