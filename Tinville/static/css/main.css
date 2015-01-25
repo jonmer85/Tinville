@@ -1718,3 +1718,7 @@ textarea
   -o-transform: scale(1, -1);
   transform: scale(1, -1);
 }
+
+.dropdown-menu > li > a {
+    white-space: normal !important;
+}
