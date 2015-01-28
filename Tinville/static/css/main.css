@@ -468,12 +468,20 @@ body
     font-size     : .85em;
     padding-top   : 2px;
 }
-
 #submit-id-userform
 {
-    width : 150px;
+    width : 50%;
+    margin-left: 25%;
 }
 
+@media (max-width : 768px)
+{
+    #submit-id-userform
+    {
+        width : 66%;
+        margin-left: 16.67%;
+    }
+}
 .userType :hover
 {
     background-color : white;

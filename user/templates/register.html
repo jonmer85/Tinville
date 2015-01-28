@@ -13,11 +13,11 @@
                     <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-7 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
                         <form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
                             <div class="row" style="border-radius: 8px;">
-                                <button id="shopper" type="button" class="btn col-xs-offset-2 col-xs-4 borderHighlight">
-                                    <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"><h5 style="color: #515151;">Customer</h5></img>
+                                <button id="shopper" type="button" class="btn col-xs-offset-2 col-xs-4 borderHighlight" style="">
+                                    <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"><div style="color: #515151;">Customer</div></img>
                                 </button>
-                                <button id="designer" type="button" class="btn col-xs-4">
-                                    <img class="img-responsive" src="{{ STATIC_URL }}img/designer_big_logo.png"><h5 style="color: #515151;">Designer</h5></img>
+                                <button id="designer" type="button" class="btn col-xs-4" style="">
+                                    <img class="img-responsive" src="{{ STATIC_URL }}img/designer_big_logo.png"><div style="color: #515151;">Designer</div></img>
                                 </button>
                             </div>
 
@@ -25,7 +25,7 @@
                             {% crispy form %}
                         </form>
                     </div>
-                </div>
+                </div>1
             </div>
         </div>
 
