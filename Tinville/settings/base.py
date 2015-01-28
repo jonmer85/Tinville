@@ -473,7 +473,7 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
+TINVILLE_ORDER_SALES_CUT = Decimal(0.15)  # Tinville takes 10% of designer sales
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {
