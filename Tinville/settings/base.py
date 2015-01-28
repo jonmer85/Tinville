@@ -13,7 +13,7 @@ from oscar.defaults import *
 
 # HEROKU Change!!!
 DEBUG = False
-TEMPLATE_DEBUG = DEBUGsa
+TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
