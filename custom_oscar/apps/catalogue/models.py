@@ -1,6 +1,6 @@
 from django.db import models
 
-from oscar.apps.catalogue.abstract_models import AbstractProduct
+from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductImage
 
 from image_cropping import ImageRatioField
 

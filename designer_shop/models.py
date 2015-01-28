@@ -24,15 +24,15 @@ class Shop(models.Model):
     name = models.CharField(verbose_name="Shop name", unique=True, blank=False, null=False, db_index=True,
                             default=None, max_length=100)
     slug = models.SlugField()
-    banner = ImageCropField(default='images/banner.jpg',
+    banner = models.ImageField(default='images/banner.jpg',
                                upload_to=upload_to_banner, max_length=255)
     bannerCropping = ImageRatioField('banner', '1779x364', box_max_width=200)
-    mobileBanner = ImageCropField(default='images/mobilebanner.jpg',
+    mobileBanner = models.ImageField(default='images/mobilebanner.jpg',
                                upload_to=upload_to_mobile_banner, max_length=255)
     mobileBannerCropping = ImageRatioField('mobileBanner', '968x642', box_max_width=200)
 
     logo = models.ImageField(upload_to=upload_to_logo, max_length=255)
-    aboutImg = ImageCropField(upload_to=upload_to_about, max_length=255)
+    aboutImg = models.ImageField(upload_to=upload_to_about, max_length=255)
     # size is "width x height"
     aboutImgCropping = ImageRatioField('aboutImg', '155x155', box_max_width=200)
     aboutContent = BleachField()

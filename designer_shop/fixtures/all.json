@@ -67,7 +67,8 @@
             "product": 1,
             "original": "images/item.jpg",
             "display_order": 0,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -77,7 +78,8 @@
             "product": 1,
             "original": "images/item.jpg",
             "display_order": 1,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -87,7 +89,8 @@
             "product": 1,
             "original": "images/item.jpg",
             "display_order": 2,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -97,7 +100,8 @@
             "product": 1,
             "original": "images/item.jpg",
             "display_order": 3,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -107,7 +111,8 @@
             "product": 1,
             "original": "images/walken.jpg",
             "display_order": 4,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -429,7 +434,8 @@
             "product": 8,
             "original": "images/item.jpg",
             "display_order": 0,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -439,7 +445,8 @@
             "product": 8,
             "original": "images/item.jpg",
             "display_order": 1,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -449,7 +456,8 @@
             "product": 8,
             "original": "images/item.jpg",
             "display_order": 2,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -459,7 +467,8 @@
             "product": 8,
             "original": "images/item.jpg",
             "display_order": 3,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -469,7 +478,8 @@
             "product": 8,
             "original": "images/item.jpg",
             "display_order": 4,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -791,7 +801,8 @@
             "product": 15,
             "original": "images/item.jpg",
             "display_order": 0,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -801,7 +812,8 @@
             "product": 15,
             "original": "images/item.jpg",
             "display_order": 1,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -811,7 +823,8 @@
             "product": 15,
             "original": "images/item.jpg",
             "display_order": 2,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -821,7 +834,8 @@
             "product": 15,
             "original": "images/item.jpg",
             "display_order": 3,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -831,7 +845,8 @@
             "product": 15,
             "original": "images/item.jpg",
             "display_order": 4,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {

@@ -10,7 +10,6 @@ from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.catalogue.models import AttributeOption
 from oscar.apps.partner.models import StockRecord as StockRecords
-from oscar.apps.catalogue.models import ProductImage as ProductImages
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.contrib import messages
@@ -31,6 +30,7 @@ Basket = get_model('basket', 'basket')
 Product = get_model('catalogue', 'product')
 Line = get_model('basket', 'line')
 Selector = get_class('partner.strategy', 'Selector')
+ProductImages = get_model("catalogue", "ProductImage")
 
 selector = Selector()
 add_signal = signals.basket_addition

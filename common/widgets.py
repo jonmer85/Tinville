@@ -2,6 +2,9 @@ from django.utils.html import escape, conditional_escape
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.widgets import ClearableFileInput, CheckboxInput
+from image_cropping.widgets import CropWidget, get_attrs
+from oscar.forms.widgets import ImageInput
+
 
 class AdvancedFileInput(ClearableFileInput):
 
@@ -44,3 +47,33 @@ class AdvancedFileInput(ClearableFileInput):
                 substitutions['clear_template'] = self.template_with_clear % substitutions
 
         return mark_safe(template % substitutions)
+
+
+
+from floppyforms import ClearableFileInput as FloppyClearableFileInput
+
+
+class ImageThumbnailFileInput(FloppyClearableFileInput):
+    template_name = 'image_thumbnail.html'
+
+
+class TinvilleImageCropWidget(ImageThumbnailFileInput, CropWidget):
+    def render(self, name, value, attrs=None):
+        if not attrs:
+            attrs = {}
+        if value:
+            attrs.update(get_attrs(value, name))
+        else:
+            attrs.update({
+            'class': "crop-thumb",
+            'data-thumbnail-url': "http://www.placehold.it/400x500",
+            'data-field-name': name,
+            'data-org-width': "400",
+            'data-org-height': "500",
+            'data-max-width': "400",
+            'data-max-height': "500",
+        })
+        return super(ImageThumbnailFileInput, self).render(name, value, attrs)
+
+class TinvilleImageInput(ImageInput):
+    template_name = 'tinville_image_input.html'

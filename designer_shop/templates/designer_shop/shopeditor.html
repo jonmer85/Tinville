@@ -836,13 +836,15 @@ function DeleteConfirmation(slug) {
 }
 
 
-    function readURL(input, cropping_img) {
+    function readURL(input, cropping_img, image_ratio_input, ratio) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
 
             reader.onload = function (e) {
-                jcrop[cropping_img].setImage(reader.result);
+                if (cropping_img in jcrop) {
+                    jcrop[cropping_img].setImage(reader.result);
+                }
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -851,6 +853,7 @@ function DeleteConfirmation(slug) {
 
     $("#id_banner").change(function(){
 {#        $('#banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
+
         readURL(this, 'id_bannerCropping-image');
     });
 
@@ -864,9 +867,10 @@ function DeleteConfirmation(slug) {
         readURL(this, 'id_aboutImgCropping-image');
     });
 
-    $("#id_product_image").change(function(){
-        $('#product_image_preview ').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#product_image_preview'), 400 / 500);
+    $("#id_images-0-original").change(function(){
+{#        $('#product_image_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
+
+        readURL(this, 'id_images-0-cropping-image', 400 / 500);
     });
     $("#id_product_image1").change(function(){
         $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');

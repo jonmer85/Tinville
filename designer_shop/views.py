@@ -20,13 +20,13 @@ import os
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
 from oscar.apps.catalogue.models import ProductCategory as Categories
-from oscar.apps.catalogue.models import ProductImage as ProductImages
+# from oscar.apps.catalogue.models import ProductImage as ProductImages
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
-    LogoUploadForm
+    LogoUploadForm, ProductImageFormSet
 
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation
 
@@ -488,7 +488,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                     bannerUploadForm=None, item=None, tab=None):
+                     bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
     editItem = item is not None
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
     products = get_list_or_empty(Product, shop=shop.id)
@@ -496,6 +496,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         'editmode': True,
         'shop': shop,
         'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+        'productImageFormSet': productImageFormSet or ProductImageFormSet(instance=item if editItem else None),
         'editItemMode': editItem,
         'bannerUploadForm': bannerUploadForm or BannerUploadForm(instance=shop),
         'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
@@ -563,10 +564,15 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                                                sizes=sizes)
                 if form.is_valid():
                     canonicalProduct = form.save(shop, sizes, sizeVariationType)
+                    image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
+
+                    if image_formset.is_valid():
+                        image_formset.save()
+
                     form = ProductCreationForm()
                     messages.success(request,
                                      ("Item has been successfully {0}!").format("created" if is_create else "updated"))
-            return renderShopEditor(request, shop, productCreationForm=form, item=item)
+            return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
         return renderShopEditor(request, shop, item=item)
 
