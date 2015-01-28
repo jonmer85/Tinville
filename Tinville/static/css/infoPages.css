@@ -104,3 +104,47 @@ ul.infoList {
     -moz-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
 }
+
+.aboutText{
+    background-color: #ffffff;
+    border-radius: 4px;
+    font-size: 1em;
+    padding-right: 2%;
+    font-family:"Cabin Condensed", sans-serif;
+    word-wrap:break-word;
+     text-align : center;
+}
+
+.aboutLine {
+    /*border: lightgray 1px solid;*/
+    height: 1px;
+    background-color: lightgray;
+    color: lightgray;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.aboutTitle {
+    background-color: #ffffff;
+    border-radius: 4px;
+    font-size: 2em;
+    /*padding-right: 2%;*/
+    font-family:"Cabin Condensed", sans-serif;
+    word-wrap:break-word;
+     text-align : center;
+}
+.aboutDashRight {
+    border-right: lightgray 1px dashed;
+
+}
+.aboutDashLeft {
+    border-left: lightgray 1px dashed;
+
+}
+
+.aboutCircle {
+    border: lightgray 2px solid;
+    border-radius: 50%;
+    padding: 5px;
+    left: 50%;
+}
