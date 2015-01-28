@@ -509,6 +509,7 @@
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -577,6 +578,16 @@
         $(window).on('resize', function () {
             stickyFooter();
         });
+
+
+        function isTooLightYIQ(hexcolor){
+          color = new RGBColor(hexcolor);
+{#          var r = parseInt(rgb.r.substr(0,2),16);#}
+{#          var g = parseInt(rgb.g.substr(2,2),16);#}
+{#          var b = parseInt(rgb.b.substr(4,2),16);#}
+          var yiq = ((color.r*299)+(color.g*587)+(color.b*114))/1000;
+          return yiq >= 128;
+        }
 
         function stickyFooter() {
 {#            if (checkMode() != "xs") {#}
