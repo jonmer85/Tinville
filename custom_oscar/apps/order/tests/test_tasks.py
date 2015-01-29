@@ -286,10 +286,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event2 = self.assert_proper_payment_events(
-            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=46.75)
+            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=46.76)
 
         designer_payout2 = self.assert_proper_payout_records(
-            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=46.75)
+            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=46.76)
 
         self.assert_proper_stripe_records(designer_payout2)
 
