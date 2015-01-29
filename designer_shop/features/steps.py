@@ -56,7 +56,7 @@ def given_the_demo_shop(step):
     user = TinvilleUser.objects.get(email="demo@user.com")
     form = fill_in_access_form(access_code=user.access_code)
     form.submit()
-    wait_for_browser_to_have_url(world.browser.get(lettuce.django.get_server().url('/Demo')))
+    # wait_for_browser_to_have_url(world.browser.get(lettuce.django.get_server().url('/Demo')))
 
 @step(u'Given a shop editor')
 def given_a_shop_editor(step):
