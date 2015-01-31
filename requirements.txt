@@ -19,7 +19,7 @@ boto==2.8.0
 celery==3.1.16
 coverage==3.6
 cssselect==0.9.1
-distribute==0.6.49
+
 dj-database-url==0.2.1
 django-appconf==0.6
 django-autoslug==1.7.1
