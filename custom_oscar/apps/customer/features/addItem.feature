@@ -21,10 +21,9 @@ Feature: Add item to the shopping bag
     Given Checkout page with an item to checkout
     When I increase the number of items by 2 using arrow
     Then The total sum should be 3
-    And I decrease the number of items using arrow
-    Then The total sum should decrease
+    And I decrease the number of items using arrow by 1
+    Then The total sum should be 2
 
-    #total sum =
 
   Scenario: Deleting an item
     Given A shopping bag with 2 items
@@ -38,10 +37,16 @@ Feature: Add item to the shopping bag
     Then The message should say 'You need to add some items to your basket to checkout'
     And I click on continue shopping button
     Then I go back to main page
-    #should I check navigation like this one above?
+
+  Scenario: Trying to click on Add to Bag without choosing any item
+    Given Main Demo page with a shopping bag that is empty
+    Then I click on Add_to_Bag button
+    Then I receive the following warnings
+
+
 
   Scenario: Checkout
-    Given A shopping bag with items
+    Given A shopping bag with 2 items
     When I click on checkout button
     Then The shipping address form should be displayed
     And I click on Ship to This address
