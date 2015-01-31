@@ -1,7 +1,5 @@
 {% load purchase_info_tags %}
-{% load smart_load %}
-{% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
-{#{% load thumbnail from easy_thumbnails as easy_thumbnail %}#}
+{% load cropping %}
 
 <div class="row" id="shopItems">
     {% if shopProductCount > 0 %}
@@ -16,15 +14,13 @@
 
                                     {% if product.primary_image and product.primary_image.original.url %}
                                         {% with image=product.primary_image %}
-                                            {% sorl_thumbnail image.original "120x148" upscale=true as thumb %}
-                                                <div class="Item row">
-                                                    <div class="col-xs-12">
-                                                        <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
-                                                            <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="itemSize" />
-                                                        </a>
-                                                    </div>
+                                            <div class="Item row">
+                                                <div class="col-xs-12">
+                                                    <a href="{{ shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
+                                                        <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="itemSize" />
+                                                    </a>
                                                 </div>
-                                            {% endthumbnail %}
+                                            </div>
                                         {% endwith %}
                                     {% else %}
                                     -
@@ -95,6 +91,3 @@
         </div>
     {% endif %}
 </div>
-
-
-

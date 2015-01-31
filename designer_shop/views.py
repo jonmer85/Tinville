@@ -20,7 +20,6 @@ import os
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
 from oscar.apps.catalogue.models import ProductCategory as Categories
-# from oscar.apps.catalogue.models import ProductImage as ProductImages
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 
@@ -33,6 +32,7 @@ from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspi
 from django.views.generic import ListView
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
+ProductImage = get_model('catalogue', 'ProductImage')
 
 class ShopListView(ListView):
     template_name = "shoplist.html"
@@ -122,7 +122,7 @@ def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
     variants = get_list_or_empty(Product, parent=item.id)
-    images = get_list_or_empty(ProductImages, product_id=item.id)
+    images = get_list_or_empty(ProductImage, product_id=item.id)
     colorlist = []
     for variant in variants:
         colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)

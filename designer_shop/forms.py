@@ -156,6 +156,8 @@ class ProductCreationForm(forms.ModelForm):
         variantProduct.structure = Product.CHILD
         variantProduct.pk = None
         variantProduct.id = None
+        variantProduct.save()
+        variantProduct.attr.product = variantProduct # Switch attributes to the variant
         variantProduct.description = canonical.description
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
@@ -393,26 +395,22 @@ class ProductImageForm(forms.ModelForm):
     def get_display_order(self):
         return self.prefix.split('-').pop()
 
+    def has_changed(self):
+        """
+        Returns True if data differs from initial.
+        """
+        return bool(self.changed_data) \
+            and not (len(self.changed_data) == 1 and self.changed_data[0] == 'cropping' and self.empty_permitted)
+
     def __init__(self, *args, **kwargs):
         super(ProductImageForm, self).__init__(*args, **kwargs)
 
 
 BaseProductImageFormSet = inlineformset_factory(
-    Product, ProductImage, form=ProductImageForm, extra=1, max_num=5, validate_max=True)
+    Product, ProductImage, form=ProductImageForm, extra=1, can_delete=True, max_num=5, min_num=1, validate_min=True, validate_max=True)
 
 
 class ProductImageFormSet(BaseProductImageFormSet):
-    helper = FormHelper()
-    helper.form_show_labels = True
-    helper.layout = Layout(
-            Field('DELETE'),
-            Field('original'),
-            Field('cropping')
-
-            # css_class="thumbnail col-xs-12", style="padding:10%")
-            # css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
-        )
-    # helper.template = 'responsive_forms.html'
 
     def __init__(self, *args, **kwargs):
         super(ProductImageFormSet, self).__init__(*args, **kwargs)
