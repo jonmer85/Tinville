@@ -39,3 +39,7 @@ def clean_database(scenario):
     call_command('loaddata', 'all.json', verbosity=0)
     call_command('loaddata', 'initial_data2.json', verbosity=0)
 
+@before.each_scenario
+def clear_cookies(scenario):
+    world.browser.delete_all_cookies()
+

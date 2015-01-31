@@ -3,6 +3,8 @@ from django.conf import settings
 from decimal import Decimal as D, ROUND_FLOOR
 import string
 from django.core.exceptions import ValidationError, SuspiciousOperation
+import re
+from designer_shop.models import Shop
 
 
 def get_or_none(model, **kwargs):
@@ -67,3 +69,10 @@ def CroppedFieldLayout(croppedField, preview):
                 css_class='img-container', style="margin-top: 5px; margin-bottom: 10px"
             )
         )
+
+def ExtractDesignerIdFromOrderId(orderId):
+    shopIdMatch = re.search('^([0-9]+)', orderId)
+    shopId = shopIdMatch.group()
+    shop = Shop.objects.get(pk=shopId)
+    designerId = shop.user.id
+    return designerId

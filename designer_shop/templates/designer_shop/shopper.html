@@ -12,18 +12,18 @@
     <div class="navbar2 navbar-default shopBackgroundColor">
         <div class="container">
             <div class="navbar-header">
-				<a class="navbar-brand" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
+				<a class="navbar-brand shopTitleColor" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a>
                 <div class="visible-xs shopMenuBar">
-                    <a class="navbar-brand shopMenuActiveColor" id="shopTabLinkXS" data-toggle="tab" href="#shopTab">Shop</a>
-                    <a class="navbar-brand" id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
+                    <a class="navbar-brand shopMenuActiveColor shopTitleColor" id="shopTabLinkXS" data-toggle="tab" href="#shopTab">Shop</a>
+                    <a class="navbar-brand shopTitleColor" id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
                 </div>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="hidden-xs collapse navbar-collapse" id="">
 				<ul class="nav navbar-nav">
-					<li class="shopTabLink active" ><a data-toggle="tab" href="#shopTab">Shop</a></li>
-					<li id="aboutTabLink"><a id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+					<li class="shopTabLink active"><a class="shopTitleColor" data-toggle="tab" href="#shopTab">Shop</a></li>
+					<li id="aboutTabLink "><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
         </div>
@@ -85,7 +85,7 @@
             </div>
         </div>
     </div>
-    </div>
+
 
 {% endblock %}
 

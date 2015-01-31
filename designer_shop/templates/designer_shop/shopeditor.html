@@ -147,6 +147,8 @@
                         clear_form_field_errors("#color");
 					    $(".shopColor").css("color", document.getElementById("id_color").value);
                         $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
+                        var textColor = isTooLightYIQ(document.getElementById("id_color").value) ? '#777' : '#e7e5e6';
+                        $(".shopTitleColor").css("color", textColor);
                         document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
 					},
                     error: function(data, textStatus, jqXHR) {

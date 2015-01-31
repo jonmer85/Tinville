@@ -17,6 +17,7 @@ from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsVi
     ShippingAddressView as CoreShippingAddressView, ThankYouView as CoreThankYouView, GatewayForm, ShippingAddressForm
 from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
+from custom_oscar.apps.checkout.mixins import SendOrderMixin
 
 # Create your views here.
 from oscar_stripe.facade import Facade
@@ -291,6 +292,24 @@ class PaymentDetailsView(CorePaymentDetailsView):
         basket.submit()
 
         return self.handle_successful_order(top_level_order)
+
+    def handle_successful_order(self, order):
+        # Send confirmation message (normally an email)
+        self.send_confirmation_message(order, self.communication_type_code)
+
+        sendOrderMixin = SendOrderMixin()
+        sendOrderMixin.send_new_order_email(order)
+
+        # Flush all session data
+        self.checkout_session.flush()
+
+        # Save order id in session so thank-you page can load it
+        self.request.session['checkout_order_id'] = order.id
+
+        response = HttpResponseRedirect(self.get_success_url())
+        self.send_signal(self.request, response, order)
+        return response
+
 
     def generate_order_number(self, basket, shop_id=None):
         order_num = 100000 + basket.id

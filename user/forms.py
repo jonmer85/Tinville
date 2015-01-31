@@ -40,8 +40,8 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 ), css_class=""
             ),
             Div(Div(
-                Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-3 col-sm-4"
-            ), css_class="row")
+                Submit('userForm', 'Register'), css_class=""
+            ), css_class="")
         )
     )
 
@@ -150,13 +150,13 @@ class LoginForm(AuthenticationForm):
                         </label>
                     </div>"""),
                 Submit('submit', 'Sign in', css_class='full-screen btn btn-primary tinvilleButton'),
-                # HTML("""<div class="formField pull-left loginForgot">
-                #         <p>Forgot
-                #         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
-                #          or
-                #         <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
-                #         </div>"""),
-                # Div(css_class='clearfix'),
+                HTML("""<div class="formField pull-left loginForgot">
+                        <p>Forgot Password?
+                        <a href="/password-reset" id="loginForgotPasswordLink" class=""> Reset password</a></p>
+                        </div>"""),
+                        # <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
+                        #  or
+                Div(css_class='clearfix'),
                 HTML("""<div class="formField pull-left loginRegister">
                         <p>Don't have an Account?
                         <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>

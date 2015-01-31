@@ -91,7 +91,7 @@
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
                               <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
                           </a>
-                          <ul class="dropdown-menu" style="margin-left: -100px; width: 200px;">
+                          <ul class="dropdown-menu" style="margin-left: -200%; width: 200px;">
                             {%  if user.is_seller %}
                                 <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
                                 <li class="divider"></li>
@@ -380,13 +380,12 @@
 {#            </nav>#}
             <nav class="footer-nav col-sm-offset-2 col-sm-2">
                 <dl class="list-unstyled">
-                    <li class="mainFooterListItem">My Account</li>
-                        {% if user.is_authenticated %}
-                            <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
-                        {% else %}
-                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
-                        {% endif %}
+                    {% if user.is_authenticated %}
+                        <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
+                    {% else %}
+                        <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
+                        <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                    {% endif %}
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
 {#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
                 </dl>
@@ -431,10 +430,7 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </div>
-            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
-                <h4 id="tinvilleXSFooterHeaders">My Account</h4>
-            </button>
-            <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
+            <div class="list-unstyled listPadding">
                 <dl class="list-unstyled listPadding">
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
@@ -513,6 +509,7 @@
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -581,6 +578,13 @@
         $(window).on('resize', function () {
             stickyFooter();
         });
+
+
+        function isTooLightYIQ(hexcolor){
+          color = new RGBColor(hexcolor);
+          var yiq = ((color.r*299)+(color.g*587)+(color.b*114))/1000;
+          return yiq >= 128;
+        }
 
         function stickyFooter() {
 {#            if (checkMode() != "xs") {#}
@@ -671,17 +675,21 @@
 
                     $('.menu-toggle').click(function() {
                         if(menu == "close"){
-                            $('.slidingContent').css('-webkit-transform','translate(70%, 0)');
-                            $('.navbarSliding').css('-webkit-transform','translate(0px, 0)');
-                            $('.slidingContent').css('-transform','translate(70%, 0)');
-                            $('.navbarSliding').css('-transform','translate(0px, 0)');
+                            $('.slidingContent').css('left','70%');
+                            $('.slidingContent').css('opacity','.05');
+                            $('.slidingContent').css('position','fixed');
+                            $('.slidingContent').css('pointer-events','none');
+                            $('.navbarSliding').css('width','70%');
+                            $('.navbarSliding').css('left','70%');
                             menu="open";
                         }
                         else{
-                            $('.slidingContent').css('-webkit-transform','translate(0, 0)');
-                            $('.navbarSliding').css('-webkit-transform','translate(-100%, 0)');
-                            $('.slidingContent').css('-transform','translate(0, 0)');
-                            $('.navbarSliding').css('-transform','translate(-100%, 0)');
+                            $('.slidingContent').css('left','0%');
+                            $('.slidingContent').css('opacity','1');
+                            $('.slidingContent').css('position','relative');
+                            $('.slidingContent').css('pointer-events','auto');
+                            $('.navbarSliding').css('width','0%');
+                            $('.navbarSliding').css('left','0%');
                             menu="close";
                         }
             });
