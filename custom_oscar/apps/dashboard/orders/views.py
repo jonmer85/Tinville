@@ -135,12 +135,14 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment_context(self, order):
         shipment_collection = []
-        if cache.get('parcel_types') == None:
+        if cache.get('parcel_types') == None or len(self.get_supported_parcel_types()) > len(cache.get('parcel_types')):
             for parcel_type in self.get_supported_parcel_types():
                 if parcel_type['type'] == 'flatrate':
                     parcelType = { 'predefined_package': parcel_type['easypostname'],
-                                   'weight': 10 }
-                    shipment_collection.append(self.get_specific_shipment(order, parcelType))
+                                  'weight': 10 }
+                    flatrate_type = self.get_specific_shipment(order, parcelType)
+                    shipment_collection.append(flatrate_type)
+                    logger.info("flatrate_type: " + str(parcelType) + "=" + str(flatrate_type))
                 elif parcel_type['type'] == 'calculated':
                     shipment_collection.append({'type': parcel_type['easypostname'],
                                                 'name':parcel_type['displayname'],

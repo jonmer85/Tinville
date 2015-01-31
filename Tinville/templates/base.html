@@ -380,13 +380,12 @@
 {#            </nav>#}
             <nav class="footer-nav col-sm-offset-2 col-sm-2">
                 <dl class="list-unstyled">
-                    <li class="mainFooterListItem">My Account</li>
-                        {% if user.is_authenticated %}
-                            <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
-                        {% else %}
-                            <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
-                        {% endif %}
+                    {% if user.is_authenticated %}
+                        <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
+                    {% else %}
+                        <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
+                        <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                    {% endif %}
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
 {#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
                 </dl>
@@ -431,10 +430,7 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
                 </dl>
             </div>
-            <button class="footerPanelTitle footerSectionTitle footerButton" type="button" data-toggle="collapse" data-target="#collapseMyAccount">
-                <h4 id="tinvilleXSFooterHeaders">My Account</h4>
-            </button>
-            <div id="collapseMyAccount" class="panel-collapse collapse footerPanelPadding">
+            <div class="list-unstyled listPadding">
                 <dl class="list-unstyled listPadding">
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
@@ -513,6 +509,7 @@
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
     {% endblock javascript_library %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -581,6 +578,13 @@
         $(window).on('resize', function () {
             stickyFooter();
         });
+
+
+        function isTooLightYIQ(hexcolor){
+          color = new RGBColor(hexcolor);
+          var yiq = ((color.r*299)+(color.g*587)+(color.b*114))/1000;
+          return yiq >= 128;
+        }
 
         function stickyFooter() {
 {#            if (checkMode() != "xs") {#}
