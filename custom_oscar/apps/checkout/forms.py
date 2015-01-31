@@ -3,11 +3,16 @@ from crispy_forms.bootstrap import AppendedText
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+from oscar.apps.dashboard.orders.views import *
 from oscar.apps.checkout.forms import GatewayForm as CoreGatewayForm, ShippingAddressForm as CoreShippingAddressForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden, Fieldset
 from parsley.decorators import parsleyfy
 
+import easypost
+import logging
+
+logger = logging.getLogger(__name__)
 
 class GatewayForm(CoreGatewayForm):
     helper = FormHelper()
@@ -35,6 +40,21 @@ class ShippingAddressForm(CoreShippingAddressForm):
         # Field('country', placeholder="Country"),
         Field('phone_number', placeholder="Phone Number")
     )
+
+    def clean(self):
+
+        easypost.api_key = settings.EASYPOST_API_KEY
+
+        try:
+            easypost.Address.create_and_verify(
+                name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
+                street1=self.cleaned_data['line1'],
+                city=self.cleaned_data['line4'],
+                state=self.cleaned_data['state'],
+                zip=self.cleaned_data['postcode'],
+                country='US')
+        except Exception as e:
+            raise forms.ValidationError( "Please enter a valid address." )
 
 @parsleyfy
 class PaymentInfoForm(forms.Form):
