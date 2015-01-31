@@ -40,8 +40,8 @@ class TinvilleUserCreationForm(forms.ModelForm):
                 ), css_class=""
             ),
             Div(Div(
-                Submit('userForm', 'Register'), css_class="container col-xs-offset-2 col-xs-8 col-sm-offset-3 col-sm-4"
-            ), css_class="row")
+                Submit('userForm', 'Register'), css_class=""
+            ), css_class="")
         )
     )
 
