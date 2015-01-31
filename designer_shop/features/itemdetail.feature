@@ -9,7 +9,7 @@ Feature: Item Detail
         Given I have at least 1 items in the demo shop
         When I click on the "TestSizeSetItem" item
         Then the item detail page is displayed
-  @yori
+
   Scenario: Visible the Item Detail page
       Given I am on an item detail page
       Then I can see the following elements
@@ -25,7 +25,7 @@ Feature: Item Detail
           | sharingiscaring    |
           | selectedImage      |
 
-   @yori
+
   Scenario: Default Values
       Given I am on an item detail page
       Then the default values for an item are as follows

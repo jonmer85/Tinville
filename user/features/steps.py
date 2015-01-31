@@ -84,6 +84,13 @@ def then_i_can_visit_my_shop(step, url):
     form.submit()
     assert_page_exist(absoluteUrl)
 
+@step(u'(?:Then|And) I can visit my shop again at "([^"]*)"')
+def then_i_can_visit_my_shop_again(step, url):
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    wait_for_browser_to_have_url(absoluteUrl+"/")
+    assert_page_exist(absoluteUrl)
+
 @step(u'I should see a confirmation notification prompting me to activate the account via email instructions to "([^"]*)"')
 def i_should_see_a_confirmation_notification(step, email):
     assert_class_exists('alert-success')
