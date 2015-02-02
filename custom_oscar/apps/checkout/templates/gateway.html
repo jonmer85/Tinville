@@ -18,21 +18,49 @@ base.html" %}
 {% endblock css %}
 {% block content %}
 
-    <form action="" method="post" class="form-stacked well">
-    <div class = "checkoutAlign">
+    <div id = "registrationBackground" style="background-image: url('{{ STATIC_URL }}img/register.jpg');">
+        {% if user.is_staff %}
+            <div>hello</div>
+        {% else %}
+        <div class="container">
+            <div class="row" style="margin-top: 50px">
+                <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-1 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;">
+                    <h3>Registered Users Sign In</h3>
+                    <form action="" method="post" class="form-stacked">
                         {% csrf_token %}
-    					{% load crispy_forms_tags %}
-						{% crispy form %}
-
+                        {% load crispy_forms_tags %}
+                        {% crispy form %}
                         <div class="form-actions">
-            <div class="row-fluid">
-                <div class="span3">
-                    <button type="submit" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue" %}</button>
+{#                            <div class="row-fluid">#}
+{#                                <div class="span3">#}
+                                    <button type="submit" name="options" value="existing" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue" %}</button>
+{#                                </div>#}
+{#                            </div>#}
+                        </div>
+                    </form>
+                </div>
+                <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;">
+                    <h3>Guests</h3>
+                    <p>Continue checkout as a guest. We will use your email for tracking purposes (this won't mean you're signed up for our emails).</p>
+                    <form action="" method="post" class="form-stacked">
+                        {% csrf_token %}
+                        {% load crispy_forms_tags %}
+                        {% crispy form2 %}
+                        <div class="form-actions">
+{#                            <div class="row-fluid">#}
+{#                                <div class="span3">#}
+                                    <button type="submit" name="options" value="anonymous" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue as Guest" %}</button>
+                                    <button type="submit" name="options" value="new" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Register and Continue" %}</button>
+{#                                </div>#}
+{#                            </div>#}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
-    </form>
+
 
 {% endblock content %}
 

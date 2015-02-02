@@ -4,6 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from oscar.apps.checkout.forms import GatewayForm as CoreGatewayForm, ShippingAddressForm as CoreShippingAddressForm
+from oscar.apps.checkout.forms import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden, Fieldset
 from parsley.decorators import parsleyfy
@@ -12,12 +13,31 @@ from parsley.decorators import parsleyfy
 class GatewayForm(CoreGatewayForm):
     helper = FormHelper()
     helper.form_show_labels = False
+    helper.form_tag = False
 
     helper.layout = Layout(
         Field('username', placeholder="Email"),
-        Field('options', placeholder="Options"),
-        Field('password', placeholder="Password")
-    )
+        # Field('options', placeholder="Options"),
+        Field('password', placeholder="Password"),
+        Hidden('form', 'submitted-form'))
+
+    GUEST, NEW, EXISTING = 'anonymous', 'new', 'existing'
+    CHOICES = (
+        (GUEST, _('I am a new customer and wanst to checkout as a guest')),
+        (NEW, _('I am a new customer and want to create an account '
+                'before checking out')),
+        (EXISTING, _('I am a returning customer, and my password is')))
+    # options = forms.ChoiceField(widget=forms.widgets.RadioSelect,
+    #                             choices=CHOICES, initial=GUEST)
+
+class GatewayFormGuest(CoreGatewayForm):
+    helper = FormHelper()
+    helper.form_show_labels = False
+    helper.form_tag = False
+    helper.layout = Layout(
+        Field('username', placeholder="Email"),
+        Hidden('form2', 'submitted-form'))
+
 
 class ShippingAddressForm(CoreShippingAddressForm):
     helper = FormHelper()
@@ -109,3 +129,4 @@ class PaymentInfoFormWithTotal(PaymentInfoForm):
                 Submit('paymentForm', 'Pay', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
+

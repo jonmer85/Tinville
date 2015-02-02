@@ -18,7 +18,7 @@ from oscar.apps.checkout.views import PaymentDetailsView as CorePaymentDetailsVi
 from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 from custom_oscar.apps.checkout.mixins import SendOrderMixin
-
+from custom_oscar.apps.checkout.forms import GatewayFormGuest
 # Create your views here.
 from oscar_stripe.facade import Facade
 
@@ -29,8 +29,6 @@ RedirectRequired, UnableToTakePayment, PaymentError \
                                          'UnableToTakePayment',
                                          'PaymentError'])
 UnableToPlaceOrder = get_class('order.exceptions', 'UnableToPlaceOrder')
-
-
 SourceType = get_model('payment', 'SourceType')
 Source = get_model('payment', 'Source')
 Country = get_model('address', 'Country')
@@ -338,14 +336,43 @@ class PaymentDetailsView(CorePaymentDetailsView):
         return order
 
 
-
 class IndexView(CoreIndexView):
     template_name = 'gateway.html'
     form_class = GatewayForm
+    second_form_class = GatewayFormGuest
+
+    def post(self, request, *args, **kwargs):
+
+        # determine which form is being submitted
+        # uses the name of the form's submit button
+        if 'form' in request.POST:
+
+            # get the primary form
+            form_class = self.get_form_class()
+            form_name = 'form'
+
+        else:
+
+            # get the secondary form
+            form_class = self.second_form_class
+            form_name = 'form2'
+
+        form = self.get_form(form_class)
+        #
+        # # validate
+        if form.is_valid():
+             return self.form_valid(form)
+        else:
+            return self.form_invalid(**{form_name: form})
+
+    def form_invalid(self, **kwargs):
+        return self.render_to_response(self.get_context_data(**kwargs))
+
 
 class ShippingAddressView(CoreShippingAddressView):
     template_name = 'shipping_address.html'
     form_class = ShippingAddressForm
+
 
 class ThankYouView(CoreThankYouView):
     template_name = 'thank-you.html'
