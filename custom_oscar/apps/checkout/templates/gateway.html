@@ -17,11 +17,7 @@ base.html" %}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/checkout/styles.css" />
 {% endblock css %}
 {% block content %}
-
     <div id = "registrationBackground" style="background-image: url('{{ STATIC_URL }}img/register.jpg');">
-        {% if user.is_staff %}
-            <div>hello</div>
-        {% else %}
         <div class="container">
             <div class="row" style="margin-top: 50px">
                 <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-1 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;">
@@ -31,15 +27,11 @@ base.html" %}
                         {% load crispy_forms_tags %}
                         {% crispy form %}
                         <div class="form-actions text-center">
-{#                            <div class="row-fluid">#}
-{#                                <div class="span3">#}
-                                    <button type="submit" name="options" value="existing" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue" %}</button>
-{#                                </div>#}
-{#                            </div>#}
+                            <button type="submit" name="options" value="existing" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue" %}</button>
                         </div>
                     </form>
                 </div>
-                <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;">
+                <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-2 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;">
                     <h3>New Shoppers</h3>
                     <form action="" method="post" class="form-stacked">
                         {% csrf_token %}
@@ -47,22 +39,14 @@ base.html" %}
                         {% crispy form2 %}
                         <p>If you choose to continue checkout as a guest. We use your email address for Order Tracking purposes.</p>
                         <div class="form-actions text-center">
-{#                            <div class="row-fluid">#}
-{#                                <div class="span3">#}
-                                    <button type="submit" name="options" value="anonymous" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue as Guest" %}</button>
-                                    <button type="submit" name="options" value="new" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Register and Continue" %}</button>
-{#                                </div>#}
-{#                            </div>#}
+                            <button type="submit" name="options" value="anonymous" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue as Guest" %}</button>
+                            <button type="submit" name="options" value="new" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Register and Continue" %}</button>
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
-        {% endif %}
     </div>
-
-
 {% endblock content %}
 
 {% block onbodyload %}
