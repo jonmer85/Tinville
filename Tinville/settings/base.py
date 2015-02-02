@@ -27,7 +27,7 @@ AUTH_USER_MODEL = 'user.TinvilleUser'
 PROJECT_DIR = Path(__file__).ancestor(2)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash. jon test
+# trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
