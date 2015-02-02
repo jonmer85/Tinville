@@ -194,6 +194,10 @@ INSTALLED_APPS = [
     'djcelery',
     'raven.contrib.django.raven_compat',
     'django_bleach',
+    'easy_thumbnails',
+    'image_cropping',
+    'smart_load_tag',
+    'floppyforms'
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
