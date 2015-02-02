@@ -342,26 +342,20 @@ class IndexView(CoreIndexView):
     second_form_class = GatewayFormGuest
 
     def post(self, request, *args, **kwargs):
-
         # determine which form is being submitted
         # uses the name of the form's submit button
         if 'form' in request.POST:
-
             # get the primary form
             form_class = self.get_form_class()
             form_name = 'form'
-
         else:
-
             # get the secondary form
             form_class = self.second_form_class
             form_name = 'form2'
-
         form = self.get_form(form_class)
-        #
-        # # validate
+        # validate
         if form.is_valid():
-             return self.form_valid(form)
+            return self.form_valid(form)
         else:
             return self.form_invalid(**{form_name: form})
 
