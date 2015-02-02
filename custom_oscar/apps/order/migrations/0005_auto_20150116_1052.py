@@ -7,15 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('designer_shop', '0001_initial'),
-        ('catalogue', '0001_initial'),
+        ('order', '0004_auto_20141216_1919'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='product',
-            name='shop',
-            field=models.ForeignKey(default=None, to='designer_shop.Shop'),
+        migrations.AlterField(
+            model_name='order',
+            name='date_placed',
+            field=models.DateTimeField(db_index=True),
             preserve_default=True,
         ),
     ]
