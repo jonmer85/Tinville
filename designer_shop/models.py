@@ -4,7 +4,6 @@ from django.template.defaultfilters import slugify
 from django_bleach.models import BleachField
 from django.core.validators import RegexValidator
 # Create your models here.
-from image_cropping import ImageRatioField, ImageCropField
 
 def upload_to_about(instance, filename):
     return 'shops/{0}/aboutImg/{1}'.format(instance.slug, filename)
