@@ -108,7 +108,7 @@ def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     products = get_list_or_empty(Product, shop=shop.id)
 
-    if not check_access_code(request):
+    if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
         return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
     if request.method == 'POST':
