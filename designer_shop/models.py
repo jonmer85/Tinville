@@ -4,6 +4,19 @@ from django.template.defaultfilters import slugify
 from django_bleach.models import BleachField
 from django.core.validators import RegexValidator
 # Create your models here.
+from image_cropping import ImageRatioField, ImageCropField
+
+def upload_to_about(instance, filename):
+    return 'shops/{0}/aboutImg/{1}'.format(instance.slug, filename)
+
+def upload_to_logo(instance, filename):
+    return 'shops/{0}/logo/{1}'.format(instance.slug, filename)
+
+def upload_to_mobile_banner(instance, filename):
+    return 'shops/{0}/banner/{1}'.format(instance.slug, filename)
+
+def upload_to_banner(instance, filename):
+    return 'shops/{0}/banner/{1}'.format(instance.slug, filename)
 
 
 class Shop(models.Model):
@@ -12,11 +25,13 @@ class Shop(models.Model):
                             default=None, max_length=100)
     slug = models.SlugField()
     banner = models.ImageField(default='images/banner.jpg',
-                               upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
+                               upload_to=upload_to_banner, max_length=255)
     mobileBanner = models.ImageField(default='images/mobilebanner.jpg',
-                               upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename),max_length=255)
-    logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename), max_length=255)
-    aboutImg = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/aboutImg/{1}'.format(instance.slug, filename), max_length=255)
+                               upload_to=upload_to_mobile_banner, max_length=255)
+
+    logo = models.ImageField(upload_to=upload_to_logo, max_length=255)
+    aboutImg = models.ImageField(upload_to=upload_to_about, max_length=255)
+    # size is "width x height"
     aboutContent = BleachField()
     color = models.CharField(default='#663399', max_length=7,
         validators=[RegexValidator(
@@ -45,5 +60,3 @@ SIZE_TYPES = [
     (SIZE_DIM, "Dimensions (eg. Length X Width)"),
     (SIZE_NUM, "Number (eg. Dress size)")
 ]
-
-

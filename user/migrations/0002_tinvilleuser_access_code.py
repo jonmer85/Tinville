@@ -7,15 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('designer_shop', '0001_initial'),
-        ('catalogue', '0001_initial'),
+        ('user', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='shop',
-            field=models.ForeignKey(default=None, to='designer_shop.Shop'),
+            model_name='tinvilleuser',
+            name='access_code',
+            field=models.CharField(default=b'ABC12', max_length=5),
             preserve_default=True,
         ),
     ]
