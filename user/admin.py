@@ -18,11 +18,12 @@ class TinvilleUserAdmin(UserAdmin):
                     'is_admin',
                     'is_seller',
                     'is_active',
-                    'is_staff'
+                    'is_staff',
+                    'access_code'
                     )
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'is_seller')}),
+        (None, {'fields': ('email', 'password', 'is_seller', 'access_code')}),
         ('Permissions', {'fields': ('is_admin', 'is_active', 'is_staff')}),
         # ('Important dates', {'fields': ('last_login',)}),
     )
