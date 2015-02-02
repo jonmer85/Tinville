@@ -23,4 +23,4 @@ class SendOrderMixinTests(TestCase):
         self.assertEqual(email.user.email, self.user.email)
         self.assertEqual(email.subject, "New Customer Order Placed", "Because the subject should be equal")
         self.assertEqual(email.body_text, "Hello, /n You have a new order available.", "Because the text body should be equal")
-        self.assertEqual(email.body_html, "<html><div>Hello,</div><div> You have a new order available.</div></html>", "Because the html body should be equal")
+        self.assertEqual(email.body_html, "<html><div>Hello,</div><p>A new order 2-10011 is available.</p><p>The order contains:</p><ul><li>Dummy title - quantity: 1</li></ul><p></html>", "Because the html body should be equal")

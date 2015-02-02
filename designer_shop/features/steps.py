@@ -52,6 +52,11 @@ def and_every_item_should_have_a_price(step):
 @step(u'Given the demo shop$')
 def given_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
+    wait_for_browser_to_have_url(lettuce.django.get_server().url('/access_code?shop=Demo'))
+    user = TinvilleUser.objects.get(email="demo@user.com")
+    form = fill_in_access_form(access_code=user.access_code)
+    form.submit()
+    # wait_for_browser_to_have_url(world.browser.get(lettuce.django.get_server().url('/Demo')))
 
 @step(u'Given a shop editor')
 def given_a_shop_editor(step):
