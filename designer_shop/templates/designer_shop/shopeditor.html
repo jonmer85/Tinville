@@ -860,18 +860,16 @@ function DeleteConfirmation(slug) {
 
             reader.onload = function (e) {
                 if (cropping_img in jcrop) {
-                    jcrop[cropping_img].setImage(reader.result);
                     var thumbnail = $('#' + cropping_img).next('.jcrop-image').children('img');
-                    jcrop[cropping_img].setOptions(
-                            {
+                    jcrop[cropping_img].setImage(reader.result, function() {
+                        this.setOptions({
                                 aspectRatio: ratio_width / ratio_height,
                                 setSelect: getCenterBoxSelection(ratio_width, ratio_height, thumbnail.width(), thumbnail.height()),
                                 trueSize: [thumbnail.width(), thumbnail.height()],
                                 onSelect: image_cropping.update_selection($this)
-                            }
-                    );
+                        });
+                    }
                 }
-            };
 
 
             reader.readAsDataURL(input.files[0]);
