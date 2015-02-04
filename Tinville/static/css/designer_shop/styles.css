@@ -656,7 +656,7 @@
 }
 
 .shopMenuActiveColor {
-    background-color: #a9a9a9;
+    background-color: white;
 }
 
 
@@ -675,5 +675,5 @@
 }
 
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
-    background-color: #a9a9a9;
+    background-color: lightgray;
 }
