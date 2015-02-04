@@ -150,13 +150,13 @@ class LoginForm(AuthenticationForm):
                         </label>
                     </div>"""),
                 Submit('submit', 'Sign in', css_class='full-screen btn btn-primary tinvilleButton'),
-                # HTML("""<div class="formField pull-left loginForgot">
-                #         <p>Forgot
-                #         <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
-                #          or
-                #         <a href="#" id="loginForgotPasswordLink" class="">password?</a></p>
-                #         </div>"""),
-                # Div(css_class='clearfix'),
+                HTML("""<div class="formField pull-left loginForgot">
+                        <p>Forgot Password?
+                        <a href="/password-reset" id="loginForgotPasswordLink" class=""> Reset password</a></p>
+                        </div>"""),
+                        # <a href="#" id="loginForgotUsernameLink" class=" ">username</a>
+                        #  or
+                Div(css_class='clearfix'),
                 HTML("""<div class="formField pull-left loginRegister">
                         <p>Don't have an Account?
                         <a href="/register" id="loginRegisterLink" class=" ">Register</a></p>
@@ -181,3 +181,29 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
+
+@parsleyfy
+class BetaAccessForm(forms.Form):
+    def clean_access_code(self):
+        access_code_candidate = self.cleaned_data['access_code']
+
+        try:
+            TinvilleUser.objects.get(access_code = access_code_candidate)
+        except ObjectDoesNotExist:
+            raise forms.ValidationError('Incorrect Access Code')
+        return access_code_candidate
+
+
+    access_code = forms.CharField(max_length=5)
+    shop = forms.CharField(widget=forms.HiddenInput, required=False)
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+
+    helper.layout = Layout(
+        Div(
+            Field('access_code', placeholder="Beta Access Code"),
+            HTML('<input type="hidden" name="shop" value="{{ shop }}">'),
+            Submit('betaForm', 'Submit', css_class='btn btn-primary', style='margin-top: 10px')
+        )
+    )

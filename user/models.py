@@ -7,7 +7,9 @@ from django.contrib.auth.models import (
     )
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
 from django.utils.timezone import utc
+from django.core.exceptions import ObjectDoesNotExist
 from autoslug import AutoSlugField
 
 from oscar.apps.customer.abstract_models import UserManager, AbstractUser
@@ -47,6 +49,7 @@ class TinvilleUser(AbstractUser):
     account_token = models.CharField(max_length=255)
     full_legal_name = models.CharField(max_length=255)
     recipient_id = models.CharField(max_length=255)
+    access_code = models.CharField(max_length=5, default="ABC12")
 
 
 
@@ -60,6 +63,22 @@ class TinvilleUser(AbstractUser):
         salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
         self.activation_key = hashlib.sha1(salt+self.email).hexdigest()
         self.key_expires = datetime.datetime.utcnow().replace(tzinfo=utc) + datetime.timedelta(7)  # Give 7 days to confirm
+        self.save()
+
+    def generate_access_code(self):
+         # Generates random access code for shop
+        access_code_candidate = None
+        while True:
+            access_code_candidate = get_random_string(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+
+            try:
+                TinvilleUser.objects.get(access_code = access_code_candidate)
+                pass
+            except ObjectDoesNotExist:
+                break
+
+
+        self.access_code = access_code_candidate
         self.save()
 
     def delete(self, *args, **kwargs):

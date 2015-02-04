@@ -3,21 +3,45 @@ from crispy_forms.bootstrap import AppendedText
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+from oscar.apps.dashboard.orders.views import *
 from oscar.apps.checkout.forms import GatewayForm as CoreGatewayForm, ShippingAddressForm as CoreShippingAddressForm
+from oscar.apps.checkout.forms import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Hidden, Fieldset
 from parsley.decorators import parsleyfy
 
+import easypost
+import logging
+logger = logging.getLogger(__name__)
 
 class GatewayForm(CoreGatewayForm):
     helper = FormHelper()
     helper.form_show_labels = False
+    helper.form_tag = False
 
     helper.layout = Layout(
         Field('username', placeholder="Email"),
-        Field('options', placeholder="Options"),
-        Field('password', placeholder="Password")
-    )
+        # Field('options', placeholder="Options"),
+        Field('password', placeholder="Password"),
+        Hidden('form', 'submitted-form'))
+
+    GUEST, NEW, EXISTING = 'anonymous', 'new', 'existing'
+    CHOICES = (
+        (GUEST, _('I am a new customer and wanst to checkout as a guest')),
+        (NEW, _('I am a new customer and want to create an account '
+                'before checking out')),
+        (EXISTING, _('I am a returning customer, and my password is')))
+    # options = forms.ChoiceField(widget=forms.widgets.RadioSelect,
+    #                             choices=CHOICES, initial=GUEST)
+
+class GatewayFormGuest(CoreGatewayForm):
+    helper = FormHelper()
+    helper.form_show_labels = False
+    helper.form_tag = False
+    helper.layout = Layout(
+        Field('username', placeholder="Email"),
+        Hidden('form2', 'submitted-form'))
+
 
 class ShippingAddressForm(CoreShippingAddressForm):
     helper = FormHelper()
@@ -35,6 +59,21 @@ class ShippingAddressForm(CoreShippingAddressForm):
         # Field('country', placeholder="Country"),
         Field('phone_number', placeholder="Phone Number")
     )
+
+    def clean(self):
+
+        easypost.api_key = settings.EASYPOST_API_KEY
+
+        try:
+            easypost.Address.create_and_verify(
+                name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
+                street1=self.cleaned_data['line1'],
+                city=self.cleaned_data['line4'],
+                state=self.cleaned_data['state'],
+                zip=self.cleaned_data['postcode'],
+                country='US')
+        except Exception as e:
+            raise forms.ValidationError( "Please enter a valid address." )
 
 @parsleyfy
 class PaymentInfoForm(forms.Form):
@@ -109,3 +148,4 @@ class PaymentInfoFormWithTotal(PaymentInfoForm):
                 Submit('paymentForm', 'Pay', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
+

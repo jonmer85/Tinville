@@ -6,9 +6,7 @@
 
 .continueButtonAlign{
     display: inline;
-    width:auto;
-    padding-left: 10%;
-    padding-right: 10%;
+    width:50%;
 }
 
 .slidingContent{

@@ -473,7 +473,7 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-TINVILLE_ORDER_SALES_CUT = Decimal(0.10)  # Tinville takes 10% of designer sales
+TINVILLE_ORDER_SALES_CUT = Decimal(0.15)  # Tinville takes 15% of designer sales
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {
@@ -521,3 +521,7 @@ DEBUG_TOOLBAR_CONFIG = {
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
+
+
+
+DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', False)
