@@ -21,9 +21,9 @@
             "name": "Demo",
 			"slug": "demo",
             "banner": "images/banner.jpg",
-            "mobileBanner": "images/mobileBanner.jpg",
+            "mobileBanner": "images/mobilebanner.jpg",
             "logo": "",
-            "aboutImg": "images/aboutImage.png",
+            "aboutImg": "images/aboutimage.png",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "#AED4EF"
