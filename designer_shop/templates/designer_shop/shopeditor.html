@@ -193,8 +193,8 @@ $(document).ready(function () {
     resizeEditor();
     {% if editItemMode %}
     populateProductVariantsInfo();
-    showImageFields();
     {% endif %}
+    showImageFields();
 
 });
 
@@ -658,28 +658,7 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 
 }
 
-function showImageFields() {
 
-    var visibleImages = [
-        $('#product_image-clear_id').length,
-        $('#product_image1-clear_id').length,
-        $('#product_image2-clear_id').length,
-        $('#product_image3-clear_id').length
-    ];
-
-    if(visibleImages[0]) {
-        $("#id_product_image1").removeClass("hidden");
-    }
-    if(visibleImages[1]) {
-        $("#id_product_image2").removeClass("hidden");
-    }
-    if(visibleImages[2]) {
-        $("#id_product_image3").removeClass("hidden");
-    }
-    if(visibleImages[3]) {
-        $("#id_product_image4").removeClass("hidden");
-    }
-}
 
 $(window).resize(function() {
     if($("#emptyShopId").length > 0) {
@@ -861,15 +840,17 @@ function DeleteConfirmation(slug) {
             reader.onload = function (e) {
                 if (cropping_img in jcrop) {
                     var thumbnail = $('#' + cropping_img).next('.jcrop-image').children('img');
+                    var img = new Image();
+                    img.src = reader.result;
                     jcrop[cropping_img].setImage(reader.result, function() {
                         this.setOptions({
                                 aspectRatio: ratio_width / ratio_height,
-                                setSelect: getCenterBoxSelection(ratio_width, ratio_height, thumbnail.width(), thumbnail.height()),
-                                trueSize: [thumbnail.width(), thumbnail.height()],
-                                onSelect: image_cropping.update_selection($this)
+                                setSelect: getCenterBoxSelection(ratio_width, ratio_height, img.width, img.height),
+                                trueSize: [img.width, img.height],
                         });
-                    }
+                    })
                 }
+            };
 
 
             reader.readAsDataURL(input.files[0]);
@@ -878,76 +859,97 @@ function DeleteConfirmation(slug) {
     }
 
     $("#id_banner").change(function(){
-{#        $('#banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
-
         readURL(this, 'id_bannerCropping-image', 1779, 364);
     });
 
     $("#id_mobileBanner").change(function(){
-{#        $('#mobile_banner_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
         readURL(this, 'id_mobileBannerCropping-image', 968, 642);
     });
 
     $("#id_aboutImg").change(function(){
-{#        $('#aboutImg_preview').parent().prev('.docs-toolbar').removeClass('hidden');#}
         readURL(this, 'id_aboutImgCropping-image', 155, 155);
     });
 
     $("#id_images-0-original").change(function(){
 {#        $('#product_image_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
-
         readURL(this, 'id_images-0-cropping-image', 400, 500);
+        $('#div_id_images-1-original').removeClass("hidden");
+        $('#div_id_images-1-cropping').removeClass('hidden');
+        $('#div_id_images-1-DELETE').removeClass('hidden');
     });
     $("#id_images-1-original").change(function(){
         readURL(this, 'id_images-1-cropping-image', 400, 500);
+        $('#div_id_images-2-original').removeClass("hidden");
+        $('#div_id_images-2-cropping').removeClass('hidden');
+        $('#div_id_images-2-DELETE').removeClass('hidden');
+    });
+    $("#id_images-2-original").change(function(){
+        readURL(this, 'id_images-2-cropping-image', 400, 500);
+        $('#div_id_images-3-original').removeClass("hidden");
+        $('#div_id_images-3-cropping').removeClass('hidden');
+        $('#div_id_images-3-DELETE').removeClass('hidden');
+    });
+    $("#id_images-3-original").change(function(){
+        readURL(this, 'id_images-3-cropping-image', 400, 500);
+        $('#div_id_images-4-original').removeClass("hidden");
+        $('#div_id_images-4-cropping').removeClass('hidden');
+        $('#div_id_images-4-DELETE').removeClass('hidden');
+    });
+    $("#id_images-4-original").change(function(){
+        readURL(this, 'id_images-4-cropping-image', 400, 500);
     });
 
 
-    $("#id_product_image1").change(function(){
-        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#product_image1_preview'), 400 / 500);
-    });
-    $("#id_product_image2").change(function(){
-        $('#product_image2_preview ').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#product_image2_preview'), 400 / 500);
-    });
-    $("#id_product_image3").change(function(){
-        $('#product_image3_preview ').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#product_image3_preview'), 400 / 500);
-    });
-    $("#id_product_image4").change(function(){
-        $('#product_image4_preview ').parent().prev('.docs-toolbar').removeClass('hidden');
-        readURL(this, $('#product_image4_preview'), 400 / 500);
-    });
+    function showImageFields() {
 
-    function showPreviewItemImage(previewSelector) {
-        readURL(this, $(previewSelector), 400 / 500);
-        $(previewSelector).parent().prev('.docs-toolbar').removeClass('hidden')
-    }
+{#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
 
-    $("#banner").submit(function(){
-        populateCroppedField($("#banner_preview"), $("#id_bannerCropped"));
-        populateCroppedField($("#mobile_banner_preview"), $("#id_mobileBannerCropped"));
-    });
+        $('#div_id_images-1-original').addClass('hidden');
+        $('#div_id_images-2-original').addClass('hidden');
+        $('#div_id_images-3-original').addClass('hidden');
+        $('#div_id_images-4-original').addClass('hidden');
 
-    $("#about").submit(function(){
-{#        populateCroppedField($("#aboutImg_preview"), $("#id_aboutImgCropped"));#}
-    });
+        $('#div_id_images-1-cropping').addClass('hidden');
+        $('#div_id_images-2-cropping').addClass('hidden');
+        $('#div_id_images-3-cropping').addClass('hidden');
+        $('#div_id_images-4-cropping').addClass('hidden');
 
-    $("#addOrEditItem").submit(function(){
-        populateCroppedField($("#product_image_preview"), $("#id_product_image_cropped"));
-        populateCroppedField($("#product_image1_preview"), $("#id_product_image1_cropped"));
-        populateCroppedField($("#product_image2_preview"), $("#id_product_image2_cropped"));
-        populateCroppedField($("#product_image3_preview"), $("#id_product_image3_cropped"));
-        populateCroppedField($("#product_image4_preview"), $("#id_product_image4_cropped"));
-    });
+        $('#div_id_images-1-DELETE').addClass('hidden');
+        $('#div_id_images-2-DELETE').addClass('hidden');
+        $('#div_id_images-3-DELETE').addClass('hidden');
+        $('#div_id_images-4-DELETE').addClass('hidden');
 
-    function populateCroppedField($preview, $croppedField) {
-        if($preview.siblings(".cropper-container").length) {
-            var img_data =$preview.cropper("getData");
-            $croppedField.val(img_data);
+
+        var visibleImages = [
+            $('#div_id_images-0-original a[target="_blank"]').length,
+            $('#div_id_images-1-original a[target="_blank"]').length,
+            $('#div_id_images-2-original a[target="_blank"]').length,
+            $('#div_id_images-3-original a[target="_blank"]').length
+        ];
+
+        if(visibleImages[0]) {
+            $('#div_id_images-1-original').removeClass("hidden");
+            $('#div_id_images-1-cropping').removeClass('hidden');
+            $('#div_id_images-1-DELETE').removeClass('hidden');
+        }
+        if(visibleImages[1]) {
+            $('#div_id_images-2-original').removeClass("hidden");
+            $('#div_id_images-2-cropping').removeClass('hidden');
+            $('#div_id_images-2-DELETE').removeClass('hidden');
+        }
+        if(visibleImages[2]) {
+            $('#div_id_images-3-original').removeClass("hidden");
+            $('#div_id_images-3-cropping').removeClass('hidden');
+            $('#div_id_images-3-DELETE').removeClass('hidden');
+        }
+        if(visibleImages[3]) {
+            $('#div_id_images-4-original').removeClass("hidden");
+            $('#div_id_images-4-cropping').removeClass('hidden');
+            $('#div_id_images-4-DELETE').removeClass('hidden');
         }
     }
+
+
 
 {#    $(function() {#}
 {#        $('#images .panel-body').formset({#}
