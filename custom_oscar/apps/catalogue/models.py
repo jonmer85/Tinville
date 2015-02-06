@@ -41,6 +41,6 @@ class Product(AbstractProduct):
                 'is_missing': True}
 
 class ProductImage(AbstractProductImage):
-    cropping = ImageRatioField('original', '400x500', box_max_width=400, box_max_height=500)
+    cropping = ImageRatioField('original', '400x500', box_max_width=200)
 
 from oscar.apps.catalogue.models import *
