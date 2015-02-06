@@ -63,5 +63,3 @@ SIZE_TYPES = [
     (SIZE_DIM, "Dimensions (eg. Length X Width)"),
     (SIZE_NUM, "Number (eg. Dress size)")
 ]
-
-

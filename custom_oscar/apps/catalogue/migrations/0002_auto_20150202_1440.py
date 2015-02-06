@@ -8,7 +8,7 @@ import image_cropping.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('designer_shop', '__first__'),
+        ('designer_shop', '0001_initial'),
         ('catalogue', '0001_initial'),
     ]
 
