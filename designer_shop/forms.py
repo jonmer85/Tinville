@@ -289,13 +289,6 @@ class ProductImageForm(forms.ModelForm):
     helper = FormHelper()
     # helper.form_tag = False
     helper.form_show_labels = False
-    # helper.layout = Layout(
-    #     Div(
-    #         Field('original'),
-    #         Field('cropping'),
-    #         css_class="thumbnail", style="padding:10%")
-    #         # css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
-    #     )
 
 
     class Meta:
@@ -356,7 +349,6 @@ class AboutBoxForm(forms.ModelForm):
 
                      Field('aboutImg', css_class="autoHeight"),
                      Field('aboutImgCropping'),
-                     # CroppedFieldLayout('aboutImgCropped', 'aboutImg_preview'),
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
@@ -403,10 +395,6 @@ class DesignerShopColorPicker(forms.Form):
 
 class BannerUploadForm(forms.ModelForm):
 
-    # banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    # mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    # bannerCropped = forms.CharField(required=False)
-    # mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
     helper.form_show_labels = False
 

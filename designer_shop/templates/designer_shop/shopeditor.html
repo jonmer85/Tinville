@@ -86,7 +86,6 @@
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
   <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
-{#  <script src="{{ STATIC_URL }}js/vendor/jquery.formset.js"></script>#}
 
 {% endblock javascript_library %}
 
@@ -950,12 +949,6 @@ function DeleteConfirmation(slug) {
     }
 
 
-
-{#    $(function() {#}
-{#        $('#images .panel-body').formset({#}
-{#            prefix: '{{ productImageFormSet.prefix }}'#}
-{#        });#}
-{#    })#}
 
 
 

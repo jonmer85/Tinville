@@ -74,6 +74,3 @@ class TinvilleImageCropWidget(ImageThumbnailFileInput, CropWidget):
             'data-max-height': "500",
         })
         return super(ImageThumbnailFileInput, self).render(name, value, attrs)
-
-class TinvilleImageInput(ImageInput):
-    template_name = 'tinville_image_input.html'
