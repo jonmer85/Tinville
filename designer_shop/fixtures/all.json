@@ -66,7 +66,7 @@
         "pk": 2,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_1.jpg",
             "display_order": 0,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -77,7 +77,7 @@
         "pk": 3,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_2.jpg",
             "display_order": 1,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -88,7 +88,7 @@
         "pk": 4,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_3.jpg",
             "display_order": 2,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -99,7 +99,7 @@
         "pk": 5,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_4.jpg",
             "display_order": 3,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -433,7 +433,7 @@
         "pk": 7,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_1.jpg",
             "display_order": 0,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -444,7 +444,7 @@
         "pk": 8,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_2.jpg",
             "display_order": 1,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -455,7 +455,7 @@
         "pk": 9,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_3.jpg",
             "display_order": 2,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -466,7 +466,7 @@
         "pk": 10,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_4.jpg",
             "display_order": 3,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -477,7 +477,7 @@
         "pk": 11,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_5.jpg",
             "display_order": 4,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -800,7 +800,7 @@
         "pk": 12,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_1.jpg",
             "display_order": 0,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -811,7 +811,7 @@
         "pk": 13,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_2.jpg",
             "display_order": 1,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -822,7 +822,7 @@
         "pk": 14,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_3.jpg",
             "display_order": 2,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -833,7 +833,7 @@
         "pk": 15,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_4.jpg",
             "display_order": 3,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
@@ -844,7 +844,7 @@
         "pk": 16,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_5.jpg",
             "display_order": 4,
             "date_created": "2014-06-28 18:03:32.910457",
             "cropping": ""
