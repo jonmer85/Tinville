@@ -59,7 +59,7 @@ class ProductCreationForm(forms.ModelForm):
                     AccordionGroup('General',
                              Field('title', placeholder='Title'),
                              AccordionGroup('Description',
-                                            Field('description', placeholder='Description'),style="padding-bottom: 10px"),
+                                            Field('description', placeholder='Description'), style="padding-bottom: 10px"),
                              Field('category', placeholder='Choose a Category'),
                              Field('price', placeholder='Price')
                     ),
