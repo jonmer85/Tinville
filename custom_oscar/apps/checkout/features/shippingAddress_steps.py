@@ -2,7 +2,7 @@ from common.lettuce_utils import *
 
 @step(u'Given the shipping address page')
 def given_the_shipping_address_page(step):
-    world.browser.get(lettuce.django.get_server().url('/shipping-address'))
+    assert world.browser.get(lettuce.django.get_server().url('/shipping-address'))
 
 @step(u'When the form is displayed')
 def when_the_form_is_displayed(step):
