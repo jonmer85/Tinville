@@ -6,7 +6,7 @@ Feature: Designer Registration
 
   Scenario: Form entry
 	When I register for a shop named "foo"
-	Then I can visit my shop at "/foo/"
+	Then I can visit my shop at "foo"
 
   Scenario: Shop name unavailable without applying for shop
     When I access the registration page
@@ -33,9 +33,10 @@ Feature: Designer Registration
      | ADMIN    |
      | aDMIN    |
 
+    @yori
   Scenario: AW Defect 212 - Shop name URL should be case-insensitive
     When I register for a shop named "foo"
-    Then I can visit my shop at "/foo"
-    And I can visit my shop at "/FOO"
-    And I can visit my shop at "/Foo"
+    Then I can visit my shop at "foo"
+    And I can visit my shop again at "FOO"
+    And I can visit my shop again at "Foo"
 

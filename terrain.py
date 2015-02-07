@@ -23,6 +23,7 @@ def set_browser(step):
         browser = webdriver.Firefox
     world.browser = browser()
 
+
 #@before.all
 # Jon M - Commented this out since sync-ing the DB all the time was slow. Manually sync the test DB as needed with
 # ./test syncdb as needed
@@ -39,3 +40,6 @@ def clean_database(scenario):
     call_command('loaddata', 'all.json', verbosity=0)
     call_command('loaddata', 'initial_data2.json', verbosity=0)
 
+@before.each_scenario
+def clear_cookies(scenario):
+    world.browser.delete_all_cookies()
