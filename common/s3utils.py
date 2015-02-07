@@ -17,4 +17,5 @@ class MediaS3BotoStorage(S3BotoStorage):
 
     def __init__(self, *args, **kwargs):
         kwargs['location'] = 'media'
+        kwargs['querystring_auth'] = False
         super(MediaS3BotoStorage, self).__init__(*args, **kwargs)

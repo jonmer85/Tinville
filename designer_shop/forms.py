@@ -1,8 +1,9 @@
+from copy import copy
 import uuid
 from django import forms
 from django.core.files.base import ContentFile
+from django.forms import inlineformset_factory
 from django_bleach.forms import BleachField
-from oscar.apps.catalogue.models import ProductImage
 
 from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,28 +15,23 @@ from tinymce.widgets import TinyMCE
 from color_utils import widgets
 from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
+from image_cropping import ImageCropWidget
 
-from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES
-from common.utils import get_or_none, CroppedFieldLayout
-from common.widgets import AdvancedFileInput
-
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES, Shop
+from common.utils import get_or_none
+from common.widgets import AdvancedFileInput, TinvilleImageCropWidget
 
 
 SIZE_TYPES_AND_EMPTY = [('', 'How is this item sized?')] + SIZE_TYPES
 
 Product = get_model("catalogue", "Product")
+ProductImage = get_model("catalogue", "ProductImage")
 
 @parsleyfy
 class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title",max_length=80)
-
-    product_image_cropped = forms.CharField(required=False)
-    product_image1_cropped = forms.CharField(required=False)
-    product_image2_cropped = forms.CharField(required=False)
-    product_image3_cropped = forms.CharField(required=False)
-    product_image4_cropped = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
@@ -44,9 +40,6 @@ class ProductCreationForm(forms.ModelForm):
         self.fields['sizeVariation'] = forms.ChoiceField(label='Size type',
                                          choices=SIZE_TYPES_AND_EMPTY, required=True,
                                          initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
-
-
-        # self.fields['product_image'] = forms.ImageField(required=False)
 
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
@@ -65,16 +58,7 @@ class ProductCreationForm(forms.ModelForm):
                     ),
                     AccordionGroup('Images',
                              HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
-                             Field( 'product_image', css_id="id_productImage" ),
-                             CroppedFieldLayout('product_image_cropped', 'product_image_preview'),
-                             Field( 'product_image1', css_id="id_productImage1", css_class='hidden'),
-                             CroppedFieldLayout('product_image1_cropped', 'product_image1_preview'),
-                             Field( 'product_image2', css_id="id_productImage2", css_class='hidden'),
-                             CroppedFieldLayout('product_image2_cropped', 'product_image2_preview'),
-                             Field( 'product_image3', css_id="id_productImage3", css_class='hidden'),
-                             CroppedFieldLayout('product_image3_cropped', 'product_image3_preview'),
-                             Field( 'product_image4', css_id="id_productImage4", css_class='hidden'),
-                             CroppedFieldLayout('product_image4_cropped', 'product_image4_preview'),
+                             HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
                     ),
                     AccordionGroup('Sizes and Colors',
                              Field('sizeVariation', placeholder='Choose a variation'),
@@ -88,18 +72,6 @@ class ProductCreationForm(forms.ModelForm):
             )
 
         )
-
-        self.fields['product_image'] \
-            = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image', None),
-                               widget=AdvancedFileInput)
-        self.fields['product_image1'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image1', None),
-                                                         widget=AdvancedFileInput)
-        self.fields['product_image2'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image2', None),
-                                                         widget=AdvancedFileInput)
-        self.fields['product_image3'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image3', None),
-                                                         widget=AdvancedFileInput)
-        self.fields['product_image4'] = forms.ImageField(required=False, initial=self.get_value_if_in_edit_mode('product_image4', None),
-                                                         widget=AdvancedFileInput)
 
         self.fields['description'] = BleachField(required=False)
         self.fields['description'].widget = TinyMCE()
@@ -152,12 +124,14 @@ class ProductCreationForm(forms.ModelForm):
 
 
     def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
-        variantProduct = canonical
+        variantProduct = copy(canonical)
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
         variantProduct.parent_id = canonicalId
         variantProduct.structure = Product.CHILD
         variantProduct.pk = None
         variantProduct.id = None
+        variantProduct.save()
+        variantProduct.attr.product = variantProduct # Switch attributes to the variant
         variantProduct.description = canonical.description
         if sizeSet:
             setattr(variantProduct.attr, 'size_set', sizeSet)
@@ -219,14 +193,6 @@ class ProductCreationForm(forms.ModelForm):
             Product.objects.filter(parent=canonicalId).delete()
 
 
-        #if not is_edit:
-        # Tommy Leedberg TODO!!!! Make this work for editing images and remove if statement above!!!
-        self.save_image_if_needed(canonicalProduct, "product_image", 0)
-        self.save_image_if_needed(canonicalProduct, "product_image1", 1)
-        self.save_image_if_needed(canonicalProduct, "product_image2", 2)
-        self.save_image_if_needed(canonicalProduct, "product_image3", 3)
-        self.save_image_if_needed(canonicalProduct, "product_image4", 4)
-
         for size in sizes:
             if sizeType == SIZE_SET:
                 if size["sizeFieldName"] in self.cleaned_data:
@@ -271,39 +237,6 @@ class ProductCreationForm(forms.ModelForm):
                             pass
         return canonicalProduct
 
-    def save_image_if_needed(self, product, image_field, display_order):
-        if self.cleaned_data[image_field] is not None:
-            if not self.cleaned_data[image_field]:
-                # False means that the clear checkbox was checked
-                existing = get_or_none(ProductImage, display_order=display_order, product=product)
-                if existing is not None:
-                    existing.delete()
-
-            else:
-                croppedImgField = self.cleaned_data[image_field + '_cropped']
-                newFileExists = croppedImgField is not None and croppedImgField != ""
-                if newFileExists:
-                    existing = get_or_none(ProductImage, display_order=display_order, product=product)
-                    if existing:
-                        existing.display_order = 999999 # temp value to not collide with replacement display_order
-                        existing.save()
-
-                    img_string = self.cleaned_data[image_field + '_cropped']
-                    img_data = img_string.decode("base64")
-                    productImage = ProductImage(product=product, display_order=display_order)
-                    productImage.original.save(self.cleaned_data[image_field].name, ContentFile(img_data))
-                    productImage.save()
-
-                    if existing:
-                        existing.delete()
-
-
-
-    def load_image(self, product, display_order):
-        image = get_or_none(ProductImage, product=product, display_order=display_order)
-        retVal = None if not image else image.original
-        return retVal
-
     def get_size_variation(self):
         if not self.instance or not self.instance.is_group:
             return "0"
@@ -327,16 +260,6 @@ class ProductCreationForm(forms.ModelForm):
             return self.get_size_variation()
         if field_name == 'price':
             return self.instance.min_variant_price_excl_tax
-        if field_name == 'product_image':
-            return self.load_image(self.instance.pk, 0)
-        if field_name == 'product_image1':
-            return self.load_image(self.instance.pk, 1)
-        if field_name == 'product_image2':
-            return self.load_image(self.instance.pk, 2)
-        if field_name == 'product_image3':
-            return self.load_image(self.instance.pk, 3)
-        if field_name == 'product_image4':
-            return self.load_image(self.instance.pk, 4)
         if field_name == 'category':
             categories = self.instance.categories.all()
             return categories[0] if categories.count() > 0 else None
@@ -361,11 +284,61 @@ def get_partner_from_shop(shop):
         partner.users.add(shop_owner)
         return partner
 
-class AboutBoxForm(forms.Form):
+class ProductImageForm(forms.ModelForm):
 
-    aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
-    aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    aboutImgCropped = forms.CharField(required=False)
+    helper = FormHelper()
+    # helper.form_tag = False
+    helper.form_show_labels = False
+
+
+    class Meta:
+        model = ProductImage
+        exclude = ('display_order', 'caption')
+
+        widgets = {
+            'original': TinvilleImageCropWidget,
+        }
+
+    def save(self, *args, **kwargs):
+        # We infer the display order of the image based on the order of the
+        # image fields within the formset.
+        kwargs['commit'] = False
+        obj = super(ProductImageForm, self).save(*args, **kwargs)
+        obj.display_order = self.get_display_order()
+        obj.save()
+        return obj
+
+    def get_display_order(self):
+        return self.prefix.split('-').pop()
+
+    def has_changed(self):
+        """
+        Returns True if data differs from initial.
+        """
+        return bool(self.changed_data) \
+            and not (len(self.changed_data) == 1 and self.changed_data[0] == 'cropping' and self.empty_permitted)
+
+    def __init__(self, *args, **kwargs):
+        super(ProductImageForm, self).__init__(*args, **kwargs)
+
+
+BaseProductImageFormSet = inlineformset_factory(
+    Product, ProductImage, form=ProductImageForm, extra=4, can_delete=True, max_num=5, min_num=1, validate_min=True, validate_max=True)
+
+
+class ProductImageFormSet(BaseProductImageFormSet):
+
+    def __init__(self, *args, **kwargs):
+        super(ProductImageFormSet, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.fields["original"].label = ""
+            form.fields["cropping"].label = ""
+
+class AboutBoxForm(forms.ModelForm):
+
+    # aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    # aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    # aboutImgCropped = forms.CharField(required=False)
 
     helper = FormHelper()
     helper.form_show_labels = False
@@ -373,13 +346,27 @@ class AboutBoxForm(forms.Form):
         Div(Accordion(
             AccordionGroup('About',
                      HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
+
                      Field('aboutImg', css_class="autoHeight"),
-                     CroppedFieldLayout('aboutImgCropped', 'aboutImg_preview'),
+                     Field('aboutImgCropping'),
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
+
+    def __init__(self, *args, **kwargs):
+        super(AboutBoxForm, self).__init__(*args, **kwargs)
+
+        self.fields['aboutContent'].widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 })
+
+
+    class Meta:
+        model = Shop
+        fields = ['aboutImg', 'aboutContent', 'aboutImgCropping']
+        widgets = {
+            'aboutImg': TinvilleImageCropWidget,
+        }
 
 class DesignerShopColorPicker(forms.Form):
 
@@ -406,12 +393,8 @@ class DesignerShopColorPicker(forms.Form):
             raise forms.ValidationError('Tinville Branding is not Allowed to be Used.')
         return tinville_color
 
-class BannerUploadForm(forms.Form):
+class BannerUploadForm(forms.ModelForm):
 
-    banner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    mobileBanner = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
-    bannerCropped = forms.CharField(required=False)
-    mobileBannerCropped = forms.CharField(required=False)
     helper = FormHelper()
     helper.form_show_labels = False
 
@@ -421,16 +404,24 @@ class BannerUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"></div>"""),
                      Field('banner', css_class="autoHeight"),
-                     CroppedFieldLayout('bannerCropped', 'banner_preview')),
+                     Field('bannerCropping')),
 
             AccordionGroup('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
-                     CroppedFieldLayout('mobileBannerCropped', 'mobile_banner_preview')),
+                     Field('mobileBannerCropping')),
             ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
         ))
+
+    class Meta:
+        model = Shop
+        fields = ['banner', 'mobileBanner', 'bannerCropping', 'mobileBannerCropping']
+        widgets = {
+            'banner': TinvilleImageCropWidget,
+            'mobileBanner': TinvilleImageCropWidget,
+        }
 
 class LogoUploadForm(forms.Form):
 

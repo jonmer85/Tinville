@@ -43,7 +43,6 @@ def isNoneOrEmptyOrWhitespace (validateString):
         else:
             return True
     return False
-
 def CroppedFieldLayout(croppedField, preview):
     return \
         Layout(

@@ -24,7 +24,6 @@ before_script:
   - /etc/init.d/xvfb start
 
 script:
-  - ./lettuce_tests reset_db --noinput
   - ./initDataNoInput lettuce_tests
   - coverage run --source='Tinville,basket,common,designer_shop,extensions,custom_oscar.apps.catalogue,custom_oscar.apps.checkout,custom_oscar.apps.customer,custom_oscar.apps.order,custom_oscar.apps.dashboard,user' manage.py harvest --with-xunit --xunit-file=shippable/testresults/lettucetests.xml --settings=Tinville.settings.lettuce_tests
   - coverage xml -o shippable/codecoverage/coverage_lettuce.xml
