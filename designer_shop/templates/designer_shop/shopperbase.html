@@ -8,19 +8,6 @@
 {% endblock css %}
 {% block content %}
     {{ block.super }}
-{#      {% if shop.banner and shop.logo %}#}
-{#          <div class="full-screen">#}
-{#              <img id="id_BannerImage" src="{{shop.banner.url}}" />#}
-{#              <a href='{{ shop.get_absolute_url }}' data-toggle="tooltip" data-placement="right" title="Click here to go to {{ shop.name }}">#}
-{#                <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />#}
-{#              </a>#}
-{#          </div>#}
-{#      {% elif not shop.banner and shop.logo %}#}
-{#          <div class="full-screen shopBackgroundColor">#}
-{#            <a href='{{ shop.get_absolute_url }}' data-toggle="tooltip" data-placement="right" title="Click here to go to {{ shop.name }}">#}
-{#              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />#}
-{#            </a>#}
-{#          </div>#}
       {% if shop.banner %}
             <span data-picture class="banner">
                 {% if shop.mobileBanner %}
