@@ -410,7 +410,6 @@ class BannerUploadForm(forms.ModelForm):
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
-            ),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
             css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
         ))
