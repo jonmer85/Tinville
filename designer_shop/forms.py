@@ -51,8 +51,8 @@ class ProductCreationForm(forms.ModelForm):
             Div(Accordion(
                     AccordionGroup('General',
                              Field('title', placeholder='Title'),
-                             HTML("""<p>Description</p>"""),
-                             Field('description', placeholder='Description'),
+                             AccordionGroup('Description',
+                                            Field('description', placeholder='Description'), style="padding-bottom: 10px"),
                              Field('category', placeholder='Choose a Category'),
                              Field('price', placeholder='Price')
                     ),
@@ -399,14 +399,14 @@ class BannerUploadForm(forms.ModelForm):
     helper.form_show_labels = False
 
     helper.layout = Layout(
-        Div(Accordion(
-            AccordionGroup('Banner Image',
+        Div(
+            Fieldset('Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"></div>"""),
                      Field('banner', css_class="autoHeight"),
                      Field('bannerCropping')),
 
-            AccordionGroup('Mobile Banner Image',
+            Fieldset('Mobile Banner Image',
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
