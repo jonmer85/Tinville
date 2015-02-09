@@ -522,6 +522,7 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
-
-
 DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', False)
+
+#Overriding oscars required address fields for custom validation
+OSCAR_REQUIRED_ADDRESS_FIELDS = {}
