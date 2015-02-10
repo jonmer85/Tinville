@@ -26,6 +26,8 @@ S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
+COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 BROKER_URL=os.environ.get('REDISTOGO_URL', None)
 CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', None)
 

@@ -9,6 +9,7 @@ DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_
 # HEROKU Change!!!
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+COMPRESS_ENABLED = True
 
 ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
 
@@ -25,6 +26,8 @@ S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
+
+COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 
 
