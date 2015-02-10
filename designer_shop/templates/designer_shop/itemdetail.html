@@ -171,10 +171,14 @@
 
 {% block javascript_library %}
   {{ block.super }}
-<!-- Please call pinit.js only once per page -->
-<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+
 
 {% endblock javascript_library %}
+
+{% block uncompressable_js %}
+<!-- Please call pinit.js only once per page -->
+<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+{% endblock uncompressable_js %}
 
 
 {% block javascript %}
