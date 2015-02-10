@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% load i18n %}
+{% load cropping %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
@@ -16,12 +17,12 @@
                         <a href='{{ shop.get_absolute_url }}'>
                             <span data-picture class="banner">
                                 {% if shop.mobileBanner %}
-                                    <span data-src="{{shop.mobileBanner.url}}"></span>
+                                    <span data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
                                 {% else %}
-                                    <span data-src="{{shop.banner.url}}"></span>
+                                    <span data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}"></span>
                                 {% endif %}
-                                <span data-src="{{shop.banner.url}}" data-media="(min-width: 768px)"></span>
-                                <div class="col-xs-offset-5">{{ shop.name }}</div>
+                                <span data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)"></span>
+                                <div class="col-xs-offset-1">{{ shop.name }}</div>
                             </span>
                         </a>
                     </li>
