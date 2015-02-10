@@ -442,6 +442,7 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_PASTE = True
+TINYMCE_COMPRESSOR = True
 
 # to be overridden in other settings files
 GOOGLE_ANALYTICS_TRACKING_ID = ''
