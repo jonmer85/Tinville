@@ -25,33 +25,38 @@ Feature: Add item to the shopping bag
     Then The total sum should be 2
 
 
-  Scenario: Deleting an item
-    Given A shopping bag with 2 items
-    When I click on delete item button
-    Then The number of items should be 1
-    And I delete this item too
-    Then The the shopping bag should become empty
-    And I click on bag icon
-    Then It should say No Item in Your Bag
-    And I click on checkout button
-    Then The message should say 'You need to add some items to your basket to checkout'
-    And I click on continue shopping button
-    Then I go back to main page
-
-  Scenario: Trying to click on Add to Bag without choosing any item
-    Given Main Demo page with a shopping bag that is empty
-    Then I click on Add_to_Bag button
-    Then I receive the following warnings
-
-
-
   Scenario: Checkout
-    Given A shopping bag with 2 items
+    #Given checkout page with 2 items
     When I click on checkout button
-    Then The shipping address form should be displayed
+    Then The user login options page should be displayed
+    And I choose I am a returning customer, and my password is
+    And I click on continue
+    And I receive the warning messages
+    And I enter the correct info (demo@user.com - tinville)
+    And the address page is open
     And I click on Ship to This address
     Then The payment form should be displayed
     And I enter correct form credentials
+    Then I click on Pay
+
+
+  # Scenario: Deleting an item
+  #  Given A shopping bag with 2 items
+  # When I click on delete item button
+  # Then The number of items should be 1
+#    And I delete this item too
+#    Then The the shopping bag should become empty
+#    And I click on bag icon
+#    Then It should say No Item in Your Bag
+#    And I click on checkout button
+#    Then The message should say 'You need to add some items to your basket to checkout'
+#    And I click on continue shopping button
+#    Then I go back to main page
+
+   Scenario: Trying to click on Add to Bag without choosing any item
+   Given Main Demo page with a shopping bag that is empty
+   Then I click on Add_to_Bag button
+   Then I receive the following warnings
 
 
   #Scenario: Checking out with empty basket 'You need to add some items to your basket to checkout'
