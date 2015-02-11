@@ -17,7 +17,7 @@
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+
     {#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
     {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -25,8 +25,8 @@
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
     {% compress css %}
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
-
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
@@ -42,14 +42,6 @@
 
     {% endcompress %}
 
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-    {% compress js %}
-{#    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>#}
-    <script src="{{ STATIC_URL }}js/Utilities.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>
-    {% endcompress %}
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -500,6 +492,7 @@
     </div>
 </div>
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script id="message_template" type="text/x-handlebars-template">
         {% verbatim %}
@@ -521,6 +514,8 @@
     {% block uncompressable_js %}{% endblock %}
     {% compress js %}
     {% block javascript_library %}
+        <script src="{{ STATIC_URL }}js/Utilities.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
 
         <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>
