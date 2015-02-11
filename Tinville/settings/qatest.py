@@ -14,6 +14,7 @@ DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
+THUMBNAIL_DEFAULT_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')

@@ -10,7 +10,8 @@
             "is_active": true,
             "is_seller": true,
             "is_approved": true,
-            "key_expires": "2020-02-02"
+            "key_expires": "2020-02-02",
+            "access_code": "ABC12"
         }
     },
     {
@@ -20,9 +21,9 @@
             "name": "Demo",
 			"slug": "demo",
             "banner": "images/banner.jpg",
-            "mobileBanner": "images/mobileBanner.jpg",
+            "mobileBanner": "images/mobilebanner.jpg",
             "logo": "",
-            "aboutImg": "images/aboutImage.png",
+            "aboutImg": "images/aboutimage.png",
             "user": 2,
             "aboutContent": "<p><b>Some bold sample about text here</b></p>",
             "color": "#AED4EF"
@@ -65,9 +66,10 @@
         "pk": 2,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_1.jpg",
             "display_order": 0,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -75,9 +77,10 @@
         "pk": 3,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_2.jpg",
             "display_order": 1,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -85,9 +88,10 @@
         "pk": 4,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_3.jpg",
             "display_order": 2,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -95,9 +99,10 @@
         "pk": 5,
         "fields": {
             "product": 1,
-            "original": "images/item.jpg",
+            "original": "images/item1_4.jpg",
             "display_order": 3,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -107,7 +112,8 @@
             "product": 1,
             "original": "images/walken.jpg",
             "display_order": 4,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -427,9 +433,10 @@
         "pk": 7,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_1.jpg",
             "display_order": 0,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -437,9 +444,10 @@
         "pk": 8,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_2.jpg",
             "display_order": 1,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -447,9 +455,10 @@
         "pk": 9,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_3.jpg",
             "display_order": 2,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -457,9 +466,10 @@
         "pk": 10,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_4.jpg",
             "display_order": 3,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -467,9 +477,10 @@
         "pk": 11,
         "fields": {
             "product": 8,
-            "original": "images/item.jpg",
+            "original": "images/item2_5.jpg",
             "display_order": 4,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -789,9 +800,10 @@
         "pk": 12,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_1.jpg",
             "display_order": 0,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -799,9 +811,10 @@
         "pk": 13,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_2.jpg",
             "display_order": 1,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -809,9 +822,10 @@
         "pk": 14,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_3.jpg",
             "display_order": 2,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -819,9 +833,10 @@
         "pk": 15,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_4.jpg",
             "display_order": 3,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -829,9 +844,10 @@
         "pk": 16,
         "fields": {
             "product": 15,
-            "original": "images/item.jpg",
+            "original": "images/item3_5.jpg",
             "display_order": 4,
-            "date_created": "2014-06-28 18:03:32.910457"
+            "date_created": "2014-06-28 18:03:32.910457",
+            "cropping": ""
         }
     },
     {
@@ -1983,6 +1999,20 @@
         "fields": {
             "code": "paid_shipping",
             "name": "Paid Shipping"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "customer.communicationeventtype",
+        "fields": {
+            "code": "DESIGNER_ORDER_PLACED",
+            "name": "Designer Order Placed",
+            "category": "Order related",
+            "email_subject_template": "New Customer Order Placed",
+            "email_body_template": "Hello, /n You have a new order available.",
+            "email_body_html_template" : "<html><div>Hello,</div><p>A new order {{ order.number }} is available.</p><p>The order contains:</p><ul>{% for line in order.lines.all %}<li>{{ line.title }} - quantity: {{ line.quantity }}</li>{% endfor %}</ul><p></html>",
+            "date_created": "2015-01-17 20:31:49.481761",
+            "date_updated": "2015-01-17 20:31:49.481761"
         }
     }
 ]

@@ -1,6 +1,9 @@
 from django.db import models
+from easy_thumbnails.files import get_thumbnailer
 
-from oscar.apps.catalogue.abstract_models import AbstractProduct
+from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductImage
+
+from image_cropping import ImageRatioField
 
 from designer_shop.models import Shop
 
@@ -37,5 +40,13 @@ class Product(AbstractProduct):
                 'original': self.get_missing_image(),
                 'caption': '',
                 'is_missing': True}
+
+class ProductImage(AbstractProductImage):
+    cropping = ImageRatioField('original', '400x500', box_max_width=200)
+
+    def delete(self, *args, **kwargs):
+        thumbnailer = get_thumbnailer(self.original)
+        thumbnailer.delete_thumbnails()
+        super(ProductImage, self).delete(*args, **kwargs)
 
 from oscar.apps.catalogue.models import *

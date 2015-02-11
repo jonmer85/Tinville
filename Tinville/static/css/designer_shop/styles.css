@@ -656,7 +656,7 @@
 }
 
 .shopMenuActiveColor {
-    background-color: #dcdcdc;
+    background-color: white;
 }
 
 
@@ -668,4 +668,12 @@
 .shoplistStyle {
     width: 100%;
     height: 250px;
+}
+
+.shopTitleColor {
+    /*color: white !important;*/
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+    background-color: lightgray;
 }

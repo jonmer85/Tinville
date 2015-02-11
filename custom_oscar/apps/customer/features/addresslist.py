@@ -16,7 +16,7 @@ def i_access_the_addresses_page_as_a_new_designer(step):
     assert_selector_contains_text(".slidingContent2", "There are no addresses in your address book.")
 
 @step(u'I access the addresses page as a new shopper')
-def i_access_the_addresses_page_as_a_new_designer(step):
+def i_access_the_addresses_page_as_a_new_shopper(step):
     register_a_shopper_account('joe@schmoe.com', 'test')
     sign_in('joe@schmoe.com', 'test')
     world.browser.get(lettuce.django.get_server().url('/accounts/addresses'))

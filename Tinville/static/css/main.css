@@ -383,7 +383,7 @@ body
     padding-bottom   : 1%;
     border-radius    : 8px;
     font-size        : small;
-    margin-left      : -200%;
+    margin-left      : -300%;
     padding-left     : 30px;
     padding-right    : 30px;
     width            : 220px;
@@ -468,12 +468,20 @@ body
     font-size     : .85em;
     padding-top   : 2px;
 }
-
 #submit-id-userform
 {
-    width : 150px;
+    width : 50%;
+    margin-left: 25%;
 }
 
+@media (max-width : 768px)
+{
+    #submit-id-userform
+    {
+        width : 66%;
+        margin-left: 16.67%;
+    }
+}
 .userType :hover
 {
     background-color : white;
@@ -1332,13 +1340,18 @@ textarea
 /*Start mobile navbar*/
 @media (max-width : 768px)
 {
+    .navbarSliding
+    {
+        width: 0;
+        left: 0;
+    }
     .navbar-main.navbar
     {
         position           : fixed;
         height             : 100%;
-        width              : 70%;
+        /*width              : 70%;*/
         top                : 0;
-        left               : 0;
+        /*left               : 0;*/
         background-color   : #F1EEEF;
         overflow           : hidden;
         margin-top         : 58px;
@@ -1367,6 +1380,9 @@ textarea
     {
         -webkit-transition : all 1s ease;
         transition : all 1s ease;
+        width: 100%;
+        left: 0;
+        position: relative;
     }
 
 
@@ -1579,6 +1595,7 @@ textarea
 {
     -animation        : spin .7s infinite linear;
     -webkit-animation : spin2 .7s infinite linear;
+    -moz-animation: spin2 .7s infinite linear;
 }
 
 @-webkit-keyframes spin2
@@ -1593,6 +1610,11 @@ textarea
         -webkit-transform : rotate(360deg);
         transform : rotate(360deg);
     }
+}
+
+@-moz-keyframes spin2 {
+  from { -moz-transform: rotate(0deg);}
+  to { -moz-transform: rotate(360deg);}
 }
 
 @keyframes spin
@@ -1709,4 +1731,12 @@ textarea
   -ms-transform: scale(1, -1);
   -o-transform: scale(1, -1);
   transform: scale(1, -1);
+}
+
+.betaAccessAlign{
+    padding: 2%;
+}
+
+.dropdown-menu > li > a {
+    white-space: normal !important;
 }

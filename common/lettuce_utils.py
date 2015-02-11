@@ -151,6 +151,9 @@ def wait_for_element_with_name_to_exist(name):
     WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_name(name))
     return world.browser.find_element_by_name(name)
 
+def wait_for_browser_to_have_url(url):
+    WebDriverWait(world.browser, 15).until(lambda s: s.current_url == url)
+
 def wait_for_element_with_id_to_be_displayed(id):
     WebDriverWait(world.browser, 15).until(EC.visibility_of_element_located((By.ID, id)))
     return world.browser.find_element_by_id(id)
@@ -300,4 +303,9 @@ def submit_form_and_activate_user(form, expectSuccess=True):
 
 def sign_in_local():
     sign_in(world.user_info["email"], world.user_info["password"])
+
+def fill_in_access_form(access_code):
+    form = world.browser.find_element_by_id("betaform")
+    form.find_element_by_name("access_code").send_keys(access_code)
+    return form
 

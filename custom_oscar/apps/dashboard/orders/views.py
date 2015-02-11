@@ -15,7 +15,7 @@ import json
 import re
 import easypost
 import logging
-from common.utils import isNoneOrEmptyOrWhitespace
+from common.utils import isNoneOrEmptyOrWhitespace, ExtractDesignerIdFromOrderId
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -135,12 +135,14 @@ class OrderDetailView(CoreOrderDetailView):
 
     def get_shipment_context(self, order):
         shipment_collection = []
-        if cache.get('parcel_types') == None:
+        if cache.get('parcel_types') == None or len(self.get_supported_parcel_types()) > len(cache.get('parcel_types')):
             for parcel_type in self.get_supported_parcel_types():
                 if parcel_type['type'] == 'flatrate':
                     parcelType = { 'predefined_package': parcel_type['easypostname'],
-                                   'weight': 10 }
-                    shipment_collection.append(self.get_specific_shipment(order, parcelType))
+                                  'weight': 10 }
+                    flatrate_type = self.get_specific_shipment(order, parcelType)
+                    shipment_collection.append(flatrate_type)
+                    logger.info("flatrate_type: " + str(parcelType) + "=" + str(flatrate_type))
                 elif parcel_type['type'] == 'calculated':
                     shipment_collection.append({'type': parcel_type['easypostname'],
                                                 'name':parcel_type['displayname'],
@@ -235,10 +237,7 @@ class OrderDetailView(CoreOrderDetailView):
             return HttpResponse(shippingcost, content_type='application/json')
 
     def _GetShopAddress(self,orderId):
-        shopIdMatch = re.search('^([0-9]+)',orderId)
-        shopId = shopIdMatch.group()
-        shop = Shop.objects.get(pk=shopId)
-        userId = shop.user.id
+        userId = ExtractDesignerIdFromOrderId(orderId)
 
         partners = Partner._default_manager.filter(users=userId)
         if(partners == None or len(partners) == 0):
