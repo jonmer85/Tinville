@@ -5,8 +5,10 @@
     <script src="//tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
     <link href="{{ STATIC_URL }}css/cropper.css" rel="stylesheet">
-    {{ aboutBoxForm.media }}
 {% endblock css %}
+{% block uncompressable_css %}
+    {{ aboutBoxForm.media }}
+{% endblock uncompressable_css %}
 {% block content %}
 {{ block.super }}
 <div id="shopEditor" class="container">
