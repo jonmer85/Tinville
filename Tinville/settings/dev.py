@@ -9,21 +9,32 @@ DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_
 # HEROKU Change!!!
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+COMPRESS_ENABLED = True
 
 ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
+THUMBNAIL_DEFAULT_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_SECURE_URLS = True
+AWS_IS_GZIPPED = env('AWS_IS_GZIPPED', True)
+AWS_QUERYSTRING_EXPIRE = env('AWS_QUERYSTRING_EXPIRE', 63115200)
+AWS_HEADERS = {
+    'Cache-Control': str(env('AWS_CACHE_CONTROL', 'public, max-age=2592000')),
+}
 
 S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
+
+COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+
 
 BROKER_URL=env('REDISTOGO_URL')
 CELERY_RESULT_BACKEND=env('REDISTOGO_URL')

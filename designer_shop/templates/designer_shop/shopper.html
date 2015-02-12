@@ -1,7 +1,7 @@
 {% extends "designer_shop/shopperbase.html" %}
-{% load thumbnail %}
 {% load purchase_info_tags %}
 {% load bleach_tags %}
+{% load cropping %}
 
 {% block css %}
     {{ block.super }}
@@ -74,7 +74,8 @@
                 <div class="row">
                     <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
                         {% if shop.aboutImg %}
-                            <img id="displayedAboutImg" class="full-screen" src="{{shop.aboutImg.url}}"  />
+                            {% load cropping %}
+                            <img id="displayedAboutImg" class="full-screen" src="{% cropped_thumbnail shop "aboutImgCropping" scale=1 %}"  />
                         {% endif %}
                     </div>
                     <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">

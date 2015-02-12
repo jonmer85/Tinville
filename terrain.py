@@ -37,6 +37,7 @@ def add_context_to_scenario(scenario):
 @before.each_scenario
 def clean_database(scenario):
     call_command('flush', noinitialdata=True, interactive=False, verbosity=0)
+    call_command('collectmedia', noinitialdata=True, interactive=False, verbosity=0)
     call_command('loaddata', 'all.json', verbosity=0)
     call_command('loaddata', 'initial_data2.json', verbosity=0)
 

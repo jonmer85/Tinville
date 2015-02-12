@@ -1,8 +1,9 @@
 #!/bin/sh
 
+python manage.py collectmedia --settings=Tinville.settings.$1
 python manage.py migrate --settings=Tinville.settings.$1
 python manage.py loaddata initial_data2.json --settings=Tinville.settings.$1
 python manage.py loaddata countries_tinville.json --settings=Tinville.settings.$1
 python manage.py loaddata all.json --settings=Tinville.settings.$1
-python manage.py collectmedia --settings=Tinville.settings.$1
+
 
