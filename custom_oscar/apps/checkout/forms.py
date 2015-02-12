@@ -46,6 +46,12 @@ class GatewayFormGuest(CoreGatewayForm):
 class ShippingAddressForm(CoreShippingAddressForm):
     helper = FormHelper()
     helper.form_show_labels = False
+    first_name = forms.CharField(label='First Name', error_messages={'required': 'Please enter your first name.'})
+    last_name = forms.CharField(label='Last Name', error_messages={'required': 'Please enter your last.'})
+    line1 = forms.CharField(label='Address', error_messages={'required': 'Please enter an address.'})
+    line4 = forms.CharField(label='City', error_messages={'required': 'Please enter a city.'})
+    state = forms.CharField(label='Zip Code', error_messages={'required': 'Please enter a state.'})
+    postcode = forms.CharField(label='Zip Code', error_messages={'required': 'Please enter a United States zip code.'})
 
     helper.layout = Layout(
         Field('first_name', placeholder="First Name"),
@@ -62,18 +68,22 @@ class ShippingAddressForm(CoreShippingAddressForm):
 
     def clean(self):
 
+        #Generate the easpost api key for address validation
         easypost.api_key = settings.EASYPOST_API_KEY
 
-        try:
-            easypost.Address.create_and_verify(
-                name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
-                street1=self.cleaned_data['line1'],
-                city=self.cleaned_data['line4'],
-                state=self.cleaned_data['state'],
-                zip=self.cleaned_data['postcode'],
-                country='US')
-        except Exception as e:
-            raise forms.ValidationError( "Please enter a valid address." )
+        if set(['first_name', 'last_name', 'line1', 'line4', 'state', 'postcode']).issubset(self.cleaned_data):
+
+            try:
+                easypost.Address.create_and_verify(
+                    name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
+                    street1=self.cleaned_data['line1'],
+                    city=self.cleaned_data['line4'],
+                    state=self.cleaned_data['state'],
+                    zip=self.cleaned_data['postcode'],
+                    country='US')
+            except Exception as e:
+                logger
+                raise forms.ValidationError( "Please enter a valid address." )
 
 @parsleyfy
 class PaymentInfoForm(forms.Form):
