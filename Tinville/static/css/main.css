@@ -1734,7 +1734,8 @@ textarea
 }
 
 .betaAccessAlign{
-    padding: 2%;
+    padding-top: 5%;
+    margin-left: 40%;
 }
 
 .dropdown-menu > li > a {
