@@ -25,19 +25,19 @@ Feature: Add item to the shopping bag
 #    Then The total sum should be 2
 
 
-  Scenario: Checkout
+#  Scenario: Checkout
     #Given checkout page with 2 items
-    When I click on checkout button
-    Then The user login options page should be displayed
-    And I choose I am a returning customer, and my password is
-    And I click on continue
-    And I receive the warning messages
-    And I enter the correct info (demo@user.com - tinville)
-    And the address page is open
-    And I click on Ship to This address
-    Then The payment form should be displayed
-    And I enter correct form credentials
-    Then I click on Pay
+#    When I click on checkout button
+#    Then The user login options page should be displayed
+#    And I choose I am a returning customer, and my password is
+#    And I click on continue
+#    And I receive the warning messages
+#    And I enter the correct info (demo@user.com - tinville)
+#    And the address page is open
+#    And I click on Ship to This address
+#    Then The payment form should be displayed
+#    And I enter correct form credentials
+#    Then I click on Pay
 
 
   # Scenario: Deleting an item
