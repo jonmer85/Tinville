@@ -9,7 +9,6 @@ DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_
 # HEROKU Change!!!
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-COMPRESS_ENABLED = True
 
 ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
 
