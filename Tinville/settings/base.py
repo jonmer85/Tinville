@@ -528,9 +528,6 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
-COMPRESS_ENABLED = env("COMPRESS_ENABLED", False)
-
-
 DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', False)
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
