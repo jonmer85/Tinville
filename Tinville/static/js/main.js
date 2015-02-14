@@ -131,58 +131,6 @@
 
 
 
-        $(document).ready(function() {
-
-                   var menu = "close";
-
-                    $('.menu-toggle').click(function() {
-                        if(menu == "close"){
-                            $('.slidingContent').css('left','70%');
-                            $('.slidingContent').css('opacity','.05');
-                            $('.slidingContent').css('position','fixed');
-                            $('.slidingContent').css('pointer-events','none');
-                            $('.navbarSliding').css('width','70%');
-                            $('.navbarSliding').css('left','70%');
-                            menu="open";
-                        }
-                        else{
-                            $('.slidingContent').css('left','0%');
-                            $('.slidingContent').css('opacity','1');
-                            $('.slidingContent').css('position','relative');
-                            $('.slidingContent').css('pointer-events','auto');
-                            $('.navbarSliding').css('width','0%');
-                            $('.navbarSliding').css('left','0%');
-                            menu="close";
-                        }
-            });
-            var self = $(this);
-            var url = "/load_cart";
-                ajax_req = $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: 'json',
-                    success: function(data, textStatus, jqXHR) {
-                        $.each(data, function(index, item)
-                        {
-                            if (item.msg == ''){
-                                item.image = "{{ MEDIA_URL }}" + item.image;
-                                AddCartItem(item);
-                                cartCount()
-                            }
-                            else {
-                                $('#messageId').html(item.msg);
-                                $('#messageModal').modal('show');
-                            }
-                        });
-                    },
-                    error: function(data, textStatus, jqXHR) {
-                    }
-                });
-
-            cartCount();
-
-        });
-
         $(document).on("submit", ".loginForm", function(e) {
             e.preventDefault();
             var self = $(this),
@@ -305,55 +253,6 @@ function cartToggleBtn()
     cartJson["IsOpen"] = IsOpen;
     sessionStorage.setItem("cartState", JSON.stringify(cartJson));
 }
-function LoadCartItemDiv(cartItem)
-{
-    var rowdiv =  $('<div/>', {
-        'class':'row'
-    });
-    var cartitemdiv =  $('<li/>', {
-        'class':'shoppingcartitem col-xs-12',
-        'id' : "lineId" + cartItem.Id
-    });
-
-    var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
-    var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
-    itemThumbnail.appendTo(thumbnailDiv);
-    thumbnailDiv.appendTo(cartitemdiv);
-
-    var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
-
-    var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
-    itemTitle.appendTo(itemInfoDiv);
-
-    var itemDescription = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Color: " + cartItem.color});
-    itemDescription.appendTo(itemInfoDiv);
-    var itemSize = $('<div/>', {'class':'shoppingcartitemDescription', 'text':"Size: " + cartItem.size});
-    itemSize.appendTo(itemInfoDiv);
-
-    var itemQty = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
-    itemQty.appendTo(itemInfoDiv);
-
-    itemInfoDiv.appendTo(cartitemdiv);
-    var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
-    var delBtnId = 'deleteBtnId_' + cartItem.Id;
-    var removeBtn = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
-        'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
-    });
-    removeBtn.appendTo(removeBtnDiv);
-    removeBtnDiv.appendTo(cartitemdiv);
-    var price = '$' + (cartItem.qty * cartItem.price);
-    var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
-    priceDiv.appendTo(cartitemdiv);
-    cartitemdiv.appendTo(rowdiv);
-
-    rowdiv.appendTo("#shoppingcartitems");
-
-
-
-     $(".shoppingcartitemTitle").text(function(index, currentText) {
-            return currentText.substr(0, 15);
-        });
-}
 
 
 function aggregateTotal()
@@ -443,7 +342,7 @@ function RemoveCartItem(itemId)
 
     //for each element that is classed as 'pull-down', set its margin-top to the difference between its own height and the height of its parent
     $('.pull-down').each(function() {
-        $(this).css('margin-top', $(this).parent().height()-$(this).height())
+        $(this).css('margin-top', $(this).parent().height()-$(this).height());
     });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
