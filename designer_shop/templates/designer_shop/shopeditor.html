@@ -5,8 +5,10 @@
     <script src="//tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
     <link href="{{ STATIC_URL }}css/cropper.css" rel="stylesheet">
-    {{ aboutBoxForm.media }}
 {% endblock css %}
+{% block uncompressable_css %}
+    {{ aboutBoxForm.media }}
+{% endblock uncompressable_css %}
 {% block content %}
 {{ block.super }}
 <div id="shopEditor" class="container">
@@ -19,7 +21,7 @@
                 </div>
             <div id="editorPanels" class="row panel-collapse collapse in">
                 <div id="optionPanel" class="container col-sm-2 panel-body editorPanel shopEditorElementTop">
-                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Options</a>
+                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Click here for editor options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
                             {% if editItemMode %}

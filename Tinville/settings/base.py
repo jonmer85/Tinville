@@ -87,11 +87,13 @@ STATICFILES_DIRS = (
 
 )
 
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -198,7 +200,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'image_cropping',
     'smart_load_tag',
-    'floppyforms'
+    'floppyforms',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
