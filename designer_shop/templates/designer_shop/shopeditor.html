@@ -11,6 +11,23 @@
 {% endblock uncompressable_css %}
 {% block content %}
 {{ block.super }}
+    <div class="modal fade" id="mobileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="mobileModalLabel">Mobile Shop Editor</h4>
+                </div>
+                <div class="modal-body">
+                    Mobile shop editor is experimental. For best results use a PC or at least a 7 inch tablet.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div id="shopEditor" class="container">
     <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
@@ -81,6 +98,7 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}
 
