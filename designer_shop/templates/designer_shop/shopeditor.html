@@ -968,10 +968,18 @@ function DeleteConfirmation(slug) {
         }
     }
 
+        $(document).ready(function()
+        {
+            var mode = checkMode();
+            if (mode == 'xs' || mode == 'sm') {
 
-
-
-
+                var showMobile = sessionStorage.getItem('showMobile');
+                if (showMobile == null || showMobile == 'true') {
+                    sessionStorage.setItem('showMobile', 'false');
+                    $('#mobileModal').modal('show');
+                }
+            }
+        });
 
 </script>
 
