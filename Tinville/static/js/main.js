@@ -348,3 +348,11 @@ function RemoveCartItem(itemId)
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         stickyFooter();
     });
+
+        $(document).ready(function()
+        {
+            var mode = checkMode();
+            if(mode == 'xs' || mode == 'sm') {
+                $('#mobileModal').modal('show');
+            }
+        });
