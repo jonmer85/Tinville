@@ -17,12 +17,12 @@ Feature: Add item to the shopping bag
     Then The checkout form should be displayed
 
 
-  Scenario: Checkout page using arrows to control number of items
-    Given Checkout page with an item to checkout
-    When I increase the number of items by 2 using arrow
-    Then The total sum should be 3
-    And I decrease the number of items using arrow by 1
-    Then The total sum should be 2
+#  Scenario: Checkout page using arrows to control number of items
+#    Given Checkout page with an item to checkout
+#    When I increase the number of items by 2 using arrow
+#    Then The total sum should be 3
+#    And I decrease the number of items using arrow by 1
+#    Then The total sum should be 2
 
 
   Scenario: Checkout
@@ -53,10 +53,10 @@ Feature: Add item to the shopping bag
 #    And I click on continue shopping button
 #    Then I go back to main page
 
-   Scenario: Trying to click on Add to Bag without choosing any item
-   Given Main Demo page with a shopping bag that is empty
-   Then I click on Add_to_Bag button
-   Then I receive the following warnings
+#   Scenario: Trying to click on Add to Bag without choosing any item
+#   Given Main Demo page with a shopping bag that is empty
+#   Then I click on Add_to_Bag button
+#   Then I receive the following warnings
 
 
   #Scenario: Checking out with empty basket 'You need to add some items to your basket to checkout'
