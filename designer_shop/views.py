@@ -109,9 +109,13 @@ def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     products = get_list_or_empty(Product, shop=shop.id)
 
-    # if shop.user == user or shop.user.is_approved:
-    if not shop.user.is_approved:
-        return HttpResponseRedirect(reverse('under_construction'))
+    if not (shop.user.is_approved):
+        if(request.user.is_active):
+            if(not request.user.slug==shop.user.slug):
+                return HttpResponseRedirect(reverse('under_construction'))
+        else:
+            return HttpResponseRedirect(reverse('under_construction'))
+
 
     if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
         return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
