@@ -14,7 +14,7 @@ the content for this basic editor should include the following fields:
     When the add item tab is selected
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1          | SizeVariation |
-    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item.jpg | 1             |
+    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item1_1.jpg | 1             |
 	And I choose the size SM with row number 1 and I fill the following quantities and colors
     | Color | Quantity  |
     | Red   | 7         |
@@ -41,7 +41,7 @@ the content for this basic editor should include the following fields:
     When the add item tab is selected
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1          | SizeVariation |
-    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item.jpg | 2             |
+    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item2_1.jpg | 2             |
 	And I choose the sizeX 32 and the sizeY 34 with row number 1 and I fill the following quantities and colors
     | Color | Quantity  |
     | Red   | 10        |
@@ -68,7 +68,7 @@ the content for this basic editor should include the following fields:
     When the add item tab is selected
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1          | SizeVariation |
-    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item.jpg | 3             |
+    | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item3_1.jpg | 3             |
 	And I choose the sizenumber 5 with row number 1 and I fill the following quantities and colors
     | Color | Quantity  |
     | Red   | 10        |

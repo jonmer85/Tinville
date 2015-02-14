@@ -8,6 +8,7 @@ import os
 from unipath import Path
 from django.utils.translation import ugettext_lazy as _
 
+
 from oscar import get_core_apps
 from oscar.defaults import *
 
@@ -86,11 +87,13 @@ STATICFILES_DIRS = (
 
 )
 
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -194,6 +197,10 @@ INSTALLED_APPS = [
     'djcelery',
     'raven.contrib.django.raven_compat',
     'django_bleach',
+    'easy_thumbnails',
+    'image_cropping',
+    'smart_load_tag',
+    'floppyforms',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -503,6 +510,7 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = True
 
 BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
+BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
 
 
 # Django Debug Toolbar
@@ -522,6 +530,12 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
+COMPRESS_ENABLED = env("COMPRESS_ENABLED", True)
 
 
 DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', False)
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS

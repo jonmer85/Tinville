@@ -100,7 +100,7 @@ def assert_text_of_every_selector(selector, text):
 def assert_selector_contains_text(selector, text):
     assert_regexp_matches(
         dom().cssselect(selector)[0].text_content(),
-        re.compile(".*" + text + ".*"),
+        re.compile(".*" + text + ".*"), world.browser.find_element_by_css_selector(selector).text + " does not contain " + text
     )
 
 

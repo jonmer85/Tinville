@@ -1,5 +1,6 @@
 {% extends "designer_shop/shopperbase.html" %}
-{% load thumbnail %}
+{% load smart_load %}
+{% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
 {% load bleach_tags %}
 
 {% block css %}
@@ -60,13 +61,12 @@
                                     <div class="itemSelectedImage col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-9 ">
                                         {% if item.primary_image and item.primary_image.original.url %}
                                             {% with image=item.primary_image %}
-                                                {% thumbnail image.original "400x500" upscale=True as thumb %}
-                                                    <div style = "max-width: 400px; max-height: 500px">
-                                                <a id="itemSelectedImageLink" href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
-                                                    <img id="itemSelectedImage"  src="{{ thumb.url }}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
-                                                </a>
-                                                    </div>
-                                                {% endthumbnail %}
+                                                {% load cropping %}
+                                                <div style = "max-width: 400px; max-height: 500px">
+                                                    <a id="itemSelectedImageLink" href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                        <img id="itemSelectedImage"  src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ item.get_title }}" class="img-responsive center-block selectedImage" style = "width: 400px; height: 500px"/>
+                                                    </a>
+                                                </div>
                                             {% endwith %}
                                         {% else %}
                                                 -
@@ -76,15 +76,13 @@
                                          <div class="row">
                                             {% for image in images %}
                                                 {% if not image.is_primary %}
-                                                    {% thumbnail image.original "100x125" upscale=True as thumb %}
 
-                                                            <div class="col-xs-3 col-md-12 otherImage">
-                                                                <a href="{{ MEDIA_URL }}{{ image.original }}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
-                                                                    <img src="{{ MEDIA_URL }}{{ image.original }}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
-                                                                </a>
-                                                            </div>
+                                                    <div class="col-xs-3 col-md-12 otherImage">
+                                                        <a href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                            <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                                        </a>
+                                                    </div>
 
-                                                    {% endthumbnail %}
                                                 {% endif %}
                                             {% endfor %}
                                          </div>
@@ -173,10 +171,14 @@
 
 {% block javascript_library %}
   {{ block.super }}
-<!-- Please call pinit.js only once per page -->
-<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+
 
 {% endblock javascript_library %}
+
+{% block uncompressable_js %}
+<!-- Please call pinit.js only once per page -->
+<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+{% endblock uncompressable_js %}
 
 
 {% block javascript %}

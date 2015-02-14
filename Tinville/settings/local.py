@@ -6,6 +6,7 @@ from .base import *  # Start with base settings
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
+SSLIFY_DISABLE = True
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -42,3 +43,5 @@ CACHES = {
         'LOCATION': '127.0.0.1:6379',
     },
 }
+
+STATIC_ROOT = os.path.join(PROJECT_DIR.parent, "static")

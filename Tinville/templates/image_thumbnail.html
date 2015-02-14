@@ -1,0 +1,11 @@
+{% load i18n %}
+{% if value.url %}
+    {% trans "Currently:" %} <a target="_blank" href="{{ value.url }}">{{ value }}</a>
+    <br/>
+{% trans "Change:" %}
+{% endif %}
+
+    <input type="{{ type }}" name="{{ name }}" {% include "floppyforms/attrs.html" %}>
+
+
+

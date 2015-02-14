@@ -14,3 +14,4 @@ Tinville/Tinville.iml
 /nbproject/private/
 .env
 *.iml
+CACHE/*
