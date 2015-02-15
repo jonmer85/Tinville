@@ -100,7 +100,7 @@
   bottom: 0;
   padding: 20px;
   border: 1px solid #ccc;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 [type=radio]:checked ~ label {
   background: white;
@@ -339,6 +339,7 @@
 #formPanel {
     padding-right: 0px;
     padding-left: 0px;
+    overflow-x: hidden
 }
 
 #cornerRadius {
