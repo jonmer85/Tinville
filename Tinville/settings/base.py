@@ -8,6 +8,7 @@ import os
 from unipath import Path
 from django.utils.translation import ugettext_lazy as _
 
+
 from oscar import get_core_apps
 from oscar.defaults import *
 
@@ -508,6 +509,7 @@ BLEACH_STRIP_TAGS = True
 # Strip comments, or leave them in.
 BLEACH_STRIP_COMMENTS = True
 
+BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
 BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
 
 

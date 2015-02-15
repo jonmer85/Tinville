@@ -6,6 +6,8 @@ from tempfile import NamedTemporaryFile
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+INTERNAL_IPS = ('127.0.0.1',)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -16,6 +18,8 @@ DATABASES = {
         "PORT": "",
     },
 }
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 LETTUCE_APPS = (
     'Tinville',
@@ -24,11 +28,13 @@ LETTUCE_APPS = (
     'basket',
     'custom_oscar.apps.customer',
     'custom_oscar.apps.checkout'
+    'checkout',
 )
 
 INSTALLED_APPS = INSTALLED_APPS + ['lettuce',  'django_nose',] + ['extensions',]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
 
 
 ########## TEST SETTINGS
