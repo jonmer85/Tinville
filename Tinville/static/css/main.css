@@ -1743,4 +1743,5 @@ textarea
 
 .mobileMomentumScroll {
     -webkit-overflow-scrolling: touch;
+    overflow-y: scroll !important;
 }
