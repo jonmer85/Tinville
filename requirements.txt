@@ -4,7 +4,7 @@
 -e git://github.com/jonmer85/django-basic-feedback.git@10ca27c5824886fabe6a9dd74cf52284b3b34674#egg=django_basic_feedback-dev
 -e git://github.com/jonmer85/django-oscar.git@dec47b79a933a014cf01c1f49c00b0bf6df084bc#egg=django-oscar
 -e git://github.com/jonmer85/django-oscar-stripe.git#egg=oscar_stripe
--e git://github.com/piotrekmonko/django-image-cropping.git@eae6367302ab34019c9778a9c51ade520869f70d#egg=image_cropping
+-e git://github.com/jonmer85/django-image-cropping.git@bf5963cc8423cf244cff17d32b52624913a7539b#egg=image_cropping
 amqp==1.4.6
 anyjson==0.3.3
 Babel==1.3
@@ -21,7 +21,7 @@ celery==3.1.16
 coverage==3.6
 cssselect==0.9.1
 dj-database-url==0.2.1
-django-appconf==0.6
+django-appconf==1.0.1
 django-autoslug==1.7.1
 django-backbone==0.3.1
 django-bleach==0.3.0

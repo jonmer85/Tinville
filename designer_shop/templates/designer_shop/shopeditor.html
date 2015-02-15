@@ -62,7 +62,7 @@
                     </ul>
                 </div>
                 <div id="secondColumn" class="container col-sm-10">
-                    <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
+                    <div id="formPanel" class="mobileMomentumScroll panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
                             <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
@@ -819,8 +819,8 @@ $.each(json, function(containerId, href) {
     return $("#" + containerId + " a[href=" + href + "]").tab('show');
 });
 
-$("#optionContent").slimScroll({});
-$("#formContent").slimScroll({});
+{#$("#optionContent").slimScroll({});#}
+{#$("#formContent").slimScroll({});#}
 
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
