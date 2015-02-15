@@ -492,7 +492,7 @@ SENTRY_AUTO_LOG_STACKS = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Which HTML tags are allowed
-BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a', 'span']
 
 # Which HTML attributes are allowed
 BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
@@ -500,7 +500,7 @@ BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
 # Which CSS properties are allowed in 'style' attributes (assuming
 # style is an allowed attribute)
 BLEACH_ALLOWED_STYLES = [
-    'font-family', 'font-weight', 'text-decoration', 'font-variant']
+    'font-family', 'font-weight', 'text-decoration', 'font-variant', 'font-size', 'padding-left', 'padding-right']
 
 # Strip unknown tags if True, replace with HTML escaped characters if
 # False
