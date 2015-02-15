@@ -1740,3 +1740,7 @@ textarea
 .dropdown-menu > li > a {
     white-space: normal !important;
 }
+
+.mobileMomentumScroll {
+    -webkit-overflow-scrolling: touch;
+}
