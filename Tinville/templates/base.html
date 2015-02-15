@@ -510,7 +510,6 @@
         </div>
         {% endverbatim %}
     </script>
-    {% block uncompressable_js %}{% endblock %}
     {% compress js %}
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
@@ -671,6 +670,7 @@
     {% block javascript %}
     {% endblock javascript %}
     {% endcompress %}
+    {% block uncompressable_js %}{% endblock %}
 
 
 
