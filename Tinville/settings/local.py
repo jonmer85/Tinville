@@ -45,3 +45,5 @@ CACHES = {
 }
 
 STATIC_ROOT = os.path.join(PROJECT_DIR.parent, "static")
+
+COMPRESS_ENABLED = env("COMPRESS_ENABLED", False)
