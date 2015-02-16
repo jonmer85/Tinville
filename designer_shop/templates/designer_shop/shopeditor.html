@@ -9,6 +9,9 @@
 {% block uncompressable_css %}
     {{ aboutBoxForm.media }}
 {% endblock uncompressable_css %}
+{% block js_to_run_before_body  %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+{% endblock js_to_run_before_body  %}
 {% block content %}
 {{ block.super }}
     <div class="modal fade" id="mobileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

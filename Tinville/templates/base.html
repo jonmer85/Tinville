@@ -50,6 +50,8 @@
         <![endif]-->
 {#    {% load feedback_widget %}#}
 {#	{% feedback_widget %}#}
+    {% block js_to_run_before_body  %}
+    {% endblock js_to_run_before_body  %}
     <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
     <div class="cartLocation" id="shoppingcartBtn">
         <li class="dropdown navbarLinkS " id="" >
@@ -510,7 +512,6 @@
         </div>
         {% endverbatim %}
     </script>
-    {% block uncompressable_js %}{% endblock %}
     {% compress js %}
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
@@ -665,12 +666,32 @@
     </script>
 
 
-
-
+    <script type="text/javascript">
+        var _ghost = _ghost || {};
+        _ghost.usability = 'ghostrec-usability';
+        (function () {
+            var shouldLoad = function() {
+                if (new RegExp("^#ghostrec-usability=").test(window.location.hash)) {
+                    return true;
+                }
+                var items = document.cookie.split(';');
+                for (var i in items)
+                    if (items[i].split('=')[0].replace(/^\s+/, "") === "ghostrec-usability")
+                        return true;
+                return false;
+            },
+            load = function() {
+                var host = ("https:" == document.location.protocol ? "https://secure.eemt.se" : "http://www.eemt.se");
+                document.write(unescape("%3Cscript src='" + host + "/gt/js/4945.js' type='text/javascript'%3E%3C/script%3E"));
+            };
+            if (shouldLoad()) load();
+        })();
+    </script>
 
     {% block javascript %}
     {% endblock javascript %}
     {% endcompress %}
+    {% block uncompressable_js %}{% endblock %}
 
 
 

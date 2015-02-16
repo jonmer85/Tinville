@@ -22,6 +22,9 @@
         </div>
     </div>
 
+    {% block javascript %}
+    {{ block.super }}
+
     <script>
         $(function() {
             LoadCheckoutCartDivs();
@@ -167,4 +170,5 @@
             });
         }
     </script>
+    {% endblock javascript %}
 {% endblock %}
