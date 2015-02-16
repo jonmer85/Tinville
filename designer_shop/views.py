@@ -109,7 +109,8 @@ def shopper(request, slug):
     products = get_list_or_empty(Product, shop=shop.id)
 
     if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
-        return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
+        if request.user.is_anonymous() or not request.user.is_seller:
+            return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
