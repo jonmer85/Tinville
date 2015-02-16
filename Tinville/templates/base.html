@@ -662,10 +662,14 @@
             });
     }
 
-
     </script>
 
 
+
+
+    {% block javascript %}
+    {% endblock javascript %}
+    {% endcompress %}
     <script type="text/javascript">
         var _ghost = _ghost || {};
         _ghost.usability = 'ghostrec-usability';
@@ -687,10 +691,6 @@
             if (shouldLoad()) load();
         })();
     </script>
-
-    {% block javascript %}
-    {% endblock javascript %}
-    {% endcompress %}
     {% block uncompressable_js %}{% endblock %}
 
 
