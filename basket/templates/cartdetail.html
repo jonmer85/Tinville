@@ -22,7 +22,10 @@
         </div>
     </div>
 
-    {% block javascript %}
+
+{% endblock %}
+
+ {% block javascript %}
     {{ block.super }}
 
     <script>
@@ -170,5 +173,4 @@
             });
         }
     </script>
-    {% endblock javascript %}
-{% endblock %}
+{% endblock javascript %}
