@@ -666,7 +666,12 @@
     </script>
 
 
-
+    <script type="text/javascript">
+        (function() {
+            var host = ("https:" == document.location.protocol ? "https://secure.eemt.se" : "http://www.eemt.se");
+            document.write(unescape("%3Cscript src='" + host + "/gt/js/4944.js' type='text/javascript'%3E%3C/script%3E"));
+        })();
+    </script>
 
 
     {% block javascript %}
