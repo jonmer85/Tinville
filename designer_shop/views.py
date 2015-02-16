@@ -590,11 +590,11 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
 
                 if image_formset.is_valid():
                     image_formset.save()
+                    messages.success(request,
+                                 ("Item has been successfully {0}!").format("created" if is_create else "updated"))
                     return renderShopEditor(request, shop, item=item)
 
-                form = ProductCreationForm()
-                messages.success(request,
-                                 ("Item has been successfully {0}!").format("created" if is_create else "updated"))
+
                 return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
         return renderShopEditor(request, shop, item=item)

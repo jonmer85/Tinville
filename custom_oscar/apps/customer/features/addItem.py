@@ -27,7 +27,7 @@ def the_shopping_bag_is_empty(step):
 def then_I_add_an_item_to_my_shopping_bag(step):
     Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
-    scroll_to_element(wait_for_element_with_css_selector_to_exist("#id_AddToCart"))
+    wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
 
 @step(u'Then The bag icon should show the number of the item')
@@ -39,7 +39,6 @@ def then_the_bag_icon_should_show_the_number_of_the_item(step):
 def and_I_click_on_the_bag_icon(step):
     wait_for_element_with_id_to_exist('shoppingcart')
     myelement = world.browser.find_element_by_id('shoppingcart')
-    scroll_to_element(myelement)
     myelement.click()
 
 @step(u'Then The checkout drop down is displayed')
@@ -130,7 +129,7 @@ def when_I_click_on_checkout_button(step):
 
 @step(u'Then I click on Add_to_Bag button')
 def then_I_click_on_add_to_bag_button(step):
-    scroll_to_element(wait_for_element_with_css_selector_to_exist("#id_AddToCart"))
+    wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
 
 @step(u'Then I receive the following warnings')

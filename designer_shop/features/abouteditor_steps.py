@@ -34,7 +34,7 @@ def and_the_about_content_is_submitted(step):
     imgUploader = world.browser.find_element_by_id("id_aboutImg")
     imgUploader.send_keys(os.path.join(settings.MEDIA_ROOT, "images/aboutImage.png"))
 
-    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitAboutContent"))
+    wait_for_element_with_id_to_exist("id_SubmitAboutContent")
     wait_for_element_with_id_to_be_clickable("id_SubmitAboutContent").click()
     wait_for_ajax_to_complete()
 
@@ -42,7 +42,7 @@ def and_the_about_content_is_submitted(step):
 def the_about_content_is_saved(step):
     world.browser.maximize_window()
     minimize_shop_editor()
-    scroll_to_element(wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor'))
+    wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor')
     wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor').click()
     aboutLocation = wait_for_element_with_css_selector_to_be_displayed('.aboutContent>p')
     assert aboutLocation.text == "Test About Content"

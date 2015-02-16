@@ -153,7 +153,7 @@ def and_a_banner_is_submitted(step):
     change_viewport_lg()
     bannerUploader = world.browser.find_element_by_id("id_banner")
     bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner.jpg"))
-    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitBanner"))
+    wait_for_element_with_id_to_exist("id_SubmitBanner")
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 
