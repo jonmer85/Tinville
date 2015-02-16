@@ -667,12 +667,26 @@
 
 
     <script type="text/javascript">
-        (function() {
-            var host = ("https:" == document.location.protocol ? "https://secure.eemt.se" : "http://www.eemt.se");
-            document.write(unescape("%3Cscript src='" + host + "/gt/js/4944.js' type='text/javascript'%3E%3C/script%3E"));
+        var _ghost = _ghost || {};
+        _ghost.usability = 'ghostrec-usability';
+        (function () {
+            var shouldLoad = function() {
+                if (new RegExp("^#ghostrec-usability=").test(window.location.hash)) {
+                    return true;
+                }
+                var items = document.cookie.split(';');
+                for (var i in items)
+                    if (items[i].split('=')[0].replace(/^\s+/, "") === "ghostrec-usability")
+                        return true;
+                return false;
+            },
+            load = function() {
+                var host = ("https:" == document.location.protocol ? "https://secure.eemt.se" : "http://www.eemt.se");
+                document.write(unescape("%3Cscript src='" + host + "/gt/js/4945.js' type='text/javascript'%3E%3C/script%3E"));
+            };
+            if (shouldLoad()) load();
         })();
     </script>
-
 
     {% block javascript %}
     {% endblock javascript %}
