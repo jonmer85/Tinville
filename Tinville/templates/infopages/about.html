@@ -8,60 +8,102 @@
 {% endblock css %}
 {% block content %}
     {{ super }}
-    <div style="margin-top: 50px"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-offset-0 col-xs-4 col-md-offset-3 col-md-2 aboutText">
-                <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"/>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-            <div class="col-xs-4 col-md-2 aboutDashRight aboutDashLeft" >
-                <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"/>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-            <div class="col-xs-4 col-md-2">
-                <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"/>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-        </div>
-        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>
-        <div class="row">
-            <div class="col-xs-offset-0 col-xs-6 col-md-offset-3 col-md-3 aboutText aboutDashRight">
-                <div class="aboutTitle tinvilleOrange">As a Customer</div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-            <div class="col-xs-6 col-md-3 aboutText aboutDashLeft">
-                <div class="aboutTitle tinvilleOrange">As a Designer</div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-        </div>
-        <div class="row">
-
-
-        </div>
-        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>
-        <div class="row">
-            <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutText">
-                <div class="aboutTitle tinvilleOrange">About Tinville</div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collTinville" class=" aboutCircle glyphicon glyphicon-chevron-down" ></a>
-    {#            <div class="col-xs-6 aboutLine"></div>#}
+    <span data-picture class="banner">
+        <span data-src="{{ STATIC_URL }}img/infopageimg/aboutMobileBanner.jpg"></span>
+        <span data-src="{{ STATIC_URL }}img/infopageimg/aboutBanner.jpg" data-media="(min-width: 768px)"></span>
+        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+        <noscript>
+            <img src="{{ STATIC_URL }}img//infopageimg/aboutBanner.jpg">
+        </noscript>
+    </span>
+    <div  style="background-color: #fafbfd">
+        <div class="container">
+            <div class="row" style="padding-top: 20px">
+                <div class="col-xs-offset-0 col-xs-4 col-md-offset-3 col-md-2">
+                    <img class="img-responsive" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
+                    <p class="aboutText">BROWSE OUR SELECTION OF TOP INDEPENDENT APPAREL AND ACCESSORY DESIGNERS</p>
+                </div>
+                <div class="col-xs-4 col-md-2 aboutDashRight aboutDashLeft" >
+                    <img class="img-responsive" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
+                    <p class="aboutText">DISPLAY YOUR EXCLUSIVE BRAND PROUDLY AS AN OWNER AND A BRAND AMBASSADOR</p>
+                </div>
+                <div class="col-xs-4 col-md-2">
+                    <img class="img-responsive" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
+                    <p class="aboutText">MAKE A FASHION STATEMENT AND SET THE INDUSTRY ON FIRE</p>
+                </div>
             </div>
         </div>
     </div>
+    <div  style="background-color: #575757">
+        <div class="container">
+    {#        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>#}
+            <div class="row" >
+                <div class="col-xs-offset-0 col-xs-6 col-md-offset-3 col-md-3 aboutDashRight">
+                    <div class="about1stTitle">AS A TINVILLE</div>
+                    <p class="aboutTitle">Customer</p>
+                    <p class="about2ndText">As a guest or registered user, browse Tinville designers, share hot fashion trends, and shop hard-to-find designsyou won't find anywhere else</p>
+                </div>
+                <div class="col-xs-6 col-md-3 aboutDashLeft">
+                    <div class="about1stTitle">AS A TINVILLE</div>
+                    <p class="aboutTitle">Designer</p>
+                    <p class="about2ndText">Create and design your fashion marketplace, connecting your followers to your unique village</p>
+                </div>
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collASTinville" class=" aboutCircle glyphicon glyphicon-chevron-down" ></a>
+        {#            <div class="col-xs-6 aboutLine"></div>#}
+                </div>
+            </div>
+        </div>
 
-    <div id="collTinville" class="panel-collapse collapse">
-        <div class="row">
-            <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutText">
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        <div id="collASTinville" class="panel-collapse collapse">
+            <div class="row">
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 ">
+                    <p class="about2ndText">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </div>
             </div>
         </div>
     </div>
+    <div  style="background-color: #fafbfd">
+        <div class="container">
+    {#        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>#}
+            <div class="row" >
+                <div class="col-xs-offset-0 col-xs-6 col-md-offset-3 col-md-3 aboutDashRight">
+                    <div class="about2ndTitle">About Us</div>
+                    <p class="aboutText">Tinville is an interactive ecommerce platform that is revolutionizing the way consumers interact with indepentdent designers and their product lines. By signing up to become a member on Tinvilee (or shoppingas a guest), you'll immediately have access to some of the world's most. </p>
+                </div>
+                <div class="col-xs-6 col-md-3 aboutDashLeft">
+                    <div class="about2ndTitle">Tinville Community</div>
+                    <p class="aboutText">Tinville was created from the need to offer designers a more direct route to their clientele and fan base. In the process, Tinville understands the importance of connecting designers to one another, increasing their exposure to the masses, while building relationships with those who interest.</p>
+                </div>
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collTinville" class=" aboutCircle glyphicon glyphicon-chevron-down" ></a>
+        {#            <div class="col-xs-6 aboutLine"></div>#}
+                </div>
+            </div>
+        </div>
+        <div id="collTinville" class="panel-collapse collapse">
+            <div class="row">
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutText">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  style="background-color: #c9c9c9">
+        <div class="container">
+    {#        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>#}
+            <div class="row" >
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 ">
+                    <div class="about2ndTitle">Payment Information</div>
+                    <p class="aboutText">Getting paid on TInville is made simple thanks to our partnership with Stripe. Using a checking account or debt card will allow you to create a shop on Tinville and get paid for all products sold through your shop Designers will only receive
+                     payment for their order (minus Tinville costs) upon confirmation of shipping out the product(s) to the buyer. It is also up to the designer to ensure accuracy of payment information submitted to Tinville and Stripe. *Please note: To sign up as designer on Tinville you must use a valid checking account or debit card credentials.
+                    All other forms of payment will not be accepted and may cause your shop to be modified or deleted.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 
 {% endblock %}
 {% block javascript %}
