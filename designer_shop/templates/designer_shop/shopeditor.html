@@ -9,6 +9,9 @@
 {% block uncompressable_css %}
     {{ aboutBoxForm.media }}
 {% endblock uncompressable_css %}
+{% block js_to_run_before_body  %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+{% endblock js_to_run_before_body  %}
 {% block content %}
 {{ block.super }}
     <div class="modal fade" id="mobileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -62,7 +65,7 @@
                     </ul>
                 </div>
                 <div id="secondColumn" class="container col-sm-10">
-                    <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
+                    <div id="formPanel" class="mobileMomentumScroll panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
                             <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
@@ -819,8 +822,8 @@ $.each(json, function(containerId, href) {
     return $("#" + containerId + " a[href=" + href + "]").tab('show');
 });
 
-$("#optionContent").slimScroll({});
-$("#formContent").slimScroll({});
+{#$("#optionContent").slimScroll({});#}
+{#$("#formContent").slimScroll({});#}
 
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");

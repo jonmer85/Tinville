@@ -112,7 +112,7 @@ urlpatterns += patterns('',
     url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper')
 )
 
-if settings.DEBUG:
+if settings.LOCAL_STATIC_SERVE:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns() + [
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {

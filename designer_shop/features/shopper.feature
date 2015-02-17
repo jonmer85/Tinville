@@ -16,7 +16,7 @@ Feature: Designer Shop
   Scenario: Gender Filter Functionality
     Given the demo shop
     Given I have at least 3 items in the demo shop
-    When I select the "filterGender" "Women"
+    When I select the "filterGender" "Men"
     Then I should have "2" items in the demo shop
 
 
@@ -25,13 +25,14 @@ Feature: Designer Shop
     Given I have at least 3 items in the demo shop
     When I select the "filterType" "Boots"
     Then I should have "1" items in the demo shop
-
+@senay
   Scenario: Gender Type Combo Filter Functionality
     Given the demo shop
     Given I have at least 3 items in the demo shop
-    When I select the "filterGender" "Women"
+    When I select the "filterGender" "Men"
     Then I should have "2" items in the demo shop
-    When I select the "filterType" "Dresses"
+    When I select the "filterType" "Jackets"
     Then I should have "1" items in the demo shop
-
+    When I select the "filterGender" "View All"
+    Then I should have "2" items in the demo shop
 

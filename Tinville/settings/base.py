@@ -492,7 +492,7 @@ SENTRY_AUTO_LOG_STACKS = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Which HTML tags are allowed
-BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a', 'span']
 
 # Which HTML attributes are allowed
 BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
@@ -500,7 +500,7 @@ BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
 # Which CSS properties are allowed in 'style' attributes (assuming
 # style is an allowed attribute)
 BLEACH_ALLOWED_STYLES = [
-    'font-family', 'font-weight', 'text-decoration', 'font-variant']
+    'font-family', 'font-weight', 'text-decoration', 'font-variant', 'font-size', 'padding-left', 'padding-right']
 
 # Strip unknown tags if True, replace with HTML escaped characters if
 # False
@@ -528,10 +528,9 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
-THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
-
 COMPRESS_ENABLED = env("COMPRESS_ENABLED", True)
 
+THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
 DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', False)
 
@@ -539,3 +538,8 @@ from easy_thumbnails.conf import Settings as thumbnail_settings
 THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
+
+#Overriding oscars required address fields for custom validation
+OSCAR_REQUIRED_ADDRESS_FIELDS = {}
