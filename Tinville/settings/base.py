@@ -540,3 +540,6 @@ THUMBNAIL_PROCESSORS = (
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
 
 LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
+
+#Overriding oscars required address fields for custom validation
+OSCAR_REQUIRED_ADDRESS_FIELDS = {}
