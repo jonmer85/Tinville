@@ -11,6 +11,13 @@ from Tinville.settings.base import MEDIA_ROOT
 @step(u'the (?:add|edit) item tab is selected')
 def when_the_add_item_tab_is_selected(step):
     maximize_shop_editor()
+    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#addOrEditItem"]').click()
+    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
+
+@step(u'the mobile (?:add|edit) item tab is selected')
+def when_the_add_item_tab_is_selected_mobile(step):
+    maximize_shop_editor()
+    wait_for_element_with_id_to_be_clickable("optionsXS").click()
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
 
