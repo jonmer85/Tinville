@@ -14,12 +14,15 @@ def when_the_add_item_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
 
+@step(u'a mobile view')
+def a_mobile_view(step):
+    change_viewport_xs()
+
 
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
 
-    change_viewport_lg()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
     for itemfields in step.hashes:
         clear_and_send_keys(world.browser.find_element_by_name("title"), itemfields["Title"])
         wait_for_element_with_css_selector_to_be_clickable("a[href='#description']").click()
@@ -31,6 +34,9 @@ def and_i_fill_in_the_general_add_item_fields(step):
         file = os.path.join(settings.MEDIA_ROOT, itemfields["Image1"])
         wait_for_element_with_css_selector_to_be_clickable("a[href='#images']").click()
         wait_for_element_with_name_to_be_displayed("images-0-original").send_keys(file)
+        if "Image2" in itemfields:
+            file2 = os.path.join(settings.MEDIA_ROOT, itemfields["Image2"])
+            wait_for_element_with_name_to_be_displayed("images-1-original").send_keys(file2)
         wait_for_element_with_css_selector_to_exist("a[href='#accordion2']")
         wait_for_element_with_css_selector_to_be_clickable("a[href='#accordion2']").click()
         wait_for_element_with_name_to_exist('sizeVariation')
@@ -148,9 +154,10 @@ def my_color_quantity_and_size_selections_are(step):
             size_select.select_by_visible_text(size)
             assert_selector_contains_text('.itemStockQuantity', quantity+' ')
 
-@step(u'my primary image is visible')
-def my_primary_image_is_visible(step):
-    assert_every_selector_contains("#itemSelectedImage", "src", ".jpg")
+@step(u'my primary image (.*) and secondary image (.*) are visible')
+def my_images_are_visible(step, img1, img2):
+    assert_every_selector_contains("#itemSelectedImage", "src", img1)
+    assert_every_selector_contains(".otherItemImages .col-xs-3 > a:nth-child(1) > img:nth-child(1)", "src", img2)
 
 
 @step(u'I click the edit button on the basic size set product')

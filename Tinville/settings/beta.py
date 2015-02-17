@@ -24,6 +24,7 @@ AWS_QUERYSTRING_EXPIRE = env('AWS_QUERYSTRING_EXPIRE', 63115200)
 AWS_HEADERS = {
     'Cache-Control': str(env('AWS_CACHE_CONTROL', 'public, max-age=2592000')),
 }
+AWS_S3_FILE_OVERWRITE = env('AWS_S3_FILE_OVERWRITE', False)
 
 S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
