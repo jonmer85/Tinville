@@ -49,10 +49,14 @@
 
         $(document).ready(function () {
             stickyFooter();
+            var pos = ($(window).width() *.50) - 45;
+             $('#tinvilleTagBannerXS').css('left',pos);
         });
 
         $(window).on('resize', function () {
             stickyFooter();
+            var pos = ($(window).width() *.50) - 45;
+             $('#tinvilleTagBannerXS').css('left',pos);
         });
 
 
@@ -78,7 +82,9 @@
              $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
         $(window).resize(function(){
-             var mode = checkMode();
+            var pos = ($(window).width() *.50) - 45;
+             $('#tinvilleTagBannerXS').css('left',pos);
+            var mode = checkMode();
 
             if(mode == 'xs'){
                 $("#nonMobileMenContent").css("display","none");
@@ -101,6 +107,8 @@
         });
 
          $(window).load(function(){
+             var pos = ($(window).width() *.50) - 45;
+             $('#tinvilleTagBannerXS').css('left',pos);
               var mode = checkMode();
 
             if(mode == 'xs'){
