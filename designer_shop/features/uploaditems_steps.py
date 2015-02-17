@@ -14,12 +14,15 @@ def when_the_add_item_tab_is_selected(step):
     world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
 
+@step(u'a mobile view')
+def a_mobile_view(step):
+    change_viewport_xs()
+
 
 
 @step(u'And I fill in the general add item fields')
 def and_i_fill_in_the_general_add_item_fields(step):
 
-    change_viewport_lg()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
     for itemfields in step.hashes:
         clear_and_send_keys(world.browser.find_element_by_name("title"), itemfields["Title"])
         wait_for_element_with_css_selector_to_be_clickable("a[href='#description']").click()
