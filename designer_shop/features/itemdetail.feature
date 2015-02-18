@@ -1,4 +1,4 @@
-Feature: Item Detail
+Feature: Item Detaildemo shop
     In order to browse clothing
     As a customer
     I want to view a designer's shop and select an item
