@@ -39,7 +39,7 @@ the content for this basic editor should include the following fields:
     Given the demo shop editor
     And a mobile view
 	Then I should see 3 product total
-    When the add item tab is selected
+    When the mobile add item tab is selected
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1             | Image2             | SizeVariation |
     | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item1_1.jpg | images/item1_2.jpg | 1
