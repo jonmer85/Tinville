@@ -109,7 +109,8 @@ def shopper(request, slug):
     products = get_list_or_empty(Product, shop=shop.id)
 
     if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
-        return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
+        if request.user.is_anonymous() or not request.user.is_seller:
+            return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
     if request.method == 'POST':
         if request.POST.__contains__('genderfilter'):
@@ -551,6 +552,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             form = BannerUploadForm(request.POST, request.FILES, instance=shop)
             if form.is_valid():
                 form.save()
+                return renderShopEditor(request, shop)
             return renderShopEditor(request, shop, bannerUploadForm=form)
         # Jon M TODO - Put back and cleanup if we support Logo again
         # elif request.POST.__contains__('logoUploadForm'):
@@ -564,8 +566,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             form = AboutBoxForm(request.POST, request.FILES, instance=shop)
             if form.is_valid():
                 form.save()
-
-            return renderShopEditor(request, shop, aboutForm=form, tab='about')
+                return renderShopEditor(request, shop, tab='about')
+            return renderShopEditor(request, shop, aboutForm=form)
         elif request.POST.__contains__('genderfilter'):
             return render(request, 'designer_shop/shop_items.html', {
                 'editmode': True,
@@ -574,26 +576,26 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 'shopProductCount': len(get_list_or_empty(Product, shop=shop.id))
             })
         else:
-            if request.method == 'POST':
-                sizeVariationType = get_dict_value_or_suspicious_operation(request.POST, "sizeVariation")
-                sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
+            sizeVariationType = get_dict_value_or_suspicious_operation(request.POST, "sizeVariation")
+            sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
 
-                if is_create:
-                    form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
-                else:
-                    form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
-                                               sizes=sizes)
-                if form.is_valid():
-                    canonicalProduct = form.save(shop, sizes, sizeVariationType)
-                    image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
+            if is_create:
+                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+            else:
+                form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
+                                           sizes=sizes)
+            if form.is_valid():
+                canonicalProduct = form.save(shop, sizes, sizeVariationType)
+                image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
 
-                    if image_formset.is_valid():
-                        image_formset.save()
-
-                    form = ProductCreationForm()
+                if image_formset.is_valid():
+                    image_formset.save()
                     messages.success(request,
-                                     ("Item has been successfully {0}!").format("created" if is_create else "updated"))
-            return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
+                                 ("Item has been successfully {0}!").format("created" if is_create else "updated"))
+                    return renderShopEditor(request, shop, item=item)
+
+
+                return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
         return renderShopEditor(request, shop, item=item)
 

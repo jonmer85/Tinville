@@ -23,7 +23,7 @@ def Given_mobile_shopper(step):
 
 @step(u'When I click the Desktop Shopping cart button')
 def When_Click_Desktop_Shopping_Cart_Button(step):
-    scroll_to_element(wait_for_element_with_css_selector_to_exist("#shoppingcartBtn"))
+    wait_for_element_with_css_selector_to_exist("#shoppingcartBtn")
     wait_for_element_with_css_selector_to_be_clickable("#shoppingcartBtn #shoppingcart").click()
 
 @step(u'When I click the Mobile Shopping cart button')
@@ -45,7 +45,7 @@ def When_add_item_to_cart(step):
     world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))
     Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("SM")
-    scroll_to_element(wait_for_element_with_css_selector_to_exist("#id_AddToCart"))
+    wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
 
 @step(u'Then the item is added to my cart')
@@ -62,7 +62,7 @@ def add_and_still_in_my_cart(step):
     world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))
     Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
-    scroll_to_element(wait_for_element_with_css_selector_to_exist("#id_AddToCart"))
+    wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
     wait_for_javascript_to_complete()
     wait_for_element_with_css_selector_to_exist(".shoppingcartitem[id^=lineId]")

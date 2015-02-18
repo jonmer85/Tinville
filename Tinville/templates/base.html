@@ -43,13 +43,15 @@
 
 </head>
 
-<body class="{% block body_class %}{% endblock %}">
+<body class="mobileMomentumScroll {% block body_class %}{% endblock %}">
 {% block body %}
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 {#    {% load feedback_widget %}#}
 {#	{% feedback_widget %}#}
+    {% block js_to_run_before_body  %}
+    {% endblock js_to_run_before_body  %}
     <a id='tinvilletagXS' class="visible-xs" href="/"><img id="tinvilleTagBannerXS" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/mobileTinLogo.png" /></a>
     <div class="cartLocation" id="shoppingcartBtn">
         <li class="dropdown navbarLinkS " id="" >
@@ -510,7 +512,6 @@
         </div>
         {% endverbatim %}
     </script>
-    {% block uncompressable_js %}{% endblock %}
     {% compress js %}
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
@@ -661,9 +662,7 @@
             });
     }
 
-
     </script>
-
 
 
 
@@ -671,6 +670,28 @@
     {% block javascript %}
     {% endblock javascript %}
     {% endcompress %}
+    <script type="text/javascript">
+        var _ghost = _ghost || {};
+        _ghost.usability = 'ghostrec-usability';
+        (function () {
+            var shouldLoad = function() {
+                if (new RegExp("^#ghostrec-usability=").test(window.location.hash)) {
+                    return true;
+                }
+                var items = document.cookie.split(';');
+                for (var i in items)
+                    if (items[i].split('=')[0].replace(/^\s+/, "") === "ghostrec-usability")
+                        return true;
+                return false;
+            },
+            load = function() {
+                var host = ("https:" == document.location.protocol ? "https://secure.eemt.se" : "http://www.eemt.se");
+                document.write(unescape("%3Cscript src='" + host + "/gt/js/4945.js' type='text/javascript'%3E%3C/script%3E"));
+            };
+            if (shouldLoad()) load();
+        })();
+    </script>
+    {% block uncompressable_js %}{% endblock %}
 
 
 

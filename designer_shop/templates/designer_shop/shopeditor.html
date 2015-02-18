@@ -9,8 +9,28 @@
 {% block uncompressable_css %}
     {{ aboutBoxForm.media }}
 {% endblock uncompressable_css %}
+{% block js_to_run_before_body  %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+{% endblock js_to_run_before_body  %}
 {% block content %}
 {{ block.super }}
+    <div class="modal fade" id="mobileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="mobileModalLabel">Mobile Shop Editor</h4>
+                </div>
+                <div class="modal-body">
+                    Mobile shop editor is experimental. For best results use a PC, Mac, or a larger tablet such as an iPad.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div id="shopEditor" class="container">
     <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">
         <div id="cornerRadius" class="cornerRadius panel panel-default">
@@ -45,7 +65,7 @@
                     </ul>
                 </div>
                 <div id="secondColumn" class="container col-sm-10">
-                    <div id="formPanel" class="editorPanel panel-body shopEditorElementBottom">
+                    <div id="formPanel" class="mobileMomentumScroll panel-body shopEditorElementBottom">
                         <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
                             <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
@@ -81,6 +101,7 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}
 
@@ -801,8 +822,8 @@ $.each(json, function(containerId, href) {
     return $("#" + containerId + " a[href=" + href + "]").tab('show');
 });
 
-$("#optionContent").slimScroll({});
-$("#formContent").slimScroll({});
+{#$("#optionContent").slimScroll({});#}
+{#$("#formContent").slimScroll({});#}
 
 $("#shopEditorTitle").click(function() {
    $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
@@ -950,10 +971,18 @@ function DeleteConfirmation(slug) {
         }
     }
 
+        $(document).ready(function()
+        {
+            var mode = checkMode();
+            if (mode == 'xs' || mode == 'sm') {
 
-
-
-
+                var showMobile = sessionStorage.getItem('showMobile');
+                if (showMobile == null || showMobile == 'true') {
+                    sessionStorage.setItem('showMobile', 'false');
+                    $('#mobileModal').modal('show');
+                }
+            }
+        });
 
 </script>
 

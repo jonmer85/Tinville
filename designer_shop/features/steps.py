@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django.core.management import call_command
 import lettuce.django
 import math
@@ -206,15 +207,18 @@ def and_the_submit_banner_button_is_displayed(step):
 @step(u'And a banner is submitted')
 def and_a_banner_is_submitted(step):
     bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner.jpg"))
-    scroll_to_element(wait_for_element_with_id_to_exist("id_SubmitBanner"))
+    bannerUploader.send_keys(os.path.join(settings.PROJECT_DIR.child("static"), "img/banner-xl.jpg"))
+    assert_selector_contains('#div_id_bannerCropping > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > '
+                             'div:nth-child(1) > img:nth-child(1)', 'src', 'data:image/jpeg;base64')
     wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
     world.browser.find_element_by_id("id_SubmitBanner").click()
 
 @step(u'The selected banner file is saved')
 def the_selected_banner_file_is_saved(step):
+    assert_selector_contains('#div_id_bannerCropping > div:nth-child(1) > div:nth-child(3) > img:nth-child(3)',
+                             'src', '/media/shops/demo/banner/banner-xl')
     minimize_shop_editor()
-    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner')
+    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner-xl')
 
 
 @step(u'And the tinville orange color f46430 is submitted')

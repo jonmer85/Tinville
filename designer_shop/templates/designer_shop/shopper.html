@@ -133,20 +133,22 @@
         if (genderFilter.match("All"))
             genderFilter = "All";
         if (changeGender)
-            refreshtypes(genderFilter);
+            refreshtypes(genderFilter, typeFilter);
     }
 var myresponse;
-    function refreshtypes(genderFilter) {
-        myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
-            var list = [];
-            list.push('<option value="View All Types"><i>View All Types</i></option>');
-            $.each(data.types, function(key, value)
-            {
-                list.push('<option value="'+ value +'">'+ value +'</option>');
+    function refreshtypes(genderFilter, typeFilter) {
+        if (typeFilter.match("All")) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.types, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                });
+                $('#filterType').html(list.join(''));
+                $('#filterType').val("View All Types");
             });
-            $('#filterType').html(list.join(''));
-            $('#filterType').val("View All Types");
-        });
+        }
     }
 
     </script>
