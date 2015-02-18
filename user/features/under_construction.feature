@@ -6,20 +6,17 @@ Feature: Under construction
   As a User
   I would only have access to the shop if the shop is approved
 
-  @yori
   Scenario: Designer accessing not approved shop
 	When I register for a shop named "foo"
-    And the shop is not approved
-	Then I can visit my shop at "foo"
+    And I sign in
+    And their shop is not approved
+	Then I can visit my new shop at "foo"
 
-  @yori
   Scenario: User accessing not approved shop
-    Given the demo shop
-    And the shop is not approved
+    When the shop is not approved
+    And I visit my new shop at "Demo"
     Then I should be redirected to the under construction page
 
-  @yori
   Scenario: User accessing approved shop
-    Given the demo shop
-    And the shop is approved
-    Then I can visit my shop at "foo"
+    When the shop is approved
+    Then I can visit the demo shop
