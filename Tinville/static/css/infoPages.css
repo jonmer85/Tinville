@@ -108,7 +108,7 @@ ul.infoList {
 .aboutText{
     /*background-color: #ffffff;*/
     /*border-radius: 4px;*/
-    font-size: 1em;
+    font-size: 1.25em;
     padding-top: 20px;
     padding-bottom: 20px;
     font-family:"Cabin Condensed", sans-serif;
@@ -120,9 +120,20 @@ ul.infoList {
     /*background-color: #ffffff;*/
     /*border-radius: 4px;*/
     color: #ffffff;
-    font-size: 1em;
+    font-size: 1.25em;
     padding-top: 20px;
     padding-bottom: 20px;
+    font-family:"Cabin Condensed", sans-serif;
+    word-wrap:break-word;
+     text-align : center;
+}
+.abouthiddenText{
+    /*background-color: #ffffff;*/
+    /*border-radius: 4px;*/
+    color: #ffffff;
+    font-size: 1.25em;
+    margin: 0px;
+    /*padding-bottom: 20px;*/
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
      text-align : center;
@@ -138,17 +149,18 @@ ul.infoList {
 
 .aboutTitle {
     color: #fdbdA9;
-    font-size: 2em;
+    font-size: 3em;
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
      text-align : center;
     text-shadow: 0px -2px 10px -4px #f46430;
+    padding-left: 30px;
 }
 .about1stTitle {
     padding-top: 20px;
     padding-left: 15px;
     color: #fdbdA9;
-    font-size: 1.5em;
+    font-size: 2.5em;
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
      text-align : left;
@@ -157,7 +169,7 @@ ul.infoList {
 .about2ndTitle {
     color: #575757;
     padding-top: 20px;
-    font-size: 2em;
+    font-size: 3em;
     font-family:"Cabin Condensed", sans-serif;
     word-wrap:break-word;
      text-align : center;
