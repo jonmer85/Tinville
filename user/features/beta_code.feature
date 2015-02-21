@@ -9,6 +9,7 @@ Feature: Beta Code
   So that I may access a shop
   So that my cookie is set
 
+  @yori
   Scenario: Form entry and user first and second access
     When I register for a shop named "BetaShop"
     Given the beta shop
