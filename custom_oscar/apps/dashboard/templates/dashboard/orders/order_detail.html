@@ -490,11 +490,16 @@
                                                 <td data-th="Tracking Number">{{ event.tracking_code|default:"-" }}</td>
                                                 <td data-th="{% trans "Actions" %}">
                                                     {% if event.event_type.code == 'shipped' %}
-                                                        <div class="btn-group" role="group" aria-label="...">
-                                                            <button type="button" id="print_label_{{ event.id }}" class="btn btn-primary">{% trans "Print Label" %}</button>
+{#                                                        <div class="btn-group" role="group" aria-label="...">#}
+                                                            {% if not request.mobile %}
+                                                                <button type="button" id="print_label_{{ event.id }}" class="btn btn-primary">{% trans "Print Label" %}</button>
+                                                            {% endif %}
                                                             <img src="{{ event.label_url }}" class="hidden printLabel">
-                                                            <button type="button" id="cancel_label_{{ event.id }}" class="btn btn-primary">{% trans "Cancel Label" %}</button>
-                                                        </div>
+                                                            {% if user.is_staff %}
+                                                                <button type="button" id="cancel_label_{{ event.id }}" class="btn btn-primary">{% trans "Cancel Label" %}</button>
+                                                            {% endif %}
+
+{#                                                        </div>#}
                                                     {% endif %}
                                                 </td>
                                             </tr>
