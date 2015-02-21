@@ -16,19 +16,89 @@
             <img src="{{ STATIC_URL }}img//infopageimg/aboutBanner.jpg">
         </noscript>
     </span>
-    <div  style="background-color: #fafbfd">
+
+
+    <div  id="thumbnail-preview-indicators" class="visible-xs carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#thumbnail-preview-indicators" data-slide-to="0" class="active">
+{#              <div class="thumbnail">#}
+{#                <img class="img-responsive" src="{{ STATIC_URL }}img/banner-xl.jpg">#}
+{#              </div>#}
+            </li>
+            <li data-target="#thumbnail-preview-indicators" data-slide-to="1">
+{#            <div class="thumbnail">#}
+{#                <img class="img-responsive" src="https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg">#}
+{#              </div>#}
+            </li>
+            <li data-target="#thumbnail-preview-indicators" data-slide-to="2">
+{#            <div class="thumbnail">#}
+{#                <img class="img-responsive" src="https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg">#}
+{#              </div>#}
+            </li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="item slides active">
+              <div class="container">
+                  <div class="row">
+                        <div class="col-xs-6 slide-1"></div>
+                        <div class="col-xs-6">
+                          <p style="padding-top: 60px;" class="aboutText">BROWSE OUR SELECTION OF TOP INDEPENDENT APPAREL AND ACCESSORY DESIGNERS</p>
+                        </div>
+                  </div>
+              </div>
+            </div>
+            <div class="item slides">
+              <div class="container">
+                  <div class="row">
+                        <div class="col-xs-6 slide-2"></div>
+                        <div class="col-xs-6">
+                          <p style="padding-top: 60px;" class="aboutText">DISPLAY YOUR EXCLUSIVE BRAND PROUDLY AS AN OWNER AND A BRAND AMBASSADOR</p>
+                        </div>
+                  </div>
+              </div>
+            </div>
+            <div class="item slides">
+              <div class="container">
+                  <div class="row">
+                        <div class="col-xs-6 slide-3"></div>
+                        <div class="col-xs-6">
+                          <p style="padding-top: 60px;" class="aboutText">MAKE A FASHION STATEMENT AND SET THE INDUSTRY ON FIRE</p>
+                        </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="hidden-xs" style="background-color: #fafbfd">
         <div class="container">
             <div class="row" style="padding-top: 20px">
-                <div class="col-xs-offset-0 col-xs-4 col-md-offset-3 col-md-2">
-                    <img class="img-responsive" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
+                <div class="col-xs-offset-0 col-xs-4 col-md-4" >
+                    <img class="" style="margin-left: 25%;" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
                     <p class="aboutText">BROWSE OUR SELECTION OF TOP INDEPENDENT APPAREL AND ACCESSORY DESIGNERS</p>
                 </div>
-                <div class="col-xs-4 col-md-2 aboutDashRight aboutDashLeft" >
-                    <img class="img-responsive" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
+                <div class="col-xs-4 col-md-4 aboutDashRight aboutDashLeft" >
+                    <img class="" style="margin-left: 25%;" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
                     <p class="aboutText">DISPLAY YOUR EXCLUSIVE BRAND PROUDLY AS AN OWNER AND A BRAND AMBASSADOR</p>
                 </div>
-                <div class="col-xs-4 col-md-2">
-                    <img class="img-responsive" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
+                <div class="col-xs-4 col-md-4" >
+                    <img class="" style="margin-left: 25%;" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
                     <p class="aboutText">MAKE A FASHION STATEMENT AND SET THE INDUSTRY ON FIRE</p>
                 </div>
             </div>
@@ -38,17 +108,17 @@
         <div class="container">
     {#        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>#}
             <div class="row" >
-                <div class="col-xs-offset-0 col-xs-6 col-md-offset-3 col-md-3 aboutDashRight">
+                <div class="col-xs-offset-0 col-xs-6 col-md-offset-2 col-md-4 aboutDashRight">
                     <div class="about1stTitle">AS A TINVILLE</div>
                     <p class="aboutTitle">Customer</p>
                     <p class="about2ndText">As a guest or registered user, browse Tinville designers, share hot fashion trends, and shop hard-to-find designsyou won't find anywhere else</p>
                 </div>
-                <div class="col-xs-6 col-md-3 aboutDashLeft">
+                <div class="col-xs-6 col-md-4 aboutDashLeft">
                     <div class="about1stTitle">AS A TINVILLE</div>
                     <p class="aboutTitle">Designer</p>
                     <p class="about2ndText">Create and design your fashion marketplace, connecting your followers to your unique village</p>
                 </div>
-                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6">
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-2 col-md-8">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collASTinville" class=" aboutCircle glyphicon glyphicon-chevron-down" ></a>
         {#            <div class="col-xs-6 aboutLine"></div>#}
                 </div>
@@ -56,9 +126,20 @@
         </div>
 
         <div id="collASTinville" class="panel-collapse collapse">
-            <div class="row">
-                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 ">
-                    <p class="about2ndText">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <div class="row" >
+                <div class="col-xs-offset-0 col-xs-6 col-md-offset-2 col-md-4 aboutDashRight">
+                    <p class="abouthiddenText">- Search by fashion product line or designer</p>
+                    <p class="abouthiddenText">- Checkout only once through multiple shops</p>
+                    <p class="abouthiddenText">- Invite friends to shop along with you</p>
+                    <p class="abouthiddenText">- Get fashion news on our blog for new trends,
+                    fashion product releases, designer interviews
+                    and more </p>
+                </div>
+                <div class="col-xs-6 col-md-4 aboutDashLeft">
+                    <p class="abouthiddenText">- Market campaigns based around your line</p>
+                    <p class="abouthiddenText">- Track analytics to see best conversion rates</p>
+                    <p class="abouthiddenText">- Collaborate with other designers in cohesion, not competition with one another</p>
+                    <p class="abouthiddenText">- Receive monthly reports to improve product, design and marketing of your village</p>
                 </div>
             </div>
         </div>
@@ -67,24 +148,45 @@
         <div class="container">
     {#        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>#}
             <div class="row" >
-                <div class="col-xs-offset-0 col-xs-6 col-md-offset-3 col-md-3 aboutDashRight">
+                <div class="col-xs-offset-0 col-xs-6 col-md-offset-2 col-md-4 aboutDashRight">
                     <div class="about2ndTitle">About Us</div>
-                    <p class="aboutText">Tinville is an interactive ecommerce platform that is revolutionizing the way consumers interact with indepentdent designers and their product lines. By signing up to become a member on Tinvilee (or shoppingas a guest), you'll immediately have access to some of the world's most. </p>
+                    <p class="aboutText">Tinville is an interactive ecommerce platform that is revolutionizing the way consumers interact with indepentdent designers and their product lines. By signing up to become a member on Tinvilee (or shoppingas a guest), you'll immediately have access to some of the world's most </p>
                 </div>
-                <div class="col-xs-6 col-md-3 aboutDashLeft">
+                <div class="col-xs-6 col-md-4 aboutDashLeft">
                     <div class="about2ndTitle">Tinville Community</div>
-                    <p class="aboutText">Tinville was created from the need to offer designers a more direct route to their clientele and fan base. In the process, Tinville understands the importance of connecting designers to one another, increasing their exposure to the masses, while building relationships with those who interest.</p>
+                    <p class="aboutText">Tinville was created from the need to offer designers a more direct route to their clientele and fan base. In the process, Tinville understands the importance of connecting designers to one another, increasing their exposure to the masses, while building relationships with those who interest </p>
                 </div>
-                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6">
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-2 col-md-8">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collTinville" class=" aboutCircle glyphicon glyphicon-chevron-down" ></a>
         {#            <div class="col-xs-6 aboutLine"></div>#}
                 </div>
             </div>
         </div>
         <div id="collTinville" class="panel-collapse collapse">
-            <div class="row">
-                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutText">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <div class="row" >
+                <div class="col-xs-offset-0 col-xs-6 col-md-offset-2 col-md-4 aboutDashRight">
+                    <p class="abouthidden2ndText">creative, artistic designers with apparel for just about
+
+                        From the designer perspective, signing up for Tinville is a no-brainer. The registration process is
+
+                        quite simple, you’ll gain a great deal of exposure and networking opportunities right away, and
+
+                        most importantly, you’ll have a team of industry professionals guiding your every step in the
+
+                        marketplace from marketing your brand to actual logistics of filling an order.
+
+                        So whether you need a go-to shop for all your fashion needs or you are looking to expose your
+
+                        brand to the world, Tinville is the place to do it.</p>
+                </div>
+                <div class="col-xs-6 col-md-4 aboutDashLeft">
+                    <p class="abouthidden2ndText">them. Thus, our Tinville Community was created.
+
+                    At Tinville, we encourage designers to network, cross-shop and build important partnerships
+
+                    with one another. Our concept establishes a base of visibility - the more designers working
+
+                    together, the more help everyone gets building their brand on Tinville. It’s really that simple.</p>
                 </div>
             </div>
         </div>
@@ -93,7 +195,7 @@
         <div class="container">
     {#        <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 aboutLine"></div>#}
             <div class="row" >
-                <div class="col-xs-offset-0 col-xs-12 col-md-offset-3 col-md-6 ">
+                <div class="col-xs-offset-0 col-xs-12 col-md-offset-2 col-md-8 ">
                     <div class="about2ndTitle">Payment Information</div>
                     <p class="aboutText">Getting paid on TInville is made simple thanks to our partnership with Stripe. Using a checking account or debt card will allow you to create a shop on Tinville and get paid for all products sold through your shop Designers will only receive
                      payment for their order (minus Tinville costs) upon confirmation of shipping out the product(s) to the buyer. It is also up to the designer to ensure accuracy of payment information submitted to Tinville and Stripe. *Please note: To sign up as designer on Tinville you must use a valid checking account or debit card credentials.
@@ -106,9 +208,14 @@
 
 
 {% endblock %}
-{% block javascript %}
-	{{ super }}
-    <script type="text/javascript">
 
-	</script>
+{% block javascript %}
+    {{ block.super }}
+    <script>
+
+        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/infopageimg/shop.png)");
+        $("#thumbnail-preview-indicators .slides .slide-2 ").css("background-image", "url({{ STATIC_URL }}img/infopageimg/wear.png)");
+        $("#thumbnail-preview-indicators .slides .slide-3 ").css("background-image", "url({{ STATIC_URL }}img/infopageimg/inspire.png)");
+    </script>
+
 {% endblock %}
