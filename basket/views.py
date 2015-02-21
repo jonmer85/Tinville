@@ -1,6 +1,7 @@
 import json
 import collections
 from decimal import Decimal
+from easy_thumbnails.files import get_thumbnailer
 import simplejson as json
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.shortcuts import redirect
@@ -63,7 +64,12 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'description': strip_tags(parentproduct.description),
                 'price': float(stockrecord.price_excl_tax),
                 'subtotal': float(stockrecord.price_excl_tax * qty),
-                'image': str(image[0].original),
+                'image': str(get_thumbnailer(image[0].original).get_thumbnail({
+                            'size': (400, 500),
+                            'box': image[0].cropping,
+                            'crop': True,
+                            'detail': True,
+                            })),
                 'qty': qty,
                 'color': color,
                 'size': size,
