@@ -5,7 +5,8 @@ from lettuce import step
 from nose.tools import assert_equals, assert_not_equals, assert_raises
 from user.models import TinvilleUser
 import lettuce.django
-from selenium.common.exceptions import * 
+from selenium.common.exceptions import *
+from django.core.exceptions import ObjectDoesNotExist
 
 @step(u'I access the registration page')
 def access_registration_url(step):
@@ -33,6 +34,9 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
 @step(u'(?:When|And) I register for a shop named "([^"]*)"')
 def when_i_register_for_a_shop(step, shop_name):
     register_basic_shop(shop_name, "joe@schmoe.com", "test")
+    user = TinvilleUser.objects.get(email="joe@schmoe.com")
+    user.is_approved = True
+    user.save()
 
 @step(u'(?:When|And|Or) I try to register a shop named "([^"]*)"')
 def when_i_register_for_a_shop(step, shop_name):
@@ -85,6 +89,12 @@ def then_i_should_be_redirected_to_the_home_page(step):
 
 @step(u'(?:Then|And) I can visit my shop at "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    assert_page_exist(absoluteUrl)
+
+@step(u'(?:Then|And) I can visit my shop for the first time at "([^"]*)"')
+def then_i_can_visit_my_shop_for_the_first_time(step, url):
     absoluteUrl = lettuce.django.get_server().url(url)
     world.browser.get(absoluteUrl)
     redirect = '/access_code?shop=' + url

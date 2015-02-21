@@ -7,15 +7,15 @@
 {% block content %}
 
             <div class="container betaAccessAlign">
-                <h3>Please Enter You Access Code</h3>
-                <div class="row ">
-                    <div class="well well-info">
-                        <form id="betaform" class="" action="/access_code" method="post">
-                            {% load crispy_forms_tags %}
-                            {% crispy form %}
-                        </form>
+                    <h3>Please Enter You Access Code</h3>
+                    <div class="row ">
+                        <div class="well well-info">
+                            <form id="betaform" class="" action="/access_code" method="post">
+                                    {% load crispy_forms_tags %}
+                                    {% crispy form %}
+                            </form>
+                        </div>
                     </div>
-                </div>
             </div>
 
 {% endblock %}
