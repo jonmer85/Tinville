@@ -290,7 +290,7 @@ def fill_in_user_form(email, password):
 def access_registration_url(step):
     world.browser.get(lettuce.django.get_server().url('/register'))
 
-def submit_form_and_activate_user(form, expectSuccess=True):
+def submit_form_and_activate_user(form, expectSuccess=True, activateUser=True):
     form.submit()
     if(expectSuccess):
         wait_for_element_with_id_to_exist("messagesModal")
@@ -298,7 +298,8 @@ def submit_form_and_activate_user(form, expectSuccess=True):
         wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
         wait_for_element_with_id_to_not_be_displayed("messagesModal")
         user = TinvilleUser.objects.get(email=world.user_info['email'].lower())
-        user.is_active = True
+        if activateUser:
+            user.is_active = True
         user.save()
 
 def sign_in_local():
