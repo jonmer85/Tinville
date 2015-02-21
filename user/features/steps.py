@@ -5,7 +5,8 @@ from lettuce import step
 from nose.tools import assert_equals, assert_not_equals, assert_raises
 from user.models import TinvilleUser
 import lettuce.django
-from selenium.common.exceptions import * 
+from selenium.common.exceptions import *
+from django.core.exceptions import ObjectDoesNotExist
 
 @step(u'I access the registration page')
 def access_registration_url(step):
@@ -20,6 +21,11 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
     form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form)
 
+@step(u'(?:When|And) I register but not activate a shopper account with email "([^"]*)" and password "([^"]*)"')
+def when_i_register_but_not_activate_a_shopper_account_with_email_and_password(step, email, password):
+    form = fill_in_user_form(email=email, password=password)
+    submit_form_and_activate_user(form, expectSuccess=True, activateUser=False)
+
 @step(u'(?:When|And) I try to again register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
     form = fill_in_user_form(email=email, password=password)
@@ -28,6 +34,9 @@ def when_i_register_for_a_shopper_account_with_email_and_password(step, email, p
 @step(u'(?:When|And) I register for a shop named "([^"]*)"')
 def when_i_register_for_a_shop(step, shop_name):
     register_basic_shop(shop_name, "joe@schmoe.com", "test")
+    user = TinvilleUser.objects.get(email="joe@schmoe.com")
+    user.is_approved = True
+    user.save()
 
 @step(u'(?:When|And|Or) I try to register a shop named "([^"]*)"')
 def when_i_register_for_a_shop(step, shop_name):
@@ -69,12 +78,23 @@ def then_i_should_see_an_error_telling_me_that_shop_exists(step):
     assert_selector_does_exist("#div_id_shop_name.has-error")
     assert_selector_contains_text("#error_1_id_shop_name strong", "Not a valid shop name, please choose another")
 
+@step(u'I should see an error telling me that my user is not activated')
+def then_i_should_see_an_error_telling_me_that_my_user_is_not_activated(step):
+    assert_selector_contains_text("#md-Login .alert-danger",
+                                   "This account is inactive.")
+
 @step(u'Then I should be redirected to the home page')
 def then_i_should_be_redirected_to_the_home_page(step):
     go_home_page()
 
 @step(u'(?:Then|And) I can visit my shop at "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
+    absoluteUrl = lettuce.django.get_server().url(url)
+    world.browser.get(absoluteUrl)
+    assert_page_exist(absoluteUrl)
+
+@step(u'(?:Then|And) I can visit my shop for the first time at "([^"]*)"')
+def then_i_can_visit_my_shop_for_the_first_time(step, url):
     absoluteUrl = lettuce.django.get_server().url(url)
     world.browser.get(absoluteUrl)
     redirect = '/access_code?shop=' + url
@@ -120,12 +140,17 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 
 @step(u'I should be logged in')
 def then_i_should_be_logged_in(step):
-    assert_id_exists('clickedLogin-lg')
+    assert_selector_does_exist('#clickedLogin-lg.glyphicon-user')
+
+@step(u'I should not be logged in')
+def then_i_should_be_logged_in(step):
+    assert_selector_does_not_exist('clickedLogin-lg.glyphicon-user')
 
 @step(u'Visit and confirm the flatpages "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
     absoluteUrl = lettuce.django.get_server().url(url)
     world.browser.get(absoluteUrl)
     assert_page_exist(url)
+
 # Utilities
 
