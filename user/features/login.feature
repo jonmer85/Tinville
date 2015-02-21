@@ -19,3 +19,10 @@ Feature: Login
     When I register for a shopper account with email "foo@bar.com" and password "foobar"
     When I fill in the login screen with email "foo@bar.com " and password "foobar"
     Then I should be logged in
+
+  Scenario: Login before activation fails
+    When I register but not activate a shopper account with email "foo@bar.com" and password "foobar"
+    Then I should be redirected to the home page
+    When I fill in the login screen with email "foo@bar.com" and password "foobar"
+    Then I should not be logged in
+    And I should see an error telling me that my user is not activated

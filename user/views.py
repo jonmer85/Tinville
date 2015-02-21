@@ -79,8 +79,9 @@ def register(request):
         form = TinvilleUserCreationForm(request.POST)
 
         if form.is_valid():
-            #create initial entry for User object
             user = form.save()
+            user.is_active = False  # Need this since oscar defaults it to True
+            user.save()
             user.generate_activation_information()
             user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
 
