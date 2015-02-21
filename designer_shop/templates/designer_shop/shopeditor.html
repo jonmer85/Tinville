@@ -44,23 +44,20 @@
                     <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Click here for editor options</a>
                     <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
                         <li class="active">
-                            {% if editItemMode %}
-                                <a href="#addOrEditItem" data-toggle="pill">Edit Item</a>
-                            {% else %}
-                                <a href="#addOrEditItem" data-toggle="pill">Add Item</a>
-                            {% endif %}
+                            <a href="#about" data-toggle="pill">About</a>
                         </li>
                         <li>
                             <a href="#banner" data-toggle="pill">Banner</a>
                         </li>
-{#                        <li>#}
-{#                            <a href="#logo" data-toggle="pill">Logo</a>#}
-{#                        </li>#}
                         <li>
                             <a href="#color" data-toggle="pill">Color</a>
                         </li>
                         <li>
-                            <a href="#about" data-toggle="pill">About</a>
+                            {% if editItemMode %}
+                                <a href="#addOrEditItem" data-toggle="pill">Edit the selected item</a>
+                            {% else %}
+                                <a href="#addOrEditItem" data-toggle="pill">List new item for sale</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
@@ -80,11 +77,11 @@
                                 {% load crispy_forms_tags %}
                                 {% crispy designerShopColorPicker %}
                             </form>
-                            <form class="tab-pane row" id="about" enctype="multipart/form-data" method="post">
+                            <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">
                                  {% load crispy_forms_tags %}
                                  {% crispy aboutBoxForm %}
                             </form>
-                            <form novalidate="novalidate" class="tab-pane active" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                            <form novalidate="novalidate" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">
                                 {% load crispy_forms_tags %}
                                 {% crispy productCreationForm %}
                             </form>
