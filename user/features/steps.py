@@ -130,11 +130,11 @@ def then_i_should_get_a_validation_error_on_email_address(step):
 
 @step(u'I should be logged in')
 def then_i_should_be_logged_in(step):
-    assert_selector_does_exist('clickedLogin-lg .glyphicon-user')
+    assert_selector_does_exist('#clickedLogin-lg.glyphicon-user')
 
 @step(u'I should not be logged in')
 def then_i_should_be_logged_in(step):
-    assert_selector_does_not_exist('clickedLogin-lg .glyphicon-user')
+    assert_selector_does_not_exist('clickedLogin-lg.glyphicon-user')
 
 @step(u'Visit and confirm the flatpages "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
