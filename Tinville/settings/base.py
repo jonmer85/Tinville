@@ -118,8 +118,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
     'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
     'minidetector.Middleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
