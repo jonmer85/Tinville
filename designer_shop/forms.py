@@ -352,7 +352,7 @@ class AboutBoxForm(forms.ModelForm):
                      Field('aboutContent', placeholder="Enter Text Here")),
             ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
-            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
+            css_class="container col-xs-12 col-lg-8"
         ))
 
     def __init__(self, *args, **kwargs):
@@ -384,7 +384,7 @@ class DesignerShopColorPicker(forms.Form):
         Div(
             Field('color'),
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
-            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
+            css_class="container col-xs-12 col-lg-8"
         ))
 
     def clean_color(self):
@@ -411,7 +411,7 @@ class BannerUploadForm(forms.ModelForm):
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
-            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-11 col-lg-6"
+            css_class="container col-xs-12 col-lg-6"
         ))
 
     class Meta:
@@ -435,6 +435,6 @@ class LogoUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
                      Field('logo', css_class="autoHeight")),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
-            css_class="container col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-12 col-lg-8"
+            css_class="container col-xs-12 col-sm-offset-0 col-sm-12 col-lg-8"
         ))
 

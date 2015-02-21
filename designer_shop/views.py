@@ -3,7 +3,6 @@ import collections
 import re
 import shutil
 import datetime
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
@@ -46,6 +45,8 @@ class ShopListView(ListView):
     model = Shop
     context_object_name = "shop_list"
 
+    def get_queryset(self):
+        return Shop.objects.filter(user__is_approved = True)
 
 class IsShopOwnerDecorator(object):
     def __init__(self, view_func):
@@ -107,6 +108,14 @@ class get_filter_lists:
 def shopper(request, slug):
     shop = get_object_or_404(Shop, slug__iexact=slug)
     products = get_list_or_empty(Product, shop=shop.id)
+
+    if not (shop.user.is_approved):
+        if(request.user.is_active):
+            if(not request.user.slug==shop.user.slug):
+                return HttpResponseRedirect(reverse('under_construction'))
+        else:
+            return HttpResponseRedirect(reverse('under_construction'))
+
 
     if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
         if request.user.is_anonymous() or not request.user.is_seller:
