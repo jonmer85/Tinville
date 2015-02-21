@@ -33,10 +33,8 @@ Feature: Designer Registration
      | ADMIN    |
      | aDMIN    |
 
-    @yori
   Scenario: AW Defect 212 - Shop name URL should be case-insensitive
     When I register for a shop named "foo"
-    Then I can visit my shop at "foo"
-    And I can visit my shop again at "FOO"
-    And I can visit my shop again at "Foo"
-
+    Then I can visit my shop for the first time at "foo"
+    And I can visit my shop at "FOO"
+    And I can visit my shop at "/Foo"
