@@ -14,6 +14,8 @@ import stripe
 from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName, BetaAccessForm
 from user.models import TinvilleUser
 
+from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
+
 Partner = get_model('partner', 'Partner')
 
 class DesignerPaymentInfoView(FormView):
