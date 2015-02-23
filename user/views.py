@@ -1,10 +1,11 @@
 import json
 
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
+from django.contrib.auth import login as auth_login
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render
@@ -129,11 +130,23 @@ def activation(request, **kwargs):
         #     return context
             user.is_active = True
             user.save()
-            messages.success(request,
-                             """Thank you for completing the registration process! You may now sign in to Tinville
-                             with your new user account using the link at the upper right hand corner.""")
-    success_url = reverse('home')
-    return HttpResponseRedirect(success_url)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            data = auth_login(request, user)
+
+            if(user.is_seller):
+                return activation_redirectUrl(reverse('home'))
+            else:
+                return activation_redirectUrl(reverse('home'))
+
+    homeUrl = reverse('home')
+    return HttpResponseRedirect(homeUrl)
+
+def activation_redirectUrl(url):
+    loginResponse = HttpResponseRedirect(url)
+    logged_in = True
+    loginResponseBody = JsonResponse({'logged_in': logged_in})
+    loginResponse.content = loginResponseBody.content
+    return loginResponse
 
 
 def ajax_login(request, *args, **kwargs):

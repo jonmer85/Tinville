@@ -176,6 +176,16 @@ ul.infoList {
      text-align : left;
     text-shadow: 0px -2px 10px -4px #f46430;
 }
+.aboutMobileTitle {
+    padding-top: 20px;
+    padding-left: 15px;
+    color: #F46430;
+    font-size: 2.5em;
+    font-family:"Cabin Condensed", sans-serif;
+    word-wrap:break-word;
+     text-align : left;
+    text-shadow: 0px -2px 10px -4px #f46430;
+}
 .about2ndTitle {
     color: #575757;
     padding-top: 20px;
@@ -237,7 +247,10 @@ ul.infoList {
         left: 48.5%;
     }
 }
-.aboutCircle a:link, .aboutCircle a:visited, .aboutCircle a:hover, .aboutCircle a:active {
+a.aboutCircle:link,
+a.aboutCircle:visited,
+a.aboutCircle:hover,
+a.aboutCircle:active {
     color: #fdbdA9;
     text-decoration: none;
 }
@@ -273,12 +286,24 @@ ul.infoList {
 #thumbnail-preview-indicators .carousel-inner .item .carousel-caption {
   top: 20%;
   bottom: inherit;
+
 }
-#thumbnail-preview-indicators .carousel-indicators li,
+#thumbnail-preview-indicators .carousel-indicators li {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  color: #F46430;
+    border-color: #F46430;
+
+}
+
 #thumbnail-preview-indicators .carousel-indicators li.active {
   position: relative;
-  width: 100px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
+  color: #F46430;
+    border-color: #F46430;
+    background-color: #F46430;
 }
 #thumbnail-preview-indicators .carousel-indicators li > .thumbnail {
   position: absolute;
@@ -301,12 +326,12 @@ ul.infoList {
 @media screen and (max-width : 480px) {
     #thumbnail-preview-indicators .carousel-indicators li,
     #thumbnail-preview-indicators .carousel-indicators li.active {
-      width: 50px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       position: relative;
     }
     #thumbnail-preview-indicators .carousel-indicators li > .thumbnail {
-       width: 50px;
+       width: 10px;
        left: 50%;
        margin-top: -50px;
        margin-left: -25px;
@@ -318,6 +343,6 @@ ul.infoList {
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-      height: 200px;
+      height: 150px;
     }
 }
