@@ -20,6 +20,14 @@ class AddressCreateView(CoreAddressCreateView):
     template_name = 'edit_address.html'
     form_class = UserAddressForm
 
+    def get_success_url(self):
+        # Assign shop shipping address if none assigned
+        if self.request.user.is_seller:
+            if _get_shipping_address_pk_that_is_shop_shipping_address(self.request) is None:
+                _assign_shop_shipping_address(self.request.user, self.object.id)
+        return super(AddressCreateView, self).get_success_url()
+
+
 
 class AddressListView(CoreAddressListView):
     template_name = 'address_list.html'
@@ -32,22 +40,11 @@ class AddressListView(CoreAddressListView):
 
 
 class AddressChangeStatusView(CoreAddressChangeStatusView):
+
+
     def get(self, request, pk=None, action=None, *args, **kwargs):
         if action == 'default_for_shop':
-            # Find all partners associated with this user and set the new address
-            address = get_object_or_404(UserAddress, user=self.request.user,
-                                        pk=pk)
-
-            partners = get_list_or_404(Partner, users__pk=self.request.user.pk)
-
-            for partner in partners:
-                partner_address = partner.primary_address
-                if partner_address is not None:
-                    partner_address.delete()
-                partner_address = partner.addresses.model(partner=partner)
-                address.populate_alternative_model(partner_address)
-                partner_address.save()
-                partner.save()
+            _assign_shop_shipping_address(self.request.user, pk)
 
         return super(AddressChangeStatusView, self).get(
             request, pk, action, *args, **kwargs)
@@ -93,4 +90,18 @@ def _get_shipping_address_pk_that_is_shop_shipping_address(request):
                 and partner_address.search_text == address.search_text:
                     return address.pk
     return None
+
+def _assign_shop_shipping_address(user, address_pk):
+    # Find all partners associated with this user and set the new address
+    address = get_object_or_404(UserAddress, user=user,
+                                pk=address_pk)
+    partners = get_list_or_404(Partner, users__pk=user.pk)
+    for partner in partners:
+        partner_address = partner.primary_address
+        if partner_address is not None:
+            partner_address.delete()
+        partner_address = partner.addresses.model(partner=partner)
+        address.populate_alternative_model(partner_address)
+        partner_address.save()
+        partner.save()
 
