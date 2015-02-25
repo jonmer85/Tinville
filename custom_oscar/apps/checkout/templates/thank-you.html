@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load currency_filters %}
-{% load thumbnail %}
+{% load cropping %}
 {% block css %}
 {{ block.super }}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/checkout/styles.css" />
@@ -116,9 +116,9 @@
                 <div class="col-md-2">
                     <div class="image_container">
                         {% with image=line.product.primary_image %}
-                            {% thumbnail image.original "200x200" upscale=False as thumb %}
-                            <a href="{{ line.product.get_absolute_url }}"><img class="img-thumbnail" src="{{ thumb.url }}" alt="{{ product.get_title }}"></a>
-                            {% endthumbnail %}
+                            <a href="{% cropped_thumbnail image "cropping" scale=1 %}">
+                                <img class="img-thumbnail" src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}">
+                            </a>
                         {% endwith %}
                     </div>
                 </div>
