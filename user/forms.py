@@ -4,6 +4,7 @@ from autoslug.utils import slugify
 
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
+from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
@@ -14,9 +15,11 @@ from crispy_forms.bootstrap import AppendedText
 
 from parsley.decorators import parsleyfy
 
+
 from user.models import TinvilleUser
 from designer_shop.models import Shop
 from custom_oscar.apps.checkout.forms import PaymentInfoForm
+
 
 
 class TinvilleUserCreationForm(forms.ModelForm):
@@ -78,6 +81,9 @@ class TinvilleUserCreationForm(forms.ModelForm):
         if self.cleaned_data["shop_name"]:
             user.is_seller = True
             user.shop = Shop.objects.create(user=user, name=self.cleaned_data["shop_name"])
+            dashboard_access_perm = Permission.objects.get(
+                codename='dashboard_access', content_type__app_label='partner')
+            user.user_permissions.add(dashboard_access_perm)
             user.save()
 
         return user

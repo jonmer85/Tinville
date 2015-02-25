@@ -56,6 +56,7 @@ class IndexView(CoreIndexView):
         orders_last_day = queryset_orders_for_user(self.request.user).filter(date_placed__gt=start_time)
         return super(IndexView, self).get_hourly_report()
 
+
     def get_stats(self):
         datetime_24hrs_ago = now() - timedelta(hours=24)
 
@@ -110,3 +111,5 @@ class IndexView(CoreIndexView):
             ).values('status').annotate(freq=Count('id'))
         }
         return stats
+
+

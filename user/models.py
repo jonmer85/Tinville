@@ -39,7 +39,6 @@ class TinvilleUser(AbstractUser):
     slug = AutoSlugField(populate_from='email', unique=True)
     is_admin = models.BooleanField(default=False)
     is_active = False
-    # = models.BooleanField(default=False)
     activation_key = models.CharField(max_length=40, blank=True)
     key_expires = models.DateTimeField(auto_now_add=True)
 
@@ -51,11 +50,7 @@ class TinvilleUser(AbstractUser):
     recipient_id = models.CharField(max_length=255)
     access_code = models.CharField(max_length=5, default="ABC12")
 
-
-
     objects = TinvilleUserManager()
-
-    # USERNAME_FIELD = "email"
 
     def generate_activation_information(self):
 
@@ -70,14 +65,11 @@ class TinvilleUser(AbstractUser):
         access_code_candidate = None
         while True:
             access_code_candidate = get_random_string(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-
             try:
                 TinvilleUser.objects.get(access_code = access_code_candidate)
                 pass
             except ObjectDoesNotExist:
                 break
-
-
         self.access_code = access_code_candidate
         self.save()
 
@@ -99,18 +91,6 @@ class TinvilleUser(AbstractUser):
     def __unicode__(self):
         return self.email
 
-    def has_perms(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        #TODO Add permission system for designer pages
-        return True
-
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        #TODO Add permission system for designer pages
-        return True
-
     def send_confirmation_email(self, base_url):
 
         # Send an email with the confirmation link
@@ -122,11 +102,6 @@ class TinvilleUser(AbstractUser):
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 
-    # @property
-    # def is_staff(self):
-    #     "Is the user a member of staff?"
-    #     # Simplest possible answer: All admins are staff
-    #     return self.is_admin
 
 class DesignerPayout(models.Model):
     designer = models.ForeignKey('TinvilleUser')
