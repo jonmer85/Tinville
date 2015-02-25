@@ -48,6 +48,7 @@ class ShopListView(ListView):
     def get_queryset(self):
         return Shop.objects.filter(user__is_approved = True)
 
+
 class IsShopOwnerDecorator(object):
     def __init__(self, view_func):
         self.view_func = view_func
