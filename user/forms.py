@@ -1,25 +1,19 @@
 from datetime import datetime
 import urlparse
 from autoslug.utils import slugify
-
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
-
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
 from crispy_forms.bootstrap import AppendedText
-
 from parsley.decorators import parsleyfy
-
-
 from user.models import TinvilleUser
 from designer_shop.models import Shop
 from custom_oscar.apps.checkout.forms import PaymentInfoForm
-
 
 
 class TinvilleUserCreationForm(forms.ModelForm):
