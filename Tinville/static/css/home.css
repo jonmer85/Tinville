@@ -21,7 +21,7 @@
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-      height: 480px;
+      height: 550px;
     }
 /*#thumbnail-preview-indicators .slides .slide-1 {*/
   /*background-image: url({{ STATIC_URL }}img/banner-xl.jpg);*/
