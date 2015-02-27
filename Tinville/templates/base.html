@@ -127,7 +127,7 @@
     </div>
 
     <nav class="navbar yamm navbar-default navbar-main navbarSliding" role="navigation">
-        <div class="container ">
+        <div class="container " id="menuContainer">
             <div id="navHeader" class="navbar-header">
 
 {#                <div class="input-group margin-bottom-sm visible-xs " style="padding-top: 5%" >#}
@@ -350,6 +350,7 @@
                                 </ul>
                             </li>
                         {% endif %}
+
                     </ul>
                 </div>
             </div>
@@ -562,7 +563,7 @@
 
          $(document).ready(function() {
 
-               var menu = "close";
+             var menu = "close";
 
                 $('.menu-toggle').click(function() {
                     if(menu == "close"){
@@ -611,6 +612,7 @@
         cartCount();
 
     });
+
 
     function LoadCartItemDiv(cartItem)
     {
