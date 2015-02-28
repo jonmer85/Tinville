@@ -1259,23 +1259,6 @@ textarea
     list-style-type : none;
 }
 
-@media (max-width : 768px)
-{
-    .cartLocation
-    {
-        /*right : 15px;*/
-    }
-}
-
-@media (max-width : 992px)
-{
-    .cartLocation
-    {
-        /*right : 10px;*/
-        /*top: 17px;*/
-    }
-}
-
 .cartDropdown
 {
     margin-top  : 15px;
