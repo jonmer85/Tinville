@@ -39,7 +39,17 @@
           </ol>
           <div class="carousel-inner">
             <div class="item slides active">
-              <div class="slide-1"></div>
+              <div class="slide-1">
+                      <span data-picture class="banner">
+                            <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+                            <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
+                            <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+                            <noscript>
+                                <img src="{{ STATIC_URL }}img/banner-xs.png">
+                            </noscript>
+                        </span>
+
+              </div>
               <div class="container">
                 <div class="carousel-caption">
 {#                  <p><a class="btn btn-lg btn-primary" href="/register" role="button">Sign up today</a></p>#}
@@ -84,7 +94,7 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");
+{#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
     </script>
 
 {% endblock %}
