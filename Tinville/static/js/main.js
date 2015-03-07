@@ -201,6 +201,10 @@
             {
                 $("#menuContainer").css("width",winWidth-100)
             }
+            if (winWidth > 768 && winWidth < 850)
+            {
+                $("#menuContainer").css("width",winWidth-100)
+            }
         }
       function cartCount()
       {
