@@ -1,3 +1,7 @@
+body {
+    padding-right: 0px !important;
+}
+
 .shopColor {
     /*background-color: #802152;*/
     color: #990099;
@@ -605,6 +609,7 @@
   height: 25px;
   z-index: 10;
   color: #f46430;
+  cursor: pointer;
 }
 .overlayEdit a:link,
 .overlayEdit a:visited,
@@ -678,4 +683,28 @@
 
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
     background-color: lightgray;
+}
+
+.editIconContainer {
+    position: relative;
+    vertical-align: bottom;
+}
+
+.banner-image::before, .banner-image::after { white-space: nowrap; }
+
+.bannerUploadEditButton {
+    position:absolute;
+    bottom:10px;
+    right:10px;
+}
+
+.colorPickerEditButton {
+    position:absolute;
+    bottom:19px;
+}
+
+.aboutBoxEditButton {
+    position:absolute;
+    bottom:10px;
+    right:10px;
 }

@@ -30,75 +30,142 @@
             </div>
         </div>
     </div>
-
-<div id="shopEditor" class="container">
-    <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">
-        <div id="cornerRadius" class="cornerRadius panel panel-default">
-            <div id="shopEditorHeading" class="panel-heading">
-                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">
-                    <b>{{ shop.name }} - Shop Editor</b>
-                    <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>
-                </div>
-            <div id="editorPanels" class="row panel-collapse collapse in">
-                <div id="optionPanel" class="container col-sm-2 panel-body editorPanel shopEditorElementTop">
-                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Click here for editor options</a>
-                    <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">
-                        <li class="active">
-                            <a href="#about" data-toggle="pill">About</a>
-                        </li>
-                        <li>
-                            <a href="#banner" data-toggle="pill">Banner</a>
-                        </li>
-                        <li>
-                            <a href="#color" data-toggle="pill">Color</a>
-                        </li>
-                        <li>
-                            {% if editItemMode %}
-                                <a href="#addOrEditItem" data-toggle="pill">Edit the selected item</a>
-                            {% else %}
-                                <a href="#addOrEditItem" data-toggle="pill">List new item for sale</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </div>
-                <div id="secondColumn" class="container col-sm-10">
-                    <div id="formPanel" class="mobileMomentumScroll panel-body shopEditorElementBottom">
-                        <div id="formContent" class="tab-content panel-content shopEditorElementBottom">
-                            <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
-                                {% load crispy_forms_tags %}
-                                {% crispy bannerUploadForm %}
-                            </form>
+{##}
+{#<div id="shopEditor" class="container">#}
+{#    <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">#}
+{#        <div id="cornerRadius" class="cornerRadius panel panel-default">#}
+{#            <div id="shopEditorHeading" class="panel-heading">#}
+{#                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">#}
+{#                    <b>{{ shop.name }} - Shop Editor</b>#}
+{#                    <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>#}
+{#                </div>#}
+{#            <div id="editorPanels" class="row panel-collapse collapse in">#}
+{#                <div id="optionPanel" class="container col-sm-2 panel-body editorPanel shopEditorElementTop">#}
+{#                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Click here for editor options</a>#}
+{#                    <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">#}
+{#                        <li class="active">#}
+{#                            <a href="#about" data-toggle="pill">About</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="#banner" data-toggle="pill">Banner</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="#color" data-toggle="pill">Color</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            {% if editItemMode %}#}
+{#                                <a href="#addOrEditItem" data-toggle="pill">Edit the selected item</a>#}
+{#                            {% else %}#}
+{#                                <a href="#addOrEditItem" data-toggle="pill">List new item for sale</a>#}
+{#                            {% endif %}#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#                <div id="secondColumn" class="container col-sm-10">#}
+{#                    <div id="formPanel" class="mobileMomentumScroll panel-body shopEditorElementBottom">#}
+{#                        <div id="formContent" class="tab-content panel-content shopEditorElementBottom">#}
+{#                            <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">#}
+{#                                {% load crispy_forms_tags %}#}
+{#                                {% crispy bannerUploadForm %}#}
+{#                            </form>#}
 {#                            S.Abbay - removing logo for now until we understand better way to place it#}
 {#                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">#}
 {#                                {% load crispy_forms_tags %}#}
 {#                                {% crispy logoUploadForm %}#}
 {#                            </form>#}
-                            <form class="tab-pane row" id="color" action="ajax_color" method="post">
-                                {% load crispy_forms_tags %}
-                                {% crispy designerShopColorPicker %}
-                            </form>
-                            <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">
-                                 {% load crispy_forms_tags %}
-                                 {% crispy aboutBoxForm %}
-                            </form>
-                            <form novalidate="novalidate tab-pane row" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">
-                                {% load crispy_forms_tags %}
-                                {% crispy productCreationForm %}
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row-xs-height col-xs-12">
-                        <div id="buttonContainer" class="container col-xs-12 container-xs-height">
-                            <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>
-                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right hidden">Submit</button>
-                        </div>
-                    </div>
+{#                            <form class="tab-pane row" id="color" action="ajax_color" method="post">#}
+{#                                {% load crispy_forms_tags %}#}
+{#                                {% crispy designerShopColorPicker %}#}
+{#                            </form>#}
+{#                            <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">#}
+{#                                 {% load crispy_forms_tags %}#}
+{#                                 {% crispy aboutBoxForm %}#}
+{#                            </form>#}
+{#                            <form novalidate="novalidate tab-pane row" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">#}
+{#                                {% load crispy_forms_tags %}#}
+{#                                {% crispy productCreationForm %}#}
+{#                            </form>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="row-xs-height col-xs-12">#}
+{#                        <div id="buttonContainer" class="container col-xs-12 container-xs-height">#}
+{#                            <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>#}
+{#                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right hidden">Submit</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+    <div class="modal fade" id="bannerUploadModal" tabindex="-1" role="dialog" aria-labelledby="bannerUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="bannerUploadModalLabel">Upload Your Banner</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
+                        {% load crispy_forms_tags %}
+                        {% crispy bannerUploadForm %}
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
+    <div class="modal fade" id="colorPickerModal" tabindex="-1" role="dialog" aria-labelledby="colorPickerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="colorPickerModalLabel">Choose your Color</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="tab-pane row" id="color" action="ajax_color" method="post">
+                        {% load crispy_forms_tags %}
+                        {% crispy designerShopColorPicker %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aboutBoxModal" tabindex="-1" role="dialog" aria-labelledby="aboutBoxModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="aboutBoxModalLabel">Edit About You</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">
+                         {% load crispy_forms_tags %}
+                         {% crispy aboutBoxForm %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="productCreationModal" tabindex="-1" role="dialog" aria-labelledby="productCreationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="productCreationModalLabel">Add Item</h4>
+                </div>
+                <div class="modal-body" id="productCreationForm">
+                    <form novalidate="novalidate" class="tab-pane row" action="{% if editItemMode %}{{ url_path }}{% endif %}" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                        {% load crispy_forms_tags %}
+                        {% crispy productCreationForm %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -195,26 +262,32 @@ $(document).ready(function () {
         $("input[type=submit]").attr("disabled", "disabled");
         return;
     }
+{#    else#}
+{#    {#}
+{#        if (!formInstance.isValid('SizeAndColor'))#}
+{#        {#}
+{#            TODO: Write to correct div#}
+{#        }#}
+{##}
+{#        if (!formInstance.isValid('General'))#}
+{#        {#}
+{#           TODO: Write to correct div#}
+{#        }#}
+{#    }#}
     // else stop form submission
     formInstance.submitEvent.preventDefault();
     $('.parsley-errors-list')
 {#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
       .addClass("filled bootstrapError help-block");
-
   });
 
     document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
     document.getElementById("id_price").attributes["type"].value = "decimal";
-
-    if($("#emptyShopId").length > 0) {
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    }
-    resizeEditor();
+{#    resizeEditor();#}
     {% if editItemMode %}
     populateProductVariantsInfo();
     {% endif %}
     showImageFields();
-
 });
 
 
@@ -305,7 +378,7 @@ function sizeNumberTemplate(required){
 }
 
 function rowColorQuantityTemplate(required){
-    numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+    numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
     if (required === "")
         numRequired = "";
     var rowColorQuantityTemplate = "" +
@@ -360,8 +433,24 @@ const SizeTypeInfo = {
     }
 };
 
-$("#id_sizeVariation").change(function() {
-    $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
+{#$("#id_sizeVariation").change(function() {#}
+{#    $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);#}
+{#    var selectedValue = $("#id_sizeVariation option:selected");#}
+{#    var sizesFieldSet = $("#sizesFieldSet");#}
+{#    sizesFieldSet.removeClass("hidden");#}
+{#    var sizeType = selectedValue[0].value;#}
+{#    var sizeTypeString = sizeTypeStringFromNum(sizeType);#}
+{#    var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];#}
+{#    var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];#}
+{#    var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];#}
+{##}
+{##}
+{#    RemoveWrongSizeTypes(sizeTypeString);#}
+{#    addNewSizeRow(sizeTypeString);#}
+{#    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);#}
+{#{);#}
+
+$(document).on('change','#id_sizeVariation',function(){
     var selectedValue = $("#id_sizeVariation option:selected");
     var sizesFieldSet = $("#sizesFieldSet");
     sizesFieldSet.removeClass("hidden");
@@ -417,9 +506,9 @@ function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelecti
 
 var arSizeRows  = [] ;
 var arColorRows = [] ;
-var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
-var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
+var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
+var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
 function clearColorRow( strRowToClear )
 {
         var strRowId = "#" + strRowToClear ;
@@ -427,19 +516,15 @@ function clearColorRow( strRowToClear )
 
         $(strRowId).remove();
         arColorRows.splice(indexToRemove, 1);
-
 }
 
 function clearSizeRow( strRowToClear )
 {
-
     var strRowId = "#" + strRowToClear ;
     var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
 
     $(strRowId).remove();
     arSizeRows.splice(indexToRemove, 1);
-
-
 }
 
 function addNewSizeRow(sizeType) {
@@ -504,7 +589,7 @@ function addNewColorAndQuantityRow(prefix, appendTo, required) {
 
     var rowQtyRequired = "";
     if(required === true)
-        rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required";
+        rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
 
     var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
     colorsAndQuantities.collapse('show');
@@ -612,15 +697,14 @@ function sizeTypeStringFromNum(num) {
 
 }
 
-function populateProductVariantsInfo() {
+function populateProductVariantsInfo(ajaxurl) {
 
-    $.getJSON("{{ request.get_full_path }}/getVariants/size", function(data) {
+    $.getJSON(ajaxurl+"/getVariants/size", function(data) {
         var sizeType = data["sizetype"];
         var sizeTypeString = sizeTypeStringFromNum(sizeType);
         var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
         var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
         var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
-
 
         var sizesFieldSet = $("#sizesFieldSet");
         sizesFieldSet.removeClass("hidden");
@@ -640,11 +724,7 @@ function populateProductVariantsInfo() {
             addNewColorAndQuantityRow(prefix, appendTo, false);
         });
         addNewSizeRow(sizeTypeString);
-
-
-
     });
-
 }
 
 function populateInitialDataForSizeRow(sizeRow, sizeType, size) {
@@ -679,297 +759,287 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 
 
 
-$(window).resize(function() {
-    if($("#emptyShopId").length > 0) {
-        document.getElementById('emptyShopId').innerHTML = "Items go here..."
-    }
-    resizeEditor();
-});
+{#$(window).resize(function() {#}
+{#    resizeEditor();#}
+{#{);#}
+{##}
+{#$("#optionContent li").click(function (){#}
+{#    $("#optionsXS").text($(this).text()+" (click here for editor options)");#}
+{#    $("#shopEditor_message_area").empty();#}
+{#    resizeEditor();#}
+{#{);#}
+{##}
+{#optionsXSMargin = 20;#}
+{#editorHeightRatio = 0.85;#}
+{##}
+{#$("#optionsXS").click(function() {#}
+{#    var currentFormPanelHeight;#}
+{#    var maxFormHeight;#}
+{#    var transitionHeight;#}
+{#    currentFormPanelHeight = $("#secondColumn").outerHeight();#}
+{#    maxFormHeight = Math.round($(window).height()*editorHeightRatio);#}
+{#    $("#optionContent").height(maxFormHeight-#}
+{#            $("#optionsXS").outerHeight()+ optionsXSMargin -#}
+{#            $("#buttonContainer").outerHeight()-#}
+{#            $("#shopEditorTitle").outerHeight()-#}
+{#            parseInt($("#cornerRadius").css('border-top-width'))-#}
+{#            parseInt($("#cornerRadius").css('border-bottom-width'))-#}
+{#            parseInt($("#shopEditorHeading").css('padding-bottom'))-#}
+{#            parseInt($("#formPanel").css('border-top-width'))-#}
+{#            parseInt($("#formPanel").css('padding-bottom')));#}
+{#            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();#}
+{##}
+{#    if ($("#optionPanel").outerHeight() == $("#optionsXS").outerHeight() + optionsXSMargin)#}
+{#    {#}
+{#        $("#optionPanel").velocity({height: transitionHeight},{duration: 300});#}
+{#        $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});#}
+{#        $("#formContent").velocity({height: currentFormPanelHeight-transitionHeight}, {duration: 300});#}
+{#    }#}
+{#    else#}
+{#    {#}
+{#        resizeEditor();#}
+{#    }#}
+{#{);#}
+{##}
+{#function resizeEditor() {#}
+{#    var maxFormHeight;#}
+{#    var editorPanelHeight;#}
+{#    var buttonHeight;#}
+{#    var optionPanelHeight;#}
+{#    var editorHeight;#}
+{#    var maxHeight;#}
+{#    var formTransitionHeight;#}
+{#    var excess;#}
+{##}
+{#    buttonHeight = $("#buttonContainer").outerHeight();#}
+{##}
+{#    if (checkMode() == 'xs')#}
+{#    {#}
+{#        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});#}
+{#        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});#}
+{#        optionPanelHeight = $("#optionsXS").outerHeight() + optionsXSMargin; /* Account for top margin, note the handler in $("#optionsXS").click accounts for the same margin */#}
+{#        maxFormHeight = $(window).height()*editorHeightRatio;#}
+{#        formTransitionHeight = maxFormHeight-optionPanelHeight-#}
+{#                $("#shopEditorTitle").outerHeight()-#}
+{#                $("#buttonContainer").outerHeight()-#}
+{#                parseInt($("#cornerRadius").css('border-top-width'))-#}
+{#                parseInt($("#cornerRadius").css('border-bottom-width'));#}
+{#        $("#optionPanel").velocity({height:optionPanelHeight},{duration: 300});#}
+{#        $("#optionContent").velocity({height: optionPanelHeight},{duration: 300});#}
+{#        $("#formPanel").velocity({height:formTransitionHeight}, {duration: 300});#}
+{#        $("#formContent").velocity({height: formTransitionHeight}, {duration: 300});#}
+{#    }#}
+{#    else#}
+{#    {#}
+{#        $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});#}
+{#        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});#}
+{#        editorPanelHeight = 0.80;#}
+{#        excess =  $("#shopEditorTitle").outerHeight()+#}
+{#                parseInt($("#cornerRadius").css('border-top-width'))+#}
+{#                parseInt($("#cornerRadius").css('border-bottom-width'))+#}
+{#                parseInt($("#shopEditorHeading").css('padding-bottom'));#}
+{#        maxHeight = $(window).height()*editorPanelHeight;#}
+{#        $("#optionPanel").velocity({height:maxHeight-excess},300);#}
+{#        $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);#}
+{#        $("#optionContent").velocity({height: maxHeight-excess},300);#}
+{#        $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);#}
+{#    }#}
+{#    }#}
 
-$("#optionContent li").click(function (){
-    $("#optionsXS").text($(this).text()+" (click here for editor options)");
-    $("#shopEditor_message_area").empty();
-    resizeEditor();
-});
+        var jsonDel, delState;
+        $('.itemDelete').click(function (e) {
+            var chevron, jsonDel, parentId, delState;
+            delState = sessionStorage.getItem("del-state");
+            jsonDel = JSON.parse(delState || "{}");
+            parentId = "editorPanels";
+            chevron = "false";
+            jsonDel[parentId] = chevron;
 
-optionsXSMargin = 20;
-editorHeightRatio = 0.85;
+            return sessionStorage.setItem("del-state", JSON.stringify(jsonDel));
+        });
 
-$("#optionsXS").click(function() {
-    var currentFormPanelHeight;
-    var maxFormHeight;
-    var transitionHeight;
-    currentFormPanelHeight = $("#secondColumn").outerHeight();
-    maxFormHeight = Math.round($(window).height()*editorHeightRatio);
-    $("#optionContent").height(maxFormHeight-
-            $("#optionsXS").outerHeight()+ optionsXSMargin -
-            $("#buttonContainer").outerHeight()-
-            $("#shopEditorTitle").outerHeight()-
-            parseInt($("#cornerRadius").css('border-top-width'))-
-            parseInt($("#cornerRadius").css('border-bottom-width'))-
-            parseInt($("#shopEditorHeading").css('padding-bottom'))-
-            parseInt($("#formPanel").css('border-top-width'))-
-            parseInt($("#formPanel").css('padding-bottom')));
-            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();
+        delState = sessionStorage.getItem("del-state");
+        jsonDel = JSON.parse(delState || "{}");
 
-    if ($("#optionPanel").outerHeight() == $("#optionsXS").outerHeight() + optionsXSMargin)
-    {
-        $("#optionPanel").velocity({height: transitionHeight},{duration: 300});
-        $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});
-        $("#formContent").velocity({height: currentFormPanelHeight-transitionHeight}, {duration: 300});
-    }
-    else
-    {
-        resizeEditor();
-    }
-});
+        $(function () {
+            $.each(jsonDel, function (containerId, isHidden) {
+                        if (isHidden === "false") {
+                            $("#minMaxIcon").removeClass("glyphicon-chevron-down");
+                            $("#minMaxIcon").addClass("glyphicon-chevron-up");
+                            sessionStorage.removeItem("del-state");
+                            return $("#" + containerId).collapse('hide');
+                        }
+                        else {
+                            return $("#" + containerId).collapse('show');
+                        }
+                    }
+            );
+        });
 
-function resizeEditor() {
-    var maxFormHeight;
-    var editorPanelHeight;
-    var buttonHeight;
-    var optionPanelHeight;
-    var editorHeight;
-    var maxHeight;
-    var formTransitionHeight;
-    var excess;
+        var json, tabsState;
+        $('a[data-toggle="pill"]').click(function (e) {
+            var href, json, parentId, tabsState;
 
-    buttonHeight = $("#buttonContainer").outerHeight();
+            tabsState = sessionStorage.getItem("tabs-state");
+            json = JSON.parse(tabsState || "{}");
+            parentId = $(e.target).parents("ul.nav.nav-pills").attr("id");
+            href = $(e.target).attr('href');
+            json[parentId] = href;
 
-    if (checkMode() == 'xs')
-    {
-        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});
-        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});
-        optionPanelHeight = $("#optionsXS").outerHeight() + optionsXSMargin; /* Account for top margin, note the handler in $("#optionsXS").click accounts for the same margin */
-        maxFormHeight = $(window).height()*editorHeightRatio;
-        formTransitionHeight = maxFormHeight-optionPanelHeight-
-                $("#shopEditorTitle").outerHeight()-
-                $("#buttonContainer").outerHeight()-
-                parseInt($("#cornerRadius").css('border-top-width'))-
-                parseInt($("#cornerRadius").css('border-bottom-width'));
-        $("#optionPanel").velocity({height:optionPanelHeight},{duration: 300});
-        $("#optionContent").velocity({height: optionPanelHeight},{duration: 300});
-        $("#formPanel").velocity({height:formTransitionHeight}, {duration: 300});
-        $("#formContent").velocity({height: formTransitionHeight}, {duration: 300});
-    }
-    else
-    {
-        $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});
-        editorPanelHeight = 0.80;
-        excess =  $("#shopEditorTitle").outerHeight()+
-                parseInt($("#cornerRadius").css('border-top-width'))+
-                parseInt($("#cornerRadius").css('border-bottom-width'))+
-                parseInt($("#shopEditorHeading").css('padding-bottom'));
-        maxHeight = $(window).height()*editorPanelHeight;
-        $("#optionPanel").velocity({height:maxHeight-excess},300);
-        $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);
-        $("#optionContent").velocity({height: maxHeight-excess},300);
-        $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);
-    }
-}
+            return sessionStorage.setItem("tabs-state", JSON.stringify(json));
+        });
 
-var jsonDel, delState;
- $('.itemDelete').click(function(e){
-     var chevron, jsonDel, parentId, delState;
-     delState = sessionStorage.getItem("del-state");
-     jsonDel = JSON.parse(delState || "{}");
-     parentId = "editorPanels";
-     chevron = "false";
-     jsonDel[parentId] = chevron;
+        tabsState = sessionStorage.getItem("tabs-state");
+        json = JSON.parse(tabsState || "{}");
 
-     return sessionStorage.setItem("del-state", JSON.stringify(jsonDel));
- });
+        $.each(json, function (containerId, href) {
+            return $("#" + containerId + " a[href=" + href + "]").tab('show');
+        });
 
-delState = sessionStorage.getItem("del-state");
-jsonDel = JSON.parse(delState || "{}");
+        {#$("#optionContent").slimScroll({});#}
+        {#$("#formContent").slimScroll({});#}
 
-$(function() {
-    $.each(jsonDel, function (containerId, isHidden) {
-                if(isHidden === "false") {
-                    $("#minMaxIcon").removeClass("glyphicon-chevron-down");
-                    $("#minMaxIcon").addClass("glyphicon-chevron-up");
-                    sessionStorage.removeItem("del-state");
-                    return $("#" + containerId).collapse('hide');
-                }
-                else {
-                    return $("#" + containerId).collapse('show');
-                }
+        {##}
+
+        function DeleteConfirmation(slug) {
+            $('#deleteModal').modal('show');
+            $('#okDeleteBtn').click({param1: slug}, function (event) {
+                var href = "{{ shop.get_absolute_url }}edit/delete_product/";
+                window.location = href + event.data.param1;
+            });
+        }
+
+        function getCenterBoxSelection(ratio_width, ratio_height, image_width, image_height) {
+
+            var ratio = ratio_width / ratio_height;
+            if (image_width < image_height * ratio) {
+                // width fits fully, height needs to be cropped
+                offset = Math.round((image_height - (image_width / ratio)) / 2);
+                return [0, offset, image_width, image_height - offset]
             }
-    );
-});
 
-var json, tabsState;
-$('a[data-toggle="pill"]').click( function(e) {
-    var href, json, parentId, tabsState;
 
-    tabsState = sessionStorage.getItem("tabs-state");
-    json = JSON.parse(tabsState || "{}");
-    parentId = $(e.target).parents("ul.nav.nav-pills").attr("id");
-    href = $(e.target).attr('href');
-    json[parentId] = href;
-
-    return sessionStorage.setItem("tabs-state", JSON.stringify(json));
-});
-
-tabsState = sessionStorage.getItem("tabs-state");
-json = JSON.parse(tabsState || "{}");
-
-$.each(json, function(containerId, href) {
-    return $("#" + containerId + " a[href=" + href + "]").tab('show');
-});
-
-{#$("#optionContent").slimScroll({});#}
-{#$("#formContent").slimScroll({});#}
-
-$("#shopEditorTitle").click(function() {
-   $("#minMaxIcon").toggleClass("glyphicon-chevron-up");
-   $("#minMaxIcon").toggleClass("glyphicon-chevron-down");
-});
-
-function DeleteConfirmation(slug) {
-    $('#deleteModal').modal('show');
-    $('#okDeleteBtn').click({param1: slug}, function (event) {
-        var href = "{{ shop.get_absolute_url }}edit/delete_product/";
-        window.location =  href + event.data.param1;
-    });
-}
-
-    function getCenterBoxSelection(ratio_width, ratio_height, image_width, image_height) {
-
-        var ratio = ratio_width / ratio_height;
-        if (image_width < image_height * ratio) {
-            // width fits fully, height needs to be cropped
-            offset = Math.round((image_height - (image_width / ratio)) / 2);
-            return [0, offset, image_width, image_height - offset]
+            // height fits fully, width needs to be cropped
+            var offset = Math.round((image_width - (image_height * ratio)) / 2);
+            return [offset, 0, image_width - offset, image_height];
         }
 
 
-        // height fits fully, width needs to be cropped
-        var offset = Math.round((image_width - (image_height * ratio)) / 2);
-        return [offset, 0, image_width - offset, image_height];
-    }
+        function readURL(input, cropping_img, ratio_width, ratio_height) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
 
-    function readURL(input, cropping_img, ratio_width, ratio_height) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-
-            reader.onload = function (e) {
-                if (cropping_img in jcrop) {
-                    var thumbnail = $('#' + cropping_img).next('.jcrop-image').children('img');
-                    var img = new Image();
-                    img.src = reader.result;
-                    jcrop[cropping_img].setImage(reader.result, function() {
-                        this.setOptions({
+                reader.onload = function (e) {
+                    if (cropping_img in jcrop) {
+                        var thumbnail = $('#' + cropping_img).next('.jcrop-image').children('img');
+                        var img = new Image();
+                        img.src = reader.result;
+                        jcrop[cropping_img].setImage(reader.result, function () {
+                            this.setOptions({
                                 aspectRatio: ratio_width / ratio_height,
                                 setSelect: getCenterBoxSelection(ratio_width, ratio_height, img.width, img.height),
                                 trueSize: [img.width, img.height],
-                        });
-                    })
-                }
-            };
-
-
-            reader.readAsDataURL(input.files[0]);
-
+                            });
+                        })
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-    }
 
-    $("#id_banner").change(function(){
-        readURL(this, 'id_bannerCropping-image', 1779, 364);
-    });
+        $("#id_banner").change(function () {
+            readURL(this, 'id_bannerCropping-image', 1779, 364);
+        });
 
-    $("#id_mobileBanner").change(function(){
-        readURL(this, 'id_mobileBannerCropping-image', 968, 642);
-    });
+        $("#id_mobileBanner").change(function () {
+            readURL(this, 'id_mobileBannerCropping-image', 968, 642);
+        });
 
-    $("#id_aboutImg").change(function(){
-        readURL(this, 'id_aboutImgCropping-image', 155, 155);
-    });
+        $("#id_aboutImg").change(function () {
+            readURL(this, 'id_aboutImgCropping-image', 155, 155);
+        });
 
-    $("#id_images-0-original").change(function(){
-{#        $('#product_image_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
-        readURL(this, 'id_images-0-cropping-image', 400, 500);
-        $('#div_id_images-1-original').removeClass("hidden");
-        $('#div_id_images-1-cropping').removeClass('hidden');
-        $('#div_id_images-1-DELETE').removeClass('hidden');
-    });
-    $("#id_images-1-original").change(function(){
-        readURL(this, 'id_images-1-cropping-image', 400, 500);
-        $('#div_id_images-2-original').removeClass("hidden");
-        $('#div_id_images-2-cropping').removeClass('hidden');
-        $('#div_id_images-2-DELETE').removeClass('hidden');
-    });
-    $("#id_images-2-original").change(function(){
-        readURL(this, 'id_images-2-cropping-image', 400, 500);
-        $('#div_id_images-3-original').removeClass("hidden");
-        $('#div_id_images-3-cropping').removeClass('hidden');
-        $('#div_id_images-3-DELETE').removeClass('hidden');
-    });
-    $("#id_images-3-original").change(function(){
-        readURL(this, 'id_images-3-cropping-image', 400, 500);
-        $('#div_id_images-4-original').removeClass("hidden");
-        $('#div_id_images-4-cropping').removeClass('hidden');
-        $('#div_id_images-4-DELETE').removeClass('hidden');
-    });
-    $("#id_images-4-original").change(function(){
-        readURL(this, 'id_images-4-cropping-image', 400, 500);
-    });
-
-
-    function showImageFields() {
-
-{#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
-
-        $('#div_id_images-1-original').addClass('hidden');
-        $('#div_id_images-2-original').addClass('hidden');
-        $('#div_id_images-3-original').addClass('hidden');
-        $('#div_id_images-4-original').addClass('hidden');
-
-        $('#div_id_images-1-cropping').addClass('hidden');
-        $('#div_id_images-2-cropping').addClass('hidden');
-        $('#div_id_images-3-cropping').addClass('hidden');
-        $('#div_id_images-4-cropping').addClass('hidden');
-
-        $('#div_id_images-1-DELETE').addClass('hidden');
-        $('#div_id_images-2-DELETE').addClass('hidden');
-        $('#div_id_images-3-DELETE').addClass('hidden');
-        $('#div_id_images-4-DELETE').addClass('hidden');
-
-
-        var visibleImages = [
-            $('#div_id_images-0-original a[target="_blank"]').length,
-            $('#div_id_images-1-original a[target="_blank"]').length,
-            $('#div_id_images-2-original a[target="_blank"]').length,
-            $('#div_id_images-3-original a[target="_blank"]').length
-        ];
-
-        if(visibleImages[0]) {
+        $(document).on("change","#id_images-0-original",function(){
+            {#        $('#product_image_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
+            readURL(this, 'id_images-0-cropping-image', 400, 500);
             $('#div_id_images-1-original').removeClass("hidden");
             $('#div_id_images-1-cropping').removeClass('hidden');
             $('#div_id_images-1-DELETE').removeClass('hidden');
-        }
-        if(visibleImages[1]) {
+        });
+        $(document).on("change","#id_images-1-original",function(){
+            readURL(this, 'id_images-1-cropping-image', 400, 500);
             $('#div_id_images-2-original').removeClass("hidden");
             $('#div_id_images-2-cropping').removeClass('hidden');
             $('#div_id_images-2-DELETE').removeClass('hidden');
-        }
-        if(visibleImages[2]) {
+        });
+        $(document).on("change","#id_images-2-original",function(){
+            readURL(this, 'id_images-2-cropping-image', 400, 500);
             $('#div_id_images-3-original').removeClass("hidden");
             $('#div_id_images-3-cropping').removeClass('hidden');
             $('#div_id_images-3-DELETE').removeClass('hidden');
-        }
-        if(visibleImages[3]) {
+        });
+        $(document).on("change","#id_images-3-original",function(){
+            readURL(this, 'id_images-3-cropping-image', 400, 500);
             $('#div_id_images-4-original').removeClass("hidden");
             $('#div_id_images-4-cropping').removeClass('hidden');
             $('#div_id_images-4-DELETE').removeClass('hidden');
-        }
-    }
+        });
+        $(document).on("change","#id_images-4-original",function(){
+            readURL(this, 'id_images-4-cropping-image', 400, 500);
+        });
 
-        $(document).ready(function()
-        {
+
+        function showImageFields() {
+
+            {#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
+
+            $('#div_id_images-1-original').addClass('hidden');
+            $('#div_id_images-2-original').addClass('hidden');
+            $('#div_id_images-3-original').addClass('hidden');
+            $('#div_id_images-4-original').addClass('hidden');
+
+            $('#div_id_images-1-cropping').addClass('hidden');
+            $('#div_id_images-2-cropping').addClass('hidden');
+            $('#div_id_images-3-cropping').addClass('hidden');
+            $('#div_id_images-4-cropping').addClass('hidden');
+
+            $('#div_id_images-1-DELETE').addClass('hidden');
+            $('#div_id_images-2-DELETE').addClass('hidden');
+            $('#div_id_images-3-DELETE').addClass('hidden');
+            $('#div_id_images-4-DELETE').addClass('hidden');
+
+
+            var visibleImages = [
+                $('#div_id_images-0-original a[target="_blank"]').length,
+                $('#div_id_images-1-original a[target="_blank"]').length,
+                $('#div_id_images-2-original a[target="_blank"]').length,
+                $('#div_id_images-3-original a[target="_blank"]').length
+            ];
+
+            if (visibleImages[0]) {
+                $('#div_id_images-1-original').removeClass("hidden");
+                $('#div_id_images-1-cropping').removeClass('hidden');
+                $('#div_id_images-1-DELETE').removeClass('hidden');
+            }
+            if (visibleImages[1]) {
+                $('#div_id_images-2-original').removeClass("hidden");
+                $('#div_id_images-2-cropping').removeClass('hidden');
+                $('#div_id_images-2-DELETE').removeClass('hidden');
+            }
+            if (visibleImages[2]) {
+                $('#div_id_images-3-original').removeClass("hidden");
+                $('#div_id_images-3-cropping').removeClass('hidden');
+                $('#div_id_images-3-DELETE').removeClass('hidden');
+            }
+            if (visibleImages[3]) {
+                $('#div_id_images-4-original').removeClass("hidden");
+                $('#div_id_images-4-cropping').removeClass('hidden');
+                $('#div_id_images-4-DELETE').removeClass('hidden');
+            }
+        }
+
+        $(document).ready(function () {
             var mode = checkMode();
             if (mode == 'xs' || mode == 'sm') {
 
@@ -980,6 +1050,23 @@ function DeleteConfirmation(slug) {
                 }
             }
         });
+
+    $(".overlayEdit").click(function(){
+        var ajaxurl = $(this).attr("data-navigation");
+        $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
+            populateProductVariantsInfo(ajaxurl);
+            showImageFields();
+            $('#productCreationModal').modal();
+        });
+    });
+
+    $(".addItem").click(function(){
+        var ajaxurl = $(this).attr("data-navigation");
+        $("#productCreationForm").load(ajaxurl + " #productCreationForm form" , function(){
+            $('#productCreationModal').modal();
+            showImageFields();
+        });
+    });
 
 </script>
 

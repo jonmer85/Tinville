@@ -50,24 +50,24 @@ class ProductCreationForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(Accordion(
                     AccordionGroup('General',
-                             Field('title', placeholder='Title'),
+                             Field('title', placeholder='Title', data_parsley_group="General"),
                              AccordionGroup('Description',
                                             Field('description', placeholder='Description'), style="padding-bottom: 10px"),
-                             Field('category', placeholder='Choose a Category'),
-                             Field('price', placeholder='Price')
+                             Field('category', placeholder='Choose a Category', data_parsley_group="General"),
+                             Field('price', placeholder='Price', data_parsley_group="General")
                     ),
                     AccordionGroup('Images',
                              HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
                              HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
                     ),
                     AccordionGroup('Sizes and Colors',
-                             Field('sizeVariation', placeholder='Choose a variation'),
+                             Field('sizeVariation', placeholder='Choose a variation', data_parsley_group="SizeAndColor"),
                              Div(
                                  Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden")),
                              css_class="accordion", css_id="accordion2"),
                     ),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
-                css_class="container col-xs-12 col-lg-8",
+                css_class="container col-xs-12",
                 css_id="addItemEditor"
             )
 
@@ -343,16 +343,15 @@ class AboutBoxForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_show_labels = False
     helper.layout = Layout(
-        Div(Accordion(
-            AccordionGroup('About',
-                     HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
-
-                     Field('aboutImg', css_class="autoHeight"),
-                     Field('aboutImgCropping'),
-                     Field('aboutContent', placeholder="Enter Text Here")),
-            ),
+        Div(
+            # AccordionGroup('About',
+             HTML("""<p>If no image is selected, clicking submit will clear current about image</p>"""),
+             Field('aboutImg', css_class="autoHeight"),
+             Field('aboutImgCropping'),
+             Field('aboutContent', placeholder="Enter Text Here"),
+            # ),
             Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
-            css_class="container col-xs-12 col-lg-8"
+            css_class="container col-xs-12"
         ))
 
     def __init__(self, *args, **kwargs):
@@ -384,7 +383,7 @@ class DesignerShopColorPicker(forms.Form):
         Div(
             Field('color'),
             Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
-            css_class="container col-xs-12 col-lg-8"
+            css_class="container col-xs-12"
         ))
 
     def clean_color(self):
@@ -411,7 +410,7 @@ class BannerUploadForm(forms.ModelForm):
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
             Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
-            css_class="container col-xs-12 col-lg-8"
+            css_class="container col-xs-12"
         ))
 
     class Meta:
@@ -435,6 +434,6 @@ class LogoUploadForm(forms.Form):
                      HTML("""<p>If no image is selected, clicking submit will clear current logo</p>"""),
                      Field('logo', css_class="autoHeight")),
             Submit('logoUploadForm', 'Submit Logo', css_class='tinvilleButton', css_id="id_SubmitLogo"),
-            css_class="container col-xs-12 col-lg-8"
+            css_class="container col-xs-12"
         ))
 
