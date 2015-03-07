@@ -12,16 +12,16 @@
 #thumbnail-preview-indicators .slides .slide-1,
 #thumbnail-preview-indicators .slides .slide-2,
 #thumbnail-preview-indicators .slides .slide-3 {
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  /*background-size: cover;*/
+  /*background-position: center center;*/
+  /*background-repeat: no-repeat;*/
 }
     #thumbnail-preview-indicators,
     #thumbnail-preview-indicators .slides,
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-      height: 480px;
+      height: 550px;
     }
 /*#thumbnail-preview-indicators .slides .slide-1 {*/
   /*background-image: url({{ STATIC_URL }}img/banner-xl.jpg);*/

@@ -53,6 +53,7 @@ class OrderListView(CoreOrderListView):
         self.base_queryset = queryset_orders_for_user(
             request.user).order_by('-date_placed')
 
+
 class OrderDetailView(CoreOrderDetailView):
     template_name = 'templates/dashboard/orders/order_detail.html'
     easypost.api_key = settings.EASYPOST_API_KEY
