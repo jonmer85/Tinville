@@ -30,74 +30,6 @@
             </div>
         </div>
     </div>
-{##}
-{#<div id="shopEditor" class="container">#}
-{#    <div id ="shopEditorWindow" class="panel-group navbar-fixed-bottom" id="accordion">#}
-{#        <div id="cornerRadius" class="cornerRadius panel panel-default">#}
-{#            <div id="shopEditorHeading" class="panel-heading">#}
-{#                <div id="shopEditorTitle" data-toggle="collapse" data-parent="#accordion" href="#editorPanels" class="tinvilleOrange panel-title">#}
-{#                    <b>{{ shop.name }} - Shop Editor</b>#}
-{#                    <div id="minMaxIcon" class="editorControlButton glyphicon glyphicon-chevron-down pull-right"></div>#}
-{#                </div>#}
-{#            <div id="editorPanels" class="row panel-collapse collapse in">#}
-{#                <div id="optionPanel" class="container col-sm-2 panel-body editorPanel shopEditorElementTop">#}
-{#                    <a id="optionsXS" class="row hidden-lg hidden-md hidden-sm panel-heading nav-pills">Click here for editor options</a>#}
-{#                    <ul id="optionContent" class="nav nav-pills nav-stacked shopEditorElementTop">#}
-{#                        <li class="active">#}
-{#                            <a href="#about" data-toggle="pill">About</a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="#banner" data-toggle="pill">Banner</a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="#color" data-toggle="pill">Color</a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            {% if editItemMode %}#}
-{#                                <a href="#addOrEditItem" data-toggle="pill">Edit the selected item</a>#}
-{#                            {% else %}#}
-{#                                <a href="#addOrEditItem" data-toggle="pill">List new item for sale</a>#}
-{#                            {% endif %}#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#                <div id="secondColumn" class="container col-sm-10">#}
-{#                    <div id="formPanel" class="mobileMomentumScroll panel-body shopEditorElementBottom">#}
-{#                        <div id="formContent" class="tab-content panel-content shopEditorElementBottom">#}
-{#                            <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">#}
-{#                                {% load crispy_forms_tags %}#}
-{#                                {% crispy bannerUploadForm %}#}
-{#                            </form>#}
-{#                            S.Abbay - removing logo for now until we understand better way to place it#}
-{#                            <form class="tab-pane" id="logo" enctype="multipart/form-data" method="post">#}
-{#                                {% load crispy_forms_tags %}#}
-{#                                {% crispy logoUploadForm %}#}
-{#                            </form>#}
-{#                            <form class="tab-pane row" id="color" action="ajax_color" method="post">#}
-{#                                {% load crispy_forms_tags %}#}
-{#                                {% crispy designerShopColorPicker %}#}
-{#                            </form>#}
-{#                            <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">#}
-{#                                 {% load crispy_forms_tags %}#}
-{#                                 {% crispy aboutBoxForm %}#}
-{#                            </form>#}
-{#                            <form novalidate="novalidate tab-pane row" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">#}
-{#                                {% load crispy_forms_tags %}#}
-{#                                {% crispy productCreationForm %}#}
-{#                            </form>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <div class="row-xs-height col-xs-12">#}
-{#                        <div id="buttonContainer" class="container col-xs-12 container-xs-height">#}
-{#                            <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>#}
-{#                            <button id="editorButton" class="btn btn-primary tinvilleButton pull-right hidden">Submit</button>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
 
     <div class="modal fade" id="bannerUploadModal" tabindex="-1" role="dialog" aria-labelledby="bannerUploadModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -223,628 +155,517 @@
             var self = $(this);
             var url = self.attr("action");
             var ajax_req = $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {
-                        color: document.getElementById("id_color").value
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors("#color");
-					    $(".shopColor").css("color", document.getElementById("id_color").value);
-                        $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
-                        var textColor = isTooLightYIQ(document.getElementById("id_color").value) ? '#777' : '#e7e5e6';
-                        $(".shopTitleColor").css("color", textColor);
-                        document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
-					},
-                    error: function(data, textStatus, jqXHR) {
-                        clear_django_messages(self.find("#shopEditor_message_area"));
-                        clear_form_field_errors("#color");
-                        document.getElementById('shopEditor_message_area').innerHTML = "";
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function(index, value) {
-                            if (index === "__all__") {
-                                django_message(value[0], "error", self.find("#shopEditor_message_area"));
-                            } else {
-                                apply_form_field_error(self[0].id, index, value);
-                            }
-                        });
-                    }
-                });
+                url: url,
+                type: "POST",
+                data: {
+                    color: document.getElementById("id_color").value
+                },
+                success: function(data, textStatus, jqXHR) {
+                    clear_django_messages(self.find("#shopEditor_message_area"));
+                    clear_form_field_errors("#color");
+                    $(".shopColor").css("color", document.getElementById("id_color").value);
+                    $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
+                    var textColor = isTooLightYIQ(document.getElementById("id_color").value) ? '#777' : '#e7e5e6';
+                    $(".shopTitleColor").css("color", textColor);
+                    document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
+                },
+                error: function(data, textStatus, jqXHR) {
+                    clear_django_messages(self.find("#shopEditor_message_area"));
+                    clear_form_field_errors("#color");
+                    document.getElementById('shopEditor_message_area').innerHTML = "";
+                    var errors = $.parseJSON(data.responseText);
+                    $.each(errors, function(index, value) {
+                        if (index === "__all__") {
+                            django_message(value[0], "error", self.find("#shopEditor_message_area"));
+                        } else {
+                            apply_form_field_error(self[0].id, index, value);
+                        }
+                    });
+                }
+            });
         });
 
-$(document).ready(function () {
-  $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
+        $(document).ready(function () {
+          $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
+            // if one of these blocks is not failing do not prevent submission
+            // we use here group validation with option force (validate even non required fields)
+            if (formInstance.isValid()) {
+                $("input[type=submit]").attr("disabled", "disabled");
+                return;
+            }
+        {#    else#}
+        {#    {#}
+        {#        if (!formInstance.isValid('SizeAndColor'))#}
+        {#        {#}
+        {#            TODO: Write to correct div#}
+        {#        }#}
+        {##}
+        {#        if (!formInstance.isValid('General'))#}
+        {#        {#}
+        {#           TODO: Write to correct div#}
+        {#        }#}
+        {#    }#}
+            // else stop form submission
+            formInstance.submitEvent.preventDefault();
+            $('.parsley-errors-list')
+        {#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
+              .addClass("filled bootstrapError help-block");
+          });
 
-    // if one of these blocks is not failing do not prevent submission
-    // we use here group validation with option force (validate even non required fields)
-    if (formInstance.isValid()) {
-        $("input[type=submit]").attr("disabled", "disabled");
-        return;
-    }
-{#    else#}
-{#    {#}
-{#        if (!formInstance.isValid('SizeAndColor'))#}
-{#        {#}
-{#            TODO: Write to correct div#}
-{#        }#}
-{##}
-{#        if (!formInstance.isValid('General'))#}
-{#        {#}
-{#           TODO: Write to correct div#}
-{#        }#}
-{#    }#}
-    // else stop form submission
-    formInstance.submitEvent.preventDefault();
-    $('.parsley-errors-list')
-{#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
-      .addClass("filled bootstrapError help-block");
-  });
-
-    document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
-    document.getElementById("id_price").attributes["type"].value = "decimal";
-{#    resizeEditor();#}
-    {% if editItemMode %}
-    populateProductVariantsInfo();
-    {% endif %}
-    showImageFields();
-});
+            document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+            document.getElementById("id_price").attributes["type"].value = "decimal";
+            {% if editItemMode %}
+            populateProductVariantsInfo();
+            {% endif %}
+            showImageFields();
+        });
 
 
-var htmlString = "<div>\
-  This is a string.\
-</div>";
+        var htmlString = "<div>\
+          This is a string.\
+        </div>";
 
-var colorQuantityTableHead = "" +
-"<div class='accordion-body collapse collapse-colors-quantity col-xs-12' style='padding-right: 0; padding-left: 6px; '>" +
-    "<div class='accordion-inner table-responsive'>" +
-        "<table class='table'>" +
-            "<thead>" +
-                "<tr>" +
-                    "<td class='col-xs-8'><b>Color</b></td>" +
-                    "<td class='col-xs-4'><b>Qty</b></td>" +
-                "</tr>" +
-            "</thead>" +
-            "<tbody>" +
-            "</tbody>" +
-        "</table>" +
-    "</div>" +
-"</div>";
-
-function sizeSetTemplate(required) {
-    var sizeSetTemplate = "" +
-    "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
-        "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-            "<div class='controls row'>" +
-                "<div class='col-xs-10'>" +
-                    "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
-                        "<option value='' selected='selected'>Choose a size...</option>" +
-                        "{% for sizeSet in sizeSetOptions %}" +
-                        "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
-                        "{% endfor %}" +
-                    "</select>" +
-                "</div>" +
-                "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' class='shoppingcartBtn' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>" +
-                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
-                    "</button>" +
-                "</div>" +
+        var colorQuantityTableHead = "" +
+        "<div class='accordion-body collapse collapse-colors-quantity col-xs-12' style='padding-right: 0; padding-left: 6px; '>" +
+            "<div class='accordion-inner table-responsive'>" +
+                "<table class='table'>" +
+                    "<thead>" +
+                        "<tr>" +
+                            "<td class='col-xs-8'><b>Color</b></td>" +
+                            "<td class='col-xs-4'><b>Qty</b></td>" +
+                        "</tr>" +
+                    "</thead>" +
+                    "<tbody>" +
+                    "</tbody>" +
+                "</table>" +
             "</div>" +
-        "</div>" +
-    "</div>" + colorQuantityTableHead;
-    return sizeSetTemplate;
-}
+        "</div>";
 
-function sizeDimensionTemplate(required) {
-    var sizeDimensionTemplate = "" +
-    "<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
-        "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
-            "<div class='controls row'>" +
-                "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='decimal' placeholder = 'Type a width'" + required +">" +
-                "</div>" +
-                "<div class='col-xs-2 dimensionSplit'>X</div>"+
-                "<div class='col-xs-4'>" +
-                    "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='decimal' placeholder = 'Type a length'" + required +">" +
-                "</div>" +
-                "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' class='shoppingcartBtn'  value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>" +
-                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
-                    "</button>" +
-                "</div>" +
-            "</div>" +
-        "</div>" +
-    "</div>" + colorQuantityTableHead;
-    return sizeDimensionTemplate;
-}
-
-function sizeNumberTemplate(required){
-    var sizeNumberTemplate = "" +
-    "<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
-        "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
-            "<div class='controls row'>" +
-                "<div class='col-xs-10'>" +
-                    "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='decimal' placeholder = 'Type a size'>" +
-                "</div>" +
-                "<div class='col-xs-2'>" +
-                    "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
-                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
-                    "</button>" +
-                "</div>" +
-            "</div>" +
-        "</div>" +
-    "</div>" + colorQuantityTableHead;
-    return sizeNumberTemplate;
-}
-
-function rowColorQuantityTemplate(required){
-    numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
-    if (required === "")
-        numRequired = "";
-    var rowColorQuantityTemplate = "" +
-    "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
-        "<td style=' padding: 8px 2px 0px 2px; '>" +
-            "<div class='row-color >" +
-                "<div id='div_id_colorSelection' class='form-group'>" +
-                    "<div class='controls'>" +
-                        "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
-                            "<option value='' selected='selected'>Choose a color...</option>" +
-                            "{% for color in colors %}" +
-                            "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
-                            "{% endfor %}" +
-                        "</select>" +
+        function sizeSetTemplate(required) {
+            var sizeSetTemplate = "" +
+            "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
+                "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
+                    "<div class='controls row'>" +
+                        "<div class='col-xs-10'>" +
+                            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
+                                "<option value='' selected='selected'>Choose a size...</option>" +
+                                "{% for sizeSet in sizeSetOptions %}" +
+                                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                                "{% endfor %}" +
+                            "</select>" +
+                        "</div>" +
+                        "<div class='col-xs-2'>" +
+                            "<button id='id_clearSizes' class='shoppingcartBtn' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>" +
+                                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                            "</button>" +
+                        "</div>" +
                     "</div>" +
                 "</div>" +
-            "</div>" +
-        "</td>" +
-        "<td style=' padding: 8px 0px 0px 0px; '>" +
-            "<div id='div_id_quantityField' class='form-group'>" +
-                "<div class='controls'>" +
-                    "<input class='numberinput form-control quantityField'" + numRequired +  "id='id_quantityField' name='quantityField' type='number' value='1'>" +
+            "</div>" + colorQuantityTableHead;
+            return sizeSetTemplate;
+        }
+
+        function sizeDimensionTemplate(required) {
+            var sizeDimensionTemplate = "" +
+            "<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
+                "<div class='accordion-heading'><div id='div_id_sizeDimensionSelection' class='form-group'>" +
+                    "<div class='controls row'>" +
+                        "<div class='col-xs-4'>" +
+                            "<input class='sizeDimensionSelection numberinput form-control dimensionWidth' id='id_sizeDimensionSelectionWidth' name='sizeDimWidth' type='decimal' placeholder = 'Type a width'" + required +">" +
+                        "</div>" +
+                        "<div class='col-xs-2 dimensionSplit'>X</div>"+
+                        "<div class='col-xs-4'>" +
+                            "<input class='sizeDimensionSelection numberinput form-control dimensionLength' id='id_sizeDimensionSelectionLength' name='sizeDimLength' type='decimal' placeholder = 'Type a length'" + required +">" +
+                        "</div>" +
+                        "<div class='col-xs-2'>" +
+                            "<button id='id_clearSizes' class='shoppingcartBtn'  value='Clear' onclick='clearSizeRow(\"sizeDimensionSelectionTemplateTEMPLATENUM\")'>" +
+                                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                            "</button>" +
+                        "</div>" +
+                    "</div>" +
                 "</div>" +
-            "</div>" +
-        "</td>" +
-        "<td style=' padding: 8px 0px 0px 0px; '>" +
-            "<button id='id_clearColorQuantity' value='Clear' class='shoppingcartBtn' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>" +
-                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20' />" +
-            "</button>" +
-        "</td>" +
-    "</tr>";
-    return rowColorQuantityTemplate;
-}
-const SizeTypeInfo = {
-    "1" :
-    {
-        "sizeTemplateClass" : ".sizeSetSelectionTemplate",
-        "sizeSelectionClass" : ".sizeSetSelection",
-        "selectedValueType" : '$("option:selected", this)'
-    },
-    "2" :
-    {
-        "sizeTemplateClass" : ".sizeDimensionSelectionTemplate",
-        "sizeSelectionClass" : ".sizeDimensionSelection",
-        "selectedValueType" : '$(this).val()'
-    },
-    "3" :
-    {
-        "sizeTemplateClass" : ".sizeNumberSelectionTemplate",
-        "sizeSelectionClass" : ".sizeNumberSelection",
-        "selectedValueType" : '$(this).val()'
-    }
-};
-
-{#$("#id_sizeVariation").change(function() {#}
-{#    $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);#}
-{#    var selectedValue = $("#id_sizeVariation option:selected");#}
-{#    var sizesFieldSet = $("#sizesFieldSet");#}
-{#    sizesFieldSet.removeClass("hidden");#}
-{#    var sizeType = selectedValue[0].value;#}
-{#    var sizeTypeString = sizeTypeStringFromNum(sizeType);#}
-{#    var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];#}
-{#    var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];#}
-{#    var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];#}
-{##}
-{##}
-{#    RemoveWrongSizeTypes(sizeTypeString);#}
-{#    addNewSizeRow(sizeTypeString);#}
-{#    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);#}
-{#{);#}
-
-$(document).on('change','#id_sizeVariation',function(){
-    var selectedValue = $("#id_sizeVariation option:selected");
-    var sizesFieldSet = $("#sizesFieldSet");
-    sizesFieldSet.removeClass("hidden");
-    var sizeType = selectedValue[0].value;
-    var sizeTypeString = sizeTypeStringFromNum(sizeType);
-    var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
-    var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
-    var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
-
-
-    RemoveWrongSizeTypes(sizeTypeString);
-    addNewSizeRow(sizeTypeString);
-    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
-});
-
-function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
-    //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-    sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
-
-
-        if($(this).closest('.accordion-group').next().length == "0") {
-            addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+            "</div>" + colorQuantityTableHead;
+            return sizeDimensionTemplate;
         }
 
-        var selectedValue = eval(selectedValueType);
-        var sizesFieldSet = $("#sizesFieldSet");
-        if (selectedValue[0].value != "0") {
-            if($(this).closest('.accordion-group').next().length == "0") {
-                //Add a new size set row
-                $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
-                addNewSizeRow(sizeTypeString);
+        function sizeNumberTemplate(required){
+            var sizeNumberTemplate = "" +
+            "<div id='sizeNumberSelectionTemplate' class='accordion-group sizeNumberSelectionTemplate'>" +
+                "<div class='accordion-heading'><div id='div_id_sizeNumberSelection' class='form-group'>" +
+                    "<div class='controls row'>" +
+                        "<div class='col-xs-10'>" +
+                            "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='decimal' placeholder = 'Type a size'>" +
+                        "</div>" +
+                        "<div class='col-xs-2'>" +
+                            "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
+                                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                            "</button>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>" + colorQuantityTableHead;
+            return sizeNumberTemplate;
+        }
+
+        function rowColorQuantityTemplate(required){
+            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
+            if (required === "")
+                numRequired = "";
+            var rowColorQuantityTemplate = "" +
+            "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
+                "<td style=' padding: 8px 2px 0px 2px; '>" +
+                    "<div class='row-color >" +
+                        "<div id='div_id_colorSelection' class='form-group'>" +
+                            "<div class='controls'>" +
+                                "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
+                                    "<option value='' selected='selected'>Choose a color...</option>" +
+                                    "{% for color in colors %}" +
+                                    "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
+                                    "{% endfor %}" +
+                                "</select>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</td>" +
+                "<td style=' padding: 8px 0px 0px 0px; '>" +
+                    "<div id='div_id_quantityField' class='form-group'>" +
+                        "<div class='controls'>" +
+                            "<input class='numberinput form-control quantityField'" + numRequired +  "id='id_quantityField' name='quantityField' type='number' value='1'>" +
+                        "</div>" +
+                    "</div>" +
+                "</td>" +
+                "<td style=' padding: 8px 0px 0px 0px; '>" +
+                    "<button id='id_clearColorQuantity' value='Clear' class='shoppingcartBtn' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20' />" +
+                    "</button>" +
+                "</td>" +
+            "</tr>";
+            return rowColorQuantityTemplate;
+        }
+        const SizeTypeInfo = {
+            "1" :
+            {
+                "sizeTemplateClass" : ".sizeSetSelectionTemplate",
+                "sizeSelectionClass" : ".sizeSetSelection",
+                "selectedValueType" : '$("option:selected", this)'
+            },
+            "2" :
+            {
+                "sizeTemplateClass" : ".sizeDimensionSelectionTemplate",
+                "sizeSelectionClass" : ".sizeDimensionSelection",
+                "selectedValueType" : '$(this).val()'
+            },
+            "3" :
+            {
+                "sizeTemplateClass" : ".sizeNumberSelectionTemplate",
+                "sizeSelectionClass" : ".sizeNumberSelection",
+                "selectedValueType" : '$(this).val()'
             }
-        }
-    });
-    //Color event handling (Add a new color/quantity row for more color/quantity selection)
-    sizesFieldSet.on("change", ".row-color", function(e) {
-        var selectedValue = $("option:selected", this);
-        var sizesFieldSet = $("#sizesFieldSet");
-        var editorPanelHeight;
-        var currentPanel;
-        editorPanelHeight = .85;
-        maxHeight = $(window).height()*editorPanelHeight;
-        if (selectedValue[0].value != 0) {
-            var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
-            if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
-                addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable, false);
-                currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
-                $('#formContent').animate({scrollTop: currentPanel  }, 500);
-            }
-        }
-    })
-}
+        };
 
-var arSizeRows  = [] ;
-var arColorRows = [] ;
-var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
-var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
-var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
-function clearColorRow( strRowToClear )
-{
-        var strRowId = "#" + strRowToClear ;
-        var indexToRemove = arColorRows.indexOf(strRowToClear) ;
-
-        $(strRowId).remove();
-        arColorRows.splice(indexToRemove, 1);
-}
-
-function clearSizeRow( strRowToClear )
-{
-    var strRowId = "#" + strRowToClear ;
-    var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
-
-    $(strRowId).remove();
-    arSizeRows.splice(indexToRemove, 1);
-}
-
-function addNewSizeRow(sizeType) {
-    var sizeTemplateName;
-    var templateName;
-    switch (sizeType) {
-        case "sizeSet":
-            sizeTemplateName = "sizeSetSelectionTemplate";
-            templateName = sizeSetTemplate(sizeRequired);
-            sizeRequired="";
-            break;
-        case "sizeDim":
-            sizeTemplateName = "sizeDimensionSelectionTemplate";
-            templateName = sizeDimensionTemplate(sizeDimRequired);
-            sizeDimRequired = "";
-            break;
-        case "sizeNum":
-            sizeTemplateName = "sizeNumberSelectionTemplate";
-            templateName = sizeNumberTemplate(sizeNumRequired);
-            sizeNumRequired="";
-            break
-    }
-    $("#sizesFieldSet").append(templateName);
-    var $newSizeSelection = $("#"+sizeTemplateName);
-    // Get the number at the end of the ID, increment it, and replace the old id
-    var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
-    appendSuffixToAttribute($newSizeSelection, "id", counter);
-
-    //find TEMPLATENUM and replace it with the appropriate row number for clearing
-    var newInnerHTML = $newSizeSelection.html().replace( "TEMPLATENUM", counter ) ;
-    $newSizeSelection.html( newInnerHTML ) ;
-
-    //If were working with a different size type we need to clear the array
-    if( arSizeRows.length != 0 && arSizeRows[0].indexOf( sizeTemplateName ) == -1 )
-    {
-        arSizeRows = [] ;
-    }
-    arSizeRows[arSizeRows.length] = ( $( $newSizeSelection ).attr('id') ) ;
-
-    // Find all elements in $clone that have an ID, and iterate using each()
-    var prefix = $newSizeSelection[0].id + "_";
-    $newSizeSelection.find('[id]').each(function() {
-         //Perform the same replace as above
-        var $th = $(this);
-        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str; });
-        $th.attr('id', newID);
-    });
-
-    // Find all elements in $clone that have a name, and iterate using each()
-    $newSizeSelection.find('[name]').each(function() {
-         //Perform the same replace as above
-        var $th = $(this);
-        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
-        $th.attr('name', newName);
-    });
-    return $newSizeSelection;
-}
-
-function addNewColorAndQuantityRow(prefix, appendTo, required) {
-
-    if(typeof(required)==='undefined') required = true;
-
-    var rowQtyRequired = "";
-    if(required === true)
-        rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
-
-    var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
-    colorsAndQuantities.collapse('show');
-
-    $(appendTo).append(rowColorQuantityTemplate(rowQtyRequired));
-
-    var $newColorQuantityRow = $("#rowColorQuantityTemplate");
-
-    // Get the number at the end of the ID, increment it, and replace the old id
-    var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
-    prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
-    appendSuffixToAttribute($newColorQuantityRow, "id", counter);
-
-    //find TEMPLATENUM and replace it with the appropriate row number for clearing
-    var newInnerHTML = $newColorQuantityRow.html().replace( "TEMPLATENUM", counter ) ;
-    newInnerHTML = newInnerHTML.replace("rowColorQuantityTemplate", prefix + "rowColorQuantityTemplate" ) ;
-    $newColorQuantityRow.html( newInnerHTML ) ;
-    arColorRows[arColorRows.length] = ( $( $newColorQuantityRow ).attr('id') ) ;
-
-    // Find all elements in $clone that have an ID, and iterate using each()
-    $newColorQuantityRow.find('[id]').each(function() {
-        //Perform the same replace as above
-        var $th = $(this);
-        var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
-        $th.attr('id', newID);
-    });
-
-    // Find all elements in $clone that have a name, and iterate using each()
-    $newColorQuantityRow.find('[name]').each(function() {
-         //Perform the same replace as above
-        var $th = $(this);
-        var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
-        $th.attr('name', newName);
-    });
-    return $newColorQuantityRow;
-}
-
-function RemoveWrongSizeTypes(newSizeType) {
-    switch (newSizeType) {
-        case "sizeSet":
-            $(".sizeDimensionSelectionTemplate").each(function() {
-                (this).remove();
-            });
-            $(".sizeNumberSelectionTemplate").each(function() {
-                (this).remove();
-            });
-            break;
-        case "sizeDim":
-            $(".sizeSetSelectionTemplate").each(function() {
-                (this).remove();
-            });
-            $(".sizeNumberSelectionTemplate").each(function() {
-                (this).remove();
-            });
-            break;
-        case "sizeNum":
-            $(".sizeSetSelectionTemplate").each(function() {
-                (this).remove();
-            });
-            $(".sizeDimensionSelectionTemplate").each(function() {
-                (this).remove();
-            });
-            break
-    }
-}
-
-function GetNewCounter($element, classFromPrevious, initial){
-    var counter = initial;
-    var numberAtEndOfId;
-    if($element.prev().hasClass(classFromPrevious))
-    {
-        if(numberAtEndOfId = $element.prev().attr('id').match(/(\d+)$/))
-        {
-            counter = parseInt(numberAtEndOfId[0], 10) + 1;
-        }
-    }
-    return counter;
-}
-
-function ReplaceNumberAtEndOfString(string, newNumber) {
-    var newString = string.replace(/[_0-9]+$/, newNumber);
-    return newString
-}
+        $(document).on('change','#id_sizeVariation',function(){
+            var selectedValue = $("#id_sizeVariation option:selected");
+            var sizesFieldSet = $("#sizesFieldSet");
+            sizesFieldSet.removeClass("hidden");
+            var sizeType = selectedValue[0].value;
+            var sizeTypeString = sizeTypeStringFromNum(sizeType);
+            var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
+            var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
+            var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
 
 
-function appendSuffixToAttribute(element, attr, suffix){
-    element.attr(attr, element.attr(attr) + suffix);
-}
-
-function prependPrefixToAttribute(element, attr, prefix){
-    element.attr(attr, prefix + element.attr(attr));
-}
-
-function sizeTypeStringFromNum(num) {
-    switch (num) {
-        case "1":
-            return "sizeSet";
-        case "2":
-            return "sizeDim";
-        case "3":
-            return "sizeNum";
-        default:
-            return "";
-    }
-
-}
-
-function populateProductVariantsInfo(ajaxurl) {
-
-    $.getJSON(ajaxurl+"/getVariants/size", function(data) {
-        var sizeType = data["sizetype"];
-        var sizeTypeString = sizeTypeStringFromNum(sizeType);
-        var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
-        var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
-        var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
-
-        var sizesFieldSet = $("#sizesFieldSet");
-        sizesFieldSet.removeClass("hidden");
-        wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
-
-        $.each(data.variants, function(key, value) {
-
-            var sizeRow = addNewSizeRow(sizeTypeString);
-            populateInitialDataForSizeRow(sizeRow, sizeTypeString, key);
-            var prefix = sizeRow.attr("id") + "_";
-            var appendTo = sizeRow.find("tbody");
-            $.each(value, function (key, value) {
-
-                var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
-                populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
-            });
-            addNewColorAndQuantityRow(prefix, appendTo, false);
+            RemoveWrongSizeTypes(sizeTypeString);
+            addNewSizeRow(sizeTypeString);
+            wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
         });
-        addNewSizeRow(sizeTypeString);
-    });
-}
 
-function populateInitialDataForSizeRow(sizeRow, sizeType, size) {
-    switch (sizeType) {
-        case "sizeSet":
-            sizeRow.find('.sizeSetSelection option').each(function() {
-              if($(this).text() == size.toUpperCase()) {
+        function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
+            //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+            sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
+
+
+                if($(this).closest('.accordion-group').next().length == "0") {
+                    addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
+                }
+
+                var selectedValue = eval(selectedValueType);
+                var sizesFieldSet = $("#sizesFieldSet");
+                if (selectedValue[0].value != "0") {
+                    if($(this).closest('.accordion-group').next().length == "0") {
+                        //Add a new size set row
+                        $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
+                        addNewSizeRow(sizeTypeString);
+                    }
+                }
+            });
+            //Color event handling (Add a new color/quantity row for more color/quantity selection)
+            sizesFieldSet.on("change", ".row-color", function(e) {
+                var selectedValue = $("option:selected", this);
+                var sizesFieldSet = $("#sizesFieldSet");
+                var editorPanelHeight;
+                var currentPanel;
+                editorPanelHeight = .85;
+                maxHeight = $(window).height()*editorPanelHeight;
+                if (selectedValue[0].value != 0) {
+                    var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
+                    if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
+                        addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable, false);
+                        currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
+                        $('#formContent').animate({scrollTop: currentPanel  }, 500);
+                    }
+                }
+            })
+        }
+
+        var arSizeRows  = [] ;
+        var arColorRows = [] ;
+        var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
+        var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
+        var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
+        function clearColorRow( strRowToClear )
+        {
+            var strRowId = "#" + strRowToClear ;
+            var indexToRemove = arColorRows.indexOf(strRowToClear) ;
+
+            $(strRowId).remove();
+            arColorRows.splice(indexToRemove, 1);
+        }
+
+        function clearSizeRow( strRowToClear )
+        {
+            var strRowId = "#" + strRowToClear ;
+            var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
+
+            $(strRowId).remove();
+            arSizeRows.splice(indexToRemove, 1);
+        }
+
+        function addNewSizeRow(sizeType) {
+            var sizeTemplateName;
+            var templateName;
+            switch (sizeType) {
+                case "sizeSet":
+                    sizeTemplateName = "sizeSetSelectionTemplate";
+                    templateName = sizeSetTemplate(sizeRequired);
+                    sizeRequired="";
+                    break;
+                case "sizeDim":
+                    sizeTemplateName = "sizeDimensionSelectionTemplate";
+                    templateName = sizeDimensionTemplate(sizeDimRequired);
+                    sizeDimRequired = "";
+                    break;
+                case "sizeNum":
+                    sizeTemplateName = "sizeNumberSelectionTemplate";
+                    templateName = sizeNumberTemplate(sizeNumRequired);
+                    sizeNumRequired="";
+                    break
+            }
+            $("#sizesFieldSet").append(templateName);
+            var $newSizeSelection = $("#"+sizeTemplateName);
+            // Get the number at the end of the ID, increment it, and replace the old id
+            var counter = GetNewCounter($newSizeSelection, sizeTemplateName, 0);
+            appendSuffixToAttribute($newSizeSelection, "id", counter);
+
+            //find TEMPLATENUM and replace it with the appropriate row number for clearing
+            var newInnerHTML = $newSizeSelection.html().replace( "TEMPLATENUM", counter ) ;
+            $newSizeSelection.html( newInnerHTML ) ;
+
+            //If were working with a different size type we need to clear the array
+            if( arSizeRows.length != 0 && arSizeRows[0].indexOf( sizeTemplateName ) == -1 )
+            {
+                arSizeRows = [] ;
+            }
+            arSizeRows[arSizeRows.length] = ( $( $newSizeSelection ).attr('id') ) ;
+
+            // Find all elements in $clone that have an ID, and iterate using each()
+            var prefix = $newSizeSelection[0].id + "_";
+            $newSizeSelection.find('[id]').each(function() {
+                 //Perform the same replace as above
+                var $th = $(this);
+                var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str; });
+                $th.attr('id', newID);
+            });
+
+            // Find all elements in $clone that have a name, and iterate using each()
+            $newSizeSelection.find('[name]').each(function() {
+                 //Perform the same replace as above
+                var $th = $(this);
+                var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str; });
+                $th.attr('name', newName);
+            });
+            return $newSizeSelection;
+        }
+
+        function addNewColorAndQuantityRow(prefix, appendTo, required) {
+
+            if(typeof(required)==='undefined') required = true;
+
+            var rowQtyRequired = "";
+            if(required === true)
+                rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
+
+            var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
+            colorsAndQuantities.collapse('show');
+
+            $(appendTo).append(rowColorQuantityTemplate(rowQtyRequired));
+
+            var $newColorQuantityRow = $("#rowColorQuantityTemplate");
+
+            // Get the number at the end of the ID, increment it, and replace the old id
+            var counter = GetNewCounter($newColorQuantityRow, "rowColorQuantityTemplate", 0);
+            prependPrefixToAttribute($newColorQuantityRow, "id", prefix);
+            appendSuffixToAttribute($newColorQuantityRow, "id", counter);
+
+            //find TEMPLATENUM and replace it with the appropriate row number for clearing
+            var newInnerHTML = $newColorQuantityRow.html().replace( "TEMPLATENUM", counter ) ;
+            newInnerHTML = newInnerHTML.replace("rowColorQuantityTemplate", prefix + "rowColorQuantityTemplate" ) ;
+            $newColorQuantityRow.html( newInnerHTML ) ;
+            arColorRows[arColorRows.length] = ( $( $newColorQuantityRow ).attr('id') ) ;
+
+            // Find all elements in $clone that have an ID, and iterate using each()
+            $newColorQuantityRow.find('[id]').each(function() {
+                //Perform the same replace as above
+                var $th = $(this);
+                var newID = $th.attr('id').replace(/\w+$/, function(str) { return prefix + str + counter; });
+                $th.attr('id', newID);
+            });
+
+            // Find all elements in $clone that have a name, and iterate using each()
+            $newColorQuantityRow.find('[name]').each(function() {
+                 //Perform the same replace as above
+                var $th = $(this);
+                var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
+                $th.attr('name', newName);
+            });
+            return $newColorQuantityRow;
+        }
+
+        function RemoveWrongSizeTypes(newSizeType) {
+            switch (newSizeType) {
+                case "sizeSet":
+                    $(".sizeDimensionSelectionTemplate").each(function() {
+                        (this).remove();
+                    });
+                    $(".sizeNumberSelectionTemplate").each(function() {
+                        (this).remove();
+                    });
+                    break;
+                case "sizeDim":
+                    $(".sizeSetSelectionTemplate").each(function() {
+                        (this).remove();
+                    });
+                    $(".sizeNumberSelectionTemplate").each(function() {
+                        (this).remove();
+                    });
+                    break;
+                case "sizeNum":
+                    $(".sizeSetSelectionTemplate").each(function() {
+                        (this).remove();
+                    });
+                    $(".sizeDimensionSelectionTemplate").each(function() {
+                        (this).remove();
+                    });
+                    break
+            }
+        }
+
+        function GetNewCounter($element, classFromPrevious, initial){
+            var counter = initial;
+            var numberAtEndOfId;
+            if($element.prev().hasClass(classFromPrevious))
+            {
+                if(numberAtEndOfId = $element.prev().attr('id').match(/(\d+)$/))
+                {
+                    counter = parseInt(numberAtEndOfId[0], 10) + 1;
+                }
+            }
+            return counter;
+        }
+
+        function ReplaceNumberAtEndOfString(string, newNumber) {
+            var newString = string.replace(/[_0-9]+$/, newNumber);
+            return newString
+        }
+
+        function appendSuffixToAttribute(element, attr, suffix){
+            element.attr(attr, element.attr(attr) + suffix);
+        }
+
+        function prependPrefixToAttribute(element, attr, prefix){
+            element.attr(attr, prefix + element.attr(attr));
+        }
+
+        function sizeTypeStringFromNum(num) {
+            switch (num) {
+                case "1":
+                    return "sizeSet";
+                case "2":
+                    return "sizeDim";
+                case "3":
+                    return "sizeNum";
+                default:
+                    return "";
+            }
+        }
+
+        function populateProductVariantsInfo(ajaxurl) {
+
+            $.getJSON(ajaxurl+"/getVariants/size", function(data) {
+                var sizeType = data["sizetype"];
+                var sizeTypeString = sizeTypeStringFromNum(sizeType);
+                var sizeTemplateClass = SizeTypeInfo[sizeType]['sizeTemplateClass'];
+                var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
+                var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
+
+                var sizesFieldSet = $("#sizesFieldSet");
+                sizesFieldSet.removeClass("hidden");
+                wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+
+                $.each(data.variants, function(key, value) {
+
+                    var sizeRow = addNewSizeRow(sizeTypeString);
+                    populateInitialDataForSizeRow(sizeRow, sizeTypeString, key);
+                    var prefix = sizeRow.attr("id") + "_";
+                    var appendTo = sizeRow.find("tbody");
+                    $.each(value, function (key, value) {
+
+                        var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
+                        populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
+                    });
+                    addNewColorAndQuantityRow(prefix, appendTo, false);
+                });
+                addNewSizeRow(sizeTypeString);
+            });
+        }
+
+        function populateInitialDataForSizeRow(sizeRow, sizeType, size) {
+            switch (sizeType) {
+                case "sizeSet":
+                    sizeRow.find('.sizeSetSelection option').each(function() {
+                      if($(this).text() == size.toUpperCase()) {
+                        $(this).attr('selected', 'selected');
+                      }
+                    });
+                    break;
+                case "sizeDim":
+                    var dims = size.split(" x ");
+                    sizeRow.find('.dimensionWidth').val(dims[0]);
+                    sizeRow.find('.dimensionLength').val(dims[1]);
+                    break;
+                case "sizeNum":
+                    sizeRow.find('.sizeNumberSelection').val(size);
+                    break;
+            }
+        }
+
+        function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quantity) {
+            colorQuantityRow.find('.colorSelect option').each(function() {
+              if($(this).text() == color) {
                 $(this).attr('selected', 'selected');
               }
             });
-            break;
-        case "sizeDim":
-            var dims = size.split(" x ");
-            sizeRow.find('.dimensionWidth').val(dims[0]);
-            sizeRow.find('.dimensionLength').val(dims[1]);
-            break;
-        case "sizeNum":
-            sizeRow.find('.sizeNumberSelection').val(size);
-            break;
-    }
-}
-
-function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quantity) {
-    colorQuantityRow.find('.colorSelect option').each(function() {
-      if($(this).text() == color) {
-        $(this).attr('selected', 'selected');
-      }
-    });
-    colorQuantityRow.find('.quantityField').val(quantity);
-
-}
-
-
-
-{#$(window).resize(function() {#}
-{#    resizeEditor();#}
-{#{);#}
-{##}
-{#$("#optionContent li").click(function (){#}
-{#    $("#optionsXS").text($(this).text()+" (click here for editor options)");#}
-{#    $("#shopEditor_message_area").empty();#}
-{#    resizeEditor();#}
-{#{);#}
-{##}
-{#optionsXSMargin = 20;#}
-{#editorHeightRatio = 0.85;#}
-{##}
-{#$("#optionsXS").click(function() {#}
-{#    var currentFormPanelHeight;#}
-{#    var maxFormHeight;#}
-{#    var transitionHeight;#}
-{#    currentFormPanelHeight = $("#secondColumn").outerHeight();#}
-{#    maxFormHeight = Math.round($(window).height()*editorHeightRatio);#}
-{#    $("#optionContent").height(maxFormHeight-#}
-{#            $("#optionsXS").outerHeight()+ optionsXSMargin -#}
-{#            $("#buttonContainer").outerHeight()-#}
-{#            $("#shopEditorTitle").outerHeight()-#}
-{#            parseInt($("#cornerRadius").css('border-top-width'))-#}
-{#            parseInt($("#cornerRadius").css('border-bottom-width'))-#}
-{#            parseInt($("#shopEditorHeading").css('padding-bottom'))-#}
-{#            parseInt($("#formPanel").css('border-top-width'))-#}
-{#            parseInt($("#formPanel").css('padding-bottom')));#}
-{#            transitionHeight = $("#optionContent").outerHeight()+$("#optionsXS").outerHeight();#}
-{##}
-{#    if ($("#optionPanel").outerHeight() == $("#optionsXS").outerHeight() + optionsXSMargin)#}
-{#    {#}
-{#        $("#optionPanel").velocity({height: transitionHeight},{duration: 300});#}
-{#        $("#formPanel").velocity({height: currentFormPanelHeight-transitionHeight},{duration: 300});#}
-{#        $("#formContent").velocity({height: currentFormPanelHeight-transitionHeight}, {duration: 300});#}
-{#    }#}
-{#    else#}
-{#    {#}
-{#        resizeEditor();#}
-{#    }#}
-{#{);#}
-{##}
-{#function resizeEditor() {#}
-{#    var maxFormHeight;#}
-{#    var editorPanelHeight;#}
-{#    var buttonHeight;#}
-{#    var optionPanelHeight;#}
-{#    var editorHeight;#}
-{#    var maxHeight;#}
-{#    var formTransitionHeight;#}
-{#    var excess;#}
-{##}
-{#    buttonHeight = $("#buttonContainer").outerHeight();#}
-{##}
-{#    if (checkMode() == 'xs')#}
-{#    {#}
-{#        $("#optionPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px', 'margin-bottom' : '10px'});#}
-{#        $("#formPanel").css({'padding-top' : '0px', 'padding-bottom' : '0px'});#}
-{#        optionPanelHeight = $("#optionsXS").outerHeight() + optionsXSMargin; /* Account for top margin, note the handler in $("#optionsXS").click accounts for the same margin */#}
-{#        maxFormHeight = $(window).height()*editorHeightRatio;#}
-{#        formTransitionHeight = maxFormHeight-optionPanelHeight-#}
-{#                $("#shopEditorTitle").outerHeight()-#}
-{#                $("#buttonContainer").outerHeight()-#}
-{#                parseInt($("#cornerRadius").css('border-top-width'))-#}
-{#                parseInt($("#cornerRadius").css('border-bottom-width'));#}
-{#        $("#optionPanel").velocity({height:optionPanelHeight},{duration: 300});#}
-{#        $("#optionContent").velocity({height: optionPanelHeight},{duration: 300});#}
-{#        $("#formPanel").velocity({height:formTransitionHeight}, {duration: 300});#}
-{#        $("#formContent").velocity({height: formTransitionHeight}, {duration: 300});#}
-{#    }#}
-{#    else#}
-{#    {#}
-{#        $("#optionPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});#}
-{#        $("#formPanel").css({'padding-top' : '15px', 'padding-bottom' : '15px'});#}
-{#        editorPanelHeight = 0.80;#}
-{#        excess =  $("#shopEditorTitle").outerHeight()+#}
-{#                parseInt($("#cornerRadius").css('border-top-width'))+#}
-{#                parseInt($("#cornerRadius").css('border-bottom-width'))+#}
-{#                parseInt($("#shopEditorHeading").css('padding-bottom'));#}
-{#        maxHeight = $(window).height()*editorPanelHeight;#}
-{#        $("#optionPanel").velocity({height:maxHeight-excess},300);#}
-{#        $("#formPanel").velocity({height:maxHeight-excess-buttonHeight},300);#}
-{#        $("#optionContent").velocity({height: maxHeight-excess},300);#}
-{#        $("#formContent").velocity({height: maxHeight-excess-buttonHeight},300);#}
-{#    }#}
-{#    }#}
+            colorQuantityRow.find('.quantityField').val(quantity);
+        }
 
         var jsonDel, delState;
         $('.itemDelete').click(function (e) {
@@ -896,11 +717,6 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
             return $("#" + containerId + " a[href=" + href + "]").tab('show');
         });
 
-        {#$("#optionContent").slimScroll({});#}
-        {#$("#formContent").slimScroll({});#}
-
-        {##}
-
         function DeleteConfirmation(slug) {
             $('#deleteModal').modal('show');
             $('#okDeleteBtn').click({param1: slug}, function (event) {
@@ -917,13 +733,10 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
                 offset = Math.round((image_height - (image_width / ratio)) / 2);
                 return [0, offset, image_width, image_height - offset]
             }
-
-
             // height fits fully, width needs to be cropped
             var offset = Math.round((image_width - (image_height * ratio)) / 2);
             return [offset, 0, image_width - offset, image_height];
         }
-
 
         function readURL(input, cropping_img, ratio_width, ratio_height) {
             if (input.files && input.files[0]) {
@@ -991,9 +804,7 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
 
 
         function showImageFields() {
-
             {#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
-
             $('#div_id_images-1-original').addClass('hidden');
             $('#div_id_images-2-original').addClass('hidden');
             $('#div_id_images-3-original').addClass('hidden');
@@ -1051,23 +862,21 @@ function populateInitialDataForColorAndQuantityRow(colorQuantityRow, color, quan
             }
         });
 
-    $(".overlayEdit").click(function(){
-        var ajaxurl = $(this).attr("data-navigation");
-        $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
-            populateProductVariantsInfo(ajaxurl);
-            showImageFields();
-            $('#productCreationModal').modal();
+        $(".overlayEdit").click(function(){
+            var ajaxurl = $(this).attr("data-navigation");
+            $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
+                populateProductVariantsInfo(ajaxurl);
+                showImageFields();
+                $('#productCreationModal').modal();
+            });
         });
-    });
 
-    $(".addItem").click(function(){
-        var ajaxurl = $(this).attr("data-navigation");
-        $("#productCreationForm").load(ajaxurl + " #productCreationForm form" , function(){
-            $('#productCreationModal').modal();
-            showImageFields();
+        $(".addItem").click(function(){
+            var ajaxurl = $(this).attr("data-navigation");
+            $("#productCreationForm").load(ajaxurl + " #productCreationForm form" , function(){
+                $('#productCreationModal').modal();
+                showImageFields();
+            });
         });
-    });
-
-</script>
-
+    </script>
 {% endblock %}
