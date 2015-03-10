@@ -49,7 +49,7 @@ class TinvilleUser(AbstractUser):
     account_token = models.CharField(max_length=255)
     full_legal_name = models.CharField(max_length=255)
     recipient_id = models.CharField(max_length=255)
-    access_code = models.CharField(max_length=5, default="ABC12")
+    access_code = models.CharField(max_length=5)
 
 
 
