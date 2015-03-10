@@ -111,37 +111,21 @@
 {% block javascript %}
     {{ block.super }}
     <script>
-        $('#id_product_image').change
-        (
-            function()
-            {
-                $("#id_product_image1" ).removeClass("hidden");
-            }
-        );
+        $(document).on("change","#id_product_image",function() {
+            $("#id_product_image1").removeClass("hidden");
+        });
 
-        $('#id_product_image1').change
-        (
-            function()
-            {
-                $("#id_product_image2" ).removeClass("hidden");
-            }
-        );
+        $(document).on("change","#id_product_image1",function() {
+            $("#id_product_image2").removeClass("hidden");
+        });
 
-        $('#id_product_image2').change
-        (
-            function()
-            {
-                $("#id_product_image3" ).removeClass("hidden");
-            }
-        );
+        $(document).on("change","#id_product_image2",function() {
+            $("#id_product_image3").removeClass("hidden");
+        });
 
-        $('#id_product_image3').change
-        (
-            function()
-            {
-                $("#id_product_image4" ).removeClass("hidden");
-            }
-        );
+        $(document).on("change","#id_product_image3",function() {
+            $("#id_product_image4").removeClass("hidden");
+        });
 
         $("#emptyShopCon").css("border-style", "dashed");
         $("#emptyShopCon").css("border-color", "darkgray");
@@ -185,39 +169,37 @@
             });
         });
 
-        $(document).ready(function () {
-          $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
-            // if one of these blocks is not failing do not prevent submission
-            // we use here group validation with option force (validate even non required fields)
-            if (formInstance.isValid()) {
-                $("input[type=submit]").attr("disabled", "disabled");
-                return;
-            }
-        {#    else#}
-        {#    {#}
-        {#        if (!formInstance.isValid('SizeAndColor'))#}
-        {#        {#}
-        {#            TODO: Write to correct div#}
-        {#        }#}
-        {##}
-        {#        if (!formInstance.isValid('General'))#}
-        {#        {#}
-        {#           TODO: Write to correct div#}
-        {#        }#}
-        {#    }#}
-            // else stop form submission
-            formInstance.submitEvent.preventDefault();
-            $('.parsley-errors-list')
-        {#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
-              .addClass("filled bootstrapError help-block");
-          });
 
-            document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
-            document.getElementById("id_price").attributes["type"].value = "decimal";
-            {% if editItemMode %}
-            populateProductVariantsInfo();
-            {% endif %}
-            showImageFields();
+        var resetEditFormParsley = function () {
+            $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
+                // if one of these blocks is not failing do not prevent submission
+                // we use here group validation with option force (validate even non required fields)
+                if (formInstance.isValid()) {
+                    $("input[type=submit]").attr("disabled", "disabled");
+                    return;
+                }
+                {#    else#}
+                {#    {#}
+                {#        if (!formInstance.isValid('SizeAndColor'))#}
+                {#        {#}
+                {#            TODO: Write to correct div#}
+                {#        }#}
+                {##}
+                {#        if (!formInstance.isValid('General'))#}
+                {#        {#}
+                {#           TODO: Write to correct div#}
+                {#        }#}
+                {#    }#}
+                // else stop form submission
+                formInstance.submitEvent.preventDefault();
+                $('.parsley-errors-list')
+                        {#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
+                        .addClass("filled bootstrapError help-block");
+            });
+        }
+
+        $(document).ready(function () {
+            resetEditFormParsley();
         });
 
 
@@ -741,8 +723,6 @@
         function readURL(input, cropping_img, ratio_width, ratio_height) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
-
                 reader.onload = function (e) {
                     if (cropping_img in jcrop) {
                         var thumbnail = $('#' + cropping_img).next('.jcrop-image').children('img');
@@ -867,15 +847,19 @@
             $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
                 populateProductVariantsInfo(ajaxurl);
                 showImageFields();
+                resetEditFormParsley();
                 $('#productCreationModal').modal();
+
             });
         });
 
         $(".addItem").click(function(){
             var ajaxurl = $(this).attr("data-navigation");
             $("#productCreationForm").load(ajaxurl + " #productCreationForm form" , function(){
-                $('#productCreationModal').modal();
                 showImageFields();
+                resetEditFormParsley();
+                $('#productCreationModal').modal();
+
             });
         });
     </script>
