@@ -48,6 +48,7 @@
         });
 
         $(document).ready(function () {
+            ChangeMenuContainer();
             stickyFooter();
             var pos = ($(window).width() *.50) - 45;
              $('#tinvilleTagBannerXS').css('left',pos);
@@ -82,6 +83,7 @@
              $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
         $(window).resize(function(){
+            ChangeMenuContainer();
             var pos = ($(window).width() *.50) - 45;
              $('#tinvilleTagBannerXS').css('left',pos);
             var mode = checkMode();
@@ -107,6 +109,7 @@
         });
 
          $(window).load(function(){
+             ChangeMenuContainer();
              var pos = ($(window).width() *.50) - 45;
              $('#tinvilleTagBannerXS').css('left',pos);
               var mode = checkMode();
@@ -191,6 +194,18 @@
  cartState = sessionStorage.getItem("cartState");
  cartJson = JSON.parse(cartState || "{}");
 
+        function ChangeMenuContainer()
+        {
+            var winWidth = $(window).width();
+            if (winWidth > 992 && winWidth < 1050)
+            {
+                $("#menuContainer").css("width",winWidth-100)
+            }
+            if (winWidth > 768 && winWidth < 850)
+            {
+                $("#menuContainer").css("width",winWidth-100)
+            }
+        }
       function cartCount()
       {
           ajax_req = $.ajax({

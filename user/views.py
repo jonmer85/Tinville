@@ -1,18 +1,20 @@
 import json
 
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
+from django.contrib.auth import login as auth_login
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from oscar.core.loading import get_model
 import stripe
 
 from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName, BetaAccessForm
 from user.models import TinvilleUser
+from custom_oscar.apps.dashboard.views import IndexView as dashboard_view
 
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 
@@ -129,11 +131,23 @@ def activation(request, **kwargs):
         #     return context
             user.is_active = True
             user.save()
-            messages.success(request,
-                             """Thank you for completing the registration process! You may now sign in to Tinville
-                             with your new user account using the link at the upper right hand corner.""")
-    success_url = reverse('home')
-    return HttpResponseRedirect(success_url)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            data = auth_login(request, user)
+
+            if(user.is_seller):
+                return redirect('dashboard:index')
+            else:
+                return activation_redirectUrl(reverse('home'))
+
+    homeUrl = reverse('home')
+    return HttpResponseRedirect(homeUrl)
+
+def activation_redirectUrl(url):
+    loginResponse = HttpResponseRedirect(url)
+    logged_in = True
+    loginResponseBody = JsonResponse({'logged_in': logged_in})
+    loginResponse.content = loginResponseBody.content
+    return loginResponse
 
 
 def ajax_login(request, *args, **kwargs):
