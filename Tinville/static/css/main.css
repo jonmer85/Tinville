@@ -1196,17 +1196,19 @@ textarea
 .shoppingcartitemPrice
 {
     color     : #F46430;
-    position  : absolute;
-    left      : 79%;
-    top       : 63%;
     font-size : 1.15em;
+}
+
+
+.shoppingcartpriceinfo
+{
+    float: right;
+    padding: 8px 5px 5px 5px;
 }
 
 #shoppingcartcheckout
 {
-    /*position:absolute;*/
-    /*left:10px;*/
-    /*bottom:5px;*/
+
     color : #FFFFFF;
 
 }
@@ -1215,9 +1217,8 @@ textarea
 {
     color       : #2E2D2E;
     font-size   : 1.15em;
-    left        : 64%;
-    padding-top : 10px;
-    position    : relative;
+    padding : 8px 20px 5px 5px;
+    float: right;
 }
 
 .shoppingcartBtn
@@ -1255,25 +1256,8 @@ textarea
     float           : right;
     position        : relative;
     top             : 17px;
-    right           : 4%;
+    right           : 20px;
     list-style-type : none;
-}
-
-@media (max-width : 768px)
-{
-    .cartLocation
-    {
-        right : 15px;
-    }
-}
-
-@media (max-width : 992px)
-{
-    .cartLocation
-    {
-        right : 10px;
-        /*top: 17px;*/
-    }
 }
 
 .cartDropdown
