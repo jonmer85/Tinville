@@ -67,10 +67,8 @@ class ProductCreationForm(forms.ModelForm):
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
                 css_class="container col-xs-12",
                 css_id="addItemEditor"
-            ),
+            )
         )
-
-
         self.fields['description'] = BleachField(required=False)
         self.fields['description'].widget = TinyMCE()
         self.fields['category'] = forms.ModelChoiceField(queryset=get_model('catalogue', 'Category').objects.filter(depth=3),

@@ -102,9 +102,9 @@
 {% endblock %}
 
 {% block javascript_library %}
-  {{ block.super }}
-  <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
-  <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
+    <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
 
 {% endblock javascript_library %}
 
@@ -844,22 +844,24 @@
 
         $(".overlayEdit").click(function(){
             var ajaxurl = $(this).attr("data-navigation");
+            tinyMCE.execCommand('mceRemoveControl', true, "id_description");
             $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
                 populateProductVariantsInfo(ajaxurl);
                 showImageFields();
                 resetEditFormParsley();
+                tinyMCE.execCommand('mceAddControl', true, "id_description");
                 $('#productCreationModal').modal();
-
             });
         });
 
         $(".addItem").click(function(){
             var ajaxurl = $(this).attr("data-navigation");
+            tinyMCE.execCommand('mceRemoveControl', true, "id_description");
             $("#productCreationForm").load(ajaxurl + " #productCreationForm form" , function(){
                 showImageFields();
                 resetEditFormParsley();
+                tinyMCE.execCommand('mceAddControl', true, "id_description");
                 $('#productCreationModal').modal();
-
             });
         });
     </script>
