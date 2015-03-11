@@ -48,30 +48,28 @@ class ProductCreationForm(forms.ModelForm):
         self.helper.form_show_labels = False
 
         self.helper.layout = Layout(
-            Div(Accordion(
-                    AccordionGroup('General',
-                             Field('title', placeholder='Title', data_parsley_group="General"),
-                             AccordionGroup('Description',
-                                            Field('description', placeholder='Description'), style="padding-bottom: 10px"),
-                             Field('category', placeholder='Choose a Category', data_parsley_group="General"),
-                             Field('price', placeholder='Price', data_parsley_group="General")
-                    ),
-                    AccordionGroup('Images',
-                             HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
-                             HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
-                    ),
-                    AccordionGroup('Sizes and Colors',
-                             Field('sizeVariation', placeholder='Choose a variation', data_parsley_group="SizeAndColor"),
-                             Div(
-                                 Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden")),
-                             css_class="accordion", css_id="accordion2"),
-                    ),
+            Div(
+                Fieldset('General',
+                         Field('title', placeholder='Title', data_parsley_group="General"),
+                         Field('description', placeholder='Description', style="padding-bottom: 10px"),
+                         Field('category', placeholder='Choose a Category', data_parsley_group="General"),
+                         Field('price', placeholder='Price', data_parsley_group="General")
+                ),
+                Fieldset('Images',
+                         HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
+                         HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
+                ),
+                Fieldset('Sizes and Colors',
+                         Field('sizeVariation', placeholder='Choose a variation', data_parsley_group="SizeAndColor"),
+                         Div(
+                             Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden")),
+                ),
                 Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
                 css_class="container col-xs-12",
                 css_id="addItemEditor"
-            )
-
+            ),
         )
+
 
         self.fields['description'] = BleachField(required=False)
         self.fields['description'].widget = TinyMCE()
