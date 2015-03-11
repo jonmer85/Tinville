@@ -61,6 +61,7 @@
                         {% crispy designerShopColorPicker %}
                     </form>
                 </div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
@@ -78,6 +79,7 @@
                          {% crispy aboutBoxForm %}
                     </form>
                 </div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
@@ -95,6 +97,7 @@
                         {% crispy productCreationForm %}
                     </form>
                 </div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
@@ -850,6 +853,7 @@
                 showImageFields();
                 resetEditFormParsley();
                 tinyMCE.execCommand('mceAddControl', true, "id_description");
+                $(".modal-body").css('max-height', $(window).height() *.85 + 'px');
                 $('#productCreationModal').modal();
             });
         });
@@ -861,8 +865,14 @@
                 showImageFields();
                 resetEditFormParsley();
                 tinyMCE.execCommand('mceAddControl', true, "id_description");
+                $(".modal-body").css('max-height', $(window).height() *.85 + 'px');
                 $('#productCreationModal').modal();
             });
         });
+
+        $(window).resize(function (){
+            $(".modal-body").css('max-height', $(window).height() *.85 + 'px');
+        });
+
     </script>
 {% endblock %}

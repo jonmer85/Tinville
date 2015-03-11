@@ -706,3 +706,7 @@
     bottom:10px;
     right:10px;
 }
+
+.modal-body {
+    overflow-y: auto;
+}
