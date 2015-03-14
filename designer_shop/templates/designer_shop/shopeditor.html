@@ -748,7 +748,7 @@
                             this.setOptions({
                                 aspectRatio: ratio_width / ratio_height,
                                 setSelect: getCenterBoxSelection(ratio_width, ratio_height, img.width, img.height),
-                                trueSize: [img.width, img.height],
+                                trueSize: [img.width, img.height]
                             });
                         })
                     }
@@ -801,6 +801,7 @@
 
         function showImageFields() {
             {#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
+
             $('#div_id_images-1-original').addClass('hidden');
             $('#div_id_images-2-original').addClass('hidden');
             $('#div_id_images-3-original').addClass('hidden');
@@ -870,6 +871,7 @@
                     tinyMCE.execCommand('mceAddControl', true, "id_description");
                     currentEditForm = thisClick.attr('data-navigation');
                     showModal();
+                    image_cropping.init();
                 });
             }
             else
