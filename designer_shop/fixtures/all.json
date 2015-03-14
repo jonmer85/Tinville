@@ -11,6 +11,7 @@
             "is_seller": true,
             "is_approved": true,
             "key_expires": "2020-02-02",
+            "user_permissions": [142],
             "access_code": "ABC12"
         }
     },
