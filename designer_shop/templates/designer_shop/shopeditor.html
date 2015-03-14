@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="bannerUploadModal" tabindex="-1" role="dialog" aria-labelledby="bannerUploadModalLabel" aria-hidden="true">
+    <div class="modal fade" id="bannerUploadModal" tabindex="-1" role="dialog" aria-labelledby="bannerUploadModalLabel" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -44,11 +44,15 @@
                         {% crispy bannerUploadForm %}
                     </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitBanner').click()">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="colorPickerModal" tabindex="-1" role="dialog" aria-labelledby="colorPickerModalLabel" aria-hidden="true">
+    <div class="modal fade" id="colorPickerModal" tabindex="-1" role="dialog" aria-labelledby="colorPickerModalLabel" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -61,12 +65,15 @@
                         {% crispy designerShopColorPicker %}
                     </form>
                 </div>
-                <div class="modal-footer"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary tinvilleButton" data-dismiss="modal" onclick="$('#id_ShopColorPicker').click()">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="aboutBoxModal" tabindex="-1" role="dialog" aria-labelledby="aboutBoxModalLabel" aria-hidden="true">
+    <div class="modal fade" id="aboutBoxModal" tabindex="-1" role="dialog" aria-labelledby="aboutBoxModalLabel" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,12 +86,15 @@
                          {% crispy aboutBoxForm %}
                     </form>
                 </div>
-                <div class="modal-footer"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAboutContent').click()">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="productCreationModal" tabindex="-1" role="dialog" aria-labelledby="productCreationLabel" aria-hidden="true">
+    <div class="modal fade" id="productCreationModal" tabindex="-1" role="dialog" aria-labelledby="productCreationLabel" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -97,7 +107,10 @@
                         {% crispy productCreationForm %}
                     </form>
                 </div>
-                <div class="modal-footer"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAddEditItem').click()">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -845,33 +858,34 @@
             }
         });
 
-        $(".overlayEdit").click(function(){
-            var ajaxurl = $(this).attr("data-navigation");
-            tinyMCE.execCommand('mceRemoveControl', true, "id_description");
-            $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
-                populateProductVariantsInfo(ajaxurl);
-                showImageFields();
-                resetEditFormParsley();
-                tinyMCE.execCommand('mceAddControl', true, "id_description");
-                $(".modal-body").css('max-height', $(window).height() *.85 + 'px');
-                $('#productCreationModal').modal();
-            });
+        var currentEditForm = "";
+        $(".overlayEdit, .addItem").click(function(){
+            var thisClick = $(this);
+            if ($(this).attr('data-navigation') != currentEditForm) {
+                var ajaxurl = $(this).attr("data-navigation");
+                tinyMCE.execCommand('mceRemoveControl', true, "id_description");
+                $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
+                    if (thisClick.hasClass('overlayEdit')) { populateProductVariantsInfo(ajaxurl); }
+                    resetEditFormParsley();
+                    tinyMCE.execCommand('mceAddControl', true, "id_description");
+                    currentEditForm = thisClick.attr('data-navigation');
+                    showModal();
+                });
+            }
+            else
+            {
+                showModal();
+            }
         });
 
-        $(".addItem").click(function(){
-            var ajaxurl = $(this).attr("data-navigation");
-            tinyMCE.execCommand('mceRemoveControl', true, "id_description");
-            $("#productCreationForm").load(ajaxurl + " #productCreationForm form" , function(){
-                showImageFields();
-                resetEditFormParsley();
-                tinyMCE.execCommand('mceAddControl', true, "id_description");
-                $(".modal-body").css('max-height', $(window).height() *.85 + 'px');
-                $('#productCreationModal').modal();
-            });
-        });
+        var showModal = function(){
+            showImageFields();
+            $(".modal-body").css('max-height', $(window).height() *.80 + 'px');
+            $('#productCreationModal').modal();
+        }
 
         $(window).resize(function (){
-            $(".modal-body").css('max-height', $(window).height() *.85 + 'px');
+            $(".modal-body").css('max-height', $(window).height() *.80 + 'px');
         });
 
     </script>

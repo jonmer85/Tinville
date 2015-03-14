@@ -64,7 +64,7 @@ class ProductCreationForm(forms.ModelForm):
                          Div(
                              Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden")),
                 ),
-                Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton'),
+                Submit('productCreationForm', 'Edit' if self.instance.pk else 'Create', css_class='tinvilleButton hidden', css_id='id_SubmitAddEditItem'),
                 css_class="container col-xs-12",
                 css_id="addItemEditor"
             )
@@ -346,7 +346,7 @@ class AboutBoxForm(forms.ModelForm):
              Field('aboutImgCropping'),
              Field('aboutContent', placeholder="Enter Text Here"),
             # ),
-            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton', css_id="id_SubmitAboutContent"),
+            Submit('aboutBoxForm', 'Submit', css_class='tinvilleButton hidden', css_id='id_SubmitAboutContent'),
             css_class="container col-xs-12"
         ))
 
@@ -378,7 +378,7 @@ class DesignerShopColorPicker(forms.Form):
     helper.layout = Layout(
         Div(
             Field('color'),
-            Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton', css_id="shopColorPicker"),
+            Submit('designerShopColorPicker', 'Select', css_class='tinvilleButton hidden', css_id='id_ShopColorPicker'),
             css_class="container col-xs-12"
         ))
 
@@ -405,7 +405,7 @@ class BannerUploadForm(forms.ModelForm):
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
-            Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton', css_id="id_SubmitBanner"),
+            Submit('bannerUploadForm', 'Submit Banner', css_class='tinvilleButton hidden', css_id="id_SubmitBanner"),
             css_class="container col-xs-12"
         ))
 
