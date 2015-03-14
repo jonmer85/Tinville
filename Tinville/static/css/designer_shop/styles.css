@@ -710,3 +710,7 @@
 .modal-body {
     overflow-y: auto;
 }
+
+.addItem {
+    cursor: pointer;
+}
