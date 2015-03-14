@@ -5,18 +5,11 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 
 {% block content %}
     {{ block.super }}
-{#    <span data-picture class="banner">#}
-{#        <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>#}
-{#        <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>#}
-{#        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->#}
-{#        <noscript>#}
-{#            <img src="{{ STATIC_URL }}img/banner-xs.jpg">#}
-{#        </noscript>#}
-{#    </span>#}
 
     <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
@@ -80,7 +73,33 @@
           <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
           <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
       </div>
-    <div style="height: 300px"></div>
+    <div class="homeBlock">
+
+        <div class="container">
+            <div class="visible-xs container">
+                <div class="row">
+                    <img class="" style="margin-top: 20px; margin-left: 50px; height: 200px" src="{{ STATIC_URL }}img/infopageimg/swi.png"/>
+                </div>
+            </div>
+            <div class="hidden-xs row" style="padding-top: 20px">
+                <div class="col-xs-offset-0 col-xs-4 col-md-4" >
+                    <img class="" style="margin-left: 25%; height: 200px" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
+                </div>
+                <div class="col-xs-4 col-md-4 aboutDashRight aboutDashLeft" >
+                    <img class="" style="margin-left: 25%; height: 200px" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
+                </div>
+                <div class="col-xs-4 col-md-4" >
+                    <img class="" style="margin-left: 25%; height: 200px" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container" style="padding-top: 100px">
+        <div class="row" id="shopItems">
+            {% include "designer_shop/item_gallery.html" %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block bottomContent %}

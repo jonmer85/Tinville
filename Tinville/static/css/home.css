@@ -83,3 +83,10 @@
       height: 400px;
     }
 }
+
+.homeBlock {
+    background: #5B595A;
+    width: auto;
+    margin: auto;
+    height: 150px;
+}
