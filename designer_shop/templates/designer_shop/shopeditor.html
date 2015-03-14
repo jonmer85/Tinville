@@ -864,7 +864,11 @@
             var thisClick = $(this);
             if ($(this).attr('data-navigation') != currentEditForm) {
                 var ajaxurl = $(this).attr("data-navigation");
-                tinyMCE.execCommand('mceRemoveControl', true, "id_description");
+                tinyMCE.execCommand('mceRemoveControl', true, "id_description")
+                $.each(jcrop, function() {
+                    this.destroy();
+                });
+                $("img[style*='display: block']").remove();
                 $("#productCreationForm").load(ajaxurl + " #productCreationForm form", function (){
                     if (thisClick.hasClass('overlayEdit')) { populateProductVariantsInfo(ajaxurl); }
                     resetEditFormParsley();
