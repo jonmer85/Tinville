@@ -516,14 +516,10 @@
     margin-top: 5px;
     margin-right: 5px;
 }
-.thumbnail a > img {
-    max-width: 150px;
-}
 
 .itemSize {
     width:auto;
-    max-width: 160px;
-    max-height:185px;
+    max-height:250px;
 }
 
 
