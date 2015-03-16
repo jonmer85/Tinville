@@ -192,6 +192,7 @@
                 // we use here group validation with option force (validate even non required fields)
                 if (formInstance.isValid()) {
                     $("input[type=submit]").attr("disabled", "disabled");
+                    $("#processing-modal").modal();
                     return;
                 }
                 {#    else#}
@@ -863,6 +864,7 @@
         $(".overlayEdit, .addItem").click(function(){
             var thisClick = $(this);
             if ($(this).attr('data-navigation') != currentEditForm) {
+                $('#processing-modal').modal();
                 var ajaxurl = $(this).attr("data-navigation");
                 tinyMCE.execCommand('mceRemoveControl', true, "id_description")
                 $.each(jcrop, function() {
@@ -875,6 +877,7 @@
                     tinyMCE.execCommand('mceAddControl', true, "id_description");
                     currentEditForm = thisClick.attr('data-navigation');
                     image_cropping.init();
+                    $('#processing-modal').modal('hide');
                     showModal();
                 });
             }
