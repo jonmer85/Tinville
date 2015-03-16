@@ -96,13 +96,15 @@ def and_the_shop_editor_is_85(step):
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
 
 @step(u'Given the demo shop editor')
-def give_demo_shop_editor(step):
+def given_demo_shop_editor(step):
     # time.sleep(1)
     world.browser.get(lettuce.django.get_server().url('/'))
     sign_in("demo@user.com", "tinville")
 
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
-    wait_for_element_with_id_to_be_displayed('shopEditor')
+    wait_for_element_with_class_to_be_displayed('bannerUploadEditIcon')
+    wait_for_element_with_class_to_be_displayed('colorPickerEditButton')
+    wait_for_element_with_class_to_be_displayed('addItem')
 
 @step(u'Then there should be 1 icon displayed for size control')
 def there_should_be_one_icon_for_size_control(step):
