@@ -25,6 +25,7 @@
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
     {% compress css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
@@ -493,6 +494,12 @@
     </div>
 </div>
 
+    <div id="outdated">
+        <h6>Your browser is out-of-date!</h6>
+        <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+        <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    </div>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script id="message_template" type="text/x-handlebars-template">
@@ -520,6 +527,7 @@
 
         <script src="{{ STATIC_URL }}js/vendor/jquery.shorten.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.transit.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/outdatedbrowser.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/velocity.js"></script>
 {#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
 {#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
@@ -543,6 +551,14 @@
         <script src="{{ STATIC_URL }}js/main.js"></script>
     {% endblock javascript_library %}
     <script>
+        $( document ).ready(function() {
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'transform',
+                languagePath: ''
+            })
+        })
         $(window).load(function() {
             $("#{{ flatpage.title }}").addClass("active");
             {% if messages %}
