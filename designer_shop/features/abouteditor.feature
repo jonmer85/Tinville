@@ -6,7 +6,7 @@ Feature: Designer Shop About Content Selection
 
   Scenario: About Box Editor
     Given the demo shop editor
-    When the about tab is selected
+    When the about edit button is pressed
     Then the about text field box is displayed
     And the submit about content button is displayed
     And the about content and image is submitted

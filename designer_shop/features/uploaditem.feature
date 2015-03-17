@@ -118,7 +118,6 @@ the content for this basic editor should include the following fields:
     And my primary image item3_1 and secondary image item3_2 are visible
 
 
-  @jon
   Scenario: Edit Basic Item on Demo Shop using size sets
 	Given the demo shop editor
     And I plan to change the default image of the size set product
@@ -146,12 +145,10 @@ the content for this basic editor should include the following fields:
     | Black  | XL    | 8        |
     And my primary image is different from the original
 
-  @jon
   Scenario: Delete a color/quantity row on basic item from Demo Shop
 	Given the demo shop editor
 	Then I should see 3 product total
     When I click the edit button on the basic size set product
-    And I expand the sizes group
     And I add a new color to the size set product
     And I delete an existing color
     And I submit this item
@@ -168,13 +165,10 @@ the content for this basic editor should include the following fields:
     | White  | SM    | 1        |
 
 
-  @jon
   Scenario: Delete a size row on basic item from Demo Shop
 	Given the demo shop editor
 	Then I should see 3 product total
     When I click the edit button on the basic size set product
-    And the edit item tab is selected
-    And I expand the sizes group
     And I add a new size to the size set product
     And I delete an existing size
     And I submit this item
@@ -196,4 +190,3 @@ the content for this basic editor should include the following fields:
      When I click the delete button for the product
      And I click ok on the confirmation
      Then the product is removed
-     And the shop editor refreshes in a minimized state
