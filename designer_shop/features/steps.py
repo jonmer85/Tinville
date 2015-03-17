@@ -102,7 +102,7 @@ def given_demo_shop_editor(step):
     sign_in("demo@user.com", "tinville")
 
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
-    wait_for_element_with_class_to_be_displayed('bannerUploadEditIcon')
+    wait_for_element_with_css_selector_to_exist('.bannerUploadEditButton')
     wait_for_element_with_class_to_be_displayed('colorPickerEditButton')
     wait_for_element_with_class_to_be_displayed('addItem')
 

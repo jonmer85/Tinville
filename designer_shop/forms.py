@@ -31,7 +31,7 @@ ProductImage = get_model("catalogue", "ProductImage")
 class ProductCreationForm(forms.ModelForm):
 
     price = forms.DecimalField(decimal_places=2, max_digits=12)
-    title = forms.CharField(label="title",max_length=80)
+    title = forms.CharField(label="title", max_length=80)
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
@@ -50,17 +50,17 @@ class ProductCreationForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Fieldset('General',
-                         Field('title', placeholder='Title', data_parsley_group="General"),
+                         Field('title', placeholder='Title'),
                          Field('description', placeholder='Description', style="padding-bottom: 10px"),
-                         Field('category', placeholder='Choose a Category', data_parsley_group="General"),
-                         Field('price', placeholder='Price', data_parsley_group="General")
+                         Field('category', placeholder='Choose a Category'),
+                         Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
                          HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
                          HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
                 ),
                 Fieldset('Sizes and Colors',
-                         Field('sizeVariation', placeholder='Choose a variation', data_parsley_group="SizeAndColor"),
+                         Field('sizeVariation', placeholder='Choose a variation'),
                          Div(
                              Fieldset('Sizes', css_id="sizesFieldSet", css_class="hidden")),
                 ),

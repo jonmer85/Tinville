@@ -505,7 +505,7 @@
     height: auto;
 }
 
-.shopItem {
+.shopItem, .addItemContainer {
     padding-bottom: 5px;
     padding-right: 5px;
 }

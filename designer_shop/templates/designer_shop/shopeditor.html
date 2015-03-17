@@ -45,8 +45,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitBanner').click()">Submit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="bannerModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitBanner').click()">Submit</button>
+                    <button type="button" class="btn btn-defaultnumber" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary tinvilleButton" data-dismiss="modal" onclick="$('#id_ShopColorPicker').click()">Submit</button>
+                    <button id="colorModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" data-dismiss="modal" onclick="$('#id_ShopColorPicker').click()">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAboutContent').click()">Submit</button>
+                    <button id="aboutModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAboutContent').click()">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAddEditItem').click()">Submit</button>
+                    <button id="itemModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAddEditItem').click()">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -392,7 +392,7 @@
                 if (selectedValue[0].value != "0") {
                     if($(this).closest('.accordion-group').next().length == "0") {
                         //Add a new size set row
-                        $('#formContent').animate({scrollTop: $('#formContent')[0].scrollHeight}, 500);
+                        $('#productCreationForm').animate({scrollTop: $('#productCreationForm')[0].scrollHeight}, 500);
                         addNewSizeRow(sizeTypeString);
                     }
                 }
@@ -410,7 +410,7 @@
                     if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
                         addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable, false);
                         currentPanel = $(this).closest('.rowColorQuantityTemplate').next().position().top + $(this).closest(sizeTemplateClass).next().position().top - $(this).closest('.rowColorQuantityTemplate').next().height();
-                        $('#formContent').animate({scrollTop: currentPanel  }, 500);
+                        $('#productCreationForm').animate({scrollTop: currentPanel  }, 500);
                     }
                 }
             })

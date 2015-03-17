@@ -8,11 +8,10 @@ from selenium.webdriver.support.ui import Select
 from Tinville.settings.base import MEDIA_ROOT
 
 
-@step(u'the (?:add|edit) item tab is selected')
-def when_the_add_item_tab_is_selected(step):
-    maximize_shop_editor()
-    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#addOrEditItem"]').click()
-    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#addOrEditItem"]')
+@step(u'the add item button is pressed')
+def when_the_add_item_button_is_pressed(step):
+    wait_for_element_with_css_selector_to_be_clickable('a.addItem').click()
+    wait_for_element_with_css_selector_to_be_displayed('#productCreationModal')
 
 @step(u'the mobile (?:add|edit) item tab is selected')
 def when_the_add_item_tab_is_selected_mobile(step):
@@ -31,20 +30,16 @@ def and_i_fill_in_the_general_add_item_fields(step):
 
     for itemfields in step.hashes:
         clear_and_send_keys(world.browser.find_element_by_name("title"), itemfields["Title"])
-        wait_for_element_with_css_selector_to_be_clickable("a[href='#description']").click()
         # TinyMCE uses iframes so need to use their javascript API to set the content
         world.browser.execute_script("tinyMCE.activeEditor.setContent('{0}')".format(itemfields["Description"]))
         clear_and_send_keys(wait_for_element_with_name_to_be_displayed("price"), itemfields["Price"])
         wait_for_element_with_name_to_exist("category")
         wait_for_element_with_name_to_be_displayed("category").send_keys(itemfields["Category"])
         file = os.path.join(settings.MEDIA_ROOT, itemfields["Image1"])
-        wait_for_element_with_css_selector_to_be_clickable("a[href='#images']").click()
         wait_for_element_with_name_to_be_displayed("images-0-original").send_keys(file)
         if "Image2" in itemfields:
             file2 = os.path.join(settings.MEDIA_ROOT, itemfields["Image2"])
             wait_for_element_with_name_to_be_displayed("images-1-original").send_keys(file2)
-        wait_for_element_with_css_selector_to_exist("a[href='#accordion2']")
-        wait_for_element_with_css_selector_to_be_clickable("a[href='#accordion2']").click()
         wait_for_element_with_name_to_exist('sizeVariation')
         Select(wait_for_element_with_name_to_be_displayed('sizeVariation')).select_by_value(itemfields['SizeVariation'])
 
@@ -126,12 +121,10 @@ def i_should_see_a_confirmation_message_stating_that_the_item_was_created_or_upd
 
 @step(u'And I submit this item')
 def and_i_submit_this_item(step):
-    element = world.browser.find_element_by_name("productCreationForm")
-    element.click()
+    wait_for_element_with_id_to_be_clickable('itemModalFooterSubmit').click()
 
 @step(u'Then I should see (\d+) product(?s) total')
 def i_should_see_n_products_total(step, total):
-    minimize_shop_editor()
     products = world.browser.find_elements_by_css_selector(".shopItem")
     assert len(products) == int(total)
 
