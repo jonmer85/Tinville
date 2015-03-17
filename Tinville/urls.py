@@ -9,6 +9,7 @@ from user.decorators import designer_required
 from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
 from user.forms import LoginForm
 from designer_shop.views import ShopListView
+from Tinville.views import HomeListView
 import django
 from django.contrib.auth import views as auth_views
 from oscar.views.decorators import login_forbidden
@@ -39,7 +40,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^$', HomeListView.as_view(template_name='home.html'), name='home'),
     url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
     url(r'^register$', 'user.views.register'),
     url(r'^packageStatus$', 'custom_oscar.apps.dashboard.orders.views.packageStatus'),

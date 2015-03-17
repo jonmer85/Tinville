@@ -28,7 +28,7 @@ def pay_designers():
     # Remove all payments that have been paid already
     potential_payment_ids = [p.id for p in potential_payments]
     payments_made = PaymentEvent.objects.filter(shipping_event__in=potential_payment_ids)
-    payments_to_make = potential_payments.exclude(id__in=payments_made).select_related('order')
+    payments_to_make = potential_payments.exclude(group__in=[p.group for p in payments_made]).select_related('order')
 
     # Group payments to make by designer
     payments_by_designer = defaultdict(list)
