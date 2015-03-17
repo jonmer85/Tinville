@@ -9,7 +9,6 @@
                         <div class="">
                             <div class="">
                                 <div class="thumbnail shopItem shopBorderColor" style="border: none;">
-
                                     {% if product.primary_image and product.primary_image.original.url %}
                                         {% with image=product.primary_image %}
                                             <div class="Item row">
@@ -23,55 +22,34 @@
                                     {% else %}
                                     -
                                     {% endif %}
+                                    <div class="row">
+                                        {% if product and product.is_top_level %}
+                                            {% if editmode %}
+                                                <a class="overlayEdit col-xs-offset-1 col-xs-1"
+                                                   data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
+                                                   data-toggle="tooltip" data-placement="left" title="Edit item">
+                                                    <span class="fa fa-pencil-square-o fa-lg tinvilleOrange"></span>
+                                                </a>
+                                                <div class="caption col-xs-6">
+                                            {% else %}
+                                                <div class="caption col-xs-12">
+                                            {% endif %}
+                                                <div class="row">
+                                                    <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
+                                                </div>
 
-                                            <div class="row">
-                                                {% if product and product.is_top_level %}
-                                                    {% if editmode %}
-                                                        <a class="overlayEdit col-xs-offset-1 col-xs-1 pull-down"
-                                                           data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
-                                                           data-toggle="tooltip" data-placement="left" title="Edit item">
-                                                            <span class="fa fa-pencil-square-o fa-lg tinvilleOrange pull-down"></span>
-                                                        </a>
-                                                        <div class="caption col-xs-6">
-                                                    {% else %}
-                                                        <div class="caption col-xs-12">
-                                                    {% endif %}
-                                                        <div class="row">
-                                                            <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
-                                                        </div>
-
-                                                        <div class="price row">
-                                                            ${{session.price.excl_tax}}
-                                                        </div>
-                                                    </div>
-                                                    {% if editmode %}
-                                                        <a id='{{ product.slug }}' class="itemDelete col-xs-1 pull-down" style="cursor: pointer; padding-left: 10px"
-                                                           onclick="DeleteConfirmation('{{ product.slug }}')"  >
-                                                            <img class="overlayDelete" src='{{ STATIC_URL }}img/delete.png' data-toggle="tooltip" data-placement="right" title="Delete item" />
-                                                        </a>
-                                                    {% endif %}
-                                                {% endif %}
-
-                                            </div>
-
-                                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                        <h4 class="modal-title" id="myModalLabel">Delete Item</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to delete?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button id="okDeleteBtn" type="button" class="btn btn-primary">OK</button>
-                                                    </div>
+                                                <div class="price row">
+                                                    ${{session.price.excl_tax}}
                                                 </div>
                                             </div>
-                                        </div>
-
+                                            {% if editmode %}
+                                                <a id='{{ product.slug }}' class="itemDelete col-xs-1"
+                                                   onclick="DeleteConfirmation('{{ product.slug }}')">
+                                                    <span class="fa fa-trash-o fa-lg tinvilleOrange"></span>
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
