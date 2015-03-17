@@ -213,11 +213,16 @@
                         {#      .html("You must correctly fill the fields of at least one of these two blocks!")#}
                         .addClass("filled bootstrapError help-block");
             });
-        }
+        };
 
         $(document).ready(function () {
             resetEditFormParsley();
         });
+
+        var changeItemPriceDataTypes = function() {
+            document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+            document.getElementById("id_price").attributes["type"].value = "decimal";
+        };
 
 
         var htmlString = "<div>\
@@ -889,6 +894,7 @@
 
         var showModal = function(){
             showImageFields();
+            changeItemPriceDataTypes();
             $(".modal-body").css('max-height', $(window).height() *.80 + 'px');
             $('#productCreationModal').modal();
         }

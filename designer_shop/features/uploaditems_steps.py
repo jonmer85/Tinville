@@ -13,12 +13,6 @@ def when_the_add_item_button_is_pressed(step):
     wait_for_element_with_css_selector_to_be_clickable('a.addItem').click()
     wait_for_element_with_css_selector_to_be_displayed('#productCreationModal')
 
-@step(u'the mobile (?:add|edit) item tab is selected')
-def when_the_add_item_tab_is_selected_mobile(step):
-    maximize_shop_editor()
-    wait_for_element_with_id_to_be_clickable("optionsXS").click()
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
-
 @step(u'a mobile view')
 def a_mobile_view(step):
     change_viewport_xs()
@@ -161,15 +155,14 @@ def my_images_are_visible(step, img1, img2):
 
 @step(u'I click the edit button on the basic size set product')
 def i_click_the_edit_button_on_the_basic_size_set_product(self):
-    minimize_shop_editor()
-    wait_for_element_with_css_selector_to_be_clickable("a[href='/demo/edit/testsizesetitem'].overlayEdit").click()
+    wait_for_element_with_css_selector_to_be_clickable("a[data-navigation='/demo/edit/testsizesetitem'].overlayEdit").click()
+    wait_for_element_with_id_to_be_displayed('productCreationModal')
 
 @step(u'I plan to change the default image of the size set product')
 def i_change_the_default_image_of_the_size_set_product(step):
     world.browser.find_element_by_css_selector("a[href='/demo/testsizesetitem']").click()
     world.browser.originalImageURL = wait_for_element_with_css_selector_to_exist("#itemSelectedImageLink").get_attribute("href")
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
-    wait_for_element_with_id_to_be_displayed('shopEditor')
 
 @step(u'my primary image is different from the original')
 def my_primary_image_is_visible_and_different_from_original(step):

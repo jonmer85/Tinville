@@ -8,7 +8,6 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
-  @jon
   Scenario: Create Basic Item on Demo Shop using size sets
 	Given the demo shop editor
 	Then I should see 3 product total
@@ -40,7 +39,7 @@ the content for this basic editor should include the following fields:
     Given the demo shop editor
     And a mobile view
 	Then I should see 3 product total
-    When the mobile add item tab is selected
+    When the add item button is pressed
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1             | Image2             | SizeVariation |
     | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item1_1.jpg | images/item1_2.jpg | 1
@@ -67,7 +66,7 @@ the content for this basic editor should include the following fields:
   Scenario: Create Basic Item on Demo Shop using size dimensions
 	Given the demo shop editor
 	Then I should see 3 product total
-    When the add item tab is selected
+    When the add item button is pressed
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1             | Image2              | SizeVariation |
     | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item2_1.jpg | images/item2_2.jpg  |  2            |
@@ -94,7 +93,7 @@ the content for this basic editor should include the following fields:
   Scenario: Create Basic Item on Demo Shop using size number
 	Given the demo shop editor
 	Then I should see 3 product total
-    When the add item tab is selected
+    When the add item button is pressed
 	And I fill in the general add item fields with
     | Title     | Description                     | Category                 | Price | Image1             | Image2              | SizeVariation |
     | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item3_1.jpg | images/item3_2.jpg  | 3             |
@@ -119,12 +118,12 @@ the content for this basic editor should include the following fields:
     And my primary image item3_1 and secondary image item3_2 are visible
 
 
+  @jon
   Scenario: Edit Basic Item on Demo Shop using size sets
 	Given the demo shop editor
     And I plan to change the default image of the size set product
 	Then I should see 3 product total
     When I click the edit button on the basic size set product
-    And the edit item tab is selected
     And I fill in the general add item fields with
     | Title           | Description                         | Category                   | Price | Image1            | SizeVariation |
     | NewTestSizeSet  | <h1>New Test Item Description</h1>  | Women > Clothing > Pants   | 8.00  | images/walken.jpg | 1             |
@@ -147,12 +146,11 @@ the content for this basic editor should include the following fields:
     | Black  | XL    | 8        |
     And my primary image is different from the original
 
-
+  @jon
   Scenario: Delete a color/quantity row on basic item from Demo Shop
 	Given the demo shop editor
 	Then I should see 3 product total
     When I click the edit button on the basic size set product
-    And the edit item tab is selected
     And I expand the sizes group
     And I add a new color to the size set product
     And I delete an existing color
@@ -170,6 +168,7 @@ the content for this basic editor should include the following fields:
     | White  | SM    | 1        |
 
 
+  @jon
   Scenario: Delete a size row on basic item from Demo Shop
 	Given the demo shop editor
 	Then I should see 3 product total

@@ -28,7 +28,7 @@
                                                 {% if product and product.is_top_level %}
                                                     {% if editmode %}
                                                         <a class="overlayEdit col-xs-offset-1 col-xs-1 pull-down"
-                                                           href='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
+                                                           data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
                                                            data-toggle="tooltip" data-placement="left" title="Edit item">
                                                             <span class="fa fa-pencil-square-o fa-lg tinvilleOrange pull-down"></span>
                                                         </a>
