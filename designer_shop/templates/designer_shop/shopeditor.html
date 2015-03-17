@@ -195,18 +195,6 @@
                     $("#processing-modal").modal();
                     return;
                 }
-                {#    else#}
-                {#    {#}
-                {#        if (!formInstance.isValid('SizeAndColor'))#}
-                {#        {#}
-                {#            TODO: Write to correct div#}
-                {#        }#}
-                {##}
-                {#        if (!formInstance.isValid('General'))#}
-                {#        {#}
-                {#           TODO: Write to correct div#}
-                {#        }#}
-                {#    }#}
                 // else stop form submission
                 formInstance.submitEvent.preventDefault();
                 $('.parsley-errors-list')
@@ -307,7 +295,7 @@
         }
 
         function rowColorQuantityTemplate(required){
-            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
+            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
             if (required === "")
                 numRequired = "";
             var rowColorQuantityTemplate = "" +
@@ -418,9 +406,9 @@
 
         var arSizeRows  = [] ;
         var arColorRows = [] ;
-        var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
-        var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
-        var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.' data-parsley-group='SizeAndColor'";
+        var sizeRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' required";
+        var sizeDimRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+        var sizeNumRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
         function clearColorRow( strRowToClear )
         {
             var strRowId = "#" + strRowToClear ;
@@ -501,7 +489,7 @@
 
             var rowQtyRequired = "";
             if(required === true)
-                rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required data-parsley-group='SizeAndColor'";
+                rowQtyRequired ="data-parsley-required='true' data-parsley-required-message='This field is required.' required";
 
             var colorsAndQuantities = $(".collapse-colors-quantity", appendTo.parents(".accordion-group")[0]);
             colorsAndQuantities.collapse('show');
