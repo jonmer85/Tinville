@@ -68,6 +68,7 @@
                 <div class="modal-footer">
                     <button id="colorModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" data-dismiss="modal" onclick="$('#id_ShopColorPicker').click()">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div id="shopEditor_message_area" class="col-middle col-xs-height"></div>
                 </div>
             </div>
         </div>
@@ -82,7 +83,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">
-                         {% load crispy_forms_tags %}
+                         {% load crispy_forms_tags %}c
                          {% crispy aboutBoxForm %}
                     </form>
                 </div>
@@ -185,7 +186,6 @@
                     $(".shopBackgroundColor").css("background-color", document.getElementById("id_color").value);
                     var textColor = isTooLightYIQ(document.getElementById("id_color").value) ? '#777' : '#e7e5e6';
                     $(".shopTitleColor").css("color", textColor);
-                    document.getElementById('shopEditor_message_area').innerHTML = "Color " + document.getElementById("id_color").value + " has been applied"
                 },
                 error: function(data, textStatus, jqXHR) {
                     clear_django_messages(self.find("#shopEditor_message_area"));

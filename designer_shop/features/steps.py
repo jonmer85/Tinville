@@ -155,21 +155,6 @@ def the_selected_logo_file_is_saved(step):
     assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo.jpg')
 
 
-
-@step(u'And the tinville orange color f46430 is submitted')
-def and_the_tinville_orange_color_f46430_is_submitted(step):
-    color_picker = world.browser.find_element_by_id("color")
-    world.browser.find_element_by_id("id_color").clear()
-    color_picker.find_element_by_name("color").send_keys("#f46430")
-    # world.browser.find_element_by_id("minMaxIcon").click()
-    wait_for_element_with_id_to_be_displayed("shopColorPicker")
-    world.browser.find_element_by_id("shopColorPicker").click()
-
-@step(u'Then an exception Tinville Branding is not Allowed to be Used is thrown')
-def then_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
-    wait_for_element_with_css_selector_to_exist("#div_id_color.has-error")
-    assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
-
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
     sign_in('demo@user.com', 'tinville')
