@@ -13,7 +13,7 @@
                 {% if shop.mobileBanner %}
                     <span class="editIconContainer" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}">
                         {% if editmode %}
-                            <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                            <button id= type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
                         {% endif %}
                     </span>
                 {% else %}
@@ -25,7 +25,7 @@
                 {% endif %}
                 <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)">
                 {% if editmode %}
-                    <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                    <button id="xlBannerUploadButton" type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
                 {% endif %}
                 </span>
 

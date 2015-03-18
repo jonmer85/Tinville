@@ -191,36 +191,6 @@ def and_a_logo_is_submitted(step):
 def the_selected_logo_file_is_saved(step):
     assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo.jpg')
 
-@step(u'When the banner tab is selected')
-def when_the_banner_tab_is_selected(step):
-    maximize_shop_editor()
-    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#banner"]').click()
-    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#banner"]')
-
-@step(u'Then the banner file upload is displayed')
-def then_the_banner_file_upload_is_displayed(step):
-    wait_for_element_with_css_selector_to_be_displayed('#banner.tab-pane.active')
-    assert_id_exists('id_banner')
-
-@step(u'And the submit Banner button is displayed')
-def and_the_submit_banner_button_is_displayed(step):
-    assert_id_exists('id_SubmitBanner')
-
-@step(u'And a banner is submitted')
-def and_a_banner_is_submitted(step):
-    bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys(os.path.join(settings.PROJECT_DIR.child("static"), "img/banner-xl.jpg"))
-    assert_selector_contains('#div_id_bannerCropping > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > '
-                             'div:nth-child(1) > img:nth-child(1)', 'src', 'data:image/jpeg;base64')
-    wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
-    world.browser.find_element_by_id("id_SubmitBanner").click()
-
-@step(u'The selected banner file is saved')
-def the_selected_banner_file_is_saved(step):
-    assert_selector_contains('#div_id_bannerCropping > div:nth-child(1) > div:nth-child(3) > img:nth-child(3)',
-                             'src', '/media/shops/demo/banner/banner-xl')
-    minimize_shop_editor()
-    assert_selector_contains('.banner>span>img', 'src', '/media/shops/demo/banner/banner-xl')
 
 
 @step(u'And the tinville orange color f46430 is submitted')
