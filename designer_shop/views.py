@@ -137,7 +137,7 @@ def shopper(request, slug):
             'shopgenders': get_filter_lists(shop).genderlist(),
             'shopcategories': shopcategorynames,
             'products': products,
-            'shopProductCount': len(products)
+            'shopProductCount': len(products),
         })
 
 def check_access_code(request):
@@ -524,30 +524,33 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
     editItem = item is not None
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
     products = get_list_or_empty(Product, shop=shop.id)
-    return render(request, 'designer_shop/shopeditor.html', {
-        'editmode': True,
-        'shop': shop,
-        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
-        'productImageFormSet': productImageFormSet or ProductImageFormSet(instance=item if editItem else None),
-        'editItemMode': editItem,
-        'bannerUploadForm': bannerUploadForm or BannerUploadForm(instance=shop),
-        'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
-                                                           {
-                                                               "logo": shop.logo
-                                                           }),
-        'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
-                                                                              {
-                                                                                  "color": shop.color
-                                                                              }),
-        'aboutBoxForm': aboutForm or AboutBoxForm(instance=shop),
-        'colors': AttributeOption.objects.filter(group=2),
-        'sizeSetOptions': AttributeOption.objects.filter(group=1),
-        'shopcategories': shopCategoryNames,
-        'shopgenders': get_filter_lists(shop).genderlist(),
-        'products': products,
-        'shopProductCount': len(products),
-        'tab' : tab or 'Default'
-    })
+    if not editItem or (editItem and request.is_ajax()):
+        return render(request, 'designer_shop/shopeditor.html', {
+            'editmode': True,
+            'shop': shop,
+            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+            'productImageFormSet': productImageFormSet or ProductImageFormSet(instance=item if editItem else None),
+            'editItemMode': editItem,
+            'bannerUploadForm': bannerUploadForm or BannerUploadForm(instance=shop),
+            'logoUploadForm': logoUploadForm or LogoUploadForm(initial=
+                                                               {
+                                                                   "logo": shop.logo
+                                                               }),
+            'designerShopColorPicker': colorPickerForm or DesignerShopColorPicker(initial=
+                                                                                  {
+                                                                                      "color": shop.color
+                                                                                  }),
+            'aboutBoxForm': aboutForm or AboutBoxForm(instance=shop),
+            'colors': AttributeOption.objects.filter(group=2),
+            'sizeSetOptions': AttributeOption.objects.filter(group=1),
+            'shopcategories': shopCategoryNames,
+            'shopgenders': get_filter_lists(shop).genderlist(),
+            'products': products,
+            'shopProductCount': len(products),
+            'tab' : tab or 'Default'
+        })
+    else:
+        return redirect('designer_shop.views.shopeditor', shop.slug)
 
 
 #private method no Auth
