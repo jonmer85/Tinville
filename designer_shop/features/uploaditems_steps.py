@@ -172,20 +172,8 @@ def my_primary_image_is_visible_and_different_from_original(step):
 
 
 
-
-
-
-
-
-
-
-
-
-    
-    
 @step(u'When I click the delete button for the product')
 def when_I_click_delete_button_product(step):
-    minimize_shop_editor()
     wait_for_element_with_id_to_be_clickable("testsizesetitem").click()
 
 @step(u'And I click ok on the confirmation')

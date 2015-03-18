@@ -40,7 +40,6 @@ def and_the_about_content_is_submitted(step):
 @step(u'The about content is saved')
 def the_about_content_is_saved(step):
     world.browser.maximize_window()
-    minimize_shop_editor()
     wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor')
     wait_for_element_with_css_selector_to_be_clickable('#aboutTabAnchor').click()
     aboutLocation = wait_for_element_with_css_selector_to_be_displayed('.aboutContent>p')
