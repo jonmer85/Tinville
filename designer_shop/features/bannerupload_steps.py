@@ -5,7 +5,6 @@ import os
 
 @step(u'the banner button is pressed')
 def when_the_banner_button_is_selected(step):
-    change_viewport_lg()
     wait_for_element_with_id_to_exist('xlBannerUploadButton').click()
 
 @step(u'Then the banner file upload is displayed')

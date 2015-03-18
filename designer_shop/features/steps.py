@@ -127,47 +127,10 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.8)) <= 1
 
-@step(u'When the color tab is selected')
-def when_the_color_tab_is_selected(step):
-    maximize_shop_editor()
-    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#color"]').click()
-    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#color"]')
-
-@step(u'Then the color picker wheel is displayed')
-def then_the_color_picker_wheel_is_displayed(step):
-    wait_for_element_with_css_selector_to_be_displayed('#color.tab-pane.active')
-    assert_id_exists('id_color-colorpicker')
-
-@step(u'And the Create button is displayed')
-def and_the_create_button_is_displayed(step):
-    assert_id_exists('shopColorPicker')
-
-@step(u'And a color is submitted "([^"]*)"')
-def and_a_color_is_submitted(step,color):
-    color_picker = world.browser.find_element_by_id("color")
-    world.browser.find_element_by_id("id_color").clear()
-    color_picker.find_element_by_name("color").send_keys(color)
-    wait_for_element_with_id_to_be_displayed("shopColorPicker")
-    world.browser.find_element_by_id("shopColorPicker").click()
-    wait_for_ajax_to_complete()
-
-@step(u'The selected color is applied to the components of the shop "([^"]*)"')
-def the_selected_color_is_applied_to_the_components_of_the_shop(step, color):
-    color_element = world.browser.find_element_by_css_selector('.shopBackgroundColor')
-    style = color_element.get_attribute("style")
-    bc = "background-color: " + str(color) + ";"
-    assert style == bc
-
-@step(u'And the text color of shop menu is applied "([^"]*)"')
-def and_the_text_color_of_shop_menu(step, color):
-    color_element = world.browser.find_element_by_css_selector('.shopTitleColor')
-    style = color_element.get_attribute("style")
-    assert style == "color: " + color + ";"
 
 
 @step(u'When the logo tab is selected')
 def when_the_logo_tab_is_selected(step):
-    maximize_shop_editor()
     wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#logo"]').click()
     wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#logo"]')
 
