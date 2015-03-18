@@ -77,11 +77,6 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.80)) <= 1
 
-@step(u'When the color tab is selected')
-def when_the_color_tab_is_selected(step):
-    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#color"]').click()
-    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#color"]')
-
 @step(u'Then the color picker wheel is displayed')
 def then_the_color_picker_wheel_is_displayed(step):
     wait_for_element_with_css_selector_to_be_displayed('#color.tab-pane.active')
@@ -106,35 +101,6 @@ def the_selected_color_is_applied_to_the_components_of_the_shop(step):
     style = color_element.get_attribute("style")
     assert style == 'background-color: rgb(251, 28, 14);'
 
-@step(u'When the logo tab is selected')
-def when_the_logo_tab_is_selected(step):
-    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#logo"]').click()
-    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#logo"]')
-
-@step(u'Then the logo file upload is displayed')
-def then_the_logo_file_upload_is_displayed(step):
-    wait_for_element_with_css_selector_to_be_displayed('#logo.tab-pane.active')
-    assert_id_exists('id_logo')
-
-@step(u'And the submit Logo button is displayed')
-def and_the_submit_logo_button_is_displayed(step):
-    assert_id_exists('id_SubmitLogo')
-
-@step(u'And a logo is submitted')
-def and_a_logo_is_submitted(step):
-    logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys(os.path.join(MEDIA_ROOT, "images/logo.jpg"))
-    wait_for_element_with_id_to_be_displayed("id_SubmitLogo")
-    world.browser.find_element_by_id("id_SubmitLogo").click()
-
-@step(u'The selected logo file is saved')
-def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo.jpg')
-
-@step(u'When the banner tab is selected')
-def when_the_banner_tab_is_selected(step):
-    wait_for_element_with_css_selector_to_be_clickable('#optionContent>li>a[href="#banner"]').click()
-    wait_for_element_with_css_selector_to_be_displayed('#optionContent>.active>a[href="#banner"]')
 
 @step(u'Then the banner file upload is displayed')
 def then_the_banner_file_upload_is_displayed(step):
