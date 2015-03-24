@@ -16,15 +16,15 @@ Feature: Add item to the shopping bag
     Then The checkout form should be displayed
 
   @yori
-  Scenario: Checkout page using arrows to control number of items
-    Given Demo page
-    When The shopping bag is empty
-    Then I add an item to my shopping bag
-    Then I go to the checkout page
-    When I increase the number of items by 2 using arrow
-    Then The total sum should be 3
-    And I decrease the number of items using arrow by 1
-    Then The total sum should be 2
+#  Scenario: Checkout page using arrows to control number of items
+#    Given Demo page
+#    When The shopping bag is empty
+#    Then I add an item to my shopping bag
+#    Then I go to the checkout page
+#    When I increase the number of items by 2 using arrow
+#    Then The total sum should be 3
+#    And I decrease the number of items using arrow by 1
+#    Then The total sum should be 2
 
 
 #  Scenario: Checkout
