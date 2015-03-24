@@ -91,7 +91,7 @@
             <tr id="orderInfo" class="dashboardCollapse collapse">
                 <td class="hidden"></td>
                 <td data-th="{% trans "Order Total" %}">{{ order.total_incl_tax|currency:order.currency }}</td>
-                <td data-th="{% trans "Date of purchase" %}">{{ order.date_placed|date:"d/m/y" }}</td>
+                <td data-th="{% trans "Date of purchase" %}">{{ order.date_placed|date:"m/d/y" }}</td>
                 <td data-th="{% trans "Time of purchase" %}">{{ order.date_placed|date:"H:i" }}</td>
                 <td data-th="{% trans "Status" %}">{{ order.status|default:"N/A" }}</td>
             </tr>
@@ -173,7 +173,7 @@
                                 </label>
                             </div>
                         </div>
-                        <!-- Modal -->
+
                         <div class="modal fade" id="shipItModal" tabindex="-1" role="dialog" aria-labelledby="shipItModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-sm">
                                 <div class="modal-content">

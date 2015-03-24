@@ -11,15 +11,27 @@
       {% if shop.banner %}
             <span data-picture class="banner">
                 {% if shop.mobileBanner %}
-                    <span data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
+                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}">
+                        {% if editmode %}
+                            <button id= type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                        {% endif %}
+                    </span>
                 {% else %}
-                    <span data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}"></span>
+                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}">
+                        {% if editmode %}
+                            <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                        {% endif %}
+                    </span>
                 {% endif %}
-                <span data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)"></span>
-            </span>
+                <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)">
+                {% if editmode %}
+                    <button id="xlBannerUploadButton" type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                {% endif %}
+                </span>
 
+            </span>
       {% else %}
-          <div class=" shopBanner shopBackgroundColor">
+          <div class="shopBanner shopBackgroundColor">
           </div>
       {% endif %}
 

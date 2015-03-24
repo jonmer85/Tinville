@@ -6,8 +6,18 @@ Feature: Dashboard Index Page
     When I click the user Icon
     Then I can see the dropdown menu
     Then I should 'not' see the Dashboard link
+    When I go to the url '/dashboard'
+    Then I should not see the Dashboard page
+
+  Scenario: Accessing the Dashboard
+    Given I am logged in as <user>
+    when I click on the user Icon
+    Then I should see the Dashboard link
+    When I click on 'Dashboard'
+    Then I should see the Dashboard page
 
   Scenario: Designer Index Layout
+    Given I am logged in as
 
   Scenario: Designer Index Shop Stats
 

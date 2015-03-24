@@ -201,17 +201,6 @@ def scroll_to_element(element):
 # Tinville site specific utilities
 
 # Utilities
-def minimize_shop_editor():
-    if css_selector_exists("#minMaxIcon.glyphicon-chevron-down"):
-        wait_for_element_with_id_to_be_displayed("minMaxIcon").click()
-        time.sleep(1)
-        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-up")
-
-def maximize_shop_editor():
-    if css_selector_exists("#minMaxIcon.glyphicon-chevron-up"):
-        wait_for_element_with_id_to_be_clickable("minMaxIcon").click()
-        time.sleep(1)
-        wait_for_element_with_css_selector_to_be_displayed("#minMaxIcon.glyphicon-chevron-down")
 
 def sign_in(email, password):
     change_viewport_lg()

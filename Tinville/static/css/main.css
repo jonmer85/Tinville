@@ -1730,3 +1730,8 @@ textarea
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll !important;
 }
+
+/* so modals don't push stuff over.. */
+body {
+    padding-right: 0px !important;
+}
