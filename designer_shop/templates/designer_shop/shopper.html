@@ -25,13 +25,13 @@
 
 			<div class="hidden-xs collapse navbar-collapse editIconContainer">
 				<ul class="nav navbar-nav">
+                    {% if editmode %}
+                        <li><a class="shopTitleColor" id="editorTour">Shop Tour</a></li>
+                    {% endif %}
 					<li class="shopTabLink active"><a class="shopTitleColor" data-toggle="tab" href="#shopTab">Shop</a></li>
 					<li id="aboutTabLink "><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
                     {% if editmode %}
                         <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
-                    {% endif %}
-                    {% if editmode %}
-                        <li><a class="shopTitleColor" id="editorTour">Shop Tour</a></li>
                     {% endif %}
 				</ul>
 			</div>
