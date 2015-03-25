@@ -205,6 +205,7 @@
             {
                 $("#menuContainer").css("width",winWidth-100)
             }
+            $('#tinvilleTagBannerXS').removeClass("hidden");
         }
       function cartCount()
       {

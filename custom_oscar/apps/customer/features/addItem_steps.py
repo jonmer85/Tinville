@@ -19,6 +19,10 @@ from common.lettuce_utils import *
 def demo_page(step):
      world.browser.get(lettuce.django.get_server().url("/demo/testsizesetitem"))
 
+@step(u'Then I go to the checkout page')
+def then_I_go_to_the_checkout_page(step):
+    world.browser.get(lettuce.django.get_server().url("/cartdetail"))
+
 @step(u'The shopping bag is empty')
 def the_shopping_bag_is_empty(step):
      assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 0)
@@ -64,10 +68,9 @@ def given_checkout_page_with_an_item_to_checkout(step):
 def when_I_increase_the_number_of_items_by_2_using_arrow(step):
     product = world.browser.find_element_by_tag_name('table')
     rows = product.find_elements_by_tag_name('tbody')
-    #print rows[0]
     inputField = rows[0].find_element_by_css_selector("""td[data-th="Quantity"]>input""")
-    #inputField.send_keys(Keys.ARROW_UP)
-    #inputField.send_keys(Keys.ARROW_UP)
+    inputField.send_keys(Keys.ARROW_UP)
+    inputField.send_keys(Keys.ARROW_UP)
 
 @step(u'Then The total sum should be 3')
 def then_the_total_sum_should_be_3(step):
@@ -75,7 +78,7 @@ def then_the_total_sum_should_be_3(step):
     rows = product.find_elements_by_tag_name('tbody')
     #print rows[0]
     quantityNumber = rows[0].find_element_by_css_selector("""td[data-th="Quantity"]>input""")
-    #assert_selector_contains_text(quantityNumber, 3)
+    assert_selector_contains_text(quantityNumber, 3)
     value = quantityNumber.get_attribute("value")
     #print value
     assert True
@@ -85,7 +88,7 @@ def and_I_decrease_the_number_of_items_using_arrow_by_1(step):
     product = world.browser.find_element_by_tag_name('table')
     rows = product.find_elements_by_tag_name('tbody')
     inputField = rows[0].find_element_by_css_selector("""td[data-th="Quantity"]>input""")
-   # inputField.send_keys(Keys.ARROW_DOWN)
+    inputField.send_keys(Keys.ARROW_DOWN)
 
 @step(u'Then The total sum should be 2')
 def then_the_total_sum_should_be_2(step):
