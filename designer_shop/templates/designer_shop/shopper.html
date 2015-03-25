@@ -30,6 +30,9 @@
                     {% if editmode %}
                         <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
                     {% endif %}
+                    {% if editmode %}
+                        <li><a class="shopTitleColor" id="editorTour">Shop Tour</a></li>
+                    {% endif %}
 				</ul>
 			</div>
         </div>
@@ -100,7 +103,7 @@
             </div>
         </div>
     </div>
-
+    <div id="hiddenShopperField"></div>
 
 {% endblock %}
 
