@@ -553,27 +553,28 @@
         function RemoveWrongSizeTypes(newSizeType) {
             switch (newSizeType) {
                 case "sizeSet":
+                    // Need to get parent and removeChild since IE does not support "remove()"
                     $(".sizeDimensionSelectionTemplate").each(function() {
-                        (this).remove();
+                        $(this).remove();
                     });
                     $(".sizeNumberSelectionTemplate").each(function() {
-                        (this).remove();
+                         $(this).remove();
                     });
                     break;
                 case "sizeDim":
                     $(".sizeSetSelectionTemplate").each(function() {
-                        (this).remove();
+                         $(this).remove();
                     });
                     $(".sizeNumberSelectionTemplate").each(function() {
-                        (this).remove();
+                         $(this).remove();
                     });
                     break;
                 case "sizeNum":
                     $(".sizeSetSelectionTemplate").each(function() {
-                        (this).remove();
+                         $(this).remove();
                     });
                     $(".sizeDimensionSelectionTemplate").each(function() {
-                        (this).remove();
+                         $(this).remove();
                     });
                     break
             }
