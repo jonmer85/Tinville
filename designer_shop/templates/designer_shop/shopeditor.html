@@ -223,6 +223,7 @@
 
         $(document).ready(function () {
             resetEditFormParsley();
+            showProductModalIfErrors();
         });
 
         var changeItemPriceDataTypes = function() {
@@ -373,9 +374,16 @@
             }
         };
 
+        function scrollToBottomOfProductCreationForm() {
+                $('#productCreationForm').animate({scrollTop: $('#productCreationForm')[0].scrollHeight}, 500);
+            }
+
         $(document).on('change','#id_sizeVariation',function(){
             var selectedValue = $("#id_sizeVariation option:selected");
             var sizesFieldSet = $("#sizesFieldSet");
+
+
+
             sizesFieldSet.removeClass("hidden");
             var sizeType = selectedValue[0].value;
             var sizeTypeString = sizeTypeStringFromNum(sizeType);
@@ -387,6 +395,7 @@
             RemoveWrongSizeTypes(sizeTypeString);
             addNewSizeRow(sizeTypeString);
             wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+            scrollToBottomOfProductCreationForm();
         });
 
         function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
@@ -403,7 +412,7 @@
                 if (selectedValue[0].value != "0") {
                     if($(this).closest('.accordion-group').next().length == "0") {
                         //Add a new size set row
-                        $('#productCreationForm').animate({scrollTop: $('#productCreationForm')[0].scrollHeight}, 500);
+                        scrollToBottomOfProductCreationForm();
                         addNewSizeRow(sizeTypeString);
                     }
                 }
@@ -890,16 +899,22 @@
                     currentEditForm = thisClick.attr('data-navigation');
                     image_cropping.init();
                     $('#processing-modal').modal('hide');
-                    showModal();
+                    showProductModal();
                 });
             }
             else
             {
-                showModal();
+                showProductModal();
             }
         });
 
-        var showModal = function(){
+        var showProductModalIfErrors = function(){
+            if($('#productCreationModal .alert-danger').length > 0 || $('#productCreationModal .help-block').length > 0){
+                showProductModal();
+            }
+        };
+
+        var showProductModal = function(){
             showImageFields();
             changeItemPriceDataTypes();
             $(".modal-body").css('max-height', $(window).height() *.75 + 'px');
