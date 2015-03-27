@@ -170,6 +170,10 @@ def my_primary_image_is_visible_and_different_from_original(step):
     assert wait_for_element_with_css_selector_to_exist("#itemSelectedImageLink").get_attribute("href") != world.browser.originalImageURL, \
         "Because the image should be different"
 
+@step(u'there should be an error stating that "(.*)"')
+def there_should_be_an_error(step, error_msg):
+    assert_selector_contains_text('#productCreationForm .help-block', error_msg)
+
 
 
 @step(u'When I click the delete button for the product')
