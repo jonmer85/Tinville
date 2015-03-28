@@ -1,5 +1,6 @@
 from datetime import timedelta
 from decimal import Decimal as D, ROUND_UP
+from custom_oscar.apps.customer.views import _get_shipping_address_pk_that_is_shop_shipping_address
 from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
 from django.utils.timezone import now
 from oscar.core.loading import get_model
@@ -64,6 +65,10 @@ class IndexView(CoreIndexView):
 
         orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
 
+        designer_payment_info_not_configured = len(self.request.user.recipient_id) == 0
+
+        designer_shop_shipping_address_not_configured = _get_shipping_address_pk_that_is_shop_shipping_address(self.request) is None
+
         open_alerts = StockAlert.objects.filter(status=StockAlert.OPEN)
         closed_alerts = StockAlert.objects.filter(status=StockAlert.CLOSED)
 
@@ -111,6 +116,8 @@ class IndexView(CoreIndexView):
                 'status'
             ).values('status').annotate(freq=Count('id')),
 
-            'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count()
+            'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count(),
+            'designer_payment_info_not_configured': designer_payment_info_not_configured,
+            'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
         }
         return stats
