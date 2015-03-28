@@ -1,18 +1,63 @@
-
-var shopEditorItems = new Tour({
+function aboutPageFunc() {
+        $("#aboutTabAnchor").click();
+}
+function aboutProfileFunc() {
+        $('#aboutBoxModal').modal();
+}
+function shopProfileFunc() {
+    $("#aboutBoxModal").modal('hide');
+}
+function backToShopTab() {
+    $("#shopTabAnchor").click();
+}
+function addItemIconFunc() {
+    $('#productCreationModal').modal();
+}
+function endItemFunc() {
+    $("#productCreationModal").modal('hide');
+}
+var shopEditorItems;
+shopEditorItems = new Tour({
     steps: [
         {
-            element: "#menuContainer",
+            element: "#editorTour",
             title: "How To: Edit Shop",
             content: "Welcome to Tinville and our quick tour of how to create a shop."
+        },
+        {
+            element: "#aboutTabAnchor",
+            title: "How To: Edit Shop",
+            content: "This tab brings you to the 'About' your shop page.",
+            onNext: aboutPageFunc
+        },
+        {
+            element: "#aboutAddProfileBtn",
+            title: "How To: Edit Shop",
+            content: "Click the 'Add Your Profile' button to access your shop profile information.",
+            onNext: aboutProfileFunc
+        },
+        {
+            element: "#hiddenShopperField",
+            template: "",
+            duration: 1000
+        },
+        {
+            element: "#div_id_aboutImg",
+            title: "How To: Edit Shop",
+            content: "Here you can enter your Shop Profile information. Click Submit to save your changes or click cancel.",
+            onNext: shopProfileFunc
+        },
+        {
+            element: "#shopTabAnchor",
+            title: "How To: Edit Shop",
+            content: "To go back to your shop click the Shop Tab.",
+            onNext: backToShopTab
         },
         {
             element: "#addItemImg",
             title: "How To: Edit Shop",
             content: "To Add a new Item click the Add Item Icon.",
-            onNext: function(tour) {
-                showModal();
-            }
+            onNext: addItemIconFunc
         },
         {
             element: "#hiddenShopperField",
@@ -22,42 +67,18 @@ var shopEditorItems = new Tour({
         {
             element: "#id_title",
             title: "How To: Edit Shop",
-            content: "Enter the name of the product."
+            content: "Please enter all the product fields. Don't forget to scroll!"
         },
         {
-            element: "#id_description_ifr",
+            element: "#productCreateModelClose",
             title: "How To: Edit Shop",
-            content: "Enter the description of the product."
-        },
-        {
-            element: "#id_category",
-            title: "How To: Edit Shop",
-            content: "Select the category of the product."
-        },
-        {
-            element: "#id_price",
-            title: "How To: Edit Shop",
-            content: "Set the price of the product."
-        },
-        {
-            element: "#id_images-0-original",
-            title: "How To: Edit Shop",
-            content: "Upload an image of the product."
-        },
-        {
-            element: "#div_id_sizeVariation",
-            title: "How To: Edit Shop",
-            content: "Select the size of the product."
-        },
-        {
-            element: "#itemModalFooterSubmit",
-            title: "How To: Edit Shop",
-            content: "Submit the new product or click close to cancel."
+            content: "Submit the new product or click close to cancel.",
+            onNext: endItemFunc
         }
-    ]});
-
-shopEditorItems.init();
+    ]
+});
 
 $("#editorTour").click(function() {
+    shopEditorItems.init();
     shopEditorItems.restart();
 });

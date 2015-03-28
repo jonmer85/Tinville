@@ -28,7 +28,7 @@
                     {% if editmode %}
                         <li><a class="shopTitleColor" id="editorTour">Shop Tour</a></li>
                     {% endif %}
-					<li class="shopTabLink active"><a class="shopTitleColor" data-toggle="tab" href="#shopTab">Shop</a></li>
+					<li class="shopTabLink active"><a class="shopTitleColor" id="shopTabAnchor" data-toggle="tab" href="#shopTab">Shop</a></li>
 					<li id="aboutTabLink "><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
                     {% if editmode %}
                         <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
@@ -89,7 +89,7 @@
                             {% endif %}
                         {% else %}
                             {% if editmode %}
-                                <button type="button" class="btn btn-primary btn editButton fa fa-pencil-square-o" data-toggle="modal" data-target="#aboutBoxModal">
+                                <button id="aboutAddProfileBtn" type="button" class="btn btn-primary btn editButton fa fa-pencil-square-o" data-toggle="modal" data-target="#aboutBoxModal">
                                     Add Your Profile
                                 </button>
                             {% endif %}
