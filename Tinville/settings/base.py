@@ -275,16 +275,17 @@ HAYSTACK_CONNECTIONS = {
 # DJANGO OSCAR SETTINGS
 OSCAR_HOMEPAGE = "/"
 OSCAR_DEFAULT_CURRENCY = '$'
-OSCAR_INITIAL_ORDER_STATUS = 'Pending'
-OSCAR_INITIAL_LINE_STATUS = 'Pending'
+OSCAR_INITIAL_ORDER_STATUS = 'Ready for Shipment'
+OSCAR_INITIAL_LINE_STATUS = 'Ready for Shipment'
 OSCAR_ORDER_STATUS_PIPELINE = {
-    'Pending': ('Being processed', 'Cancelled',),
-    'Being processed': ('Processed', 'Cancelled',),
+    'Ready for Shipment': ('Partially Shipped', 'Shipped', 'Cancelled'),
+    'Partially Shipped': ('Shipped', 'Returned', 'Partially Cancelled'),
+    'Shipped': ('Returned', 'Partially Shipped'),
     'Cancelled': (),
 }
 
 OSCAR_LINE_STATUS_PIPELINE = {
-    'Pending': ('Partially Shipped', 'Shipped', 'Cancelled'),
+    'Ready for shipment': ('Partially Shipped', 'Shipped', 'Cancelled'),
     'Partially Shipped': ('Shipped', 'Returned', 'Partially Cancelled'),
     'Shipped': ('Returned', 'Partially Shipped'),
     'Cancelled': (),
