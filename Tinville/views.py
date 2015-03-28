@@ -1,6 +1,7 @@
-from django.views.generic import ListView
-
 from custom_oscar.apps.catalogue.models import Product
+
+from designer_shop.models import Shop
+from django.views.generic import ListView
 
 
 class HomeListView(ListView):
@@ -9,6 +10,4 @@ class HomeListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        return Product.objects.all()
-
-
+        return Product.objects.filter(shop = Shop.objects.filter(user__is_approved = True))

@@ -165,7 +165,7 @@ class ProductCreationForm(forms.ModelForm):
             products.objects.get(title__iexact=title, parent__isnull=True)
         except ObjectDoesNotExist:
             return title
-        raise forms.ValidationError('Item name already exist.')
+        raise forms.ValidationError('Item name already exists.')
 
     def save(self, shop, sizes, sizeType):
         is_edit = self.instance.pk is not None

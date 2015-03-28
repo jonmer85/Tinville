@@ -8,6 +8,7 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
+from itertools import chain
 from designer_shop.models import Shop
 from custom_oscar.apps.order.models import ShippingEvent
 from custom_oscar.apps.order.exceptions import *
@@ -29,6 +30,7 @@ def queryset_orders_for_user(user):
     To allow access to an order for a non-staff user, at least one line's
     partner has to have the user in the partner's list.
     """
+
     if user.is_staff:
         queryset = Order._default_manager.select_related(
         'billing_address', 'billing_address__country',
