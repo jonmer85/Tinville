@@ -193,11 +193,11 @@ h3.app-ico:before {
 .btn-primary.active,
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  background-color: #005096;
+  background-color: #F44B16;
 }
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #003563 \9;
+  background-color: #F44B16 \9;
 }
 .btn-primary,
 .btn-danger {

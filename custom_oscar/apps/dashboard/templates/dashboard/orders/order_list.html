@@ -83,7 +83,17 @@
                         <button type="submit" class="btn btn-primary" name="download_selected">{% trans "Download" %}</button>
                     </div>
                 </div>
-                <h3><i class="icon-shopping-cart glyphicon glyphicon-large"></i>{{ queryset_description }}</h3>
+                <h3>
+                    <i class="icon-shopping-cart glyphicon glyphicon-large"></i>
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary active" onclick="showOrdersReadyToBeShipped()">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Ready for Shipment
+                      </label>
+                      <label class="btn btn-primary" onclick="showAllOrders()">
+                        <input type="radio" name="options" id="option2" autocomplete="off">All Orders
+                      </label>
+                    </div>
+                </h3>
             </caption>
             <table id="orders" class="collapseTableXS table-condensed table table-striped table-bordered table-hover panel-group">
                 <thead>
@@ -150,3 +160,31 @@
         oscar.dashboard.orders.initTable();
         oscar.dashboard.search.init();
     {% endblock onbodyload %}
+
+    {% block javascript %}
+        {{ block.super }}
+        <script>
+            $( document ).ready(function() {
+                showOrdersReadyToBeShipped();
+            });
+
+            var showOrdersReadyToBeShipped = function() {
+                $("tbody tr").each(function() {
+                    var statusTD = $(this).find("td[data-th='Status']");
+                    if(statusTD.length > 0) {
+                        var status = statusTD[0].innerHTML;
+
+                        if(status!= "Ready for Shipment" && status != "Partially Shipped") {
+                            $(this).addClass("hidden");
+                        }
+
+                    }
+                })
+            };
+
+            var showAllOrders = function() {
+                $("tbody tr").removeClass("hidden");
+            };
+        </script>
+    {% endblock javascript %}
+
