@@ -3,7 +3,7 @@ from decimal import Decimal as D, ROUND_UP
 from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
 from django.utils.timezone import now
 from oscar.core.loading import get_model
-from django.db.models import Avg, Sum, Count
+from django.db.models import Avg, Sum, Count, Q
 from oscar.core.compat import get_user_model
 from oscar.apps.promotions.models import AbstractPromotion
 from oscar.apps.dashboard.views import IndexView as CoreIndexView
@@ -62,6 +62,8 @@ class IndexView(CoreIndexView):
         orders = queryset_orders_for_user(self.request.user)
         orders_last_day = orders.filter(date_placed__gt=datetime_24hrs_ago)
 
+        orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
+
         open_alerts = StockAlert.objects.filter(status=StockAlert.OPEN)
         closed_alerts = StockAlert.objects.filter(status=StockAlert.CLOSED)
 
@@ -107,6 +109,8 @@ class IndexView(CoreIndexView):
 
             'order_status_breakdown': orders.order_by(
                 'status'
-            ).values('status').annotate(freq=Count('id'))
+            ).values('status').annotate(freq=Count('id')),
+
+            'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count()
         }
         return stats

@@ -25,7 +25,7 @@ Feature: Designer Shop
     Given I have at least 3 items in the demo shop
     When I select the "filterType" "Boots"
     Then I should have "1" items in the demo shop
-@senay
+
   Scenario: Gender Type Combo Filter Functionality
     Given the demo shop
     Given I have at least 3 items in the demo shop
