@@ -98,7 +98,7 @@
         </ul>
         <ul id="nav-xs" class="nav nav-pills nav-stacked visible-xs">
             <li class="text-center dropdown active"><a id="orderContentDropdownHead" href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order contents" %} <span class="caret"></span></a>
-                <ul id="orderContentDropdown" class="dropdown-menu specialDropdown" roll="menu">
+                <ul id="orderContentDropdown" class="dropdown-menu" role="menu">
                 {% block nav_tabs_xs %}
                     <li class="text-center {% if active_tab == 'lines' %}active{% endif %}"><a href="#lines" data-toggle="tab">{% trans "Order contents" %}</a></li>
                     <li class="text-center {% if active_tab == 'shipping' %}active{% endif %}"><a href="#shipping" data-toggle="tab">{% trans "Shipping" %}</a></li>
