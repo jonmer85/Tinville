@@ -46,7 +46,7 @@ def then_i_can_see_the_following_elements(step):
 
 @step(u'the default values for an item are as follows')
 def then_the_default_values_for_an_item_are_as_follows(step):
-    wait_for_ajax_to_complete()
+    # wait_for_ajax_to_complete()
     for itemdetailvalues in step.hashes:
         theitem = str(itemdetailvalues["ID"])
         thedefaultvalue = str(itemdetailvalues["DefaultValue"]).replace('"', '')
@@ -60,6 +60,7 @@ def then_the_default_values_for_an_item_are_as_follows(step):
 
 @step(u'I select the color (.*)')
 def when_i_select_a_color(step, color):
+    time.sleep(1)
     Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value(str(color))
 
 @step(u'my color is (.*)')
@@ -70,7 +71,7 @@ def then_my_color_is(step, color):
 @step(u'I try to select a size there are no options')
 def when_i_try_select_a_size_before_selecting_color(step):
     amountofoptions = len(Select(world.browser.find_element_by_id("itemSizeSelection")).all_selected_options)
-    assert amountofoptions == 0, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
+    assert amountofoptions == 1, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
 
 @step(u'I select the size (.*)')
 def when_I_select_a_size(step, size):

@@ -102,14 +102,14 @@
                                     <div class="row">
                                         <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
                                             <select id="itemColorSelection" class="form-control selectpicker" required>
-                                                <option value="" disabled><i>Choose a Color</i></option>
-                                                <option value="" disabled><i>Colors Loading...</i></option>
+                                                <option value=""><i>Choose a Color</i></option>
+                                                <option value=""><i>Colors Loading...</i></option>
                                             </select>
                                         </div>
                                         <div class="itemSizeSelection itemDetailBox itemDetailBoxSize col-xs-6 col-sm-5">
                                             <select id="itemSizeSelection" class="form-control selectpicker" required>
-                                                <option value="" disabled><i>Choose a Size</i></option>
-                                                <option value="" disabled><i>Please select a color first</i></option>
+                                                <option value=""><i>Choose a Size</i></option>
+                                                <option value=""><i>Please select a color first</i></option>
                                             </select>
                                         </div>
                                     </div>
@@ -439,11 +439,11 @@ $( function()
     }
     setInterval(refreshvariants, 60000);
     $("#itemSizeSelection").change(function() {
-{#        $('option[value=""]').attr('disabled', true);#}
+        $('option[value=""]').attr('disabled', true);
     });
 
     $("#itemColorSelection").change(function() {
-{#        $('option[value=""]').attr('disabled', true);#}
+        $('option[value=""]').attr('disabled', true);
         $.each(myresponse.responseJSON.variants, function(key, val) {
             var sizelist = [];
             if (key === $("#itemColorSelection").val())
