@@ -8,7 +8,6 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
-from itertools import chain
 from designer_shop.models import Shop
 from custom_oscar.apps.order.models import ShippingEvent
 from custom_oscar.apps.order.exceptions import *

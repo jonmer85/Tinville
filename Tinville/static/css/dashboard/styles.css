@@ -71,6 +71,13 @@ input[disabled] {
     cursor: pointer;
 }
 
+@media screen and (max-width: 767px) {
+    .dropdown-menu>li>a
+    {
+        color: #dcdcdc;
+    }
+}
+
 @media screen {
   #printSection {
       display: none;
