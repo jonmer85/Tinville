@@ -19,14 +19,30 @@
 {% block dashboard_content %}
 
 <div class="table-header">
+    <i class="glyphicon glyphicon-bell"></i> {% trans "Your Alerts" %}
+</div>
+
+<div class="content-block">
+    <div class="row">
+        <aside class="col-md-3 order-graph-details">
+            <a href="{% url 'dashboard:order-list' %}">
+                <label class="label label-default btn"><span><i class="glyphicon glyphicon-envelope"></i>{{ orders_ready_to_be_shipped }}</span>{% trans "Order Ready to be Shipped" %}</label>
+            </a>
+            <label class="label label-default"><span><i class="glyphicon glyphicon-exclamation-sign"></i></span>{% trans "Setup Payment Info" %}</label>
+            <label class="label label-default"><span><i class="glyphicon glyphicon-ok-sign"></i></span>{% trans "Shop Shipping Address OK" %}</label>
+        </aside>
+    </div>
+</div>
+
+<div class="table-header">
     <i class="glyphicon glyphicon-signal"></i> {% trans "Your Shop Stats" %}
 </div>
 
 <div class="content-block">
     <div class="row">
         <aside class="col-md-3 order-graph-details">
-            <label class="label label-default"><span><i class="glyphicon glyphicon-shopping-cart"></i>{{ total_orders_last_day }}</span>{% trans "Total Orders" %}</label>
-            <label class="label label-default"><span><i class="glyphicon glyphicon-hand-right"></i>{{ total_customers_last_day }}</span>{% trans "New Customers" %}</label>
+            <label class="label label-default"><span><i class="glyphicon glyphicon-shopping-cart"></i>{{ total_orders_last_day }}</span>{% trans "Total Orders - Last 24 Hours" %}</label>
+            <label class="label label-default"><span><i class="glyphicon glyphicon-hand-right"></i>{{ total_customers_last_day }}</span>{% trans "New Customers - Last 24 Hours" %}</label>
             <label class="label label-default"><span><i class="glyphicon glyphicon-dashboard"></i>{{ total_customers }}</span>{% trans "Total Customers" %}</label>
             <label class="label label-default"><span><i class="glyphicon glyphicon-book"></i>{{ total_products }}</span>{% trans "Total Products" %}</label>
         </aside>
