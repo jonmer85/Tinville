@@ -35,6 +35,25 @@ the content for this basic editor should include the following fields:
     | Green  | LG    | 3        |
     And my primary image item1_1 and secondary image item1_2 are visible
 
+  Scenario: Create Basic Item on Demo Shop with existing item name raises error
+	Given the demo shop editor
+	Then I should see 3 product total
+    When the add item button is pressed
+	And I fill in the general add item fields with
+    | Title           | Description                     | Category                 | Price | Image1             | Image2             | SizeVariation |
+    | TestSizeSetItem | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item1_1.jpg | images/item1_2.jpg | 1
+	And I choose the size SM with row number 1 and I fill the following quantities and colors
+    | Color | Quantity  |
+    | Red   | 7         |
+    | Blue  | 2         |
+	And I choose the size LG with row number 2 and I fill the following quantities and colors
+    | Color | Quantity  |
+    | Green | 3         |
+    | Blue  | 5         |
+    And I submit this item
+    Then there should be an error stating that "Item name already exists"
+	Then I should see 3 product total
+
   Scenario: Create Basic Item on Demo Shop using size sets on XS screen
     Given the demo shop editor
     And a mobile view

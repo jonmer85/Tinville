@@ -597,6 +597,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             else:
                 form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
                                            sizes=sizes)
+
             if form.is_valid():
                 canonicalProduct = form.save(shop, sizes, sizeVariationType)
                 image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
@@ -606,9 +607,9 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                     messages.success(request,
                                  ("Item has been successfully {0}!").format("created" if is_create else "updated"))
                     return renderShopEditor(request, shop, item=item)
-
-
-                return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
+            else:
+                image_formset = ProductImageFormSet(instance=item if item else None)
+            return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
         return renderShopEditor(request, shop, item=item)
 

@@ -60,28 +60,28 @@
 
         <div>
             {% block payment_info %}
-                <div class="sub-header">
-                    <h2>{% trans "Payment" %}</h2>
-                </div>
-                <div class="well well-success">
-                    <h4>{% trans "Payment" %}</h4>
-                    {% for source in order.sources.all %}
-                        <p>
-                        {% if source.reference %}
-                            {% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name reference=source.reference %}
-                                Allocation of {{ amount }} from type {{ type }} (reference: {{ reference }})
-                            {% endblocktrans %}
-                        {% else %}
-                            {% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name %}
-                                Allocation of {{ amount }} from type {{ type }}
-                            {% endblocktrans %}
-                        {% endif %}
-                        </p>
-                    {% empty %}
-                        <p>
-                        {% trans "No payment was required for this order." %}
-                        </p>
-                    {% endfor %}
+{#                <div class="sub-header">#}
+{#                    <h2>{% trans "Payment" %}</h2>#}
+{#                </div>#}
+{#                <div class="well well-success">#}
+{#                    <h4>{% trans "Payment" %}</h4>#}
+{#                    {% for source in order.sources.all %}#}
+{#                        <p>#}
+{#                        {% if source.reference %}#}
+{#                            {% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name reference=source.reference %}#}
+{#                                Allocation of {{ amount }} from type {{ type }} (reference: {{ reference }})#}
+{#                            {% endblocktrans %}#}
+{#                        {% else %}#}
+{#                            {% blocktrans with amount=source.amount_allocated|currency:source.currency type=source.source_type.name %}#}
+{#                                Allocation of {{ amount }} from type {{ type }}#}
+{#                            {% endblocktrans %}#}
+{#                        {% endif %}#}
+{#                        </p>#}
+{#                    {% empty %}#}
+{#                        <p>#}
+{#                        {% trans "No payment was required for this order." %}#}
+{#                        </p>#}
+{#                    {% endfor %}#}
 
                     {% if order.billing_address %}
                         <h4>{% trans "Billing address" %}</h4>
@@ -104,7 +104,7 @@
     <div class="basket-title ">
         <div class="row">
             <h4 class="col-md-6">{% trans "Items purchased" %}</h4>
-            <h4 class="col-md-3 align-center hidden-xs">{% trans "Estimated dispatch date" %}</h4>
+{#            <h4 class="col-md-3 align-center hidden-xs">{% trans "Estimated dispatch date" %}</h4>#}
             <h4 class="col-md-1 align-center hidden-xs">{% trans "Quantity" %}</h4>
             <h4 class="col-md-2 align-right hidden-xs">{% trans "Total" %}</h4>
         </div>
