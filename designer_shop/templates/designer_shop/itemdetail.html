@@ -76,7 +76,6 @@
                                          <div class="">
                                             {% for image in images %}
                                                 {% if not image.is_primary %}
-
                                                     <div class="col-xs-3 col-md-12 otherImage">
                                                         <a href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
                                                             <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
@@ -104,11 +103,13 @@
                                         <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
                                             <select id="itemColorSelection" class="form-control selectpicker" required>
                                                 <option value=""><i>Choose a Color</i></option>
+                                                <option value=""><i>Colors Loading...</i></option>
                                             </select>
                                         </div>
                                         <div class="itemSizeSelection itemDetailBox itemDetailBoxSize col-xs-6 col-sm-5">
                                             <select id="itemSizeSelection" class="form-control selectpicker" required>
                                                 <option value=""><i>Choose a Size</i></option>
+                                                <option value=""><i>Please select a color first</i></option>
                                             </select>
                                         </div>
                                     </div>
