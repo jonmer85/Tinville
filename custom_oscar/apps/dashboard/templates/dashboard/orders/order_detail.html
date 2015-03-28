@@ -33,41 +33,6 @@
 {% endblock  %}
 
 {% block dashboard_content %}
-    {% block customer_information %}
-    <div class="table-header text-center hidden-xs">
-        <i class="glyphicon glyphicon-user"></i>{% trans "Customer Information" %}
-    </div>
-    <table class="collapseTableXS table table-striped table-bordered table-hover">
-        <thead>
-            {% if order.guest_email %}
-                <tr><td>{% trans "Customer checked out as a guest." %}</td></tr>
-            {% elif order.user %}
-                <tr>
-                    {% if user.is_staff %}
-                        <th>{% trans "Name" %}</th>
-                    {% endif %}
-                    <th>{% trans "Email address" %}</th>
-                </tr>
-        </thead>
-            <tbody>
-                <tr class="visible-xs text-center" data-toggle="collapse" data-target="#customerInfo">
-                    <td>
-                        <i class="glyphicon glyphicon-user"></i> {% trans "Customer Information" %}
-                    </td>
-                </tr>
-                <tr id="customerInfo" class="dashboardCollapse collapse">
-                    <td class="hidden"></td>
-                    {% if user.is_staff %}
-                        <td data-th="{% trans "Name" %}">{{ order.user.get_full_name|default:"-" }}</td>
-                    {% endif %}
-                    <td data-th="{% trans "Email address" %}">{{ order.user.email|default:"-" }}</td>
-                </tr>
-            {% else %}
-                <tr><td>{% trans "Customer has deleted their account." %}</td></tr>
-            {% endif %}
-            </tbody>
-    </table>
-    {% endblock customer_information %}
 
     {% block order_information %}
     <div class="table-header text-center hidden-xs">
@@ -271,7 +236,7 @@
                                     <tr id="orderline_{{ line.id }}" class="dashboardCollapse collapse">
                                         <td class="hidden"></td>
                                         <td data-th="{% trans "Select" %}">
-                                            <span><input type="checkbox" name="selected_line" value="{{ line.id }}" /></span>
+                                            <span><input type="checkbox" name="selected_line" checked value="{{ line.id }}" /></span>
                                             {% if "Shipped" in line.shipping_event_breakdown %}
                                                 <span><input type="text" class="form-control" name="selected_line_qty_{{ line.id }}" value="{{ line.quantity|subtract:line.shipping_event_breakdown.Shipped.quantity }}" class="col-md-1" size="2" style="width:40px" /></span>
                                             {% else %}
@@ -824,6 +789,42 @@
             {% block extra_tabs %}{% endblock %}
         </div>
     </div>
+    {% block customer_information %}
+    <div class="table-header text-center hidden-xs">
+        <i class="glyphicon glyphicon-user"></i>{% trans "Customer Information" %}
+    </div>
+    <table class="collapseTableXS table table-striped table-bordered table-hover">
+        <thead>
+            {% if order.guest_email %}
+                <tr><td>{% trans "Customer checked out as a guest." %}</td></tr>
+            {% elif order.user %}
+                <tr>
+                    {% if user.is_staff %}
+                        <th>{% trans "Name" %}</th>
+                    {% endif %}
+                    <th>{% trans "Email address" %}</th>
+                </tr>
+        </thead>
+            <tbody>
+                <tr class="visible-xs text-center" data-toggle="collapse" data-target="#customerInfo">
+                    <td>
+                        <i class="glyphicon glyphicon-user"></i> {% trans "Customer Information" %}
+                    </td>
+                </tr>
+                <tr id="customerInfo" class="dashboardCollapse collapse">
+                    <td class="hidden"></td>
+                    {% if user.is_staff %}
+                        <td data-th="{% trans "Name" %}">{{ order.user.get_full_name|default:"-" }}</td>
+                    {% endif %}
+                    <td data-th="{% trans "Email address" %}">{{ order.user.email|default:"-" }}</td>
+                </tr>
+            {% else %}
+                <tr><td>{% trans "Customer has deleted their account." %}</td></tr>
+            {% endif %}
+            </tbody>
+    </table>
+    {% endblock customer_information %}
+
 {% endblock dashboard_content %}
 
 {% block onbodyload %}
