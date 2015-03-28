@@ -70,7 +70,7 @@ def then_my_color_is(step, color):
 @step(u'I try to select a size there are no options')
 def when_i_try_select_a_size_before_selecting_color(step):
     amountofoptions = len(Select(world.browser.find_element_by_id("itemSizeSelection")).all_selected_options)
-    assert amountofoptions == 1, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
+    assert amountofoptions == 2, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
 
 @step(u'I select the size (.*)')
 def when_I_select_a_size(step, size):
