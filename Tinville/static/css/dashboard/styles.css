@@ -67,6 +67,10 @@ input[disabled] {
     z-index: 999 !important;
 }
 
+.collapseTableXS tr.visible-xs {
+    cursor: pointer;
+}
+
 @media screen {
   #printSection {
       display: none;
