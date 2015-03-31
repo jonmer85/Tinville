@@ -285,7 +285,7 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 }
 
 OSCAR_LINE_STATUS_PIPELINE = {
-    'Ready for shipment': ('Partially Shipped', 'Shipped', 'Cancelled'),
+    'Ready for Shipment': ('Partially Shipped', 'Shipped', 'Cancelled'),
     'Partially Shipped': ('Shipped', 'Returned', 'Partially Cancelled'),
     'Shipped': ('Returned', 'Partially Shipped'),
     'Cancelled': (),
