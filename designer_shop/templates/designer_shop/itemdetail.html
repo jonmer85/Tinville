@@ -498,7 +498,9 @@ $( function()
                 });
                 if (variantprice === "")
                 {
-                    variantprice = 'From $ ' + myresponse.responseJSON.minprice;
+{#                    TODO: Add this back when we had indiviudal pricing#}
+{#                    variantprice = 'From $' + myresponse.responseJSON.minprice;#}
+                      variantprice = '$' + myresponse.responseJSON.minprice;
                 }
                 if (numberquantity === "")
                 {
@@ -512,7 +514,9 @@ $( function()
             }
             if (variantprice === "")
             {
-                variantprice = 'From $ ' + myresponse.responseJSON.minprice;
+                {#     TODO: Add this back when we had indiviudal pricing #}
+                {#  variantprice = 'From $' + myresponse.responseJSON.minprice;#}
+                variantprice = '$' + myresponse.responseJSON.minprice;
                 $('.itemPrice').text(variantprice);
             }
         });

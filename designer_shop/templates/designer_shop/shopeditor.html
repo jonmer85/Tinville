@@ -224,6 +224,7 @@
         $(document).ready(function () {
             resetEditFormParsley();
             showProductModalIfErrors();
+            setMaxModalHeight();
         });
 
         var changeItemPriceDataTypes = function() {
@@ -917,13 +918,18 @@
         var showProductModal = function(){
             showImageFields();
             changeItemPriceDataTypes();
-            $(".modal-body").css('max-height', $(window).height() *.75 + 'px');
+            setMaxModalHeight();
             $('#productCreationModal').modal();
         }
 
         $(window).resize(function (){
-            $(".modal-body").css('max-height', $(window).height() *.75 + 'px');
+            setMaxModalHeight();
         });
+
+        var setMaxModalHeight = function () {
+            heightToSubtract =
+            $(".modal-body").css('max-height', ($(window).height() *.9 - 140) + 'px');
+        }
 
     </script>
 {% endblock %}
