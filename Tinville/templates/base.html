@@ -16,7 +16,7 @@
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+    <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
     {#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
     {#    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">#}
@@ -27,6 +27,7 @@
     {% compress css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
+
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
@@ -549,6 +550,8 @@
         <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/fastclick.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
+        <script src="{{ STATIC_URL }}js/Tours.js"></script>
     {% endblock javascript_library %}
     <script>
 
