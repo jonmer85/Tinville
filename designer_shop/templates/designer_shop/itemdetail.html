@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="itemPrice center visible-xs col-xs-12">
-                                From $ {{ item.min_variant_price_excl_tax }}
+                                From $ {{ item.min_variant_price_excl_tax|floatformat:2 }}
                             </div>
                             <div class="col-xs-12 col-sm-6" id="idItemDetail">
                                 <div>
@@ -97,7 +97,7 @@
                                         {{ item.title }}
                                     </div>
                                     <div class="itemPrice hidden-xs">
-                                        From $ {{ item.min_variant_price_excl_tax }}
+                                        From $ {{ item.min_variant_price_excl_tax|floatformat:2 }}
                                     </div>
                                     <div class="row">
                                         <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
