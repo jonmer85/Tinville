@@ -18,18 +18,37 @@
 
 {% block dashboard_content %}
 
-<div class="table-header">
+<div id="alerts-header" class="table-header">
     <i class="glyphicon glyphicon-bell"></i> {% trans "Your Alerts" %}
 </div>
 
 <div class="content-block">
     <div class="row">
-        <aside class="col-md-3 order-graph-details">
-            <a href="{% url 'dashboard:order-list' %}">
-                <label class="label label-default btn"><span><i class="glyphicon glyphicon-envelope"></i>{{ orders_ready_to_be_shipped }}</span>{% trans "Order Ready to be Shipped" %}</label>
-            </a>
-            <label class="label label-default"><span><i class="glyphicon glyphicon-exclamation-sign"></i></span>{% trans "Setup Payment Info" %}</label>
-            <label class="label label-default"><span><i class="glyphicon glyphicon-ok-sign"></i></span>{% trans "Shop Shipping Address OK" %}</label>
+        <aside id="alerts-body" class="col-md-3 order-graph-details">
+            {% if orders_ready_to_be_shipped > 0 %}
+                <a href="{% url 'dashboard:order-list' %}">
+                    <label class="label label-default btn alert-info-important">
+                        <span><i class="glyphicon glyphicon-envelope"></i>{{ orders_ready_to_be_shipped }}</span>
+                        {% trans "Orders Ready to be Shipped" %}
+                    </label>
+                </a>
+            {% endif %}
+            {% if designer_payment_info_not_configured %}
+                <a href="{% url 'designer-payment-info' %}">
+                    <label class="label label-default btn alert-danger-important">
+                        <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+                        {% trans "Setup Payment Info" %}
+                    </label>
+                </a>
+            {% endif %}
+            {% if designer_shop_shipping_address_not_configured %}
+                <a href="{% url 'customer:address-list' %}">
+                    <label class="label label-default btn alert-danger-important">
+                        <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+                        {% trans "Setup Shop Shipping Address" %}
+                    </label>
+                </a>
+            {% endif %}
         </aside>
     </div>
 </div>
@@ -205,3 +224,21 @@
 </div> 
 
 {% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $( document ).ready(function() {
+            checkAlerts();
+        });
+
+        var checkAlerts = function() {
+            if($("#alerts-body").children().length == 0) {
+
+                $("#alerts-header").append(" - No new alerts");
+                $("#alerts-header").next(".content-block").remove();
+
+            }
+        };
+    </script>
+{% endblock javascript %}

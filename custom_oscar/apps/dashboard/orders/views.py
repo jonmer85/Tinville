@@ -1,3 +1,7 @@
+import json
+import re
+import logging
+
 from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.translation import ugettext_lazy as _
@@ -8,15 +12,11 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from oscar.apps.dashboard.orders.views import OrderStatsView as CoreOrderStatsView
 from oscar.core.loading import get_model
 from django.views.generic import View
-from itertools import chain
-from designer_shop.models import Shop
-from custom_oscar.apps.order.models import ShippingEvent
-from custom_oscar.apps.order.exceptions import *
-import json
-import re
 import easypost
-import logging
+
+from custom_oscar.apps.order.exceptions import *
 from common.utils import isNoneOrEmptyOrWhitespace, ExtractDesignerIdFromOrderId
+
 
 Order = get_model('order', 'Order')
 Partner = get_model('partner', 'Partner')
@@ -27,11 +27,15 @@ def queryset_orders_for_user(user):
     """
     Returns a queryset of all orders that a user is allowed to access.
     A staff user may access all orders.
-    To allow access to an order for a non-staff user, at least one line's
+    To allow access to an order for a non-staff user, at least one line'soo
     partner has to have the user in the partner's list.
     """
 
-    if user.is_staff:
+    if user.is_staff and user.is_seller:
+        partners = Partner._default_manager.filter(users=user)
+        orderlines = [l.order_id for l in Line.objects.filter(partner__in=partners)]
+        return Order.objects.filter(id__in=orderlines).distinct().filter(number__contains="-") | Order.objects.distinct().exclude(number__contains="-")
+    elif user.is_staff:
         queryset = Order._default_manager.select_related(
         'billing_address', 'billing_address__country',
         'shipping_address', 'shipping_address__country',
@@ -130,7 +134,7 @@ class OrderDetailView(CoreOrderDetailView):
             order = kwargs['object']
             ctx['box_types'] = self.get_shipment_context(order)
             ctx['box_types_json'] = json.dumps(ctx['box_types'])
-        except ValueError as e:
+        except (ValueError, ObjectDoesNotExist) as e:
             #NOTE: If get shipment context fails we return empty box types
             ctx['box_types'] = []
             ctx['box_types_json'] = []
