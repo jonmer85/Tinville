@@ -542,3 +542,5 @@ LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
 
 #Overriding oscars required address fields for custom validation
 OSCAR_REQUIRED_ADDRESS_FIELDS = {}
+
+OSCAR_HIDDEN_FEATURES = ["reviews"]
