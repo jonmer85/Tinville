@@ -39,10 +39,12 @@
                     <h4 class="modal-title" id="bannerUploadModalLabel">Upload Your Banner</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
-                        {% load crispy_forms_tags %}
-                        {% crispy bannerUploadForm %}
-                    </form>
+                    <div class="container">
+                        <form class="tab-pane row" id="banner" enctype="multipart/form-data" method="post">
+                            {% load crispy_forms_tags %}
+                            {% crispy bannerUploadForm %}
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="bannerModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitBanner').click()">Submit</button>
@@ -60,10 +62,12 @@
                     <h4 class="modal-title" id="colorPickerModalLabel">Choose your Color</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="tab-pane row" id="color" action="ajax_color" method="post">
-                        {% load crispy_forms_tags %}
-                        {% crispy designerShopColorPicker %}
-                    </form>
+                    <div class="container">
+                        <form class="tab-pane row" id="color" action="ajax_color" method="post">
+                            {% load crispy_forms_tags %}
+                            {% crispy designerShopColorPicker %}
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="colorModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" data-dismiss="modal" onclick="$('#id_ShopColorPicker').click()">Submit</button>
@@ -82,10 +86,12 @@
                     <h4 class="modal-title" id="aboutBoxModalLabel">Edit About You</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">
-                         {% load crispy_forms_tags %}c
-                         {% crispy aboutBoxForm %}
-                    </form>
+                    <div class="container">
+                        <form class="tab-pane row active" id="about" enctype="multipart/form-data" method="post">
+                             {% load crispy_forms_tags %}
+                             {% crispy aboutBoxForm %}
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="aboutModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAboutContent').click()">Submit</button>
@@ -103,10 +109,12 @@
                     <h4 class="modal-title" id="productCreationModalLabel">Add Item</h4>
                 </div>
                 <div class="modal-body" id="productCreationForm">
-                    <form novalidate="novalidate" class="tab-pane row" action="{% if editItemMode %}{{ url_path }}{% endif %}" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">
-                        {% load crispy_forms_tags %}
-                        {% crispy productCreationForm %}
-                    </form>
+                    <div class="container">
+                        <form novalidate="novalidate" class="tab-pane row" action="{% if editItemMode %}{{ url_path }}{% endif %}" class="tab-pane" id="addOrEditItem" enctype="multipart/form-data" method="post">
+                            {% load crispy_forms_tags %}
+                            {% crispy productCreationForm %}
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="itemModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAddEditItem').click()">Submit</button>
@@ -224,6 +232,7 @@
         $(document).ready(function () {
             resetEditFormParsley();
             showProductModalIfErrors();
+            setMaxModalHeight();
         });
 
         var changeItemPriceDataTypes = function() {
@@ -917,13 +926,18 @@
         var showProductModal = function(){
             showImageFields();
             changeItemPriceDataTypes();
-            $(".modal-body").css('max-height', $(window).height() *.75 + 'px');
+            setMaxModalHeight();
             $('#productCreationModal').modal();
         }
 
         $(window).resize(function (){
-            $(".modal-body").css('max-height', $(window).height() *.75 + 'px');
+            setMaxModalHeight();
         });
+
+        var setMaxModalHeight = function () {
+            heightToSubtract =
+            $(".modal-body").css('max-height', ($(window).height() *.9 - 140) + 'px');
+        }
 
     </script>
 {% endblock %}

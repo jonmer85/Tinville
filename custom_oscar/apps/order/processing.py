@@ -8,6 +8,9 @@ import logging
 
 # from .models import PaymentEventType
 from decimal import Decimal as D
+
+SHIPPED = 'Shipped'
+PARTIALLY_SHIPPED = 'Partially Shipped'
 Partner = get_model('partner', 'Partner')
 PartnerAddress = get_model('partner', 'PartnerAddress')
 ShippingEvent = get_model('order', 'ShippingEvent')
@@ -26,23 +29,27 @@ class EventHandler(processing.EventHandler):
 
         group = None
 
-        if event_type.name == 'Shipped':
+        if event_type.name == SHIPPED:
             max_query = ShippingEvent.objects.all().aggregate(Max('group'))['group__max']
             group = (max_query+1) if max_query is not None else 0
 
             self.consume_stock_allocations(
                 order, lines, line_quantities)
             for line, quantity in zip(lines, line_quantities):
-                if "Shipped" in line.shipping_event_breakdown:
-                    if line.shipping_event_breakdown["Shipped"]["quantity"] + quantity == line.quantity:
-                        line.set_status("Shipped")
+                if SHIPPED in line.shipping_event_breakdown:
+                    if line.shipping_event_breakdown[SHIPPED]["quantity"] + quantity == line.quantity:
+                        line.set_status(SHIPPED)
                     else:
-                        line.set_status("Partially Shipped")
+                        line.set_status(PARTIALLY_SHIPPED)
                 else:
                     if line.quantity == quantity:
-                        line.set_status("Shipped")
+                        line.set_status(SHIPPED)
                     else:
-                        line.set_status("Partially Shipped")
+                        line.set_status(PARTIALLY_SHIPPED)
+            if all(line.status == SHIPPED for line in lines):
+                order.set_status(SHIPPED)
+            else:
+                order.set_status(PARTIALLY_SHIPPED)
 
             # if they are shipping, they should have payed for shipping (at least for now).. create that payment event here..
             #TODO add support here for shipping not using easypost (aka.. ignore this next section)
