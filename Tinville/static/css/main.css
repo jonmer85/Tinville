@@ -474,7 +474,7 @@ body
     margin-left: 25%;
 }
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     #submit-id-userform
     {
@@ -495,7 +495,7 @@ body
 
 /*The CSS below is for the footer -Jeff Bowman*/
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     .footer-nav
     {
@@ -515,7 +515,7 @@ body
     margin-bottom : 1em;
 }
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     .footerRow
     {
@@ -565,7 +565,7 @@ body
     font-weight : bold;
 }
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     #tinvilleFooterListItemPrimary:first-child
     {
@@ -1125,7 +1125,7 @@ textarea
     /*overflow-x: hidden;*/
 }
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     #shoppingcartitems
     {
@@ -1272,7 +1272,7 @@ textarea
     margin-left : -240px;
 }
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     .cartDropdown
     {
@@ -1327,7 +1327,7 @@ textarea
 }
 
 /*Start mobile navbar*/
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     .navbarSliding
     {
@@ -1465,7 +1465,7 @@ textarea
     overflow-y : auto;
 }
 
-@media (max-width : 768px)
+@media (max-width : 767px)
 {
     .navbar-collapse2
     {

@@ -8,7 +8,7 @@
 .feedback_toggle{
 
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .feedback_toggle {
         top: 20%;
         width: 80%;
