@@ -2,13 +2,12 @@
 from decimal import Decimal
 import os
 import os.path
-
 from celery.schedules import crontab
 from getenv import env
 from unipath import Path
 from django.utils.translation import ugettext_lazy as _
 from oscar import get_core_apps
-
+from oscar.defaults import *
 
 
 # HEROKU Change!!!
