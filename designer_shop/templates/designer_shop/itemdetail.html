@@ -440,10 +440,12 @@ $( function()
     setInterval(refreshvariants, 60000);
     $("#itemSizeSelection").change(function() {
         $('option[value=""]').attr('disabled', true);
+        $("#id_AddToCart").text("Add to bag");
     });
 
     $("#itemColorSelection").change(function() {
         $('option[value=""]').attr('disabled', true);
+        $("#id_AddToCart").text("Add to bag");
         $.each(myresponse.responseJSON.variants, function(key, val) {
             var sizelist = [];
             if (key === $("#itemColorSelection").val())
@@ -509,7 +511,7 @@ $( function()
                 $('.itemPrice').text(variantprice);
                 $('.itemStockQuantity').text(variantquantity);
                 $('#buyQuantity').attr('max', numberquantity)
-                $("#id_AddToCart").text("Add to bag");
+
                 return false
             }
             if (variantprice === "")
