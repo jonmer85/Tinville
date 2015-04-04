@@ -176,7 +176,7 @@
     text-decoration: none;
     color: white;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
      .shopLogoDiv {
          height: 100px;
          width: 100px;
@@ -198,7 +198,7 @@
     padding:3px;
     text-decoration: none;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
      .shopLogoDiv2 {
          height: 100px;
          width: 100px;
@@ -332,7 +332,7 @@
     margin-bottom: 0px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     #shopEditorWindow {
         margin-right: 0px;
     }
@@ -366,7 +366,7 @@
     font-size: 5em;
     color: lightgray;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
      .emptyShop {
          /*margin-top: 150px;*/
          font-size: 3em;
@@ -390,14 +390,14 @@
     box-shadow: 0px -2px 10px -4px  #f46430;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     #optionPanel {
        box-shadow: 0px 2px 10px -4px  #616161;
        border-top: 1px solid #e7e5e6;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .nav-pills {
         font-size: 1.5em;
         font-weight: bold;
@@ -436,7 +436,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .nav-pills>li>a {
         text-align: center;
     }
@@ -542,14 +542,14 @@
     padding: 0px;
 }
 
-@media (max-width: 768px)
+@media (max-width: 767px)
 {
     .otherItemImages {
         padding-top: 3px;
     }
 }
 
-/*@media (max-width: 768px) {*/
+/*@media (max-width: 767px) {*/
     .otherImage {
         padding: 2px;
     }

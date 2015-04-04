@@ -484,7 +484,7 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-TINVILLE_ORDER_SALES_CUT = Decimal(0.15)  # Tinville takes 15% of designer sales
+TINVILLE_ORDER_SALES_CUT = Decimal(0.20)  # Tinville takes 20% of designer sales
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {
@@ -547,3 +547,5 @@ LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
 
 #Overriding oscars required address fields for custom validation
 OSCAR_REQUIRED_ADDRESS_FIELDS = {}
+
+OSCAR_HIDDEN_FEATURES = ["reviews"]
