@@ -1,13 +1,13 @@
 # Django settings for Tinville project.
 from decimal import Decimal
+import os
+
 from celery.schedules import crontab
 from getenv import env
-import os.path
-import os
 from unipath import Path
 from django.utils.translation import ugettext_lazy as _
 from oscar import get_core_apps
-from oscar.defaults import *
+
 
 # HEROKU Change!!!
 DEBUG = False
@@ -155,7 +155,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.core.context_processors.metadata',
     'Tinville.context_processors.google_analytics_id',
     'Tinville.context_processors.include_shops',
-    'user.context_processors.get_user_shop'
+    'user.context_processors.get_user_shop',
+    'django.core.context_processors.request'
     )
 
 # Actual Tinville business logic
@@ -199,6 +200,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'smart_load_tag',
     'floppyforms',
+    'endless_pagination',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -264,6 +266,9 @@ LOGGING = {
         },
     },
 }
+
+ENDLESS_PAGINATION_PER_PAGE = 20
+ENDLESS_PAGINATION_LOADING = """<div class="well col-xs-12"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate center-block" style="text-align: center;"></span></div>"""
 
 # For django-oscar search
 HAYSTACK_CONNECTIONS = {

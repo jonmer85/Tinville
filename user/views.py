@@ -14,9 +14,6 @@ import stripe
 
 from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName, BetaAccessForm
 from user.models import TinvilleUser
-from custom_oscar.apps.dashboard.views import IndexView as dashboard_view
-
-from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 
 Partner = get_model('partner', 'Partner')
 
@@ -74,6 +71,8 @@ class DesignerPaymentInfoView(FormView):
     def form_invalid(self, form):
         messages.warning(self.request, "Error occurred while processing card information.")
         return super(DesignerPaymentInfoView, self).form_invalid(form)
+
+
 
 
 def register(request):

@@ -1,44 +1,38 @@
 import json
 import collections
 import re
-import shutil
-import datetime
-from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
-from custom_oscar.apps.catalogue.models import Product
+
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.core.files.base import ContentFile
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
+from django.template.context import RequestContext
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-import os
-
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
 from oscar.apps.catalogue.models import ProductCategory as Categories
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
+from django.views.generic import ListView
 
+from custom_oscar.apps.catalogue.models import Product
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm, ProductImageFormSet
-
-from common.utils import get_list_or_empty, get_or_none
-from user.forms import BetaAccessForm
 from user.models import TinvilleUser
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation
 
-from django.views.generic import ListView
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 ProductImage = get_model('catalogue', 'ProductImage')
+
 
 class ShopListView(ListView):
     template_name = "shoplist.html"
@@ -79,7 +73,7 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 class get_filter_lists:
     def __init__(self, shop):
         self.shop = shop
-        self.shop_products = get_list_or_empty(Product, shop_id=shop.id, parent__isnull=True)
+        self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
 
     def shop_product_categories(self):
         shopProductCategories = set()
@@ -107,38 +101,47 @@ class get_filter_lists:
 
 
 def shopper(request, slug):
-    shop = get_object_or_404(Shop, slug__iexact=slug)
-    products = get_list_or_empty(Product, shop=shop.id)
+    if not (request.is_ajax() and 'page' in request.POST):
+        shop = get_object_or_404(Shop, slug__iexact=slug)
 
-    if not (shop.user.is_approved):
-        if(request.user.is_active):
-            if(not request.user.slug==shop.user.slug):
+        if not (shop.user.is_approved):
+            if(request.user.is_active):
+                if(not request.user.slug==shop.user.slug):
+                    return HttpResponseRedirect(reverse('under_construction'))
+            else:
                 return HttpResponseRedirect(reverse('under_construction'))
-        else:
-            return HttpResponseRedirect(reverse('under_construction'))
 
 
-    if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
-        if request.user.is_anonymous() or not request.user.is_seller:
-            return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
+        if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
+            if request.user.is_anonymous() or not request.user.is_seller:
+                return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
-    if request.method == 'POST':
-        if request.POST.__contains__('genderfilter'):
-            return render(request, 'designer_shop/shop_items.html', {
+
+        if request.method == 'POST':
+            if request.POST.__contains__('genderfilter'):
+                return render(request, 'designer_shop/shop_items.html', {
+                    'shop': shop,
+                    'products': get_filtered_products(request, shop, request.POST),
+                    'shopProductCount': len(get_filtered_products(request, shop, request.POST)),
+                })
+
+        if request.method == 'GET':
+            products = get_filtered_products(request, shop)
+            shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
+            template = 'designer_shop/shopper.html'
+            page_template = 'designer_shop/item_gallery.html'
+
+            context = {
                 'shop': shop,
-                'products': get_filtered_products(shop, request.POST),
-                'shopProductCount': len(products)
-            })
-
-    if request.method == 'GET':
-        shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
-        return render(request, 'designer_shop/shopper.html', {
-            'shop': shop,
-            'shopgenders': get_filter_lists(shop).genderlist(),
-            'shopcategories': shopcategorynames,
-            'products': products,
-            'shopProductCount': len(products),
-        })
+                'shopgenders': get_filter_lists(shop).genderlist(),
+                'shopcategories': shopcategorynames,
+                'products': products,
+                'shopProductCount': len(products),
+            }
+            if request.is_ajax():
+                template = page_template
+                context = {'products': products}
+            return render_to_response(template, context, context_instance=RequestContext(request))
 
 def check_access_code(request):
     if 'beta_access' in request.COOKIES:
@@ -149,6 +152,7 @@ def check_access_code(request):
         except ObjectDoesNotExist:
             return False
     return False
+
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
@@ -174,14 +178,20 @@ def itemdetail(request, shop_slug, item_slug=None):
     })
 
 
-def get_filtered_products(shop, post):
-    genderfilter = get_dict_value_or_suspicious_operation(post, 'genderfilter')
-    itemtypefilter = get_dict_value_or_suspicious_operation(post, 'typefilter')
-    sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
-    filteredProductList = get_sort_order(Product.objects.filter(
-        Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
-                                         sortfilter)
-    return filteredProductList
+def get_filtered_products(request=None, shop=None, post=None):
+    if post is not None and shop is not None:
+        genderfilter = get_dict_value_or_suspicious_operation(post, 'genderfilter')
+        itemtypefilter = get_dict_value_or_suspicious_operation(post, 'typefilter')
+        sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
+        filteredProductList = get_sort_order(Product.objects.filter(
+            Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
+                                             sortfilter)
+        context = filteredProductList.filter(structure="parent")
+    elif shop is not None:
+        context = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
+    else:
+        context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
+    return context
 
 
 def get_valid_categories_for_filter(gender, type):
@@ -522,10 +532,13 @@ def get_sizes_colors_and_quantities(sizeType, post):
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
     editItem = item is not None
+    products = get_filtered_products(request, shop)
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
-    products = get_list_or_empty(Product, shop=shop.id)
     if not editItem or (editItem and request.is_ajax()):
-        return render(request, 'designer_shop/shopeditor.html', {
+        template = 'designer_shop/shopeditor.html'
+        page_template = 'designer_shop/item_gallery.html'
+
+        context = {
             'editmode': True,
             'shop': shop,
             'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
@@ -548,7 +561,12 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
             'products': products,
             'shopProductCount': len(products),
             'tab' : tab or 'Default'
-        })
+        }
+
+        if request.is_ajax() and 'page' in request.GET:
+            template = page_template
+            context = {'products': products}
+        return render_to_response(template, context, context_instance=RequestContext(request))
     else:
         return redirect('designer_shop.views.shopeditor', shop.slug)
 
