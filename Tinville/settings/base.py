@@ -1,6 +1,7 @@
 # Django settings for Tinville project.
 from decimal import Decimal
 import os
+import os.path
 
 from celery.schedules import crontab
 from getenv import env
