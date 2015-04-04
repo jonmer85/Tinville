@@ -1,10 +1,9 @@
+import logging
+
 from django.db.models import Max
 from oscar.apps.order import processing
-from oscar.apps.payment import exceptions
 from oscar.core.loading import get_model
-from django.conf import settings
-from custom_oscar.apps.order.exceptions import *
-import logging
+
 
 # from .models import PaymentEventType
 from decimal import Decimal as D

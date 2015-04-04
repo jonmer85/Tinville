@@ -1,15 +1,17 @@
 from decimal import Decimal
-from designer_shop.models import Shop
+
 from django.conf import settings
 from django.db.models import Max
 from django.db.models.query_utils import Q
 from django.test import TestCase
-from custom_oscar.apps.order.tasks import pay_designers
 from oscar.core.loading import get_model
-
-from common.factories import create_order, create_product, create_basket_with_products, create_basket
 import stripe
+
+from designer_shop.models import Shop
+from custom_oscar.apps.order.tasks import pay_designers
+from common.factories import create_order, create_product, create_basket_with_products, create_basket
 from user.models import TinvilleUser, DesignerPayout
+
 
 PaymentEvent = get_model('order', 'PaymentEvent')
 ShippingEvent = get_model('order', 'ShippingEvent')
