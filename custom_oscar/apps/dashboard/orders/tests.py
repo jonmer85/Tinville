@@ -125,7 +125,7 @@ class PackageStatusTest(TestCase):
         self.assertEqual(result.reason_phrase, 'BadRequest', "Because the service should return BadRequest")
 
     def test_none_tracking_code_package(self):
-        result = self.client.post(self.requestUrl, json.dumps({"result": { "tracking_code": None, "status": "in_transit"}}), content_type="application/json")
+        result = self.client.post(self.requestUrl, json.dumps({"result": { "tracking_code": None, "carrier": "USPS", "status": "in_transit"}}), content_type="application/json")
         self.assertEqual(result.status_code, 400, "Because the service should return a 400")
         self.assertEqual(result.reason_phrase, 'BadRequest', "Because the service should return BadRequest")
 
