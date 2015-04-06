@@ -156,7 +156,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'Tinville.context_processors.google_analytics_id',
     'Tinville.context_processors.include_shops',
     'user.context_processors.get_user_shop',
-    'django.core.context_processors.request'
     )
 
 # Actual Tinville business logic
