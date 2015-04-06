@@ -200,7 +200,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="submit" id="line_action_submit" name="line_action" value="create_shipping_event" class="btn btn-primary" data-toggle="modal">Confirm Shipping Option</button>
+                                        <button type="submit" id="line_action_submit" name="line_action" class="btn btn-primary" data-toggle="modal">Confirm Shipping Option</button>
                                     </div>
                                 </div>
                             </div>
@@ -912,6 +912,7 @@
             if ( $form.parsley().validate('weightcalc') )
             {
                 $("#processing-modal").modal();
+                $('#line_action_submit').val("create_shipping_event");
                 $("#order_lines_form").submit();
             }
         });
