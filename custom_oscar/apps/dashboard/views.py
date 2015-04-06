@@ -28,6 +28,30 @@ def get_total_product_count(user):
         return len(get_list_or_empty(Product, shop__user=user, parent__isnull=True))
 
 
+def get_dashboard_notifications(request, orders):
+    orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
+    count = orders_ready_to_be_shipped.count()
+    designer_payment_info_not_configured = len(request.user.recipient_id) == 0
+    if designer_payment_info_not_configured:
+        count += 1
+    designer_shop_shipping_address_not_configured = _get_shipping_address_pk_that_is_shop_shipping_address(
+        request) is None
+    if designer_shop_shipping_address_not_configured:
+        count += 1
+
+    return \
+        {
+            "notifications":
+                {
+                    'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count(),
+                    'designer_payment_info_not_configured': designer_payment_info_not_configured,
+                    'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
+                },
+            "count": count
+
+        }
+
+
 class IndexView(CoreIndexView):
     def get_template_names(self):
         if self.request.user.is_staff:
@@ -62,12 +86,6 @@ class IndexView(CoreIndexView):
 
         orders = queryset_orders_for_user(self.request.user)
         orders_last_day = orders.filter(date_placed__gt=datetime_24hrs_ago)
-
-        orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
-
-        designer_payment_info_not_configured = len(self.request.user.recipient_id) == 0
-
-        designer_shop_shipping_address_not_configured = _get_shipping_address_pk_that_is_shop_shipping_address(self.request) is None
 
         open_alerts = StockAlert.objects.filter(status=StockAlert.OPEN)
         closed_alerts = StockAlert.objects.filter(status=StockAlert.CLOSED)
@@ -114,10 +132,8 @@ class IndexView(CoreIndexView):
 
             'order_status_breakdown': orders.order_by(
                 'status'
-            ).values('status').annotate(freq=Count('id')),
+            ).values('status').annotate(freq=Count('id'))
 
-            'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count(),
-            'designer_payment_info_not_configured': designer_payment_info_not_configured,
-            'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
         }
+        stats.update(get_dashboard_notifications(self.request, orders)["notifications"])
         return stats
