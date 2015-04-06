@@ -101,47 +101,46 @@ class get_filter_lists:
 
 
 def shopper(request, slug):
-    if not (request.is_ajax() and 'page' in request.POST):
-        shop = get_object_or_404(Shop, slug__iexact=slug)
+    shop = get_object_or_404(Shop, slug__iexact=slug)
 
-        if not (shop.user.is_approved):
-            if(request.user.is_active):
-                if(not request.user.slug==shop.user.slug):
-                    return HttpResponseRedirect(reverse('under_construction'))
-            else:
+    if not (shop.user.is_approved):
+        if(request.user.is_active):
+            if(not request.user.slug==shop.user.slug):
                 return HttpResponseRedirect(reverse('under_construction'))
+        else:
+            return HttpResponseRedirect(reverse('under_construction'))
 
 
-        if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
-            if request.user.is_anonymous() or not request.user.is_seller:
-                return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
+    if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
+        if request.user.is_anonymous() or not request.user.is_seller:
+            return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
 
-        if request.method == 'POST':
-            if request.POST.__contains__('genderfilter'):
-                return render(request, 'designer_shop/shop_items.html', {
-                    'shop': shop,
-                    'products': get_filtered_products(request, shop, request.POST),
-                    'shopProductCount': len(get_filtered_products(request, shop, request.POST)),
-                })
-
-        if request.method == 'GET':
-            products = get_filtered_products(request, shop)
-            shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
-            template = 'designer_shop/shopper.html'
-            page_template = 'designer_shop/item_gallery.html'
-
-            context = {
+    if request.method == 'POST':
+        if request.POST.__contains__('genderfilter'):
+            return render(request, 'designer_shop/shop_items.html', {
                 'shop': shop,
-                'shopgenders': get_filter_lists(shop).genderlist(),
-                'shopcategories': shopcategorynames,
-                'products': products,
-                'shopProductCount': len(products),
-            }
-            if request.is_ajax():
-                template = page_template
-                context = {'products': products}
-            return render_to_response(template, context, context_instance=RequestContext(request))
+                'products': get_filtered_products(request, shop, request.POST),
+                'shopProductCount': len(get_filtered_products(request, shop, request.POST)),
+            })
+
+    if request.method == 'GET':
+        products = get_filtered_products(request, shop)
+        shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
+        template = 'designer_shop/shopper.html'
+        page_template = 'designer_shop/item_gallery.html'
+
+        context = {
+            'shop': shop,
+            'shopgenders': get_filter_lists(shop).genderlist(),
+            'shopcategories': shopcategorynames,
+            'products': products,
+            'shopProductCount': len(products),
+        }
+        if request.is_ajax():
+            template = page_template
+            context = {'products': products}
+        return render_to_response(template, context, context_instance=RequestContext(request))
 
 def check_access_code(request):
     if 'beta_access' in request.COOKIES:
