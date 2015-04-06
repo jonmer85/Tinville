@@ -171,8 +171,12 @@ def ajax_login(request, *args, **kwargs):
     return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
 def load_user_notifications_count(request):
-    dashboard_notifications = get_dashboard_notifications(request, queryset_orders_for_user(request.user))
-    return HttpResponse(json.dumps({'dashboard_notifications_count': dashboard_notifications["count"]}), content_type='application/json')
+    if(request.user.is_seller):
+        dashboard_notifications = get_dashboard_notifications(request, queryset_orders_for_user(request.user))
+        return HttpResponse(json.dumps({'dashboard_notifications_count': dashboard_notifications["count"]}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'dashboard_notifications_count': 0}), content_type='application/json')
+
 
 class BetaAccessView(FormView):
     template_name = 'beta_access.html'

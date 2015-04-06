@@ -670,8 +670,10 @@
 
         cartCount();
 
-        load_user_notifications();
-        setInterval(load_user_notifications, 60000 );  // Poll every 60 seconds
+        {% if user.is_authenticated and user.is_seller %}
+            load_user_notifications();
+            setInterval(load_user_notifications, 60000 );  // Poll every 60 seconds
+        {% endif %}
 
 
     });
