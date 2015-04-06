@@ -28,7 +28,7 @@
                                                 <a class="overlayEdit col-xs-offset-1 col-xs-1"
                                                    data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
                                                    data-toggle="tooltip" data-placement="left" title="Edit item">
-                                                    <span class="fa fa-pencil-square-o fa-lg tinvilleOrange"></span>
+                                                    <span class="fa fa-pencil-square-o fa-lg tinvilleOrange" style="font-size: 14pt"></span>
                                                 </a>
                                                 <div class="caption col-xs-6">
                                             {% else %}
@@ -45,7 +45,7 @@
                                             {% if editmode %}
                                                 <a id='{{ product.slug }}' class="itemDelete col-xs-1"
                                                    onclick="DeleteConfirmation('{{ product.slug }}')">
-                                                    <span class="fa fa-trash-o fa-lg tinvilleOrange"></span>
+                                                    <span class="fa fa-trash-o fa-lg tinvilleOrange" style="font-size: 14pt"></span>
                                                 </a>
                                             {% endif %}
                                         {% endif %}
