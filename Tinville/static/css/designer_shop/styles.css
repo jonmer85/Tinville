@@ -692,11 +692,13 @@
     position:absolute;
     bottom:10px;
     right:10px;
+    font-size: 14pt;
 }
 
 .colorPickerEditButton {
     position:absolute;
     bottom:19px;
+    font-size: 14pt;
 }
 
 .aboutBoxEditButton {
