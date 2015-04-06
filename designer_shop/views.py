@@ -1,9 +1,11 @@
 import json
 import collections
 import re
+import os
+import datetime
+import shutil
 from operator import itemgetter
 from functools import wraps
-
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.core.files.base import ContentFile
@@ -12,8 +14,7 @@ from django.core.urlresolvers import reverse
 from django.template.context import RequestContext
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
-from django.http import HttpResponse, HttpResponseBadRequest
-from django.contrib import messages
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from oscar.apps.partner.models import StockRecord as StockRecords
@@ -21,7 +22,6 @@ from oscar.apps.catalogue.models import ProductCategory as Categories
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 from django.views.generic import ListView
-
 from custom_oscar.apps.catalogue.models import Product
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
