@@ -1,23 +1,21 @@
+from custom_oscar.apps.customer.views import AddressChangeStatusView
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.base import RedirectView, TemplateView
 from oscar.core.loading import get_class
-
-from custom_oscar.apps.customer.views import AddressChangeStatusView
 from user.decorators import designer_required
+from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
 from user.forms import LoginForm
 from designer_shop.views import ShopListView
-from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
-from django.contrib.auth.decorators import login_required, permission_required
-
-# from Tinville.views import HomeListView
+from Tinville.views import HomeListView
+import django
 from django.contrib.auth import views as auth_views
 from oscar.views.decorators import login_forbidden
 from django.core.urlresolvers import reverse_lazy
-import django
+
 from oscar.app import application
-# from oscar.app import application
 
 admin.autodiscover()
 
