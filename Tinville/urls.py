@@ -11,6 +11,7 @@ from user.views import ajax_login, DesignerPaymentInfoView, BetaAccessView
 from user.forms import LoginForm
 from designer_shop.views import ShopListView
 
+
 # from Tinville.views import HomeListView
 from django.contrib.auth import views as auth_views
 from oscar.views.decorators import login_forbidden

@@ -1,15 +1,17 @@
 from datetime import timedelta
-from decimal import Decimal as D, ROUND_UP
-from custom_oscar.apps.customer.views import _get_shipping_address_pk_that_is_shop_shipping_address
-from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
+from decimal import Decimal as D
+
 from django.utils.timezone import now
 from oscar.core.loading import get_model
 from django.db.models import Avg, Sum, Count, Q
 from oscar.core.compat import get_user_model
-from oscar.apps.promotions.models import AbstractPromotion
 from oscar.apps.dashboard.views import IndexView as CoreIndexView
 from django.views.generic import TemplateView
-from common.utils import get_list_or_empty, get_or_none
+
+from custom_oscar.apps.customer.views import _get_shipping_address_pk_that_is_shop_shipping_address
+from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
+from common.utils import get_list_or_empty
+
 
 ConditionalOffer = get_model('offer', 'ConditionalOffer')
 Voucher = get_model('voucher', 'Voucher')
