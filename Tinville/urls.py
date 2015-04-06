@@ -109,6 +109,7 @@ urlpatterns += patterns('',
     url(r'^total_cart_items$', 'basket.views.total_cart_items'),
     url(r'^delete_item_to_cart$', 'basket.views.delete_item_to_cart'),
     url(r'^load_cart$', 'basket.views.load_cart'),
+    url(r'^load_user_notifications_count$', 'user.views.load_user_notifications_count'),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<slug>[\w-]+)/$', 'designer_shop.views.shopper')
 )

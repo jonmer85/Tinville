@@ -98,7 +98,8 @@
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
+                              <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
+                              <div id="userNotifications-xs" class="userNotifications"></div>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -200%; width: 200px;">
                             {%  if user.is_seller %}
@@ -112,7 +113,7 @@
                             <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
                             <li class="divider"></li>
                             {% if user.is_seller or user.is_staff %}
-                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
@@ -314,7 +315,8 @@
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
+                                      <i id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
+                                      <div id="userNotifications-lg" class="userNotifications"></div>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
                                     {%  if user.is_seller %}
@@ -328,7 +330,7 @@
                                     <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
                                     <li class="divider"></li>
                                     {% if user.is_seller or user.is_staff %}
-                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
@@ -583,58 +585,97 @@
         ga('create', '{{ GOOGLE_ANALYTICS_TRACKING_ID }}', 'auto');
         ga('send', 'pageview');
 
+        load_user_notifications = function() {
+            $.ajax({
+                url: "/load_user_notifications_count",
+                type: "GET",
+                dataType: 'json',
+                success: function (data, textStatus, jqXHR) {
+                    var count = 0;
+                    var dashboard_count = 0;
+                    $.each(data, function (index, item) {
+                        if (index == "dashboard_notifications_count") {
+                            count += item;
+                            dashboard_count += item;
+                        }
+                    });
+                    if (count > 0) {
+                        $(".userNotifications").text(count);
+                        $(".userNotifications").removeClass("hidden");
+                    }
+                    else {
+                        $(".userNotifications").text("");
+                        $(".userNotifications").addClass("hidden");
+                    }
+                    if (dashboard_count > 0) {
+                        $(".dashboardNotifications").text(dashboard_count);
+                        $(".dashboardNotifications").removeClass("hidden");
+                    }
+                    else {
+                        $(".dashboardNotifications").text("");
+                        $(".dashboardNotifications").addClass("hidden");
+                    }
+                },
+                error: function (data, textStatus, jqXHR) {
+                }
+            })
+        };
 
-         $(document).ready(function() {
+        $(document).ready(function() {
 
              var menu = "close";
 
-                $('.menu-toggle').click(function() {
-                    if(menu == "close"){
-                        $('.slidingContent').css('left','70%');
-                        $('.slidingContent').css('opacity','.05');
-                        $('.slidingContent').css('position','fixed');
-                        $('.slidingContent').css('pointer-events','none');
-                        $('.navbarSliding').css('width','70%');
-                        $('.navbarSliding').css('left','70%');
-                        menu="open";
-                    }
-                    else{
-                        $('.slidingContent').css('left','0%');
-                        $('.slidingContent').css('opacity','1');
-                        $('.slidingContent').css('position','relative');
-                        $('.slidingContent').css('pointer-events','auto');
-                        $('.navbarSliding').css('width','0%');
-                        $('.navbarSliding').css('left','0%');
-                        menu="close";
-                    }
-        });
-        var self = $(this);
-        var url = "/load_cart";
-            ajax_req = $.ajax({
-                url: url,
-                type: "GET",
-                dataType: 'json',
-                success: function(data, textStatus, jqXHR) {
-                    $.each(data, function(index, item)
-                    {
-                        if (item.msg == ''){
-                            item.image = "{{ MEDIA_URL }}" + item.image;
-                            AddCartItem(item);
-                            cartCount()
-                        }
-                        else {
-                            $('#messageId').html(item.msg);
-                            $('#messageModal').modal('show');
-                        }
-                    });
-                },
-                error: function(data, textStatus, jqXHR) {
+            $('.menu-toggle').click(function() {
+                if(menu == "close"){
+                    $('.slidingContent').css('left','70%');
+                    $('.slidingContent').css('opacity','.05');
+                    $('.slidingContent').css('position','fixed');
+                    $('.slidingContent').css('pointer-events','none');
+                    $('.navbarSliding').css('width','70%');
+                    $('.navbarSliding').css('left','70%');
+                    menu="open";
+                }
+                else{
+                    $('.slidingContent').css('left','0%');
+                    $('.slidingContent').css('opacity','1');
+                    $('.slidingContent').css('position','relative');
+                    $('.slidingContent').css('pointer-events','auto');
+                    $('.navbarSliding').css('width','0%');
+                    $('.navbarSliding').css('left','0%');
+                    menu="close";
                 }
             });
+        var self = $(this);
+        load_cart_ajax_req = $.ajax({
+            url: "/load_cart",
+            type: "GET",
+            dataType: 'json',
+            success: function(data, textStatus, jqXHR) {
+                $.each(data, function(index, item)
+                {
+                    if (item.msg == ''){
+                        item.image = "{{ MEDIA_URL }}" + item.image;
+                        AddCartItem(item);
+                        cartCount()
+                    }
+                    else {
+                        $('#messageId').html(item.msg);
+                        $('#messageModal').modal('show');
+                    }
+                });
+            },
+            error: function(data, textStatus, jqXHR) {
+            }
+        });
 
         cartCount();
 
+        load_user_notifications();
+        setInterval(load_user_notifications, 60000 );  // Poll every 60 seconds
+
+
     });
+
 
 
     function LoadCartItemDiv(cartItem)

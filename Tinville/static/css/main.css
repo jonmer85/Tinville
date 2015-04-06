@@ -1235,12 +1235,10 @@ textarea
     background     : none;
 }
 
-.cartCount
+.cartCount, .userNotifications, .dashboardNotifications
 {
     width            : 14px;
     z-index          : 11;
-    top              : -7px;
-    right            : 9px;
     background-color : darkred;
     /*background-color: #f46430;*/
     border-color     : #5B595A;
@@ -1249,8 +1247,26 @@ textarea
     color            : #FFFFFF;
     font             : bold 11px Arial;
     line-height      : 14px;
-    position         : absolute;
     text-align       : center;
+}
+
+.dashboardNotifications
+{
+    margin-right: 5px;
+}
+
+.userNotifications
+{
+    top: -27px;
+    right: -12px;
+    position: relative;
+}
+
+.cartCount
+{
+    top: -7px;
+    right: 9px;
+    position: absolute;
 }
 
 .cartLocation
