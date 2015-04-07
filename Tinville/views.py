@@ -1,13 +1,16 @@
-from custom_oscar.apps.catalogue.models import Product
+from django.template.context import RequestContext
+from django.shortcuts import render_to_response
 
-from designer_shop.models import Shop
-from django.views.generic import ListView
+from designer_shop.views import get_filtered_products
 
 
-class HomeListView(ListView):
-    template_name = "home.html"
-    model = Product
-    context_object_name = "products"
-
-    def get_queryset(self):
-        return Product.objects.filter(shop = Shop.objects.filter(user__is_approved = True))
+def home_gallery(request):
+    template = "home.html"
+    page_template = "designer_shop/item_gallery.html"
+    products = get_filtered_products(request)
+    context = {
+        'products': products
+    }
+    if request.is_ajax():
+        template = page_template
+    return render_to_response(template, context, context_instance=RequestContext(request))

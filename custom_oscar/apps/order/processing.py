@@ -1,12 +1,13 @@
-from common.utils import ExtractDesignerIdFromOrderId
-from designer_shop.models import Shop
+import logging
+
 from django.db.models import Max
 from oscar.apps.order import processing
-from oscar.apps.payment import exceptions
 from oscar.core.loading import get_model, get_class
+from common.utils import ExtractDesignerIdFromOrderId
+from designer_shop.models import Shop
+from oscar.apps.payment import exceptions
 from django.conf import settings
 from custom_oscar.apps.order.exceptions import *
-import logging
 
 # from .models import PaymentEventType
 from decimal import Decimal as D
