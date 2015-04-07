@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
