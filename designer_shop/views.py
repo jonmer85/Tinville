@@ -114,25 +114,24 @@ def shopper(request, slug):
         else:
             return HttpResponseRedirect(reverse('under_construction'))
 
-
     if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
         if request.user.is_anonymous() or not request.user.is_seller:
             return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
-
-    if request.method == 'POST':
-        if request.POST.__contains__('genderfilter'):
-            return render(request, 'designer_shop/shop_items.html', {
-                'shop': shop,
-                'products': get_filtered_products(request, shop, request.POST),
-                'shopProductCount': len(get_filtered_products(request, shop, request.POST)),
-            })
-
     if request.method == 'GET':
-        products = get_filtered_products(request, shop)
-        shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
         template = 'designer_shop/shopper.html'
         page_template = 'designer_shop/item_gallery.html'
+        if request.GET.__contains__('genderfilter'):
+            products = get_filtered_products(shop, request.GET, True)
+            return render(request, 'designer_shop/shop_items.html', {
+                'shop': shop,
+                'products': products,
+                'shopProductCount': len(products),
+            })
+
+        products = get_filtered_products(shop)
+        shopcategories, shopcategorynames = get_filter_lists(shop).categorylist()
+
 
         context = {
             'shop': shop,
@@ -145,6 +144,7 @@ def shopper(request, slug):
             template = page_template
             context = {'products': products}
         return render_to_response(template, context, context_instance=RequestContext(request))
+
 
 def check_access_code(request):
     if 'beta_access' in request.COOKIES:
@@ -181,15 +181,15 @@ def itemdetail(request, shop_slug, item_slug=None):
     })
 
 
-def get_filtered_products(request=None, shop=None, post=None):
-    if post is not None and shop is not None:
+def get_filtered_products(shop=None, post=None, filter=None):
+    if shop is not None and filter is True:
         genderfilter = get_dict_value_or_suspicious_operation(post, 'genderfilter')
         itemtypefilter = get_dict_value_or_suspicious_operation(post, 'typefilter')
         sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
         filteredProductList = get_sort_order(Product.objects.filter(
             Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
                                              sortfilter)
-        context = filteredProductList.filter(structure="parent")
+        context = filteredProductList
     elif shop is not None:
         context = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
     else:
@@ -221,6 +221,7 @@ def get_sort_order(filteredobjects, sortfilter):
         return filteredobjects.order_by('date_created')
     elif sortfilter == 'price-asc':
         return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax)
+
     elif sortfilter == 'price-dsc':
         return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax, reverse=True)
     elif sortfilter == 'pop-asc':
@@ -535,7 +536,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
                      bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
     editItem = item is not None
-    products = get_filtered_products(request, shop)
+    products = get_filtered_products(shop)
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
     if not editItem or (editItem and request.is_ajax()):
         template = 'designer_shop/shopeditor.html'
@@ -602,12 +603,12 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 form.save()
                 return renderShopEditor(request, shop, tab='about')
             return renderShopEditor(request, shop, aboutForm=form)
-        elif request.POST.__contains__('genderfilter'):
+        elif request.GET.__contains__('genderfilter'):
+            products = get_filtered_products(shop, request.GET, True)
             return render(request, 'designer_shop/shop_items.html', {
-                'editmode': True,
                 'shop': shop,
-                'products': get_filtered_products(shop, request.POST),
-                'shopProductCount': len(get_list_or_empty(Product, shop=shop.id))
+                'products': products,
+                'shopProductCount': len(products),
             })
         else:
             sizeVariationType = get_dict_value_or_suspicious_operation(request.POST, "sizeVariation")
