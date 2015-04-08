@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class="tab-content ">
+    <div class="tab-content">
         <div class=" tab-pane active" id="shopTab">
             <div class="container comboBoxes">
                 <div class="row">
@@ -147,7 +147,7 @@
         var genderFilter = $("#filterGender option:selected").attr("value");
         var typeFilter = $("#filterType option:selected").attr("value");
         var sortFilter = $("#filterSort option:selected").attr("value");
-        $("#shopItems").load(" #shopItems", {genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){$(this).children().unwrap()});
+        $("#shopItems").load(" #shopItems", $.param({genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){$(this).children().unwrap()}));
         if (genderFilter.match("All"))
             genderFilter = "All";
         if (changeGender)
