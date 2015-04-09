@@ -3,6 +3,7 @@ import collections
 import re
 import shutil
 import datetime
+from django.db import transaction, IntegrityError
 from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
@@ -26,7 +27,7 @@ from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
-    LogoUploadForm, ProductImageFormSet
+    LogoUploadForm, ProductImageFormSet, SIZE_TYPES_AND_EMPTY
 from common.utils import get_list_or_empty, get_or_none
 from user.forms import BetaAccessForm
 from user.models import TinvilleUser
@@ -576,6 +577,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
 
 
 #private method no Auth
+@transaction.atomic
 def processShopEditorForms(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
 
@@ -621,15 +623,22 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                                            sizes=sizes)
 
             if form.is_valid():
-                canonicalProduct = form.save(shop, sizes, sizeVariationType)
-                image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
+                try:
+                    with transaction.atomic():
+                        canonicalProduct = form.save(shop, sizes, sizeVariationType)
+                        image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
 
-                if image_formset.is_valid():
-                    image_formset.save()
-                    messages.success(request,
-                                 ("Item has been successfully {0}!").format("created" if is_create else "updated"))
-                    return renderShopEditor(request, shop, item=item)
+                        if image_formset.is_valid():
+                            image_formset.save()
+                            messages.success(request,
+                                         ("Item has been successfully {0}!").format("created" if is_create else "updated"))
+                            return renderShopEditor(request, shop, item=item)
+                        else:
+                            raise IntegrityError("Image error")
+                except IntegrityError:
+                    form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
             else:
+                form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
                 image_formset = ProductImageFormSet(instance=item if item else None)
             return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
