@@ -28,7 +28,7 @@ from oscar.core.loading import get_model
 
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
-    LogoUploadForm, ProductImageFormSet
+    LogoUploadForm, ProductImageFormSet, SIZE_TYPES_AND_EMPTY
 
 from common.utils import get_list_or_empty, get_or_none
 from user.forms import BetaAccessForm
@@ -608,6 +608,7 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                                  ("Item has been successfully {0}!").format("created" if is_create else "updated"))
                     return renderShopEditor(request, shop, item=item)
             else:
+                form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
                 image_formset = ProductImageFormSet(instance=item if item else None)
             return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
