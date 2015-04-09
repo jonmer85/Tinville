@@ -204,24 +204,27 @@ class DesignerShopTests(TestCase):
 
     def test_escaped_javascript_in_shop_item_editor(self):
         bad_script = "<script>alert('PWND!')</script>"
-        self.client.login(username='demo@user.com', password='tinville')
-        response = self.client.post('/demo/edit/',
-                                    {'category': '37',
-                                     'description': bad_script,
-                                     'price': '3.00',
-                                     'images-INITIAL_FORMS': '1',
-                                     'images-MAX_NUM_FORMS': '5',
-                                     'images-MIN_NUM_FORMS': '1',
-                                     'images-TOTAL_FORMS': '0',
-                                     'sizeSetSelectionTemplate0_colorSelection0': '8',
-                                     'sizeSetSelectionTemplate0_colorSelection1': '',
-                                     'sizeSetSelectionTemplate0_quantityField0': '1',
-                                     'sizeSetSelectionTemplate0_quantityField1': '1',
-                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
-                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
-                                     'sizeVariation': '1',
-                                     'title': 'TestTitle'
-                                    })
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            self.client.login(username='demo@user.com', password='tinville')
+            response = self.client.post('/demo/edit/',
+                                        {'category': '37',
+                                         'description': bad_script,
+                                         'price': '3.00',
+                                         'images-INITIAL_FORMS': '0',
+                                         'images-MAX_NUM_FORMS': '5',
+                                         'images-MIN_NUM_FORMS': '1',
+                                         'images-TOTAL_FORMS': '1',
+                                         'images-0-original': fp,
+                                         'images-0-cropping': '',
+                                         'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                         'sizeSetSelectionTemplate0_colorSelection1': '',
+                                         'sizeSetSelectionTemplate0_quantityField0': '1',
+                                         'sizeSetSelectionTemplate0_quantityField1': '1',
+                                         'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                         'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                         'sizeVariation': '1',
+                                         'title': 'TestTitle'
+                                        })
         self.assertNotContains(response, bad_script)
         response = self.client.get('/demo/testtitle/')
         self.assertNotContains(response, bad_script)

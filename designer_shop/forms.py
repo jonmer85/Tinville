@@ -42,7 +42,7 @@ class ProductCreationForm(forms.ModelForm):
                                          initial=self.get_value_if_in_edit_mode('sizeVariation', '0'))
 
         self.fields['price'] \
-            = forms.DecimalField(decimal_places=2, max_digits=12, initial=self.get_value_if_in_edit_mode('price', None))
+            = forms.DecimalField(decimal_places=2, max_digits=12, localize=True, initial=self.get_value_if_in_edit_mode('price', None))
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
