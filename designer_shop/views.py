@@ -3,6 +3,7 @@ import collections
 import re
 import shutil
 import datetime
+from django.db import transaction, IntegrityError
 from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
@@ -576,6 +577,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
 
 
 #private method no Auth
+@transaction.atomic
 def processShopEditorForms(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
 
@@ -621,14 +623,20 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                                            sizes=sizes)
 
             if form.is_valid():
-                canonicalProduct = form.save(shop, sizes, sizeVariationType)
-                image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
+                try:
+                    with transaction.atomic():
+                        canonicalProduct = form.save(shop, sizes, sizeVariationType)
+                        image_formset = ProductImageFormSet(request.POST, request.FILES, instance=canonicalProduct)
 
-                if image_formset.is_valid():
-                    image_formset.save()
-                    messages.success(request,
-                                 ("Item has been successfully {0}!").format("created" if is_create else "updated"))
-                    return renderShopEditor(request, shop, item=item)
+                        if image_formset.is_valid():
+                            image_formset.save()
+                            messages.success(request,
+                                         ("Item has been successfully {0}!").format("created" if is_create else "updated"))
+                            return renderShopEditor(request, shop, item=item)
+                        else:
+                            raise IntegrityError("Image error")
+                except IntegrityError:
+                    form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
             else:
                 form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
                 image_formset = ProductImageFormSet(instance=item if item else None)
