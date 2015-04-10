@@ -1,5 +1,5 @@
 from datetime import timedelta
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_UP
 
 from django.utils.timezone import now
 from oscar.core.loading import get_model
@@ -31,7 +31,7 @@ def get_total_product_count(user):
 
 
 def get_dashboard_notifications(request, orders):
-    orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
+    orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') | Q(status='Partially Shipped'))
     count = orders_ready_to_be_shipped.count()
     designer_payment_info_not_configured = len(request.user.recipient_id) == 0
     if designer_payment_info_not_configured:
@@ -50,7 +50,6 @@ def get_dashboard_notifications(request, orders):
                     'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
                 },
             "count": count
-
         }
 
 
@@ -76,12 +75,52 @@ class IndexView(CoreIndexView):
         *segments* defines the number of labeling segments used for the y-axis
         when generating the y-axis labels (default=10).
         """
-        # Get datetime for 24 hours ago
+        # Get datetime for 24 hours agao
         time_now = now().replace(minute=0, second=0)
         start_time = time_now - timedelta(hours=hours - 1)
 
         orders_last_day = queryset_orders_for_user(self.request.user).filter(date_placed__gt=start_time)
-        return super(IndexView, self).get_hourly_report()
+
+        order_total_hourly = []
+        for hour in range(0, hours, 2):
+            end_time = start_time + timedelta(hours=2)
+            hourly_orders = orders_last_day.filter(date_placed__gt=start_time,
+                                                   date_placed__lt=end_time)
+            total = hourly_orders.aggregate(
+                Sum('total_incl_tax')
+            )['total_incl_tax__sum'] or D('0.0')
+            order_total_hourly.append({
+                'end_time': end_time,
+                'total_incl_tax': total
+            })
+            start_time = end_time
+
+        max_value = max([x['total_incl_tax'] for x in order_total_hourly])
+        divisor = 1
+        while divisor < max_value / 50:
+            divisor *= 10
+        max_value = (max_value / divisor).quantize(D('1'), rounding=ROUND_UP)
+        max_value *= divisor
+        if max_value:
+            segment_size = (max_value) / D('100.0')
+            for item in order_total_hourly:
+                item['percentage'] = int(item['total_incl_tax'] / segment_size)
+
+            y_range = []
+            y_axis_steps = max_value / D(str(segments))
+            for idx in reversed(range(segments + 1)):
+                y_range.append(idx * y_axis_steps)
+        else:
+            y_range = []
+            for item in order_total_hourly:
+                item['percentage'] = 0
+
+        ctx = {
+            'order_total_hourly': order_total_hourly,
+            'max_revenue': max_value,
+            'y_range': y_range,
+        }
+        return ctx
 
     def get_stats(self):
         datetime_24hrs_ago = now() - timedelta(hours=24)

@@ -546,7 +546,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
         context = {
             'editmode': True,
             'shop': shop,
-            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None),
+            'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None, shop=shop),
             'productImageFormSet': productImageFormSet or ProductImageFormSet(instance=item if editItem else None),
             'editItemMode': editItem,
             'bannerUploadForm': bannerUploadForm or BannerUploadForm(instance=shop),
@@ -617,10 +617,10 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             sizes = get_sizes_colors_and_quantities(sizeVariationType, request.POST)
 
             if is_create:
-                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes)
+                form = ProductCreationForm(request.POST, request.FILES, sizes=sizes, shop=shop)
             else:
                 form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
-                                           sizes=sizes)
+                                           sizes=sizes, shop=shop)
 
             if form.is_valid():
                 try:
