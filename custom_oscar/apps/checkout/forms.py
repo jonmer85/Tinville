@@ -123,17 +123,17 @@ class PaymentInfoForm(forms.Form):
             Div(
                 Fieldset('Expiration Date',
                          Div(
-                             Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-6', autocomplete='off'),
+                             Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-12', autocomplete='off'),
                              css_class="row"
                          ),
-                         css_class='col-xs-7'
+                         css_class='col-xs-6'
                 ),
                 Fieldset('CV Code',
                     Div(
                         Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', autocomplete='off'),
                         css_class="row"
                     ),
-                    css_class='col-xs-5'),
+                    css_class='col-xs-6'),
                 css_class="row"
 
             ),
