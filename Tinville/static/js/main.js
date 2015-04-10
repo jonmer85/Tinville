@@ -303,6 +303,9 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
+    $('#carttotal').text('Total: $');
+    var l = Ladda.create( document.querySelector( '#carttotal' ) );
+    l.start();
     var self = $(this);
     var url = "/delete_item_to_cart";
 
@@ -322,6 +325,7 @@ function RemoveCartItem(itemId)
 
     aggregateTotal();
     cartCount();
+    l.stop();
 }
 
     $("#shoppingcartitems").slimScroll({});
