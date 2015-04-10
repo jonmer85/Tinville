@@ -328,7 +328,7 @@
         }
 
         function rowColorQuantityTemplate(required){
-            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
             if (required === "")
                 numRequired = "";
             var rowColorQuantityTemplate = "" +

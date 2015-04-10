@@ -26,28 +26,22 @@
     <div class="row">
         <aside id="alerts-body" class="col-md-3 order-graph-details">
             {% if orders_ready_to_be_shipped > 0 %}
-                <a href="{% url 'dashboard:order-list' %}">
-                    <label class="label label-default btn alert-info-important">
-                        <span><i class="glyphicon glyphicon-envelope"></i>{{ orders_ready_to_be_shipped }}</span>
-                        {% trans "Orders Ready to be Shipped" %}
-                    </label>
-                </a>
+                <label class="label label-default btn alert-info-important" onclick="window.location='{% url 'dashboard:order-list' %}'">
+                    <span><i class="glyphicon glyphicon-envelope"></i>{{ orders_ready_to_be_shipped }}</span>
+                    {% trans "Orders Ready to be Shipped" %}
+                </label>
             {% endif %}
             {% if designer_payment_info_not_configured %}
-                <a href="{% url 'designer-payment-info' %}">
-                    <label class="label label-default btn alert-danger-important">
-                        <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
-                        {% trans "Setup Payment Info" %}
-                    </label>
-                </a>
+                <label class="label label-default btn alert-danger-important" onclick="window.location='{% url 'designer-payment-info' %}'">
+                    <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+                    {% trans "Setup Payment Info" %}
+                </label>
             {% endif %}
             {% if designer_shop_shipping_address_not_configured %}
-                <a href="{% url 'customer:address-list' %}">
-                    <label class="label label-default btn alert-danger-important">
-                        <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
-                        {% trans "Setup Shop Shipping Address" %}
-                    </label>
-                </a>
+                <label class="label label-default btn alert-danger-important" onclick="window.location='{% url 'customer:address-list' %}'">
+                    <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+                    {% trans "Setup Shop Shipping Address" %}
+                </label>
             {% endif %}
         </aside>
     </div>
@@ -240,5 +234,10 @@
 
             }
         };
+
+        var navigateTo = function(url) {
+            window.location.assign(url);
+            return false;
+        }
     </script>
 {% endblock javascript %}
