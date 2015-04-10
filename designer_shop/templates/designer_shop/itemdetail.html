@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="addToCart col-xs-12">
-                                            <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right" id="id_AddToCart"><i id="okButton" class="glyphicon "></i> Add to Bag</a>
+                                            <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right ladda-button" data-style="expand-left" id="id_AddToCart"><i id="okButton" class="glyphicon "></i> Add to Bag</a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -547,12 +547,15 @@ $( function()
 
 
     $("#id_AddToCart").click(function(e){
+        var l = Ladda.create( document.querySelector( '#id_AddToCart' ) );
+
 
         $('#itemDetailForm').parsley().validate();
         if (false === $('#itemDetailForm').parsley().isValid()) {
             $('.parsley-errors-list').addClass("filled bootstrapError help-block");
         }
         else{
+            l.start();
             $('.parsley-errors-list').remove();
             e.preventDefault();
             var self = $(this)
@@ -592,9 +595,13 @@ $( function()
                         $('#messageModal').modal('show');
                     }
                 });
+                l.stop();
             }
     });
  });
+
+
+
     </script>
 
 {% endblock %}
