@@ -22,7 +22,7 @@ from oscar.core.loading import get_class
 from designer_shop.models import Shop
 
 from oscar.apps.partner import strategy
-from common.utils import get_list_or_empty, get_or_none
+from common.utils import get_list_or_empty, convert_to_currency
 from django.utils.html import strip_tags
 from oscar.apps.basket import signals
 from designer_shop.views import get_single_variant
@@ -50,7 +50,7 @@ def load_cart(request):
                 parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
                 image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
                 stockrecord = get_object_or_404(StockRecords, product_id=basketline.product_id)
-                price_excl_tax = basketline.price_excl_tax
+                price_excl_tax = convert_to_currency(basketline.price_excl_tax)
                 cartInfo = cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord, basketline.quantity, image)
                 cartItems.append(cartInfo)
 
@@ -62,8 +62,8 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'product_id': currentproduct.id,
                 'title': currentproduct.title,
                 'description': strip_tags(parentproduct.description),
-                'price': float(stockrecord.price_excl_tax),
-                'subtotal': float(stockrecord.price_excl_tax * qty),
+                'price': convert_to_currency(stockrecord.price_excl_tax),
+                'subtotal': convert_to_currency(stockrecord.price_excl_tax * qty),
                 'image': str(get_thumbnailer(image[0].original).get_thumbnail({
                             'size': (400, 500),
                             'box': image[0].cropping,
@@ -74,7 +74,7 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'color': color,
                 'size': size,
                 'currentStock' : stockrecord.num_in_stock,
-                'total' : Decimal(basket.total_excl_tax),
+                'total' : convert_to_currency(basket.total_excl_tax),
                 'shop' : currentproduct.shop.name,
                 'shopSlug' : currentproduct.shop.slug,
                 'msg': ''}
@@ -91,8 +91,8 @@ def addBasket(request, product_id, qty):
 
     currentproduct = get_object_or_404(Product, id=product_id)
     parentproduct = get_object_or_404(Product, id=currentproduct.parent_id)
-    price_excl_tax = stockrecord.price_excl_tax * qty
-    price_incl_tax = (stockrecord.price_excl_tax * qty) * tax
+    price_excl_tax = convert_to_currency(stockrecord.price_excl_tax * qty)
+    price_incl_tax = convert_to_currency((stockrecord.price_excl_tax * qty) * tax)
     image = get_list_or_empty(ProductImages, product_id=parentproduct.id)
 
     basket = request.basket
@@ -154,7 +154,7 @@ def update_cart_item(request):
 # Purpose: Get cart total
 def cart_total(request):
     basket = request.basket
-    return HttpResponse(json.dumps({'total': Decimal(basket.total_excl_tax)}, use_decimal=True), content_type='application/json')
+    return HttpResponse(json.dumps({'total': convert_to_currency(basket.total_excl_tax)}, use_decimal=True), content_type='application/json')
 
 def total_cart_items(request):
     basket = request.basket

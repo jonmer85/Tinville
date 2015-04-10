@@ -2,7 +2,7 @@
 {% load smart_load %}
 {% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
 {% load bleach_tags %}
-
+{% load currency_filters %}
 {% block css %}
     {{ block.super }}
 {% endblock css %}
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="itemPrice center visible-xs col-xs-12">
-                                From $ {{ item.min_variant_price_excl_tax|floatformat:2 }}
+                                From {{ item.min_variant_price_excl_tax|currency }}
                             </div>
                             <div class="col-xs-12 col-sm-6" id="idItemDetail">
                                 <div>
@@ -97,7 +97,7 @@
                                         {{ item.title }}
                                     </div>
                                     <div class="itemPrice hidden-xs">
-                                        From $ {{ item.min_variant_price_excl_tax|floatformat:2 }}
+                                        From {{ item.min_variant_price_excl_tax|currency }}
                                     </div>
                                     <div class="row">
                                         <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
@@ -493,7 +493,7 @@ $( function()
                 $.each(val, function() {
                     if (this.size === $("#itemSizeSelection").val())
                     {
-                        variantprice = '$' + this.price
+{#                        variantprice = '$' + this.price#}
                         variantquantity = this.quantity + " remaining"
                         numberquantity = this.quantity
                     }
@@ -520,6 +520,7 @@ $( function()
                 {#  variantprice = 'From $' + myresponse.responseJSON.minprice;#}
                 variantprice = '$' + myresponse.responseJSON.minprice;
                 $('.itemPrice').text(variantprice);
+
             }
         });
     }

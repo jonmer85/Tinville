@@ -1153,9 +1153,6 @@ textarea
 
 .shoppingcartthumbnaildiv
 {
-    width  : 75px;
-    height : 75px;
-    float  : left;
 }
 
 .shoppingcartiteminfo
@@ -1194,7 +1191,7 @@ textarea
 .shoppingcartremovebtn
 {
     height : 50px;
-    width  : 35px;
+    margin-right: 10px;
     float  : right;
 }
 
@@ -1207,8 +1204,7 @@ textarea
 
 .shoppingcartpriceinfo
 {
-    float: right;
-    padding: 8px 5px 5px 5px;
+    padding-top: 10px;
 }
 
 #shoppingcartcheckout
@@ -1304,6 +1300,11 @@ textarea
 .tinvilleOrange
 {
     color : #F46430 !important;
+}
+
+.tinvilleBackgroundOrange
+{
+    background-color : #F46430 !important;
 }
 
 .tinvilleDrayGray
