@@ -2,8 +2,6 @@
 {% block content %}
     <div class="container">
         <div align="center"><font size="12" color="f46430">Tinville</font></div>
-
-        <div class="container">
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
@@ -15,11 +13,10 @@
                 </tr>
                 </thead>
             </table>
-            <div>
+            <div class="row">
                 <div style="margin-bottom:2%;" class="col-xs-2 col-md-6 col-xs-offset-7 col-md-offset-9 text-center"><strong id="checkoutTotal">Total: </strong></div>
                 <div style="margin-bottom:2%;" class="col-xs-2 col-md-6 col-xs-offset-7 col-md-offset-9 col-lg-offset-11"><a href="{% url 'checkout:index' %}" id="checkoutBtn" class="btn btn-success"><i class="fa fa-angle-right btn-lg"></i> Checkout</a></div>
             </div>
-        </div>
     </div>
 
 
