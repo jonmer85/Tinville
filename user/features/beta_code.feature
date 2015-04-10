@@ -9,11 +9,11 @@ Feature: Beta Code
   So that I may access a shop
   So that my cookie is set
 
-  Scenario: Form entry and user first and second access
-    When I register for a shop named "BetaShop"
-    Given the beta shop
-    Then the access code page is displayed
-    And I enter the access code
-    Then I should be redirected to the beta shop
-    Given a subsequent visit to the beta shop
-    Then I should be redirected to the beta shop
+#  Scenario: Form entry and user first and second access
+#    When I register for a shop named "BetaShop"
+#    Given the beta shop
+#    Then the access code page is displayed
+#    And I enter the access code
+#    Then I should be redirected to the beta shop
+#    Given a subsequent visit to the beta shop
+#    Then I should be redirected to the beta shop

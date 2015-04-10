@@ -1,5 +1,6 @@
 from common.lettuce_utils import *
 import cssselect
+from django.conf import settings
 from lettuce import step
 from nose.tools import assert_equals, assert_not_equals, assert_raises
 from user.models import TinvilleUser
@@ -51,7 +52,8 @@ def then_i_can_visit_my_new_shop(step, url):
 @step(u'Then I can visit the demo shop$')
 def then_i_can_visit_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
-    wait_for_browser_to_have_url(lettuce.django.get_server().url('/access_code?shop=Demo'))
-    user = TinvilleUser.objects.get(email="demo@user.com")
-    form = fill_in_access_form(access_code=user.access_code)
-    form.submit()
+    if not settings.DISABLE_BETA_ACCESS_CHECK:
+        wait_for_browser_to_have_url(lettuce.django.get_server().url('/access_code?shop=Demo'))
+        user = TinvilleUser.objects.get(email="demo@user.com")
+        form = fill_in_access_form(access_code=user.access_code)
+        form.submit()
