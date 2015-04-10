@@ -14,16 +14,15 @@
                 {% for shop in shop_list %}
     {#                <li class="shoplistLi"><a class="" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>#}
                     {% if shop.banner %}
-                        <li id="{{ shop.name }}Id" class="col-xs-6 shoplistLi">
+                        <li id="{{ shop.name }}Id" class="col-xs-4 shoplistLi">
                             <a href='{{ shop.get_absolute_url }}'>
                                 <span data-picture class="banner">
                                     {% if shop.mobileBanner %}
                                         <span data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
-                                    {% else %}
-                                        <span data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}"></span>
+                                        <div class="">
+                                            <div class="text-center">{{ shop.name }}</div>
+                                        </div>
                                     {% endif %}
-                                    <span data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)"></span>
-                                    <div class="col-xs-offset-1">{{ shop.name }}</div>
                                 </span>
                             </a>
                         </li>
