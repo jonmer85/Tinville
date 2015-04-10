@@ -41,6 +41,12 @@
 
         // Disable the submit button to prevent repeated clicks
         $form.find('button').prop('disabled', true);
+        var strDate = $("[data-stripe='exp-date']")[0].value;
+        var date = moment(strDate, "MM-YY");
+        var month = date.format("MM");
+        $form.append($('<input type="text" size="2" data-stripe="exp-month"/>').val(month));
+        var year = date.format("YY");
+        $form.append($('<input type="text" size="2" data-stripe="exp-year"/>').val(year));
 
         Stripe.createToken($form, stripeResponseHandler);
 

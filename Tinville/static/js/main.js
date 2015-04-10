@@ -336,8 +336,8 @@ function RemoveCartItem(itemId)
           .addValidator('cardexpiry', function () {
             var strDate = $("[data-stripe='exp-date']")[0].value;
                 var date = moment(strDate, "MM-YY");
-                var month = parseFloat(date.format("MM"),10);
-                var year = parseFloat(date.format("YY"),10);
+                var month = date.format("MM");
+                var year = date.format("YY");
             return Stripe.card.validateExpiry(month, year);
           }, 33)
           .addMessage('en', 'cardexpiry', 'Invalid card expiration date');
