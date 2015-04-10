@@ -31,7 +31,7 @@ from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopC
 from common.utils import get_list_or_empty, get_or_none
 from user.forms import BetaAccessForm
 from user.models import TinvilleUser
-from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation
+from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation,convert_to_currency
 from django.views.generic import ListView
 
 
@@ -402,7 +402,7 @@ def get_sizetype(variants):
 
 
 def get_min_price(item):
-    return str(item.min_child_price_excl_tax)
+    return str(convert_to_currency(item.min_child_price_excl_tax))
 
 
 def get_variants_httpresponse(request, shop_slug, item_slug, group_by=None):
