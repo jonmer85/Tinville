@@ -35,6 +35,7 @@ class ProductCreationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         sizes = kwargs.pop('sizes', [])
+        self.shop = kwargs.pop('shop', None)
         super(ProductCreationForm, self).__init__(*args, **kwargs)
 
         self.fields['sizeVariation'] = forms.ChoiceField(label='Size type',
@@ -162,7 +163,7 @@ class ProductCreationForm(forms.ModelForm):
             return title  # Ok to have the same title if this is an edit
 
         try:
-            products.objects.get(title__iexact=title, parent__isnull=True)
+            products.objects.get(title__iexact=title, parent__isnull=True, shop=self.shop)
         except ObjectDoesNotExist:
             return title
         raise forms.ValidationError('Item name already exists.')

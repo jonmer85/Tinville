@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from common.lettuce_utils import *
 import cssselect
+from django.conf import settings
 from lettuce import step
 from nose.tools import assert_equals, assert_not_equals, assert_raises
 from user.models import TinvilleUser
@@ -97,11 +98,12 @@ def then_i_can_visit_my_shop(step, url):
 def then_i_can_visit_my_shop_for_the_first_time(step, url):
     absoluteUrl = lettuce.django.get_server().url(url)
     world.browser.get(absoluteUrl)
-    redirect = '/access_code?shop=' + url
-    wait_for_browser_to_have_url(lettuce.django.get_server().url(redirect))
-    user = TinvilleUser.objects.get(email="joe@schmoe.com")
-    form = fill_in_access_form(access_code=user.access_code)
-    form.submit()
+    if not settings.DISABLE_BETA_ACCESS_CHECK:
+        redirect = '/access_code?shop=' + url
+        wait_for_browser_to_have_url(lettuce.django.get_server().url(redirect))
+        user = TinvilleUser.objects.get(email="joe@schmoe.com")
+        form = fill_in_access_form(access_code=user.access_code)
+        form.submit()
     assert_page_exist(absoluteUrl)
 
 @step(u'(?:Then|And) I can visit my shop again at "([^"]*)"')
