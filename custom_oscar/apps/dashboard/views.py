@@ -31,7 +31,7 @@ def get_total_product_count(user):
 
 
 def get_dashboard_notifications(request, orders):
-    orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
+    orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') | Q(status='Partially Shipped'))
     count = orders_ready_to_be_shipped.count()
     designer_payment_info_not_configured = len(request.user.recipient_id) == 0
     if designer_payment_info_not_configured:
@@ -50,7 +50,6 @@ def get_dashboard_notifications(request, orders):
                     'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
                 },
             "count": count
-
         }
 
 
