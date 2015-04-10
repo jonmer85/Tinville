@@ -254,7 +254,7 @@ body
 
 #signInButtonMobile
 {
-    margin-right : 20px;
+    margin-right : 10px;
     margin-top   : 0;
     float        : right;
 }
@@ -1273,7 +1273,7 @@ textarea
     float           : right;
     position        : relative;
     top             : 17px;
-    right           : 20px;
+    right           : 5px;
     list-style-type : none;
 }
 
