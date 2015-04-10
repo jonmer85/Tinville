@@ -232,28 +232,26 @@ class DesignerShopTests(TestCase):
     def test_exception_on_missing_size_variation_info(self):
         self.client.login(username='demo@user.com', password='tinville')
         initial_products = len(Product.objects.all())
-        response = self.client.post('/demo/edit/',
-                                {
-                                 'category': '37',
-                                 'description': 'Test Description',
-                                 'price': '3.00',
-                                 'product_image': '',
-                                 'product_image1': '',
-                                 'product_image2': '',
-                                 'product_image3': '',
-                                 'product_image4': '',
-                                 'images-INITIAL_FORMS': '1',
-                                 'images-MAX_NUM_FORMS': '5',
-                                 'images-MIN_NUM_FORMS': '1',
-                                 'images-TOTAL_FORMS': '0',
-                                 'sizeSetSelectionTemplate0_colorSelection0': '8',
-                                 'sizeSetSelectionTemplate0_colorSelection1': '',
-                                 'sizeSetSelectionTemplate0_quantityField0': '1',
-                                 'sizeSetSelectionTemplate0_quantityField1': '1',
-                                 'sizeSetSelectionTemplate0_sizeSetSelection': '2',
-                                 'sizeSetSelectionTemplate1_sizeSetSelection': '',
-                                 'title': 'TestTitle'
-                                })
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            response = self.client.post('/demo/edit/',
+                                    {
+                                     'category': '37',
+                                     'description': 'Test Description',
+                                     'price': '3.00',
+                                     'images-INITIAL_FORMS': '0',
+                                     'images-MAX_NUM_FORMS': '5',
+                                     'images-MIN_NUM_FORMS': '1',
+                                     'images-TOTAL_FORMS': '1',
+                                     'images-0-original': fp,
+                                     'images-0-cropping': '',
+                                     'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                     'sizeSetSelectionTemplate0_colorSelection1': '',
+                                     'sizeSetSelectionTemplate0_quantityField0': '1',
+                                     'sizeSetSelectionTemplate0_quantityField1': '1',
+                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                     'title': 'TestTitle'
+                                    })
 
         self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
         self.assertEquals(response.status_code, 400)
@@ -261,18 +259,21 @@ class DesignerShopTests(TestCase):
     def test_exception_on_missing_sizes(self):
         self.client.login(username='demo@user.com', password='tinville')
         initial_products = len(Product.objects.all())
-        response = self.client.post('/demo/edit/',
-                                {
-                                 'category': '37',
-                                 'description': 'Test Description',
-                                 'price': '3.00',
-                                 'images-INITIAL_FORMS': '1',
-                                 'images-MAX_NUM_FORMS': '5',
-                                 'images-MIN_NUM_FORMS': '1',
-                                 'images-TOTAL_FORMS': '0',
-                                 'sizeVariation': '1',
-                                 'title': 'TestTitle'
-                                })
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            response = self.client.post('/demo/edit/',
+                                    {
+                                     'category': '37',
+                                     'description': 'Test Description',
+                                     'price': '3.00',
+                                     'images-INITIAL_FORMS': '0',
+                                     'images-MAX_NUM_FORMS': '5',
+                                     'images-MIN_NUM_FORMS': '1',
+                                     'images-TOTAL_FORMS': '1',
+                                     'images-0-original': fp,
+                                     'images-0-cropping': '',
+                                     'sizeVariation': '1',
+                                     'title': 'TestTitle'
+                                    })
         self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
         self.assertEquals(response.status_code, 400)
 
@@ -280,14 +281,19 @@ class DesignerShopTests(TestCase):
     def test_exception_on_missing_color(self):
         self.client.login(username='demo@user.com', password='tinville')
         initial_products = len(Product.objects.all())
-        response = self.client.post('/demo/edit/',
-                                    {'category': '37',
+
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            response = self.client.post('/demo/edit/',
+                                    {
+                                     'category': '37',
                                      'description': 'Test Description',
                                      'price': '3.00',
-                                     'images-INITIAL_FORMS': '1',
+                                     'images-INITIAL_FORMS': '0',
                                      'images-MAX_NUM_FORMS': '5',
                                      'images-MIN_NUM_FORMS': '1',
-                                     'images-TOTAL_FORMS': '0',
+                                     'images-TOTAL_FORMS': '1',
+                                     'images-0-original': fp,
+                                     'images-0-cropping': '',
                                      'sizeSetSelectionTemplate0_quantityField0': '1',
                                      'sizeSetSelectionTemplate0_quantityField1': '1',
                                      'sizeSetSelectionTemplate0_sizeSetSelection': '2',
@@ -302,14 +308,18 @@ class DesignerShopTests(TestCase):
     def test_exception_on_missing_quantities(self):
         self.client.login(username='demo@user.com', password='tinville')
         initial_products = len(Product.objects.all())
-        response = self.client.post('/demo/edit/',
-                                    {'category': '37',
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            response = self.client.post('/demo/edit/',
+                                    {
+                                     'category': '37',
                                      'description': 'Test Description',
                                      'price': '3.00',
-                                     'images-INITIAL_FORMS': '1',
+                                     'images-INITIAL_FORMS': '0',
                                      'images-MAX_NUM_FORMS': '5',
                                      'images-MIN_NUM_FORMS': '1',
-                                     'images-TOTAL_FORMS': '0',
+                                     'images-TOTAL_FORMS': '1',
+                                     'images-0-original': fp,
+                                     'images-0-cropping': '',
                                      'sizeSetSelectionTemplate0_colorSelection0': '8',
                                      'sizeSetSelectionTemplate0_colorSelection1': '',
                                      'sizeSetSelectionTemplate0_sizeSetSelection': '2',
@@ -319,4 +329,30 @@ class DesignerShopTests(TestCase):
                                     })
         self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
         self.assertEquals(response.status_code, 400)
+
+    def test_exception_on_negative_quantities(self):
+        self.client.login(username='demo@user.com', password='tinville')
+        initial_products = len(Product.objects.all())
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            response = self.client.post('/demo/edit/',
+                                    {
+                                     'category': '37',
+                                     'description': 'Test Description',
+                                     'price': '3.00',
+                                     'images-INITIAL_FORMS': '0',
+                                     'images-MAX_NUM_FORMS': '5',
+                                     'images-MIN_NUM_FORMS': '1',
+                                     'images-TOTAL_FORMS': '1',
+                                     'images-0-original': fp,
+                                     'images-0-cropping': '',
+                                     'sizeSetSelectionTemplate0_quantityField0': '-1',
+                                     'sizeSetSelectionTemplate0_quantityField1': '1',
+                                     'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                     'sizeSetSelectionTemplate0_colorSelection1': '',
+                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                     'sizeVariation': '1',
+                                     'title': 'TestTitle'
+                                    })
+        self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
 
