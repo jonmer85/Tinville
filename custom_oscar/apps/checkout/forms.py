@@ -92,16 +92,13 @@ class PaymentInfoForm(forms.Form):
                                   widget=forms.TextInput(attrs={'data-stripe': 'number',
                                                                 'pattern': '\d*', 'autocomplete': 'off',
                                                                 'data-parsley-cardNum': 'data-parsley-cardNum'}))
-    expiration_month = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-month',
+
+    expiration_date = forms.CharField(required=True, min_length=4, max_length=4,
+                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-date',
                                                                      'pattern': '\d*', 'autocomplete': 'off',
                                                                      'data-parsley-group': 'cardexpiry',
                                                                      'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
-    expiration_year = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-year',
-                                                                     'pattern': '\d*', 'autocomplete': 'off',
-                                                                     'data-parsley-group': 'cardexpiry',
-                                                                     'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
+
     cvc = forms.CharField(required=True, max_length=4,
                                        widget=forms.PasswordInput(attrs={'data-stripe': 'cvc',
                                                                          'pattern': '\d*', 'autocomplete': 'off',
@@ -125,8 +122,7 @@ class PaymentInfoForm(forms.Form):
             HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
             Div(
                 Fieldset('Expiration Date',
-                    Div(Field('expiration_month', placeholder="MM"), css_class='col-xs-6', style='padding-left: 0', autocomplete='off'),
-                    Div(Field('expiration_year', placeholder="YY"), css_class='col-xs-6', style='padding-right: 0', autocomplete='off'),
+                    Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-6', style='padding-left: 0', autocomplete='off'),
                     css_class='col-xs-7', style='padding-left: 0'
                 ),
                 Fieldset('CV Code',
