@@ -335,13 +335,20 @@ function RemoveCartItem(itemId)
         window.ParsleyValidator
           .addValidator('cardexpiry', function () {
             var strDate = $("[data-stripe='exp-date']")[0].value;
-                var date = moment(strDate, "MMYY");
-                var month = date.format("MM");
-            var year = date.format("YY");
+                var date = moment(strDate, "MM-YY");
+                var month = parseFloat(date.format("MM"),10);
+                var year = parseFloat(date.format("YY"),10);
             return Stripe.card.validateExpiry(month, year);
           }, 33)
           .addMessage('en', 'cardexpiry', 'Invalid card expiration date');
 
+        $('#id_expiration_date').keyup(function() {
+            var expdateString = $(this).val().split("-").join("");
+            if (expdateString.length > 0) {
+                expdateString = expdateString.match(new RegExp('.{1,2}', 'g')).join("-");
+            }
+            $(this).val(expdateString);
+        });
 
         window.ParsleyValidator
           .addValidator('cardcvc', function (value) {

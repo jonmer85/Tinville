@@ -93,7 +93,7 @@ class PaymentInfoForm(forms.Form):
                                                                 'pattern': '\d*', 'autocomplete': 'off',
                                                                 'data-parsley-cardNum': 'data-parsley-cardNum'}))
 
-    expiration_date = forms.CharField(required=True, min_length=4, max_length=4,
+    expiration_date = forms.CharField(required=True, min_length=5, max_length=5,
                                        widget=forms.TextInput(attrs={'data-stripe': 'exp-date',
                                                                      'pattern': '\d*', 'autocomplete': 'off',
                                                                      'data-parsley-group': 'cardexpiry',
