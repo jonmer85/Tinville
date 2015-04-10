@@ -685,17 +685,20 @@
         var rowdiv =  $('<div/>', {
             'class':'row'
         });
+        var rowdivin =  $('<div/>', {
+            'class':'row'
+        });
         var cartitemdiv =  $('<li/>', {
             'class':'shoppingcartitem col-xs-12',
             'id' : "lineId" + cartItem.Id
         });
 
         var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
-        var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
+        var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv col-xs-4'});
         itemThumbnail.appendTo(thumbnailDiv);
-        thumbnailDiv.appendTo(cartitemdiv);
+        thumbnailDiv.appendTo(rowdivin);
 
-        var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
+        var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo col-xs-3'});
 
         var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
         itemTitle.appendTo(itemInfoDiv);
@@ -708,25 +711,25 @@
         var itemQty = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
         itemQty.appendTo(itemInfoDiv);
 
-        itemInfoDiv.appendTo(cartitemdiv);
+        itemInfoDiv.appendTo(rowdivin);
         var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
         var delBtnId = 'deleteBtnId_' + cartItem.Id;
         var removeBtn = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
             'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
         });
         removeBtn.appendTo(removeBtnDiv);
-        removeBtnDiv.appendTo(cartitemdiv);
+        removeBtnDiv.appendTo(rowdivin);
 
-        var itemInfoDiv1 = $('<div/>', {'class' : 'shoppingcartpriceinfo'});
+        var itemInfoDiv1 = $('<div/>', {'class' : 'shoppingcartpriceinfo text-center col-xs-offset-0 col-xs-5'});
 
-        var price = '$' + (cartItem.qty * cartItem.price);
+        var price = '$' +  cartItem.subtotal;
         var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
         priceDiv.appendTo(itemInfoDiv1);
-        itemInfoDiv1.appendTo(cartitemdiv);
+        itemInfoDiv1.appendTo(rowdivin);
 
+        rowdivin.appendTo(cartitemdiv);
 
         cartitemdiv.appendTo(rowdiv);
-
         rowdiv.appendTo("#shoppingcartitems");
 
 

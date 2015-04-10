@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container">
-        <div align="center"><font size="12" color="f46430">Tinville</font></div>
+    <div class="container" style="padding-bottom: 20px">
+        <div style="padding-top: 50px"></div>
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
@@ -14,8 +14,10 @@
                 </thead>
             </table>
             <div class="row">
-                <div style="margin-bottom:2%;" class="col-xs-2 col-md-6 col-xs-offset-7 col-md-offset-9 text-center"><strong id="checkoutTotal">Total: </strong></div>
-                <div style="margin-bottom:2%;" class="col-xs-2 col-md-6 col-xs-offset-7 col-md-offset-9 col-lg-offset-11"><a href="{% url 'checkout:index' %}" id="checkoutBtn" class="btn btn-success"><i class="fa fa-angle-right btn-lg"></i> Checkout</a></div>
+                <div style="margin-bottom: 10px;" class="col-xs-offset-1 col-xs-10 col-sm-offset-6 col-sm-6 col-md-offset-10 col-md-2 text-center">
+                    <strong id="checkoutTotal">Total: </strong>
+                </div>
+                <a href="{% url 'checkout:index' %}" id="checkoutBtn" class="tinvilleBackgroundOrange col-xs-offset-1 col-xs-10 col-sm-offset-6 col-sm-6 col-md-offset-10 col-md-2 btn btn-success" ><i class="fa fa-angle-right"></i> Checkout</a>
             </div>
     </div>
 
