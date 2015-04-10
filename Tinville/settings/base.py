@@ -1,13 +1,14 @@
 # Django settings for Tinville project.
 from decimal import Decimal
+import os
+import os.path
 from celery.schedules import crontab
 from getenv import env
-import os.path
-import os
 from unipath import Path
 from django.utils.translation import ugettext_lazy as _
 from oscar import get_core_apps
 from oscar.defaults import *
+
 
 # HEROKU Change!!!
 DEBUG = False
@@ -56,6 +57,8 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+USE_THOUSAND_SEPARATOR = True
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = PROJECT_DIR.child("media")
@@ -83,7 +86,6 @@ STATICFILES_DIRS = (
     PROJECT_DIR.child("static"),
 
 )
-
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -155,7 +157,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.core.context_processors.metadata',
     'Tinville.context_processors.google_analytics_id',
     'Tinville.context_processors.include_shops',
-    'user.context_processors.get_user_shop'
+    'user.context_processors.get_user_shop',
     )
 
 # Actual Tinville business logic
@@ -199,6 +201,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'smart_load_tag',
     'floppyforms',
+    'endless_pagination',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -264,6 +267,9 @@ LOGGING = {
         },
     },
 }
+
+ENDLESS_PAGINATION_PER_PAGE = 20
+ENDLESS_PAGINATION_LOADING = """<div class="well col-md-offset-4 col-xs-12 col-md-4"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate center-block" style="text-align: center;"></span></div>"""
 
 # For django-oscar search
 HAYSTACK_CONNECTIONS = {
@@ -479,7 +485,7 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-TINVILLE_ORDER_SALES_CUT = Decimal(0.15)  # Tinville takes 15% of designer sales
+TINVILLE_ORDER_SALES_CUT = Decimal(0.20)  # Tinville takes 20% of designer sales
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {
@@ -531,7 +537,7 @@ COMPRESS_ENABLED = env("COMPRESS_ENABLED", True)
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
-DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', False)
+DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', True)
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
 THUMBNAIL_PROCESSORS = (
@@ -542,3 +548,5 @@ LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
 
 #Overriding oscars required address fields for custom validation
 OSCAR_REQUIRED_ADDRESS_FIELDS = {}
+
+OSCAR_HIDDEN_FEATURES = ["reviews"]

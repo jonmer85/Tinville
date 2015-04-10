@@ -83,7 +83,7 @@
         <ul id="nav-non-xs" class="nav nav-tabs nav-pills hidden-xs">
             {% block nav_tabs_nonxs %}
                 <li class="{% if active_tab == 'lines' %}active{% endif %}"><a href="#lines" data-toggle="tab">{% trans "Order contents" %}</a></li>
-                <li class="{% if active_tab == 'shipping' %}active{% endif %}"><a href="#shipping" data-toggle="tab">{% trans "Shipping" %}</a></li>
+                <li class="{% if active_tab == 'shipping' %}active{% endif %}"><a href="#shipping" data-toggle="tab">{% trans "Shipping Info" %}</a></li>
                 {% if user.is_staff %}
                     <li class="{% if active_tab == 'payment' %}active{% endif %}"><a href="#payment" data-toggle="tab">{% trans "Payment" %}</a></li>
                 {% endif %}
@@ -126,13 +126,10 @@
                 <form id="order_lines_form" name="order_lines_form" action="" method="post" class="form-inline" data-parsley-errors-container=".parsley-container" data-parsley-validate>
                     {% csrf_token %}
                     {% block line_actions %}
-                        <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>
+{#                        <h3><i class="glyphicon glyphicon-refresh"></i> {% trans "With selected lines" %}:</h3>#}
                         <div class="control-group">
                             <div class="controls">
                                 <input type="text" readonly="true" name="shipping_event_type" value="shipped" class="btn btn-group hidden"/>
-                                <div class="btn-group">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship it!</button>
-                                </div>
                                 <label class="radio list-inline hidden">
                                     {% trans "with reference" %} <input type="text" name="reference" value="" />
                                 </label>
@@ -200,7 +197,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="submit" id="line_action_submit" name="line_action" value="create_shipping_event" class="btn btn-primary" data-toggle="modal">Confirm Shipping Option</button>
+                                        <input type="text"  name="line_action" class="btn btn-primary hidden" value="create_shipping_event"/>
+                                        <button id="line_action_submit" class="btn btn-primary">Confirm Shipping Option</button>
                                     </div>
                                 </div>
                             </div>
@@ -210,8 +208,10 @@
                         <table class="collapseTableXS table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>{% trans "Select" %}</th>
-                                    <th>{% trans "Line ID" %}</th>
+                                    <th class="hidden partialOrderCol">{% trans "Select Quantity" %}</th>
+                                    {% if user.is_staff %}
+                                        <th>{% trans "Line ID" %}</th>
+                                    {% endif %}
                                     <th>{% trans "Quantity" %}</th>
                                     <th>{% trans "Product" %}</th>
                                     <th>{% trans "Product Size" %}</th>
@@ -223,7 +223,7 @@
 {#                                    <th>{% trans "Est. delivery date" %}</th>#}
                                     <th>{% trans "Price excl tax (before discounts)" %}</th>
 {#                                    <th>{% trans "Price inc tax (before discounts)" %}</th>#}
-                                    <th>{% trans "Actions" %}</th>
+                                    {% if user.is_staff %}<th>{% trans "Actions" %}</th>{% endif %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -235,15 +235,17 @@
                                     </tr>
                                     <tr id="orderline_{{ line.id }}" class="dashboardCollapse collapse">
                                         <td class="hidden"></td>
-                                        <td data-th="{% trans "Select" %}">
+                                        <td data-th="{% trans "Select Quantity" %}" class="hidden partialOrderCol">
                                             <span><input type="checkbox" name="selected_line" checked value="{{ line.id }}" /></span>
                                             {% if "Shipped" in line.shipping_event_breakdown %}
-                                                <span><input type="text" class="form-control" name="selected_line_qty_{{ line.id }}" value="{{ line.quantity|subtract:line.shipping_event_breakdown.Shipped.quantity }}" class="col-md-1" size="2" style="width:40px" /></span>
+                                                <span><input type="text" class="form-control" name="selected_line_qty_{{ line.id }}" value="{{ line.quantity|subtract:line.shipping_event_breakdown.Shipped.quantity }}" class="col-md-1" size="2" style="width:40px"/></span>
                                             {% else %}
                                                 <span><input type="text" class="form-control" name="selected_line_qty_{{ line.id }}" value="{{ line.quantity }}" class="col-md-1" size="2" style="width:40px" /></span>
                                             {% endif %}
                                         </td>
-                                        <td class="hidden-xs"><a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}">#{{ line.id }}</a></td>
+                                        {% if user.is_staff %}
+                                            <td class="hidden-xs"><a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}">#{{ line.id }}</a></td>
+                                        {% endif %}
                                         <td data-th="{% trans "Quantity" %}">{{ line.quantity }}</td>
                                         <td data-th="{% trans "Product" %}">
                                             {% if user.is_staff %}
@@ -297,16 +299,18 @@
 {#                                        <td data-th="{% trans "Est. delivery date" %}">{{ line.est_dispatch_date|default:"-" }}</td>#}
                                         <td data-th="{% trans "Price excl tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Price inc tax (before discounts)" %}" style="text-align: right">{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}</td>#}
-                                        <td data-th="{% trans "Actions" %}">
-                                            <a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}" class="btn btn-primary">{% trans "View" %}</a>
-                                        </td>
+                                        {% if user.is_staff %}
+                                            <td data-th="{% trans "Actions" %}">
+                                                <a href="{% url 'dashboard:order-line-detail' number=order.number line_id=line.id %}" class="btn btn-primary">{% trans "View" %}</a>
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                                 <tr class="visible-xs" data-toggle="collapse" data-target=".ordertotals">
                                      <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }} (expand for details)</td>
                                 </tr>
                                 <tr class="ordertotals dashboardCollapse collapse">
-                                    <td class="hidden-xs" colspan="6"></td>
+                                    <td class="hidden-xs" colspan="3"></td>
                                     <th class="hidden-xs">{% trans "Discount" %}</th>
                                     <td data-th="{% trans "Discount" %} excl tax" style="text-align: right">{{ order.total_discount_excl_tax|currency:order.currency }}</td>
 {#                                    <td data-th="{% trans "Discount" %} incl tax" style="text-align: right">{{ order.total_discount_incl_tax|currency:order.currency }}</td>#}
@@ -314,7 +318,7 @@
                                 </tr>
 
                                 <tr class="ordertotals dashboardCollapse collapse">
-                                    <td class="hidden-xs" colspan="6"></td>
+                                    <td class="hidden-xs" colspan="3"></td>
                                     <th class="hidden-xs">{% trans "Order total" %}</th>
                                     <td data-th="{% trans "Order total" %} excl tax" style="text-align: right">{{ order.total_excl_tax|currency:order.currency }}</td>
 {#                                    <td data-th="{% trans "Order total" %} incl tax" style="text-align: right">{{ order.total_incl_tax|currency:order.currency }}</td>#}
@@ -324,7 +328,7 @@
 
                                 {% if order.has_shipping_discounts %}
                                     <tr class="ordertotals dashboardCollapse collapse">
-                                        <td class="hidden-xs" colspan="6"></td>
+                                        <td class="hidden-xs" colspan="3"></td>
                                         <td class="hidden-xs">{% trans "Shipping total (excl. discounts)" %}</td>
                                         <td data-th="{% trans "Shipping total (excl. discounts) excl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total (excl. discounts) incl tax" %}" style="text-align: right">{{ order.shipping_before_discounts_incl_tax|currency:order.currency }}</td>#}
@@ -332,7 +336,7 @@
                                     </tr>
                                     {% for discount in order.shipping_discounts %}
                                         <tr class="ordertotals dashboardCollapse collapse">
-                                            <td class="hidden-xs" colspan="6"></td>
+                                            <td class="hidden-xs" colspan="3"></td>
                                             <td>
                                                 <span class="label label-success">{% trans "Discount" %}</span>
                                                 {{ discount.offer_name }}
@@ -343,7 +347,7 @@
                                         </tr>
                                     {% endfor %}
                                     <tr class="ordertotals dashboardCollapse collapse">
-                                        <td class="hidden-xs" colspan="6"></td>
+                                        <td class="hidden-xs" colspan="3"></td>
                                         <th class="hidden-xs">{% trans "Shipping total (inc. discounts)" %}</th>
                                         <td data-th="{% trans "Shipping total (inc. discounts)" %} excl tax" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total (inc. discounts)" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
@@ -351,7 +355,7 @@
                                     </tr>
                                 {% else %}
                                     <tr class="ordertotals dashboardCollapse collapse">
-                                        <td class="hidden-xs" colspan="6"></td>
+                                        <td class="hidden-xs" colspan="3"></td>
                                         <th class="hidden-xs" >{% trans "Shipping total" %}</th>
                                         <td data-th="{% trans "Shipping total" %}" style="text-align: right">{{ order.shipping_excl_tax|currency:order.currency }}</td>
 {#                                        <td data-th="{% trans "Shipping total" %} incl tax" style="text-align: right">{{ order.shipping_incl_tax|currency:order.currency }}</td>#}
@@ -359,13 +363,13 @@
                                     </tr>
                                 {% endif %}
                                 <tr class="ordertotals dashboardCollapse collapse">
-                                    <td class="hidden-xs" colspan="6"></td>
+                                    <td class="hidden-xs" colspan="3"></td>
                                     <th class="hidden-xs">{% trans "Tinville cut total" %}</th>
                                     <td data-th="{% trans "Tinville cut total" %}" style="text-align: right">{{ order.estimated_tinville_cut|currency:order.currency }}</td>
                                     <td class="hidden-xs"></td>
                                 </tr>
                                 <tr class="ordertotals dashboardCollapse collapse">
-                                    <td class="hidden-xs" colspan="6"></td>
+                                    <td class="hidden-xs" colspan="3"></td>
                                     <th class="hidden-xs">{% trans "Take home total" %}</th>
                                     <td data-th="{% trans "Take home total" %}" style="text-align: right">{{ order.estimated_designer_cut|currency:order.currency }}</td>
                                     <td class="hidden-xs"></td>
@@ -374,7 +378,7 @@
                                     {% with discounts=order.basket_discounts %}
                                         {% if discounts %}
                                             <tr class="ordertotals dashboardCollapse collapse">
-                                                <td class="hidden-xs" colspan="6"></td>
+                                                <td class="hidden-xs" colspan="3"></td>
                                                 <th class="hidden-xs">{% trans "Basket total (excl. discounts)" %}</th>
                                                 <td data-th="{% trans "Basket total (excl. discounts)" %}" style="text-align: right">{{ order.basket_total_before_discounts_excl_tax|currency:order.currency }}</td>
     {#                                            <td data-th="{% trans "Basket total (excl. discounts)" %} incl tax" style="text-align: right">{{ order.basket_total_before_discounts_incl_tax|currency:order.currency }}</td>#}
@@ -382,7 +386,7 @@
                                             </tr>
                                             {% for discount in discounts %}
                                                 <tr class="ordertotals dashboardCollapse collapse">
-                                                    <td class="hidden-xs" colspan="6"></td>
+                                                    <td class="hidden-xs" colspan="3"></td>
                                                     <td>
                                                         <span class="label label-success">{% trans "Discount" %}</span>
                                                         {{ discount.offer_name }}
@@ -393,7 +397,7 @@
                                                 </tr>
                                             {% endfor %}
                                             <tr class="ordertotals dashboardCollapse collapse">
-                                                <td class="hidden-xs" colspan="6"></td>
+                                                <td class="hidden-xs" colspan="3"></td>
                                                 <th class="hidden-xs">{% trans "Basket total (inc. discounts)" %}</th>
                                                 <td class="hidden-xs" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
     {#                                            <td class="hidden-xs" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
@@ -401,7 +405,7 @@
                                             </tr>
                                         {% else %}
                                             <tr class="ordertotals dashboardCollapse collapse">
-                                                <td class="hidden-xs" colspan="6"></td>
+                                                <td class="hidden-xs" colspan="3"></td>
                                                 <th class="hidden-xs">{% trans "Basket total" %}</th>
                                                 <td data-th="{% trans "Basket total" %}" style="text-align: right">{{ order.basket_total_excl_tax|currency:order.currency }}</td>
     {#                                            <td data-th="{% trans "Basket total" %} incl tax" style="text-align: right">{{ order.basket_total_incl_tax|currency:order.currency }}</td>#}
@@ -410,7 +414,21 @@
                                         {% endif %}
                                     {% endwith %}
                                 {% endif %}
+
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="btn-group pull-right">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship my order!</button>
+                                        </div>
+                                        <div class="pull-left">
+                                            <input type="checkbox" id="partialOrder"/>
+                                            <label>Ship partial order</label>
+                                        </div>
+                                    </td>
+
+                                </tr>
                             </tbody>
+
                         </table>
                     {% endblock order_lines %}
                 </form>
@@ -540,18 +558,24 @@
                     </div>
                     <table class="table table-striped table-bordered table-hover collapseTableXS">
                         <tbody>
+                            {% if user.is_staff %}
                             <tr>
                                 <th class="hidden-xs">{% trans "Method name" %}</th>
                                 <td data-th="{% trans "Method name" %}">{{ order.shipping_method }}</td>
                             </tr>
+                            {% endif %}
+                            {% if user.is_staff %}
                             <tr>
                                 <th class="hidden-xs">{% trans "Method code" %}</th>
                                 <td data-th="{% trans "Method code" %}">{{ order.shipping_code|upper }}</td>
                             </tr>
+                            {% endif %}
+                            {% if user.is_staff %}
                             <tr>
                                 <th class="hidden-xs">{% trans "Charge (incl tax)" %}</th>
                                 <td data-th="% {% trans "Charge (incl tax)" %}">{{ order.shipping_incl_tax|currency:order.currency }}</td>
                             </tr>
+                            {% endif %}
                             <tr>
                                 <th class="hidden-xs">{% trans "Charge (excl tax)" %}</th>
                                 <td data-th="{% trans "Charge (excl tax)" %}">{{ order.shipping_excl_tax|currency:order.currency }}</td>
@@ -568,10 +592,12 @@
                                 <th class="hidden-xs">{% trans "Phone" %}</th>
                                 <td data-th="{% trans "Phone" %}">{{ order.shipping_address.phone_number|default:"-" }}</td>
                             </tr>
+                            {% if user.is_staff %}
                             <tr>
                                 <th class="hidden-xs">{% trans "Instructions" %}</th>
                                 <td data-th="{% trans "Instructions" %}">{{ order.shipping_address.notes|default:"-"|linebreaks }}</td>
                             </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 {% endblock %}
@@ -859,7 +885,7 @@
                     $("#weight-input").addClass("hidden");
                     $("#weight-input>*").addClass("hidden");
                     $("#weight-input>*").attr('data-parsley-required', 'false');
-                    $("[name='weight").val('');
+                    $("[name='weight']").val('');
                 }
             }
         });
@@ -911,8 +937,22 @@
             var $form = $('#order_lines_form');
             if ( $form.parsley().validate('weightcalc') )
             {
-                $("#processing-modal").modal();
+                $("#processing-modal").modal('show');
                 $("#order_lines_form").submit();
+            }
+        });
+
+        $("#partialOrder").click( function(){
+            if( $(this).is(':checked') ){
+                $("[colspan='3']").attr("colspan", "4")
+                $("[colspan='8']").attr("colspan", "7")
+                $(".partialOrderCol").removeClass("hidden");
+            }
+            else
+            {
+                $("[colspan='4']").attr("colspan", "3")
+                $("[colspan='7']").attr("colspan", "8")
+                $(".partialOrderCol").addClass("hidden")
             }
         });
 

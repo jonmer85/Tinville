@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError, SuspiciousOperation
 import re
 from designer_shop.models import Shop
 
+def convert_to_currency(orignal_amount):
+    return '{:,.2f}'.format(orignal_amount)
 
 def get_or_none(model, **kwargs):
     try:

@@ -12,11 +12,11 @@ from django.shortcuts import render, redirect
 from oscar.core.loading import get_model
 import stripe
 
+from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
 from user.forms import TinvilleUserCreationForm, LoginForm, PaymentInfoFormWithFullName, BetaAccessForm
 from user.models import TinvilleUser
-from custom_oscar.apps.dashboard.views import IndexView as dashboard_view
+from custom_oscar.apps.dashboard.views import get_dashboard_notifications
 
-from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
 
 Partner = get_model('partner', 'Partner')
 
@@ -168,6 +168,14 @@ def ajax_login(request, *args, **kwargs):
         return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), content_type='application/json')
 
     return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
+
+def load_user_notifications_count(request):
+    if(not request.user.is_anonymous() and request.user.is_seller):
+        dashboard_notifications = get_dashboard_notifications(request, queryset_orders_for_user(request.user))
+        return HttpResponse(json.dumps({'dashboard_notifications_count': dashboard_notifications["count"]}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'dashboard_notifications_count': 0}), content_type='application/json')
+
 
 class BetaAccessView(FormView):
     template_name = 'beta_access.html'

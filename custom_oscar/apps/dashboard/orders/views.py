@@ -329,14 +329,20 @@ def packageStatus(request):
                 return response
 
             tracking_code = result['tracking_code']
+            carrier = result['carrier']
 
             if(isNoneOrEmptyOrWhitespace(tracking_code) == False):
                 response.reason_phrase = 'BadRequest'
                 response.status_code = 400
                 return response
 
+            if(isNoneOrEmptyOrWhitespace(carrier) == False):
+                response.reason_phrase = 'BadRequest'
+                response.status_code = 400
+                return response
+
             try:
-                EventHandler().create_inTransit_event(tracking_code)
+                EventHandler().create_inTransit_event(tracking_code, carrier)
             except:
                 response.reason_phrase = 'BadRequest'
                 response.status_code = 400

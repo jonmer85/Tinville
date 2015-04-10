@@ -296,7 +296,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
         self.send_confirmation_message(order, self.communication_type_code)
 
         sendOrderMixin = SendOrderMixin()
-        sendOrderMixin.send_new_order_email(order)
+        sendOrderMixin.send_new_order_email(order, self.request)
 
         # Flush all session data
         self.checkout_session.flush()

@@ -1,15 +1,17 @@
 from datetime import timedelta
 from decimal import Decimal as D, ROUND_UP
-from custom_oscar.apps.customer.views import _get_shipping_address_pk_that_is_shop_shipping_address
-from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
+
 from django.utils.timezone import now
 from oscar.core.loading import get_model
 from django.db.models import Avg, Sum, Count, Q
 from oscar.core.compat import get_user_model
-from oscar.apps.promotions.models import AbstractPromotion
 from oscar.apps.dashboard.views import IndexView as CoreIndexView
 from django.views.generic import TemplateView
-from common.utils import get_list_or_empty, get_or_none
+
+from custom_oscar.apps.customer.views import _get_shipping_address_pk_that_is_shop_shipping_address
+from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
+from common.utils import get_list_or_empty
+
 
 ConditionalOffer = get_model('offer', 'ConditionalOffer')
 Voucher = get_model('voucher', 'Voucher')
@@ -26,6 +28,29 @@ def get_total_product_count(user):
         return Product.objects.count()
     else:
         return len(get_list_or_empty(Product, shop__user=user, parent__isnull=True))
+
+
+def get_dashboard_notifications(request, orders):
+    orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') | Q(status='Partially Shipped'))
+    count = orders_ready_to_be_shipped.count()
+    designer_payment_info_not_configured = len(request.user.recipient_id) == 0
+    if designer_payment_info_not_configured:
+        count += 1
+    designer_shop_shipping_address_not_configured = _get_shipping_address_pk_that_is_shop_shipping_address(
+        request) is None
+    if designer_shop_shipping_address_not_configured:
+        count += 1
+
+    return \
+        {
+            "notifications":
+                {
+                    'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count(),
+                    'designer_payment_info_not_configured': designer_payment_info_not_configured,
+                    'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
+                },
+            "count": count
+        }
 
 
 class IndexView(CoreIndexView):
@@ -50,24 +75,58 @@ class IndexView(CoreIndexView):
         *segments* defines the number of labeling segments used for the y-axis
         when generating the y-axis labels (default=10).
         """
-        # Get datetime for 24 hours ago
+        # Get datetime for 24 hours agao
         time_now = now().replace(minute=0, second=0)
         start_time = time_now - timedelta(hours=hours - 1)
 
         orders_last_day = queryset_orders_for_user(self.request.user).filter(date_placed__gt=start_time)
-        return super(IndexView, self).get_hourly_report()
+
+        order_total_hourly = []
+        for hour in range(0, hours, 2):
+            end_time = start_time + timedelta(hours=2)
+            hourly_orders = orders_last_day.filter(date_placed__gt=start_time,
+                                                   date_placed__lt=end_time)
+            total = hourly_orders.aggregate(
+                Sum('total_incl_tax')
+            )['total_incl_tax__sum'] or D('0.0')
+            order_total_hourly.append({
+                'end_time': end_time,
+                'total_incl_tax': total
+            })
+            start_time = end_time
+
+        max_value = max([x['total_incl_tax'] for x in order_total_hourly])
+        divisor = 1
+        while divisor < max_value / 50:
+            divisor *= 10
+        max_value = (max_value / divisor).quantize(D('1'), rounding=ROUND_UP)
+        max_value *= divisor
+        if max_value:
+            segment_size = (max_value) / D('100.0')
+            for item in order_total_hourly:
+                item['percentage'] = int(item['total_incl_tax'] / segment_size)
+
+            y_range = []
+            y_axis_steps = max_value / D(str(segments))
+            for idx in reversed(range(segments + 1)):
+                y_range.append(idx * y_axis_steps)
+        else:
+            y_range = []
+            for item in order_total_hourly:
+                item['percentage'] = 0
+
+        ctx = {
+            'order_total_hourly': order_total_hourly,
+            'max_revenue': max_value,
+            'y_range': y_range,
+        }
+        return ctx
 
     def get_stats(self):
         datetime_24hrs_ago = now() - timedelta(hours=24)
 
         orders = queryset_orders_for_user(self.request.user)
         orders_last_day = orders.filter(date_placed__gt=datetime_24hrs_ago)
-
-        orders_ready_to_be_shipped = orders.filter(Q(status='Ready for Shipment') or Q(status='Partially Shipped'))
-
-        designer_payment_info_not_configured = len(self.request.user.recipient_id) == 0
-
-        designer_shop_shipping_address_not_configured = _get_shipping_address_pk_that_is_shop_shipping_address(self.request) is None
 
         open_alerts = StockAlert.objects.filter(status=StockAlert.OPEN)
         closed_alerts = StockAlert.objects.filter(status=StockAlert.CLOSED)
@@ -114,10 +173,8 @@ class IndexView(CoreIndexView):
 
             'order_status_breakdown': orders.order_by(
                 'status'
-            ).values('status').annotate(freq=Count('id')),
+            ).values('status').annotate(freq=Count('id'))
 
-            'orders_ready_to_be_shipped': orders_ready_to_be_shipped.count(),
-            'designer_payment_info_not_configured': designer_payment_info_not_configured,
-            'designer_shop_shipping_address_not_configured': designer_shop_shipping_address_not_configured
         }
+        stats.update(get_dashboard_notifications(self.request, orders)["notifications"])
         return stats

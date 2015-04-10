@@ -1,15 +1,17 @@
 from decimal import Decimal
-from designer_shop.models import Shop
+
 from django.conf import settings
 from django.db.models import Max
 from django.db.models.query_utils import Q
 from django.test import TestCase
-from custom_oscar.apps.order.tasks import pay_designers
 from oscar.core.loading import get_model
-
-from common.factories import create_order, create_product, create_basket_with_products, create_basket
 import stripe
+
+from designer_shop.models import Shop
+from custom_oscar.apps.order.tasks import pay_designers
+from common.factories import create_order, create_product, create_basket_with_products, create_basket
 from user.models import TinvilleUser, DesignerPayout
+
 
 PaymentEvent = get_model('order', 'PaymentEvent')
 ShippingEvent = get_model('order', 'ShippingEvent')
@@ -153,10 +155,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event = self.assert_proper_payment_events(
-            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=5.95)
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=5.60)
 
         designer_payout = self.assert_proper_payout_records(
-            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=5.95)
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=5.60)
 
         self.assert_proper_stripe_records(designer_payout)
 
@@ -225,10 +227,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event = self.assert_proper_payment_events(
-            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=12.76)
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=12.00)
 
         designer_payout = self.assert_proper_payout_records(
-            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=12.76)
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=12.00)
 
         self.assert_proper_stripe_records(designer_payout)
 
@@ -241,10 +243,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event2 = self.assert_proper_payment_events(
-            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=25.51)
+            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=24.00)
 
         designer_payout2 = self.assert_proper_payout_records(
-            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=25.51)
+            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=24.00)
 
         self.assert_proper_stripe_records(designer_payout2)
 
@@ -271,10 +273,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event = self.assert_proper_payment_events(
-            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=131.76)
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=124.00)
 
         designer_payout = self.assert_proper_payout_records(
-            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=131.76)
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=124.00)
 
         self.assert_proper_stripe_records(designer_payout)
 
@@ -286,10 +288,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event2 = self.assert_proper_payment_events(
-            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=46.76)
+            total_payment_events=4, payment_event_group=in_transit_event2.group, payout_total=44.00)
 
         designer_payout2 = self.assert_proper_payout_records(
-            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=46.76)
+            total_payout_records=2, payment_event_ref=designer_payment_event2.reference, payout_total=44.00)
 
         self.assert_proper_stripe_records(designer_payout2)
 
@@ -304,10 +306,10 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event = self.assert_proper_payment_events(
-            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=5.95)
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=5.60)
 
         designer_payout = self.assert_proper_payout_records(
-            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=5.95)
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=5.60)
 
         self.assert_proper_stripe_records(designer_payout)
 
@@ -324,9 +326,9 @@ class PayDesignersTests(TestCase):
         pay_designers()
 
         designer_payment_event = self.assert_proper_payment_events(
-            total_payment_events=4, payment_event_group=in_transit_event.group, payout_total=5.95)
+            total_payment_events=4, payment_event_group=in_transit_event.group, payout_total=5.60)
 
         designer_payout = self.assert_proper_payout_records(
-            total_payout_records=2, payment_event_ref=designer_payment_event.reference, payout_total=5.95)
+            total_payout_records=2, payment_event_ref=designer_payment_event.reference, payout_total=5.60)
 
         self.assert_proper_stripe_records(designer_payout)

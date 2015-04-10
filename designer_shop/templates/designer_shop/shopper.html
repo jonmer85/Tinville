@@ -18,7 +18,7 @@
                     <a class="navbar-brand shopMenuActiveColor shopTitleColor" id="shopTabLinkXS" data-toggle="tab" href="#shopTab">Shop</a>
                     <a class="navbar-brand shopTitleColor" id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
                     {% if editmode %}
-                        <a type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o" data-toggle="modal" data-target="#colorPickerModal"></a>
+                        <a type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o" data-toggle="modal" data-target="#colorPickerModal" style="font-size: 14pt;"></a>
                     {% endif %}
                 </div>
 			</div>
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class="tab-content ">
+    <div class="tab-content">
         <div class=" tab-pane active" id="shopTab">
             <div class="container comboBoxes">
                 <div class="row">
@@ -79,8 +79,8 @@
         </div>
         <div class=" tab-pane" id="aboutTab">
             <div class="container">
-                <div class="row">
-                    <div class="col-xs-offset-1 col-xs-10 col-sm-2 aboutContent editIconContainer" style="padding-top: 20px">
+
+                    <div class="col-xs-offset-10 col-sm-offset-2 aboutContent editIconContainer" style="padding-top: 20px">
                         {% if shop.aboutImg %}
                             {% load cropping %}
                             <img id="displayedAboutImg" class="full-screen banner-image" src="{% cropped_thumbnail shop "aboutImgCropping" scale=1 %}"  />
@@ -95,6 +95,7 @@
                             {% endif %}
                         {% endif %}
                     </div>
+                <div class="row">
                     <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
                         {{ shop.aboutContent | bleach }}
                         <div id="aboutHighlight"></div>
@@ -146,7 +147,7 @@
         var genderFilter = $("#filterGender option:selected").attr("value");
         var typeFilter = $("#filterType option:selected").attr("value");
         var sortFilter = $("#filterSort option:selected").attr("value");
-        $("#shopItems").load(" #shopItems", {genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){$(this).children().unwrap()});
+        $("#shopItems").load(" #shopItems", $.param({genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){$(this).children().unwrap()}));
         if (genderFilter.match("All"))
             genderFilter = "All";
         if (changeGender)

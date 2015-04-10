@@ -12,6 +12,7 @@ env:
     - DISPLAY=:99.0
 
 before_install:
+  - . $HOME/.rvm/scripts/rvm && rvm use ruby-2.0.0-p598 --default && ruby --version
   - which heroku || wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
 
 install:

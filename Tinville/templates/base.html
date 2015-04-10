@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social-buttons.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-social.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ladda.min.css" />
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
 
     {% block css %}{% endblock %}
@@ -98,7 +99,8 @@
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                           <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
-                              <span id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
+                              <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
+                              <div id="userNotifications-xs" class="userNotifications"></div>
                           </a>
                           <ul class="dropdown-menu" style="margin-left: -200%; width: 200px;">
                             {%  if user.is_seller %}
@@ -112,7 +114,7 @@
                             <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
                             <li class="divider"></li>
                             {% if user.is_seller or user.is_staff %}
-                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
                                 <li class="divider"></li>
                             {% endif %}
                             <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
@@ -314,7 +316,8 @@
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                                   <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                      <span id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></span>
+                                      <i id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
+                                      <div id="userNotifications-lg" class="userNotifications"></div>
                                   </a>
                                   <ul class="dropdown-menu" style="right: 0;">
                                     {%  if user.is_seller %}
@@ -328,7 +331,7 @@
                                     <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
                                     <li class="divider"></li>
                                     {% if user.is_seller or user.is_staff %}
-                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span></a></li>
+                                        <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
                                         <li class="divider"></li>
                                     {% endif %}
                                     <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
@@ -553,6 +556,7 @@
         <script src="{{ STATIC_URL }}js/main.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
         <script src="{{ STATIC_URL }}js/Tours.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
     {% endblock javascript_library %}
     <script>
 
@@ -584,63 +588,107 @@
         ga('create', '{{ GOOGLE_ANALYTICS_TRACKING_ID }}', 'auto');
         ga('send', 'pageview');
 
+        load_user_notifications = function() {
+            $.ajax({
+                url: "/load_user_notifications_count",
+                type: "GET",
+                dataType: 'json',
+                success: function (data, textStatus, jqXHR) {
+                    var count = 0;
+                    var dashboard_count = 0;
+                    $.each(data, function (index, item) {
+                        if (index == "dashboard_notifications_count") {
+                            count += item;
+                            dashboard_count += item;
+                        }
+                    });
+                    if (count > 0) {
+                        $(".userNotifications").text(count);
+                        $(".userNotifications").removeClass("hidden");
+                    }
+                    else {
+                        $(".userNotifications").text("");
+                        $(".userNotifications").addClass("hidden");
+                    }
+                    if (dashboard_count > 0) {
+                        $(".dashboardNotifications").text(dashboard_count);
+                        $(".dashboardNotifications").removeClass("hidden");
+                    }
+                    else {
+                        $(".dashboardNotifications").text("");
+                        $(".dashboardNotifications").addClass("hidden");
+                    }
+                },
+                error: function (data, textStatus, jqXHR) {
+                }
+            })
+        };
 
-         $(document).ready(function() {
+        $(document).ready(function() {
 
              var menu = "close";
 
-                $('.menu-toggle').click(function() {
-                    if(menu == "close"){
-                        $('.slidingContent').css('left','70%');
-                        $('.slidingContent').css('opacity','.05');
-                        $('.slidingContent').css('position','fixed');
-                        $('.slidingContent').css('pointer-events','none');
-                        $('.navbarSliding').css('width','70%');
-                        $('.navbarSliding').css('left','70%');
-                        menu="open";
-                    }
-                    else{
-                        $('.slidingContent').css('left','0%');
-                        $('.slidingContent').css('opacity','1');
-                        $('.slidingContent').css('position','relative');
-                        $('.slidingContent').css('pointer-events','auto');
-                        $('.navbarSliding').css('width','0%');
-                        $('.navbarSliding').css('left','0%');
-                        menu="close";
-                    }
-        });
-        var self = $(this);
-        var url = "/load_cart";
-            ajax_req = $.ajax({
-                url: url,
-                type: "GET",
-                dataType: 'json',
-                success: function(data, textStatus, jqXHR) {
-                    $.each(data, function(index, item)
-                    {
-                        if (item.msg == ''){
-                            item.image = "{{ MEDIA_URL }}" + item.image;
-                            AddCartItem(item);
-                            cartCount()
-                        }
-                        else {
-                            $('#messageId').html(item.msg);
-                            $('#messageModal').modal('show');
-                        }
-                    });
-                },
-                error: function(data, textStatus, jqXHR) {
+            $('.menu-toggle').click(function() {
+                if(menu == "close"){
+                    $('.slidingContent').css('left','70%');
+                    $('.slidingContent').css('opacity','.05');
+                    $('.slidingContent').css('position','fixed');
+                    $('.slidingContent').css('pointer-events','none');
+                    $('.navbarSliding').css('width','70%');
+                    $('.navbarSliding').css('left','70%');
+                    menu="open";
+                }
+                else{
+                    $('.slidingContent').css('left','0%');
+                    $('.slidingContent').css('opacity','1');
+                    $('.slidingContent').css('position','relative');
+                    $('.slidingContent').css('pointer-events','auto');
+                    $('.navbarSliding').css('width','0%');
+                    $('.navbarSliding').css('left','0%');
+                    menu="close";
                 }
             });
+        var self = $(this);
+        load_cart_ajax_req = $.ajax({
+            url: "/load_cart",
+            type: "GET",
+            dataType: 'json',
+            success: function(data, textStatus, jqXHR) {
+                $.each(data, function(index, item)
+                {
+                    if (item.msg == ''){
+                        item.image = "{{ MEDIA_URL }}" + item.image;
+                        AddCartItem(item);
+                        cartCount()
+                    }
+                    else {
+                        $('#messageId').html(item.msg);
+                        $('#messageModal').modal('show');
+                    }
+                });
+            },
+            error: function(data, textStatus, jqXHR) {
+            }
+        });
 
         cartCount();
 
+        {% if user.is_authenticated and user.is_seller %}
+            load_user_notifications();
+            setInterval(load_user_notifications, 60000 );  // Poll every 60 seconds
+        {% endif %}
+
+
     });
+
 
 
     function LoadCartItemDiv(cartItem)
     {
         var rowdiv =  $('<div/>', {
+            'class':'row'
+        });
+        var rowdivin =  $('<div/>', {
             'class':'row'
         });
         var cartitemdiv =  $('<li/>', {
@@ -649,11 +697,11 @@
         });
 
         var itemThumbnail = $('<img/>', {'src':cartItem.image, 'class': 'img-responsive shoppingcartthumbnail'});
-        var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv'});
+        var thumbnailDiv = $('<div/>', {'class': 'shoppingcartthumbnaildiv col-xs-4'});
         itemThumbnail.appendTo(thumbnailDiv);
-        thumbnailDiv.appendTo(cartitemdiv);
+        thumbnailDiv.appendTo(rowdivin);
 
-        var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo'});
+        var itemInfoDiv = $('<div/>', {'class' : 'shoppingcartiteminfo col-xs-3'});
 
         var itemTitle = $('<div/>', {'class':'shoppingcartitemTitle ','text':cartItem.title});
         itemTitle.appendTo(itemInfoDiv);
@@ -666,25 +714,25 @@
         var itemQty = $('<div/>', {'class':'shoppingcartitemQty', 'text':"Qty:" + cartItem.qty});
         itemQty.appendTo(itemInfoDiv);
 
-        itemInfoDiv.appendTo(cartitemdiv);
+        itemInfoDiv.appendTo(rowdivin);
         var removeBtnDiv = $('<div/>', {'class':'shoppingcartremovebtn'});
         var delBtnId = 'deleteBtnId_' + cartItem.Id;
         var removeBtn = $('<a/>', { 'onclick' : 'RemoveCartItem(' + cartItem.Id + ')', 'id' : delBtnId,
             'class' : 'shoppingcartBtn', 'html' : '<img src="{{ STATIC_URL }}img/delete.png" width="20" height="20">'
         });
         removeBtn.appendTo(removeBtnDiv);
-        removeBtnDiv.appendTo(cartitemdiv);
+        removeBtnDiv.appendTo(rowdivin);
 
-        var itemInfoDiv1 = $('<div/>', {'class' : 'shoppingcartpriceinfo'});
+        var itemInfoDiv1 = $('<div/>', {'class' : 'shoppingcartpriceinfo text-center col-xs-offset-0 col-xs-5'});
 
-        var price = '$' + (cartItem.qty * cartItem.price);
+        var price = '$' +  cartItem.subtotal;
         var priceDiv = $('<div/>', {'class':'shoppingcartitemPrice', 'text': price});
         priceDiv.appendTo(itemInfoDiv1);
-        itemInfoDiv1.appendTo(cartitemdiv);
+        itemInfoDiv1.appendTo(rowdivin);
 
+        rowdivin.appendTo(cartitemdiv);
 
         cartitemdiv.appendTo(rowdiv);
-
         rowdiv.appendTo("#shoppingcartitems");
 
 

@@ -68,11 +68,9 @@
         }
 
         function stickyFooter() {
-                // Jon M TBD - Temp hack until we can find a better sticky footer solution :(
-                $('.slidingContent2').css('min-height', $(window).height() *.75);
+            // Jon M TBD - Temp hack until we can find a better sticky footer solution :(
+            $('.slidingContent2').css('min-height', $(window).height() *.75);
         }
-
-
 
 
         $("#goToTopOfPage").click(function(){
@@ -199,11 +197,11 @@
             var winWidth = $(window).width();
             if (winWidth > 992 && winWidth < 1050)
             {
-                $("#menuContainer").css("width",winWidth-100)
+                $("#menuContainer").css("width",winWidth-100);
             }
             if (winWidth > 768 && winWidth < 850)
             {
-                $("#menuContainer").css("width",winWidth-100)
+                $("#menuContainer").css("width",winWidth-100);
             }
             $('#tinvilleTagBannerXS').removeClass("hidden");
         }

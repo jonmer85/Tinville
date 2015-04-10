@@ -122,12 +122,20 @@ class PaymentInfoForm(forms.Form):
             HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
             Div(
                 Fieldset('Expiration Date',
-                    Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-6', style='padding-left: 0', autocomplete='off'),
-                    css_class='col-xs-7', style='padding-left: 0'
+                         Div(
+                             Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-6', autocomplete='off'),
+                             css_class="row"
+                         ),
+                         css_class='col-xs-7'
                 ),
                 Fieldset('CV Code',
-                    Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', style='padding-left: 0', autocomplete='off'),
-                    css_class='col-xs-5', style='padding-right: 0')
+                    Div(
+                        Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', autocomplete='off'),
+                        css_class="row"
+                    ),
+                    css_class='col-xs-5'),
+                css_class="row"
+
             ),
 
         )
@@ -145,13 +153,7 @@ class PaymentInfoFormWithTotal(PaymentInfoForm):
             Div(
                 PaymentInfoForm.header_payment_layout,
                 PaymentInfoForm.base_payment_layout,
-                HTML('''
-                            <div class='form-control total btn btn-info col-xs-12'>
-                              Total:
-                              <span class='amount'>{{ payment_currency }}{{ total }}</span>
-                            </div>
-                          '''),
-                Submit('paymentForm', 'Pay', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
+                Submit('paymentForm', 'Pay {{ payment_currency }}{{ total }}', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
 

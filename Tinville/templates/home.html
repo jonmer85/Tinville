@@ -74,12 +74,9 @@
           <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
       </div>
     <div class="homeBlock">
-
         <div class="container">
             <div class="visible-xs ">
-
                 <img class="" style="margin-top: 20px; margin-left: 50px; height: 200px" src="{{ STATIC_URL }}img/infopageimg/swi.png"/>
-
             </div>
             <div class="hidden-xs row" style="padding-top: 20px">
                 <div class="col-xs-offset-0 col-xs-4 col-md-4" >
@@ -93,7 +90,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="container" style="padding-top: 100px">
         <div class="row" id="shopItems">
@@ -115,5 +111,7 @@
     <script>
 {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
     </script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>$.endlessPaginate();</script>
 
 {% endblock %}
