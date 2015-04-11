@@ -41,7 +41,18 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+        var setBannerSizes = function () {
+            var itemWidth = $(".banner img").width();
+            $(".itemSize").css('height', (itemWidth * 0.66322) + 'px');
+        }
 
+        $(window).resize(function(){
+            setBannerSizes();
+        });
+
+        $(document).ready(function(){
+            setBannerSizes();
+        });
     </script>
 
 {% endblock %}
