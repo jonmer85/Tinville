@@ -81,9 +81,9 @@ class ShippingAddressForm(CoreShippingAddressForm):
                     state=self.cleaned_data['state'],
                     zip=self.cleaned_data['postcode'],
                     country='US')
-                if(self.cleaned_data['state'] != verified_address.state):
+                if(self.cleaned_data['state'].lower() != verified_address.state.lower()):
                     raise forms.ValidationError(_('Invalid state: %s') % self.cleaned_data['state'])
-                if(self.cleaned_data['line4'] != verified_address.city):
+                if(self.cleaned_data['line4'].lower() != verified_address.city.lower()):
                     raise forms.ValidationError(_('Invalid city: %s') % self.cleaned_data['line4'])
             except Exception, Argument:
                 logger.error( "custom_oscar.apps.checkout.forms.ShippingAddressForm.clean(): failed to verify address") ;
