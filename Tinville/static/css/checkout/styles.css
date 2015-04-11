@@ -41,3 +41,13 @@
 .checkOutTop
 {
 }
+.orNewAddress{
+
+}
+
+@media (min-width: 768px) {
+    .orNewAddress{
+        margin-top: 150px;
+    }
+
+}
