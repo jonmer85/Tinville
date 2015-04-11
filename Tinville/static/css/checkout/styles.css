@@ -1,7 +1,4 @@
 .checkoutAlign {
-    margin-left: auto;
-    margin-right: auto;
-    width: 45%;
 }
 
 .continueButtonAlign{
@@ -33,4 +30,14 @@
 
 .mobileTotals{
     float:left;
+}
+
+@media (min-width: 768px) {
+     .checkOutTop
+    {
+         padding-top: 50px;
+    }
+}
+.checkOutTop
+{
 }
