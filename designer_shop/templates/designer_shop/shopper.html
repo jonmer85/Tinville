@@ -153,7 +153,7 @@
         if (changeGender)
             refreshtypes(genderFilter, typeFilter);
     }
-var myresponse;
+    var myresponse;
     function refreshtypes(genderFilter, typeFilter) {
         if (typeFilter.match("All")) {
             myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
