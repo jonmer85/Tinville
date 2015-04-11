@@ -80,13 +80,13 @@
             </div>
             <div class="hidden-xs row" style="padding-top: 20px">
                 <div class="col-xs-offset-0 col-xs-4 col-md-4" >
-                    <img class="" style="margin-left: 25%; height: 200px" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
+                    <img class="center-block" style="height: 200px" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
                 </div>
                 <div class="col-xs-4 col-md-4 aboutDashRight aboutDashLeft" >
-                    <img class="" style="margin-left: 25%; height: 200px" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
+                    <img class="center-block" style="height: 200px" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
                 </div>
                 <div class="col-xs-4 col-md-4" >
-                    <img class="" style="margin-left: 25%; height: 200px" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
+                    <img class="center-block" style="height: 200px" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
                 </div>
             </div>
         </div>
@@ -112,6 +112,12 @@
 {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
     </script>
     <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>$.endlessPaginate();</script>
+    <script>
+    $.endlessPaginate({
+        onCompleted: function(){
+            setItemSizes();
+        },
+    });
+    </script>
 
 {% endblock %}

@@ -176,10 +176,10 @@
                                                             <td>New Shipping Costs</td>
                                                             <td id="newShippingCosts">{{ calculated_shipping_cost|currency:order.currency }}</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Other Shipping Costs</td>
-                                                            <td id="otherShippingCosts">{{ order.shipping_excl_tax|currency:order.currency }}</td>
-                                                        </tr>
+{#                                                        <tr>#}
+{#                                                            <td>Other Shipping Costs</td>#}
+{#                                                            <td id="otherShippingCosts">{{ order.shipping_excl_tax|currency:order.currency }}</td>#}
+{#                                                        </tr>#}
                                                         <tr>
                                                             <td>Total Transaction Fees</td>
                                                             <td id="totalTransactionFees">{{ order.estimated_tinville_cut|currency:order.currency }}</td>
@@ -420,7 +420,7 @@
                                         <div class="btn-group pull-right">
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship my order!</button>
                                         </div>
-                                        <div class="pull-left">
+                                        <div class="pull-left hidden">
                                             <input type="checkbox" id="partialOrder"/>
                                             <label>Ship partial order</label>
                                         </div>
@@ -476,6 +476,8 @@
 {#                                                        <div class="btn-group" role="group" aria-label="...">#}
                                                             {% if not request.mobile %}
                                                                 <button type="button" id="print_label_{{ event.id }}" class="btn btn-primary">{% trans "Print Label" %}</button>
+                                                            {% else %}
+                                                                Printing not available on mobile
                                                             {% endif %}
                                                             <img src="{{ event.label_url }}" class="hidden printLabel">
                                                             {% if user.is_staff %}
@@ -902,7 +904,7 @@
             $("#newShippingCosts").text("$" + newShippingCost)
             var totalTransactionFees = (($("#orderTotal").text().substring(1)-
                 $("#newShippingCosts").text().substring(1)-
-                $("#otherShippingCosts").text().substring(1))*0.1).toFixed(2)
+                $("#otherShippingCosts").text().substring(1))*0.2).toFixed(2)
             var totalTakeHome = ($("#orderTotal").text().substring(1)-
                 $("#newShippingCosts").text().substring(1)-
                 $("#otherShippingCosts").text().substring(1)-
