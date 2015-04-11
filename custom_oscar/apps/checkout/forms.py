@@ -92,16 +92,13 @@ class PaymentInfoForm(forms.Form):
                                   widget=forms.TextInput(attrs={'data-stripe': 'number',
                                                                 'pattern': '\d*', 'autocomplete': 'off',
                                                                 'data-parsley-cardNum': 'data-parsley-cardNum'}))
-    expiration_month = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-month',
+
+    expiration_date = forms.CharField(required=True, min_length=5, max_length=5,
+                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-date',
                                                                      'pattern': '\d*', 'autocomplete': 'off',
                                                                      'data-parsley-group': 'cardexpiry',
                                                                      'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
-    expiration_year = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-year',
-                                                                     'pattern': '\d*', 'autocomplete': 'off',
-                                                                     'data-parsley-group': 'cardexpiry',
-                                                                     'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
+
     cvc = forms.CharField(required=True, max_length=4,
                                        widget=forms.PasswordInput(attrs={'data-stripe': 'cvc',
                                                                          'pattern': '\d*', 'autocomplete': 'off',
@@ -125,19 +122,18 @@ class PaymentInfoForm(forms.Form):
             HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
             Div(
                 Fieldset('Expiration Date',
-                    Div(
-                        Div(Field('expiration_month', placeholder="MM"), css_class='col-xs-6', autocomplete='off'),
-                        Div(Field('expiration_year', placeholder="YY"), css_class='col-xs-6', autocomplete='off'),
-                        css_class="row"
-                    ),
-                    css_class='col-xs-7'
+                         Div(
+                             Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-12', autocomplete='off'),
+                             css_class="row"
+                         ),
+                         css_class='col-xs-6'
                 ),
                 Fieldset('CV Code',
                     Div(
                         Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', autocomplete='off'),
                         css_class="row"
                     ),
-                    css_class='col-xs-5'),
+                    css_class='col-xs-6'),
                 css_class="row"
 
             ),
@@ -157,12 +153,6 @@ class PaymentInfoFormWithTotal(PaymentInfoForm):
             Div(
                 PaymentInfoForm.header_payment_layout,
                 PaymentInfoForm.base_payment_layout,
-                # HTML('''
-                #             <div class='form-control total btn btn-info col-xs-12'>
-                #               Total:
-                #               <span class='amount'>{{ payment_currency }}{{ total }}</span>
-                #             </div>
-                #           '''),
                 Submit('paymentForm', 'Pay {{ payment_currency }}{{ total }}', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
