@@ -1,5 +1,6 @@
 from datetime import timedelta
 from decimal import Decimal as D, ROUND_UP
+from designer_shop.models import Shop
 
 from django.utils.timezone import now
 from oscar.core.loading import get_model
@@ -63,6 +64,7 @@ class IndexView(CoreIndexView):
     def get_context_data(self, **kwargs):
         ctx = TemplateView.get_context_data(self, **kwargs)
         ctx.update(self.get_stats())
+        ctx.update({"shop_slug": Shop.objects.get(user=self.request.user).slug})
         return ctx
 
     def get_hourly_report(self, hours=24, segments=10):
@@ -147,9 +149,8 @@ class IndexView(CoreIndexView):
             )['total_incl_tax__sum'] or D('0.00'),
 
             'hourly_report_dict': self.get_hourly_report(hours=24),
-            'total_customers_last_day': User.objects.filter(
-                date_joined__gt=datetime_24hrs_ago,
-            ).count(),
+            'total_customers_last_day': orders_last_day.values_list('user', flat=True).distinct().count() +
+                                        orders_last_day.values_list('guest_email', flat=True).distinct().count(),
 
             'total_open_baskets_last_day': self.get_open_baskets({
                 'date_created__gt': datetime_24hrs_ago
@@ -163,7 +164,8 @@ class IndexView(CoreIndexView):
             'total_vouchers': self.get_active_vouchers().count(),
             'total_promotions': self.get_number_of_promotions(),
 
-            'total_customers': User.objects.count(),
+            'total_customers': orders.values_list('user', flat=True).distinct().count() +
+                               orders.values_list('guest_email', flat=True).distinct().count(),
             'total_open_baskets': self.get_open_baskets().count(),
             'total_orders': orders.count(),
             'total_lines': Line.objects.filter(order__in=orders).count(),
