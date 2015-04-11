@@ -93,7 +93,7 @@ class ProductCreationForm(forms.ModelForm):
                                                           objects.filter(group=2), empty_label="Choose a color...",
                                                      initial=sizes[i]["colorsAndQuantities"][j]["color"], required=False)
                             self.fields[colorAndQuantity['quantityFieldName']] \
-                            = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], required=False)
+                            = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], required=False, min_value=0)
 
                 elif "sizeX" in sizes[i] and sizes[i]["sizeX"] and "sizeY" in sizes[i] and sizes[i]["sizeY"]:
                     self.fields[sizes[i]["sizeFieldNameX"]] \
@@ -106,7 +106,7 @@ class ProductCreationForm(forms.ModelForm):
                                                       objects.filter(group=2), empty_label="Choose a color...",
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields[colorAndQuantity['quantityFieldName']] \
-                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
                 elif "sizeNum" in sizes[i] and sizes[i]["sizeNum"]:
                     self.fields[sizes[i]["sizeFieldName"]] \
@@ -117,7 +117,7 @@ class ProductCreationForm(forms.ModelForm):
                                                       objects.filter(group=2), empty_label="Choose a color...",
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields[colorAndQuantity['quantityFieldName']] \
-                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"])
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
 
     def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
