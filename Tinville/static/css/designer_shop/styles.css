@@ -520,10 +520,10 @@
 }
 
 .itemSize {
-    min-width: 200px;
-    max-width: 200px;
-    min-height: 250px;
-    max-height: 250px;
+    /*min-width: 200px;*/
+    /*max-width: 200px;*/
+    /*min-height: 250px;*/
+    /*max-height: 250px;*/
 }
 
 
@@ -664,9 +664,7 @@
 
 
 .shoplistLi{
-    font-size: 1em;
     list-style-type: none;
-    margin-top: 10px;
 }
 .shoplistStyle {
     width: 100%;

@@ -303,6 +303,9 @@ function AddCartItem(cartItem)
 
 function RemoveCartItem(itemId)
 {
+    $('#carttotal').text('Total: $');
+    var l = Ladda.create( document.querySelector( '#carttotal' ) );
+    l.start();
     var self = $(this);
     var url = "/delete_item_to_cart";
 
@@ -322,6 +325,7 @@ function RemoveCartItem(itemId)
 
     aggregateTotal();
     cartCount();
+    l.stop();
 }
 
     $("#shoppingcartitems").slimScroll({});
@@ -333,23 +337,28 @@ function RemoveCartItem(itemId)
           }, 32)
           .addMessage('en', 'cardnum', 'Invalid card number');
         window.ParsleyValidator
-          .addValidator('cardexpiry', function (value) {
-            var month = $("[data-stripe='exp-month']")[0].value;
-            var year = $("[data-stripe='exp-year']")[0].value;
+          .addValidator('cardexpiry', function () {
+            var strDate = $("[data-stripe='exp-date']")[0].value;
+                var date = moment(strDate, "MM-YY");
+                var month = date.format("MM");
+                var year = date.format("YY");
             return Stripe.card.validateExpiry(month, year);
           }, 33)
           .addMessage('en', 'cardexpiry', 'Invalid card expiration date');
+
+        $('#id_expiration_date').keyup(function() {
+            var expdateString = $(this).val().split("-").join("");
+            if (expdateString.length > 0) {
+                expdateString = expdateString.match(new RegExp('.{1,2}', 'g')).join("-");
+            }
+            $(this).val(expdateString);
+        });
+
         window.ParsleyValidator
           .addValidator('cardcvc', function (value) {
             return Stripe.card.validateCVC(value);
           }, 34)
           .addMessage('en', 'cardcvc', 'Invalid card verification code');
-
-     $("[data-parsley-group='cardexpiry']").keyup(function() {
-          $("[data-parsley-group='cardexpiry']").each( function() {
-              $( this ).parsley().validate();
-          })
-        });
 
 
      $(".parsley-form").parsley({

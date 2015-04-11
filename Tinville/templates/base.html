@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social-buttons.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-social.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ladda.min.css" />
 {#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
 
     {% block css %}{% endblock %}
@@ -65,7 +66,7 @@
               <ul class="dropdown-menu cartDropdown container-fluid" id="cartDropdown">
                 <li><div id="shoppingcartitems" class="slimScrollBar"></div></li>
                 <li><div id="noItem" class="col-xs-offset-2 tinvilleOrange">No Item in your Bag</div></li>
-                <li><div id="carttotal" class="hidden carttotal"></div></li>
+                <li><div id="carttotal" data-style="zoom-out" class="ladda-button hidden carttotal"></div></li>
                 <li class="row"><a id="shoppingcartcheckout" class="hidden col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
                         Checkout
                     </a>
@@ -97,7 +98,7 @@
         {% else %}
             <ul id="signInButtonMobile" class="nav ">
               <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
-                          <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown">
+                          <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown" style="padding-bottom: 0px">
                               <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
                               <div id="userNotifications-xs" class="userNotifications"></div>
                           </a>
@@ -314,7 +315,7 @@
                             </li>
                             <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
-                                  <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                  <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
                                       <i id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
                                       <div id="userNotifications-lg" class="userNotifications"></div>
                                   </a>
@@ -551,9 +552,11 @@
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/fastclick.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/moment.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
         <script src="{{ STATIC_URL }}js/Tours.js"></script>
+        <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
     {% endblock javascript_library %}
     <script>
 

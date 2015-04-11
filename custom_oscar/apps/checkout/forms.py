@@ -74,16 +74,20 @@ class ShippingAddressForm(CoreShippingAddressForm):
         if {'first_name', 'last_name', 'line1', 'line4', 'state', 'postcode'}.issubset(self.cleaned_data):
 
             try:
-                easypost.Address.create_and_verify(
+                verified_address = easypost.Address.create_and_verify(
                     name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
                     street1=self.cleaned_data['line1'],
                     city=self.cleaned_data['line4'],
                     state=self.cleaned_data['state'],
                     zip=self.cleaned_data['postcode'],
                     country='US')
-            except Exception as e:
+                if(self.cleaned_data['state'] != verified_address.state):
+                    raise forms.ValidationError(_('Invalid state: %s') % self.cleaned_data['state'])
+                if(self.cleaned_data['line4'] != verified_address.city):
+                    raise forms.ValidationError(_('Invalid city: %s') % self.cleaned_data['line4'])
+            except Exception, Argument:
                 logger.error( "custom_oscar.apps.checkout.forms.ShippingAddressForm.clean(): failed to verify address") ;
-                raise forms.ValidationError( "Please enter a valid address." )
+                raise forms.ValidationError(_('Please enter a valid address. %s') % Argument.message )
 
 @parsleyfy
 class PaymentInfoForm(forms.Form):
@@ -92,16 +96,13 @@ class PaymentInfoForm(forms.Form):
                                   widget=forms.TextInput(attrs={'data-stripe': 'number',
                                                                 'pattern': '\d*', 'autocomplete': 'off',
                                                                 'data-parsley-cardNum': 'data-parsley-cardNum'}))
-    expiration_month = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-month',
+
+    expiration_date = forms.CharField(required=True, min_length=5, max_length=5,
+                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-date',
                                                                      'pattern': '\d*', 'autocomplete': 'off',
                                                                      'data-parsley-group': 'cardexpiry',
                                                                      'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
-    expiration_year = forms.CharField(required=True, max_length=2,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-year',
-                                                                     'pattern': '\d*', 'autocomplete': 'off',
-                                                                     'data-parsley-group': 'cardexpiry',
-                                                                     'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
+
     cvc = forms.CharField(required=True, max_length=4,
                                        widget=forms.PasswordInput(attrs={'data-stripe': 'cvc',
                                                                          'pattern': '\d*', 'autocomplete': 'off',
@@ -125,19 +126,18 @@ class PaymentInfoForm(forms.Form):
             HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
             Div(
                 Fieldset('Expiration Date',
-                    Div(
-                        Div(Field('expiration_month', placeholder="MM"), css_class='col-xs-6', autocomplete='off'),
-                        Div(Field('expiration_year', placeholder="YY"), css_class='col-xs-6', autocomplete='off'),
-                        css_class="row"
-                    ),
-                    css_class='col-xs-7'
+                         Div(
+                             Div(Field('expiration_date', placeholder="MM-YY"), css_class='col-xs-12', autocomplete='off'),
+                             css_class="row"
+                         ),
+                         css_class='col-xs-6'
                 ),
                 Fieldset('CV Code',
                     Div(
                         Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', autocomplete='off'),
                         css_class="row"
                     ),
-                    css_class='col-xs-5'),
+                    css_class='col-xs-6'),
                 css_class="row"
 
             ),
@@ -157,12 +157,6 @@ class PaymentInfoFormWithTotal(PaymentInfoForm):
             Div(
                 PaymentInfoForm.header_payment_layout,
                 PaymentInfoForm.base_payment_layout,
-                # HTML('''
-                #             <div class='form-control total btn btn-info col-xs-12'>
-                #               Total:
-                #               <span class='amount'>{{ payment_currency }}{{ total }}</span>
-                #             </div>
-                #           '''),
                 Submit('paymentForm', 'Pay {{ payment_currency }}{{ total }}', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
