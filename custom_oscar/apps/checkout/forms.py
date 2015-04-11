@@ -74,16 +74,20 @@ class ShippingAddressForm(CoreShippingAddressForm):
         if {'first_name', 'last_name', 'line1', 'line4', 'state', 'postcode'}.issubset(self.cleaned_data):
 
             try:
-                easypost.Address.create_and_verify(
+                verified_address = easypost.Address.create_and_verify(
                     name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
                     street1=self.cleaned_data['line1'],
                     city=self.cleaned_data['line4'],
                     state=self.cleaned_data['state'],
                     zip=self.cleaned_data['postcode'],
                     country='US')
-            except Exception as e:
+                if(self.cleaned_data['state'] != verified_address.state):
+                    raise forms.ValidationError(_('Invalid state: %s') % self.cleaned_data['state'])
+                if(self.cleaned_data['line4'] != verified_address.city):
+                    raise forms.ValidationError(_('Invalid city: %s') % self.cleaned_data['line4'])
+            except Exception, Argument:
                 logger.error( "custom_oscar.apps.checkout.forms.ShippingAddressForm.clean(): failed to verify address") ;
-                raise forms.ValidationError( "Please enter a valid address." )
+                raise forms.ValidationError(_('Please enter a valid address. %s') % Argument.message )
 
 @parsleyfy
 class PaymentInfoForm(forms.Form):
