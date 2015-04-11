@@ -35,12 +35,15 @@
 @media (min-width: 768px) {
      .checkOutTop
     {
-         padding-top: 50px;
+         margin-top: 50px;
+         margin-bottom: 20px;
     }
 }
 .checkOutTop
 {
+    margin-bottom: 20px;
 }
+
 .orNewAddress{
 
 }
