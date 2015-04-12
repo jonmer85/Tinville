@@ -356,3 +356,29 @@ class DesignerShopTests(TestCase):
                                     })
         self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
 
+
+    def test_exception_on_negative_price(self):
+        self.client.login(username='demo@user.com', password='tinville')
+        initial_products = len(Product.objects.all())
+        with open('designer_shop/fixtures/media/image_not_found.jpg') as fp:
+            response = self.client.post('/demo/edit/',
+                                    {
+                                     'category': '37',
+                                     'description': 'Test Description',
+                                     'price': '-3.00',
+                                     'images-INITIAL_FORMS': '0',
+                                     'images-MAX_NUM_FORMS': '5',
+                                     'images-MIN_NUM_FORMS': '1',
+                                     'images-TOTAL_FORMS': '1',
+                                     'images-0-original': fp,
+                                     'images-0-cropping': '',
+                                     'sizeSetSelectionTemplate0_quantityField0': '1',
+                                     'sizeSetSelectionTemplate0_quantityField1': '1',
+                                     'sizeSetSelectionTemplate0_colorSelection0': '8',
+                                     'sizeSetSelectionTemplate0_colorSelection1': '',
+                                     'sizeSetSelectionTemplate0_sizeSetSelection': '2',
+                                     'sizeSetSelectionTemplate1_sizeSetSelection': '',
+                                     'sizeVariation': '1',
+                                     'title': 'TestTitle'
+                                    })
+        self.assertEquals(len(Product.objects.all()), initial_products)  # No new products should have been made
