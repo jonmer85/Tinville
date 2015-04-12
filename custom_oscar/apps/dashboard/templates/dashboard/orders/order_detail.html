@@ -476,6 +476,8 @@
 {#                                                        <div class="btn-group" role="group" aria-label="...">#}
                                                             {% if not request.mobile %}
                                                                 <button type="button" id="print_label_{{ event.id }}" class="btn btn-primary">{% trans "Print Label" %}</button>
+                                                            {% else %}
+                                                                Printing not available on mobile
                                                             {% endif %}
                                                             <img src="{{ event.label_url }}" class="hidden printLabel">
                                                             {% if user.is_staff %}

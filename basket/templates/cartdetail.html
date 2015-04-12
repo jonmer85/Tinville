@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block css %}
+{{ block.super }}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/checkout/styles.css" />
+{% endblock css %}
 {% block content %}
     <div class="container checkOutTop" >
         <div style="padding-top: 50px"></div>
@@ -18,7 +22,7 @@
                 <div id="btncheckouttotal" style="margin-bottom: 10px;" data-style="zoom-out" class="ladda-button col-xs-offset-1 col-xs-10 col-sm-offset-6 col-sm-6 col-md-offset-10 col-md-2 text-center">
                     <strong id="checkoutTotal">Total: </strong>
                 </div>
-                <a href="{% url 'checkout:index' %}" id="checkoutBtn" class="tinvilleBackgroundOrange col-xs-offset-1 col-xs-10 col-sm-offset-6 col-sm-6 col-md-offset-10 col-md-2 btn btn-success" ><i class="fa fa-angle-right"></i> Checkout</a>
+                <a href="{% url 'checkout:index' %}" id="checkoutBtn" data-style="zoom-out"  class="ladda-button tinvilleBackgroundOrange col-xs-offset-1 col-xs-10 col-sm-offset-6 col-sm-6 col-md-offset-10 col-md-2 btn btn-success" >Checkout <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
     </div>
 
@@ -34,8 +38,11 @@
 
     <script>
         $(function() {
+            var l = Ladda.create( document.querySelector( '#checkoutBtn' ) );
+            l.start();
             LoadCheckoutCartDivs();
             aggregateCheckoutTotal();
+            l.stop();
         });
 
         function LoadCheckoutCartDivs()
