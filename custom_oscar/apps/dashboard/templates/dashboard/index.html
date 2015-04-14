@@ -53,13 +53,13 @@
 
 <div class="content-block">
     <div class="row">
-        <aside class="col-md-3 order-graph-details">
+        <aside class="col-md-5 col-lg-3 order-graph-details">
             <label class="label label-default btn" onclick="window.location='{% url 'dashboard:order-list' %}'"><span><i class="glyphicon glyphicon-shopping-cart"></i>{{ total_orders }}</span>{% trans "Total Orders" %}</label>
             <label class="label label-default btn" onclick="window.location='{% url 'designer_shop.views.shopeditor' shop_slug %}'"><span><i class="glyphicon glyphicon-book"></i>{{ total_products }}</span>{% trans "Total Products" %}</label>
             <label class="label label-default"><span><i class="glyphicon glyphicon-hand-right"></i>{{ total_customers_last_day }}</span>{% trans "New Customers - Last 24 Hours" %}</label>
             <label class="label label-default"><span><i class="glyphicon glyphicon-dashboard"></i>{{ total_customers }}</span>{% trans "Total Customers" %}</label>
         </aside>
-        <div class="col-md-9">    
+        <div class="col-md-12 col-lg-9">
             <div id="order_graph">
                 <div class='bar-caption'><h1>{% trans "Latest Orders (last 24 hours)" %}</h1></div>
                 <div class='bar-y-axis'>
