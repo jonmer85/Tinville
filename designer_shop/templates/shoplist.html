@@ -9,7 +9,7 @@
 {% block content %}
     {{ block.super }}
         {% if shop_list %}
-            <ul class="container" style="padding-top: 50px">
+            <ul class="container" style="margin-top: 50px">
                 <div class="row">
                 {% for shop in shop_list %}
     {#                <li class="shoplistLi"><a class="" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>#}
@@ -41,7 +41,18 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+        var setBannerSizes = function () {
+            var bannerWidth = $(".banner img").width();
+            $(".banner img").css('height', (bannerWidth * 0.66322) + 'px');
+        }
 
+        $(window).resize(function(){
+            setBannerSizes();
+        });
+
+        $(document).ready(function(){
+            setBannerSizes();
+        });
     </script>
 
 {% endblock %}

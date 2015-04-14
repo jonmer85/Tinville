@@ -520,13 +520,8 @@
 }
 
 .itemSize {
-    /*min-width: 200px;*/
-    /*max-width: 200px;*/
-    /*min-height: 250px;*/
-    /*max-height: 250px;*/
+    width: 100%;
 }
-
-
 
 .itemSelectedImage {
     padding: 2px;
@@ -665,6 +660,7 @@
 
 .shoplistLi{
     list-style-type: none;
+    margin-bottom: 20px;
 }
 .shoplistStyle {
     width: 100%;

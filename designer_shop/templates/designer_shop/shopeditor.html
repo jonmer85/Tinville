@@ -764,7 +764,7 @@
             }
             // height fits fully, width needs to be cropped
             var offset = Math.round((image_width - (image_height * ratio)) / 2);
-            return [offset, 0, image_widproductCreationModalth - offset, image_height];
+            return [offset, 0, image_width - offset, image_height];
         }
 
         function readURL(input, cropping_img, ratio_width, ratio_height) {

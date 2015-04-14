@@ -23,7 +23,7 @@
         <div class="row">
             {% if request.user.is_authenticated %}
                 {% if addresses %}
-                    <div class="col-xs-12 col-sm-offset-1 col-sm-5 well">
+                    <div class="col-xs-12 col-sm-5 well">
                         <div class="row ">
                             <div class="col-xs-offset-1 col-xs-10">
                                 <div class="checkoutAlign shippingFont"><p>{% trans "An address from your addressbook?" %}</p></div>
@@ -60,13 +60,15 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-                                <div class="checkoutAlign shippingFont"><p>{% trans "Or a new address?" %}</p></div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-12 col-sm-offset-0 col-sm-2">
+                        <div class="center-block orNewAddress shippingFont text-center"><p>{% trans "Or a new address?" %}</p></div>
+                    </div>
                 {% endif %}
             {% endif %}
-            <div class="col-xs-12 col-sm-offset-1 col-sm-5 well">
+            <div class="col-xs-12 col-sm-offset-0 col-sm-5 well">
                 <form action="" method="post" class="form-stacked ">
                     <div class="row">
                         <div class="col-xs-offset-1 col-xs-10">
