@@ -48,7 +48,7 @@ input[disabled] {
         margin-bottom: 0px;
     }
 	table.collapseTableXS thead { display: none; }
-	table.collapseTableXS tbody td { display: block; padding: .6rem; min-width:320px;}
+	table.collapseTableXS tbody td { display: block; padding: 1.5rem; min-width:320px; font-size: 1.25em}
 	table.collapseTableXS tbody tr td:first-child { background: #5B595A; color: #e7e5e6; }
 	table.collapseTableXS tbody td:before {
 		content: attr(data-th); font-weight: bold;
@@ -1189,8 +1189,9 @@ textarea.plain {
   }
   table .btn {
     padding: 3px 9px;
-    font-size: 11px;
-    line-height: 16px;
+    font-size: 1em;
+    line-height: 2em;
+    min-width: 100px;
   }
 }
 @media (max-width: 979px) {
