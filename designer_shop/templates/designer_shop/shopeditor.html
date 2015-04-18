@@ -328,9 +328,10 @@
         }
 
         function rowColorQuantityTemplate(required){
-            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.' data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+            dataType = "data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.'" + dataType;
             if (required === "")
-                numRequired = "";
+                numRequired = "data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
             var rowColorQuantityTemplate = "" +
             "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
                 "<td style=' padding: 8px 2px 0px 2px; '>" +
