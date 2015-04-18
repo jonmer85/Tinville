@@ -2028,7 +2028,7 @@
               "category": "Order related",
               "email_subject_template": "Designer is Processing Your Order ({{ order_number }})",
               "email_body_template": "Hello, /n The designer is currently processing your order.",
-              "email_body_html_template": "<html><div>Hello,</div><p>The designer: {{ shop_name }} <br>is currently processing your order {{ order_number }}.</p><p>The processed items are:</p><ul>{% for line in order.lines.all %}<li>{{ line.title }} - quantity: {{ line.quantity }}</li>{% endfor %}</ul><p></html>",
+              "email_body_html_template": "<html><div>Hello,</div><p>The designer: {{ shop_name }} <br>is currently processing your order {{ order_number }}.</p><p>The processed items are:</p><ul>{% for line in order.lines.all %}<li>{{ line.title }} - quantity: {{ line.quantity }}</li>{% endfor %}</ul><p>The tracking information can be viewed at <a href='{{ tracking_number_url }}'>{{ tracking_number }}<a></p></html>",
               "date_created": "2015-04-05 20:31:49.481761",
               "date_updated": "2015-04-05 20:31:49.481761"
           }
@@ -2042,7 +2042,7 @@
               "category": "Order related",
               "email_subject_template": "Designer has Shipped Your Order ({{ order_number }})",
               "email_body_template": "Hello, /n The designer has shipped your order and it is in transit.",
-              "email_body_html_template": "<html><div>Hello,</div><p>The designer: {{ shop_name }} <br>has shipped your order {{ order_number }}.</p><p>The shipped items are:</p><ul>{% for line in order.lines.all %}<li>{{ line.title }} - quantity: {{ line.quantity }}</li>{% endfor %}</ul><p></html>",
+              "email_body_html_template": "<html><div>Hello,</div><p>The designer: {{ shop_name }} <br>has shipped your order {{ order_number }}.</p><p>The shipped items are:</p><ul>{% for line in order.lines.all %}<li>{{ line.title }} - quantity: {{ line.quantity }}</li>{% endfor %}</ul><p>The tracking information can be viewed at <a href='{{ tracking_number_url }}'>{{ tracking_number }}<a></p></html>",
               "date_created": "2015-04-05 20:31:49.481761",
               "date_updated": "2015-04-05 20:31:49.481761"
           }

@@ -78,7 +78,10 @@ class EventHandler(processing.EventHandler):
                                  {
                                      'shop_name': Shop.objects.get(user=designer).name,
                                      'order': order,
-                                     'order_number': get_top_level_order_number(order.number)
+                                     'order_number': get_top_level_order_number(order.number),
+                                     'tracking_number': shipment_info["tracking"],
+                                     'tracking_number_url': "https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1={0}".format(shipment_info["tracking"])
+
                                  })
 
         # If there was a payment event created before the shipment event, attach these events
@@ -125,7 +128,9 @@ class EventHandler(processing.EventHandler):
                     {
                         'shop_name': Shop.objects.get(user=designer).name,
                          'order': shipping_event.order,
-                        'order_number': get_top_level_order_number(shipping_event.order.number)
+                        'order_number': get_top_level_order_number(shipping_event.order.number),
+                        'tracking_number': tracking_code,
+                        'tracking_number_url': "https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1={0}".format(tracking_code)
                     })
 
             except ShippingEvent.DoesNotExist:
