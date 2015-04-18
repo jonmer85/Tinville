@@ -313,7 +313,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
         order_num = 100000 + basket.id
         if shop_id is not None:
             order_num = str(shop_id) + '-' + str(order_num)
-        return order_num
+        return str(order_num)
 
 
 
