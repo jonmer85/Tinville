@@ -91,7 +91,7 @@ urlpatterns += patterns('',
     url(r'^dashboard/', include(get_class('dashboard.app', 'application').urls)),
     #IMPORTANT!!! This route need to always be last since it consumes the entire namespace!
     url(r'^(?P<shop_slug>[\w-]+)/edit/$', 'designer_shop.views.shopeditor'),
-    # url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_about$', 'designer_shop.views.ajax_about'),
+    # url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_utut$', 'designer_shop.views.ajax_about'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)$', 'designer_shop.views.shopeditor_with_item'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/$', 'designer_shop.views.itemdetail'),
