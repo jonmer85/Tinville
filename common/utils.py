@@ -78,3 +78,7 @@ def ExtractDesignerIdFromOrderId(orderId):
     shop = Shop.objects.get(pk=shopId)
     designerId = shop.user.id
     return designerId
+
+def get_top_level_order_number(designer_order_number):
+    return designer_order_number[designer_order_number.find("-")+1:]
+

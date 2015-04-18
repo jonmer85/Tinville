@@ -3,7 +3,7 @@ import logging
 from django.db.models import Max
 from oscar.apps.order import processing
 from oscar.core.loading import get_model, get_class
-from common.utils import ExtractDesignerIdFromOrderId
+from common.utils import ExtractDesignerIdFromOrderId, get_top_level_order_number
 from designer_shop.models import Shop
 from oscar.apps.payment import exceptions
 from django.conf import settings
@@ -77,7 +77,8 @@ class EventHandler(processing.EventHandler):
         self._send_notifications(order, DESIGNER_PROCESSING_ORDER,
                                  {
                                      'shop_name': Shop.objects.get(user=designer).name,
-                                     'order': order
+                                     'order': order,
+                                     'order_number': get_top_level_order_number(order.number)
                                  })
 
         # If there was a payment event created before the shipment event, attach these events
@@ -123,7 +124,8 @@ class EventHandler(processing.EventHandler):
                 self._send_notifications(shipping_event.order, ORDER_IN_TRANSIT,
                     {
                         'shop_name': Shop.objects.get(user=designer).name,
-                         'order': shipping_event.order
+                         'order': shipping_event.order,
+                        'order_number': get_top_level_order_number(shipping_event.order.number)
                     })
 
             except ShippingEvent.DoesNotExist:

@@ -418,7 +418,9 @@
                                 <tr>
                                     <td colspan="8">
                                         <div class="btn-group pull-right">
+                                            {% ifnotequal order.status "Shipped" %}
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipItModal">Ship my order!</button>
+                                            {% endifnotequal %}
                                         </div>
                                         <div class="pull-left hidden">
                                             <input type="checkbox" id="partialOrder"/>

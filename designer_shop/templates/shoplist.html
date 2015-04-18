@@ -44,13 +44,13 @@
         var setBannerSizes = function () {
             var bannerWidth = $(".banner img").width();
             $(".banner img").css('height', (bannerWidth * 0.66322) + 'px');
-        }
+        };
 
         $(window).resize(function(){
             setBannerSizes();
         });
 
-        $(document).ready(function(){
+        $(window).load(function(){
             setBannerSizes();
         });
     </script>
