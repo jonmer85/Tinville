@@ -2,21 +2,68 @@
 {% load i18n %}
 {% block body_class %}{{ block.super }} About{% endblock %}
 {% block css %}
-  {{ block.super }}
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/infoPages.css" />
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/infoPages.css" />
+    <style>
+        @media (min-width: 768px) {
+            #about_main {
+                background-image: url({{ STATIC_URL }}img/infopageimg/aboutBanner.jpg);
+            }
+
+            #about_designer_sell {
+
+            }
+
+            #about_designer_ship {
+
+            }
+
+            #about_shopper {
+
+            }
+        }
+
+        @media (max-width: 767px) {
+            #about_main {
+                background-image: url({{ STATIC_URL }}img/infopageimg/aboutMobileBanner.jpg);
+            }
+
+            #about_designer_sell {
+
+            }
+
+            #about_designer_ship {
+
+            }
+
+            #about_shopper {
+
+            }
+        }
+    </style>
 {% endblock css %}
 {% block content %}
     {{ super }}
-    {% include "infopages/about/about_community.html" %}
+        <div id="about_main" class="about_section">
+            {% include "infopages/about/about_main.html" %}
+        </div>
 
-    <div id="about_designer">
-        {% include "infopages/about/about_designer_sell.html" %}
-        {% include "infopages/about/about_designer_ship.html" %}
-    </div>
+        <div id="about_community" class="about_section">
+            {% include "infopages/about/about_community.html" %}
+        </div>
 
-    <div id="about_shopper">
-        {% include "infopages/about/about_shopper.html" %}
-    </div>
+        <div id="about_designer">
+            <div id="about_designer_sell" class="about_section">
+                {% include "infopages/about/about_designer_sell.html" %}
+            </div>
+            <div id="about_designer_ship" class="about_section">
+                {% include "infopages/about/about_designer_ship.html" %}
+            </div>
+        </div>
+
+        <div id="about_shopper" class="about_section">
+            {% include "infopages/about/about_shopper.html" %}
+        </div>
 {% endblock %}
 
 {% block javascript %}
