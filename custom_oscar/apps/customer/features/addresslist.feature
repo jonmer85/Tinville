@@ -20,6 +20,7 @@ Feature: Custom Address List Page
     And I mark the address as the shipping address
     Then the shipping address badge is shown
 
+  @testandy
   Scenario: Add an Address As a Shopper and ensure they cannot mark it as a Shop Shipping Address
     Given I access the addresses page as a new shopper
     When I add a new address
