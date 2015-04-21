@@ -15,7 +15,8 @@
                 </div>
                 <div class="panel-body">
                     {% if last4 %}
-                    <h4>Your current card ending in <mark>{{ last4 }}</mark> will be overwritten</h4>
+                    <h4>Your current card on file is XXXX-XXXX-XXXX-<mark>{{ last4 }}</mark>.</h4>
+                        <h5>Entering information below will overwrite this card.</h5>
                     {% endif %}
                     {% load crispy_forms_tags %}
                     {% crispy form %}
