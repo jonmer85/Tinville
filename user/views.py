@@ -85,7 +85,7 @@ def register(request):
             user.is_active = False  # Need this since oscar defaults it to True
             user.save()
             user.generate_activation_information()
-            user.send_confirmation_email(request.get_host())  # Kind of a hack to get the base URL. Jon M TODO
+            user.send_confirmation_email(request.get_host(), request.scheme)  # Kind of a hack to get the base URL. Jon M TODO
 
             # Create a Partner model if this is a designer
             if user.is_seller:

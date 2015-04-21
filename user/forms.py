@@ -28,6 +28,8 @@ class TinvilleUserCreationForm(forms.ModelForm):
         Div(
             Div(
                 HTML("""<div style="padding-top: 25px;"></div>"""),
+                HTML('<input type="text" name="prevent_autofill" id="prevent_autofill" value="" style="display:none;" />'),
+                HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
                 Field('email', placeholder="Email"),
                 Field('password', placeholder="Password"),
                 Field('redirect_url'),
