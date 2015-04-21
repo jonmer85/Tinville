@@ -748,13 +748,13 @@
         var setItemSizes = function () {
             var itemWidth = $(".itemSize").width();
             $(".itemSize").css('height', (itemWidth * 1.25) + 'px');
-        }
+        };
 
         $(window).resize(function(){
             setItemSizes();
         });
 
-        $(document).ready(function(){
+        $(window).load(function(){
             setItemSizes();
         });
     </script>

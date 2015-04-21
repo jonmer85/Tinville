@@ -91,14 +91,14 @@ class TinvilleUser(AbstractUser):
     def __unicode__(self):
         return self.email
 
-    def send_confirmation_email(self, base_url):
+    def send_confirmation_email(self, base_url, scheme):
 
         # Send an email with the confirmation link
         confirmation_url = reverse('activate-user', kwargs={'activation_key': self.activation_key})
 
         email_subject = 'Your new Tinville account confirmation'
         email_body = "Thanks for signing up for a Tinville account!\n\nTo activate your account, click" \
-                     " this link within 7 days:\n\n%s" % (base_url+confirmation_url)
+                     " this link within 7 days:\n\n%s" % (scheme+"://"+base_url+confirmation_url)
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
 
