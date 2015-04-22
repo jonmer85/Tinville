@@ -112,6 +112,7 @@ class PaymentInfoForm(forms.Form):
     helper.form_id = 'payment-info-form'
     helper.form_class = 'parsley-form'
     helper.form_show_labels = False
+    helper.attrs = {'autocomplete': 'off'}
     # helper.form_action = reverse_lazy('checkout:payment-details')
 
     header_payment_layout = Layout(
