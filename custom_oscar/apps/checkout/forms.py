@@ -135,6 +135,7 @@ class PaymentInfoForm(forms.Form):
                 ),
                 Fieldset('CV Code',
                     Div(
+                        HTML('<input type="password" name="password_fake" id="password_fake" value="" style="display:none;" />'),
                         Div(Field('cvc', placeholder="CV Code"), css_class='col-xs-12', autocomplete='off'),
                         css_class="row"
                     ),
