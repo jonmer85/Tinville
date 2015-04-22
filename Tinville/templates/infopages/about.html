@@ -52,7 +52,7 @@
 {% endblock css %}
 {% block content %}
     {{ super }}
-        <div id="about_main" class="about_section content">
+        <div id="about_main" class="about_section">
             {% include "infopages/about/about_main.html" %}
         </div>
 
@@ -71,6 +71,10 @@
 
         <div id="about_shopper" class="about_section">
             {% include "infopages/about/about_shopper.html" %}
+        </div>
+
+        <div id="about_final" class="about_section">
+            {% include "infopages/about/about_final.html" %}
         </div>
 {% endblock %}
 
