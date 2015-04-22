@@ -347,13 +347,24 @@ a.aboutCircle:active {
     }
 }
 
-
 .about_section {
     background: 50% 50% no-repeat;
     background-size: cover;
     min-height: 500px;
     padding: 60px 20px;
     text-align: center;
+}
+
+.about_section .glyphicon {
+    font-size: 60px;
+}
+
+.about_section .fa {
+    font-size: 60px;
+}
+
+.about_section .container {
+    margin-top: 50px;
 }
 
 .about_section p {
