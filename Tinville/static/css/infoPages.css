@@ -350,13 +350,15 @@ a.aboutCircle:active {
 .about_section {
     background: 50% 50% no-repeat;
     background-size: cover;
-    min-height: 500px;
+    min-height: 750px;
     padding: 60px 20px;
     text-align: center;
+    background-color: #e7e5e6;
 }
 
 .about_section .glyphicon {
     font-size: 60px;
+    /*color: #f46430;*/
 }
 
 .about_section .fa {
