@@ -365,7 +365,7 @@
                                 <tr class="ordertotals dashboardCollapse collapse">
                                     <td class="hidden-xs" colspan="3"></td>
                                     <th class="hidden-xs">{% trans "Tinville cut total" %}</th>
-                                    <td data-th="{% trans "Tinville cut total" %}" style="text-align: right">{{ order.estimated_tinville_cut|currency:order.currency }}</td>
+                                    <td data-th="{% trans "Tinville cut total" %}" style="text-align: right"> {% if order.status == 'Shipped' %}{{ order.estimated_tinville_cut|currency:order.currency }} {% else %} {% trans "Pending shipping" %} {% endif %}</td>
                                     <td class="hidden-xs"></td>
                                 </tr>
                                 <tr class="ordertotals dashboardCollapse collapse">

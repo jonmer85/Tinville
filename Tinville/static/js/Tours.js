@@ -44,7 +44,7 @@ shopEditorItems = new Tour({
         {
             element: "#div_id_aboutImg",
             title: "How To: Edit Shop",
-            content: "Here you can enter your Shop Profile information. Click Submit to save your changes or click cancel.",
+            content: "Here you can enter your Shop Profile information. Click Submit to save your changes or click close.",
             onNext: shopProfileFunc
         },
         {
