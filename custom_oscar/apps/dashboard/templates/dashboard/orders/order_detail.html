@@ -375,7 +375,7 @@
                                 <tr class="ordertotals dashboardCollapse collapse">
                                     <td class="hidden-xs" colspan="3"></td>
                                     <th class="hidden-xs">{% trans "Take home total" %}</th>
-                                    <td data-th="{% trans "Take home total" %}" style="text-align: right">{{ order.estimated_designer_cut|currency:order.currency }}</td>
+                                    <td data-th="{% trans "Take home total" %}" style="text-align: right">{% if order.status == 'Shipped' %}{{ order.estimated_designer_cut|currency:order.currency }} {% else %} {% trans "Pending shipping" %} {% endif %}</td>
                                     <td class="hidden-xs"></td>
                                 </tr>
                                 {% if discounts %}
