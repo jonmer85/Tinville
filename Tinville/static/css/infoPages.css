@@ -350,7 +350,7 @@ a.aboutCircle:active {
 .about_section {
     background: 50% 50% no-repeat;
     background-size: cover;
-    min-height: 750px;
+    min-height: 500px;
     padding: 60px 20px;
     text-align: center;
     background-color: #e7e5e6;
