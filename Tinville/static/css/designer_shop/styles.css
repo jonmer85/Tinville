@@ -583,8 +583,9 @@
 }
 
 .itemDelete{
-  /*position:absolute;*/
-  /*bottom: 0;*/
+    /*position:absolute;*/
+    /*bottom: 0;*/
+    margin-top: 10px;
 }
 
 .overlayDelete{
@@ -594,13 +595,15 @@
 }
 
 .overlayEdit{
-  /*position:absolute;*/
-  /*bottom: 0;*/
-  width: 25px;
-  height: 25px;
-  z-index: 10;
-  color: #f46430;
-  cursor: pointer;
+    /*position:absolute;*/
+    /*bottom: 0;*/
+    width: 25px;
+    height: 25px;
+    z-index: 10;
+    color: #f46430;
+    cursor: pointer;
+    margin-top: 10px;
+
 }
 .overlayEdit a:link,
 .overlayEdit a:visited,
