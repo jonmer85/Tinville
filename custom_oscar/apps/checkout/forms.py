@@ -68,7 +68,7 @@ class ShippingAddressForm(CoreShippingAddressForm):
 
     def clean(self):
 
-        #Generate the easpost api key for address validation
+        # Generate the easypost api key for address validation
         easypost.api_key = settings.EASYPOST_API_KEY
 
         if {'first_name', 'last_name', 'line1', 'line4', 'state', 'postcode'}.issubset(self.cleaned_data):
