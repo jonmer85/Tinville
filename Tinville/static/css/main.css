@@ -1751,3 +1751,8 @@ textarea
 body {
     padding-right: 0px !important;
 }
+
+/* Fixes issue with Modal-backdrop  in bootstrap 3.3.4 */
+.modal-backdrop {
+    z-index: -1;
+}
