@@ -29,7 +29,7 @@
                         <li><a class="shopTitleColor" href="#" id="editorTour">Shop Tour</a></li>
                     {% endif %}
 					<li class="shopTabLink active"><a class="shopTitleColor" id="shopTabAnchor" data-toggle="tab" href="#shopTab">Shop</a></li>
-					<li id="aboutTabLink "><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
+					<li id="aboutTabLink"><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
                     {% if editmode %}
                         <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
                     {% endif %}
@@ -128,6 +128,7 @@
                         }, 8000
                 );
             }
+            ShopTabActive("{{ shop.color }}");
         });
 
         $("#shopTabLinkXS").click(function(){
@@ -168,6 +169,68 @@
             });
         }
     }
+
+        $('.shopTabLink').click(function() {
+            ShopTabActiveClick();
+        });
+
+        function ShopTabActiveClick() {
+            var bannerTextColor = ShopTabActive("{{ shop.color }}");
+            $('#aboutTabAnchor').css("color", bannerTextColor);
+        }
+
+        function ShopTabActive(shopColor)
+        {
+            var bannerTextColor = isTooLightYIQ(shopColor) ? '#777' : '#e7e5e6';
+            var textColor = isTooLightYIQ('#d8dfd7') ? '#898080' : bannerTextColor;
+            $('#shopTabAnchor').css("color", textColor);
+            return bannerTextColor;
+        }
+
+        $('#aboutTabLink').click(function() {
+                AboutTabActiveClick();
+                });
+
+        function AboutTabActiveClick()
+        {
+            var bannerTextColor = AboutTabActive("{{ shop.color }}");
+            $('#shopTabAnchor').css("color", bannerTextColor );
+        }
+
+        function AboutTabActive(shopColor) {
+            var bannerTextColor = isTooLightYIQ(shopColor) ? '#777' : '#e7e5e6';
+            var textColor = isTooLightYIQ('#d8dfd7') ? '#898080' : bannerTextColor;
+            $('#aboutTabAnchor').css("color", textColor);
+            return bannerTextColor;
+        }
+
+    $('#colorModalFooterSubmit').click(function()
+    {
+        if($('.shopTabLink').hasClass('active'))
+        {
+            var newBannerColor = $('#id_color').css('background-color');
+            var converted = rgb2hex(newBannerColor);
+            ShopTabActive(converted);
+        }
+
+        if($('#aboutTabLink').hasClass('active'))
+        {
+            var newBannerColor = $('#id_color').css('background-color');
+            var converted = rgb2hex(newBannerColor);
+            AboutTabActive(converted);
+        }
+    });
+
+        function rgb2hex(rgb) {
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+        }
+
+        function hex(x) {
+            return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+        }
+
+        var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
 
     </script>
 {% endblock %}
