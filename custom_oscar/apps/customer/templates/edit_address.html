@@ -15,6 +15,7 @@
 {% endblock css %}
 
 {% block content %}
+    <div class="container" style="padding-top: 50px;">
 
     {% if request.user.is_authenticated %}
     {% if addresses %}
@@ -68,15 +69,16 @@
             {% crispy form %}
 
             <div class="form-actions">
-                <div class="row-fluid">
-                    <div class="span3">
-                        <button type="submit" class="btn btn-large btn-block btn-primary continueButtonAlign">{% trans "Continue" %}</button>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-offset-3 col-sm-6">
+                        <button type="submit" class="btn btn-large btn-block btn-primary ">{% trans "Continue" %}</button>
                     </div>
                 </div>
             </div>
 
         </div>
     </form>
+    </div>
 {% endblock content %}
 
 
