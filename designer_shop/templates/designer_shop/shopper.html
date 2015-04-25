@@ -18,7 +18,7 @@
                     <a class="navbar-brand shopMenuActiveColor shopTitleColor" id="shopTabLinkXS" data-toggle="tab" href="#shopTab">Shop</a>
                     <a class="navbar-brand shopTitleColor" id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
                     {% if editmode %}
-                        <a type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o" data-toggle="modal" data-target="#colorPickerModal" style="font-size: 14pt;"></a>
+                        <a type="button" id="colorAddProfileBtn" class="btn btn-primary btn-xs fa fa-pencil-square-o" data-toggle="modal" data-target="#colorPickerModal" style="font-size: 14pt;"></a>
                     {% endif %}
                 </div>
 			</div>
@@ -31,7 +31,7 @@
 					<li class="shopTabLink active"><a class="shopTitleColor" id="shopTabAnchor" data-toggle="tab" href="#shopTab">Shop</a></li>
 					<li id="aboutTabLink "><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
                     {% if editmode %}
-                        <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
+                        <button type="button" id="colorAddProfileBtn" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
                     {% endif %}
 				</ul>
 			</div>
