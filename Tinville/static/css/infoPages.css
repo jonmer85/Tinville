@@ -346,3 +346,40 @@ a.aboutCircle:active {
       height: 150px;
     }
 }
+
+.about_section {
+    background: 50% 50% no-repeat;
+    background-size: cover;
+    min-height: 500px;
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #e7e5e6;
+}
+
+.about_section .glyphicon {
+    font-size: 60px;
+    /*color: #f46430;*/
+}
+
+.about_section .fa {
+    font-size: 60px;
+}
+
+.about_section .row {
+    margin-top: 50px;
+}
+
+.about_section p {
+    font-size: 2em;
+}
+
+@media (max-width: 767px) {
+    .about_section {
+        background-position: 60% 50% !important;
+        background-size: cover !important;
+        min-height: 0;
+        margin: -5px;
+        padding: 20px 20px;
+    }
+}
+

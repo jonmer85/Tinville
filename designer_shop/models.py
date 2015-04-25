@@ -18,6 +18,9 @@ def upload_to_mobile_banner(instance, filename):
 def upload_to_banner(instance, filename):
     return 'shops/{0}/banner/{1}'.format(instance.slug, filename)
 
+class FeaturedShop(models.Model):
+    featured = models.ForeignKey('designer_shop.Shop')
+
 
 class Shop(models.Model):
     user = models.ForeignKey('user.TinvilleUser')

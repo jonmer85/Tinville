@@ -110,7 +110,7 @@
                     </tr>
                 </thead>
                 {% for order in orders %}
-                    <tr class="visible-xs" data-toggle="collapse" data-target="#ordernumber_{{ order.number }}">
+                    <tr class="visible-xs xs-header" data-toggle="collapse" data-target="#ordernumber_{{ order.number }}">
                         <td data-th="Order Number:">
                             {{ order.number }}
                             <a class="btn btn-primary pull-right" href="{% url 'dashboard:order-detail' number=order.number %}">
@@ -188,6 +188,8 @@
 
                         if(status!= "Ready for Shipment" && status != "Partially Shipped") {
                             $(this).addClass("hidden");
+                            $(this).prev().addClass("hidden");
+                            $(this).prev().removeClass('visible-xs');
                         }
 
                     }
@@ -196,6 +198,8 @@
 
             var showAllOrders = function() {
                 $("tbody tr").removeClass("hidden");
+                $(".xs-header").addClass('visible-xs');
+                $(".xs-header").removeClass('hidden');
             };
         </script>
     {% endblock javascript %}
