@@ -58,10 +58,10 @@
  {% include "notification.html" %}
 
 
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" style="height: 52px;">
         <div class="cartLocation" id="shoppingcartBtn">
             <li class="dropdown navbarLinkS " id="" >
-                  <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle">
+                  <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle" >
                       <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
                       <div id="cartCountId" class="cartCount">
                       </div>
@@ -81,6 +81,51 @@
         <div class="navbar-header">
           <div id="navHeader" class="navbar-header">
                 <a class="" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
+                {% if not user.is_authenticated %}
+                    <div id="signInButtonMobile" class="nav ">
+                        <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >
+                        <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>
+                        <ul class="dropdown-menu loginPopupFormMobile">
+                            <li class="">
+                                <div class="yamm-content" style="padding-top: 2px">
+                                    <div>
+                                        {%  include "login_form.html" with form_name="xs-Login" %}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                      </li>
+                    </div>
+                {% else %}
+                    <div id="signInButtonMobile" class="nav ">
+                      <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
+                              <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown" style="padding-bottom: 0px; height: 30px;">
+                                  <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
+                                  <div id="userNotifications-xs" class="userNotifications"></div>
+                              </a>
+                              <ul class="dropdown-menu" style="left: -115px; width: 200px; top: 40px;">
+                                {%  if user.is_seller %}
+                                    <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                {% endif %}
+                                {% if user.is_seller or user.is_staff %}
+                                    <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                {% endif %}
+                                <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
+                                <li class="divider"></li>
+                                {% if user.is_seller or user.is_staff %}
+                                    <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
+                                    <li class="divider"></li>
+                                {% endif %}
+                                <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                                <li class="divider"></li>
+                                <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+
+                              </ul>
+                        </li>
+                    </div>
+                {% endif %}
           </div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -105,16 +150,16 @@
                 <a class="hidden" href="http://blog.tinville.com" target="_blank">BLOG</a>
             </li>
             {% if user.is_authenticated %}
-                <li class="hidden-xs">
+                <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
                     <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
                 </li>
-                <li class="hidden-xs" id="lg-menuLogin" >
+                <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                       <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
                           <i id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
                           <div id="userNotifications-lg" class="userNotifications"></div>
                       </a>
-                      <ul class="" style="right: 0;">
+                      <ul class="dropdown-menu" style="right: 0;">
                         {%  if user.is_seller %}
                             <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
                             <li class="divider"></li>
@@ -134,15 +179,13 @@
                         <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
 
                       </ul>
+
                 </li>
             {% else %}
                 <li class="">
-                    <a href="/register"  class="visible-xs list-group-item slideMenuText">
-                        <i class="fa fa-pencil fa-fw"></i>&nbsp; Sign Up
-                    </a>
                     <a class="hidden-xs" href="/register">SIGN UP</a>
                 </li>
-                <li class="hidden-xs" id="lg-menuLogin" >
+                <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                     <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
                     <ul class="dropdown-menu loginPopupForm">
                         <li class="">
@@ -160,55 +203,29 @@
 
 
 
-{#    <div class="navbar-header">#}
-{#        {% if not user.is_authenticated %}#}
-{#            <ul id="signInButtonMobile" class="nav ">#}
-{#              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" >#}
-{#                <a class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-sign-in" style="font-size: large;"></i></a>#}
-{#                <ul class="dropdown-menu loginPopupFormMobile">#}
-{#                    <li class="">#}
-{#                        <div class="yamm-content" style="padding-top: 2px">#}
-{#                            <div>#}
-{#                                {%  include "login_form.html" with form_name="xs-Login" %}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </li>#}
-{#                </ul>#}
-{#              </li>#}
-{#            </ul>#}
-{#        {% else %}#}
-{#            <ul id="signInButtonMobile" class="nav ">#}
-{#              <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">#}
-{#                      <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown" style="padding-bottom: 0px">#}
-{#                          <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>#}
-{#                          <div id="userNotifications-xs" class="userNotifications"></div>#}
-{#                      </a>#}
-{#                      <ul class="dropdown-menu" style="margin-left: -200%; width: 200px;">#}
-{#                        {%  if user.is_seller %}#}
-{#                            <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>#}
-{#                            <li class="divider"></li>#}
-{#                        {% endif %}#}
-{#                        {% if user.is_seller or user.is_staff %}#}
-{#                            <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>#}
-{#                            <li class="divider"></li>#}
-{#                        {% endif %}#}
-{#                        <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>#}
-{#                        <li class="divider"></li>#}
-{#                        {% if user.is_seller or user.is_staff %}#}
-{#                            <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>#}
-{#                            <li class="divider"></li>#}
-{#                        {% endif %}#}
-{#                        <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>#}
-{#                        <li class="divider"></li>#}
-{#                        <li class="tinvilleOrange logEmail">{{ user.email }}</li>#}
-{##}
-{#                      </ul>#}
-{#                </li>#}
-{#             </ul>#}
-{#        {% endif %}#}
-{#    </div>#}
+
 
     <div class="slidingContent" style="padding-top: 52px">
+        <nav class="visible-xs navbar navbar-default">
+          <div class="container">
+                <div class="navbar-header pull-right" style="padding: 15px">
+
+                    <a href="/shoplist/"  class="tinvilleDrayGray" style="display: inline">
+{#                                <i class="tinvilleOrange fa fa-pencil fa-fw"></i>#}
+                        Discover
+                    </a>
+                    {% if not user.is_authenticated %}
+                        <a href="/register"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
+{#                                <i class="tinvilleOrange fa fa-key fa-fw"></i>#}
+                            Sign Up
+                        </a>
+                    {% endif %}
+
+                </div>
+
+          </div>
+        </nav>
+
         <div class="slidingContent2">
             {% block content %}
             {% endblock content %}

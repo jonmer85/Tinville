@@ -1,4 +1,4 @@
-from designer_shop.models import Shop
+from designer_shop.models import Shop,FeaturedShop
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -32,6 +32,17 @@ class ShopAdmin(admin.ModelAdmin):
     ordering = ('name',)
     filter_horizontal = ()
 
+class FeaturedShopAdmin(admin.ModelAdmin):
+    # inlines = [
+    #     ImageInline,
+    # ]
+
+    list_display = ('featured',)
+
+    list_filter = ('featured',)
+
+
 
 # Now register the new UserAdmin...
 admin.site.register(Shop, ShopAdmin)
+admin.site.register(FeaturedShop, FeaturedShopAdmin)
