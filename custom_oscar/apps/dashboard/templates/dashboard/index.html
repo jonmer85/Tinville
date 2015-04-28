@@ -69,7 +69,7 @@
                     {% endfor %}
                     </ul>
                 </div>
-                <dl class='bar-chart'> 
+                <dl class='bar-chart hidden-xs'>
                     {% for item in hourly_report_dict.order_total_hourly %}
                         <dd class='bar-layer'>
                             <em>{{ item.end_time|date:"gA"|lower }}</em>

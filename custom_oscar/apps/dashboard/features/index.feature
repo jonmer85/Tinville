@@ -11,7 +11,7 @@ Feature: Dashboard Index Page
 
   Scenario: Accessing the Dashboard
     Given I am logged in as <user>
-    when I click on the user Icon
+    When I click on the user Icon
     Then I should see the Dashboard link
     When I click on 'Dashboard'
     Then I should see the Dashboard page
