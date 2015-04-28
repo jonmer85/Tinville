@@ -59,7 +59,7 @@
             <label class="label label-default"><span><i class="glyphicon glyphicon-hand-right"></i>{{ total_customers_last_day }}</span>{% trans "New Customers - Last 24 Hours" %}</label>
             <label class="label label-default"><span><i class="glyphicon glyphicon-dashboard"></i>{{ total_customers }}</span>{% trans "Total Customers" %}</label>
         </aside>
-        <div class="col-md-12 col-lg-9">
+        <div class="col-md-12 col-lg-9  hidden-xs">
             <div id="order_graph">
                 <div class='bar-caption'><h1>{% trans "Latest Orders (last 24 hours)" %}</h1></div>
                 <div class='bar-y-axis'>
@@ -69,7 +69,7 @@
                     {% endfor %}
                     </ul>
                 </div>
-                <dl class='bar-chart hidden-xs'>
+                <dl class='bar-chart'>
                     {% for item in hourly_report_dict.order_total_hourly %}
                         <dd class='bar-layer'>
                             <em>{{ item.end_time|date:"gA"|lower }}</em>
