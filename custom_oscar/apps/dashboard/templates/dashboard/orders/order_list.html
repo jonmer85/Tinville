@@ -50,7 +50,7 @@
                 {% endif %}
             {% endfor %}
             <input type="submit" value="{% trans "Search" %}" class="btn btn-primary" />
-            <a data-toggle="modal" href="#SearchModal">{% trans "Advanced Search" %}</a>
+            <a data-toggle="modal" class="hidden" href="#SearchModal">{% trans "Advanced Search" %}</a>
         </form>
 
         <div class="modal hide fade" id="SearchModal">
@@ -77,7 +77,7 @@
             {% include "dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
             <caption>
                 <div class="pull-right">
-                    <div class="form-inline hidden-xs">
+                    <div class="form-inline hidden">
                         <label>{% trans "Download selected orders as a CSV" %}</label>
                         <input type="hidden" name="action" value="download_selected_orders" />
                         <button type="submit" class="btn btn-primary" name="download_selected">{% trans "Download" %}</button>

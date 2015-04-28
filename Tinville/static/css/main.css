@@ -219,7 +219,7 @@ body
 
 #lg-menuLogin
 {
-    /*margin-right : 25px;*/
+    margin-right : 25px;
 }
 .logEmail {
     display: block;
@@ -376,13 +376,14 @@ body
 {
     background-color : #E7E7E7;
     padding-top      : 0;
-    padding-bottom   : 1%;
+    padding-bottom   : 20px;
     border-radius    : 8px;
     font-size        : small;
     margin-left      : -300%;
     padding-left     : 30px;
     padding-right    : 30px;
     width            : 220px;
+    top              : 52px;
 }
 
 .alignField
@@ -427,6 +428,7 @@ body
 
 #loginForgotPasswordLink
 {
+    display: none;
     padding-left : 0;
     clear        : both;
 
@@ -1275,17 +1277,9 @@ textarea
 
 .cartDropdown
 {
-    margin-top  : 15px;
+    margin-top  : 10px;
     width       : 275px;
     margin-left : -240px;
-}
-
-@media (max-width : 767px)
-{
-    .cartDropdown
-    {
-        margin-top : 19px;
-    }
 }
 
 .footersociallogo
@@ -1750,4 +1744,9 @@ textarea
 /* so modals don't push stuff over.. */
 body {
     padding-right: 0px !important;
+}
+
+/* Fixes issue with Modal-backdrop  in bootstrap 3.3.4 */
+.modal-backdrop {
+    z-index: -1;
 }
