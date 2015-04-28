@@ -86,7 +86,7 @@ class ShippingAddressForm(CoreShippingAddressForm):
                 if(self.cleaned_data['line4'].lower() != verified_address.city.lower()):
                     raise forms.ValidationError(_('Invalid city: %s') % self.cleaned_data['line4'])
             except Exception, Argument:
-                logger.error( "custom_oscar.apps.checkout.forms.ShippingAddressForm.clean(): failed to verify address") ;
+                logger.info( "custom_oscar.apps.checkout.forms.ShippingAddressForm.clean(): failed to verify address")
                 raise forms.ValidationError(_('Please enter a valid address. %s') % Argument.message )
 
 @parsleyfy

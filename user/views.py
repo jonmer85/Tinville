@@ -41,13 +41,16 @@ class DesignerPaymentInfoView(FormView):
         # Add the payment info to the user
         token = form.cleaned_data['stripe_token']
         full_legal_name = form.cleaned_data['full_legal_name']
+        type = form.cleaned_data['recipient_type']
+        tax_id = form.cleaned_data['tax_id']
 
         try:
             # Create a Recipient
             stripe.api_key = settings.STRIPE_SECRET_KEY
             recipient = stripe.Recipient.create(
               name=full_legal_name,
-              type="individual",
+              type="individual" if type == "1" else "corporation",
+              tax_id=tax_id,
               email=self.request.user.email,
               card=token)
 
@@ -67,6 +70,7 @@ class DesignerPaymentInfoView(FormView):
             print "Message is: %s" % err['message']
 
             messages.error(self.request, err['message'])
+            return super(DesignerPaymentInfoView, self).form_invalid(form)
 
 
         return super(DesignerPaymentInfoView, self).form_valid(form)
