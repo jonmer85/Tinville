@@ -288,11 +288,9 @@ body
 .tinvilleTagBanner
 {
     position   : relative;
-    /*top        : 34px;*/
     left       : 5%;
     z-index    : 1001; /* 1 higher than Bootstrap nav pop-ups*/
     height     : 51px;
-    /*margin-top : -24px*/
 }
 
 
