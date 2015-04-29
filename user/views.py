@@ -45,14 +45,25 @@ class DesignerPaymentInfoView(FormView):
         tax_id = form.cleaned_data['tax_id']
 
         try:
-            # Create a Recipient
             stripe.api_key = settings.STRIPE_SECRET_KEY
-            recipient = stripe.Recipient.create(
-              name=full_legal_name,
-              type="individual" if type == "1" else "corporation",
-              tax_id=tax_id,
-              email=self.request.user.email,
-              card=token)
+            type_string = "individual" if type == "1" else "corporation"
+            if not self.request.user.recipient_id:
+                # No recipient, create one
+                recipient = stripe.Recipient.create(
+                  name=full_legal_name,
+                  type=type_string,
+                  tax_id=tax_id,
+                  email=self.request.user.email,
+                  card=token)
+            else:
+                # Update existing recipient
+                recipient = stripe.Recipient.retrieve(self.request.user.recipient_id)
+                recipient.name = full_legal_name
+                recipient.type = type_string
+                recipient.tax_id = tax_id
+                recipient.card = token
+                recipient.save()
+
 
             self.request.user.recipient_id = recipient.id
             self.request.user.account_token = token
