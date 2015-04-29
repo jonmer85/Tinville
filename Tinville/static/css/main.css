@@ -1322,6 +1322,10 @@ textarea
     }
 }
 
+.slidingContent
+{
+    padding-top: 52px;
+}
 /*Start mobile navbar*/
 @media (max-width : 767px)
 {
@@ -1368,6 +1372,7 @@ textarea
         width: 100%;
         left: 0;
         position: relative;
+        padding-top: 52px;
     }
 
 
