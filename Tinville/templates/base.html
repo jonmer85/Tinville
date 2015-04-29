@@ -60,7 +60,7 @@
         <div class="cartLocation" id="shoppingcartBtn">
             <li class="dropdown navbarLinkS " id="" >
                   <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle" >
-                      <i id="tagIconId" class="fa fa-tags tinvilleOrange" style="font-size: large"></i>
+                      <i id="tagIconId" class="fa fa-tags " style="font-size: large"></i>
                       <div id="cartCountId" class="cartCount">
                       </div>
                   </a>
@@ -200,10 +200,7 @@
     </nav>
 
 
-
-
-
-    <div class="slidingContent" style="padding-top: 52px">
+    <div class="slidingContent">
         <nav class="visible-xs navbar navbar-default">
           <div class="container">
                 <div class="navbar-header pull-right" style="padding: 15px">
@@ -489,28 +486,7 @@
 
         $(document).ready(function() {
 
-             var menu = "close";
 
-            $('.menu-toggle').click(function() {
-                if(menu == "close"){
-                    $('.slidingContent').css('left','70%');
-                    $('.slidingContent').css('opacity','.05');
-                    $('.slidingContent').css('position','fixed');
-                    $('.slidingContent').css('pointer-events','none');
-                    $('.navbarSliding').css('width','70%');
-                    $('.navbarSliding').css('left','70%');
-                    menu="open";
-                }
-                else{
-                    $('.slidingContent').css('left','0%');
-                    $('.slidingContent').css('opacity','1');
-                    $('.slidingContent').css('position','relative');
-                    $('.slidingContent').css('pointer-events','auto');
-                    $('.navbarSliding').css('width','0%');
-                    $('.navbarSliding').css('left','0%');
-                    menu="close";
-                }
-            });
         var self = $(this);
         load_cart_ajax_req = $.ajax({
             url: "/load_cart",
