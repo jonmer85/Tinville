@@ -32,11 +32,16 @@ def given_the_payment_info(step):
     step.then('click on My Payment Info')
     step.then('payment info form is displayed')
 
-@step("the '(.*)' '(.*)' is displayed") #Payment Form Display, given the payment info form
+@step("the '(.*)' '(.*)' is displayed")
 def payment_form_displayed(step, name, fieldtype):
     field = world.browser.find_element_by_name(name)
     assert field.is_displayed()==True
     assert field.get_attribute('type')==fieldtype, "fieldtype should be " + fieldtype + " but is " + field.tag_name
+
+@step("the '(.*)' select is displayed")
+def payment_form_select_displayed(step, name):
+    field = world.browser.find_element_by_name(name)
+    assert field.is_displayed()==True
 
 @step("I fill the form with")
 def fill_payment_info(step):
@@ -50,12 +55,24 @@ def submit_form(step):
     payment_form_displayed(step, 'payment-info', 'submit')
     world.browser.find_element_by_name('payment-info').click()
 
+@step("I should see success message that states '(.*)'")
+def success_message(step, message):
+    if message.startswith('"') and message.endswith('"'):
+        message = message[1:-1] #subracting first and last characters in string -quotes in this case
+    wait_for_element_with_css_selector_to_be_displayed('#messagesModal')
+    assert_selector_contains_text("#messagesModal .alert-success", message)
+
 @step("I should see an error that states '(.*)'") #check if a card entered is not a debit card/or missing name info
 def error_not_debit_card(step, error):
     if error.startswith('"') and error.endswith('"'):
         error = error[1:-1] #subracting first and last characters in string -quotes in this case
     wait_for_element_with_css_selector_to_be_displayed('#messagesModal')
     assert_selector_contains_text("#messagesModal .alert-error", error)
+
+@step("I should see the follow form error '(.*)'")
+def should_see_form_error(step, error):
+    wait_for_element_with_css_selector_to_be_displayed(".payment-errors")
+    assert_selector_contains_text(".payment-errors", error)
 
 @step("Expiration month and year validation '(.*)'")
 def expiration_month_year(step, error):
