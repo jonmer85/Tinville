@@ -33,6 +33,7 @@ def then_I_add_an_item_to_my_shopping_bag(step):
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
     wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
+    time.sleep(3)
 
 @step(u'Then The bag icon should show the number of the item')
 def then_the_bag_icon_should_show_the_number_of_the_item(step):
@@ -44,6 +45,31 @@ def and_I_click_on_the_bag_icon(step):
     wait_for_element_with_id_to_exist('shoppingcart')
     myelement = world.browser.find_element_by_id('shoppingcart')
     myelement.click()
+
+@step(u'And I continue as guest')
+def and_I_continue_as_guest(step):
+    form = world.browser.find_element_by_id("checkoutOption")
+    form.find_element_by_name("username").send_keys('joe@schmoe.com')
+    wait_for_element_with_id_to_exist('guestButton')
+    myelement = world.browser.find_element_by_id('guestButton')
+    myelement.click()
+
+@step(u'Then I add a valid address')
+def then_I_add_a_valid_address(step):
+    wait_for_element_with_name_to_be_displayed('first_name').send_keys('Joe')
+    wait_for_element_with_name_to_be_displayed('last_name').send_keys('Schmoe')
+    wait_for_element_with_name_to_be_displayed('line1').send_keys('14 Minnesota Ave.')
+    wait_for_element_with_name_to_be_displayed('line4').send_keys('Somerville')
+    wait_for_element_with_name_to_be_displayed('state').send_keys('Ma')
+    wait_for_element_with_name_to_be_displayed('postcode').send_keys('02145')
+    wait_for_element_with_css_selector_to_be_clickable("button[type='submit']").click()
+
+@step(u'Then I enter a valid payment')
+def then_I_add_a_valid_payment(step):
+    wait_for_element_with_id_to_exist('id_card_number').send_keys('4242424242424242')
+    wait_for_element_with_id_to_exist('id_expiration_date').send_keys('0925')
+    wait_for_element_with_id_to_exist('id_cvc').send_keys('666')
+    wait_for_element_with_css_selector_to_be_clickable("#submit-id-paymentform").click()
 
 @step(u'Then The checkout drop down is displayed')
 def then_the_checkout_drop_down_is_displayed(step):

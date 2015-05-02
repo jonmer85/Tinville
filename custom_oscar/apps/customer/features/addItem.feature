@@ -15,7 +15,7 @@ Feature: Add item to the shopping bag
     And  I click on the checkout button
     Then The checkout form should be displayed
 
-  @yori
+
 #  Scenario: Checkout page using arrows to control number of items
 #    Given Demo page
 #    When The shopping bag is empty
@@ -26,12 +26,17 @@ Feature: Add item to the shopping bag
 #    And I decrease the number of items using arrow by 1
 #    Then The total sum should be 2
 
-
-#  Scenario: Checkout
-    #Given checkout page with 2 items
-#    When I click on checkout button
-#    Then The user login options page should be displayed
-#    And I choose I am a returning customer, and my password is
+  @yori
+  Scenario: Guest Checkout
+    Given Demo page
+    Then I add an item to my shopping bag
+    And  I click on the bag icon
+    Then The checkout drop down is displayed
+    And  I click on the checkout button
+    When I click on checkout button
+    And I continue as guest
+    Then I add a valid address
+    Then I enter a valid payment
 #    And I click on continue
 #    And I receive the warning messages
 #    And I enter the correct info (demo@user.com - tinville)
