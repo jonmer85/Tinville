@@ -1,8 +1,10 @@
+from Tinville.sitemaps import StaticViewSitemap, ShopsSitemap, ItemsSitemap
 from custom_oscar.apps.customer.views import AddressChangeStatusView
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.sitemaps.views import sitemap
 from django.views.generic.base import RedirectView, TemplateView
 from oscar.core.loading import get_class
 from user.decorators import designer_required
@@ -25,6 +27,12 @@ customer_app = get_class('customer.app', 'application')
 password_reset_form = get_class('customer.forms', 'PasswordResetForm')
 set_password_form = get_class('customer.forms', 'SetPasswordForm')
 
+sitemaps = {
+    'static': StaticViewSitemap,
+    'shops': ShopsSitemap,
+    'items': ItemsSitemap,
+}
+
 urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
     url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
@@ -39,6 +47,8 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+    name='django.contrib.sitemaps.views.sitemap'),
     url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
     url(r'^register$', 'user.views.register'),
     url(r'^packageStatus$', 'custom_oscar.apps.dashboard.orders.views.packageStatus'),
