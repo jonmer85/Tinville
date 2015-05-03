@@ -47,7 +47,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
-    url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps},
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
     url(r'^register$', 'user.views.register'),
