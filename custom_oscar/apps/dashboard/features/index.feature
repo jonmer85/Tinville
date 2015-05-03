@@ -10,7 +10,7 @@ Feature: Dashboard Index Page
     Then I should not see the Dashboard page
 
   Scenario: Accessing the Dashboard
-    Given I am logged in as <user>
+    Given I am logged in as demo@user.com
     When I click on the user Icon
     Then I should see the Dashboard link
     When I click on 'Dashboard'
@@ -18,44 +18,50 @@ Feature: Dashboard Index Page
 
   Scenario: Designer Index Menu
     Given I am on the dashboard index page
-    Then I should see the dashboard nav menu
+    Then I should see the 'dashboard nav menu'
+    Then I should see the 'Dashboard' link
     Then I should see a Fulfilment dropdown with the following options
       | Options    |
       | orders     |
       | statistics |
 
+@wipjeff
   Scenario: Designer Index Shop Stats
     Given I am on the dashboard index page
-    Then I should see the Shop Stats
-    Then I should see my Total Orders
-    Then I should see my Total Products
-    Then I should see my New Customers - Last 24 Hours
-    Then I should see my Total Customers
+    Then I should see the 'Your Shop Stats' table
+    Then I should see my 'Total Orders'
+    Then I should see my 'Total Products'
+    Then I should see my 'New Customers - Last 24 Hours'
+    Then I should see my 'Total Customers'
 
+@wipjeff
   Scenario: Designer Index Alerts
     Given I am on the dashboard index page
-    Then I should see the Your Alerts
-    Then I should see Orders Readt to be Shipped
-    Then I should see Setup Payment Info
-    Then I should see Setup Shop Shipping Address
+    Then I should see the 'Your Alerts' table
+    Then I should see my 'Orders Ready to be Shipped'
+    Then I should see my 'Setup Payment Info'
+    Then I should see my 'Setup Shop Shipping Address'
 
+@wipjeff
   Scenario: Designer Index Orders - Last 24 Hours
     Given I am on the dashboard index page
-    Then I should see the Orders - Last 24 Hours
-    Then I should see my Total orders
-    Then I should see my Total lines
-    Then I should see my Total revenue
-    Then I should see my Average order costs
+    Then I should see the 'Orders - Last 24 Hours' table
+    Then I should see my 'Total orders'
+    Then I should see my 'Total lines'
+    Then I should see my 'Total revenue'
+    Then I should see my 'Average order costs'
 
+@wipjeff
   Scenario: Designer Index Order - All Time
     Given I am on the dashboard index page
-    Then I should see the Orders - All Time
-    Then I should see my Total orders
-    Then I should see my Total lines
-    Then I should see my Total revenue
-    Then I should see my Total open baskets
+    Then I should see the 'Orders - All Time' table
+    Then I should see my 'Total orders'
+    Then I should see my 'Total lines'
+    Then I should see my 'Total revenue'
+    Then I should see my 'Total open baskets'
 
+@wipjeff
   Scenario: Designer Index Catalogue
     Given I am on the dashboard index page
-    Then I should see the Catalogue
-    Then I should see my Total products
+    Then I should see the 'Catalogue' table
+    Then I should see my 'Total products'
