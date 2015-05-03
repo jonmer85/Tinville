@@ -45,13 +45,13 @@
     {{ block.super }}
     <script>
 
-    $("#tinvilleTagBanner").css("height", "50px");
-    $("#tinvilleTagBanner").css("top", "0px");
-    $("#tinvilleTagBanner").css("margin-top", "0px");
-    $(".shopColor").css("color", "{{ shop.color }}");
-    var textColor = isTooLightYIQ("{{ shop.color }}") ? '#777' : '#e7e5e6';
-    $(".shopTitleColor").css("color", textColor);
-    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    $(document).ready(function () {
+        $(".shopColor").css("color", "{{ shop.color }}");
+        var textColor = isTooLightYIQ("{{ shop.color }}") ? '#777' : '#e7e5e6';
+        $(".shopTitleColor").css("color", textColor);
+        $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    });
+
     $("a.name").text(function(index, currentText) {
         if (currentText.length > 20){
             $('a.name').attr('rel', 'tooltip');
