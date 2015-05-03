@@ -1,4 +1,4 @@
-from Tinville.sitemaps import StaticViewSitemap, ShopsSitemap
+from Tinville.sitemaps import StaticViewSitemap, ShopsSitemap, ItemsSitemap
 from custom_oscar.apps.customer.views import AddressChangeStatusView
 from django.conf.urls import patterns, include, url
 from django.conf import settings
@@ -30,6 +30,7 @@ set_password_form = get_class('customer.forms', 'SetPasswordForm')
 sitemaps = {
     'static': StaticViewSitemap,
     'shops': ShopsSitemap,
+    'items': ItemsSitemap,
 }
 
 urlpatterns = patterns('django.contrib.flatpages.views',

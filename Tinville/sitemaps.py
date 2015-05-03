@@ -1,3 +1,4 @@
+from designer_shop.forms import Product
 from designer_shop.models import Shop
 from django.contrib import sitemaps
 from django.core.urlresolvers import reverse
@@ -13,6 +14,7 @@ class StaticViewSitemap(sitemaps.Sitemap):
     def location(self, item):
         return reverse(item)
 
+
 class ShopsSitemap(sitemaps.Sitemap):
     priority = 0.7
     changefreq = 'daily'
@@ -22,3 +24,14 @@ class ShopsSitemap(sitemaps.Sitemap):
 
     def location(self, item):
         return reverse('designer_shop.views.shopper', kwargs={'slug': item.slug})
+
+
+class ItemsSitemap(sitemaps.Sitemap):
+    priority = 0.9
+    changefreq = 'daily'
+
+    def items(self):
+        return Product.objects.filter(structure="parent").filter(shop__user__is_approved = True)
+
+    def location(self, item):
+        return reverse('designer_shop.views.itemdetail', kwargs={'shop_slug': item.shop.slug, 'item_slug': item.slug})
