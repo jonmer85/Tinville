@@ -202,6 +202,7 @@ INSTALLED_APPS = [
     'smart_load_tag',
     'floppyforms',
     'endless_pagination',
+    'django.contrib.sitemaps',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
