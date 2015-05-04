@@ -1,3 +1,4 @@
+from Tinville.seo import MyMetadata
 from Tinville.sitemaps import StaticViewSitemap, ShopsSitemap, ItemsSitemap
 from custom_oscar.apps.customer.views import AddressChangeStatusView
 from django.conf.urls import patterns, include, url
@@ -15,6 +16,7 @@ import django
 from django.contrib.auth import views as auth_views
 from oscar.views.decorators import login_forbidden
 from django.core.urlresolvers import reverse_lazy
+from rollyourown.seo.admin import register_seo_admin
 
 from oscar.app import application
 
@@ -26,6 +28,8 @@ customer_app = get_class('customer.app', 'application')
 
 password_reset_form = get_class('customer.forms', 'PasswordResetForm')
 set_password_form = get_class('customer.forms', 'SetPasswordForm')
+
+register_seo_admin(admin.site, MyMetadata)
 
 sitemaps = {
     'static': StaticViewSitemap,

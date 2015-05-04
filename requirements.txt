@@ -5,6 +5,7 @@
 -e git://github.com/jonmer85/django-oscar.git@dec47b79a933a014cf01c1f49c00b0bf6df084bc#egg=django-oscar
 -e git://github.com/jonmer85/django-oscar-stripe.git#egg=oscar_stripe
 -e git://github.com/jonmer85/django-image-cropping.git@bf5963cc8423cf244cff17d32b52624913a7539b#egg=image_cropping
+-e git://github.com/fabika/django-seo.git@3fa5eb34de0ed06cfacd4fc401bb0f5e4724e370#egg=DjangoSEO
 amqp==1.4.6
 anyjson==0.3.3
 Babel==1.3
