@@ -2,16 +2,16 @@
 {% load i18n %}
 {% load url from future %}
 {% load compress %}
+{% load seo %}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
+    {% get_metadata %}
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Tinville</title>
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
-    <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
@@ -266,8 +266,11 @@
             <nav id="footerNavLeft" class="footer-nav col-sm-2 col-sm-offset-2">
                 <dl class="list-unstyled">
                     <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2014</li>
+                    <li id="tinvilleFooterListItemChild">2011-2015</li>
                     <li id="tinvilleFooterListItemPrimary">Contact Us</li>
+                    {%  if user.is_seller %}
+                        <li id="tinvilleFooterListItemChild" style="margin-bottom: 0;">781-281-8608</li>
+                    {% endif %}
                     <li id="tinvilleFooterListItemChild">
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
@@ -320,8 +323,11 @@
             <div>
                 <dl class="list-unstyled listPadding">
                     <li id="tinvilleFooterListItemPrimary">© Tinville.com</li>
-                    <li id="tinvilleFooterListItemChild">2011-2013</li>
+                    <li id="tinvilleFooterListItemChild">2011-2015</li>
                     <li id="tinvilleFooterListItemPrimary">Contact Us</li>
+                    {%  if user.is_seller %}
+                        <li id="tinvilleFooterListItemChild" style="margin-bottom: 0;">781-281-8608</li>
+                    {% endif %}
                     <li id="tinvilleFooterListItemChild">
                         <a href="mailto:support@tinville.com" Id="tinvilleFooterListItemChild">support@tinville.com</a>
                     </li>
