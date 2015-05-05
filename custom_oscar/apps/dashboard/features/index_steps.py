@@ -8,7 +8,6 @@ from designer_shop.models import Shop
 @step("I am on the dashboard index page")
 def i_am_on_the_dashboard_index_page(step):
     world.browser.get(lettuce.django.get_server().url('/'))
-    sign_in("demo@user.com", "tinville")
     world.browser.get(lettuce.django.get_server().url('/dashboard'))
 
 
@@ -16,9 +15,7 @@ def i_am_on_the_dashboard_index_page(step):
 def i_should_see_the_table(step, tabletitle):
     tableheaders = len(world.browser.find_elements_by_xpath("//table/caption[normalize-space(.)='" + tabletitle + "']")) \
                     + len(world.browser.find_elements_by_xpath("//div[contains(@class, 'table-header') and normalize-space(.)='" + tabletitle + "']"))
-
     assert_equals(1, tableheaders, "Should be 1 " + tabletitle + " table but there was " + str(tableheaders))
-
     try:
         table = world.browser.find_element_by_xpath("//div[contains(@class, 'table-header') and normalize-space(.)='" + tabletitle + "']/following-sibling::div[1]")
         type = "label"

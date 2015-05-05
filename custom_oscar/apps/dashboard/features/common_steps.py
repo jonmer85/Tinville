@@ -3,6 +3,7 @@ from django.contrib.auth.models import Permission
 from custom_oscar.apps.catalogue.models import Product
 from user.models import TinvilleUser as User
 from lettuce import step
+from common.lettuce_utils import *
 
 @step("My user has correct permissions")
 def my_user_has_correct_permissions(step):
@@ -11,6 +12,7 @@ def my_user_has_correct_permissions(step):
                 codename='dashboard_access', content_type__app_label='partner')
     user.user_permissions.add(dashboard_access_perm)
     user.save()
+    sign_in("demo@user.com", "tinville")
 
 @step("I have some basic dashboard data")
 def i_have_some_basic_dashboar_data(step):

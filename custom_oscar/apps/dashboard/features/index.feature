@@ -23,7 +23,7 @@ Feature: Dashboard Index Page
     Given I am on the dashboard index page
     Then I should see the 'dashboard nav menu'
     Then I should see the 'Dashboard' link
-    Then I should see a Fulfilment dropdown with the following options
+    Then I should see a 'Fulfilment' dropdown with the following options
       | Options    |
       | orders     |
       | statistics |
