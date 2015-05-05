@@ -2,6 +2,7 @@ Feature: Dashboard Index Page
   As a designer, I want to be able to view an overview or orders and see a chart of orders in the past 24 hours
 
   Scenario: Accessing the Dashboard as Non Designer
+    Given I have some basic dashboard data
     Given I am logged in as <user>
     When I click the user Icon
     Then I can see the dropdown menu
@@ -10,6 +11,7 @@ Feature: Dashboard Index Page
     Then I should not see the Dashboard page
 
   Scenario: Accessing the Dashboard
+    Given I have some basic dashboard data
     Given I am logged in as demo@user.com
     When I click on the user Icon
     Then I should see the Dashboard link
@@ -17,6 +19,7 @@ Feature: Dashboard Index Page
     Then I should see the Dashboard page
 
   Scenario: Designer Index Menu
+    Given I have some basic dashboard data
     Given I am on the dashboard index page
     Then I should see the 'dashboard nav menu'
     Then I should see the 'Dashboard' link
@@ -27,6 +30,7 @@ Feature: Dashboard Index Page
 
 @wipjeff
   Scenario: Designer Index Shop Stats
+    Given I have some basic dashboard data
     Given I am on the dashboard index page
     Then I should see the 'Your Shop Stats' table
     Then I should see my 'Total Orders'
@@ -35,7 +39,8 @@ Feature: Dashboard Index Page
     Then I should see my 'Total Customers'
 
 @wipjeff
-  Scenario: Designer Index Alerts
+  Scenario: Designer Index Alert
+    Given I have some basic dashboard data
     Given I am on the dashboard index page
     Then I should see the 'Your Alerts' table
     Then I should see my 'Orders Ready to be Shipped'
@@ -44,6 +49,7 @@ Feature: Dashboard Index Page
 
 @wipjeff
   Scenario: Designer Index Orders - Last 24 Hours
+    Given I have some basic dashboard data
     Given I am on the dashboard index page
     Then I should see the 'Orders - Last 24 Hours' table
     Then I should see my 'Total orders'
@@ -53,6 +59,7 @@ Feature: Dashboard Index Page
 
 @wipjeff
   Scenario: Designer Index Order - All Time
+    Given I have some basic dashboard data
     Given I am on the dashboard index page
     Then I should see the 'Orders - All Time' table
     Then I should see my 'Total orders'
@@ -62,6 +69,7 @@ Feature: Dashboard Index Page
 
 @wipjeff
   Scenario: Designer Index Catalogue
+    Given I have some basic dashboard data
     Given I am on the dashboard index page
     Then I should see the 'Catalogue' table
     Then I should see my 'Total products'
