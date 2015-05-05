@@ -26,7 +26,6 @@ Feature: Add item to the shopping bag
 #    And I decrease the number of items using arrow by 1
 #    Then The total sum should be 2
 
-  @yori
   Scenario: Guest Checkout
     Given Demo page
     Then I add an item to my shopping bag
@@ -37,7 +36,20 @@ Feature: Add item to the shopping bag
     And I continue as guest
     Then I add a valid address
     Then I enter a valid payment
-#    And I click on continue
+    Then the thank you page is displayed
+
+  @yori
+  Scenario: Registered User Checkout
+    Given Demo page
+    Then I add an item to my shopping bag
+    And  I click on the bag icon
+    Then The checkout drop down is displayed
+    And  I click on the checkout button
+    When I click on checkout button
+    And I sign in
+    Then I add a valid address
+    Then I enter a valid payment
+    Then the thank you page is displayed
 #    And I receive the warning messages
 #    And I enter the correct info (demo@user.com - tinville)
 #    And the address page is open

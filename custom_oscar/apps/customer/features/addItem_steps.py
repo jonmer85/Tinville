@@ -71,6 +71,19 @@ def then_I_add_a_valid_payment(step):
     wait_for_element_with_id_to_exist('id_cvc').send_keys('666')
     wait_for_element_with_css_selector_to_be_clickable("#submit-id-paymentform").click()
 
+@step(u'Then the thank you page is displayed')
+def then_the_thank_you_page_is_displayed(step):
+     assert_id_exists('basket_totals')
+
+@step(u'(?:When|And) I sign in')
+def and_i_sign_in(step):
+    form = world.browser.find_element_by_id("signInOption")
+    form.find_element_by_name("username").send_keys('demo@user.com')
+    form.find_element_by_name("password").send_keys('tinville')
+    wait_for_element_with_id_to_exist('returningButton')
+    myelement = world.browser.find_element_by_id('returningButton')
+    myelement.click()
+
 @step(u'Then The checkout drop down is displayed')
 def then_the_checkout_drop_down_is_displayed(step):
     assert_id_exists('cartDropdown')
