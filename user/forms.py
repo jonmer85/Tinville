@@ -118,6 +118,7 @@ class LoginForm(AuthenticationForm):
     remember_me = forms.BooleanField(label="Remember Me", widget=forms.CheckboxInput, initial=True, required=False)
     redirect_url = ''
 
+
     def __init__(self, *args, **kwargs):
 
         if 'redirect_url' in kwargs:
@@ -182,6 +183,13 @@ class LoginForm(AuthenticationForm):
 
 @parsleyfy
 class PaymentInfoFormWithFullName(PaymentInfoForm):
+    RECIPIENT_CHOICES = (
+        ('1', 'Individual'),
+        ('2', 'Business/Corporation'),
+    )
+
+    recipient_type = forms.ChoiceField(choices=RECIPIENT_CHOICES)
+    tax_id = forms.CharField(max_length=11)
     full_legal_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'autofocus': 'autofocus'}))
 
     def __init__(self, *args, **kwargs):
@@ -189,7 +197,9 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
         self.helper.layout = Layout(
             Div(
                 PaymentInfoForm.header_payment_layout,
+                Field('recipient_type'),
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
+                Field('tax_id',  placeholder="Tax ID (SSN or EIN if business/corporation)", css_class='input-group'),
                 PaymentInfoForm.base_payment_layout,
                 Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )

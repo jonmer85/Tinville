@@ -202,6 +202,9 @@ INSTALLED_APPS = [
     'smart_load_tag',
     'floppyforms',
     'endless_pagination',
+    'django.contrib.sitemaps',
+    'robots',
+    'rollyourown.seo',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -269,7 +272,7 @@ LOGGING = {
 }
 
 ENDLESS_PAGINATION_PER_PAGE = 20
-ENDLESS_PAGINATION_LOADING = """<div class="well col-md-offset-4 col-xs-12 col-md-4"><span class="fa fa-spinner fa-pulse center-block" style="text-align: center;"></span></div>"""
+ENDLESS_PAGINATION_LOADING = """<div class="well col-md-offset-4 col-xs-12 col-md-4"><span class="fa fa-spinner fa-spin center-block" style="text-align: center;"></span></div>"""
 
 # For django-oscar search
 HAYSTACK_CONNECTIONS = {

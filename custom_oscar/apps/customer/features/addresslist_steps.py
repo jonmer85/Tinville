@@ -41,19 +41,16 @@ def i_should_not_see_any_default_address_types(step):
 @step(u'I should see all available designer address types as options to be added to the address')
 def i_should_see_all_available_designer_address_types_as_options(step):
     assert_selector_does_exist(".dropdown-menu a[href$='default_for_shipping/']")
-    assert_selector_does_exist(".dropdown-menu a[href$='default_for_billing/']")
     assert_selector_does_exist(".dropdown-menu a[href$='default_for_shop/']")
 
 @step(u'I should see all but shop shipping address available designer address types as options to be added to the address')
 def i_should_see_all_available_designer_address_types_as_options(step):
     assert_selector_does_exist(".dropdown-menu a[href$='default_for_shipping/']")
-    assert_selector_does_exist(".dropdown-menu a[href$='default_for_billing/']")
 
 
 @step(u'I should see all available shopper address types as options to be added to the address')
 def i_should_see_all_available_designer_address_types_as_options(step):
     assert_selector_does_exist(".dropdown-menu a[href$='default_for_shipping/']")
-    assert_selector_does_exist(".dropdown-menu a[href$='default_for_billing/']")
     assert_selector_does_not_exist(".dropdown-menu a[href$='default_for_shop/']")
 
 

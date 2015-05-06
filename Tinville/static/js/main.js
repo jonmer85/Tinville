@@ -86,24 +86,7 @@
              $('#tinvilleTagBannerXS').css('left',pos);
             var mode = checkMode();
 
-            if(mode == 'xs'){
-                $("#nonMobileMenContent").css("display","none");
-                $("#mobileMenContent").css("display","");
 
-                $("#nonMobileWomenContent").css("display","none");
-                $("#mobileWomenContent").css("display","");
-            }
-            else
-            {
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-
-                $('.navbarSliding').removeAttr( 'style' );
-                $('.slidingContent').removeAttr( 'style' );
-            }
         });
 
          $(window).load(function(){
@@ -112,20 +95,7 @@
              $('#tinvilleTagBannerXS').css('left',pos);
               var mode = checkMode();
 
-            if(mode == 'xs'){
-                $("#nonMobileMenContent").css("display","none");
-                $("#mobileMenContent").css("display","");
 
-                $("#nonMobileWomenContent").css("display","none");
-                $("#mobileWomenContent").css("display","");
-            }
-            else{
-                $("#nonMobileMenContent").css("display","");
-                $("#mobileMenContent").css("display","none");
-
-                $("#nonMobileWomenContent").css("display","");
-                $("#mobileWomenContent").css("display","none");
-            }
         });
 
 
