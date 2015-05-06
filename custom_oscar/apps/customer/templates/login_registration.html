@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body_class %}{{ block.super }} login{% endblock %}
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+
+
+    {%  load crispy_forms_tags %}
+    <form id="loginForm2" action="/login/" method="post">
+        {% crispy login_form %}
+    </form>
+
+
+{% endblock %}

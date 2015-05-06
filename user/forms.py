@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy, resolve, Resolver404
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset
+from crispy_forms.layout import Layout, Field, Submit, Div, HTML, Fieldset, Hidden
 from crispy_forms.bootstrap import AppendedText
 from parsley.decorators import parsleyfy
 from user.models import TinvilleUser
@@ -116,15 +116,21 @@ class TinvilleUserChangeForm(forms.ModelForm):
 
 class LoginForm(AuthenticationForm):
     remember_me = forms.BooleanField(label="Remember Me", widget=forms.CheckboxInput, initial=True, required=False)
+    redirect_url = ''
 
     def __init__(self, *args, **kwargs):
+
+        if 'redirect_url' in kwargs:
+            self.redirect_url = kwargs['redirect_url']
+            del kwargs['redirect_url']
+
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_errors = False
         self.helper.form_show_labels = False
         self.helper.form_class = 'loginPopupForm'
         # self.helper.field_class = 'test'
-
+        hidden_field_name = forms.CharField(label='reset', max_length=256, widget=forms.HiddenInput())
         self.helper.layout = Layout(
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
             Div(
@@ -141,6 +147,11 @@ class LoginForm(AuthenticationForm):
                 Div(
                     Field('password', type='password', placeholder="Password"),
                     css_class="alignField",
+                ),
+                Div(
+                    # Create hidden field which contains redirect url
+                    Hidden('next', str(self.redirect_url))
+                    # <input type="hidden" name="next" value="{{ this.redirect_url }}" />
                 ),
 
 

@@ -1,4 +1,4 @@
-from custom_oscar.apps.customer.views import AddressChangeStatusView
+from custom_oscar.apps.customer.views import AddressChangeStatusView, AccountAuthView
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
@@ -46,6 +46,7 @@ urlpatterns += patterns('',
     url(r'^ajax_login$', ajax_login,
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
         name='ajax_logins'),
+    url(r'^login/$', AccountAuthView.as_view(), name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
