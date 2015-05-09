@@ -1,12 +1,11 @@
-@wipjeff
 Feature: Dashboard Index Page
   As a designer, I want to be able to view an overview or orders and see a chart of orders in the past 24 hours
 
+  @wipjeff
   Scenario: Accessing the Dashboard as Non Designer
     Given I am logged in as a non-designer customer
     When I go to the url '/dashboard'
     Then I should not see the Dashboard page
-
 
   Scenario: Accessing the Dashboard
     Given I have some basic dashboard data

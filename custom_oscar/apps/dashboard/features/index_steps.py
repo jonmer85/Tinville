@@ -69,14 +69,15 @@ def I_should_not_see_the_dashboard_page(step):
     assert_selector_does_not_exist(".dashboard")
 
 
-@step("I go to the url '/dashboard'")
+@step("I go to the url '(.*)'")
 def i_go_to_url(step, url):
     world.browser.get(lettuce.django.get_server().url(url))
 
 
 @step("I am logged in as a non-designer customer")
 def i_am_logged_in_as_a_non_designer_customer(step):
-    pass
+    world.browser.get(lettuce.django.get_server().url('/'))
+    sign_in("democust@user.com", "tinville")
 
 
 @step("I should see the Dashboard Menu")
@@ -89,4 +90,4 @@ def i_should_see_a_dropdown_with_options(step, linktext):
     link = wait_for_element_with_partial_link_text_to_be_displayed(linktext)
     link.click()
     for option in step.hashes:
-        wait_for_element_with_partial_link_text_to_be_displayed(option)
+        wait_for_element_with_partial_link_text_to_be_displayed(option["Options"])

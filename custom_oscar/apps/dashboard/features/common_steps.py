@@ -1,6 +1,7 @@
 from common.factories import create_order, create_product, create_basket_with_products, create_basket
 from django.contrib.auth.models import Permission
 from custom_oscar.apps.catalogue.models import Product
+from custom_oscar.apps.order.models import Order
 from user.models import TinvilleUser as User
 from lettuce import step
 from common.lettuce_utils import *
@@ -23,5 +24,8 @@ def i_have_some_basic_dashboar_data(step):
     product_list.append(Product.objects.get(pk=3))
     basket1 = create_basket_with_products(product_list)
     basket2 = create_basket_with_products(product_list)
+    basket3 = create_basket_with_products(product_list)
     create_order(number="1-10002", basket=basket1, user=User.objects.get(pk=2), shop=Shop.objects.get(pk=1))
     create_order(number="1-10003", basket=basket2, user=User.objects.get(pk=2), shop=Shop.objects.get(pk=1))
+    create_order(number="1-10004", basket=basket3, user=User.objects.get(pk=2), shop=Shop.objects.get(pk=1), status="Shipped")
+
