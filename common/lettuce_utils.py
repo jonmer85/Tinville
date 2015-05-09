@@ -38,12 +38,14 @@ def assert_class_exists(klass):
 def assert_id_exists(id):
     wait_for_element_with_id_to_exist(id)
 
+
 def css_selector_exists(selector):
     try:
         world.browser.find_element_by_css_selector(selector)
         return True
     except NoSuchElementException:
         return False
+
 
 def assert_id_does_not_exist(id):
     try:
@@ -52,13 +54,13 @@ def assert_id_does_not_exist(id):
     except NoSuchElementException:
         pass
 
+
 def id_exists(id):
     try:
         world.browser.find_element_by_id(id)
         return True
     except NoSuchElementException:
         return False
-
 
 
 def assert_class_does_not_exist(klass):
@@ -183,6 +185,11 @@ def wait_for_element_with_class_to_be_displayed(class_name):
 
 def wait_for_element_with_link_text_to_be_displayed(link_text):
     WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
+    return world.browser.find_element_by_link_text(link_text)
+
+def wait_for_element_with_partial_link_text_to_be_displayed(link_text):
+    WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_partial_link_text(link_text).is_displayed())
+    return world.browser.find_element_by_partial_link_text(link_text)
 
 def wait_for_element_with_link_text_to_be_clickable(link_text):
     WebDriverWait(world.browser, 15).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
