@@ -32,6 +32,10 @@ def i_should_see_the_table(step, tabletitle):
     step.scenario.context["table"] = table
     step.scenario.context["type"] = type
 
+    if type == "tr":
+        step.scenario.context["LinkToClick"] = world.browser.find_element_by_xpath(
+            "//table/caption[normalize-space(.)='" + tabletitle + "']")
+
 
 @step("I should see my '(.*)'")
 def i_should_see_my_section(step, section):
@@ -39,6 +43,9 @@ def i_should_see_my_section(step, section):
     assert_equals(1, len(
         filter(lambda e: section in e.text, table.find_elements_by_css_selector(step.scenario.context["type"]))),
                   "No element with the text " + section + " exists in the table")
+
+    if step.scenario.context["type"] == "label":
+        step.scenario.context["LinkToClick"] = filter(lambda e: section in e.text, table.find_elements_by_css_selector(step.scenario.context["type"]))[0]
 
 
 @step("I click the user Icon")
@@ -58,10 +65,10 @@ def i_click_on_link(step):
     dashboardlink.click()
 
 
-@step("I should see the Dashboard page")
-def i_should_see_the_dashboard_page(step):
+@step("I should see the Dashboard '(.*)' page")
+def i_should_see_the_dashboard_page(step, page):
     assert_selector_does_exist(".dashboard")
-    assert_selector_contains_text("h1", "Dashboard")
+    assert_selector_contains_text("h1", page)
 
 
 @step("I should not see the Dashboard page")

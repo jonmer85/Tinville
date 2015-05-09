@@ -1,7 +1,6 @@
 Feature: Dashboard Index Page
   As a designer, I want to be able to view an overview or orders and see a chart of orders in the past 24 hours
 
-  @wipjeff
   Scenario: Accessing the Dashboard as Non Designer
     Given I am logged in as a non-designer customer
     When I go to the url '/dashboard'
@@ -12,7 +11,7 @@ Feature: Dashboard Index Page
     When I click the user Icon
     Then I should see the 'Dashboard' link
     When I click on 'Dashboard'
-    Then I should see the Dashboard page
+    Then I should see the Dashboard 'Dashboard' page
 
   Scenario: Designer Index Menu
     Given I have some basic dashboard data
