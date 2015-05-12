@@ -26,6 +26,7 @@ Feature: Add item to the shopping bag
 #    And I decrease the number of items using arrow by 1
 #    Then The total sum should be 2
 
+  @yori
   Scenario: Guest Checkout
     Given Demo page
     Then I add an item to my shopping bag
