@@ -6,11 +6,12 @@
 
 {% block content %}
 
-
+    <div class="container">
     {%  load crispy_forms_tags %}
     <form id="loginForm2" action="/login/" method="post">
         {% crispy login_form %}
     </form>
+    </div>
 
 
 {% endblock %}
