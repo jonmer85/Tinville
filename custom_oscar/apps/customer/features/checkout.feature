@@ -51,13 +51,6 @@ Feature: Add item to the shopping bag
     Then I add a valid address
     Then I enter a valid payment
     Then the thank you page is displayed
-#    And I receive the warning messages
-#    And I enter the correct info (demo@user.com - tinville)
-#    And the address page is open
-#    And I click on Ship to This address
-#    Then The payment form should be displayed
-#    And I enter correct form credentials
-#    Then I click on Pay
 
 
   # Scenario: Deleting an item
