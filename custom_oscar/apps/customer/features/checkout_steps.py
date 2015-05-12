@@ -54,8 +54,38 @@ def and_I_continue_as_guest(step):
     myelement = world.browser.find_element_by_id('guestButton')
     myelement.click()
 
+@step(u'And I choose to register')
+def and_I_choose_to_register(step):
+    form = world.browser.find_element_by_id("checkoutOption")
+    form.find_element_by_name("username").send_keys('foo@bar.com')
+    wait_for_element_with_id_to_exist('registerButton')
+    myelement = world.browser.find_element_by_id('registerButton')
+    myelement.click()
+    # form = fill_in_user_form(email='foo@bar.com', password='foobar')
+    form = fill_in_user_form(password='foobar')
+    form.submit()
+
+def fill_in_user_form(password):
+    form = world.browser.find_element_by_id("registrationForm")
+    # form.find_element_by_name("email").send_keys(email)
+    form.find_element_by_name("password").send_keys(password)
+    return form
+
 @step(u'Then I add a valid address')
 def then_I_add_a_valid_address(step):
+    wait_for_element_with_name_to_be_displayed('first_name').send_keys('Joe')
+    wait_for_element_with_name_to_be_displayed('last_name').send_keys('Schmoe')
+    wait_for_element_with_name_to_be_displayed('line1').send_keys('14 Minnesota Ave.')
+    wait_for_element_with_name_to_be_displayed('line4').send_keys('Somerville')
+    wait_for_element_with_name_to_be_displayed('state').send_keys('Ma')
+    wait_for_element_with_name_to_be_displayed('postcode').send_keys('02145')
+    wait_for_element_with_css_selector_to_be_clickable("button[type='submit']").click()
+
+@step(u'Then I add my address')
+def then_I_add_my_address(step):
+    if(wait_for_element_with_class_to_be_displayed("close")):{
+        wait_for_element_with_class_to_be_displayed("close").click()
+    }
     wait_for_element_with_name_to_be_displayed('first_name').send_keys('Joe')
     wait_for_element_with_name_to_be_displayed('last_name').send_keys('Schmoe')
     wait_for_element_with_name_to_be_displayed('line1').send_keys('14 Minnesota Ave.')
