@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load cropping %}
 {% block body_class %}{{ block.super }} home{% endblock %}
 
 {% block css %}
@@ -11,87 +12,53 @@
 {% block content %}
     {{ block.super }}
 
-    <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
-          <!-- Indicators -->
-          <ol class="carousel-indicators">
-            <li data-target="#thumbnail-preview-indicators" data-slide-to="0" class="active">
-{#              <div class="thumbnail">#}
-{#                <img class="img-responsive" src="{{ STATIC_URL }}img/banner-xl.jpg">#}
-{#              </div>#}
-            </li>
-            <li data-target="#thumbnail-preview-indicators" data-slide-to="1">
-{#            <div class="thumbnail">#}
-{#                <img class="img-responsive" src="https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg">#}
-{#              </div>#}
-            </li>
-            <li data-target="#thumbnail-preview-indicators" data-slide-to="2">
-{#            <div class="thumbnail">#}
-{#                <img class="img-responsive" src="https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg">#}
-{#              </div>#}
-            </li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="item slides active">
-              <div class="slide-1">
-                      <span data-picture class="banner">
-                            <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-                            <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
-                            <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-                            <noscript>
-                                <img src="{{ STATIC_URL }}img/banner-xs.png">
-                            </noscript>
-                        </span>
-
-              </div>
-              <div class="container">
-                <div class="carousel-caption">
-{#                  <p><a class="btn btn-lg btn-primary" href="/register" role="button">Sign up today</a></p>#}
+    {% if fshops %}
+        <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
+              <!-- Indicators -->
+            <div class="carousel-inner">
+            {% for shop in fshops %}
+                {% if forloop.first %}
+                    <div class="item slides active">
+                {% else %}
+                    <div class="item slides">
+                {% endif %}
+                    <div class="slide-{{ shop.name }}">
+                        <a href='{{ shop.get_absolute_url }}'>
+                            <span data-picture class="banner">
+                                    {% if shop.mobileBanner %}
+                                        <span class="" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
+                                    {% else %}
+                                        <span class="" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}"></span>
+                                    {% endif %}
+                                    <span class="" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)"></span>
+                              </span>
+                        </a>
+                    </div>
+                    <div class="container">
+                        <div class="carousel-caption"></div>
+                    </div>
                 </div>
-              </div>
+            {% endfor %}
             </div>
-            <div class="item slides">
-              <div class="slide-2"></div>
-              <div class="container">
-                <div class="carousel-caption">
-                  <h1>Another example headline.</h1>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="item slides">
-              <div class="slide-3"></div>
-              <div class="container">
-                <div class="carousel-caption">
-                  <h1>One more for good measure.</h1>
-                  <p>Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                  <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-          <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-      </div>
-    <div class="homeBlock">
-        <div class="container">
-            <div class="visible-xs ">
-                <img class="" style="margin-top: 20px; margin-left: 50px; height: 200px" src="{{ STATIC_URL }}img/infopageimg/swi.png"/>
-            </div>
-            <div class="hidden-xs row" style="padding-top: 20px">
-                <div class="col-xs-offset-0 col-xs-4 col-md-4" >
-                    <img class="center-block" style="height: 200px" src="{{ STATIC_URL }}img/infopageimg/shop.png"/>
-                </div>
-                <div class="col-xs-4 col-md-4 aboutDashRight aboutDashLeft" >
-                    <img class="center-block" style="height: 200px" src="{{ STATIC_URL }}img/infopageimg/wear.png"/>
-                </div>
-                <div class="col-xs-4 col-md-4" >
-                    <img class="center-block" style="height: 200px" src="{{ STATIC_URL }}img/infopageimg/inspire.png"/>
-                </div>
-            </div>
+            <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
+    {% else %}
+        <div id="thumbnail-preview-indicators" >
+            <span data-picture class="banner">
+                <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+                <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
+                <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+                <noscript>
+                    <img src="{{ STATIC_URL }}img/banner-xs.png">
+                </noscript>
+            </span>
+        </div>
+    {% endif %}
+    <div class="homeBlock">
+
     </div>
-    <div class="container" style="padding-top: 100px">
+    <div class="container" style="padding-top: 75px">
         <div class="row" id="shopItems">
             {% include "designer_shop/item_gallery.html" %}
         </div>
