@@ -9,7 +9,7 @@ DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 
 GOOGLE_ANALYTICS_TRACKING_ID = env('GOOGLE_ANALYTICS_TRACKING_ID')
 
-ALLOWED_HOSTS = ['tinville-beta.herokuapp.com', 'www.beta.tinville.com', 'beta.tinville.com']
+ALLOWED_HOSTS = ['tinville-beta.herokuapp.com', 'www.beta.tinville.com', 'beta.tinville.com', 'www.tinville.com', 'tinville.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
