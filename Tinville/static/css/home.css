@@ -21,7 +21,7 @@
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-      height: 550px;
+      height: 350px;
     }
 /*#thumbnail-preview-indicators .slides .slide-1 {*/
   /*background-image: url({{ STATIC_URL }}img/banner-xl.jpg);*/
@@ -80,13 +80,13 @@
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-      height: 400px;
+      height: 212px;
     }
 }
 
 .homeBlock {
-    background: #5B595A;
+    background: #acaaab;
     width: auto;
     margin: auto;
-    height: 150px;
+    height: 50px;
 }
