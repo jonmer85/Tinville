@@ -5,11 +5,19 @@
 	top: 40px;
 	z-index: 1031; /* 1 higher than Tinville shop editor*/
 }
+.feedback_toggle{
 
-@media (max-width: 768px) {
-    #feedback_widget {
-        top: 50%;
+}
+@media (max-width: 767px) {
+    .feedback_toggle {
+        top: 20%;
+        width: 80%;
+        height: 50%;
     }
+}
+#id_text{
+    width: 85%;
+    height: 85%;
 }
 /*
  * Tinville Orange : f46430

@@ -12,3 +12,6 @@ reports/
 *.DS_Store
 Tinville/Tinville.iml
 /nbproject/private/
+.env
+*.iml
+CACHE/*

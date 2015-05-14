@@ -1,0 +1,31 @@
+{% load purchase_info_tags %}
+{% load cropping %}
+
+<div class="row" id="shopItems">
+    {% if editmode %}
+        <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-4 col-md-3" style="padding-top: 1%; padding-bottom: 1%;">
+            <div class="">
+                <div class="">
+                    <div class="thumbnail addItemContainer shopBorderColor" style="border: none;">
+                        <div class="Item row">
+                            <div class="col-xs-12">
+                                <a data-navigation="{{ shop.get_absolute_url }}edit/" class="sub-image addItem" >
+                                    <img src="{{ STATIC_URL }}img/add_item.png" alt="Add a New Item" class="itemSize"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if shopProductCount > 0 %}
+        {% include "designer_shop/item_gallery.html" %}
+    {% else %}
+        {% if not editmode %}
+            <div id="" class="container">
+                <div id="emptyShopId" class=" emptyShop col-xs-offset-3 col-xs-9 col-sm-offset-3 col-sm-9">Items coming soon...</div>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>

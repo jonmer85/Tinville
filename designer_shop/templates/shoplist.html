@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load i18n %}
+{% load cropping %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock css %}
+{% block content %}
+    {{ block.super }}
+        {% if shop_list %}
+            <ul class="container" style="margin-top: 50px">
+                <div class="row">
+                {% for shop in shop_list %}
+    {#                <li class="shoplistLi"><a class="" href="{{ shop.get_absolute_url }}">{{ shop.name }}</a></li>#}
+                    {% if shop.banner %}
+                        <li id="{{ shop.name }}Id" class="col-xs-6 col-sm-4 shoplistLi">
+                            <a href='{{ shop.get_absolute_url }}'>
+                                <span data-picture class="banner">
+                                    {% if shop.mobileBanner %}
+                                        <span data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
+                                        <div class="">
+                                            <div class="text-center">{{ shop.name }}</div>
+                                        </div>
+                                    {% endif %}
+                                </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </ul>
+        {% endif %}
+
+{% endblock %}
+
+{% block javascript_library %}
+  {{ block.super }}
+{% endblock javascript_library %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        var setBannerSizes = function () {
+            var bannerWidth = $(".banner img").width();
+            $(".banner img").css('height', (bannerWidth * 0.66322) + 'px');
+        };
+
+        $(window).resize(function(){
+            setBannerSizes();
+        });
+
+        $(window).load(function(){
+            setBannerSizes();
+        });
+    </script>
+
+{% endblock %}

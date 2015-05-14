@@ -1,9 +1,25 @@
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
-from tinymce.models import HTMLField
+from django_bleach.models import BleachField
 from django.core.validators import RegexValidator
 # Create your models here.
+from image_cropping import ImageRatioField, ImageCropField
+
+def upload_to_about(instance, filename):
+    return 'shops/{0}/aboutImg/{1}'.format(instance.slug, filename)
+
+def upload_to_logo(instance, filename):
+    return 'shops/{0}/logo/{1}'.format(instance.slug, filename)
+
+def upload_to_mobile_banner(instance, filename):
+    return 'shops/{0}/banner/{1}'.format(instance.slug, filename)
+
+def upload_to_banner(instance, filename):
+    return 'shops/{0}/banner/{1}'.format(instance.slug, filename)
+
+class FeaturedShop(models.Model):
+    featured = models.ForeignKey('designer_shop.Shop')
 
 
 class Shop(models.Model):
@@ -12,9 +28,17 @@ class Shop(models.Model):
                             default=None, max_length=100)
     slug = models.SlugField()
     banner = models.ImageField(default='images/banner.jpg',
-                               upload_to=lambda instance, filename: 'shops/{0}/banner/{1}'.format(instance.slug, filename))
-    logo = models.ImageField(upload_to=lambda instance, filename: 'shops/{0}/logo/{1}'.format(instance.slug, filename))
-    aboutContent = HTMLField()
+                               upload_to=upload_to_banner, max_length=255)
+    bannerCropping = ImageRatioField('banner', '1779x364', box_max_width=200)
+    mobileBanner = models.ImageField(default='images/mobilebanner.jpg',
+                               upload_to=upload_to_mobile_banner, max_length=255)
+    mobileBannerCropping = ImageRatioField('mobileBanner', '968x642', box_max_width=200)
+
+    logo = models.ImageField(upload_to=upload_to_logo, max_length=255)
+    aboutImg = models.ImageField(upload_to=upload_to_about, max_length=255)
+    # size is "width x height"
+    aboutImgCropping = ImageRatioField('aboutImg', '155x155', box_max_width=200)
+    aboutContent = BleachField()
     color = models.CharField(default='#663399', max_length=7,
         validators=[RegexValidator(
             regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
@@ -42,5 +66,3 @@ SIZE_TYPES = [
     (SIZE_DIM, "Dimensions (eg. Length X Width)"),
     (SIZE_NUM, "Number (eg. Dress size)")
 ]
-
-

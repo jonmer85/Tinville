@@ -1,27 +1,90 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load cropping %}
 {% block body_class %}{{ block.super }} home{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+{% endblock css %}
 
 {% block content %}
     {{ block.super }}
-    <div class="container">
-        {% include "notification.html" %}
+
+    {% if fshops %}
+        <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
+              <!-- Indicators -->
+            <div class="carousel-inner">
+            {% for shop in fshops %}
+                {% if forloop.first %}
+                    <div class="item slides active">
+                {% else %}
+                    <div class="item slides">
+                {% endif %}
+                    <div class="slide-{{ shop.name }}">
+                        <a href='{{ shop.get_absolute_url }}'>
+                            <span data-picture class="banner">
+                                    {% if shop.mobileBanner %}
+                                        <span class="" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
+                                    {% else %}
+                                        <span class="" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}"></span>
+                                    {% endif %}
+                                    <span class="" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)"></span>
+                              </span>
+                        </a>
+                    </div>
+                    <div class="container">
+                        <div class="carousel-caption"></div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+    {% else %}
+        <div id="thumbnail-preview-indicators" >
+            <span data-picture class="banner">
+                <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+                <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
+                <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+                <noscript>
+                    <img src="{{ STATIC_URL }}img/banner-xs.png">
+                </noscript>
+            </span>
+        </div>
+    {% endif %}
+    <div class="homeBlock">
+
     </div>
-    <span data-picture class="banner">
-        <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-        <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
-        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-        <noscript>
-            <img src="{{ STATIC_URL }}img/banner-xs.jpg">
-        </noscript>
-    </span>
-
-    <img class="img-responsive col-xs-12 col-sm-12 col-md-8" src="{{ STATIC_URL }}img/sale-item-main.jpg"/>
-    <img class="img-responsive col-xs-6 col-sm-6 col-md-4" src="{{ STATIC_URL }}img/sale-item-1.jpg"/>
-    <img class="img-responsive col-xs-6 col-sm-6 col-md-4" src="{{ STATIC_URL }}img/sale-item-2.jpg"/>
-
+    <div class="container" style="padding-top: 75px">
+        <div class="row" id="shopItems">
+            {% include "designer_shop/item_gallery.html" %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block bottomContent %}
     <div id="villageOfShops"></div>
+{% endblock %}
+
+{% block javascript_library %}
+  {{ block.super }}
+{% endblock javascript_library %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+{#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
+    </script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>
+    $.endlessPaginate({
+        onCompleted: function(){
+            setItemSizes();
+        },
+    });
+    </script>
+
 {% endblock %}

@@ -1,1 +1,83 @@
 {% extends "infopages/infopage.html" %}
+{% block info_content %}
+    <h1 class="section-heading">The Basics</h1>
+    <h3 class="question">How does Tinville work?</h3>
+    <p>
+        Tinville is a social marketplace for those with a love for fashion, unique brands and looks that you
+        won't find at your typical malls and clothing stores. We offer an ecosystem that connects unique designers and
+        customers so that they can follow, share, and purchase from one another, in an extremely easy way!
+    </p>
+
+    <h1 class="section-heading">Shopping</h1>
+    <h3 class="question"><a data-toggle="collapse" href="#" data-target="#howToBuy">How do I buy items?</a></h3>
+    <p class="collapse" id="howToBuy">
+        You can buy items that are listed on the homepage, or directly from a designer's shop. When you see an item you like,
+        select the size and color you would like and click "Add to bag". You can now go to your shopping bag in the upper
+        right-hand corner to quickly view your items and checkout if you are ready.<br/><br/>
+
+        After confirming your items and quantities are correct, you will need to enter your debit or credit card information
+        to complete your purchase. Don't worry about paying or choosing shipping options, that part of your order is on us (free!) and
+        the designer will ship your item as soon as possible.<br/><br/>
+
+        One of the features that differentiates Tinville from other marketplaces is the ability to checkout items from many
+        designers at once!<br/> Please keep in mind that you may not receive all of your ordered items at the same exact time since
+        each designer may fulfill their pieces of your order at different times. As always, we take customer service and shipping
+        times very seriously here at Tinville so please shoot us an <a href="mailto:support@tinville.com">email</a>
+        if there are any problems with your order :)
+    </p>
+{#    <h3 class="question">Can I return an item</h3>#}
+{#    <h3 class="question">The designer isn't responsing, what should I do?</h3>#}
+{#    <h3 class="question">How do I cancel my order?</h3>#}
+    <h3 class="question"><a data-toggle="collapse" href="#" data-target="#shippedNotReceived">USPS says my order has been shipped but I haven't received it yet</a></h3>
+    <p class="collapse" id="shippedNotReceived">
+        Please get in touch with your local post office and give them the tracking number. They’ll be able to check on the status of your package! It's most likely just waiting for you there.
+        If not, they'll be able to tell you exactly when it was delivered - or even put you in touch with your mail carrier who can give you all the details of its delivery! Be sure to check with neighbors too - they might have ended up receiving it.
+        <br/><br/>
+        Also, remember that this may only be a portion of your order that has shipped if your order contained items from many different
+        designers.
+    </p>
+
+    <h1 class="section-heading">Selling as a Designer</h1>
+    <h3 class="question"><a data-toggle="collapse" href="#" data-target="#howToSell">How do I start selling on Tinville?</a></h3>
+    <p class="collapse" id="howToSell">
+        Designers go through the same <a href="{% url 'user.views.register' %}">registration process</a> as shoppers. When you confirm
+        your registration by following the instructions sent to your email address, you are able to start designing your online shop
+        and listing items for sale.
+        <br/>
+        However, shoppers will not be able to access your shop until you are approved by Tinville.
+        We will be in touch and ask you questions about your brand, where else you sell, and generally get an idea
+        of who you are and the types of items you design.
+        <br/>
+        We do this to ensure that the designers at Tinville genuinely love their
+        art and take fashion as seriously as we do. Upon approval, your shop and items are available to the world!
+    </p>
+    <h3 class="question"><a data-toggle="collapse" href="#" data-target="#feesCollected">What fees do I have to pay to sell on Tinville?</a></h3>
+    <p class="collapse" id="feesCollected">
+        None! :-D
+        <br/><br/>
+        Tinville does not make a dime until you do!
+        <br/><br/>
+        Our business model has been built around the success of our designers. It's in our best interest to make sure
+        that your business is a success, so we are always brainstorming innovative ways to promote YOU, our designer!
+        <br/><br/>
+        Many of our competitors will charge you a fee here and there for things like payment processing, shipping, and
+        a commission of your sale.
+        <br/><br/>
+        At Tinville, you get to keep 80% of your sales. We handle the payment processing, shipping, and other logistics to
+        make sure you get to focus on what makes sense to you, your brand! Shipping is free to customers, but don't worry,
+        we don't take our commission until after shipping is paid.
+        <br/><br/>
+        Also, Tinville takes care of the shipping cost by pre-paying it and providing the shipping label available for you to print.
+        You even get to take advantage of our exclusive discounted shipping rates!
+        All you are responsible for is printing out the label, sticking it on the package, and shipping it! Easy right!?
+    </p>
+    <h3 class="question"><a data-toggle="collapse" href="#" data-target="#shippedNowPay">OK, I shipped my order, how do I get paid?</a></h3>
+    <p class="collapse" id="shippedNowPay">
+        When we are notified from the mail carrier that you have shipped your item, we will add this order amount, minus our
+        sales commission to your account balance. You will then get paid your account balance at our weekly payout period.
+        Don't forget to enter your debit card information so that we can pay you!
+    </p>
+
+
+
+{% endblock info_content %}

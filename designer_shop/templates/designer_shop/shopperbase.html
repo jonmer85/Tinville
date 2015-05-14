@@ -1,42 +1,72 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% load i18n %}
+{% load cropping %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
 {% endblock css %}
 {% block content %}
     {{ block.super }}
-      {% if shop.banner and shop.logo %}
-          <div class="shopBanner img-responsive full-screen ">
-              <img id="id_BannerImage" class="shopBanner img-responsive full-screen" src="{{shop.banner.url}}" />
-              <img id="id_LogoImage" class="shopLogoDiv" src="{{shop.logo.url}}" />
-          </div>
-      {% elif not shop.banner and shop.logo %}
-          <div class="shopBanner full-screen shopBackgroundColor">
-              <img class="shopLogoDiv2" src="{{shop.logo.url}}" />
-          </div>
-      {% elif shop.banner and not shop.logo %}
-          <div>
-            <img src="{{shop.banner.url}}" class="shopBanner img-responsive full-screen"  />
-          </div>
+      {% if shop.banner %}
+            <span data-picture class="banner">
+                {% if shop.mobileBanner %}
+                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}">
+                        {% if editmode %}
+                            <button id= type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                        {% endif %}
+                    </span>
+                {% else %}
+                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}">
+                        {% if editmode %}
+                            <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                        {% endif %}
+                    </span>
+                {% endif %}
+                <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)">
+                {% if editmode %}
+                    <button id="xlBannerUploadButton" type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                {% endif %}
+                </span>
+
+            </span>
       {% else %}
-          <div class="shopBanner full-screen shopBackgroundColor">
+          <div class="shopBanner shopBackgroundColor">
           </div>
       {% endif %}
 
 {% endblock %}
 
+{% block javascript_library %}
+  {{ block.super }}
+{% endblock javascript_library %}
+
 {% block javascript %}
     {{ block.super }}
     <script>
 
-    $("#tinvilleTagBanner").css("height", "50px");
-    $("#tinvilleTagBanner").css("top", "0px");
-    $("#tinvilleTagBanner").css("margin-top", "0px");
-    $(".shopColor").css("color", "{{ shop.color }}");
-    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    $(document).ready(function () {
+        $(".shopColor").css("color", "{{ shop.color }}");
+        var textColor = isTooLightYIQ("{{ shop.color }}") ? '#777' : '#e7e5e6';
+        $(".shopTitleColor").css("color", textColor);
+        $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+    });
 
+    $("a.name").text(function(index, currentText) {
+        if (currentText.length > 20){
+            $('a.name').attr('rel', 'tooltip');
+        }
+        return currentText.substr(0, 20);
+    });
+
+    </script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script>
+    $.endlessPaginate({
+        onCompleted: function(){
+            setItemSizes();
+        },
+    });
     </script>
 
 {% endblock %}

@@ -1,17 +1,22 @@
-
 {% extends "base.html" %}
 {% load i18n %}
 {% block body_class %}{{ block.super }} about{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/infoPages.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
 {{ block.super }}
-    <img id="carousel" class="img-responsive full-screen" src="{{ STATIC_URL }}img/infopageimg/info-page-image.png"/>
+    <span data-picture class="banner">
+        <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+        <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
+        <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+        <noscript>
+            <img src="{{ STATIC_URL }}img/banner-xs.jpg">
+        </noscript>
+    </span>
     <div class="container" style="height: 2px"></div>
     <div class="container">
-        <div class="row">
+        <div class="">
             <div class="hidden-md hidden-lg orangeBanner">{{ flatpage.title }}</div>
             <div class="hidden-md hidden-lg orangeLine"/>
         </div>
@@ -28,7 +33,7 @@
                 </nav>
             </div>
 
-            <div class="col-xs-10 col-sm-10 col-xs-offset-1 col-sm-offset-1 col-md-8 infoPageContent">{{ flatpage.content }}</div>
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 infoPageContent">{% block info_content %}{{ flatpage.content }}{% endblock info_content %}</div>
 
         </div>
 

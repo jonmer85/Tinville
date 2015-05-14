@@ -4,11 +4,10 @@ Feature: Designer Shop Banner Upload Selection
   As a designer
   I want to have a file selection that allows me to choose the banner
 
-  @tommy
   Scenario: Banner Menu
     Given the demo shop editor
-    When the banner tab is selected
+    When the banner button is pressed
     Then the banner file upload is displayed
     And the submit banner button is displayed
     And a banner is submitted
-    The selected banner file is saved
+    Then The selected banner file is saved

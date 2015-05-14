@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Details{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-4 col-md-offset-4 paymentInfo">
+            <span class="payment-errors"></span>
+            <div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Payment Details
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        {% load crispy_forms_tags %}
+                        {% crispy form %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block uncompressable_js %}
+{{ block.super }}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+  jQuery(function($) {
+
+    $('#payment-info-form').submit(function(event) {
+        var $form = $(this);
+
+        // Disable the submit button to prevent repeated clicks
+        $form.find('button').prop('disabled', true);
+        var strDate = $("[data-stripe='exp-date']")[0].value;
+        var date = moment(strDate, "MM-YY");
+        var month = date.format("MM");
+        $form.append($('<input class="hidden" type="text" size="2" data-stripe="exp-month"/>').val(month));
+        var year = date.format("YY");
+        $form.append($('<input class="hidden" type="text" size="2" data-stripe="exp-year"/>').val(year));
+
+        Stripe.createToken($form, stripeResponseHandler);
+
+        // Prevent the form from submitting with the default action
+        return false;
+    });
+
+    var stripeResponseHandler = function(status, response) {
+      var $form = $('#payment-info-form');
+
+      if (response.error) {
+        // Show the errors on the form
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('button').prop('disabled', false);
+      } else {
+        // token contains id, last4, and card type
+        var token = response.id;
+        // Insert the token into the form so it gets submitted to the server
+        $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+        // and submit
+        $form.get(0).submit();
+      }
+    };
+});
+</script>
+
+{% endblock uncompressable_js %}

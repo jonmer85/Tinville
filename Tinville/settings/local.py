@@ -6,6 +6,9 @@ from .base import *  # Start with base settings
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
+SSLIFY_DISABLE = True
+
+INTERNAL_IPS = ('127.0.0.1',)
 
 DATABASES = {
     'default': {
@@ -26,3 +29,23 @@ STATIC_URL = '/static/'
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379',
+    },
+}
+
+STATIC_ROOT = os.path.join(PROJECT_DIR.parent, "static")
+
+COMPRESS_ENABLED = env("COMPRESS_ENABLED", False)
+
+LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", True)

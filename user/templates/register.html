@@ -3,29 +3,31 @@
 {% load i18n %}
 {% block body_class %}{{ block.super }} register{% endblock %}
 {% block css %}
-  {{ block.super }}
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
 {% endblock css %}
 {% block content %}
-	<div class="container text-center">
-		<h3>Register With Us</h3>
-			<div class="row">
-				<div class="well col-xs-12 col-sm-10 col-sm-offset-1">
-					<form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
-						<div class="btn-group" style="border-radius: 8px">
-							<button id="shopper" type="button" class="btn col-xs-6 borderHighlight"><img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"><h4>Customer</h4></button>
-							<button id="designer" type="button" class="btn col-xs-6"><img class="img-responsive" src="{{ STATIC_URL }}img/designer_big_logo.png"><h4>Designer</h4></button>
-						</div>
-						<hr>
+        <div class="" id="registrationBackground" style="background-image: url('{{ STATIC_URL }}img/register.jpg');">
+            <div class="container">
+                <div class="row" style="margin-top: 50px">
+                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-7 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
+                        <form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
+                            <div class="row" style="border-radius: 8px;">
+                                <button id="shopper" type="button" class="btn col-xs-offset-2 col-xs-4 borderHighlight" style="">
+                                    <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"><div style="color: #515151;">Customer</div></img>
+                                </button>
+                                <button id="designer" type="button" class="btn col-xs-4" style="">
+                                    <img class="img-responsive" src="{{ STATIC_URL }}img/designer_big_logo.png"><div style="color: #515151;">Designer</div></img>
+                                </button>
+                            </div>
 
-						{% load crispy_forms_tags %}
-						{% crispy form %}
+                            {% load crispy_forms_tags %}
+                            {% crispy form %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+
 {% endblock %}
 {% block javascript %}
 	<script type="text/javascript">

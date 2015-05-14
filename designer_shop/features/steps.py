@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from lettuce import step
+from django.conf import settings
 from django.core.management import call_command
 import lettuce.django
-import os
-import time
 import math
+import time
+import os
+
 
 from Tinville.settings.base import MEDIA_ROOT
 from designer_shop.models import Shop
@@ -16,23 +17,15 @@ from common.lettuce_utils import *
 def load_all_fixtures(scenario):
     call_command('loaddata', 'all.json')
 
-@step(u'Given a designer shop')
-def given_a_designer_shop(step):
-    world.user = TinvilleUser.objects.create(email="foo@bar.com")
-    world.shop = Shop.objects.create(user=world.user, name='foo', banner='bar', logo='baz')
 
 @step(u'And (\d+) shop items')
 def and_n_shop_items(step, n):
     for i in range(int(n)):
         world.shop.item_set.create(name='itemname', image='itemimage', price='3.42')
 
-@step(u'When the shop is visited')
-def when_the_shop_is_visited(step):
-    world.browser.get(lettuce.django.get_server().url(world.shop.get_absolute_url()))
-
 @step(u'Then the banner for the shop is displayed')
 def then_the_banner_for_the_shop_is_displayed(step):
-    assert_selector_contains('img.shopBanner', 'src', 'bar')
+    assert_selector_contains('#id_BannerImage', 'src', 'bar')
 
 @step(u'And the items for the shop are displayed')
 def and_the_items_for_the_shop_are_displayed(step):
@@ -58,21 +51,27 @@ def and_every_item_should_have_an_image(step):
 def and_every_item_should_have_a_price(step):
     assert_text_of_every_selector('.shopItems .shopItem .price', '$3.42')
 
-@step(u'Given the demo shop')
+@step(u'Given the demo shop$')
 def given_the_demo_shop(step):
     world.browser.get(lettuce.django.get_server().url('/Demo'))
+    if not settings.DISABLE_BETA_ACCESS_CHECK:
+        wait_for_browser_to_have_url(lettuce.django.get_server().url('/access_code?shop=Demo'))
+        user = TinvilleUser.objects.get(email="demo@user.com")
+        form = fill_in_access_form(access_code=user.access_code)
+        form.submit()
+    # wait_for_browser_to_have_url(world.browser.get(lettuce.django.get_server().url('/Demo')))
 
 @step(u'Given a shop editor')
 def given_a_shop_editor(step):
     assert_id_exists('shopEditor')
 
-@step(u'The designer can open a shop editor')
+@step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
     world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
     assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for control')
+@step(u'Then there should be 1 icon displayed for control')
 def there_should_be_1_icon_displays_for_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -98,13 +97,17 @@ def and_the_shop_editor_is_85(step):
     assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
 
 @step(u'Given the demo shop editor')
-def give_demo_shop_editor(step):
+def given_demo_shop_editor(step):
+    # time.sleep(1)
     world.browser.get(lettuce.django.get_server().url('/'))
     sign_in("demo@user.com", "tinville")
-    world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
-    assert_id_exists('shopEditor')
 
-@step(u'There should be 1 icon displayed for size control')
+    world.browser.get(lettuce.django.get_server().url('/Demo/edit'))
+    wait_for_element_with_css_selector_to_exist('.bannerUploadEditButton')
+    wait_for_element_with_class_to_be_displayed('colorPickerEditButton')
+    wait_for_element_with_class_to_be_displayed('addItem')
+
+@step(u'Then there should be 1 icon displayed for size control')
 def there_should_be_one_icon_for_size_control(step):
     assert_id_exists('shopEditorTitle')
     assert world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-down')
@@ -123,47 +126,13 @@ def and_selecting_the_up_arrow_should_expand_the_shop_editor_again(step):
     world.browser.find_element_by_css_selector('#minMaxIcon.glyphicon-chevron-up').click()
     time.sleep(0.4)
     shopeditorheight = world.browser.find_element_by_css_selector('body').size['height']
-    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.85)) <= 1
+    assert math.fabs(world.browser.find_element_by_css_selector('#shopEditorWindow').size['height'] - int(shopeditorheight*.8)) <= 1
 
-@step(u'When the color tab is selected')
-def when_the_color_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#color"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#color"]')
 
-@step(u'Then the color picker wheel is displayed')
-def then_the_color_picker_wheel_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#color.tab-pane.active')
-    assert_id_exists('id_color-colorpicker')
-
-@step(u'And the Create button is displayed')
-def and_the_create_button_is_displayed(step):
-    assert_id_exists('shopColorPicker')
-
-@step(u'And a color is submitted')
-def and_a_color_is_submitted(step):
-    color_picker = world.browser.find_element_by_id("color")
-    world.browser.find_element_by_id("id_color").clear()
-    color_picker.find_element_by_name("color").send_keys("#fb1c0e")
-    wait_for_element_with_id_to_be_displayed("shopColorPicker")
-    world.browser.find_element_by_id("shopColorPicker").click()
-    wait_for_ajax_to_complete()
-
-@step(u'The selected color is applied to the components of the shop')
-def the_selected_color_is_applied_to_the_components_of_the_shop(step):
-    color_element = world.browser.find_element_by_css_selector('.shopBackgroundColor')
-    style = color_element.get_attribute("style")
-    assert style == 'background-color: rgb(251, 28, 14);'
-
-@step(u'When the logo tab is selected')
-def when_the_logo_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#logo"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#logo"]')
 
 @step(u'Then the logo file upload is displayed')
 def then_the_logo_file_upload_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#logo.tab-pane.active')
+    wait_for_element_with_css_selector_to_be_displayed('#logo.tab-pane.active')
     assert_id_exists('id_logo')
 
 @step(u'And the submit Logo button is displayed')
@@ -173,136 +142,42 @@ def and_the_submit_logo_button_is_displayed(step):
 @step(u'And a logo is submitted')
 def and_a_logo_is_submitted(step):
     logo_uploader = world.browser.find_element_by_id("id_logo")
-    logo_uploader.send_keys(os.path.join(MEDIA_ROOT, "images/logo2.jpg"))
+    logo_uploader.send_keys(os.path.join(MEDIA_ROOT, "images/logo.jpg"))
     wait_for_element_with_id_to_be_displayed("id_SubmitLogo")
     world.browser.find_element_by_id("id_SubmitLogo").click()
 
 @step(u'The selected logo file is saved')
 def the_selected_logo_file_is_saved(step):
-    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo2.jpg')
+    assert_selector_contains('#id_LogoImage', 'src', '/media/shops/demo/logo/logo.jpg')
 
-@step(u'When the banner tab is selected')
-def when_the_banner_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#banner"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#banner"]')
-
-@step(u'Then the banner file upload is displayed')
-def then_the_banner_file_upload_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#banner.tab-pane.active')
-    assert_id_exists('id_banner')
-
-@step(u'And the submit Banner button is displayed')
-def and_the_submit_banner_button_is_displayed(step):
-    assert_id_exists('id_SubmitBanner')
-
-@step(u'And a banner is submitted')
-def and_a_banner_is_submitted(step):
-    bannerUploader = world.browser.find_element_by_id("id_banner")
-    bannerUploader.send_keys(os.path.join(MEDIA_ROOT, "images/banner2.jpg"))
-    wait_for_element_with_id_to_be_displayed("id_SubmitBanner")
-    world.browser.find_element_by_id("id_SubmitBanner").click()
-
-@step(u'The selected banner file is saved')
-def the_selected_banner_file_is_saved(step):
-    assert_selector_contains('.shopBanner', 'src', '/media/shops/demo/banner/banner2.jpg')
-
-@step(u'When the about tab is selected')
-def when_the_about_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#about"]').click()
-    time.sleep(0.4)
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#about"]')
-
-@step(u'Then the about text field box is displayed')
-def then_the_about_text_field_box_is_displayed(step):
-    assert world.browser.find_element_by_id('about')
-    assert_id_exists('about')
-
-@step(u'And the submit about content button is displayed')
-def and_the_submit_about_content_button_is_displayed(step):
-    assert_id_exists('id_SubmitAboutContent')
-
-@step(u'And the about content is submitted')
-def and_the_about_content_is_submitted(step):
-    time.sleep(0.4)
-    world.browser.find_element_by_id('id_aboutContent_ifr').click()
-    world.browser.execute_script("tinyMCE.activeEditor.setContent('<p>Test About Content</p>')")
-    wait_for_element_with_id_to_be_displayed("id_SubmitAboutContent")
-    world.browser.find_element_by_id("id_SubmitAboutContent").click()
-    wait_for_ajax_to_complete()
-
-@step(u'The about content is saved')
-def the_about_content_is_saved(step):
-    world.browser.maximize_window()
-    world.browser.find_element_by_id('minMaxIcon').click()
-    aboutLocation = world.browser.find_element_by_css_selector('#aboutLocation.panel-body>p')
-    time.sleep(0.4)
-    assert aboutLocation.text == "Test About Content"
-
-@step(u'When the add item tab is selected')
-def when_the_add_item_tab_is_selected(step):
-    world.browser.find_element_by_css_selector('#optionContent>li>a[href="#addOrEditItem"]').click()
-    assert world.browser.find_element_by_css_selector('#optionContent>.active>a[href="#addOrEditItem"]')
-
-@step(u'Then the add item form is displayed')
-def then_the_add_item_form_is_displayed(step):
-    assert world.browser.find_element_by_css_selector('#addOrEditItem.tab-pane.active')
-    assert world.browser.find_element_by_css_selector("#id_title").is_displayed()
-
-@step(u'And the tinville orange color f46430 is submitted')
-def and_the_tinville_orange_color_f46430_is_submitted(step):
-    color_picker = world.browser.find_element_by_id("color")
-    world.browser.find_element_by_id("id_color").clear()
-    color_picker.find_element_by_name("color").send_keys("#f46430")
-    # world.browser.find_element_by_id("minMaxIcon").click()
-    wait_for_element_with_id_to_be_displayed("shopColorPicker")
-    world.browser.find_element_by_id("shopColorPicker").click()
-    wait_for_ajax_to_complete()
-
-@step(u'The an exception Tinville Branding is not Allowed to be Used is thrown')
-def the_an_exception_Tinville_Branding_is_not_Allowed_to_be_Used_is_thrown(step):
-    assert_selector_does_exist("#div_id_color.has-error")
-    assert_selector_contains_text("span strong", "Tinville Branding is not Allowed to be Used")
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
     sign_in('demo@user.com', 'tinville')
 
-@step(u'And I fill in the general add item fields')
-def and_i_fill_in_the_general_add_item_fields(step):
-    world.browser.maximize_window()  # Shop Editor features don't work well with automation unless maximized Jon M TBD
-    world.browser.find_element_by_id("minMaxIcon").click()
-    world.browser.find_element_by_name("title").send_keys("Test item")
-    # TinyMCE uses iframes so need to use their javascript API to set the content
-    world.browser.execute_script("tinyMCE.activeEditor.setContent('<h1>Test Item Description</h1>')")
-    world.browser.find_element_by_name("price").send_keys("10.00")
-    file = os.path.join(MEDIA_ROOT, "images/item.jpg")
-    world.browser.find_element_by_name("product_image").send_keys(file)
+
+@step(u'When the home tab is selected')
+def when_the_home_tab_is_selected(step):
+    wait_for_element_with_css_selector_to_be_clickable('#shopTabButton').click()
+    wait_for_element_with_css_selector_to_be_displayed('.active>#shopTabButton')
+
+@step(u'Then the home content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('shopTab')
+    assert_id_exists('shopTab')
 
 
-@step(u'With an inventory of (\d+) items of a ([^"]*) color and size set of ([^"]*)')
-def with_quantity_color_and_sizeset(step, quantity, color, sizeset):
-    variationSelection = Select(world.browser.find_element_by_name('sizeVariation'))
-    time.sleep(2)
-    variationSelection.select_by_value("1")  # Size Set
-    sizeSetSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_sizeSetSelection'))
-    sizeSetSelection.select_by_visible_text(sizeset)
-    time.sleep(1)
-    colorSelection = Select(world.browser.find_element_by_name('sizeSetSelectionTemplate0_colorSelection0'))
-    colorSelection.select_by_visible_text(color)
-    world.browser.find_element_by_name('sizeSetSelectionTemplate0_quantityField0').send_keys(quantity)
-    time.sleep(1)
+@step(u'Then the about content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('aboutTab')
+    assert_id_exists('aboutTab')
 
+@step(u'When the landing tab is selected')
+def when_the_landing_tab_is_selected(step):
+    wait_for_element_with_css_selector_to_be_clickable('#landingTabButton').click()
+    wait_for_element_with_css_selector_to_be_displayed('.active>#landingTabButton')
 
-@step(u'And I submit this item')
-def and_i_submit_this_item(step):
-    element = world.browser.find_element_by_name("productCreationForm")
-    scroll_to_element(element)
-    element.click()
-
-@step(u'Then I should see (\d+) product(?s) total')
-def i_should_see_n_products_total(step, total):
-    products = world.browser.find_elements_by_css_selector(".shopItem")
-    assert len(products) == int(total)
-
-
+@step(u'Then the landing content is displayed')
+def then_the_home_content_is_displayed(step):
+    assert world.browser.find_element_by_id('landingTab')
+    assert_id_exists('landingTab')
