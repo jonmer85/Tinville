@@ -11,7 +11,7 @@ Feature: Add item to the shopping bag
     Then I add an item to my shopping bag
     Then The bag icon should show the number of the item
     And  I click on the bag icon
-    Then The checkout drop down is displayed
+    Then The checkout drop down is displayedF
     And  I click on the checkout button
     Then The checkout form should be displayed
 
@@ -51,10 +51,14 @@ Feature: Add item to the shopping bag
     Then I enter a valid payment
     Then the thank you page is displayed
 
-
-
-
-
-
-
-
+  Scenario: Signed In User Checks Out
+    Given Demo page
+    When a registered user logs in with email "demo@user.com " and password "tinville"
+    Then I add an item to my shopping bag
+    And  I click on the bag icon
+    Then The checkout drop down is displayed
+    And  I click on the checkout button
+    When I click on checkout button
+    Then I add my address
+    Then I enter a valid payment
+    Then the thank you page is displayed
