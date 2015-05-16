@@ -181,6 +181,13 @@ def wait_for_element_with_class_to_be_displayed(class_name):
     WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
     return world.browser.find_element_by_class_name(class_name)
 
+def wait_for_element_with_class_to_be_displayed_no_exception(class_name):
+    try:
+        WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
+        return True
+    except:
+        return False
+
 def wait_for_element_with_link_text_to_be_displayed(link_text):
     WebDriverWait(world.browser, 15).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
 
