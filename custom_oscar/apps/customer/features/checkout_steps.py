@@ -62,6 +62,7 @@ def and_I_choose_to_register(step):
     myelement = world.browser.find_element_by_id('registerButton')
     myelement.click()
     # form = fill_in_user_form(email='foo@bar.com', password='foobar')
+    wait_for_element_with_class_to_be_displayed("close").click()
     form = fill_in_user_form(password='foobar')
     form.submit()
 
@@ -83,9 +84,9 @@ def then_I_add_a_valid_address(step):
 
 @step(u'Then I add my address')
 def then_I_add_my_address(step):
-    if(wait_for_element_with_class_to_be_displayed("close")):{
+    if(wait_for_element_with_class_to_be_displayed_no_exception("close")):
         wait_for_element_with_class_to_be_displayed("close").click()
-    }
+
     wait_for_element_with_name_to_be_displayed('first_name').send_keys('Joe')
     wait_for_element_with_name_to_be_displayed('last_name').send_keys('Schmoe')
     wait_for_element_with_name_to_be_displayed('line1').send_keys('14 Minnesota Ave.')
@@ -113,6 +114,14 @@ def and_i_sign_in(step):
     wait_for_element_with_id_to_exist('returningButton')
     myelement = world.browser.find_element_by_id('returningButton')
     myelement.click()
+
+@step(u'When a registered user logs in with email "([^"]*)" and password "([^"]*)"')
+def when_a_registered_user_logs_in_with_email_and_password(step, email, password):
+    world.user_info = {
+        "email": email,
+        "password": password,
+    }
+    sign_in_local()
 
 @step(u'Then The checkout drop down is displayed')
 def then_the_checkout_drop_down_is_displayed(step):
