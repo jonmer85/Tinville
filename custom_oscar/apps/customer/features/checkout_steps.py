@@ -115,6 +115,14 @@ def and_i_sign_in(step):
     myelement = world.browser.find_element_by_id('returningButton')
     myelement.click()
 
+@step(u'When a registered user logs in with email "([^"]*)" and password "([^"]*)"')
+def when_a_registered_user_logs_in_with_email_and_password(step, email, password):
+    world.user_info = {
+        "email": email,
+        "password": password,
+    }
+    sign_in_local()
+
 @step(u'Then The checkout drop down is displayed')
 def then_the_checkout_drop_down_is_displayed(step):
     assert_id_exists('cartDropdown')
