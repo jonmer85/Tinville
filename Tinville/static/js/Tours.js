@@ -4,6 +4,18 @@ function aboutPageFunc() {
 function aboutProfileFunc() {
         $('#aboutBoxModal').modal();
 }
+function shopBannerFunc() {
+    $("#bannerUploadModal").modal();
+}
+function shopBannerClose() {
+    $("#bannerUploadModal").modal('hide');
+}
+function shopColorFunc() {
+    $("#colorPickerModal").modal();
+}
+function shopColorClose() {
+    $("#colorPickerModal").modal('hide');
+}
 function shopProfileFunc() {
     $("#aboutBoxModal").modal('hide');
 }
@@ -23,6 +35,28 @@ shopEditorItems = new Tour({
             element: "#editorTour",
             title: "How To: Edit Shop",
             content: "Welcome to Tinville and our quick tour of how to create a shop."
+        },
+        {
+            element: ".bannerUploadEditButton",
+            title: "How To: Edit Shop",
+            content: "This button enables you to change your banner image.",
+            onNext: shopBannerFunc
+        },
+        {
+            element: "#hiddenShopperField",
+            template: "",
+            duration: 1000
+        },
+        {
+            element: "#bannerModalFooterSubmit",
+            title: "How To: Edit Shop",
+            content: "Select your desktop and mobile banner images and click submit to upload.",
+            onNext: shopBannerClose
+        },
+        {
+            element: "#hiddenShopperField",
+            template: "",
+            duration: 1000
         },
         {
             element: "#aboutTabAnchor",
@@ -47,6 +81,29 @@ shopEditorItems = new Tour({
             content: "Here you can enter your Shop Profile information. Click Submit to save your changes or click close.",
             onNext: shopProfileFunc
         },
+        {
+            element: "#hiddenShopperField",
+            template: "",
+            duration: 1000
+        },
+{
+    element: ".colorPickerEditButton",
+        title: "How To: Edit Shop",
+    content: "To change your banner color click the Banner Color edit button.",
+    onNext: shopColorFunc
+},
+        {
+            element: "#hiddenShopperField",
+            template: "",
+            duration: 1000
+        },
+        {
+            element: "#colorModalFooterSubmit",
+            title: "How To: Edit Shop",
+            content: "Select your new banner color and click submit to save or close to cancel.",
+            onNext: shopColorClose
+        },
+
         {
             element: "#shopTabAnchor",
             title: "How To: Edit Shop",

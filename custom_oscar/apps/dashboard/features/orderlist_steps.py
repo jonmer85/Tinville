@@ -41,7 +41,7 @@ def i_should_see_the_following_columns(step):
 
 
 @step("I should see '(.*)' order with a '(.*)' button")
-def i_should_see_x_orders_with_a_x_button(step):
+def i_should_see_x_orders_with_a_x_button(step, amount, button):
     """
     :type step lettuce.core.Step
     """
@@ -49,7 +49,7 @@ def i_should_see_x_orders_with_a_x_button(step):
 
 
 @step("I search for order '(.*)'")
-def i_search_for_order_x(step):
+def i_search_for_order_x(step, order):
     """
     :type step lettuce.core.Step
     """
