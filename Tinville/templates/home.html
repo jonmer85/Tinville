@@ -12,55 +12,25 @@
 {% block content %}
     {{ block.super }}
 
-    {% if fshops %}
-        <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
-              <!-- Indicators -->
-            <div class="carousel-inner">
-            {% for shop in fshops %}
-                {% if forloop.first %}
-                    <div class="item slides active">
-                {% else %}
-                    <div class="item slides">
-                {% endif %}
-                    <div class="slide-{{ shop.name }}">
-                        <a href='{{ shop.get_absolute_url }}'>
-                            <span data-picture class="banner">
-                                    {% if shop.mobileBanner %}
-                                        <span class="" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}"></span>
-                                    {% else %}
-                                        <span class="" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}"></span>
-                                    {% endif %}
-                                    <span class="" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)"></span>
-                              </span>
-                        </a>
-                    </div>
-                    <div class="container">
-                        <div class="carousel-caption"></div>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-            <a class="left carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-            <a class="right carousel-control" href="#thumbnail-preview-indicators" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-        </div>
-    {% else %}
-        <div id="thumbnail-preview-indicators" >
-            <span data-picture class="banner">
-                <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-                <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
-                <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-                <noscript>
-                    <img src="{{ STATIC_URL }}img/banner-xs.png">
-                </noscript>
-            </span>
-        </div>
-    {% endif %}
-    <div class="homeBlock">
 
+    <div id="thumbnail-preview-indicators" >
+        <span data-picture class="banner">
+            <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+            <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
+            <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+            <noscript>
+                <img src="{{ STATIC_URL }}img/banner-xs.png">
+            </noscript>
+        </span>
     </div>
-    <div class="container" style="padding-top: 75px">
-        <div class="row" id="shopItems">
-            {% include "designer_shop/item_gallery.html" %}
+
+    <div class="homeBlock" style="margin-bottom: 20px">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4">
+
+            </div>
         </div>
     </div>
 {% endblock %}

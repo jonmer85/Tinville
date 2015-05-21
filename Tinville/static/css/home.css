@@ -90,3 +90,9 @@
     margin: auto;
     height: 50px;
 }
+
+.categoryBlock {
+    font-weight: bold;
+    color: white;
+
+}

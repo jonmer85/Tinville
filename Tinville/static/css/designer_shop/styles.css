@@ -508,6 +508,16 @@
 .shopItem, .addItemContainer {
     padding-bottom: 5px;
     padding-right: 5px;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0px 2px 6px 2px rgba(207, 206, 206, 0.75);
+    -moz-box-shadow: 0px 2px 6px 2px rgba(207, 206, 206, 0.75);
+    box-shadow: 0px 2px 6px 2px rgba(207, 206, 206, 0.75);
+}
+
+.shopItem:hover {
+    -webkit-box-shadow: 0px 2px 6px 2px rgba(207, 206, 206, 0.75);
+    -moz-box-shadow: 0px 2px 6px 2px rgba(207, 206, 206, 0.75);
+    box-shadow: 0px 2px 6px 2px rgba(207, 206, 206, 0.75);
 }
 
 .shopItemDetail {
