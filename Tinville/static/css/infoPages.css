@@ -356,15 +356,6 @@ a.aboutCircle:active {
     background-color: #e7e5e6;
 }
 
-.about_section .glyphicon {
-    font-size: 60px;
-    /*color: #f46430;*/
-}
-
-.about_section .fa {
-    font-size: 60px;
-}
-
 .about_section .row {
     margin-top: 50px;
 }
