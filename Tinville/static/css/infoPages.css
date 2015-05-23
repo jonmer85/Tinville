@@ -350,15 +350,15 @@ a.aboutCircle:active {
 .about_section {
     background: 50% 50% no-repeat;
     background-size: cover;
-    min-height: 500px;
-    padding: 60px 20px;
+    /*min-height: 500px;*/
+    /*padding: 60px 20px;*/
     text-align: center;
     background-color: #e7e5e6;
 }
 
-.about_section .row {
-    margin-top: 50px;
-}
+/*.about_section .row {*/
+    /*margin-top: 50px;*/
+/*}*/
 
 .about_section p {
     font-size: 2em;
@@ -370,15 +370,33 @@ a.aboutCircle:active {
         background-size: cover !important;
         min-height: 0;
         margin: -5px;
-        padding: 20px 20px;
+        /*padding: 20px 20px;*/
     }
-}
-
-.section-heading {
-
 }
 
 .question {
     font-weight: bold;
 }
+
+img.image_left {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.center-svg {
+    text-align: center;
+}
+
+.column-section {
+    margin: 3px;
+}
+
+h1.about_section_title {
+    color: #F16632;
+}
+
+
 
