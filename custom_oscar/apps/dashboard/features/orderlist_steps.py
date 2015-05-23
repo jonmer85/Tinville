@@ -39,18 +39,18 @@ def i_should_see_the_following_columns(step):
         assert_equals(1, len(world.browser.find_elements_by_xpath("//th/a[normalize-space(.)='" + thecolumn + "']")) +
                       len(world.browser.find_elements_by_xpath("//th[normalize-space(.)='" + thecolumn + "']")), thecolumn + " column does not exist")
 
-
-@step("I should see '(.*)' order with a '(.*)' button")
-def i_should_see_x_orders_with_a_x_button(step, amount, button):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
-
-
-@step("I search for order '(.*)'")
-def i_search_for_order_x(step, order):
-    """
-    :type step lettuce.core.Step
-    """
-    pass
+#TODO:Andy
+# @step("I should see '(.*)' order with a '(.*)' button")
+# def i_should_see_x_orders_with_a_x_button(step, amount, button):
+#     """
+#     :type step lettuce.core.Step
+#     """
+#     pass
+#
+#
+# @step("I search for order '(.*)'")
+# def i_search_for_order_x(step, order):
+#     """
+#     :type step lettuce.core.Step
+#     """
+#     pass
