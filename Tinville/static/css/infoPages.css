@@ -353,7 +353,7 @@ a.aboutCircle:active {
     /*min-height: 500px;*/
     /*padding: 60px 20px;*/
     text-align: center;
-    background-color: #e7e5e6;
+    /*background-color: #e7e5e6;*/
 }
 
 /*.about_section .row {*/
@@ -394,6 +394,14 @@ img.image_left {
     margin: 3px;
 }
 
+.about-section-left {
+    padding-right: 0px !important;
+}
+
+.about-section-right {
+    padding-left: 0px !important;
+}
+
 h1.about_section_title {
     color: #F16632;
 }
@@ -403,5 +411,19 @@ h1.about_section_title {
     padding-bottom: 50px;
 }
 
+/*YELLOWBACKGROUND*/
+/*#E6E5E1*/
 
+.section-yellow {
+    background-color: #E6E5E1;
+}
+
+.background-padding {
+    margin-right: 18px;
+    margin-left: 18px;
+}
+
+#about_payment {
+    padding-top: 65px;
+}
 
