@@ -27,7 +27,9 @@ LETTUCE_APPS = (
     'user',
     'basket',
     'custom_oscar.apps.customer',
-    'custom_oscar.apps.checkout'
+    'custom_oscar.apps.checkout',
+    'custom_oscar.apps.dashboard',
+    'dashboard',
     'checkout',
 )
 
