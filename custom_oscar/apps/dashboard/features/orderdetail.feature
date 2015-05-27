@@ -2,7 +2,7 @@
 Feature: Dashboard Order Detail
 #  As a designer and admin, I want to be able to view the details about my orders, and buy shipping labels
 #
-#  Scenario: Order Detail Designer Elements
+  Scenario: Order Detail Designer Elements
 #    Given I have an order with at least '5' items
 #    When I visit the orders page
 #    And click on my order
