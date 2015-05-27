@@ -1,5 +1,5 @@
 #TODO:Andy
-#Feature: Dashboard Order Detail
+Feature: Dashboard Order Detail
 #  As a designer and admin, I want to be able to view the details about my orders, and buy shipping labels
 #
 #  Scenario: Order Detail Designer Elements
