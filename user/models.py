@@ -17,7 +17,7 @@ from oscar.core.loading import get_model
 
 from Tinville.settings.base import EMAIL_HOST_USER
 
-Partner = get_model("partner", "Partner")
+
 
 class TinvilleUserManager(UserManager):
 
@@ -34,7 +34,6 @@ class TinvilleUserManager(UserManager):
 
 
 class TinvilleUser(AbstractUser):
-
     # email = _metamodels.EmailField(verbose_name='email address', unique=True, db_index=True, max_length=254)
     slug = AutoSlugField(populate_from='email', unique=True)
     is_admin = models.BooleanField(default=False)
@@ -74,6 +73,7 @@ class TinvilleUser(AbstractUser):
         self.save()
 
     def delete(self, *args, **kwargs):
+        Partner = get_model("partner", "Partner")
         if self.is_seller:
             partner = Partner.objects.get(name=self.email)
             if partner is not None:

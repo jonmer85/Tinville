@@ -197,6 +197,17 @@ def get_filtered_products(shop=None, post=None, filter=None):
         context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
     return context
 
+def get_category_products(shop=None, genderfilter=None, itemtypefilter=None):
+    if itemtypefilter is None:
+        itemtypefilter = "View All Types"
+    if shop is None and filter is not None:
+        filteredProductList = Product.objects.filter(
+            Q(shop = Shop.objects.filter(user__is_approved = True), parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
+        context = filteredProductList
+    else:
+        context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
+    return context
+
 
 def get_valid_categories_for_filter(gender, type):
     filter = list()

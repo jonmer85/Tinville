@@ -16,6 +16,21 @@
         }
     },
     {
+        "model": "user.TinvilleUser",
+        "pk": 3,
+        "fields": {
+            "email": "democust@user.com",
+            "password": "pbkdf2_sha256$12000$aWMeM0nAdxhb$q8kVZ5rVvPveWkgHYQKG5dL/fLRoPWpcqimKQdzLMRg=",
+			"slug": "democustusercom",
+            "is_admin": false,
+            "is_active": true,
+            "is_seller": false,
+            "is_approved": false,
+            "key_expires": "2020-02-02",
+            "access_code": "ABC12"
+        }
+    },
+    {
         "model": "designer_shop.Shop",
         "pk": 1,
         "fields": {

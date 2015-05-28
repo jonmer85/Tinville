@@ -475,14 +475,10 @@ CELERY_RESULT_BACKEND= 'djcelery.backends.database:DatabaseBackend'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 CELERYBEAT_SCHEDULE = {
-    # Pay designers twice a week, Tuesday at midnight, and Fridays at 11:45 am
+    # Pay designers twice a week, Tuesday at 1AM EST
     'pay-designers-on-tuesdays-midnight': {
         'task': 'custom_oscar.apps.order.tasks.pay_designers',
-        'schedule': crontab(hour=0, minute=0, day_of_week=2)
-    },
-    'pay-designers-on-friday-by-noon': {
-        'task': 'custom_oscar.apps.order.tasks.pay_designers',
-        'schedule': crontab(hour=11, minute=45, day_of_week=5)
+        'schedule': crontab(hour=1, minute=0, day_of_week=2)
     },
 }
 
