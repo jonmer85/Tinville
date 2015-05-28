@@ -1,7 +1,7 @@
 #!/bin/sh
 if [ $PULL_REQUEST != 'false' ]; then exit 0; fi
 
-if [ $BRANCH == 'develop' ]; then 
+if [ $BRANCH = 'develop' ]; then 
   git push -f git@heroku.com:tinville-testing.git develop:master
   heroku run ./initDataNoInput qatest --app tinville-testing
   heroku run ./qatest collectstatic --noinput --app tinville-testing
@@ -12,7 +12,7 @@ if [ $BRANCH == 'develop' ]; then
   heroku run ./dev collectstatic --noinput --app tinville-dev
   heroku run ./dev compress --force --app tinville-dev
 else
-  if [ $BRANCH == 'master' ]; then 
+  if [ $BRANCH = 'master' ]; then 
     git push -f git@heroku.com:tinville-beta.git master:master
     heroku run ./initDataNoInput beta --app tinville-beta
     heroku run python manage.py collectstatic --settings=Tinville.settings.beta --noinput --app tinville-beta
