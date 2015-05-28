@@ -2,57 +2,49 @@
 {% load cropping %}
 {% load endless %}
 
-    {% if products %}
-        {% paginate products %}
-            {% for product in products %}
-                {% purchase_info_for_product request product as session %}
-                    <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-4 col-md-3" style="">
-                        <div class="thumbnail shopItem shopBorderColor" style="border: none;">
-                            {% if product.primary_image and product.primary_image.original.url %}
-                                {% with image=product.primary_image %}
-                                    <div class="Item row">
-                                        <div class="col-xs-12">
-                                            <a href="{{ product.shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
-                                                <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="itemSize" />
-                                            </a>
-                                        </div>
-                                    </div>
-                                {% endwith %}
-                            {% else %}
-                            -
-                            {% endif %}
-                            <div class="row">
-                                {% if editmode %}
-                                    <a class="overlayEdit col-xs-offset-1 col-xs-2"
-                                       data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
-                                       data-toggle="tooltip" data-placement="left" title="Edit item">
-                                        <span class="fa fa-pencil-square-o fa-lg tinvilleOrange"></span>
-                                    </a>
-                                    <div class="caption col-xs-6">
-                                {% else %}
-                                    <div class="caption col-xs-12">
-                                {% endif %}
-                                    <div class="">
-                                        <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
-                                    </div>
 
-                                    <div class="price row">
-                                        ${{session.price.excl_tax|floatformat:2}}
-                                    </div>
-                                </div>
-                                {% if editmode %}
-                                    <a id='{{ product.slug }}' class="itemDelete col-xs-2"
-                                       onclick="DeleteConfirmation('{{ product.slug }}')">
-                                        <span class="fa fa-trash-o fa-lg tinvilleOrange"></span>
+        {% purchase_info_for_product request product as session %}
+            <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-4 col-md-3" style="">
+                <div class="thumbnail shopItem shopBorderColor" style="border: none;">
+                    {% if product.primary_image and product.primary_image.original.url %}
+                        {% with image=product.primary_image %}
+                            <div class="Item row">
+                                <div class="col-xs-12">
+                                    <a href="{{ product.shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
+                                        <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="itemSize" />
                                     </a>
-                                {% endif %}
+                                </div>
+                            </div>
+                        {% endwith %}
+                    {% else %}
+                    -
+                    {% endif %}
+                    <div class="row">
+                        {% if editmode %}
+                            <a class="overlayEdit col-xs-offset-1 col-xs-2"
+                               data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
+                               data-toggle="tooltip" data-placement="left" title="Edit item">
+                                <span class="fa fa-pencil-square-o fa-lg tinvilleOrange"></span>
+                            </a>
+                            <div class="caption col-xs-6">
+                        {% else %}
+                            <div class="caption col-xs-12">
+                        {% endif %}
+                            <div class="">
+                                <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
+                            </div>
+
+                            <div class="price row">
+                                ${{session.price.excl_tax|floatformat:2}}
                             </div>
                         </div>
+                        {% if editmode %}
+                            <a id='{{ product.slug }}' class="itemDelete col-xs-2"
+                               onclick="DeleteConfirmation('{{ product.slug }}')">
+                                <span class="fa fa-trash-o fa-lg tinvilleOrange"></span>
+                            </a>
+                        {% endif %}
                     </div>
-            {% endfor %}
-        {% show_more "<div class='well col-xs-12 col-md-4 col-md-offset-4' style='text-align: center;'>Show me more items!</div>" %}
-    {% else %}
-        <div id="searchShopId" class="searchShop">
-                No item found with current filter selection
-        </div>
-    {% endif %}
+                </div>
+            </div>
+
