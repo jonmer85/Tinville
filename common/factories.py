@@ -114,7 +114,7 @@ def create_basket_with_products(products):
 
 def create_order(number=None, basket=None, user=None, shipping_address=None,
                  shipping_method=None, billing_address=None,
-                 total=None, shop=None, **kwargs):
+                 total=None, shop=None, status=None, **kwargs):
     """
     Helper method for creating an order for testing
     """
@@ -143,6 +143,7 @@ def create_order(number=None, basket=None, user=None, shipping_address=None,
         shipping_charge=shipping_charge,
         billing_address=billing_address,
         total=total,
+        status=status,
         **kwargs)
     basket.set_as_submitted()
     return order
