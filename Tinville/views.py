@@ -8,7 +8,7 @@ from common.utils import get_list_or_empty, get_or_none
 
 def home_gallery(request):
     template = "home.html"
-    page_template = "designer_shop/item_gallery.html"
+    page_template = "designer_shop/all_gallery.html"
     products = get_filtered_products()
     menproducts = get_category_products(genderfilter="Men")
     womenproducts = get_category_products(genderfilter="Women")
@@ -28,7 +28,7 @@ def home_gallery(request):
 
 def all_gallery(request):
     template = "homepage/all_home.html"
-    page_template = "designer_shop/item_gallery.html"
+    page_template = "designer_shop/all_gallery.html"
     products = get_filtered_products()
 
     context = {
@@ -40,7 +40,7 @@ def all_gallery(request):
 
 def men_gallery(request):
     template = "homepage/men_home.html"
-    page_template = "designer_shop/item_gallery.html"
+    page_template = "designer_shop/all_gallery.html"
     products = get_category_products(genderfilter="Men")
 
     context = {
@@ -52,7 +52,7 @@ def men_gallery(request):
 
 def women_gallery(request):
     template = "homepage/women_home.html"
-    page_template = "designer_shop/item_gallery.html"
+    page_template = "designer_shop/all_gallery.html"
     products = get_category_products(genderfilter="Women")
 
     context = {
