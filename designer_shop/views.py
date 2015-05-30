@@ -121,7 +121,7 @@ def shopper(request, slug):
 
     if request.method == 'GET':
         template = 'designer_shop/shopper.html'
-        page_template = 'designer_shop/item_gallery.html'
+        page_template = 'designer_shop/all_gallery.html'
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
             return render(request, 'designer_shop/shop_items.html', {
@@ -193,6 +193,17 @@ def get_filtered_products(shop=None, post=None, filter=None):
         context = filteredProductList
     elif shop is not None:
         context = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
+    else:
+        context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
+    return context
+
+def get_category_products(shop=None, genderfilter=None, itemtypefilter=None):
+    if itemtypefilter is None:
+        itemtypefilter = "View All Types"
+    if shop is None and filter is not None:
+        filteredProductList = Product.objects.filter(
+            Q(shop = Shop.objects.filter(user__is_approved = True), parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
+        context = filteredProductList
     else:
         context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
     return context
@@ -541,7 +552,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
     if not editItem or (editItem and request.is_ajax()):
         template = 'designer_shop/shopeditor.html'
-        page_template = 'designer_shop/item_gallery.html'
+        page_template = 'designer_shop/all_gallery.html'
 
         context = {
             'editmode': True,

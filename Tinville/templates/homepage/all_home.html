@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load cropping %}
-{% block body_class %}{{ block.super }} home{% endblock %}
+{% block body_class %}{{ block.super }} Men{% endblock %}
 
 {% block css %}
     {{ block.super }}
@@ -26,45 +26,15 @@
 
     <div class="homeBlock" style="margin-bottom: 20px">
     </div>
-    <div class="container ">
-        <a href="{% url 'all_home' %}" class="allBlock">ALL -></a>
-    </div>
-    <div class="container">
-        <div class="row">
 
-            <div class="col-xs-12 col-sm-6" style="padding-bottom: 20px">
-                <a href="{% url 'women_home' %}"  >
-                    <img src="{{ STATIC_URL }}img/women.jpg" class="categoryBlock" />
-                </a>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <a href="{% url 'men_home' %}"  >
-                    <img src="{{ STATIC_URL }}img/men.jpg" class="categoryBlock" />
-                </a>
-            </div>
-        </div>
-    </div>
-    <div style="background-color: #e6e5e1; margin-top: 50px;padding-bottom: 20px">
-        <div class="container" >
-            <div class="genderBlock">
-                Women
-            </div>
-            {% if womenproducts > 0 %}
-                {% include "homepage/womenItems.html" %}
-            {% endif %}
-        </div>
-    </div>
-    <div style="padding-bottom: 20px">
-        <div class="container" >
-            <div class="genderBlock">
-                Men
-            </div>
-            {% if menproducts > 0 %}
-                {% include "homepage/menItems.html" %}
-            {% endif %}
-        </div>
 
+
+    <div class="container" style="padding-top: 50px; padding-bottom: 50px;">
+            <div class="row" id="shopItems">
+                {% include "designer_shop/all_gallery.html" %}
+            </div>
     </div>
+
 
 {% endblock %}
 

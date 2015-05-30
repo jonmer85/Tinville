@@ -30,31 +30,31 @@ Feature: Dashboard Order List
     When I click on the 'Ready for Shipment' filter
     Then I should see '2' orders
 
-@wipjeff
-  Scenario: Order Columns
-    Given I have some basic dashboard data
-    Given I am on the dashboard order list page
-    Then I should see the following columns
-    | Column             |
-    | "Order number"     |
-    | "Total inc tax"    |
-    | "Number of items"  |
-    | Status             |
-    | Customer           |
-    | "Shipping Address" |
-    | "Date of purchase" |
-    | Actions            |
+#TODO:Andy
+#  Scenario: Order Columns
+#    Given I have some basic dashboard data
+#    Given I am on the dashboard order list page
+#    Then I should see the following columns
+#    | Column             |
+#    | "Order number"     |
+#    | "Total inc tax"    |
+#    | "Number of items"  |
+#    | Status             |
+#    | Customer           |
+#    | "Shipping Address" |
+#    | "Date of purchase" |
+#    | Actions            |
+#
+#  Scenario: Order view button text
+#    Given I have some basic dashboard data
+#    Given I am on the dashboard order list page
+#    When I click on the 'All Orders' filter
+#    Then I should see '2' orders with a 'Ship' button
+#    And I should see '1' orders with a 'View' button
 
-  Scenario: Order view button text
-    Given I have some basic dashboard data
-    Given I am on the dashboard order list page
-    When I click on the 'All Orders' filter
-    Then I should see '2' orders with a 'Ship' button
-    And I should see '1' orders with a 'View' button
-
-  Scenario: Order Search
-    Given I have some basic dashboard data
-    Given I am on the dashboard order list page
-    When I search for order '1-100002'
-    Then I should see the Dashboard 'Order #1-100002' page
+#  Scenario: Order Search
+#    Given I have some basic dashboard data
+#    Given I am on the dashboard order list page
+#    When I search for order '1-100002'
+#    Then I should see the Dashboard 'Order #1-100002' page
 

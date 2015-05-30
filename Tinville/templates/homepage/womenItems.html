@@ -1,0 +1,15 @@
+{% load purchase_info_tags %}
+{% load cropping %}
+{% load endless %}
+    {% if womenproducts %}
+        {% paginate womenproducts %}
+            {% for product in womenproducts %}
+                {% if forloop.counter <= 4 %}
+                    {% include "designer_shop/item_gallery.html" %}
+                {% endif %}
+            {% endfor %}
+    {% else %}
+        <div id="searchShopId" class="searchShop">
+                No item found with current filter selection
+        </div>
+    {% endif %}
