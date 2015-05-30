@@ -137,6 +137,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
 )
