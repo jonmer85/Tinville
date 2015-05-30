@@ -425,5 +425,14 @@ h1.about_section_title {
 
 #about_payment {
     padding-top: 65px;
+    padding-bottom: 65px;
 }
 
+.about-column {
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+#about_social {
+    padding-bottom: 65px;
+}
