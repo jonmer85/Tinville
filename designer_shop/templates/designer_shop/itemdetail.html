@@ -3,6 +3,11 @@
 {% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
 {% load bleach_tags %}
 {% load currency_filters %}
+{% block meta %}
+    <title>{{ item.title }} by {{ shop.name }} on Tinville</title>
+    <meta name="description" content="{{ item.description|striptags | truncatechars:160 }}"/>
+{% endblock meta %}
+
 {% block css %}
     {{ block.super }}
 {% endblock css %}
