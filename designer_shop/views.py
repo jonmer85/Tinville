@@ -278,10 +278,13 @@ def ajax_color(request, slug):
     return HttpResponseBadRequest()
 
 
-def get_types(request, shop_slug, group_by=None):
-    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+def get_types(request, shop_slug=None, group_by=None):
     shopCategoryNames = []
-    shopProductCategories = get_filter_lists(shop).shop_product_categories()
+    if shop_slug is None:
+        shopProductCategories = get_filter_lists(shop).shop_product_categories()
+    else:
+        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+        shopProductCategories = get_filter_lists(shop).shop_product_categories()
     for productcategory in shopProductCategories:
         if productcategory != None:
             currentcategory = get_or_none(Category, id=productcategory.category.id)
