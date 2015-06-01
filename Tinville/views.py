@@ -16,6 +16,16 @@ def home_gallery(request):
     fshops = Shop.objects.filter(id__in=featured_shop_ids)
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
 
+
+    if request.method == 'GET':
+        if request.GET.__contains__('genderfilter'):
+            products = get_filtered_products(post=request.GET, filter=True)
+            return render(request, 'designer_shop/shop_items.html', {
+                'products': products,
+                'shopProductCount': len(products),
+            })
+
+
     context = {
         'products': products,
         'fshops' : fshops,
