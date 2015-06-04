@@ -114,7 +114,6 @@ class PaymentInfoForm(forms.Form):
     helper.form_show_labels = False
     helper.attrs = {'autocomplete': 'off'}
     # helper.form_action = reverse_lazy('checkout:payment-details')
-
     header_payment_layout = Layout(
         Div(HTML('<span class="payment-errors bg-danger"></span>'), style="margin-bottom:10px")
     )
@@ -141,7 +140,6 @@ class PaymentInfoForm(forms.Form):
                     ),
                     css_class='col-xs-6'),
                 css_class="row"
-
             ),
 
         )
@@ -159,6 +157,8 @@ class PaymentInfoFormWithTotal(PaymentInfoForm):
             Div(
                 PaymentInfoForm.header_payment_layout,
                 PaymentInfoForm.base_payment_layout,
+                Field('field_name', type="checkbox"),
+                HTML('<input type="checkbox" name="save_for_later"/> Save Card for Future Use'),
                 Submit('paymentForm', 'Pay {{ payment_currency }}{{ total }}', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )

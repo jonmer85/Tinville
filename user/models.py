@@ -47,6 +47,7 @@ class TinvilleUser(AbstractUser):
     account_token = models.CharField(max_length=255)
     full_legal_name = models.CharField(max_length=255)
     recipient_id = models.CharField(max_length=255)
+    customer_id = models.CharField(max_length=255)
     access_code = models.CharField(max_length=5)
 
     objects = TinvilleUserManager()
@@ -107,7 +108,11 @@ class DesignerPayout(models.Model):
     designer = models.ForeignKey('TinvilleUser')
     datetime = models.DateTimeField(auto_now=True)
     amount = models.DecimalField(decimal_places=2, max_digits=12)
-
     # The reference should refer to the transaction ID of the payment gateway
     # that was used for this event.
     reference = models.CharField("Reference", max_length=128, blank=True)
+
+class UserPaymentMethod(models.Model):
+    user = models.ForeignKey('TinvilleUser')
+    card_token = models.CharField(max_length=255)
+    card_fingerprint = models.CharField(max_length=255)

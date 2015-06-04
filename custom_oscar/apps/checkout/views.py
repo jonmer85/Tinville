@@ -19,8 +19,11 @@ from oscar.apps.shipping.methods import NoShippingRequired, Free
 from oscar_stripe import facade, PAYMENT_METHOD_STRIPE, PAYMENT_EVENT_PURCHASE
 from custom_oscar.apps.checkout.mixins import SendOrderMixin
 from custom_oscar.apps.checkout.forms import GatewayFormGuest
+from user.models import UserPaymentMethod
+import stripe
 # Create your views here.
-from oscar_stripe.facade import Facade
+# from oscar_stripe.facade import Facade
+from stripe_facade import Facade
 
 from .forms import PaymentInfoFormWithTotal
 
@@ -41,7 +44,6 @@ logger = logging.getLogger('oscar.checkout')
 class PaymentDetailsView(CorePaymentDetailsView):
 
     template_name = "payment_details.html"
-
 
     def get_context_data(self, **kwargs):
         # ctx = super(PaymentDetailsView, self).get_context_data(**kwargs)
@@ -85,12 +87,20 @@ class PaymentDetailsView(CorePaymentDetailsView):
         return submission
 
     def handle_payment(self, order_number, total, **kwargs):
-        stripe_ref = Facade().charge(
-            order_number,
-            total,
-            card=self.request.POST['stripe_token'],
-            description=self.payment_description(order_number, total, **kwargs),
-            metadata=self.payment_metadata(order_number, total, **kwargs))
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        if self.request.user.is_authenticated():
+            if not self.request.user.customer_id and 'save_for_later' in self.request.POST:
+                card = self.create_stripe_customer()
+                customer = self.request.user.customer_id
+                stripe_ref = self.charge_customer(order_number, total, customer, card, **kwargs)
+            elif self.request.user.customer_id and 'save_for_later' in self.request.POST:
+                card = self.add_new_card_to_customer()
+                customer = self.request.user.customer_id
+                stripe_ref = self.charge_customer(order_number, total, customer, card, **kwargs)
+            else:
+                stripe_ref = self.charge_card(order_number, total, **kwargs)
+        else:
+            stripe_ref = self.charge_card(order_number, total, **kwargs)
 
         source_type, __ = SourceType.objects.get_or_create(name=PAYMENT_METHOD_STRIPE)
         source = Source(
@@ -102,6 +112,49 @@ class PaymentDetailsView(CorePaymentDetailsView):
         self.add_payment_source(source)
         self.add_payment_event(PAYMENT_EVENT_PURCHASE, total.incl_tax)
 
+    def charge_card(self, order_number, total, **kwargs):
+        return Facade().charge(
+                order_number,
+                total,
+                card=self.request.POST['stripe_token'],
+                description=self.payment_description(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, **kwargs))
+
+    def charge_customer(self, order_number, total, customer, source, **kwargs):
+        return Facade().charge_customer(
+                order_number,
+                total,
+                customer=customer,
+                source=source,
+                description=self.payment_description(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, **kwargs))
+
+    def create_stripe_customer(self):
+        customer = stripe.Customer.create(
+            description='Customer account for user ' + self.request.user.email,
+            email=self.request.user.email,
+            card = self.token
+        )
+        self.request.user.customer_id = customer.id
+        self.request.user.save()
+        u = UserPaymentMethod(user=self.request.user, card_fingerprint=customer.cards.data[0].fingerprint, card_token=customer.cards.data[0].id)
+        u.save()
+        return customer.cards.data[0].id
+
+    def add_new_card_to_customer(self):
+        customer = stripe.Customer.retrieve(self.request.user.customer_id)
+        try:
+            source = customer.sources.create(source=self.token)
+            if not UserPaymentMethod.objects.filter(user=self.request.user, card_fingerprint=source.fingerprint):
+                u = UserPaymentMethod(user=self.request.user, card_fingerprint=source.fingerprint, card_token=source.id)
+                u.save()
+                return source.id
+            else:
+                customer.sources.retrieve(source.id).delete()
+                card = UserPaymentMethod.objects.filter(user=self.request.user, card_fingerprint=source.fingerprint).first()
+                return card.card_token
+        except Exception:
+            print "whoops"
 
     def payment_description(self, order_number, total, **kwargs):
         # Jon M TODO - Add case for anonymous user with email
@@ -110,7 +163,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
         else:
             return self.checkout_session.get_guest_email()
         # return self.request.POST[STRIPE_EMAIL]
-
 
     def payment_metadata(self, order_number, total, **kwargs):
         return {'order_number': order_number}
@@ -306,6 +358,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
         response = HttpResponseRedirect(self.get_success_url())
         self.send_signal(self.request, response, order)
+
         return response
 
 
