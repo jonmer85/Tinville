@@ -67,7 +67,7 @@
                                         {% if item.primary_image and item.primary_image.original.url %}
                                             {% with image=item.primary_image %}
                                                 {% load cropping %}
-                                                <div class="center-block" style="max-width: 400px; max-height: 500px">
+                                                <div class="center-block" style="max-width: 400px; max-height: 400px">
                                                     <a id="itemSelectedImageLink" href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
                                                         <img id="itemSelectedImage"  src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ item.get_title }}" class="img-responsive selectedImage" style="width: 100%; height: auto;"/>
                                                     </a>

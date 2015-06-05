@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='productimage',
             name=b'cropping',
-            field=image_cropping.fields.ImageRatioField(b'original', '400x500', allow_fullsize=False, free_crop=False, adapt_rotation=False, box_max_width=200, size_warning=False, help_text=None, box_max_height='', verbose_name='cropping', hide_image_field=False),
+            field=image_cropping.fields.ImageRatioField(b'original', '400x400', allow_fullsize=False, free_crop=False, adapt_rotation=False, box_max_width=200, size_warning=False, help_text=None, box_max_height='', verbose_name='cropping', hide_image_field=False),
             preserve_default=True,
         ),
     ]

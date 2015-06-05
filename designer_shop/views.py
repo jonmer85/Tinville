@@ -127,10 +127,13 @@ def shopper(request, slug):
         page_template = 'designer_shop/all_gallery.html'
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
-            return render(request, 'designer_shop/shop_items.html', {
+            shopcategorynames = get_types(request=request,shop_slug=slug,group_by=request.GET['genderfilter'])
+            return render(request, 'designer_shop/shopper.html', {
                 'shop': shop,
                 'products': products,
                 'shopProductCount': len(products),
+                'shopcategories': shopcategorynames
+
             })
 
         products = get_filtered_products(shop)
@@ -279,9 +282,14 @@ def ajax_color(request, slug):
 
 
 def get_types(request, shop_slug=None, group_by=None):
+    shopCategoryNames = get_categoryName(request=request, shop_slug=shop_slug, group_by=group_by)
+    types = {'shopCategoryNames': shopCategoryNames}
+    return HttpResponse(json.dumps(types), content_type='application/json')
+
+def get_categoryName(request, shop_slug=None, group_by=None):
     shopCategoryNames = []
     if shop_slug is None:
-        shopProductCategories = get_filter_lists(shop).shop_product_categories()
+        shopProductCategories = get_filter_lists().shop_product_categories()
     else:
         shop = get_object_or_404(Shop, slug__iexact=shop_slug)
         shopProductCategories = get_filter_lists(shop).shop_product_categories()
@@ -295,8 +303,7 @@ def get_types(request, shop_slug=None, group_by=None):
             else:
                 if not shopCategoryNames.__contains__(currentcategory.name):
                     shopCategoryNames.append(currentcategory.name)
-    types = {'types': shopCategoryNames}
-    return HttpResponse(json.dumps(types), content_type='application/json')
+    return shopCategoryNames
 
 
 def get_variants(item, group=None):

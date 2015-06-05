@@ -59,7 +59,7 @@ class ProductCreationForm(forms.ModelForm):
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
-                         HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
+                         HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x400</p>"""),
                          HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
                 ),
                 Fieldset('Sizes and Colors',

@@ -42,7 +42,7 @@ class Product(AbstractProduct):
                 'is_missing': True}
 
 class ProductImage(AbstractProductImage):
-    cropping = ImageRatioField('original', '400x500', box_max_width=200)
+    cropping = ImageRatioField('original', '400x400', box_max_width=200)
 
     def delete(self, *args, **kwargs):
         thumbnailer = get_thumbnailer(self.original)
