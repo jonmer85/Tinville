@@ -52,7 +52,6 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
-    url(r'^all$', 'Tinville.views.all_gallery', name='all_home'),
     url(r'^men$', 'Tinville.views.men_gallery', name='men_home'),
     url(r'^women$', 'Tinville.views.women_gallery', name='women_home'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},

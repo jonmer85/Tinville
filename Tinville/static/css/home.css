@@ -21,7 +21,9 @@
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-      height: 350px;
+        height: 500px;
+        border-bottom: 2px solid #F46430;
+        border-top: 2px solid #F46430;
     }
 /*#thumbnail-preview-indicators .slides .slide-1 {*/
   /*background-image: url({{ STATIC_URL }}img/banner-xl.jpg);*/
@@ -94,29 +96,17 @@
 .categoryBlock {
     font-weight: bold;
     color: white;
-    height: 200px;
+    height: 150px;
     max-height: 200px;
     width: 100%;
 
 
 }
 
-.genderBlock {
+.allBlock {
     font-size: 32pt;
     border-bottom: 1px solid darkgray;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-.allBlock {
-    /*font-weight: bold;*/
-    color: #F46430;
-    font-size: large;
-    float: right;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.allBlock:hover {
-    color: #F46430;
-}
