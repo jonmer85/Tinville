@@ -76,9 +76,12 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 
 
 class get_filter_lists:
-    def __init__(self, shop):
-        self.shop = shop
-        self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
+    def __init__(self, shop=None):
+        if shop:
+            self.shop = shop
+            self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
+        else:
+            self.shop_products = Product.objects.filter(structure="parent")
 
     def shop_product_categories(self):
         shopProductCategories = set()
@@ -124,10 +127,13 @@ def shopper(request, slug):
         page_template = 'designer_shop/all_gallery.html'
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
-            return render(request, 'designer_shop/shop_items.html', {
+            shopcategorynames = get_types(request=request,shop_slug=slug,group_by=request.GET['genderfilter'])
+            return render(request, 'designer_shop/shopper.html', {
                 'shop': shop,
                 'products': products,
                 'shopProductCount': len(products),
+                'shopcategories': shopcategorynames
+
             })
 
         products = get_filtered_products(shop)
@@ -189,6 +195,14 @@ def get_filtered_products(shop=None, post=None, filter=None):
         sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
         filteredProductList = get_sort_order(Product.objects.filter(
             Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
+                                             sortfilter)
+        context = filteredProductList
+    elif shop is None and filter is True:
+        genderfilter = get_dict_value_or_suspicious_operation(post, 'genderfilter')
+        itemtypefilter = get_dict_value_or_suspicious_operation(post, 'typefilter')
+        sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
+        filteredProductList = get_sort_order(Product.objects.filter(
+            Q(shop = Shop.objects.filter(user__is_approved = True), parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
                                              sortfilter)
         context = filteredProductList
     elif shop is not None:
@@ -267,10 +281,18 @@ def ajax_color(request, slug):
     return HttpResponseBadRequest()
 
 
-def get_types(request, shop_slug, group_by=None):
-    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+def get_types(request, shop_slug=None, group_by=None):
+    shopCategoryNames = get_categoryName(request=request, shop_slug=shop_slug, group_by=group_by)
+    types = {'shopCategoryNames': shopCategoryNames}
+    return HttpResponse(json.dumps(types), content_type='application/json')
+
+def get_categoryName(request, shop_slug=None, group_by=None):
     shopCategoryNames = []
-    shopProductCategories = get_filter_lists(shop).shop_product_categories()
+    if shop_slug is None:
+        shopProductCategories = get_filter_lists().shop_product_categories()
+    else:
+        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+        shopProductCategories = get_filter_lists(shop).shop_product_categories()
     for productcategory in shopProductCategories:
         if productcategory != None:
             currentcategory = get_or_none(Category, id=productcategory.category.id)
@@ -281,8 +303,7 @@ def get_types(request, shop_slug, group_by=None):
             else:
                 if not shopCategoryNames.__contains__(currentcategory.name):
                     shopCategoryNames.append(currentcategory.name)
-    types = {'types': shopCategoryNames}
-    return HttpResponse(json.dumps(types), content_type='application/json')
+    return shopCategoryNames
 
 
 def get_variants(item, group=None):

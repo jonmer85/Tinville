@@ -7,14 +7,17 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
 <head>
+    {% block meta %}
     {% get_metadata %}
     <title>Tinville</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
     <meta name="author" content="{% block meta_author %}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
+    {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     {#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
@@ -42,7 +45,6 @@
     {% block css %}{% endblock %}
 
     {% endcompress %}
-
 </head>
 
 <body class="mobileMomentumScroll {% block body_class %}{% endblock %}">
@@ -100,7 +102,7 @@
                       <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                               <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown" style="padding-bottom: 0px; height: 30px;">
                                   <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
-                                  <div id="userNotifications-xs" class="userNotifications"></div>
+                                  <div id="userNotifications-xs" class="userNotifications hidden"></div>
                               </a>
                               <ul class="dropdown-menu" style="left: -115px; width: 200px; top: 40px;">
                                 {%  if user.is_seller %}
@@ -156,7 +158,7 @@
 
                       <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
                           <i id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
-                          <div id="userNotifications-lg" class="userNotifications"></div>
+                          <div id="userNotifications-lg" class="userNotifications hidden"></div>
                       </a>
                       <ul class="dropdown-menu" style="right: 0;">
                         {%  if user.is_seller %}
@@ -593,7 +595,7 @@
     <script>
         var setItemSizes = function () {
             var itemWidth = $(".itemSize").width();
-            $(".itemSize").css('height', (itemWidth * 1.25) + 'px');
+            $(".itemSize").css('height', (itemWidth * 1) + 'px');
         };
 
         $(window).resize(function(){
