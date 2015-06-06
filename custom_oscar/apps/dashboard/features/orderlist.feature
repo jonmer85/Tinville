@@ -29,22 +29,20 @@ Feature: Dashboard Order List
     Then I should see '3' orders
     When I click on the 'Ready for Shipment' filter
     Then I should see '2' orders
+    
+  Scenario: Order Columns
+    Given I have some basic dashboard data
+    Given I am on the dashboard order list page
+    Then I should see the following columns
+    | Column             |
+    | Order number       |
+    | "Total inc tax"    |
+    | "Number of items"  |
+    | Status             |
+    | Customer           |
+    | "Shipping address" |
+    | "Date of purchase" |
 
-#TODO:Andy
-#  Scenario: Order Columns
-#    Given I have some basic dashboard data
-#    Given I am on the dashboard order list page
-#    Then I should see the following columns
-#    | Column             |
-#    | "Order number"     |
-#    | "Total inc tax"    |
-#    | "Number of items"  |
-#    | Status             |
-#    | Customer           |
-#    | "Shipping Address" |
-#    | "Date of purchase" |
-#    | Actions            |
-#
 #  Scenario: Order view button text
 #    Given I have some basic dashboard data
 #    Given I am on the dashboard order list page

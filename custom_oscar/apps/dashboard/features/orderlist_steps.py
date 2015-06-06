@@ -36,8 +36,8 @@ def i_should_see_x_orders(step, orders):
 def i_should_see_the_following_columns(step):
     for column in step.hashes:
         thecolumn = str(column["Column"]).replace('"', '')
-        assert_equals(1, len(world.browser.find_elements_by_xpath("//th/a[normalize-space(.)='" + thecolumn + "']")) +
-                      len(world.browser.find_elements_by_xpath("//th[normalize-space(.)='" + thecolumn + "']")), thecolumn + " column does not exist")
+        assert_equals(1, len(world.browser.find_elements_by_xpath("//th/a[text()='" + thecolumn + "']")) +
+                      len(world.browser.find_elements_by_xpath("//th[text()='" + thecolumn + "']")), thecolumn + " column does not exist")
 
 #TODO:Andy
 # @step("I should see '(.*)' order with a '(.*)' button")

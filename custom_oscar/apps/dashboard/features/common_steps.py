@@ -6,16 +6,6 @@ from user.models import TinvilleUser as User
 from lettuce import step
 from common.lettuce_utils import *
 
-@step("My user has correct permissions")
-def my_user_has_correct_permissions(step):
-    user = User.objects.get(pk=2)
-    dashboard_access_perm = Permission.objects.get(
-                codename='dashboard_access', content_type__app_label='partner')
-    user.user_permissions.add(dashboard_access_perm)
-    user.save()
-    world.browser.get(lettuce.django.get_server().url('/'))
-    sign_in("demo@user.com", "tinville")
-
 @step("I have some basic dashboard data")
 def i_have_some_basic_dashboar_data(step):
     my_user_has_correct_permissions(step)
@@ -29,3 +19,12 @@ def i_have_some_basic_dashboar_data(step):
     create_order(number="1-10003", basket=basket2, user=User.objects.get(pk=2), shop=Shop.objects.get(pk=1))
     create_order(number="1-10004", basket=basket3, user=User.objects.get(pk=2), shop=Shop.objects.get(pk=1), status="Shipped")
 
+@step("My user has correct permissions")
+def my_user_has_correct_permissions(step):
+    user = User.objects.get(pk=2)
+    dashboard_access_perm = Permission.objects.get(
+                codename='dashboard_access', content_type__app_label='partner')
+    user.user_permissions.add(dashboard_access_perm)
+    user.save()
+    world.browser.get(lettuce.django.get_server().url('/'))
+    sign_in("demo@user.com", "tinville")
