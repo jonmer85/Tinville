@@ -36,18 +36,16 @@ def i_should_see_x_orders(step, orders):
 def i_should_see_the_following_columns(step):
     for column in step.hashes:
         thecolumn = str(column["Column"]).replace('"', '')
-        assert_equals(1, len(world.browser.find_elements_by_xpath("//th/a[text()='" + thecolumn + "']")) +
-                      len(world.browser.find_elements_by_xpath("//th[text()='" + thecolumn + "']")), thecolumn + " column does not exist")
+        assert_equals(1, len(world.browser.find_elements_by_xpath("//th/a[normalize-space(.)='" + thecolumn + "']")) +
+                      len(world.browser.find_elements_by_xpath("//th[normalize-space(.)='" + thecolumn + "']")), thecolumn + " column does not exist")
 
-#TODO:Andy
-# @step("I should see '(.*)' order with a '(.*)' button")
-# def i_should_see_x_orders_with_a_x_button(step, amount, button):
-#     """
-#     :type step lettuce.core.Step
-#     """
-#     pass
-#
-#
+
+@step("I should see '(.*)' orders with a '(.*)' button")
+def i_should_see_x_orders_with_a_x_button(step, orders, button):
+    ordercount = len(filter(lambda a: a.is_displayed(), world.browser.find_elements_by_xpath("//tr/td/a[normalize-space(.)='" + button + "']")))
+    assert_equals(int(orders), ordercount, "Should be " + orders + " orders with a " + button + ", but was " + str(ordercount))
+
+
 # @step("I search for order '(.*)'")
 # def i_search_for_order_x(step, order):
 #     """

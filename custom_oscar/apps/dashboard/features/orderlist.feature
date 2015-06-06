@@ -29,7 +29,7 @@ Feature: Dashboard Order List
     Then I should see '3' orders
     When I click on the 'Ready for Shipment' filter
     Then I should see '2' orders
-    
+
   Scenario: Order Columns
     Given I have some basic dashboard data
     Given I am on the dashboard order list page
@@ -42,13 +42,13 @@ Feature: Dashboard Order List
     | Customer           |
     | "Shipping address" |
     | "Date of purchase" |
-
-#  Scenario: Order view button text
-#    Given I have some basic dashboard data
-#    Given I am on the dashboard order list page
-#    When I click on the 'All Orders' filter
-#    Then I should see '2' orders with a 'Ship' button
-#    And I should see '1' orders with a 'View' button
+    
+  Scenario: Order view button text
+    Given I have some basic dashboard data
+    Given I am on the dashboard order list page
+    When I click on the 'All Orders' filter
+    Then I should see '2' orders with a 'Ship' button
+    And I should see '1' orders with a 'View' button
 
 #  Scenario: Order Search
 #    Given I have some basic dashboard data
