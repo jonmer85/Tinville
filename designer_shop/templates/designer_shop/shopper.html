@@ -78,6 +78,37 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+
+        $('#filterGender').change( function() {updateItemView(true)});
+    $('#filterType').change( function() {updateItemView(false)});
+    $('#filterSort').change( function() {updateItemView(false)});
+
+    function updateItemView(changeGender){
+        var genderFilter = $("#filterGender option:selected").attr("value");
+        var typeFilter = $("#filterType option:selected").attr("value");
+        var sortFilter = $("#filterSort option:selected").attr("value");
+        $("#shopItems").load(" #shopItems", $.param({genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){$(this).children().unwrap()}));
+        if (genderFilter.match("All"))
+            genderFilter = "All";
+        if (changeGender)
+            refreshtypes(genderFilter, typeFilter);
+    }
+    var myresponse;
+    function refreshtypes(genderFilter, typeFilter) {
+        if (typeFilter.match("All")) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.types, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                });
+                $('#filterType').html(list.join(''));
+                $('#filterType').val("View All Types");
+            });
+        }
+    }
+
         $(function(){
             var tabType = "{{ tab }}";
             $("#aboutHighlight").toggle();
