@@ -12,6 +12,7 @@
                 <div class="row ">
                     <div class="col-xs-offset-0 col-xs-12">
                         <div class="checkoutAlign shippingFont"><p>{% trans "A saved card?" %}</p></div>
+                            <div class="choose-block shippingFont">
                             {% block select_card_form %}
                                 <div class=" checkoutAlign">
                                     <form method="post">
@@ -37,14 +38,14 @@
                                     </form>
                                 </div>
                             {% endblock %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-sm-offset-0 col-sm-2">
-                <div class="center-block orNewCard shippingFont text-center"><p>{% trans "Or A New Card?" %}</p></div>
-            </div>
-            <div class="col-xs-12 col-sm-offset-0 col-sm-5 well">
+                <div class="col-xs-12 col-sm-offset-0 col-sm-2">
+                    <div class="center-block orNewCard shippingFont text-center"><p>{% trans "Or A New Card?" %}</p></div>
+                </div>
+                <div class="col-xs-12 col-sm-offset-0 col-sm-5 well">
             {% else %}
                 <div class="col-xs-12 col-sm-offset-3 col-sm-6 well">
             {% endif %}
