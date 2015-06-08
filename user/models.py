@@ -116,3 +116,4 @@ class UserPaymentMethod(models.Model):
     user = models.ForeignKey('TinvilleUser')
     card_token = models.CharField(max_length=255)
     card_fingerprint = models.CharField(max_length=255)
+    is_default_for_user = models.BooleanField(default=False)
