@@ -124,7 +124,7 @@
     };
 });
 
-$(":radio[name=cards]").change(function() {
+$(":radio[name=card]").change(function() {
     $(".table tr.active").removeClass("active");
     $(this).closest("tr").addClass("active");
 });
