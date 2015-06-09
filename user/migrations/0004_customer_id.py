@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tinvilleuser',
             name='customer_id',
-            field=models.CharField(max_length=255),
+            field=models.CharField(max_length=255, blank=True),
             preserve_default=True,
         ),
     ]
