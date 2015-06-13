@@ -4,8 +4,9 @@
 {% load bleach_tags %}
 {% load currency_filters %}
 {% block meta %}
-    <title>{{ item.title }} by {{ shop.name }} on Tinville</title>
-    <meta name="description" content="{{ item.description|striptags | truncatechars:160 }}"/>
+    {{ block.super }}
+    {% block meta_title %}{{ item.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
+    {% block meta_description %}{{ item.description|striptags | truncatechars:160 }}{% endblock meta_description %}
 {% endblock meta %}
 
 {% block css %}

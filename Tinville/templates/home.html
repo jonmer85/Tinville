@@ -1,75 +1,98 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load cropping %}
-{% block body_class %}{{ block.super }} home{% endblock %}
-
-{% block css %}
+{% block head %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-{% endblock css %}
+{#    {% block meta %}#}
+{#        {{ block.super }}#}
+{#        {% block meta_title %}Tinville{% endblock meta_title %}#}
+{#        {% block meta_description %}Tinville is an interactive e-commerce platform that is revolutionizing the way consumers interact with fashion designers and their product lines. Tinville was created from the need to offer designers a more direct route to their clientele and fan base. In the process, Tinville understands the importance of connecting designers to one another, increasing their exposure to the masses, while building relationships with those with an interest in fashion.{% endblock meta_description %}#}
+{#    {% endblock meta %}#}
 
-{% block content %}
-    {{ block.super }}
 
 
-    <div id="thumbnail-preview-indicators" >
-        <span data-picture class="banner">
-            <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-            <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
-            <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-            <noscript>
-                <img src="{{ STATIC_URL }}img/banner-xs.png">
-            </noscript>
-        </span>
-    </div>
+    {% block css %}
+        {{ block.super }}
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+    {% endblock css %}
+{% endblock head %}
 
-    <div class="container" style="margin-top: 20px;" >
-        <div class="row">
+{#    {% block body_class %}{{ block.super }} home{% endblock %}#}
+    {% block content %}
+        {{ block.super }}
 
-            <div class="col-xs-6 col-sm-offset-2 col-sm-4 " >
-                <a href="{% url 'women_home' %}"  >
-                    <img src="{{ STATIC_URL }}img/women.jpg" class="categoryBlock" />
-                </a>
-            </div>
-            <div class="col-xs-6 col-sm-4">
-                <a href="{% url 'men_home' %}"  >
-                    <img src="{{ STATIC_URL }}img/men.jpg" class="categoryBlock" />
-                </a>
+
+        <div id="thumbnail-preview-indicators" >
+            <span data-picture class="banner">
+                <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+                <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
+                <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+                <noscript>
+                    <img src="{{ STATIC_URL }}img/banner-xs.png">
+                </noscript>
+            </span>
+        </div>
+        <div style="height: 6px; background-color: #e7e7e7;"></div>
+
+        <div class="container" style="margin-top: 20px;" >
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-4">
+                    <img class="img-responsive" src="/static/img/infopageimg/place_holder_2.jpg">
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <img class="img-responsive" src="/static/img/infopageimg/place_holder_3.jpg">
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <img class="img-responsive" src="/static/img/infopageimg/place_holder_3.jpg">
+                </div>
+                <div class="hidden-xs col-sm-4">
+                    <img class="img-responsive " src="/static/img/infopageimg/place_holder_2.jpg">
+                </div>
+
+
+
             </div>
         </div>
-    </div>
-    <div class="container" style="padding-bottom: 50px;">
-        <div class="allBlock tinvilleOrange"></div>
-        {% include "designer_shop/item_filter.html" %}
-        <div class="container">
-            {% include "designer_shop/shop_items.html" %}
+
+        <div class="container" style="padding-bottom: 50px;">
+
+            <div class="allBlock tinvilleOrange">WOMEN</div>
+            <div class="container">
+                {% include "homepage/womenItems.html" %}
+            </div>
+            <div class="allBlock tinvilleOrange">MEN</div>
+            <div class="container">
+                {% include "homepage/menItems.html" %}
+            </div>
         </div>
-    </div>
 
 
-{% endblock %}
 
-{% block bottomContent %}
-    <div id="villageOfShops"></div>
-{% endblock %}
+    {% endblock %}
 
-{% block javascript_library %}
-  {{ block.super }}
-{% endblock javascript_library %}
+    {% block bottomContent %}
+        <div id="villageOfShops"></div>
+    {% endblock %}
 
-{% block javascript %}
-    {{ block.super }}
-    <script>
-{#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
-    </script>
-    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>
-    $.endlessPaginate({
-        onCompleted: function(){
-            setItemSizes();
-        },
-    });
-    </script>
 
-{% endblock %}
+    {% block javascript_library %}
+      {{ block.super }}
+    {% endblock javascript_library %}
+
+    {% block javascript %}
+        {{ block.super }}
+        <script>
+    {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
+        </script>
+        <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+        <script>
+        $.endlessPaginate({
+            onCompleted: function(){
+                setItemSizes();
+            },
+        });
+        </script>
+
+    {% endblock %}

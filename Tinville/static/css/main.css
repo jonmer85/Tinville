@@ -286,7 +286,7 @@ body
     position   : relative;
     left       : 5%;
     z-index    : 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height     : 51px;
+    height     : 72px;
 }
 
 
@@ -1308,7 +1308,8 @@ textarea
 
 .slidingContent
 {
-    padding-top: 52px;
+    padding-top: 55px;
+    background-color: #e7e7e7;
 }
 /*Start mobile navbar*/
 @media (max-width : 767px)
