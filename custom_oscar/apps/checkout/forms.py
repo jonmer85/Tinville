@@ -77,6 +77,8 @@ class ShippingAddressForm(CoreShippingAddressForm):
                 verified_address = easypost.Address.create_and_verify(
                     name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
                     street1=self.cleaned_data['line1'],
+                    street2=self.cleaned_data['line2'],
+                    street3=self.cleaned_data['line3'],
                     city=self.cleaned_data['line4'],
                     state=self.cleaned_data['state'],
                     zip=self.cleaned_data['postcode'],
