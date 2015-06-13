@@ -1306,10 +1306,19 @@ textarea
     }
 }
 
+
+.navGradient {
+    /*background: linear-gradient(white,white, white, white, white, white, white, white, white, white, rgb(250, 250, 248));*/
+    /*background: -moz-linear-gradient(white,white, white, white, white, white, white, white, white, white, rgb(250, 250, 248));*/
+    /*background: -o-linear-gradient(white,white, white, white, white, white, white, white, white, white, rgb(250, 250, 248));*/
+    /*background: -webkit-linear-gradient(white, rgb(250, 250, 248));*/
+    border-bottom: 3px solid #F46430;
+    background: white;
+}
 .slidingContent
 {
-    padding-top: 55px;
-    background-color: #e7e7e7;
+    padding-top: 52px;
+    background-color: white;
 }
 /*Start mobile navbar*/
 @media (max-width : 767px)
