@@ -5,7 +5,7 @@
 
         {% purchase_info_for_product request product as session %}
             <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-3 snicka" style="">
-                <div class="thumbnail shopItem shopBorderColor" style="border: none;">
+                <div class="thumbnail shopItem shopBorderColor" >
                     {% if product.primary_image and product.primary_image.original.url %}
                         {% with image=product.primary_image %}
                             <div class="Item row">
