@@ -65,7 +65,7 @@ def cartInfoJson(basket, basketline, currentproduct, parentproduct, stockrecord,
                 'price': convert_to_currency(stockrecord.price_excl_tax),
                 'subtotal': convert_to_currency(stockrecord.price_excl_tax * qty),
                 'image': str(get_thumbnailer(image[0].original).get_thumbnail({
-                            'size': (400, 500),
+                            'size': (400, 400),
                             'box': image[0].cropping,
                             'crop': True,
                             'detail': True,

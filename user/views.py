@@ -36,7 +36,6 @@ class DesignerPaymentInfoView(FormView):
 
         return context
 
-
     def form_valid(self, form):
         # Add the payment info to the user
         token = form.cleaned_data['stripe_token']
