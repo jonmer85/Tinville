@@ -325,18 +325,7 @@
 }
 /* Shop Editor CSS */
 
-#shopEditorWindow {
-    padding-right: 0px;
-    padding-left: 0px;
-    margin-left: 0px;
-    margin-bottom: 0px;
-}
 
-@media (max-width: 992px) {
-    #shopEditorWindow {
-        margin-right: 0px;
-    }
-}
 @media (min-width: 992px) {
     .snicka {
         width: 20%;
@@ -389,10 +378,6 @@
  /* Tinville Orange : f46430
 / * Tinville Gray : e7e5e6
 / * Tinville Dark Gray: #5B595A */
-
-#shopEditorWindow {
-    box-shadow: 0px -2px 10px -4px  #f46430;
-}
 
 @media (max-width: 767px) {
     #optionPanel {
@@ -519,7 +504,7 @@
 }
 
 .shopItem:hover {
-   border: 2px solid #F46430;
+   border: 1px solid #F46430;
 }
 
 .shopItemDetail {
