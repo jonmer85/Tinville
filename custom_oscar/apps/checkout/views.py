@@ -52,14 +52,17 @@ class PaymentDetailsView(CorePaymentDetailsView):
             customer = stripe.Customer.retrieve(self.request.user.customer_id)
             paymentmethods = UserPaymentMethod.objects.filter(user=self.request.user)
             for paymentmethod in paymentmethods:
-                card = customer.sources.retrieve(paymentmethod.card_token)
-                cards.append({
-                    'id': paymentmethod.id,
-                    'brand': card.brand,
-                    'last4': card.last4,
-                    'expiration': str(card.exp_month) + '/' + str(card.exp_year),
-                    'is_default': paymentmethod.is_default_for_user
-                })
+                try:
+                    card = customer.sources.retrieve(paymentmethod.card_token)
+                    cards.append({
+                        'id': paymentmethod.id,
+                        'brand': card.brand,
+                        'last4': card.last4,
+                        'expiration': str(card.exp_month) + '/' + str(card.exp_year),
+                        'is_default': paymentmethod.is_default_for_user
+                    })
+                except:
+                    logger.error(paymentmethod.card_token + " is not a valid card token")
         # ctx = super(PaymentDetailsView, self).get_context_data(**kwargs)
         #
         # if not hasattr(self, 'stripe_token'):
@@ -77,7 +80,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
         return ctx
 
     def post(self, request, *args, **kwargs):
-
         error_msg = (
             "A problem occurred communicating with Stripe "
             "- please try again later"
@@ -288,8 +290,11 @@ class PaymentDetailsView(CorePaymentDetailsView):
             logger.error("Order #%s: payment error (%s)", top_level_order_number, msg,
                          exc_info=True)
             self.restore_frozen_basket()
-            return self.render_preview(
-                self.request, error=error_msg, **payment_kwargs)
+            messages.error(self.request, e.message)
+            return self.render_payment_details(
+                self.request, error=msg, **payment_kwargs)
+            # return self.render_preview(
+            #     self.request, error=error_msg, **payment_kwargs)
         except Exception as e:
             # Unhandled exception - hopefully, you will only ever see this in
             # development...
@@ -297,8 +302,11 @@ class PaymentDetailsView(CorePaymentDetailsView):
                 "Order #%s: unhandled exception while taking payment (%s)",
                 top_level_order_number, e, exc_info=True)
             self.restore_frozen_basket()
-            return self.render_preview(
-                self.request, error=error_msg, **payment_kwargs)
+            messages.error(self.request, e.message)
+            return self.render_payment_details(
+                self.request, error=msg, **payment_kwargs)
+            # return self.render_preview(
+            #     self.request, error=error_msg, **payment_kwargs)
 
         top_level_order = None
         try:
