@@ -349,3 +349,4 @@ function RemoveCartItem(itemId)
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         stickyFooter();
     });
+
