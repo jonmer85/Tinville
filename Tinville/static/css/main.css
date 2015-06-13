@@ -1713,7 +1713,6 @@ textarea
 .mobileMomentumScroll {
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll !important;
-    overflow: visible !important;
 }
 
 /* so modals don't push stuff over.. */

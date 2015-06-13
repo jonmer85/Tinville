@@ -8,3 +8,9 @@
     margin: 0;
     float:none;
 }
+
+.mobileMomentumScroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll !important;
+    overflow: visible !important;
+}
