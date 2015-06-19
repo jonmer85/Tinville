@@ -175,6 +175,23 @@
             }
             $('#tinvilleTagBannerXS').removeClass("hidden");
         }
+
+        function numofItems()
+        {
+            var mode = checkMode();
+            if (mode == 'xs') {
+                    return 'xs';
+                }
+                else if ($(window).width() >= 753 && $(window).width() < 992) {
+                    return 'sm';
+                }
+                else if ($(window).width() >= 992 && $(window).width() < 1200) {
+                    return 'md';
+                }
+                else {
+                    return 'lg';
+                }
+        }
       function cartCount()
       {
           ajax_req = $.ajax({
