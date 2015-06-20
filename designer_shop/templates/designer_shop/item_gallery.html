@@ -21,21 +21,27 @@
                     {% endif %}
                     <div class="row">
                         {% if editmode %}
-                            <a class="overlayEdit col-xs-offset-1 col-xs-2"
+                            <a class="overlayEdit col-xs-offset-0 col-sm-offset-1  col-xs-2"
                                data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
                                data-toggle="tooltip" data-placement="left" title="Edit item">
                                 <span class="fa fa-pencil-square-o fa-lg tinvilleOrange"></span>
                             </a>
-                            <div class="caption col-xs-6">
+                            <div class="shopcaption col-xs-6">
                         {% else %}
-                            <div class="caption col-xs-12">
+                            <div class="shopcaption col-xs-12">
                         {% endif %}
-                            <div class="">
-                                <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
+                            <div class="titleLink" >
+                                <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:16}}</a>
                             </div>
 
-                            <div class="price row" >
-                                ${{session.price.excl_tax|floatformat:2}}
+                            <div class="shopLink " >
+                                {% if homemode %}
+                                    <a class="" href="{{ product.shop.get_absolute_url }}" style="float: left">{{ product.shop.name | truncatechars:16 }}</a>
+                                    <div class="price " style="float: right">${{session.price.excl_tax|floatformat:2}}</div>
+                                {% endif %}
+                                {% if editmode or not homemode %}
+                                    <div class="price " >${{session.price.excl_tax|floatformat:2}}</div>
+                                {% endif %}
                             </div>
                         </div>
                         {% if editmode %}

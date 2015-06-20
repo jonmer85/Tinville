@@ -5,6 +5,7 @@ from designer_shop.models import Shop,FeaturedShop
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from common.utils import get_list_or_empty, get_or_none
 from django.views.generic import ListView
+import random
 
 def home_gallery(request):
     template = "home.html"
@@ -15,12 +16,13 @@ def home_gallery(request):
     fshops = Shop.objects.filter(id__in=featured_shop_ids)
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
     menproducts = get_category_products(genderfilter="Men")
+    menproducts = menproducts.order_by('?')
     womenproducts = get_category_products(genderfilter="Women")
-
-
+    womenproducts = womenproducts.order_by('?')
 
 
     context = {
+        'homemode': True,
         'products': products,
         'menproducts': menproducts,
         'womenproducts': womenproducts,
@@ -57,6 +59,7 @@ def shop_gallery(request):
 
 
     context = {
+        'homemode': True,
         'products': products,
         'fshops' : fshops,
         'shopcategories': shopCategoryNames,
@@ -76,6 +79,7 @@ def men_gallery(request):
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
 
     context = {
+        'homemode': True,
         'products': products,
         'shopcategories': shopCategoryNames,
         'shopgenders': get_filter_lists().genderlist(),
@@ -92,6 +96,7 @@ def women_gallery(request):
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
 
     context = {
+        'homemode': True,
         'products': products,
         'shopcategories': shopCategoryNames,
         'shopgenders': get_filter_lists().genderlist(),
