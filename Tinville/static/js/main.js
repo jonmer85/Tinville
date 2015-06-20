@@ -85,6 +85,7 @@
             var pos = ($(window).width() *.50) - 45;
              $('#tinvilleTagBannerXS').css('left',pos);
             var mode = checkMode();
+            hideItems();
 
 
         });
@@ -94,7 +95,7 @@
              var pos = ($(window).width() *.50) - 45;
              $('#tinvilleTagBannerXS').css('left',pos);
               var mode = checkMode();
-
+                hideItems();
 
         });
 
@@ -174,6 +175,27 @@
                 $("#menuContainer").css("width",winWidth-100);
             }
             $('#tinvilleTagBannerXS').removeClass("hidden");
+        }
+
+        function hideItems()
+        {
+            var mode = checkMode();
+            if (mode == 'xs') {
+                $("#mitem5").addClass("hidden");
+                $("#witem5").addClass("hidden");
+            }
+            else if (mode == 'sm') {
+                $("#mitem5").addClass("hidden");
+                $("#witem5").addClass("hidden");
+            }
+            else if (mode == 'md') {
+                $("#mitem5").removeClass("hidden");
+                $("#witem5").removeClass("hidden");
+            }
+            else {
+                $("#mitem5").removeClass("hidden");
+                $("#witem5").removeClass("hidden");
+            }
         }
       function cartCount()
       {
