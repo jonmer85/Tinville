@@ -22,8 +22,8 @@
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
         height: 500px;
-        border-bottom: 2px solid #F46430;
-        border-top: 2px solid #F46430;
+        border-bottom: 3px solid #F46430;
+        /*border-top: 3px solid #F46430;*/
     }
 /*#thumbnail-preview-indicators .slides .slide-1 {*/
   /*background-image: url({{ STATIC_URL }}img/banner-xl.jpg);*/
@@ -104,9 +104,8 @@
 }
 
 .allBlock {
-    font-size: 32pt;
+    font-size: 21pt;
     border-bottom: 1px solid darkgray;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-

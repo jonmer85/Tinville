@@ -41,8 +41,8 @@ sitemaps = {
 urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
     url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
-    url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
-    url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
+    # url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
+    # url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
 )
 
 import debug_toolbar
@@ -52,6 +52,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
+    url(r'^shop$', 'Tinville.views.shop_gallery', name='shop'),
     url(r'^men$', 'Tinville.views.men_gallery', name='men_home'),
     url(r'^women$', 'Tinville.views.women_gallery', name='women_home'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},

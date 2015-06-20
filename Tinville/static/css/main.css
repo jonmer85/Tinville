@@ -286,7 +286,7 @@ body
     position   : relative;
     left       : 5%;
     z-index    : 1001; /* 1 higher than Bootstrap nav pop-ups*/
-    height     : 51px;
+    height     : 72px;
 }
 
 
@@ -1306,9 +1306,19 @@ textarea
     }
 }
 
+
+.navGradient {
+    /*background: linear-gradient(white,white, white, white, white, white, white, white, white, white, rgb(250, 250, 248));*/
+    /*background: -moz-linear-gradient(white,white, white, white, white, white, white, white, white, white, rgb(250, 250, 248));*/
+    /*background: -o-linear-gradient(white,white, white, white, white, white, white, white, white, white, rgb(250, 250, 248));*/
+    /*background: -webkit-linear-gradient(white, rgb(250, 250, 248));*/
+    border-bottom: 3px solid #F46430;
+    background: white;
+}
 .slidingContent
 {
     padding-top: 52px;
+    background-color: white;
 }
 /*Start mobile navbar*/
 @media (max-width : 767px)

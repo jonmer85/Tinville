@@ -9,14 +9,16 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
 <head>
+{% block head %}
     {% block meta %}
     {% get_metadata %}
-    <title>Tinville</title>
+    <title>{% block meta_title %}{% endblock meta_title%}</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="author" content="{% block meta_author %}{% endblock %}" />
+    <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
+    <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
     {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -45,6 +47,7 @@
     {% block css %}{% endblock %}
 
     {% endcompress %}
+{% endblock head %}
 </head>
 
 <body class="mobileMomentumScroll {% block body_class %}{% endblock %}">
@@ -59,7 +62,7 @@
  {% include "notification.html" %}
 
 
-    <nav class="navbar navbar-default navbar-fixed-top" style="height: 52px;">
+    <nav class="navbar navbar-default navbar-fixed-top navGradient" style=" height: 52px;">
         <div class="cartLocation" id="shoppingcartBtn">
             <li class="dropdown navbarLinkS " id="" >
                   <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle" >
@@ -74,12 +77,12 @@
                     <li class="row"><a id="shoppingcartcheckout" class="hidden col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
                             Checkout
                         </a>
-                    </li>
+                    </li>q
                   </ul>
             </li>
         </div>
       <div class="container">
-        <div class="navbar-header">
+        <div class="navbar-header" style="margin-left: -15px;">
           <div id="navHeader" class="navbar-header">
                 <a class="" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
                 {% if not user.is_authenticated %}
@@ -137,6 +140,9 @@
                     <i class="fa fa-female fa-fw"></i>&nbsp; Shop
                 </a>
                 <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">SHOP</a>
+            </li>
+            <li class="">
+                <a class="hidden-xs" href="{% url 'shop' %}">SHOP</a>
             </li>
             <li class="">
                 <a class="hidden-xs" href="/shoplist/">DISCOVER</a>
@@ -201,14 +207,17 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+{#     <div style="height: 6px; background-color: #e7e7e7;"></div>#}
 
 
     <div class="slidingContent">
         <nav class="visible-xs navbar navbar-default">
           <div class="container">
                 <div class="navbar-header pull-right" style="padding: 15px">
-
-                    <a href="/shoplist/"  class="tinvilleDrayGray" style="display: inline">
+                    <a href="{% url 'shop' %}"  class="tinvilleDrayGray" style="display: inline">
+                        Shop
+                    </a>
+                    <a href="/shoplist/"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
                         Discover
                     </a>
                     <a href="{% url 'home_about' %}"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
@@ -224,7 +233,7 @@
           </div>
         </nav>
 
-        <div class="slidingContent2" style="background-color: #FAFAF8;">
+        <div class="slidingContent2" style="background-color: white;">
             {% block content %}
             {% endblock content %}
         </div>
@@ -240,8 +249,8 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
 {#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
                     <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>#}
                 </dl>
             </nav>
 {#            <nav id="footerNavRight" class="footer-nav col-sm-2">#}
@@ -303,10 +312,10 @@
             <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
                 <dl class="list-unstyled">
                     <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
-                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
+{#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
                     <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>#}
                 </dl>
             </div>
             <div class="list-unstyled listPadding">
