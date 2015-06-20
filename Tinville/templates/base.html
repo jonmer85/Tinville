@@ -124,8 +124,11 @@
                                 {% endif %}
                                 <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                 <li class="divider"></li>
-                                <li class="tinvilleOrange logEmail">{{ shop.name }}</li>
-
+                                {%  if user.is_seller %}
+                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                {% else %}
+                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                {% endif %}
                               </ul>
                         </li>
                     </div>
@@ -159,7 +162,7 @@
             {% if user.is_authenticated %}
                 <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
                     {%  if user.is_seller %}
-                        <div class="menuEmail tinvilleOrange" href="" >{{ shop.name }}</div>
+                        <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
                      {% else %}
                         <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
                      {% endif %}
@@ -188,7 +191,7 @@
                         <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                         <li class="hidden-md hidden-lg divider"></li>
                          {%  if user.is_seller %}
-                            <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ shop.name }}</li>
+                            <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
                          {% else %}
                              <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
                          {% endif %}
