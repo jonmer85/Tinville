@@ -266,6 +266,25 @@
     /*border-radius: 10px 20px 0 0;;*/
 }
 
+.shopLink a:link,
+.shopLink a:visited,
+.shopLink a:hover,
+.shopLink a:active
+{
+    color           : #8b9395;
+    /*text-decoration : dashed;*/
+}
+
+.titleLink a:link,
+.titleLink a:visited,
+.titleLink a:hover,
+.titleLink a:active
+{
+    color           : #5B595A;
+    font-size: 1.2em;
+    /*text-decoration : dashed;*/
+}
+
 #shopContentTabs > li {
     /*background-color: royalblue;*/
     /*border-radius: 10px 20px 0 0;*/
@@ -620,8 +639,10 @@
 {
     text-decoration: none;
 }
-.caption{
+.shopcaption{
     text-align: center;
+    padding-top: 9px;
+    padding-bottom: 9px;
 }
 
 .navbar2{
