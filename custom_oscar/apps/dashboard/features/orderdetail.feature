@@ -12,19 +12,18 @@ Feature: Dashboard Order Detail
     | Date of purchase |
     | Time of purchase |
     | Status           |
-
-#  Scenario: Designer Order detail Order Contents Tab
-#    Given I am on the order details page
-#    When I click on the Order Contents tab
-#    Then I can see a table with the following columns
-#    | ColumnName      |
-#    | Select          |
-#    | "Line ID"       |
-#    | Product         |
-#    | "Product Size"  |
-#    | "Product Color" |
-#    |"Price excl tax (before discounts)" |
-#    | Actions                            |
+    
+  Scenario: Designer Order detail Order Contents Tab
+    Given I have some basic dashboard data
+    Given I am on the dashboard order list page
+    When I click on order '1-10002'
+    Then I can see the following order details
+    | Quantity      |
+    | Product          |
+    | Product Size       |
+    | Product Color         |
+    | Status  |
+    | Price excl tax (before discounts) |
 #
 #  Scenario: Designer Order Detail Shipping Tab
 #
