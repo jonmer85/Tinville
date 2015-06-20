@@ -1,23 +1,18 @@
 
 Feature: Dashboard Order Detail
   As a designer and admin, I want to be able to view the details about my orders, and buy shipping labels
-
+  
   Scenario: Order Detail Designer Elements
-#    Given I have an order with at least '5' items
-#    When I visit the orders page
-#    And click on my order
-#    Then I see my order
-#    Then I can see the following Elements
-#    | Selector |
-#
-#  Scenario: Order Detail Admin Elements
-#    Given I have an order with at least '5' items
-#    When I visit the orders page
-#    And click on my order
-#    Then I see my order
-#    Then I can see the following Elements
-#    | Selector |
-#
+    Given I have some basic dashboard data
+    Given I am on the dashboard order list page
+    When I click on order '1-10002'
+    Then I see order '1-10002' details
+    Then I can see the following order details
+    | Order Total      |
+    | Date of purchase |
+    | Time of purchase |
+    | Status           |
+
 #  Scenario: Designer Order detail Order Contents Tab
 #    Given I am on the order details page
 #    When I click on the Order Contents tab
