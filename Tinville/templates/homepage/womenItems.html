@@ -4,7 +4,7 @@
     {% if womenproducts %}
         {% paginate womenproducts %}
             {% for product in womenproducts %}
-                {% if forloop.counter <= 4 %}
+                {% if forloop.counter <= 5 %}
                     {% include "designer_shop/item_gallery.html" %}
                 {% endif %}
             {% endfor %}
