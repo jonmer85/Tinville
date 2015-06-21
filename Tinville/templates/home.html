@@ -39,10 +39,10 @@
             <div class="row">
 
                 <div class="col-xs-12 col-sm-offset-2 col-sm-4">
-                    <a class="hidden-xs" href="/shoplist/"><img class="img-responsive" src="{{ STATIC_URL }}img/discover_home.jpg"></a>
+                    <a class="" href="/shoplist/"><img class="img-responsive" src="{{ STATIC_URL }}img/discover_home.jpg"></a>
                 </div>
-                <div class="hidden-xs col-sm-4">
-                    <a class="hidden-xs" href="/register"><img class="img-responsive " src="{{ STATIC_URL }}img/sign_up_home.jpg"></a>
+                <div class="col-xs-12 col-sm-4 mobileSignUp ">
+                    <a class="" href="/register"><img class="img-responsive " src="{{ STATIC_URL }}img/sign_up_home.jpg"></a>
                 </div>
 
 
@@ -53,11 +53,11 @@
         <div class="container" style="padding-bottom: 50px;">
 
             <div class="allBlock tinvilleOrange">WOMEN</div>
-            <div class="container">
+            <div class="container mobileThumbCol">
                 {% include "homepage/womenItems.html" %}
             </div>
             <div class="allBlock tinvilleOrange">MEN</div>
-            <div class="container">
+            <div class="container mobileThumbCol">
                 {% include "homepage/menItems.html" %}
             </div>
         </div>
