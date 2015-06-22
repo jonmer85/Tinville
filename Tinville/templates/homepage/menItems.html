@@ -4,8 +4,10 @@
     {% if menproducts %}
         {% paginate menproducts %}
             {% for product in menproducts %}
-                {% if forloop.counter <= 4 %}
+                {% if forloop.counter <= 5 %}
+                    <div id="mitem{{ forloop.counter }}">
                     {% include "designer_shop/item_gallery.html" %}
+                    </div>
                 {% endif %}
             {% endfor %}
     {% else %}

@@ -205,6 +205,15 @@
          top: 75px;
          right: -60%;
     }
+
+    .mobileThumbCol{
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
+    .mobileThumbRow {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
 }
 
 #shopNavi{
@@ -264,6 +273,25 @@
 #shopContentTabs > .active > a:focus {
     /*background-color: #e7e5e6;*/
     /*border-radius: 10px 20px 0 0;;*/
+}
+
+.shopLink a:link,
+.shopLink a:visited,
+.shopLink a:hover,
+.shopLink a:active
+{
+    color           : #8b9395;
+    /*text-decoration : dashed;*/
+}
+
+.titleLink a:link,
+.titleLink a:visited,
+.titleLink a:hover,
+.titleLink a:active
+{
+    color           : #5B595A;
+    font-size: 1.2em;
+    /*text-decoration : dashed;*/
 }
 
 #shopContentTabs > li {
@@ -620,8 +648,10 @@
 {
     text-decoration: none;
 }
-.caption{
+.shopcaption{
     text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .navbar2{
