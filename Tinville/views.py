@@ -40,7 +40,8 @@ def home_gallery(request):
 def shop_gallery(request):
     template = "homepage/all_home.html"
     page_template = "designer_shop/all_gallery.html"
-    products = get_filtered_products()
+    products = get_filtered_products().order_by('?')
+
     featured_shop = get_list_or_empty(FeaturedShop)
     featured_shop_ids = [f.featured_id for f in featured_shop]
     fshops = Shop.objects.filter(id__in=featured_shop_ids)
@@ -52,6 +53,7 @@ def shop_gallery(request):
             products = get_filtered_products(post=request.GET, filter=True)
             # shopCategoryNames = get_categoryName(request=request,shop_slug=None,group_by=request.GET['genderfilter'])
             return render(request, 'designer_shop/shop_items.html', {
+                'homemode': True,
                 'products': products,
                 'shopProductCount': len(products),
                 'shopcategories': shopCategoryNames
