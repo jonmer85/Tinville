@@ -4,12 +4,27 @@
 
 
         {% purchase_info_for_product request product as session %}
-            <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-3 snicka" style="">
+            <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-3 snicka mobileThumbCol" style="">
+{#            <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-3 snicka" >#}
                 <div class="thumbnail shopItem shopBorderColor" >
                     {% if product.primary_image and product.primary_image.original.url %}
                         {% with image=product.primary_image %}
-                            <div class="Item row">
-                                <div class="col-xs-12">
+                            {% if homemode %}
+                                <div class="row">
+                                    <div class="shopcaption col-xs-12">
+                                        <div class="shopLink " >
+                                            <a class="hidden-xs" href="{{ product.shop.get_absolute_url }}" >{{ product.shop.name | truncatechars:25 }}</a>
+                                            <a class="visible-xs" href="{{ product.shop.get_absolute_url }}" >{{ product.shop.name | truncatechars:16 }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+
+
+
+                            <div class="Item row mobileThumbRow" style="">
+                                <div class="col-xs-12 mobileThumbCol" >
                                     <a href="{{ product.shop.get_absolute_url }}{{ product.slug }}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" >
                                         <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="itemSize" />
                                     </a>
@@ -21,21 +36,21 @@
                     {% endif %}
                     <div class="row">
                         {% if editmode %}
-                            <a class="overlayEdit col-xs-offset-1 col-xs-2"
+                            <a class="overlayEdit col-xs-offset-0 col-sm-offset-1  col-xs-2"
                                data-navigation='{{ product.shop.get_absolute_url }}edit/{{ product.slug }}'
                                data-toggle="tooltip" data-placement="left" title="Edit item">
                                 <span class="fa fa-pencil-square-o fa-lg tinvilleOrange"></span>
                             </a>
-                            <div class="caption col-xs-6">
+                            <div class="shopcaption col-xs-6">
                         {% else %}
-                            <div class="caption col-xs-12">
+                            <div class="shopcaption col-xs-12">
                         {% endif %}
-                            <div class="">
-                                <a rel="" title="{{product.get_title}}" class="name" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title}}</a>
+                            <div class="titleLink" >
+                                <a rel="" title="{{product.get_title}}" class="name hidden-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:20}}</a>
+                                <a rel="" title="{{product.get_title}}" class="name visible-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:16}}</a>
                             </div>
-
-                            <div class="price row" >
-                                ${{session.price.excl_tax|floatformat:2}}
+                            <div class="shopLink " >
+                                <div class="price " >${{session.price.excl_tax|floatformat:2}}</div>
                             </div>
                         </div>
                         {% if editmode %}
