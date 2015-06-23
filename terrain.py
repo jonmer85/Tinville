@@ -6,7 +6,7 @@ from lettuce import *
 from selenium import webdriver
 from django.core.management import call_command
 from Tinville.settings.base import PROJECT_DIR
-
+from user.models import TinvilleUser
 
 
 @before.harvest
@@ -42,6 +42,10 @@ def clean_database(scenario):
                 ' ; (./lettuce_tests collectmedia --noinput -v 0 > /dev/null)', shell=True)
     call_command('loaddata', 'all.json', verbosity=0)
     call_command('loaddata', 'initial_data2.json', verbosity=0)
+
+    demo_user = TinvilleUser.objects.get(email='demo@user.com')
+    demo_user.is_approved = True
+    demo_user.save()
 
 
 @before.each_scenario
