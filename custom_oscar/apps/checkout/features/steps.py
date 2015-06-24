@@ -11,10 +11,6 @@ from user.models import TinvilleUser
 from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
-@before.each_scenario
-def load_all_fixtures(scenario):
-    call_command('loaddata', 'all.json')
-
 
 @step(u'Given the shipping address page')
 def given_the_shipping_address_page(step):
