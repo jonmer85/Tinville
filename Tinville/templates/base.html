@@ -665,9 +665,13 @@
         }
         var setItemSizes = function () {
             var itemWidth = $(".itemSize").width();
-            $(".itemSize").css('height', (itemWidth * 1) + 'px');
-            $(".itemSizeEdit").css('height', (itemWidth * 1) + 'px');
-            $(".itemSizeEdit").css('width', (itemWidth * 1) + 'px');
+            if (itemWidth) {
+               $(".itemSize").css('height', (itemWidth * 1) + 'px');
+                var containerWidth = $('.shopItem').width();
+                var containerHeight = $('.shopItem').height();
+                $(".addItemContainer").css('height', (containerHeight * 1) + 'px');
+                $(".addItemContainer").css('width', (containerWidth * 1) + 'px');
+            }
 
         };
 

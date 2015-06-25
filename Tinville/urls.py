@@ -51,6 +51,10 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
+(r'^dowser/', include('django_dowser.urls')),
+)
+
+urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
     url(r'^shop$', 'Tinville.views.shop_gallery', name='shop'),
     url(r'^men$', 'Tinville.views.men_gallery', name='men_home'),
