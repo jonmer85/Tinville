@@ -206,6 +206,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'robots',
     'rollyourown.seo',
+    'django_dowser'
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
