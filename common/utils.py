@@ -82,3 +82,18 @@ def ExtractDesignerIdFromOrderId(orderId):
 def get_top_level_order_number(designer_order_number):
     return designer_order_number[designer_order_number.find("-")+1:]
 
+
+from functools import wraps
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import available_attrs
+
+def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
+    def decorator(view_func):
+        @wraps(view_func, assigned=available_attrs(view_func))
+        def _wrapped_view(request, *args, **kwargs):
+            if test_func(request):
+                return cache_page(timeout, cache=using, key_prefix=key_prefix)(view_func)(request, *args, **kwargs)
+            else:
+                return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
