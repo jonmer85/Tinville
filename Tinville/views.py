@@ -7,7 +7,7 @@ from common.utils import get_list_or_empty, get_or_none, passes_test_cache
 from django.views.generic import ListView
 import random
 
-@passes_test_cache(lambda request: request.user.is_anonymous(), 3600)
+# @passes_test_cache(lambda request: request.user.is_anonymous(), 3600)
 def home_gallery(request):
     template = "home.html"
     page_template = "designer_shop/all_gallery.html"
