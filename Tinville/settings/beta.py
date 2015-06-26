@@ -6,6 +6,13 @@ import urlparse
 import dj_database_url
 
 DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
+
+DATABASE_POOL_ARGS = {
+    'max_overflow': 0,
+    'pool_size': 120,  # Heroku's Standard 0 connection limit
+    'recycle': 300
+}
 
 GOOGLE_ANALYTICS_TRACKING_ID = env('GOOGLE_ANALYTICS_TRACKING_ID')
 
