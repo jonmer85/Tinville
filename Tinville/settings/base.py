@@ -427,6 +427,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'w
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_HOST = env('EMAIL_HOST')
