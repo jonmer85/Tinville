@@ -3,21 +3,26 @@
 
 <div class="row mobileThumbRow" id="shopItems">
     {% if editmode %}
-        <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-4 snicka" style="padding-top: 1%; padding-bottom: 1%;">
-            <div class="">
-                <div class="">
-                    <div class="thumbnail addItemContainer shopBorderColor" style="border: none;">
-                        <div class="Item row">
-                            <div class="col-xs-12">
-                                <a data-navigation="{{ shop.get_absolute_url }}edit/" class="sub-image addItem" >
-                                    <img src="{{ STATIC_URL }}img/add_item.png" alt="Add a New Item" class="itemSizeEdit"/>
-                                </a>
-                            </div>
+
+
+        <div class="col-xs-offset-0 col-xs-6 col-sm-offset-0 col-sm-3 snicka mobileThumbCol" style="">
+                <div class="thumbnail addItemContainer shopBorderColor" >
+                    <div class="Item row mobileThumbRow" style="">
+                        <div class="col-xs-12 mobileThumbCol" >
+                            <a data-navigation="{{ shop.get_absolute_url }}edit/" class="sub-image addItem" >
+                                <img src="{{ STATIC_URL }}img/add_item.png" alt="Add a New Item" class="itemSizeEdit" />
+                            </a>
                         </div>
+                    </div>
+                    <div class="row" style="height: 48px">
                     </div>
                 </div>
             </div>
-        </div>
+
+
+
+
+
     {% endif %}
     {% if shopProductCount > 0 %}
         {% include "designer_shop/all_gallery.html" %}
