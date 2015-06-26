@@ -8,6 +8,10 @@ import dj_database_url
 DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
+SOUTH_DATABASE_ADAPTERS = {
+    'default': 'south.db.postgresql_psycopg2'
+}
+
 DATABASE_POOL_ARGS = {
     'max_overflow': 0,
     'pool_size': 120,  # Heroku's Standard 0 connection limit
