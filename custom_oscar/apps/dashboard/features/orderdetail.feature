@@ -12,17 +12,17 @@ Feature: Dashboard Order Detail
     | Date of purchase |
     | Time of purchase |
     | Status           |
-    
+
   Scenario: Designer Order detail Order Contents Tab
     Given I have some basic dashboard data
     Given I am on the dashboard order list page
     When I click on order '1-10002'
     Then I can see the following order details
-    | Quantity      |
-    | Product          |
-    | Product Size       |
-    | Product Color         |
-    | Status  |
+    | Quantity                          |
+    | Product                           |
+    | Product Size                      |
+    | Product Color                     |
+    | Status                            |
     | Price excl tax (before discounts) |
 #
 #  Scenario: Designer Order Detail Shipping Tab
