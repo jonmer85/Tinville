@@ -662,12 +662,22 @@
                 var bannerWidth = $("#thumbnail-preview-indicators").width();
                 $("#thumbnail-preview-indicators").css('height', (bannerWidth * 500 / 1779) + 'px');
             }
+            else {
+                var bannerWidth = $("#thumbnail-preview-indicators").width();
+                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 642 / 968) + 'px');
+            }
         }
         var setItemSizes = function () {
             var itemWidth = $(".itemSize").width();
-            $(".itemSize").css('height', (itemWidth * 1) + 'px');
-            $(".itemSizeEdit").css('height', (itemWidth * 1) + 'px');
-            $(".itemSizeEdit").css('width', (itemWidth * 1) + 'px');
+            if (itemWidth) {
+               $(".itemSize").css('height', (itemWidth * 1) + 'px');
+                $(".itemSizeEdit").css('height', (itemWidth * 1) + 'px');
+                $(".itemSizeEdit").css('width', (itemWidth * 1) + 'px');
+            }
+            else {
+                var itemWidthEdit = $(".itemSizeEdit").width();
+                $(".itemSizeEdit").css('height', (itemWidthEdit * 1) + 'px');
+            }
 
         };
 

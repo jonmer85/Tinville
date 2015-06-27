@@ -9,7 +9,7 @@
             "is_admin": false,
             "is_active": true,
             "is_seller": true,
-            "is_approved": true,
+            "is_approved": false,
             "key_expires": "2020-02-02",
             "user_permissions": [142],
             "access_code": "ABC12"

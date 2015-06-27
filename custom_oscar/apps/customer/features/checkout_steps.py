@@ -29,8 +29,8 @@ def the_shopping_bag_is_empty(step):
 
 @step(u'Then I add an item to my shopping bag')
 def then_I_add_an_item_to_my_shopping_bag(step):
-    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
-    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
+    Select(wait_for_element_with_id_to_exist("itemColorSelection")).select_by_value("Blue")
+    Select(wait_for_element_with_id_to_exist("itemSizeSelection")).select_by_value("XS")
     wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
     time.sleep(3)
@@ -48,7 +48,7 @@ def and_I_click_on_the_bag_icon(step):
 
 @step(u'And I continue as guest')
 def and_I_continue_as_guest(step):
-    form = world.browser.find_element_by_id("checkoutOption")
+    form = wait_for_element_with_id_to_exist("checkoutOption")
     form.find_element_by_name("username").send_keys('joe@schmoe.com')
     wait_for_element_with_id_to_exist('guestButton')
     myelement = world.browser.find_element_by_id('guestButton')
