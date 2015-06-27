@@ -1,2 +1,2 @@
-web: python manage.py runserver 0.0.0.0:$PORT --noreload
+web: gunicorn Tinville.wsgi --log-file -
 worker: python manage.py celery worker -B -l info

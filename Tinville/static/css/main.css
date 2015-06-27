@@ -1243,7 +1243,7 @@ textarea
     z-index         : 1000;
     float           : right;
     position        : relative;
-    top             : 17px;
+    top             : 20px;
     right           : 5px;
     list-style-type : none;
 }
@@ -1733,4 +1733,8 @@ body {
 /* Fixes issue with Modal-backdrop  in bootstrap 3.3.4 */
 .modal-backdrop {
     z-index: -1;
+}
+
+#lastFour{
+    padding: 0;
 }

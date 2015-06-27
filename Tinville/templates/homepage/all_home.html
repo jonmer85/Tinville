@@ -33,26 +33,12 @@
                 </noscript>
             </span>
         </div>
-        <div style="height: 6px; background-color: #e7e7e7;"></div>
 
-        <div class="container" style="margin-top: 20px;" >
-            <div class="row">
 
-                <div class="col-xs-6 col-sm-offset-2 col-sm-4 " >
-                    <a href="{% url 'women_home' %}"  >
-                        <img src="{{ STATIC_URL }}img/women.jpg" class="categoryBlock" />
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4">
-                    <a href="{% url 'men_home' %}"  >
-                        <img src="{{ STATIC_URL }}img/men.jpg" class="categoryBlock" />
-                    </a>
-                </div>
-            </div>
-        </div>
+
         <div class="container" style="padding-bottom: 50px;">
-            <div class="allBlock tinvilleOrange"></div>
-{#            {% include "designer_shop/item_filter.html" %}#}
+{#            <div class="allBlock tinvilleOrange"></div>#}
+            {% include "designer_shop/item_filter.html" %}
             <div class="container">
                 {% include "designer_shop/shop_items.html" %}
             </div>
@@ -73,6 +59,8 @@
     {% block javascript %}
         {{ block.super }}
         <script>
+
+
     {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
         </script>
         <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>

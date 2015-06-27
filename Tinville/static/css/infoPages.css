@@ -361,7 +361,7 @@ a.aboutCircle:active {
 /*}*/
 
 .about_section p {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 @media (max-width: 767px) {
@@ -406,9 +406,9 @@ h1.about_section_title {
     color: #F16632;
 }
 
-.about-title {
-    padding-top: 50px;
-    padding-bottom: 50px;
+.tinville-orange
+{
+    color: #F16632;
 }
 
 /*YELLOWBACKGROUND*/
@@ -416,6 +416,7 @@ h1.about_section_title {
 
 .section-yellow {
     background-color: #E6E5E1;
+    padding-bottom: 20px;
 }
 
 .background-padding {
@@ -434,5 +435,5 @@ h1.about_section_title {
 }
 
 #about_social {
-    padding-bottom: 65px;
+    padding-bottom: 25px;
 }

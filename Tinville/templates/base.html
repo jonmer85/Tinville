@@ -77,7 +77,7 @@
                     <li class="row"><a id="shoppingcartcheckout" class="hidden col-xs-offset-1 col-xs-10 btn btn-primary tinvilleButton" href="{% url 'cartdetail' %}" >
                             Checkout
                         </a>
-                    </li>q
+                    </li>
                   </ul>
             </li>
         </div>
@@ -124,8 +124,11 @@
                                 {% endif %}
                                 <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                 <li class="divider"></li>
-                                <li class="tinvilleOrange logEmail">{{ user.email }}</li>
-
+                                {%  if user.is_seller %}
+                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                {% else %}
+                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                {% endif %}
                               </ul>
                         </li>
                     </div>
@@ -158,7 +161,11 @@
             </li>
             {% if user.is_authenticated %}
                 <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
-                    <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                    {%  if user.is_seller %}
+                        <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                     {% else %}
+                        <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                     {% endif %}
                 </li>
                 <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
@@ -183,7 +190,11 @@
                         {% endif %}
                         <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                         <li class="hidden-md hidden-lg divider"></li>
-                        <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                         {%  if user.is_seller %}
+                            <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                         {% else %}
+                             <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                         {% endif %}
 
                       </ul>
 
@@ -442,6 +453,50 @@
 {#    {% if debug %}#}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
 {#     {% endif %}#}
+
+        $('#filterGender').change( function() {updateItemView(true)});
+        $('#filterType').change( function() {updateItemView(false)});
+        $('#filterSort').change( function() {updateItemView(false)});
+
+        function updateItemView(changeGender){
+            var genderFilter = $("#filterGender option:selected").attr("value");
+            var typeFilter = $("#filterType option:selected").attr("value");
+            var sortFilter = $("#filterSort option:selected").attr("value");
+            $("#shopItems").load(" #shopItems", $.param({genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){
+                $(this).children().unwrap();
+                setItemSizes();
+            }));
+            if (genderFilter.match("All"))
+                genderFilter = "All";
+            if (changeGender)
+                refreshtypes(genderFilter, typeFilter);
+
+
+        }
+        var myresponse;
+        function refreshtypes(genderFilter, typeFilter) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.shopCategoryNames, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
+                    {
+                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
+                    }
+                });
+                $('#filterType').html(list.join(''));
+                if (typeFilter.match("All")) {
+                   $('#filterType').val("View All Types");
+                }
+                else
+                {
+                    $('#filterType').val(typeFilter);
+                }
+
+            });
+        }
         $( document ).ready(function() {
             outdatedBrowser({
                 bgColor: '#f25648',
@@ -602,17 +657,38 @@
     </script>
 
     <script>
+        var setBanners = function () {
+            if (checkMode() != 'xs') {
+                var bannerWidth = $("#thumbnail-preview-indicators").width();
+                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 500 / 1779) + 'px');
+            }
+            else {
+                var bannerWidth = $("#thumbnail-preview-indicators").width();
+                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 642 / 968) + 'px');
+            }
+        }
         var setItemSizes = function () {
             var itemWidth = $(".itemSize").width();
-            $(".itemSize").css('height', (itemWidth * 1) + 'px');
+            if (itemWidth) {
+               $(".itemSize").css('height', (itemWidth * 1) + 'px');
+                $(".itemSizeEdit").css('height', (itemWidth * 1) + 'px');
+                $(".itemSizeEdit").css('width', (itemWidth * 1) + 'px');
+            }
+            else {
+                var itemWidthEdit = $(".itemSizeEdit").width();
+                $(".itemSizeEdit").css('height', (itemWidthEdit * 1) + 'px');
+            }
+
         };
 
         $(window).resize(function(){
             setItemSizes();
+            setBanners();
         });
 
         $(window).load(function(){
             setItemSizes();
+            setBanners();
         });
     </script>
 

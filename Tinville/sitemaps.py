@@ -8,7 +8,7 @@ class StaticViewSitemap(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return ['home_about', 'home_faq', 'home_policies', 'home_terms', 'home', 'shoplist',
+        return ['home_about', 'home_faq', 'home', 'shoplist',
                 'user.views.register']
 
     def location(self, item):
