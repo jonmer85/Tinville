@@ -81,7 +81,7 @@ class get_filter_lists:
             self.shop = shop
             self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
         else:
-            self.shop_products = Product.objects.filter(structure="parent")
+            self.shop_products = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
 
     def shop_product_categories(self):
         shopProductCategories = set()
