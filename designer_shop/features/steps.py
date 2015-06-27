@@ -13,10 +13,6 @@ from user.models import TinvilleUser
 from selenium.webdriver.support.ui import Select
 from common.lettuce_utils import *
 
-@before.each_scenario
-def load_all_fixtures(scenario):
-    call_command('loaddata', 'all.json')
-
 
 @step(u'And (\d+) shop items')
 def and_n_shop_items(step, n):

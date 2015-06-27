@@ -6,9 +6,6 @@ import time
 from django.core.management import call_command
 from common.lettuce_utils import *
 
-@before.each_scenario
-def load_all_fixtures(scenario):
-    call_command('loaddata', 'all.json')
 
 @step(u'the about edit button is pressed')
 def when_the_about_button_is_selected(step):
