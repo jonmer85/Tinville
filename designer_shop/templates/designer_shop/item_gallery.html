@@ -46,8 +46,12 @@
                             <div class="shopcaption col-xs-12">
                         {% endif %}
                             <div class="titleLink" >
-                                <a rel="" title="{{product.get_title}}" class="name hidden-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:20}}</a>
-                                <a rel="" title="{{product.get_title}}" class="name visible-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:16}}</a>
+                                {% if editmode %}
+                                    <a rel="" title="{{product.get_title}}" class="name hidden-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:12}}</a>
+                                {% else %}
+                                    <a rel="" title="{{product.get_title}}" class="name hidden-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:20}}</a>
+                                    <a rel="" title="{{product.get_title}}" class="name visible-xs" href="{{ product.shop.get_absolute_url }}{{ product.slug }}">{{product.get_title | truncatechars:16}}</a>
+                                {% endif %}
                             </div>
                             <div class="shopLink " >
                                 <div class="price " >${{session.price.excl_tax|floatformat:2}}</div>

@@ -77,11 +77,12 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 
 class get_filter_lists:
     def __init__(self, shop=None):
+        # if one does not pass a shop then is it will only filter through approved user
         if shop:
             self.shop = shop
             self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
         else:
-            self.shop_products = Product.objects.filter(structure="parent")
+            self.shop_products = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
 
     def shop_product_categories(self):
         shopProductCategories = set()
