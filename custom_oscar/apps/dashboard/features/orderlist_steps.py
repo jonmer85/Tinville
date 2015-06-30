@@ -43,7 +43,7 @@ def i_search_for_order_x(step, order):
     world.browser.find_element_by_id("id_order_number").send_keys(order)
     world.browser.find_element_by_id("SearchSubmit").click()
 
-@step("I should see the Dashboard '(.*)' page")
+@step("I should see the Dashboard Order '(.*)' page")
 def I_should_see_the_Dashboard_x_page(step, page):
     pageXPath = "//h1[normalize-space(.)='Order #" + page + "']"
     wait_for_element_with_xpath_to_exist(pageXPath)

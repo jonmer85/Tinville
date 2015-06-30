@@ -54,5 +54,5 @@ Feature: Dashboard Order List
     Given I have some basic dashboard data
     Given I am on the dashboard order list page
     When I search for order '1-10002'
-    Then I should see the Dashboard '1-10002' page
+    Then I should see the Dashboard Order '1-10002' page
 
