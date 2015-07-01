@@ -149,6 +149,10 @@ def wait_for_element_with_id_to_exist(id, root=world.browser):
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_id(id))
     return world.browser.find_element_by_id(id)
 
+def wait_for_element_with_xpath_to_exist(xpath, root=world.browser):
+    WebDriverWait(root, 15).until(lambda s: s.find_element_by_xpath(xpath))
+    return world.browser.find_element_by_xpath(xpath)
+
 def wait_for_element_with_css_selector_to_exist(css_selector, root=world.browser):
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_css_selector(css_selector))
     return world.browser.find_element_by_css_selector(css_selector)
