@@ -1385,7 +1385,7 @@
         "pk": 19,
         "fields": {
             "group": 2,
-            "option": "gold"
+            "option": "multi"
         }
     },
     {
@@ -1393,15 +1393,7 @@
         "pk": 20,
         "fields": {
             "group": 2,
-            "option": "maroon"
-        }
-    },
-    {
-        "model": "catalogue.AttributeOption",
-        "pk": 21,
-        "fields": {
-            "group": 2,
-            "option": "multi"
+            "option": "other"
         }
     },
     {
