@@ -1381,6 +1381,22 @@
         }
     },
     {
+        "model": "catalogue.AttributeOption",
+        "pk": 19,
+        "fields": {
+            "group": 2,
+            "option": "multi"
+        }
+    },
+    {
+        "model": "catalogue.AttributeOption",
+        "pk": 20,
+        "fields": {
+            "group": 2,
+            "option": "other"
+        }
+    },
+    {
         "model": "catalogue.ProductAttribute",
         "pk": 1,
         "fields": {
