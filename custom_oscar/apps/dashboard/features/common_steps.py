@@ -9,3 +9,12 @@ from common.lettuce_utils import *
 def i_have_some_basic_dashboar_data(step):
     setup_basic_order_data()
 
+@step("My user has correct permissions")
+def my_user_has_correct_permissions(step):
+    user = User.objects.get(pk=2)
+    dashboard_access_perm = Permission.objects.get(
+                codename='dashboard_access', content_type__app_label='partner')
+    user.user_permissions.add(dashboard_access_perm)
+    user.save()
+    world.browser.get(lettuce.django.get_server().url('/'))
+    sign_in("demo@user.com", "tinville")
