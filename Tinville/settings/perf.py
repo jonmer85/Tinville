@@ -3,14 +3,24 @@
 from .base import *  # Start with base settings
 import urlparse
 
-# HEROKU Change!!!
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-
-ALLOWED_HOSTS = ['tinville-testing.herokuapp.com']
-
 import dj_database_url
+
 DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
+
+SOUTH_DATABASE_ADAPTERS = {
+    'default': 'south.db.postgresql_psycopg2'
+}
+
+DATABASE_POOL_ARGS = {
+    'max_overflow': 0,
+    'pool_size': 120,  # Heroku's Standard 0 connection limit
+    'recycle': 300
+}
+
+GOOGLE_ANALYTICS_TRACKING_ID = env('GOOGLE_ANALYTICS_TRACKING_ID')
+
+ALLOWED_HOSTS = ['tinville-perf.herokuapp.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
@@ -33,9 +43,6 @@ STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
 COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-
-BROKER_URL=os.environ.get('REDISTOGO_URL', None)
-CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', None)
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
