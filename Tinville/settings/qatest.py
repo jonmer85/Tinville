@@ -40,7 +40,7 @@ CELERY_RESULT_BACKEND=os.environ.get('REDISTOGO_URL', None)
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6959'))
+redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
 
 CACHES = {
     'default': {
