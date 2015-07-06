@@ -14,7 +14,7 @@ SOUTH_DATABASE_ADAPTERS = {
 
 DATABASE_POOL_ARGS = {
     'max_overflow': 0,
-    'pool_size': 120,  # Heroku's Standard 0 connection limit
+    'pool_size': env('PG_DB_POOL_SIZE_PER_DYNO', 20),  # Heroku's Standard 0 connection limit (up to 6 dynos * 20 = 120 connections)
     'recycle': 300
 }
 
