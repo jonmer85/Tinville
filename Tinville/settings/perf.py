@@ -48,7 +48,6 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6959'))
-
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
@@ -58,8 +57,8 @@ CACHES = {
             'PASSWORD': redis_url.password,
             'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
             'CONNECTION_POOL_CLASS_KWARGS': {
-                'max_connections': 50,
-                'timeout': 20,
+                'max_connections': env('REDIS_POOL_MAX_CONNECTIONS', 50),
+                'timeout': env('REDIS_POOL_TIMEOUT', 30),
             }
         }
     }
