@@ -240,7 +240,7 @@ def go_home_page():
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
 
 def register_a_designer_account(email, password, shop_name):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+    world.browser.get(lettuce.django.get_server().url('/register/designer'))
     form = wait_for_element_with_id_to_exist("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
@@ -251,7 +251,7 @@ def register_a_designer_account(email, password, shop_name):
     activate_user(email)
 
 def register_a_shopper_account(email, password):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+    world.browser.get(lettuce.django.get_server().url('/register/customer'))
     form = wait_for_element_with_id_to_exist("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
