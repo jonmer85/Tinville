@@ -8,15 +8,33 @@
         <div class="" id="registrationBackground" style="background-image: url('{{ STATIC_URL }}img/register.jpg');background-position: center">
             <div class="container">
                 <div class="row" style="margin-top: 50px">
-                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
+                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-4 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
                         <form id="registrationForm" class="userRegistrationForm" action="/register" method="post">
                             <div class="row" style="border-radius: 8px;">
-                                <button id="shopper" type="button" class="btn col-xs-offset-2 col-xs-4 borderHighlight" style="">
-                                    <img class="img-responsive" src="{{ STATIC_URL }}img/shopper_big_logo.png"><div style="color: #515151;">Customer</div></img>
-                                </button>
-                                <button id="designer" type="button" class="btn col-xs-4" style="">
-                                    <img class="img-responsive" src="{{ STATIC_URL }}img/designer_big_logo.png"><div style="color: #515151;">Designer</div></img>
-                                </button>
+{#                                <button id="shopper" type="button" class="shopperClass btn col-xs-offset-2 col-xs-4 borderHighlight img-responsive" style="background-image: url('{{ STATIC_URL }}img/register_glyphs/customer.svg');">#}
+                                {% if customer %}
+                                    <button id="shopper" type="button" class=" btn col-xs-offset-2 col-xs-4  img-responsive">
+                                            <img class="shopperClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg">
+                                                <div style="color: #515151;">Customer</div>
+                                            </img>
+                                    </button>
+                                    <button id="designer" type="button" class="btn col-xs-4 borderHighlight" style="">
+                                        <img class="designerClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/designer.svg">
+                                            <div style="color: #515151;">Designer</div>
+                                        </img>
+                                    </button>
+                                {% else %}
+                                    <button id="shopper" type="button" class=" btn col-xs-offset-2 col-xs-4 borderHighlight img-responsive">
+                                            <img class="shopperClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/customer.svg">
+                                                <div style="color: #515151;">Customer</div>
+                                            </img>
+                                    </button>
+                                    <button id="designer" type="button" class="btn col-xs-4" style="">
+                                        <img class="designerClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg">
+                                            <div style="color: #515151;">Designer</div>
+                                        </img>
+                                    </button>
+                                {% endif %}
                             </div>
 
                             {% load crispy_forms_tags %}
@@ -33,6 +51,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 
+
             if($("#div_id_shop_name").hasClass("has-error")) {
                 showDesigner();
             }
@@ -48,10 +67,19 @@
 			$("#designer").on("click", function () {
                 showDesigner();
 			});
+
+            {% if customer %}
+                showShopper();
+            {% else %}
+                showDesigner();
+            {% endif %}
+
 		});
 
     function showDesigner() {
         $("#shopper").removeClass("borderHighlight");
+        $('#shopper img').attr("src","{{ STATIC_URL }}img/register_glyphs/customer.svg");
+        $('#designer img').attr("src","{{ STATIC_URL }}img/register_glyphs/designer_over.svg");
         $("#designer").addClass("borderHighlight");
         $("#shop_fields").slideDown();
     }
@@ -59,6 +87,8 @@
     function showShopper() {
         $("#designer").removeClass("borderHighlight");
         $("#shopper").addClass("borderHighlight");
+        $('#shopper img').attr("src","{{ STATIC_URL }}img/register_glyphs/customer_over.svg");
+        $('#designer img').attr("src","{{ STATIC_URL }}img/register_glyphs/designer.svg");
         $("#shop_fields").slideUp();
     }
 	</script>
