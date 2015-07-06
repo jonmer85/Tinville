@@ -405,12 +405,14 @@ class BannerUploadForm(forms.ModelForm):
     helper.layout = Layout(
         Div(
             Fieldset('Banner Image',
+                     HTML("""<p>Image size recommendations are 1779x364</p>"""),
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"></div>"""),
                      Field('banner', css_class="autoHeight"),
                      Field('bannerCropping')),
 
             Fieldset('Mobile Banner Image',
+                     HTML("""<p>Image size recommendations are 958x636</p>"""),
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
