@@ -57,6 +57,8 @@ easypost==2.0.11
 easy-thumbnails==2.2
 extras==0.0.3
 fuzzywuzzy==0.2
+gevent==1.0.2
+greenlet==0.4.7
 gunicorn==0.17.4
 html5lib==0.999
 kombu==3.0.21
