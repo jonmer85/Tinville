@@ -550,3 +550,10 @@ LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
 OSCAR_REQUIRED_ADDRESS_FIELDS = {}
 
 OSCAR_HIDDEN_FEATURES = ["reviews"]
+
+
+# needed to make this work with bootstrap labels
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
