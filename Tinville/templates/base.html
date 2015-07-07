@@ -11,14 +11,14 @@
 <head>
 {% block head %}
     {% block meta %}
-    {% get_metadata %}
-    <title>{% block meta_title %}{% endblock meta_title%}</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
-    <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
+        {% get_metadata %}
+        <title>{% block meta_title %}{% endblock meta_title%}</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
+        <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
     {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@
 </head>
 
 <body class="mobileMomentumScroll {% block body_class %}{% endblock %}">
-{% block body %}
+
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -716,7 +716,5 @@
     {% block uncompressable_js %}{% endblock %}
 
 
-
-{% endblock body %}
 </body>
 </html>

@@ -3,19 +3,14 @@
 {% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
 {% load bleach_tags %}
 {% load currency_filters %}
-{#{% block head %}#}
-{#    {{ block.super }}#}
-{##}
-{#    {% block meta %}#}
-{##}
-{#        {{ block.super }}#}
-{#        {% block meta_title %}{{ item.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}#}
-{#        {% block meta_description %}{{ item.description|striptags | truncatechars:160 }}{% endblock meta_description %}#}
-{#    {% endblock meta %}#}
-{#{% endblock head %}#}
-{% block css %}
-    {{ block.super }}
-{% endblock css %}
+
+    {% block meta_title %}{{ item.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
+    {% block meta_description %}{{ item.description|striptags | truncatechars:160 }}{% endblock meta_description %}
+
+    {% block css %}
+        {{ block.super }}
+    {% endblock css %}
+
 
 {% block content %}
     {{ block.super }}
