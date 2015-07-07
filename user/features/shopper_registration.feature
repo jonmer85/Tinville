@@ -13,7 +13,7 @@ Feature: Shopper Registration
     When I register for a shopper account with email "foo@bar.com" and password "foobar"
     And I try to again register for a shopper account with email "Foo@bar.com" and password "foobar"
 	Then I should get a validation error on email address
-
+@senay
   Scenario: No initial validation
     When I access the registration page
 	Then I should not see validation errors
