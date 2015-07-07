@@ -14,8 +14,8 @@ def home_gallery(request):
     template = "home.html"
     page_template = "designer_shop/all_gallery.html"
     menproducts = get_category_products(genderfilter="Men")
-    menproducts = menproducts.order_by('?')
     womenproducts = get_category_products(genderfilter="Women")
+    menproducts = menproducts.order_by('?')
     womenproducts = womenproducts.order_by('?')
 
     context = {
