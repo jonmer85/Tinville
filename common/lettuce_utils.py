@@ -149,6 +149,10 @@ def wait_for_element_with_id_to_exist(id, root=world.browser):
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_id(id))
     return world.browser.find_element_by_id(id)
 
+def wait_for_element_with_xpath_to_exist(xpath, root=world.browser):
+    WebDriverWait(root, 15).until(lambda s: s.find_element_by_xpath(xpath))
+    return world.browser.find_element_by_xpath(xpath)
+
 def wait_for_element_with_css_selector_to_exist(css_selector, root=world.browser):
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_css_selector(css_selector))
     return world.browser.find_element_by_css_selector(css_selector)
@@ -251,7 +255,7 @@ def go_home_page():
     assert_equals(world.browser.current_url, lettuce.django.get_server().url('/'))
 
 def register_a_designer_account(email, password, shop_name):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+    world.browser.get(lettuce.django.get_server().url('/register/designer'))
     form = wait_for_element_with_id_to_exist("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
@@ -262,7 +266,7 @@ def register_a_designer_account(email, password, shop_name):
     activate_user(email)
 
 def register_a_shopper_account(email, password):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+    world.browser.get(lettuce.django.get_server().url('/register/customer'))
     form = wait_for_element_with_id_to_exist("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
@@ -284,7 +288,7 @@ def clear_and_send_keys(element, keys):
     element.send_keys(keys)
 
 def fill_out_designer_registration_form(password, shop_name, user):
-    form = fill_in_user_form(email=user, password=password)
+    form = fill_in_user_form(email=user, password=password, type='/register/designer')
     world.user_info['shop_name'] = shop_name
     form.find_element_by_id("designer").click()
     form.find_element_by_name("shop_name").send_keys(shop_name)
@@ -294,8 +298,8 @@ def register_basic_shop(shop_name, user, password):
     form = fill_out_designer_registration_form(password, shop_name, user)
     submit_form_and_activate_user(form)
 
-def fill_in_user_form(email, password):
-    access_registration_url(step)
+def fill_in_user_form(email, password, type):
+    access_registration_url(step,type)
     world.user_info = {
         "email": email,
         "password": password,
@@ -305,8 +309,8 @@ def fill_in_user_form(email, password):
     form.find_element_by_name("password").send_keys(password)
     return form
 
-def access_registration_url(step):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+def access_registration_url(step, type):
+    world.browser.get(lettuce.django.get_server().url(type))
 
 def submit_form_and_activate_user(form, expectSuccess=True, activateUser=True):
     form.submit()

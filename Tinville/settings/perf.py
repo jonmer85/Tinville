@@ -4,13 +4,23 @@ from .base import *  # Start with base settings
 import urlparse
 
 import dj_database_url
-DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 
-# HEROKU Change!!!
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
-ALLOWED_HOSTS = ['tinville-dev.herokuapp.com']
+SOUTH_DATABASE_ADAPTERS = {
+    'default': 'south.db.postgresql_psycopg2'
+}
+
+DATABASE_POOL_ARGS = {
+    'max_overflow': 0,
+    'pool_size': env('PG_DB_POOL_SIZE_PER_DYNO', 20),  # Heroku's Standard 0 connection limit (up to 6 dynos * 20 = 120 connections)
+    'recycle': 300
+}
+
+GOOGLE_ANALYTICS_TRACKING_ID = env('GOOGLE_ANALYTICS_TRACKING_ID')
+
+ALLOWED_HOSTS = ['tinville-perf.herokuapp.com']
 
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
@@ -34,18 +44,10 @@ MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
 COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-
-
-BROKER_URL=env('REDISTOGO_URL')
-CELERY_RESULT_BACKEND=env('REDISTOGO_URL')
-
-SSLIFY_DISABLE = False
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
-
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
@@ -61,3 +63,11 @@ CACHES = {
         }
     }
 }
+
+# List of callables that know how to import templates from various sources.
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)

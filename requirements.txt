@@ -57,12 +57,15 @@ easypost==2.0.11
 easy-thumbnails==2.2
 extras==0.0.3
 fuzzywuzzy==0.2
+gevent==1.0.2
+greenlet==0.4.7
 gunicorn==0.17.4
 html5lib==0.999
 kombu==3.0.21
 logilab-common==0.60.0
 lxml==3.2.4
 Minidetector==0.1
+newrelic==2.52.0.40
 nose==1.3.0
 Pillow==2.7.0
 phonenumbers==5.9.2

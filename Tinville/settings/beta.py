@@ -14,7 +14,7 @@ SOUTH_DATABASE_ADAPTERS = {
 
 DATABASE_POOL_ARGS = {
     'max_overflow': 0,
-    'pool_size': 120,  # Heroku's Standard 0 connection limit
+    'pool_size': env('PG_DB_POOL_SIZE_PER_DYNO', 20),  # Heroku's Standard 0 connection limit (up to 6 dynos * 20 = 120 connections)
     'recycle': 300
 }
 
@@ -47,7 +47,7 @@ COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6959'))
+redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
 
 CACHES = {
     'default': {
@@ -58,14 +58,13 @@ CACHES = {
             'PASSWORD': redis_url.password,
             'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
             'CONNECTION_POOL_CLASS_KWARGS': {
-                'max_connections': 50,
-                'timeout': 20,
+                'max_connections': env('REDIS_POOL_MAX_CONNECTIONS', 50),
+                'timeout': env('REDIS_POOL_TIMEOUT', 30),
             }
         }
     }
 }
 
-# List of callables that know how to import templates from various sources.
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', (

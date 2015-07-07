@@ -2,6 +2,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load cropping %}
+{% block head %}
+    {{ block.super }}
+{% endblock head %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />

@@ -200,8 +200,17 @@
 
                 </li>
             {% else %}
-                <li class="">
-                    <a class="hidden-xs" href="/register">SIGN UP</a>
+                <li class="hidden-xs dropdown navbarLinkS"  >
+{#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
+                          SIGN UP
+                    </a>
+                    <ul class="dropdown-menu" style="right: 0; top: 50px;">
+                        <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                        <li class="divider"></li>
+                        <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                    </ul>
+
                 </li>
                 <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                     <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -235,16 +244,25 @@
                         About Us
                     </a>
                     {% if not user.is_authenticated %}
-                        <a href="/register"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
-                            Sign Up
-                        </a>
+{#                        <li class="dropdown navbarLinkS"  >#}
+        {#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
+                            <a  href="#" class="dropdown-toggle tinvilleDrayGray" data-toggle="dropdown" style="display: inline; padding-left: 10px;">
+                                  Sign Up
+                            </a>
+                            <ul class="dropdown-menu" style="right: 0; top: 46px;">
+                                <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                              </ul>
+
+{#                        </li>#}
                     {% endif %}
 
                 </div>
           </div>
         </nav>
 
-        <div class="slidingContent2" style="background-color: white;">
+        <div class="slidingContent2" style="">
             {% block content %}
             {% endblock content %}
         </div>
@@ -280,7 +298,7 @@
                         <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
                     {% else %}
                         <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                        <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                        <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
                     {% endif %}
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
 {#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
@@ -336,7 +354,7 @@
                             <a href="/logout">Sign Out</a>
                         {% else %}
                             <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                            <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
                         {% endif %}
                     </li>
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}

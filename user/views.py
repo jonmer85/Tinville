@@ -90,7 +90,7 @@ class DesignerPaymentInfoView(FormView):
         return super(DesignerPaymentInfoView, self).form_invalid(form)
 
 
-def register(request):
+def register(request,type=None):
     if request.method == 'POST':
         form = TinvilleUserCreationForm(request.POST)
 
@@ -122,8 +122,16 @@ def register(request):
                                             'redirect_url': request.GET.get('next', reverse('home'))
                                         },
                                         host=request.get_host())
+
+
+    if type is None or type == "customer":
+        customer = True
+    else:
+        customer = False
+
     c = {
         'form': form,
+        'customer': customer,
     }
     return render(request, 'register.html', c)
 
