@@ -273,7 +273,7 @@ def clear_and_send_keys(element, keys):
     element.send_keys(keys)
 
 def fill_out_designer_registration_form(password, shop_name, user):
-    form = fill_in_user_form(email=user, password=password)
+    form = fill_in_user_form(email=user, password=password, type='/register/designer')
     world.user_info['shop_name'] = shop_name
     form.find_element_by_id("designer").click()
     form.find_element_by_name("shop_name").send_keys(shop_name)
@@ -283,8 +283,8 @@ def register_basic_shop(shop_name, user, password):
     form = fill_out_designer_registration_form(password, shop_name, user)
     submit_form_and_activate_user(form)
 
-def fill_in_user_form(email, password):
-    access_registration_url(step)
+def fill_in_user_form(email, password, type):
+    access_registration_url(step,type)
     world.user_info = {
         "email": email,
         "password": password,
@@ -294,8 +294,8 @@ def fill_in_user_form(email, password):
     form.find_element_by_name("password").send_keys(password)
     return form
 
-def access_registration_url(step):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+def access_registration_url(step, type):
+    world.browser.get(lettuce.django.get_server().url(type))
 
 def submit_form_and_activate_user(form, expectSuccess=True, activateUser=True):
     form.submit()
