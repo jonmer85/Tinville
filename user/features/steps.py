@@ -10,7 +10,7 @@ from selenium.common.exceptions import *
 from django.core.exceptions import ObjectDoesNotExist
 
 @step(u'I access the registration page')
-def access_registration_url(step,type):
+def access_registration_url(step):
     world.browser.get(lettuce.django.get_server().url(type))
 
 @step(u'I access the home page')
