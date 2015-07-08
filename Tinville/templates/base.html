@@ -414,6 +414,9 @@
         {% endverbatim %}
     </script>
     {% compress js %}
+        <script>alert('Test!')</script>
+    {% endcompress %}
+{#    {% compress js %}#}
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
@@ -449,7 +452,7 @@
         <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
     {% endblock javascript_library %}
     <script>
-    {% endcompress %}
+{#    {% endcompress %}#}
 
 
 {#    {% if debug %}#}
