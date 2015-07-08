@@ -449,6 +449,7 @@
         <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
     {% endblock javascript_library %}
     <script>
+    {% endcompress %}
 
 
 {#    {% if debug %}#}
@@ -667,7 +668,7 @@
 
     {% block javascript %}
     {% endblock javascript %}
-    {% endcompress %}
+
 
     {% block uncompressable_js %}
     <script>
