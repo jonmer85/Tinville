@@ -36,7 +36,6 @@ AWS_HEADERS = {
     'Cache-Control': str(env('AWS_CACHE_CONTROL', 'public, max-age=2592000')),
 }
 AWS_S3_FILE_OVERWRITE = env('AWS_S3_FILE_OVERWRITE', False)
-AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME
 
 S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
