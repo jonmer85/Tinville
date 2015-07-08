@@ -1906,7 +1906,7 @@
             "path": "000200030004",
             "depth": 3,
             "numchild": 0,
-            "name": "Belts",
+            "name": "Hats",
             "slug": "Men/accessories/hats",
             "full_name": "Men > Accessories > Hats"
         }
@@ -1954,7 +1954,7 @@
             "path": "000100030004",
             "depth": 3,
             "numchild": 0,
-            "name": "Belts",
+            "name": "Hats",
             "slug": "Women/accessories/hats",
             "full_name": "Women > Accessories > Hats"
         }
