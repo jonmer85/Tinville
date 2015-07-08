@@ -12,7 +12,7 @@ from oscar.defaults import *
 
 
 # HEROKU Change!!!
-DEBUG = False
+DEBUG = env('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
