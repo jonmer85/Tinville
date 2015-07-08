@@ -2,6 +2,7 @@
 from decimal import Decimal
 import os
 import os.path
+import uuid
 from celery.schedules import crontab
 from getenv import env
 from unipath import Path
@@ -533,13 +534,15 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
-COMPRESS_ENABLED = env("COMPRESS_ENABLED", True)
-COMPRESS_OFFLINE = env("COMPRESS_OFFLINE", True)
+COMPRESS_ENABLED = env("COMPRESS_ENABLED", False)
+COMPRESS_OFFLINE = env("COMPRESS_OFFLINE", False)
 COMPRESS_OFFLINE_CONTEXT = {
     'STATIC_URL': STATIC_URL,
     'GOOGLE_ANALYTICS_TRACKING_ID': GOOGLE_ANALYTICS_TRACKING_ID,
     'MEDIA_URL': MEDIA_URL,
 }
+guid = uuid.uuid1()
+COMPRESS_OFFLINE_MANIFEST = 'manifest-%s.json' % guid
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
