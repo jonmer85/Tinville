@@ -28,10 +28,7 @@
     <link href="//fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
-{#    {% compress css %}#}
-        {% compress js %}
-            <script>alert('sdsds!')</script>
-    {% endcompress %}
+    {% compress css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
 
@@ -49,7 +46,7 @@
 
 
 
-{#    {% endcompress %}#}
+    {% endcompress %}
     {% block css %}{% endblock %}
 {% endblock head %}
 </head>
@@ -416,7 +413,7 @@
         </div>
         {% endverbatim %}
     </script>
-{#    {% compress js %}#}
+    {% compress js %}
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
@@ -670,7 +667,7 @@
 
     {% block javascript %}
     {% endblock javascript %}
-{#    {% endcompress %}#}
+    {% endcompress %}
 
     {% block uncompressable_js %}
     <script>
