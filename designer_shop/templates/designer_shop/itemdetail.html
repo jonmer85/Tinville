@@ -146,7 +146,7 @@
                                         <div class="sharingiscaring col-xs-12">
                                             <div class="shareMeTitle">Share This Item</div>
                                             <div class="socialMediaLinks">
-                                                <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="facebooklogo">
+                                                <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="facebooklogo">
                                                     <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
                                                 </a>
                                                 <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
