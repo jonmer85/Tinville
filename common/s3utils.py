@@ -29,6 +29,8 @@ class CompressorS3BotoStorage(S3BotoStorage):
             'compressor.storage.CompressorFileStorage')()
 
     def save(self, name, content):
+        if name == 'manifest.json':
+            super(CompressorS3BotoStorage, self).delete(name)
         name = super(CompressorS3BotoStorage, self).save(name, content)
         self.local_storage._save(name, content)
         return name
