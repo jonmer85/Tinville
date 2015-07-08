@@ -5,7 +5,7 @@
 {% load seo %}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if IE 8]>         <htmlK class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
 <head>
@@ -668,6 +668,7 @@
     {% block javascript %}
     {% endblock javascript %}
     {% endcompress %}
+
     {% block uncompressable_js %}
     <script>
         $(window).load(function() {
