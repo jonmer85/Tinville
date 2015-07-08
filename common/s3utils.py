@@ -21,14 +21,14 @@ class MediaS3BotoStorage(S3BotoStorage):
         kwargs['querystring_auth'] = False
         super(MediaS3BotoStorage, self).__init__(*args, **kwargs)
 
-class CachedS3BotoStorage(S3BotoStorage):
+class CompressorS3BotoStorage(S3BotoStorage):
     def __init__(self, *args, **kwargs):
         kwargs['location'] = 'compressor'
-        super(CachedS3BotoStorage, self).__init__(*args, **kwargs)
+        super(CompressorS3BotoStorage, self).__init__(*args, **kwargs)
         self.local_storage = get_storage_class(
             'compressor.storage.CompressorFileStorage')()
 
     def save(self, name, content):
-        name = super(CachedS3BotoStorage, self).save(name, content)
+        name = super(CompressorS3BotoStorage, self).save(name, content)
         self.local_storage._save(name, content)
         return name
