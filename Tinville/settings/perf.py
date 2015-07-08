@@ -43,8 +43,8 @@ S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-COMPRESS_URL = "https:" + STATIC_URL
+COMPRESS_STORAGE = 'common.s3utils.CompressorS3BotoStorage'
+# COMPRESS_URL = "https:" + STATIC_URL
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
