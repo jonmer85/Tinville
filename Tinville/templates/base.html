@@ -29,6 +29,9 @@
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
 {#    {% compress css %}#}
+        {% compress css %}
+            <script>alert('sdsds!')</script>
+    {% endcompress %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
 
@@ -413,7 +416,7 @@
         </div>
         {% endverbatim %}
     </script>
-    {% compress js %}
+{#    {% compress js %}#}
     {% block javascript_library %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
@@ -667,7 +670,7 @@
 
     {% block javascript %}
     {% endblock javascript %}
-    {% endcompress %}
+{#    {% endcompress %}#}
 
     {% block uncompressable_js %}
     <script>
