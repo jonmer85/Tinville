@@ -474,30 +474,7 @@
 
 
         }
-        var myresponse;
-        function refreshtypes(genderFilter, typeFilter) {
-            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
-                var list = [];
-                list.push('<option value="View All Types"><i>View All Types</i></option>');
-                $.each(data.shopCategoryNames, function(key, value)
-                {
-                    list.push('<option value="'+ value +'">'+ value +'</option>');
-                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
-                    {
-                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
-                    }
-                });
-                $('#filterType').html(list.join(''));
-                if (typeFilter.match("All")) {
-                   $('#filterType').val("View All Types");
-                }
-                else
-                {
-                    $('#filterType').val(typeFilter);
-                }
 
-            });
-        }
         $( document ).ready(function() {
             outdatedBrowser({
                 bgColor: '#f25648',
@@ -506,12 +483,7 @@
                 languagePath: ''
             })
         });
-        $(window).load(function() {
-            $("#{{ flatpage.title }}").addClass("active");
-            {% if messages %}
-                $('#messagesModal').modal();
-            {% endif %}
-        });
+
 
 
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -696,7 +668,41 @@
     {% block javascript %}
     {% endblock javascript %}
     {% endcompress %}
-    {% block uncompressable_js %}{% endblock %}
+    {% block uncompressable_js %}
+    <script>
+        $(window).load(function() {
+            $("#{{ flatpage.title }}").addClass("active");
+            {% if messages %}
+                $('#messagesModal').modal();
+            {% endif %}
+        });
+
+        var myresponse;
+        function refreshtypes(genderFilter, typeFilter) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.shopCategoryNames, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
+                    {
+                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
+                    }
+                });
+                $('#filterType').html(list.join(''));
+                if (typeFilter.match("All")) {
+                   $('#filterType').val("View All Types");
+                }
+                else
+                {
+                    $('#filterType').val(typeFilter);
+                }
+
+            });
+        }
+    </script>
+    {% endblock %}
 
 
 

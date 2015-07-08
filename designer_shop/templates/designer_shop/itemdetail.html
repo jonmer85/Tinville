@@ -183,6 +183,7 @@
 {% endblock javascript_library %}
 
 {% block uncompressable_js %}
+{{ block.super }}
 <!-- Please call pinit.js only once per page -->
 <script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
 {% endblock uncompressable_js %}
