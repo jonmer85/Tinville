@@ -29,7 +29,7 @@
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
 {#    {% compress css %}#}
-        {% compress css %}
+        {% compress js %}
             <script>alert('sdsds!')</script>
     {% endcompress %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
