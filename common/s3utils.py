@@ -1,5 +1,6 @@
 from django.core.files.storage import get_storage_class
-from storages.backends.s3boto import S3BotoStorage
+from storages.backends.s3boto import S3BotoStorage, FILE_OVERWRITE
+
 
 class StaticS3BotoStorage(S3BotoStorage):
     """
@@ -29,8 +30,14 @@ class CompressorS3BotoStorage(S3BotoStorage):
             'compressor.storage.CompressorFileStorage')()
 
     def save(self, name, content):
-        if name == 'manifest.json':
-            super(CompressorS3BotoStorage, self).delete(name)
+
         name = super(CompressorS3BotoStorage, self).save(name, content)
         self.local_storage._save(name, content)
         return name
+
+    def get_available_name(self, name):
+        """ Overwrite existing file with the same name. """
+        if FILE_OVERWRITE or name == 'manifest.json':
+            name = self._clean_name(name)
+            return name
+        return super(CompressorS3BotoStorage, self).get_available_name(name)
