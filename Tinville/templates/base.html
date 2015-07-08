@@ -28,7 +28,7 @@
     <link href="//fonts.googleapis.com/css?family=Cabin+Condensed" rel='stylesheet' type='text/css'>
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
-    {% compress css %}
+{#    {% compress css %}#}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
 
@@ -46,7 +46,7 @@
 
 
 
-    {% endcompress %}
+{#    {% endcompress %}#}
     {% block css %}{% endblock %}
 {% endblock head %}
 </head>
