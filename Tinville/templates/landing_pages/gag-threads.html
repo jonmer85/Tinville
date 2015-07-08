@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load cropping %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/landing-styles.css" />
+{% endblock css %}
+
+{% block title %}Gag Threads Landing Page{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class ="landingAlign">
+
+            <div class="iconRowAlign">
+                <img src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/06/il_570xN.788151532_bpa2.jpg.400x400_q85_box-83%2C0%2C510%2C428_crop_detail.jpg">
+                <img src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/il_570xN.563303872_eztv.jpg.400x400_q85_box-0%2C85%2C570%2C655_crop_detail.jpg">
+                <img src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/DSC_0086.JPG.400x400_q85_box-52%2C1101%2C2436%2C3484_crop_detail.jpg">
+            </div>
+
+            <div>
+                <div><h1><b>
+                    <p>G.A.G THREADS Finds A Home On Tinville</p>
+                </b></h1></div>
+            </div>
+
+            <div>
+                <div><img class = 'iconAlign' src="https://tinville-alpha.s3.amazonaws.com/media/shops/gag-threads/aboutImg/LOGO.jpg.155x155_q85_box-37%2C0%2C1187%2C1152_crop_detail.jpg"></div>
+                    <h3>
+
+                        <p>Born in Miami, FL in 2010 from the vision of Founder Designer, Gabriela<br>
+                        Guzman, G.A.G THREADS offers a unique view on handmade Unisex Street Wear.</p>
+
+                        <p>From Bikinis and Crop Tops to toddlers and Fanny Packs, G.A.G has it all, and at<br>
+                        attractive prices.</p>
+
+                        <p>Shop their new releases on Tinville below, or click the "Shop Now" button below to <br>
+                            see their entire collection of authentic Street Wear.</p>
+
+                        <a href="https://www.tinville.com/gag-threads/"><button class = "btn btn-primary tinvilleButton ladda-button">Shop Now</button></a>
+                    </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<b><hr class = borderStyle></b>
+
+<div class="container">
+    <div class="newReleases row">
+            <div class="iconRowAlign">
+                <img class = "col-xs-12 col-sm-4 col-md-4" src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/il_570xN.563005431_6fj8.jpg.400x400_q85_box-0%2C120%2C570%2C689_crop_detail.jpg">
+                <img class = "col-xs-12 col-sm-4 col-md-4" src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/DSC_0217.JPG.400x400_q85_box-NaN%2CNaN%2CNaN%2CNaN_crop_detail.jpg">
+                <img class = "col-xs-12 col-sm-4 col-md-4" src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/il_570xN.580225368_iqey.jpg.400x400_q85_box-91%2C219%2C553%2C680_crop_detail.jpg">
+            </div>
+    </div>
+</div>
+
+{% endblock content %}

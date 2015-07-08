@@ -1,0 +1,18 @@
+.landingAlign{
+    text-align:center;
+}
+
+.iconAlign{
+    float: left;
+}
+
+.iconRowAlign{
+    display:flex;
+    height:auto;
+    width:auto;
+}
+
+.borderStyle{
+    border-top: 1px solid #000;
+    width:100%;
+}
