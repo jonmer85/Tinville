@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load cropping %}
+{% load cache %}
 {% block head %}
     {{ block.super }}
 {#    {% block meta %}#}
@@ -35,7 +36,7 @@
         </div>
 
 
-
+        {% cache 900 shop_all_items %}
         <div class="container" style="padding-bottom: 50px;">
 {#            <div class="allBlock tinvilleOrange"></div>#}
             {% include "designer_shop/item_filter.html" %}
@@ -43,6 +44,7 @@
                 {% include "designer_shop/shop_items.html" %}
             </div>
         </div>
+        {% endcache %}
 
 
     {% endblock %}
