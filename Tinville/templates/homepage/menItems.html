@@ -1,6 +1,9 @@
 {% load purchase_info_tags %}
 {% load cropping %}
 {% load endless %}
+{% load cache %}
+
+{% cache 900 men_homepage_cache %}
     {% if menproducts %}
         {% paginate menproducts %}
             {% for product in menproducts %}
@@ -15,3 +18,4 @@
                 No item found with current filter selection
         </div>
     {% endif %}
+{% endcache %}
