@@ -118,8 +118,6 @@ MIDDLEWARE_CLASSES = (
     'oscar.apps.basket.middleware.BasketMiddleware',
     'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
     'minidetector.Middleware',
-    'htmlmin.middleware.HtmlMinifyMiddleware',
-    'htmlmin.middleware.MarkRequestMiddleware',
     # The below clickjacking middleware must be last in the list.
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
