@@ -19,17 +19,17 @@ def access_home_url(step):
 
 @step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password, type='/register')
+    form = fill_in_user_form(email=email, password=password, customer=True)
     submit_form_and_activate_user(form)
 
 @step(u'(?:When|And) I register but not activate a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_but_not_activate_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password, type='/register')
+    form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form, expectSuccess=True, activateUser=False)
 
 @step(u'(?:When|And) I try to again register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password, type='/register')
+    form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form, False)
 
 @step(u'(?:When|And) I register for a shop named "([^"]*)"')
