@@ -31,22 +31,18 @@
     {% compress css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
-
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/feedback.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/feedback.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/imagelightbox.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/cropper.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social-buttons.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-social.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ladda.min.css" />
-{#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
-
-    {% block css %}{% endblock %}
-
     {% endcompress %}
+    {% block css %}{% endblock %}
 {% endblock head %}
 </head>
 
@@ -430,8 +426,9 @@
         </div>
         {% endverbatim %}
     </script>
-    {% compress js %}
+
     {% block javascript_library %}
+    {% compress js %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
@@ -440,21 +437,15 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.transit.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/outdatedbrowser.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/velocity.js"></script>
-{#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
-{#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
-
-{#        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>#}
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
@@ -464,10 +455,11 @@
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
         <script src="{{ STATIC_URL }}js/Tours.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
+    {% endcompress %}
     {% endblock javascript_library %}
+
+
     <script>
-
-
 {#    {% if debug %}#}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
 {#     {% endif %}#}
@@ -491,30 +483,7 @@
 
 
         }
-        var myresponse;
-        function refreshtypes(genderFilter, typeFilter) {
-            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
-                var list = [];
-                list.push('<option value="View All Types"><i>View All Types</i></option>');
-                $.each(data.shopCategoryNames, function(key, value)
-                {
-                    list.push('<option value="'+ value +'">'+ value +'</option>');
-                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
-                    {
-                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
-                    }
-                });
-                $('#filterType').html(list.join(''));
-                if (typeFilter.match("All")) {
-                   $('#filterType').val("View All Types");
-                }
-                else
-                {
-                    $('#filterType').val(typeFilter);
-                }
 
-            });
-        }
         $( document ).ready(function() {
             outdatedBrowser({
                 bgColor: '#f25648',
@@ -523,12 +492,7 @@
                 languagePath: ''
             })
         });
-        $(window).load(function() {
-            $("#{{ flatpage.title }}").addClass("active");
-            {% if messages %}
-                $('#messagesModal').modal();
-            {% endif %}
-        });
+
 
 
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -712,8 +676,43 @@
 
     {% block javascript %}
     {% endblock javascript %}
-    {% endcompress %}
-    {% block uncompressable_js %}{% endblock %}
+
+
+    {% block uncompressable_js %}
+    <script>
+        $(window).load(function() {
+            $("#{{ flatpage.title }}").addClass("active");
+            {% if messages %}
+                $('#messagesModal').modal();
+            {% endif %}
+        });
+
+        var myresponse;
+        function refreshtypes(genderFilter, typeFilter) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.shopCategoryNames, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
+                    {
+                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
+                    }
+                });
+                $('#filterType').html(list.join(''));
+                if (typeFilter.match("All")) {
+                   $('#filterType').val("View All Types");
+                }
+                else
+                {
+                    $('#filterType').val(typeFilter);
+                }
+
+            });
+        }
+    </script>
+    {% endblock %}
 
 
 
