@@ -261,29 +261,7 @@
             "</div>" +
         "</div>";
 
-        function sizeSetTemplate(required) {
-            var sizeSetTemplate = "" +
-            "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
-                "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
-                    "<div class='controls row'>" +
-                        "<div class='col-xs-10'>" +
-                            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
-                                "<option value='' selected='selected'>Choose a size...</option>" +
-                                "{% for sizeSet in sizeSetOptions %}" +
-                                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
-                                "{% endfor %}" +
-                            "</select>" +
-                        "</div>" +
-                        "<div class='col-xs-2'>" +
-                            "<button id='id_clearSizes' class='shoppingcartBtn' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>" +
-                                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
-                            "</button>" +
-                        "</div>" +
-                    "</div>" +
-                "</div>" +
-            "</div>" + colorQuantityTableHead;
-            return sizeSetTemplate;
-        }
+
 
         function sizeDimensionTemplate(required) {
             var sizeDimensionTemplate = "" +
@@ -327,42 +305,7 @@
             return sizeNumberTemplate;
         }
 
-        function rowColorQuantityTemplate(required){
-            dataType = "data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.'" + dataType;
-            if (required === "")
-                numRequired = "data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
-            var rowColorQuantityTemplate = "" +
-            "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
-                "<td style=' padding: 8px 2px 0px 2px; '>" +
-                    "<div class='row-color >" +
-                        "<div id='div_id_colorSelection' class='form-group'>" +
-                            "<div class='controls'>" +
-                                "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
-                                    "<option value='' selected='selected'>Choose a color...</option>" +
-                                    "{% for color in colors %}" +
-                                    "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
-                                    "{% endfor %}" +
-                                "</select>" +
-                            "</div>" +
-                        "</div>" +
-                    "</div>" +
-                "</td>" +
-                "<td style=' padding: 8px 0px 0px 0px; '>" +
-                    "<div id='div_id_quantityField' class='form-group'>" +
-                        "<div class='controls'>" +
-                            "<input class='numberinput form-control quantityField'" + numRequired +  "id='id_quantityField' name='quantityField' type='number' value='1'>" +
-                        "</div>" +
-                    "</div>" +
-                "</td>" +
-                "<td style=' padding: 8px 0px 0px 0px; '>" +
-                    "<button id='id_clearColorQuantity' value='Clear' class='shoppingcartBtn' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>" +
-                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20' />" +
-                    "</button>" +
-                "</td>" +
-            "</tr>";
-            return rowColorQuantityTemplate;
-        }
+
         const SizeTypeInfo = {
             "1" :
             {
@@ -747,13 +690,7 @@
             return $("#" + containerId + " a[href=" + href + "]").tab('show');
         });
 
-        function DeleteConfirmation(slug) {
-            $('#deleteModal').modal('show');
-            $('#okDeleteBtn').click({param1: slug}, function (event) {
-                var href = "{{ shop.get_absolute_url }}edit/delete_product/";
-                window.location = href + event.data.param1;
-            });
-        }
+
 
         function getCenterBoxSelection(ratio_width, ratio_height, image_width, image_height) {
 
@@ -942,3 +879,80 @@
 
     </script>
 {% endblock %}
+
+{% block uncompressable_js %}
+    {{ block.super }}
+    <script>
+    function DeleteConfirmation(slug) {
+            $('#deleteModal').modal('show');
+            $('#okDeleteBtn').click({param1: slug}, function (event) {
+                var href = "{{ shop.get_absolute_url }}edit/delete_product/";
+                window.location = href + event.data.param1;
+            });
+        }
+
+    function sizeSetTemplate(required) {
+            var sizeSetTemplate = "" +
+            "<div id='sizeSetSelectionTemplate' class='accordion-group sizeSetSelectionTemplate'>" +
+                "<div class='accordion-heading'><div id='div_id_sizeSetSelection' class='form-group'>" +
+                    "<div class='controls row'>" +
+                        "<div class='col-xs-10'>" +
+                            "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
+                                "<option value='' selected='selected'>Choose a size...</option>" +
+                                "{% for sizeSet in sizeSetOptions %}" +
+                                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                                "{% endfor %}" +
+                            "</select>" +
+                        "</div>" +
+                        "<div class='col-xs-2'>" +
+                            "<button id='id_clearSizes' class='shoppingcartBtn' value='Clear' onclick='clearSizeRow(\"sizeSetSelectionTemplateTEMPLATENUM\")'>" +
+                                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                            "</button>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>" + colorQuantityTableHead;
+            return sizeSetTemplate;
+        }
+
+    function rowColorQuantityTemplate(required){
+            dataType = "data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+            numRequired = "data-parsley-required='true' data-parsley-required-message='This field is required.'" + dataType;
+            if (required === "")
+                numRequired = "data-parsley-type='number' data-parsley-min='0' data-parsley-type-digits-message='Enter a number.' data-parsley-type-number-message='Enter a number.'";
+            var rowColorQuantityTemplate = "" +
+            "<tr class='row-color-quantity rowColorQuantityTemplate' id='rowColorQuantityTemplate'>" +
+                "<td style=' padding: 8px 2px 0px 2px; '>" +
+                    "<div class='row-color >" +
+                        "<div id='div_id_colorSelection' class='form-group'>" +
+                            "<div class='controls'>" +
+                                "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
+                                    "<option value='' selected='selected'>Choose a color...</option>" +
+                                    "{% for color in colors %}" +
+                                    "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
+                                    "{% endfor %}" +
+                                "</select>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</td>" +
+                "<td style=' padding: 8px 0px 0px 0px; '>" +
+                    "<div id='div_id_quantityField' class='form-group'>" +
+                        "<div class='controls'>" +
+                            "<input class='numberinput form-control quantityField'" + numRequired +  "id='id_quantityField' name='quantityField' type='number' value='1'>" +
+                        "</div>" +
+                    "</div>" +
+                "</td>" +
+                "<td style=' padding: 8px 0px 0px 0px; '>" +
+                    "<button id='id_clearColorQuantity' value='Clear' class='shoppingcartBtn' onclick='clearColorRow(\"rowColorQuantityTemplateTEMPLATENUM\")'>" +
+                        "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20' />" +
+                    "</button>" +
+                "</td>" +
+            "</tr>";
+            return rowColorQuantityTemplate;
+        }
+
+    </script>
+
+
+{% endblock uncompressable_js %}
