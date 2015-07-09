@@ -2,7 +2,8 @@
 {% load purchase_info_tags %}
 {% load bleach_tags %}
 {% load cropping %}
-
+{% block meta_title %}{{ shop.name }} on Tinville{% endblock meta_title %}
+{% block meta_description %}{{ shop.aboutContent | bleach | truncatechars:160 }}{% endblock meta_description %}
 {% block css %}
     {{ block.super }}
 {% endblock css %}

@@ -22,6 +22,18 @@
     font-weight: normal;
 }
 
+.designerClass {
+    width: 100px;
+    height: 100px;
+
+}
+
+.shopperClass {
+    width: 100px;
+    height: 100px;
+
+}
+
 
 .loginForm {
     margin-bottom: 0px;
