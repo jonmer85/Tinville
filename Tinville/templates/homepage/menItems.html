@@ -3,7 +3,7 @@
 {% load endless %}
 {% load cache %}
 
-{% cache 3600 men_homepage_cache %}
+{% cache 900 men_homepage_cache %}
     {% if menproducts %}
         {% paginate menproducts %}
             {% for product in menproducts %}
