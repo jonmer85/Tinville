@@ -11,7 +11,7 @@ from oscar.defaults import *
 
 
 # HEROKU Change!!!
-DEBUG = False
+DEBUG = env('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -535,13 +535,20 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
-COMPRESS_ENABLED = env("COMPRESS_ENABLED", True)
+COMPRESS_ENABLED = env("COMPRESS_ENABLED", False)
+COMPRESS_OFFLINE = env("COMPRESS_OFFLINE", False)
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': STATIC_URL,
+    'GOOGLE_ANALYTICS_TRACKING_ID': GOOGLE_ANALYTICS_TRACKING_ID,
+    'MEDIA_URL': MEDIA_URL,
+}
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
 DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', True)
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
+
 THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
