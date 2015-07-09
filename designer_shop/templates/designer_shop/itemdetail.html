@@ -387,7 +387,9 @@ $( function()
 		var selectorG = 'a[data-imagelightbox="g"]';
 		var instanceG = $( selectorG ).imageLightbox(
 		{
-			onStart:		function(){ arrowsOn( instanceG, selectorG ); },
+			quitOnDocClick:	true,
+            quitOnImgClick: true,
+            onStart:		function(){ arrowsOn( instanceG, selectorG ); },
 			onEnd:			function(){ arrowsOff(); activityIndicatorOff(); },
 			onLoadStart: 	function(){ activityIndicatorOn(); },
 			onLoadEnd:	 	function(){ $( '.imagelightbox-arrow' ).css( 'display', 'block' ); activityIndicatorOff(); }
@@ -399,7 +401,7 @@ $( function()
 		var selectorE = 'a[data-imagelightbox="e"]';
 		var instanceE = $( selectorE ).imageLightbox(
 		{
-			onStart:	 function() { navigationOn( instanceE, selectorE ); },
+            onStart:	 function() { navigationOn( instanceE, selectorE ); },
 			onEnd:		 function() { navigationOff(); activityIndicatorOff(); },
 			onLoadStart: function() { activityIndicatorOn(); },
 			onLoadEnd:	 function() { navigationUpdate( selectorE ); activityIndicatorOff(); }
