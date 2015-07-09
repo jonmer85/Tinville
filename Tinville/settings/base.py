@@ -2,7 +2,6 @@
 from decimal import Decimal
 import os
 import os.path
-import uuid
 from celery.schedules import crontab
 from getenv import env
 from unipath import Path
