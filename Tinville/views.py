@@ -13,15 +13,15 @@ import random
 def home_gallery(request):
     template = "home.html"
     page_template = "designer_shop/all_gallery.html"
-    # menproducts = get_category_products(genderfilter="Men")[:5]
-    # womenproducts = get_category_products(genderfilter="Women")[:5]
-    # menproducts = menproducts.order_by('?')[:5]
-    # womenproducts = womenproducts.order_by('?')[:5]
+    menproducts = get_category_products(genderfilter="Men")
+    womenproducts = get_category_products(genderfilter="Women")
+    menproducts = menproducts.order_by('?')[:5]
+    womenproducts = womenproducts.order_by('?')[:5]
 
     context = {
         'homemode': True,
-        # 'menproducts': menproducts,
-        # 'womenproducts': womenproducts,
+        'menproducts': menproducts,
+        'womenproducts': womenproducts,
     }
     if request.is_ajax():
         template = page_template
