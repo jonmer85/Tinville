@@ -11,14 +11,14 @@
 <head>
 {% block head %}
     {% block meta %}
-    {% get_metadata %}
-    <title>{% block meta_title %}{% endblock meta_title%}</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
-    <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
+        {% get_metadata %}
+        <title>{% block meta_title %}{% endblock meta_title%}</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
+        <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
     {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -31,27 +31,23 @@
     {% compress css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
-
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/feedback.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/feedback.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/imagelightbox.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/cropper.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social-buttons.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-social.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ladda.min.css" />
-{#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
-
-    {% block css %}{% endblock %}
-
     {% endcompress %}
+    {% block css %}{% endblock %}
 {% endblock head %}
 </head>
 
 <body class="mobileMomentumScroll {% block body_class %}{% endblock %}">
-{% block body %}
+
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -200,8 +196,17 @@
 
                 </li>
             {% else %}
-                <li class="">
-                    <a class="hidden-xs" href="/register">SIGN UP</a>
+                <li class="hidden-xs dropdown navbarLinkS"  >
+{#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
+                          SIGN UP
+                    </a>
+                    <ul class="dropdown-menu" style="right: 0; top: 50px;">
+                        <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                        <li class="divider"></li>
+                        <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                    </ul>
+
                 </li>
                 <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                     <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -235,16 +240,25 @@
                         About Us
                     </a>
                     {% if not user.is_authenticated %}
-                        <a href="/register"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
-                            Sign Up
-                        </a>
+{#                        <li class="dropdown navbarLinkS"  >#}
+        {#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
+                            <a  href="#" class="dropdown-toggle tinvilleDrayGray" data-toggle="dropdown" style="display: inline; padding-left: 10px;">
+                                  Sign Up
+                            </a>
+                            <ul class="dropdown-menu" style="right: 0; top: 46px;">
+                                <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                              </ul>
+
+{#                        </li>#}
                     {% endif %}
 
                 </div>
           </div>
         </nav>
 
-        <div class="slidingContent2" style="background-color: white;">
+        <div class="slidingContent2">
             {% block content %}
             {% endblock content %}
         </div>
@@ -280,7 +294,7 @@
                         <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
                     {% else %}
                         <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                        <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                        <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
                     {% endif %}
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
 {#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
@@ -336,7 +350,7 @@
                             <a href="/logout">Sign Out</a>
                         {% else %}
                             <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                            <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
                         {% endif %}
                     </li>
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
@@ -412,8 +426,9 @@
         </div>
         {% endverbatim %}
     </script>
-    {% compress js %}
+
     {% block javascript_library %}
+    {% compress js %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
@@ -422,21 +437,15 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.transit.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/outdatedbrowser.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/velocity.js"></script>
-{#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
-{#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
-
-{#        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>#}
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
@@ -446,10 +455,11 @@
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
         <script src="{{ STATIC_URL }}js/Tours.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
+    {% endcompress %}
     {% endblock javascript_library %}
+
+
     <script>
-
-
 {#    {% if debug %}#}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
 {#     {% endif %}#}
@@ -473,30 +483,7 @@
 
 
         }
-        var myresponse;
-        function refreshtypes(genderFilter, typeFilter) {
-            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
-                var list = [];
-                list.push('<option value="View All Types"><i>View All Types</i></option>');
-                $.each(data.shopCategoryNames, function(key, value)
-                {
-                    list.push('<option value="'+ value +'">'+ value +'</option>');
-                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
-                    {
-                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
-                    }
-                });
-                $('#filterType').html(list.join(''));
-                if (typeFilter.match("All")) {
-                   $('#filterType').val("View All Types");
-                }
-                else
-                {
-                    $('#filterType').val(typeFilter);
-                }
 
-            });
-        }
         $( document ).ready(function() {
             outdatedBrowser({
                 bgColor: '#f25648',
@@ -505,12 +492,7 @@
                 languagePath: ''
             })
         });
-        $(window).load(function() {
-            $("#{{ flatpage.title }}").addClass("active");
-            {% if messages %}
-                $('#messagesModal').modal();
-            {% endif %}
-        });
+
 
 
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -694,11 +676,44 @@
 
     {% block javascript %}
     {% endblock javascript %}
-    {% endcompress %}
-    {% block uncompressable_js %}{% endblock %}
 
 
+    {% block uncompressable_js %}
+    <script>
+        $(window).load(function() {
+            $("#{{ flatpage.title }}").addClass("active");
+            {% if messages %}
+                $('#messagesModal').modal();
+            {% endif %}
+        });
 
-{% endblock body %}
+        var myresponse;
+        function refreshtypes(genderFilter, typeFilter) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.shopCategoryNames, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
+                    {
+                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
+                    }
+                });
+                $('#filterType').html(list.join(''));
+                if (typeFilter.match("All")) {
+                   $('#filterType').val("View All Types");
+                }
+                else
+                {
+                    $('#filterType').val(typeFilter);
+                }
+
+            });
+        }
+    </script>
+    {% endblock %}
+
+
 </body>
 </html>
