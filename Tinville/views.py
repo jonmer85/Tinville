@@ -8,8 +8,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView
 import random
 
-# @passes_test_cache(lambda request: request.user.is_anonymous(), 3600)
-# @csrf_protect
+@passes_test_cache(lambda request: request.user.is_anonymous(), 3600)
+@csrf_protect
 def home_gallery(request):
     template = "home.html"
     page_template = "designer_shop/all_gallery.html"
