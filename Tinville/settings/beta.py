@@ -37,18 +37,23 @@ AWS_HEADERS = {
 }
 AWS_S3_FILE_OVERWRITE = env('AWS_S3_FILE_OVERWRITE', False)
 
-S3_URL = '//%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+S3_URL = 'https://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = S3_URL + STATIC_DIRECTORY
 MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+COMPRESS_STORAGE = 'common.s3utils.CompressorS3BotoStorage'
+COMPRESS_URL = STATIC_URL
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': STATIC_URL,
+    'GOOGLE_ANALYTICS_TRACKING_ID': GOOGLE_ANALYTICS_TRACKING_ID,
+    'MEDIA_URL': MEDIA_URL,
+}
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
-
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
@@ -65,7 +70,6 @@ CACHES = {
     }
 }
 
-# List of callables that know how to import templates from various sources.
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', (
