@@ -90,11 +90,11 @@ def Then_all_items_removed_from_cart(step):
 
 @step(u'When I register for a shopper account')
 def when_i_register_for_a_shopper_account(step):
-    form = fill_in_user_form(email='foo@bar.com', password='foobar',type='/register/customer')
+    form = fill_in_user_form(email='foo@bar.com', password='foobar')
     submit_form_and_activate_user(form)
 
-def fill_in_user_form(email, password, type):
-    world.browser.get(lettuce.django.get_server().url(type))
+def fill_in_user_form(email, password):
+    world.browser.get(lettuce.django.get_server().url('/register'))
     world.user_info = {
         "email": email,
         "password": password,

@@ -63,7 +63,7 @@ def and_I_choose_to_register(step):
     myelement.click()
     # form = fill_in_user_form(email='foo@bar.com', password='foobar')
     wait_for_element_with_class_to_be_displayed("close").click()
-    form = fill_in_user_form(password='foobar', type='/register/designer')
+    form = fill_in_user_form(password='foobar')
     form.submit()
 
 def fill_in_user_form(password):
