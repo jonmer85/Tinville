@@ -56,7 +56,7 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description', style="padding-bottom: 10px"),
                          Field('category', placeholder='Choose a Category'),
-                         HTML("<b>Include shipping costs into the price</b>"),
+                         HTML('<b>Include shipping costs into the price</b><a data-toggle="modal" data-target="#shipping_estimation" class="pull-right" style="cursor: pointer;">Shipping Price Guide</a>'),
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
