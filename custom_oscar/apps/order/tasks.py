@@ -86,18 +86,33 @@ def pay_designers():
                 # Transfer the amount to designer's Stripe account
                 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-                result = stripe.Transfer.create(
-                  amount=int(amount_to_payout * 100),  # Amount expected in cents
-                  currency="usd",
-                  recipient=designer.recipient_id,
-                  description="Payout to designer %s " % designer
-                )
-                logger.debug(result)
+                if designer.account_token.startswith('btok'):
+                    result = stripe.Transfer.create(
+                      amount=int(amount_to_payout * 100),  # Amount expected in cents
+                      currency="usd",
+                      recipient=designer.recipient_id,
+                      description="Payout to designer %s " % designer,
+                      bank_account=designer.account_token
+                    )
+                    logger.debug(result)
+                    # And save the payout record with the stripe reference
+                    payout.reference = result.id
+                    payout.amount = amount_to_payout
+                    payout.save()
+                else:
+                    result = stripe.Transfer.create(
+                      amount=int(amount_to_payout * 100),  # Amount expected in cents
+                      currency="usd",
+                      recipient=designer.recipient_id,
+                      description="Payout to designer %s " % designer,
+                      card=designer.account_token
+                    )
+                    logger.debug(result)
+                    # And save the payout record with the stripe reference
+                    payout.reference = result.id
+                    payout.amount = amount_to_payout
+                    payout.save()
 
-                # And save the payout record with the stripe reference
-                payout.reference = result.id
-                payout.amount = amount_to_payout
-                payout.save()
 
 
 
