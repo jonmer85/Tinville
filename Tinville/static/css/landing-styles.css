@@ -6,13 +6,34 @@
     float: left;
 }
 
+.primaryLogo{
+    width:30%;
+}
+
 .iconRowAlign{
     display:flex;
     height:auto;
     width:auto;
 }
 
+p{
+    text-align: center;
+    vertical-align: middle;
+}
+
+a{
+    text-align: center;
+    vertical-align: middle;
+}
+
 .borderStyle{
     border-top: 1px solid #000;
     width:100%;
+}
+
+.tinvilleButton{
+    width: 20%;
+    position:relative;
+    top:50%;
+    left:50%;
 }
