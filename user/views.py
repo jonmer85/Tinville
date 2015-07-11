@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.views import login as auth_view_login
 from django.contrib.auth import login as auth_login
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render, redirect

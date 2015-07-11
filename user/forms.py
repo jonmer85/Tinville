@@ -130,6 +130,7 @@ class LoginForm(AuthenticationForm):
         self.helper.form_show_errors = False
         self.helper.form_show_labels = False
         self.helper.form_class = 'loginPopupForm'
+        self.helper.disable_csrf = True
         # self.helper.field_class = 'test'
         hidden_field_name = forms.CharField(label='reset', max_length=256, widget=forms.HiddenInput())
         self.helper.layout = Layout(
