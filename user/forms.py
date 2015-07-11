@@ -222,7 +222,7 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                     Div(
                         Field('bank_account_number', placeholder="Bank Account Number"),
                         Field('routing_number', placeholder="Routing Number"),
-                        css_class="row col-xs-12 hidden",
+                        css_class="hidden",
                         css_id="bankAccount"
                     ),
                 ),
