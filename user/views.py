@@ -186,7 +186,7 @@ def ajax_login(request, *args, **kwargs):
 
     if request.is_ajax() and form.is_valid():
 
-        data = auth_view_login(request, form)
+        data = csrf_exempt(auth_view_login(request, form))
         logged_in = True
         return HttpResponse(json.dumps({'logged_in': logged_in}, {'errors': form.errors}), content_type='application/json')
 

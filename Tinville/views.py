@@ -33,8 +33,6 @@ def shop_gallery(request):
     template = "homepage/all_home.html"
     page_template = "designer_shop/all_gallery.html"
 
-
-
     if request.method == 'GET':
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(post=request.GET, filter=True)
