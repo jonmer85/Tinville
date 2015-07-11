@@ -16,7 +16,7 @@
                 <div class="panel-body">
                     <div class="alert alert-warning" role="alert">We require your Tax ID (Social Security Number or EIN if you are a legal business/corporation) in order to verify your identity for payment purposes. We never store this data, but we use it once to verify your identity to comply with federal laws. </div>
                     {% if last4 %}
-                    <h4>Your current card on file is XXXX-XXXX-XXXX-<mark>{{ last4 }}</mark>.</h4>
+                    <h4>Your current card on file is XXXX-XXXX-XXXX-<mark id="lastFour">{{ last4 }}</mark>.</h4>
                         <h5>Entering information below will overwrite this card.</h5>
                     {% endif %}
                     {% load crispy_forms_tags %}
@@ -30,6 +30,7 @@
 {% endblock content %}
 
 {% block uncompressable_js %}
+{{ block.super }}
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
 <script type="text/javascript">

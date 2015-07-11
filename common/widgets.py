@@ -66,11 +66,11 @@ class TinvilleImageCropWidget(ImageThumbnailFileInput, CropWidget):
         else:
             attrs.update({
             'class': "crop-thumb",
-            'data-thumbnail-url': "http://www.placehold.it/400x500",
+            'data-thumbnail-url': "http://www.placehold.it/400x400",
             'data-field-name': name,
             'data-org-width': "400",
-            'data-org-height': "500",
+            'data-org-height': "400",
             'data-max-width': "400",
-            'data-max-height': "500",
+            'data-max-height': "400",
         })
         return super(ImageThumbnailFileInput, self).render(name, value, attrs)

@@ -38,7 +38,7 @@ Feature: Add item to the shopping bag
     Then I add a valid address
     Then I enter a valid payment
     Then the thank you page is displayed
-
+@senay
   Scenario: User Registers During Checkout
     Given Demo page
     Then I add an item to my shopping bag

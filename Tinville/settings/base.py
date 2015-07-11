@@ -11,7 +11,7 @@ from oscar.defaults import *
 
 
 # HEROKU Change!!!
-DEBUG = False
+DEBUG = env('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -137,6 +137,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
 )
@@ -205,6 +206,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'robots',
     'rollyourown.seo',
+    'django_dowser'
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -283,6 +285,7 @@ HAYSTACK_CONNECTIONS = {
 
 # DJANGO OSCAR SETTINGS
 OSCAR_HOMEPAGE = "/"
+OSCAR_ACCOUNTS_REDIRECT_URL = 'customer:order-list'
 OSCAR_DEFAULT_CURRENCY = '$'
 OSCAR_INITIAL_ORDER_STATUS = 'Ready for Shipment'
 OSCAR_INITIAL_LINE_STATUS = 'Ready for Shipment'
@@ -426,6 +429,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.heroku.com', 'herokuapp.com', 'w
 STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_HOST = env('EMAIL_HOST')
@@ -530,13 +535,20 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
-COMPRESS_ENABLED = env("COMPRESS_ENABLED", True)
+COMPRESS_ENABLED = env("COMPRESS_ENABLED", False)
+COMPRESS_OFFLINE = env("COMPRESS_OFFLINE", False)
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': STATIC_URL,
+    'GOOGLE_ANALYTICS_TRACKING_ID': GOOGLE_ANALYTICS_TRACKING_ID,
+    'MEDIA_URL': MEDIA_URL,
+}
 
 THUMBNAIL_DEBUG = env("THUMBNAIL_DEBUG", False)
 
 DISABLE_BETA_ACCESS_CHECK = env('DISABLE_BETA_ACCESS_CHECK', True)
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
+
 THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
@@ -547,3 +559,10 @@ LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", False)
 OSCAR_REQUIRED_ADDRESS_FIELDS = {}
 
 OSCAR_HIDDEN_FEATURES = ["reviews"]
+
+
+# needed to make this work with bootstrap labels
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}

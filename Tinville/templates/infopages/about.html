@@ -4,82 +4,33 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/infoPages.css" />
-    <style>
-        @media (min-width: 768px) {
-            #about_main {
-{#                background-image: url({{ STATIC_URL }}img/infopageimg/aboutBanner.jpg);#}
-            }
-
-            #about_community {
-                background-image: url("http://previews.123rf.com/images/wavebreakmediamicro/wavebreakmediamicro1403/wavebreakmediamicro140341513/27142941-two-fashion-designers-adjusting-dress-on-model-in-the-studio.jpg");
-            }
-
-            #about_designer_sell {
-                background-image: url("http://previews.123rf.com/images/zhudifeng/zhudifeng1504/zhudifeng150400346/38765710-fashion-clothes-shopfront-in-shopping-mall.jpg");
-                color: #e7e5e6;
-
-            }
-
-            #about_designer_ship {
-                background-image: url("http://us.123rf.com/450wm/sbotas/sbotas1309/sbotas130900010/23077330-conceptual-view-about-checkouts-or-payments-over-internet-and-mobile-devices.jpg");
-                color: #e7e5e6;
-            }
-
-            #about_shopper {
-                background-image: url("http://previews.123rf.com/images/goodluz/goodluz1206/goodluz120600921/14118950-young-man-buying-music-on-internet-with-tablet-online-shopping-payment.jpg");
-                color: #e7e5e6;
-            }
-        }
-
-        @media (max-width: 767px) {
-            #about_main {
-                background-image: url({{ STATIC_URL }}img/infopageimg/aboutMobileBanner.jpg);
-            }
-
-            #about_community {
-
-            }
-
-            #about_designer_sell {
-
-            }
-
-            #about_designer_ship {
-
-            }
-
-            #about_shopper {
-
-            }
-        }
-    </style>
 {% endblock css %}
 {% block content %}
     {{ super }}
-        <div id="about_main" class="about_section">
-            {% include "infopages/about/about_main.html" %}
+        <div id="about_banner" class="about_section">
+            {% include "infopages/about/about_banner.html" %}
         </div>
-
-        <div id="about_community" class="about_section">
-            {% include "infopages/about/about_community.html" %}
-        </div>
-
-        <div id="about_designer">
-            <div id="about_designer_sell" class="about_section">
-                {% include "infopages/about/about_designer_sell.html" %}
+        <div class="container">
+            <div class="row">
+                <div id="about_column_a" class="about_section col-sm-6 about-column">
+                    {% include "infopages/about/about_column_a.html" %}
+                </div>
+                <div id="about_column_b" class="about_section col-sm-6 about-column">
+                    {% include "infopages/about/about_column_b.html" %}
+                </div>
+                <div id="about_payment" class="about_section col-xs-12">
+                    {% include "infopages/about/about_payment.html" %}
+                </div>
             </div>
-            <div id="about_designer_ship" class="about_section">
-                {% include "infopages/about/about_designer_ship.html" %}
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div id="about_social" class="about_section col-xs-12 section-yellow">
+                    {% include "infopages/about/about_social.html" %}
+                </div>
             </div>
         </div>
 
-        <div id="about_shopper" class="about_section">
-            {% include "infopages/about/about_shopper.html" %}
-        </div>
-
-        <div id="about_final" class="about_section">
-            {% include "infopages/about/about_final.html" %}
-        </div>
 {% endblock %}
 
 {% block javascript %}

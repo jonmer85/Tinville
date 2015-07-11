@@ -1,63 +1,75 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load cropping %}
-{% block body_class %}{{ block.super }} Men{% endblock %}
-
-{% block css %}
+{% block head %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
-{% endblock css %}
-
-{% block content %}
-    {{ block.super }}
-
-
-    <div id="thumbnail-preview-indicators" >
-        <span data-picture class="banner">
-            <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-            <span data-src="{{ STATIC_URL }}img/banner-xl.png" data-media="(min-width: 768px)"></span>
-            <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-            <noscript>
-                <img src="{{ STATIC_URL }}img/banner-xs.png">
-            </noscript>
-        </span>
-    </div>
-
-    <div class="homeBlock" style="margin-bottom: 20px">
-    </div>
+{#    {% block meta %}#}
+{#        {{ block.super }}#}
+{#        {% block meta_title %}Tinville{% endblock meta_title %}#}
+{#        {% block meta_description %}Tinville is an interactive e-commerce platform that is revolutionizing the way consumers interact with fashion designers and their product lines. Tinville was created from the need to offer designers a more direct route to their clientele and fan base. In the process, Tinville understands the importance of connecting designers to one another, increasing their exposure to the masses, while building relationships with those with an interest in fashion.{% endblock meta_description %}#}
+{#    {% endblock meta %}#}
 
 
 
-    <div class="container" style="padding-top: 50px; padding-bottom: 50px;">
-            <div class="row" id="shopItems">
-                {% include "designer_shop/all_gallery.html" %}
+    {% block css %}
+        {{ block.super }}
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
+    {% endblock css %}
+{% endblock head %}
+
+{#    {% block body_class %}{{ block.super }} home{% endblock %}#}
+    {% block content %}
+        {{ block.super }}
+
+
+        <div id="thumbnail-preview-indicators" >
+            <span data-picture class="banner">
+                <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
+                <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
+                <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+                <noscript>
+                    <img src="{{ STATIC_URL }}img/banner-xs.png">
+                </noscript>
+            </span>
+        </div>
+
+
+
+        <div class="container" style="padding-bottom: 50px;">
+{#            <div class="allBlock tinvilleOrange"></div>#}
+            {% include "designer_shop/item_filter.html" %}
+            <div class="container">
+                {% include "designer_shop/shop_items.html" %}
             </div>
-    </div>
+        </div>
 
 
-{% endblock %}
+    {% endblock %}
 
-{% block bottomContent %}
-    <div id="villageOfShops"></div>
-{% endblock %}
+    {% block bottomContent %}
+        <div id="villageOfShops"></div>
+    {% endblock %}
 
-{% block javascript_library %}
-  {{ block.super }}
-{% endblock javascript_library %}
 
-{% block javascript %}
-    {{ block.super }}
-    <script>
-{#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
-    </script>
-    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>
-    $.endlessPaginate({
-        onCompleted: function(){
-            setItemSizes();
-        },
-    });
-    </script>
+    {% block javascript_library %}
+      {{ block.super }}
+    {% endblock javascript_library %}
 
-{% endblock %}
+    {% block javascript %}
+        {{ block.super }}
+        <script>
+
+
+    {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
+        </script>
+        <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+        <script>
+        $.endlessPaginate({
+            onCompleted: function(){
+                setItemSizes();
+            }
+        });
+        </script>
+
+    {% endblock %}
