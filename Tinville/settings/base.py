@@ -207,7 +207,7 @@ INSTALLED_APPS = [
     'robots',
     'rollyourown.seo',
     'django_dowser',
-    'cachalot'
+    # 'cachalot'
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
