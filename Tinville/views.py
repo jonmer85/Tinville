@@ -45,7 +45,7 @@ def shop_gallery(request):
                 'shopcategories': shopCategoryNames
             })
 
-    products = get_filtered_products().order_by('?')
+    products = get_filtered_products()
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
     context = {
         'homemode': True,
