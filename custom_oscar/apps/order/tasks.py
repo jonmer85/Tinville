@@ -86,7 +86,7 @@ def pay_designers():
                 # Transfer the amount to designer's Stripe account
                 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-                if designer.account_token.startswith('btok'):
+                if designer.account_token.startswith('ba_'):
                     result = stripe.Transfer.create(
                       amount=int(amount_to_payout * 100),  # Amount expected in cents
                       currency="usd",
@@ -112,10 +112,6 @@ def pay_designers():
                     payout.reference = result.id
                     payout.amount = amount_to_payout
                     payout.save()
-
-
-
-
 
         except Exception as e:
             logger.error(

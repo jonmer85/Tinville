@@ -31,13 +31,17 @@ class DesignerPaymentInfoView(FormView):
         user = self.request.user
         if user.account_token:
             stripe.api_key = settings.STRIPE_SECRET_KEY
-            token = stripe.Token.retrieve(user.account_token)
-            if 'bank_account' in token:
-                context['last4'] = token.bank_account.last4
-                context['payment_type'] = 'bank_account'
-            else:
-                context['last4'] = token.card.last4
-                context['payment_type'] = 'card'
+            try:
+                recipient = stripe.Token.retrieve(user.recipient_id)
+                if user.account_token.startswith('ba_'):
+                    context['last4'] = recipient.active_account.id
+                    context['payment_type'] = 'bank_account'
+                else:
+                    context['last4'] = recipient.cards.data[0]
+                    context['payment_type'] = 'card'
+            except:
+                    context['last4'] = "0000"
+                    context['payment_type'] = 'error'
 
         return context
 
@@ -76,12 +80,14 @@ class DesignerPaymentInfoView(FormView):
                 recipient.tax_id = tax_id
                 if payment_type == '1':
                     recipient.card = token
+                    self.request.user.account_token = recipient.default_card
                 else:
                     recipient.bank_account = token
+                    self.request.user.account_token = recipient.active_account.id
                 recipient.save()
 
             self.request.user.recipient_id = recipient.id
-            self.request.user.account_token = token
+            # self.request.user.account_token = token
             self.request.user.save()
 
             messages.success(self.request, "You have successfully added your payment info")

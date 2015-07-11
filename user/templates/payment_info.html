@@ -18,10 +18,14 @@
                     {% if last4 %}
                         {% if payment_type = 'card' %}
                             <h4>Your current card on file is XXXX-XXXX-XXXX-<mark>{{ last4 }}</mark>.</h4>
-                        {% else %}
-                            <h4>Your current bank account on file is XXXXXXXX<mark>{{ last4 }}</mark>.</h4>
-                        {% endif %}
                             <h5>Entering information below will overwrite this payment method.</h5>
+                        {% endif %}
+                        {% if payment_type = 'bank_account' %}
+                            <h4>Your current bank account on file is XXXXXXXX<mark>{{ last4 }}</mark>.</h4>
+                            <h5>Entering information below will overwrite this payment method.</h5>
+                        {% else %}
+                            <h4>There is a problem with your payment info, please enter a new one below</h4>
+                        {% endif %}
                     {% endif %}
                     {% load crispy_forms_tags %}
                     {% crispy form %}
