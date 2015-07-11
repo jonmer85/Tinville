@@ -172,7 +172,7 @@ def activation_redirectUrl(url):
     loginResponse.content = loginResponseBody.content
     return loginResponse
 
-
+@csrf_exempt
 def ajax_login(request, *args, **kwargs):
     ud_dict = {'username':str(request.POST['username']).lower()}
     ud_dict['username'] = ud_dict['username'].strip()
