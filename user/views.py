@@ -58,7 +58,7 @@ class DesignerPaymentInfoView(FormView):
             type_string = "individual" if type == "1" else "corporation"
             if not self.request.user.recipient_id:
                 # No recipient, create one
-                if payment_type == 1:
+                if payment_type == "1":
                     recipient = stripe.Recipient.create(
                       name=full_legal_name,
                       type=type_string,
