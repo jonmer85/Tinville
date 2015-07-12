@@ -5,9 +5,10 @@ sub vcl_recv {
       return(pass);
     }
 
-    # unless sessionid is in the request, don't pass ANY cookies (referral_source, utm, etc)
-    if (req.request == "GET" && (req.url ~ "^/static" || req.url ~ "^/media" || req.http.cookie !~ "sessionid")) {
-      remove req.http.Cookie;
+
+    # unless sessionid/csrftoken is in the request, don't pass ANY cookies (referral_source, utm, etc)
+    if (req.request == "GET" && (req.url ~ "^/static" || (req.http.cookie !~ "sessionid" && req.http.cookie !~ "csrftoken"))) {
+        remove req.http.Cookie;
     }
 
     # normalize accept-encoding to account for different browsers

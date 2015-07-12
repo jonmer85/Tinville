@@ -50,8 +50,8 @@ COMPRESS_OFFLINE_CONTEXT = {
     'MEDIA_URL': MEDIA_URL,
 }
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
 CACHES = {
