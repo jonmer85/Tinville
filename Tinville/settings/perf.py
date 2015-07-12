@@ -5,8 +5,6 @@ import urlparse
 
 import dj_database_url
 
-SSLIFY_DISABLE = True
-
 DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
@@ -52,8 +50,8 @@ COMPRESS_OFFLINE_CONTEXT = {
     'MEDIA_URL': MEDIA_URL,
 }
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
 CACHES = {
