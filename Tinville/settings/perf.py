@@ -5,6 +5,8 @@ import urlparse
 
 import dj_database_url
 
+SSLIFY_DISABLE = True
+
 DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
 

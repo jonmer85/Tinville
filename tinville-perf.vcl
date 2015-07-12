@@ -38,10 +38,6 @@ sub vcl_fetch {
     set beresp.http.Fastly-Restarts = req.restarts;
   }
 
-  # pass through for anything with a session/csrftoken set
-  if (beresp.http.set-cookie ~ "sessionid" || beresp.http.set-cookie ~ "csrftoken") {
-    return (pass);
-  }
 
   if (beresp.http.Set-Cookie) {
     set req.http.Fastly-Cachetype = "SETCOOKIE";
@@ -58,7 +54,7 @@ sub vcl_fetch {
     set beresp.ttl = 1s;
     set beresp.grace = 5s;
     return (deliver);
-  }  
+  }
 
   if (beresp.http.Expires || beresp.http.Surrogate-Control ~ "max-age" || beresp.http.Cache-Control ~"(s-maxage|max-age)") {
     # keep the ttl here
