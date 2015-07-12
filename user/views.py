@@ -31,17 +31,26 @@ class DesignerPaymentInfoView(FormView):
         user = self.request.user
         if user.account_token:
             stripe.api_key = settings.STRIPE_SECRET_KEY
-            token = stripe.Token.retrieve(user.account_token)
-            context['last4'] = token.card.last4
+            try:
+                recipient = stripe.Token.retrieve(user.recipient_id)
+                if user.account_token.startswith('ba_'):
+                    context['last4'] = recipient.active_account.id
+                    context['payment_type'] = 'bank_account'
+                else:
+                    context['last4'] = recipient.cards.data[0]
+                    context['payment_type'] = 'card'
+            except:
+                    context['last4'] = "0000"
+                    context['payment_type'] = 'error'
 
         return context
-
 
     def form_valid(self, form):
         # Add the payment info to the user
         token = form.cleaned_data['stripe_token']
         full_legal_name = form.cleaned_data['full_legal_name']
         type = form.cleaned_data['recipient_type']
+        payment_type = form.cleaned_data['payment_choice']
         tax_id = form.cleaned_data['tax_id']
 
         try:
@@ -49,24 +58,36 @@ class DesignerPaymentInfoView(FormView):
             type_string = "individual" if type == "1" else "corporation"
             if not self.request.user.recipient_id:
                 # No recipient, create one
-                recipient = stripe.Recipient.create(
-                  name=full_legal_name,
-                  type=type_string,
-                  tax_id=tax_id,
-                  email=self.request.user.email,
-                  card=token)
+                if payment_type == "1":
+                    recipient = stripe.Recipient.create(
+                      name=full_legal_name,
+                      type=type_string,
+                      tax_id=tax_id,
+                      email=self.request.user.email,
+                      card=token)
+                else:
+                    recipient = stripe.Recipient.create(
+                      name=full_legal_name,
+                      type=type_string,
+                      tax_id=tax_id,
+                      email=self.request.user.email,
+                      bank_account=token)
             else:
                 # Update existing recipient
                 recipient = stripe.Recipient.retrieve(self.request.user.recipient_id)
                 recipient.name = full_legal_name
                 recipient.type = type_string
                 recipient.tax_id = tax_id
-                recipient.card = token
+                if payment_type == '1':
+                    recipient.card = token
+                    self.request.user.account_token = recipient.default_card
+                else:
+                    recipient.bank_account = token
+                    self.request.user.account_token = recipient.active_account.id
                 recipient.save()
 
-
             self.request.user.recipient_id = recipient.id
-            self.request.user.account_token = token
+            # self.request.user.account_token = token
             self.request.user.save()
 
             messages.success(self.request, "You have successfully added your payment info")
@@ -74,7 +95,7 @@ class DesignerPaymentInfoView(FormView):
         except (stripe.error.CardError, stripe.error.InvalidRequestError) as e:
             # Since it's a decline, stripe.error.CardError will be caught
             body = e.json_body
-            err  = body['error']
+            err = body['error']
 
             print "Status is: %s" % e.http_status
             print "Type is: %s" % err['type']
@@ -87,7 +108,7 @@ class DesignerPaymentInfoView(FormView):
         return super(DesignerPaymentInfoView, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.warning(self.request, "Error occurred while processing card information.")
+        messages.warning(self.request, "Error occurred while processing payment information.")
         return super(DesignerPaymentInfoView, self).form_invalid(form)
 
 
