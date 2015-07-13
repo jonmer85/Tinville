@@ -18,7 +18,6 @@ from django.contrib.auth import views as auth_views
 from oscar.views.decorators import login_forbidden
 from django.core.urlresolvers import reverse_lazy
 from rollyourown.seo.admin import register_seo_admin
-
 from oscar.app import application
 
 admin.autodiscover()
@@ -52,6 +51,10 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
 (r'^dowser/', include('django_dowser.urls')),
+)
+
+urlpatterns += patterns('',
+    url(r'^$', include('Tinville.favicon_urls')),
 )
 
 urlpatterns += patterns('',

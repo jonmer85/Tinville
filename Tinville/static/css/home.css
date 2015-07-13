@@ -110,8 +110,15 @@
     margin-bottom: 20px;
 }
 
+.centerHomeIcon {
+    margin-top: 60px;
+}
 @media (max-width: 767px) {
     .mobileSignUp {
         margin-top: 20px !important;
     }
+    .centerHomeIcon {
+        margin-top: 0px;
+    }
 }
+
