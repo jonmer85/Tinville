@@ -80,14 +80,16 @@ class DesignerPaymentInfoView(FormView):
                 recipient.tax_id = tax_id
                 if payment_type == '1':
                     recipient.card = token
-                    self.request.user.account_token = recipient.default_card
                 else:
                     recipient.bank_account = token
-                    self.request.user.account_token = recipient.active_account.id
                 recipient.save()
 
+            if payment_type == '1':
+                self.request.user.account_token = recipient.default_card
+            else:
+                self.request.user.account_token = recipient.active_account.id
+
             self.request.user.recipient_id = recipient.id
-            # self.request.user.account_token = token
             self.request.user.save()
 
             messages.success(self.request, "You have successfully added your payment info")
