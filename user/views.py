@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render, redirect
+from designer_shop.models import Shop
 from oscar.core.loading import get_model
 import stripe
 
@@ -241,6 +242,18 @@ def load_user_notifications_count(request):
         return HttpResponse(json.dumps({'dashboard_notifications_count': dashboard_notifications["count"]}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'dashboard_notifications_count': 0}), content_type='application/json')
+
+
+def load_user_info(request):
+    user_info = {}
+    if not request.user.is_anonymous():
+        user_info['username'] = request.user.email
+        user_info['is_seller'] = False
+        user_info['is_staff'] = request.user.is_staff
+        if request.user.is_seller:
+            user_info['is_seller'] = True
+            user_info['shop_slug'] = Shop.objects.get(user=request.user).slug
+    return HttpResponse(json.dumps(user_info), content_type='application/json')
 
 
 class BetaAccessView(FormView):
