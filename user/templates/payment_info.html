@@ -10,14 +10,22 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        Enter your debit card info to get paid...
+                        Enter your payment info to get paid...
                     </h3>
                 </div>
                 <div class="panel-body">
                     <div class="alert alert-warning" role="alert">We require your Tax ID (Social Security Number or EIN if you are a legal business/corporation) in order to verify your identity for payment purposes. We never store this data, but we use it once to verify your identity to comply with federal laws. </div>
                     {% if last4 %}
-                    <h4>Your current card on file is XXXX-XXXX-XXXX-<mark>{{ last4 }}</mark>.</h4>
-                        <h5>Entering information below will overwrite this card.</h5>
+                        {% if payment_type = 'card' %}
+                            <h4>Your current card on file is XXXX-XXXX-XXXX-<mark>{{ last4 }}</mark>.</h4>
+                            <h5>Entering information below will overwrite this payment method.</h5>
+                        {% endif %}
+                        {% if payment_type = 'bank_account' %}
+                            <h4>Your current bank account on file is XXXXXXXX<mark>{{ last4 }}</mark>.</h4>
+                            <h5>Entering information below will overwrite this payment method.</h5>
+                        {% else %}
+                            <h4>There is a problem with your payment info, please enter a new one below</h4>
+                        {% endif %}
                     {% endif %}
                     {% load crispy_forms_tags %}
                     {% crispy form %}
@@ -42,44 +50,92 @@
 {% block javascript %}
 {{ block.super }}
 <script type="text/javascript">
+    jQuery(function($) {
+        $('#payment-info-form').submit(function (event) {
+            var $form = $(this);
 
-  jQuery(function($) {
-      $('#payment-info-form').submit(function (event) {
-          var $form = $(this);
+            // Disable the submit button to prevent repeated clicks
+            $form.find('button').prop('disabled', true);
+            var strDate = $("[data-stripe='exp-date']")[0].value;
+            var date = moment(strDate, "MM-YY");
+            var month = date.format("MM");
+            var year = date.format("YY");
 
-          // Disable the submit button to prevent repeated clicks
-          $form.find('button').prop('disabled', true);
-          var strDate = $("[data-stripe='exp-date']")[0].value;
-          var date = moment(strDate, "MM-YY");
-          var month = date.format("MM");
-          $form.append($('<input class="hidden" type="text" size="2" data-stripe="exp-month"/>').val(month));
-          var year = date.format("YY");
-          $form.append($('<input class="hidden" type="text" size="2" data-stripe="exp-year"/>').val(year));
+            switch ($('#div_id_payment_choice option:selected').val()) {
+                case '1':
+                    Stripe.card.createToken({
+                    number: $('#id_card_number').val(),
+                    cvc: $('#id_cvc').val(),
+                    exp_month: month,
+                    exp_year: year
+                    }, stripeResponseHandler);
+                    break;
 
-          Stripe.createToken($form, stripeResponseHandler);
+                case '2':
+                    Stripe.bankAccount.createToken({
+                    country: 'US',
+                    currency: 'USD',
+                    account_number: $('#id_bank_account_number').val(),
+                    routing_number: $('#id_routing_number').val()
+                    }, stripeResponseHandler);
+                    break;
+            }
+            // Prevent the form from submitting with the default action
+            return false;
+        })
+    });
 
-          // Prevent the form from submitting with the default action
-          return false;
-      })
-  });
 
+    $('#div_id_payment_choice').change(function (){
+        initPaymentFormFields();
+    });
+
+    $(document).ready(function (){
+        initPaymentFormFields();
+    });
+
+    function initPaymentFormFields() {
+        switch ($('#div_id_payment_choice option:selected').val()) {
+            case '1':
+                $('#id_card_number').attr('data-parsley-required', 'true');
+                $('#id_cvc').attr('data-parsley-required', 'true');
+                $('#id_expiration_date').attr('data-parsley-required', 'true');
+                $('#id_bank_account_number').attr('data-parsley-required', 'false');
+                $('#id_routing_number').attr('data-parsley-required', 'false');
+                $('#bankAccount').addClass('hidden');
+                $("#debitCard").removeClass('hidden');
+                break;
+
+            case '2':
+                $('#id_card_number').attr('data-parsley-required', 'false');
+                $('#id_cvc').attr('data-parsley-required', 'false');
+                $('#id_expiration_date').attr('data-parsley-required', 'false');
+                $('#id_bank_account_number').attr('data-parsley-required', 'true');
+                $('#id_routing_number').attr('data-parsley-required', 'true');
+                $('#bankAccount').removeClass('hidden');
+                $("#debitCard").addClass('hidden');
+                break;
+        }
+    }
 
     function stripeResponseHandler(status, response) {
-      var $form = $('#payment-info-form');
+        var $form = $('#payment-info-form');
 
-      if (response.error) {
-        // Show the errors on the form
-        $form.find('.payment-errors').text(response.error.message);
-        $form.find('button').prop('disabled', false);
-      } else {
-        // token contains id, last4, and card type
-        var token = response.id;
-        // Insert the token into the form so it gets submitted to the server
-        $form.append($('<input type="hidden" name="stripe_token" />').val(token));
-        // and submit
-        $form.get(0).submit();
-      }
-    };
+        if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('button').prop('disabled', false);
+        } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+            // and submit
+            $form.get(0).submit();
+        }
+    }
+
+
 </script>
 
 {% endblock javascript %}

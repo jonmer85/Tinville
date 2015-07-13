@@ -29,18 +29,27 @@ class PayDesignersTests(TestCase):
         self.stripe = stripe
         self.stripe.api_key = settings.STRIPE_SECRET_KEY
 
+        # token = self.stripe.Token.create(
+        #     {
+        #         'number': '4000056655665556',
+        #         'exp_month': '12',
+        #         'exp_year': '2030',
+        #         'cvc': '123'
+        #     }
+        # )
         result = self.stripe.Recipient.create(
-            name="Joe Schmoe",
-            type="individual",
-            card= {
-                'number': '4000056655665556',
-                'exp_month': '12',
-                'exp_year': '2030',
-                'cvc': '123'
-            }
+                name="Joe Schmoe",
+                type="individual",
+                card = {
+                    'number': '4000056655665556',
+                    'exp_month': '12',
+                    'exp_year': '2030',
+                    'cvc': '123'
+                }
         )
 
         self.user.recipient_id = result.id
+        self.user.account_token = result.default_card
         self.user.save()
 
         self.shop = Shop.objects.create(name='SchmoeVille', user=self.user)
@@ -151,6 +160,33 @@ class PayDesignersTests(TestCase):
     def test_payout_on_one_full_order(self):
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
         shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
+
+        pay_designers()
+
+        designer_payment_event = self.assert_proper_payment_events(
+            total_payment_events=2, payment_event_group=in_transit_event.group, payout_total=5.60)
+
+        designer_payout = self.assert_proper_payout_records(
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=5.60)
+
+        self.assert_proper_stripe_records(designer_payout)
+
+    def test_payout_on_one_full_order_bank_account(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
+        shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
+        rp = stripe.Recipient.retrieve(self.user.recipient_id)
+        rp.bank_account = \
+            {
+                'country': 'US',
+                'currency': 'USD',
+                'account_number': '000123456789',
+                'routing_number': '110000000'
+            }
+        rp.save()
+
+        rt = stripe.Recipient.retrieve(self.user.recipient_id)
+        self.user.account_token = rt.active_account.id
+        self.user.save()
 
         pay_designers()
 
