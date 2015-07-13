@@ -84,6 +84,7 @@ class DesignerPaymentInfoView(FormView):
                     recipient.bank_account = token
                 recipient.save()
 
+
             if payment_type == '1':
                 self.request.user.account_token = recipient.default_card
             else:
