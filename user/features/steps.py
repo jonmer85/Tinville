@@ -19,7 +19,7 @@ def access_home_url(step):
 
 @step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password)
+    form = fill_in_user_form(email=email, password=password, customer=True)
     submit_form_and_activate_user(form)
 
 @step(u'(?:When|And) I register but not activate a shopper account with email "([^"]*)" and password "([^"]*)"')
@@ -137,7 +137,7 @@ def then_i_should_not_see_validation_errors(step):
 
 @step(u'Then I should get a validation error on email address')
 def then_i_should_get_a_validation_error_on_email_address(step):
-    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register'))
+    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register/designer'))
     assert_class_exists('has-error')
 
 @step(u'I should be logged in')

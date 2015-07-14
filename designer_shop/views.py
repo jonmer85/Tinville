@@ -33,10 +33,12 @@ from user.forms import BetaAccessForm
 from user.models import TinvilleUser
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation,convert_to_currency
 from django.views.generic import ListView
-
+import logging
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 ProductImage = get_model('catalogue', 'ProductImage')
+
+logger = logging.getLogger(__name__)
 
 
 class ShopListView(ListView):
@@ -76,9 +78,13 @@ class IsShopOwnerDecoratorUsingItem(IsShopOwnerDecorator):
 
 
 class get_filter_lists:
-    def __init__(self, shop):
-        self.shop = shop
-        self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
+    def __init__(self, shop=None):
+        # if one does not pass a shop then is it will only filter through approved user
+        if shop:
+            self.shop = shop
+            self.shop_products = Product.objects.filter(shop_id = shop.id).filter(structure="parent")
+        else:
+            self.shop_products = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
 
     def shop_product_categories(self):
         shopProductCategories = set()
@@ -110,12 +116,12 @@ def shopper(request, slug):
 
     if not (shop.user.is_approved):
         if(request.user.is_active):
-            if(not request.user.slug==shop.user.slug):
+            if(not request.user.slug==shop.user.slug and not request.user.is_staff):
                 return HttpResponseRedirect(reverse('under_construction'))
         else:
             return HttpResponseRedirect(reverse('under_construction'))
 
-    if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
+    if not settings.DISABLE_BETA_ACCESS_CHECK and not check_access_code(request):
         if request.user.is_anonymous() or not request.user.is_seller:
             return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
@@ -124,10 +130,13 @@ def shopper(request, slug):
         page_template = 'designer_shop/all_gallery.html'
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
-            return render(request, 'designer_shop/shop_items.html', {
+            shopcategorynames = get_types(request=request,shop_slug=slug,group_by=request.GET['genderfilter'])
+            return render(request, 'designer_shop/shopper.html', {
                 'shop': shop,
                 'products': products,
                 'shopProductCount': len(products),
+                'shopcategories': shopcategorynames
+
             })
 
         products = get_filtered_products(shop)
@@ -160,6 +169,15 @@ def check_access_code(request):
 
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+
+    if not (shop.user.is_approved):
+        if(request.user.is_active):
+            if(not request.user.slug==shop.user.slug and not request.user.is_staff):
+                return HttpResponseRedirect(reverse('under_construction'))
+        else:
+            return HttpResponseRedirect(reverse('under_construction'))
+
+
     item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
     variants = get_list_or_empty(Product, parent=item.id)
     images = get_list_or_empty(ProductImage, product_id=item.id)
@@ -189,6 +207,14 @@ def get_filtered_products(shop=None, post=None, filter=None):
         sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
         filteredProductList = get_sort_order(Product.objects.filter(
             Q(shop_id=shop.id, parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
+                                             sortfilter)
+        context = filteredProductList
+    elif shop is None and filter is True:
+        genderfilter = get_dict_value_or_suspicious_operation(post, 'genderfilter')
+        itemtypefilter = get_dict_value_or_suspicious_operation(post, 'typefilter')
+        sortfilter = get_dict_value_or_suspicious_operation(post, 'sortfilter')
+        filteredProductList = get_sort_order(Product.objects.filter(
+            Q(shop = Shop.objects.filter(user__is_approved = True), parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
                                              sortfilter)
         context = filteredProductList
     elif shop is not None:
@@ -267,10 +293,18 @@ def ajax_color(request, slug):
     return HttpResponseBadRequest()
 
 
-def get_types(request, shop_slug, group_by=None):
-    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+def get_types(request, shop_slug=None, group_by=None):
+    shopCategoryNames = get_categoryName(request=request, shop_slug=shop_slug, group_by=group_by)
+    types = {'shopCategoryNames': shopCategoryNames}
+    return HttpResponse(json.dumps(types), content_type='application/json')
+
+def get_categoryName(request, shop_slug=None, group_by=None):
     shopCategoryNames = []
-    shopProductCategories = get_filter_lists(shop).shop_product_categories()
+    if shop_slug is None:
+        shopProductCategories = get_filter_lists().shop_product_categories()
+    else:
+        shop = get_object_or_404(Shop, slug__iexact=shop_slug)
+        shopProductCategories = get_filter_lists(shop).shop_product_categories()
     for productcategory in shopProductCategories:
         if productcategory != None:
             currentcategory = get_or_none(Category, id=productcategory.category.id)
@@ -281,8 +315,7 @@ def get_types(request, shop_slug, group_by=None):
             else:
                 if not shopCategoryNames.__contains__(currentcategory.name):
                     shopCategoryNames.append(currentcategory.name)
-    types = {'types': shopCategoryNames}
-    return HttpResponse(json.dumps(types), content_type='application/json')
+    return shopCategoryNames
 
 
 def get_variants(item, group=None):
@@ -646,8 +679,11 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                             return renderShopEditor(request, shop, item=item)
                         else:
                             raise IntegrityError("Image error")
-                except IntegrityError:
+                except IntegrityError as e:
                     form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
+                    messages.error(request, "There was a problem uploading your image(s). Please try a different image(s).")
+                    logger.warning("Invalid image formset - Exception: %s" % str(e))
+                    image_formset = ProductImageFormSet(instance=item if item else None)
             else:
                 form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
                 image_formset = ProductImageFormSet(instance=item if item else None)

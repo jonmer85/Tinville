@@ -7,14 +7,19 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
 <head>
-    {% get_metadata %}
-    <title>Tinville</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
-    <meta name="author" content="{% block meta_author %}{% endblock %}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+{% block head %}
+    {% block meta %}
+        {% get_metadata %}
+        <title>{% block meta_title %}{% endblock meta_title%}</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
+        <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
+    {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     {#    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">#}
@@ -26,27 +31,23 @@
     {% compress css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
-
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tooltip.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/feedback.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/feedback.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/imagelightbox.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/cropper.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/registerAndLogin.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social-buttons.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-social.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ladda.min.css" />
-{#    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">#}
-
-    {% block css %}{% endblock %}
-
     {% endcompress %}
-
+    {% block css %}{% endblock %}
+{% endblock head %}
 </head>
 
 <body class="mobileMomentumScroll {% block body_class %}{% endblock %}">
-{% block body %}
+
     <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -57,7 +58,7 @@
  {% include "notification.html" %}
 
 
-    <nav class="navbar navbar-default navbar-fixed-top" style="height: 52px;">
+    <nav class="navbar navbar-default navbar-fixed-top navGradient" style=" height: 52px;">
         <div class="cartLocation" id="shoppingcartBtn">
             <li class="dropdown navbarLinkS " id="" >
                   <a id="shoppingcart" href="#" data-toggle="dropdown" class="dropdown-toggle" >
@@ -77,7 +78,7 @@
             </li>
         </div>
       <div class="container">
-        <div class="navbar-header">
+        <div class="navbar-header" style="margin-left: -15px;">
           <div id="navHeader" class="navbar-header">
                 <a class="" id='tinvilletagId' href="/"><img id="tinvilleTagBanner" class="tinvilleTagBanner pull-left" src="{{ STATIC_URL }}img/tinville-header.png" /></a>
                 {% if not user.is_authenticated %}
@@ -100,7 +101,7 @@
                       <li class="dropdown yamm-fw visible-xs" id="xs-menuLogin" style="margin-top: 9px">
                               <a id="loginIcon-xs" href="#" class="dropdown-toggle navbar-link navbar-text visible-xs xs-navbar-text" data-toggle="dropdown" style="padding-bottom: 0px; height: 30px;">
                                   <i id="clickedLogin-xs" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
-                                  <div id="userNotifications-xs" class="userNotifications"></div>
+                                  <div id="userNotifications-xs" class="userNotifications hidden"></div>
                               </a>
                               <ul class="dropdown-menu" style="left: -115px; width: 200px; top: 40px;">
                                 {%  if user.is_seller %}
@@ -111,7 +112,7 @@
                                     <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                                     <li class="divider"></li>
                                 {% endif %}
-                                <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
+                                <li><a href="/accounts">My Account <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                                 <li class="divider"></li>
                                 {% if user.is_seller or user.is_staff %}
                                     <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
@@ -119,8 +120,11 @@
                                 {% endif %}
                                 <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                 <li class="divider"></li>
-                                <li class="tinvilleOrange logEmail">{{ user.email }}</li>
-
+                                {%  if user.is_seller %}
+                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                {% else %}
+                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                {% endif %}
                               </ul>
                         </li>
                     </div>
@@ -137,6 +141,9 @@
                 <a href="#" data-toggle="dropdown" class="hidden-xs dropdown-toggle">SHOP</a>
             </li>
             <li class="">
+                <a class="hidden-xs" href="{% url 'shop' %}">SHOP</a>
+            </li>
+            <li class="">
                 <a class="hidden-xs" href="/shoplist/">DISCOVER</a>
             </li>
             <li class="hidden">
@@ -150,13 +157,17 @@
             </li>
             {% if user.is_authenticated %}
                 <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
-                    <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                    {%  if user.is_seller %}
+                        <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                     {% else %}
+                        <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                     {% endif %}
                 </li>
                 <li class="hidden-xs dropdown navbarLinkS" id="lg-menuLogin" >
 
                       <a id="loginIcon-lg" href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
                           <i id="clickedLogin-lg" class="tinvilleOrange glyphicon glyphicon-user" style="font-size: large;"></i>
-                          <div id="userNotifications-lg" class="userNotifications"></div>
+                          <div id="userNotifications-lg" class="userNotifications hidden"></div>
                       </a>
                       <ul class="dropdown-menu" style="right: 0;">
                         {%  if user.is_seller %}
@@ -167,7 +178,7 @@
                             <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                             <li class="divider"></li>
                         {% endif %}
-                        <li><a href="/accounts/addresses">My Addresses <span class="glyphicon glyphicon-globe pull-right"></span></a></li>
+                        <li><a href="/accounts">My Account <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
                         <li class="divider"></li>
                         {% if user.is_seller or user.is_staff %}
                             <li><a href="/dashboard">Dashboard <span class="glyphicon glyphicon-dashboard pull-right"></span><span class="dashboardNotifications pull-right"></span></a></li>
@@ -175,14 +186,27 @@
                         {% endif %}
                         <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                         <li class="hidden-md hidden-lg divider"></li>
-                        <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                         {%  if user.is_seller %}
+                            <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                         {% else %}
+                             <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                         {% endif %}
 
                       </ul>
 
                 </li>
             {% else %}
-                <li class="">
-                    <a class="hidden-xs" href="/register">SIGN UP</a>
+                <li class="hidden-xs dropdown navbarLinkS"  >
+{#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
+                          SIGN UP
+                    </a>
+                    <ul class="dropdown-menu" style="right: 0; top: 50px;">
+                        <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                        <li class="divider"></li>
+                        <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                    </ul>
+
                 </li>
                 <li class="hidden-xs dropdown yamm-fw" id="lg-menuLogin" >
                     <a class="dropdown-toggle hidden-xs" href="#" data-toggle="dropdown">SIGN IN</a>
@@ -199,30 +223,42 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+{#     <div style="height: 6px; background-color: #e7e7e7;"></div>#}
 
 
     <div class="slidingContent">
         <nav class="visible-xs navbar navbar-default">
           <div class="container">
                 <div class="navbar-header pull-right" style="padding: 15px">
-
-                    <a href="/shoplist/"  class="tinvilleDrayGray" style="display: inline">
+                    <a href="{% url 'shop' %}"  class="tinvilleDrayGray" style="display: inline">
+                        Shop
+                    </a>
+                    <a href="/shoplist/"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
                         Discover
                     </a>
                     <a href="{% url 'home_about' %}"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
                         About Us
                     </a>
                     {% if not user.is_authenticated %}
-                        <a href="/register"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
-                            Sign Up
-                        </a>
+{#                        <li class="dropdown navbarLinkS"  >#}
+        {#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
+                            <a  href="#" class="dropdown-toggle tinvilleDrayGray" data-toggle="dropdown" style="display: inline; padding-left: 10px;">
+                                  Sign Up
+                            </a>
+                            <ul class="dropdown-menu" style="right: 0; top: 46px;">
+                                <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                              </ul>
+
+{#                        </li>#}
                     {% endif %}
 
                 </div>
           </div>
         </nav>
 
-        <div class="slidingContent2" style="background-color: #FAFAF8;">
+        <div class="slidingContent2">
             {% block content %}
             {% endblock content %}
         </div>
@@ -238,8 +274,8 @@
                     <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
 {#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
                     <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>#}
                 </dl>
             </nav>
 {#            <nav id="footerNavRight" class="footer-nav col-sm-2">#}
@@ -258,7 +294,7 @@
                         <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
                     {% else %}
                         <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                        <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                        <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
                     {% endif %}
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
 {#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
@@ -301,10 +337,10 @@
             <div id="collapseInformation" class="panel-collapse collapse footerPanelPadding">
                 <dl class="list-unstyled">
                     <li class="mainFooterListItem"><a href="{% url 'home_about' %}">About Us</a></li>
-                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>
+{#                    <li class="mainFooterListItem"><a href="#">Customer Service</a></li>#}
                     <li class="mainFooterListItem"><a href="{% url 'home_faq' %}">FAQs</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>
-                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_policies' %}">Policies</a></li>#}
+{#                    <li class="mainFooterListItem"><a href="{% url 'home_terms' %}">Terms</a></li>#}
                 </dl>
             </div>
             <div class="list-unstyled listPadding">
@@ -314,7 +350,7 @@
                             <a href="/logout">Sign Out</a>
                         {% else %}
                             <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register">Register</a></li>
+                            <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
                         {% endif %}
                     </li>
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
@@ -390,8 +426,9 @@
         </div>
         {% endverbatim %}
     </script>
-    {% compress js %}
+
     {% block javascript_library %}
+    {% compress js %}
         <script src="{{ STATIC_URL }}js/Utilities.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/feedback.js"></script>`
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
@@ -400,21 +437,15 @@
         <script src="{{ STATIC_URL }}js/vendor/jquery.transit.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/outdatedbrowser.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/velocity.js"></script>
-{#        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>#}
-{#        <script type="text/javascript" src="{{  STATIC_URL }}js/vendor/bootstrap.min.js"></script>#}
-
-{#        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>#}
         <script type="text/javascript" src="{{  STATIC_URL }}js/Slimscroll/jquery.slimscroll.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/picturefill.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/handlebars.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.hammer-1.0.5.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/jquery.dragend-0.1.3.min.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/parsley.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/parsley.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/tooltip.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tabs.js"></script>
-{#        <script src="{{ STATIC_URL }}js/vendor/imagelightbox.js"></script>#}
         <script src="{{ STATIC_URL }}js/vendor/imagelightbox.min.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/RGBColor.js"></script>
@@ -424,13 +455,35 @@
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
         <script src="{{ STATIC_URL }}js/Tours.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
+    {% endcompress %}
     {% endblock javascript_library %}
+
+
     <script>
-
-
 {#    {% if debug %}#}
 {#        javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();#}
 {#     {% endif %}#}
+
+        $('#filterGender').change( function() {updateItemView(true)});
+        $('#filterType').change( function() {updateItemView(false)});
+        $('#filterSort').change( function() {updateItemView(false)});
+
+        function updateItemView(changeGender){
+            var genderFilter = $("#filterGender option:selected").attr("value");
+            var typeFilter = $("#filterType option:selected").attr("value");
+            var sortFilter = $("#filterSort option:selected").attr("value");
+            $("#shopItems").load(" #shopItems", $.param({genderfilter: genderFilter, typefilter: typeFilter, sortfilter: sortFilter}, function(){
+                $(this).children().unwrap();
+                setItemSizes();
+            }));
+            if (genderFilter.match("All"))
+                genderFilter = "All";
+            if (changeGender)
+                refreshtypes(genderFilter, typeFilter);
+
+
+        }
+
         $( document ).ready(function() {
             outdatedBrowser({
                 bgColor: '#f25648',
@@ -439,12 +492,7 @@
                 languagePath: ''
             })
         });
-        $(window).load(function() {
-            $("#{{ flatpage.title }}").addClass("active");
-            {% if messages %}
-                $('#messagesModal').modal();
-            {% endif %}
-        });
+
 
 
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -591,27 +639,81 @@
     </script>
 
     <script>
+        var setBanners = function () {
+            if (checkMode() != 'xs') {
+                var bannerWidth = $("#thumbnail-preview-indicators").width();
+                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 500 / 1779) + 'px');
+            }
+            else {
+                var bannerWidth = $("#thumbnail-preview-indicators").width();
+                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 642 / 968) + 'px');
+            }
+        }
         var setItemSizes = function () {
             var itemWidth = $(".itemSize").width();
-            $(".itemSize").css('height', (itemWidth * 1.25) + 'px');
+            if (itemWidth) {
+               $(".itemSize").css('height', (itemWidth * 1) + 'px');
+                $(".itemSizeEdit").css('height', (itemWidth * 1) + 'px');
+                $(".itemSizeEdit").css('width', (itemWidth * 1) + 'px');
+            }
+            else {
+                var itemWidthEdit = $(".itemSizeEdit").width();
+                $(".itemSizeEdit").css('height', (itemWidthEdit * 1) + 'px');
+            }
+
         };
 
         $(window).resize(function(){
             setItemSizes();
+            setBanners();
         });
 
         $(window).load(function(){
             setItemSizes();
+            setBanners();
         });
     </script>
 
     {% block javascript %}
     {% endblock javascript %}
-    {% endcompress %}
-    {% block uncompressable_js %}{% endblock %}
 
 
+    {% block uncompressable_js %}
+    <script>
+        $(window).load(function() {
+            $("#{{ flatpage.title }}").addClass("active");
+            {% if messages %}
+                $('#messagesModal').modal();
+            {% endif %}
+        });
 
-{% endblock body %}
+        var myresponse;
+        function refreshtypes(genderFilter, typeFilter) {
+            myresponse = $.getJSON( "{{ request.get_full_path }}getTypes/" + genderFilter, function(data) {
+                var list = [];
+                list.push('<option value="View All Types"><i>View All Types</i></option>');
+                $.each(data.shopCategoryNames, function(key, value)
+                {
+                    list.push('<option value="'+ value +'">'+ value +'</option>');
+                    if (!typeFilter.match('All') && $.inArray(typeFilter, data.shopCategoryNames) < 0)
+                    {
+                        list.push('<option value="' + typeFilter + '">' + typeFilter +'</option>')
+                    }
+                });
+                $('#filterType').html(list.join(''));
+                if (typeFilter.match("All")) {
+                   $('#filterType').val("View All Types");
+                }
+                else
+                {
+                    $('#filterType').val(typeFilter);
+                }
+
+            });
+        }
+    </script>
+    {% endblock %}
+
+
 </body>
 </html>

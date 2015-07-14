@@ -41,8 +41,8 @@ sitemaps = {
 urlpatterns = patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage',  kwargs={'url': '/about/'}, name='home_about'),
     url(r'^faq/$', 'flatpage', kwargs={'url': '/faq/'}, name='home_faq'),
-    url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
-    url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
+    # url(r'^policies/$', 'flatpage', kwargs={'url': '/policies/'}, name='home_policies'),
+    # url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
 )
 
 import debug_toolbar
@@ -51,15 +51,18 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
+(r'^dowser/', include('django_dowser.urls')),
+)
+
+urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
-    url(r'^all$', 'Tinville.views.all_gallery', name='all_home'),
-    url(r'^men$', 'Tinville.views.men_gallery', name='men_home'),
-    url(r'^women$', 'Tinville.views.women_gallery', name='women_home'),
+    url(r'^shop$', 'Tinville.views.shop_gallery', name='shop'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^robots\.txt$', include('robots.urls')),
     url(r'^cartdetail', TemplateView.as_view(template_name='cartdetail.html'), name='cartdetail'),
-    url(r'^register$', 'user.views.register'),
+    url(r'^register/(?P<type>\w+)$', 'user.views.register'),
+    url(r'^register', 'user.views.register'),
     url(r'^packageStatus$', 'custom_oscar.apps.dashboard.orders.views.packageStatus'),
     url(r'^activate/(?P<activation_key>\w+)$', 'user.views.activation', name='activate-user'),
     url(r'^ajax_login$', ajax_login,

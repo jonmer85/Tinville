@@ -2,7 +2,7 @@ import json
 from django.template.context import RequestContext
 from custom_oscar.apps.customer.forms import UserAddressForm
 from django.shortcuts import get_list_or_404, get_object_or_404, redirect
-from oscar.apps.customer.views import AddressUpdateView as CoreAddressUpdateView
+from oscar.apps.customer.views import AddressUpdateView as CoreAddressUpdateView, OrderHistoryView as CoreOrderHistoryView
 from oscar.apps.customer.views import AddressCreateView as CoreAddressCreateView
 from oscar.apps.customer.views import AddressListView as CoreAddressListView
 from oscar.apps.customer.views import AddressChangeStatusView as CoreAddressChangeStatusView
@@ -169,4 +169,14 @@ def _assign_shop_shipping_address(user, address_pk):
         address.populate_alternative_model(partner_address)
         partner_address.save()
         partner.save()
+
+
+class OrderHistoryView(CoreOrderHistoryView):
+    def get_queryset(self):
+        qs = self.model._default_manager.filter(user=self.request.user).exclude(number__contains="-")
+        if self.form.is_bound and self.form.is_valid():
+            qs = qs.filter(**self.form.get_filters())
+        return qs
+
+
 

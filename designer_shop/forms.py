@@ -56,10 +56,12 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description', style="padding-bottom: 10px"),
                          Field('category', placeholder='Choose a Category'),
+                         HTML('<b>Include shipping costs into the price</b><a data-toggle="modal" data-target="#shipping_estimation" '
+                              'class="pull-right" style="cursor: pointer;">Weight Based Shipping Price Guide</a>'),
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
-                         HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x500</p>"""),
+                         HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x400</p>"""),
                          HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
                 ),
                 Fieldset('Sizes and Colors',
@@ -373,7 +375,7 @@ class AboutBoxForm(forms.ModelForm):
 
 class DesignerShopColorPicker(forms.Form):
 
-    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial = "#663399", max_length=7, min_length = 6,
+    color = forms.CharField(widget=widgets.FarbtasticColorPicker, initial ="#5B595A", max_length=7, min_length = 6,
                              validators=[
         RegexValidator(
             regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
@@ -404,12 +406,14 @@ class BannerUploadForm(forms.ModelForm):
     helper.layout = Layout(
         Div(
             Fieldset('Banner Image',
+                     HTML("""<p>Image size recommendations are 1779x364</p>"""),
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>
                      <div rel="tooltip" title="info here"></div>"""),
                      Field('banner', css_class="autoHeight"),
                      Field('bannerCropping')),
 
             Fieldset('Mobile Banner Image',
+                     HTML("""<p>Image size recommendations are 958x636</p>"""),
                      HTML("""<p>If no image is selected, clicking submit will clear current banner</p>"""),
                      Field('mobileBanner', css_class="autoHeight"),
                      Field('mobileBannerCropping')),
