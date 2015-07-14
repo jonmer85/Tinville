@@ -1,0 +1,49 @@
+.landingAlign{
+    text-align:center;
+}
+
+.iconAlign{
+    float: left;
+}
+
+.primaryLogo{
+    width:30%;
+}
+
+.iconRowAlign{
+    display:flex;
+    height:auto;
+    width:auto;
+}
+
+.priceAlign{
+  text-align: center;
+  vertical-align: middle;
+  margin-left: 0%;
+
+}
+
+p{
+    text-align: left;
+    vertical-align: middle;
+    margin-left: 5%;
+}
+
+a{
+    text-align: center;
+    vertical-align: middle;
+    color: inherit;
+}
+
+.borderStyle{
+    border-top: 1px solid #000;
+    width:100%;
+}
+
+.tinvilleButton{
+    width: 20%;
+    position:relative;
+    top:50%;
+    left:50%;
+    margin-left: -10%
+}
