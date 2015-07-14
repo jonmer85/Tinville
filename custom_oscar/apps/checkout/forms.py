@@ -94,19 +94,16 @@ class ShippingAddressForm(CoreShippingAddressForm):
 @parsleyfy
 class PaymentInfoForm(forms.Form):
     stripe_token = forms.CharField()
-    card_number = forms.CharField(required=True,
-                                  widget=forms.TextInput(attrs={'data-stripe': 'number',
+    card_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'data-stripe': 'number',
                                                                 'pattern': '\d*', 'autocomplete': 'off',
                                                                 'data-parsley-cardNum': 'data-parsley-cardNum'}))
 
-    expiration_date = forms.CharField(required=True, min_length=5, max_length=5,
-                                       widget=forms.TextInput(attrs={'data-stripe': 'exp-date',
+    expiration_date = forms.CharField(required=False, widget=forms.TextInput(attrs={'data-stripe': 'exp-date',
                                                                      'pattern': '\d*', 'autocomplete': 'off',
                                                                      'data-parsley-group': 'cardexpiry',
                                                                      'data-parsley-cardexpiry': 'data-parsley-cardexpiry'}))
 
-    cvc = forms.CharField(required=True, max_length=4,
-                                       widget=forms.PasswordInput(attrs={'data-stripe': 'cvc',
+    cvc = forms.CharField(required=False, max_length=4, widget=forms.PasswordInput(attrs={'data-stripe': 'cvc',
                                                                          'pattern': '\d*', 'autocomplete': 'off',
                                                                          'data-parsley-cardcvc': 'cardcvc'}))
 
@@ -143,7 +140,6 @@ class PaymentInfoForm(forms.Form):
                     css_class='col-xs-6'),
                 css_class="row"
             ),
-
         )
     )
 
