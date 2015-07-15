@@ -1,3 +1,7 @@
+from common.factories import create_order, create_basket_with_products
+from designer_shop.forms import Product
+from designer_shop.models import Shop
+from django.contrib.auth.models import Permission
 import lettuce.django
 import re
 import time
@@ -145,6 +149,10 @@ def wait_for_element_with_id_to_exist(id, root=world.browser):
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_id(id))
     return world.browser.find_element_by_id(id)
 
+def wait_for_element_with_xpath_to_exist(xpath, root=world.browser):
+    WebDriverWait(root, 15).until(lambda s: s.find_element_by_xpath(xpath))
+    return world.browser.find_element_by_xpath(xpath)
+
 def wait_for_element_with_css_selector_to_exist(css_selector, root=world.browser):
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_css_selector(css_selector))
     return world.browser.find_element_by_css_selector(css_selector)
@@ -204,6 +212,13 @@ def wait_for_element_with_partial_link_text_to_be_displayed(link_text, root=worl
 def wait_for_element_with_link_text_to_be_clickable(link_text, root=world.browser):
     WebDriverWait(root, 30).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
     return world.browser.find_element_by_link_text(link_text)
+
+def assert_element_with_link_text_does_not_exist(link_text):
+    try:
+        world.browser.find_element_by_link_text(link_text)
+        assert False, 'Did not expect link text' + link_text + ' to be an element'
+    except NoSuchElementException:
+        pass
 
 
 def assert_page_exist(url):
@@ -321,4 +336,28 @@ def fill_in_access_form(access_code):
     form = world.browser.find_element_by_id("betaform")
     form.find_element_by_name("access_code").send_keys(access_code)
     return form
+
+def setup_basic_order_data():
+    my_user_has_correct_permissions()
+    product_list = []
+    product_list.append(Product.objects.get(pk=2))
+    product_list.append(Product.objects.get(pk=3))
+    basket1 = create_basket_with_products(product_list)
+    basket2 = create_basket_with_products(product_list)
+    basket3 = create_basket_with_products(product_list)
+    create_order(number="1-10002", basket=basket1, user=TinvilleUser.objects.get(pk=2), shop=Shop.objects.get(pk=1))
+    create_order(number="10002", basket=basket1, user=TinvilleUser.objects.get(pk=2), shop=None)
+    create_order(number="1-10003", basket=basket2, user=TinvilleUser.objects.get(pk=2), shop=Shop.objects.get(pk=1))
+    create_order(number="10003", basket=basket2, user=TinvilleUser.objects.get(pk=2), shop=None)
+    create_order(number="1-10004", basket=basket3, user=TinvilleUser.objects.get(pk=2), shop=Shop.objects.get(pk=1), status="Shipped")
+    create_order(number="10004", basket=basket3, user=TinvilleUser.objects.get(pk=2), shop=None, status="Shipped")
+
+def my_user_has_correct_permissions():
+    user = TinvilleUser.objects.get(pk=2)
+    dashboard_access_perm = Permission.objects.get(
+                codename='dashboard_access', content_type__app_label='partner')
+    user.user_permissions.add(dashboard_access_perm)
+    user.save()
+    world.browser.get(lettuce.django.get_server().url('/'))
+    sign_in("demo@user.com", "tinville")
 
