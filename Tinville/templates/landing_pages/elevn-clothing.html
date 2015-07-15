@@ -1,0 +1,88 @@
+
+{% extends "base.html" %}
+{% load i18n %}
+{% load cropping %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/landing-styles.css" />
+{% endblock css %}
+
+{% block title %}Gag Threads Landing Page{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class ="landingAlign">
+
+            <div class="iconRowAlign">
+                <img class = "col-xs-12 col-sm-4 col-md-4" src="/static/img/landing_page/Elevn Clothing Co/Cross Tail Tee White with Background 1.jpg">
+                <div class = "row">
+                    <img class = "col-xs-12 col-sm-4 col-md-4" src="/static/img/landing_page/Elevn Clothing Co/Stars and Stripes Black.jpg">
+                    <img class = "col-xs-12 col-sm-4 col-md-4" src="/static/img/landing_page/Elevn Clothing Co/Chino Brown Shorts.jpg">
+                        <div class = "row">
+                            <img class = "col-xs-12 col-sm-4 col-md-4" src="/static/img/landing_page/Elevn Clothing Co/King Homes Shirt Black.jpg">
+                            <img class = "col-xs-12 col-sm-4 col-md-4" src="/static/img/landing_page/Elevn Clothing Co/5 Lines Tee Black.jpg">
+                            <img class = "col-xs-12 col-sm-4 col-md-4" src="/static/img/landing_page/Elevn Clothing Co/Stars and Stripes Bucket Hat Navy.jpg">
+                        </div>
+                 </div>
+            </div>
+
+            <div>
+                <img class = 'iconAlign primaryLogo col-xs-4 col-sm-4 col-md-4' src="/static/img/landing_page/Elevn Clothing Co/Eleven Clothing Co Logo.jpg"></div>
+                <div class = "col-xs-8 col-sm-8 col-md-8"><h1>
+                    <b>
+                    <p>Elevn Clothing Co. Apparel Is Now Available At Tinville</p>
+                    </b></h1>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h3>
+
+                        <p>Established in 2013 and inspired by the streets of L.A., Elevn Clothing Co. has made
+                        their way onto Tinville.com, and we couldn't be more excited to be a part of their
+                        flourishing urban brand</p>
+
+                        <p>"Never Giving Up" is a lifestyle they live by, and it's evident in their quality designs
+                        and unique apparel. Shop Elevn Clothing today to see their latest designs<br><br></p>
+                    </h3>
+            </div>
+        </div>
+    </div>
+        <a href="https://www.tinville.com/gag-threads/"><button class = "btn btn-primary tinvilleButton ladda-button">Shop Now</button></a>
+</div>
+
+<b><hr class = borderStyle></b>
+
+<div class="container">
+    <div class="newReleases row">
+            <div class="iconRowAlign">
+                    <img class = "col-xs-12 col-sm-4 col-md-4" src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/543785-1.jpg.400x400_q85_box-0%2C0%2C458%2C458_crop_detail.jpg">
+                    <img class = "col-xs-12 col-sm-4 col-md-4" src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/LoveTShirtBack.jpg.400x400_q85_box-NaN%2CNaN%2CNaN%2CNaN_crop_detail.jpg">
+                    <img class = "col-xs-12 col-sm-4 col-md-4" src="https://tinville-alpha.s3.amazonaws.com/media/images/products/2015/07/543581-1.jpg.400x400_q85_box-0%2C41%2C458%2C499_crop_detail.jpg">
+            </div>
+            <div class="iconRowAlign">
+                <p class = "priceAlign col-xs-12 col-sm-4 col-md-4">
+                    <a href="https://www.tinville.com/elevn-clothing-co/bondi-shorts//">
+                       Bondi Green Shorts <br> $65.00
+                    </a>
+                </p>
+                <p class = "priceAlign col-xs-12 col-sm-4 col-md-4">
+                    <a href="https://www.tinville.com/elevn-clothing-co/cross-tail-tee/">
+                        Cross Tail Tee<br> $68.99
+                    </a>
+                </p>
+                <p class = "priceAlign col-xs-12 col-sm-4 col-md-4">
+                    <a href="https://www.tinville.com/elevn-clothing-co/snowman-tee/">
+                       Snowman Tee<br> $55.00
+                    </a>
+                </p>
+            </div>
+
+    </div>
+</div>
+
+{% endblock content %}
