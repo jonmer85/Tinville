@@ -34,10 +34,12 @@ from user.models import TinvilleUser
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation,convert_to_currency
 from django.views.generic import ListView
 from oscar.apps.analytics.scores import Calculator
-
+import logging
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 ProductImage = get_model('catalogue', 'ProductImage')
+
+logger = logging.getLogger(__name__)
 
 
 class ShopListView(ListView):
@@ -684,8 +686,11 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                             return renderShopEditor(request, shop, item=item)
                         else:
                             raise IntegrityError("Image error")
-                except IntegrityError:
+                except IntegrityError as e:
                     form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
+                    messages.error(request, "There was a problem uploading your image(s). Please try a different image(s).")
+                    logger.warning("Invalid image formset - Exception: %s" % str(e))
+                    image_formset = ProductImageFormSet(instance=item if item else None)
             else:
                 form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
                 image_formset = ProductImageFormSet(instance=item if item else None)
