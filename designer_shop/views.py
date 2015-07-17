@@ -59,7 +59,7 @@ class IsShopOwnerDecorator(object):
     def authenticate(self, request, shop_slug, item_slug):
         if request.user.is_authenticated():
             shop = get_object_or_404(Shop, slug__iexact=shop_slug)
-            if request.user.id == shop.user_id:
+            if request.user.id == shop.user_id or request.user.is_staff:
                 response = self.view_func(request, shop_slug) \
                     if not item_slug else self.view_func(request, shop_slug, item_slug)
                 return response
