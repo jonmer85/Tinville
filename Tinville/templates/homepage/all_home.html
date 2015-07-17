@@ -1,13 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load cropping %}
-{% block head %}
-    {{ block.super }}
-{#    {% block meta %}#}
-{#        {{ block.super }}#}
-{#        {% block meta_title %}Tinville{% endblock meta_title %}#}
-{#        {% block meta_description %}Tinville is an interactive e-commerce platform that is revolutionizing the way consumers interact with fashion designers and their product lines. Tinville was created from the need to offer designers a more direct route to their clientele and fan base. In the process, Tinville understands the importance of connecting designers to one another, increasing their exposure to the masses, while building relationships with those with an interest in fashion.{% endblock meta_description %}#}
-{#    {% endblock meta %}#}
+{% block meta_title %}Tinville{% endblock meta_title %}
 
 
 
@@ -16,7 +10,7 @@
         <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/designer_shop/styles.css" />
     {% endblock css %}
-{% endblock head %}
+
 
 {#    {% block body_class %}{{ block.super }} home{% endblock %}#}
     {% block content %}
@@ -25,11 +19,11 @@
 
         <div id="thumbnail-preview-indicators" >
             <span data-picture class="banner">
-                <span data-src="{{ STATIC_URL }}img/banner-xs.jpg"></span>
-                <span data-src="{{ STATIC_URL }}img/banner-xl.jpg" data-media="(min-width: 768px)"></span>
+                <span data-src="{{ STATIC_URL }}img/home/tinville_mobile.jpg"></span>
+                <span data-src="{{ STATIC_URL }}img/home/tinville_banner.jpg" data-media="(min-width: 768px)"></span>
                 <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
                 <noscript>
-                    <img src="{{ STATIC_URL }}img/banner-xs.png">
+                    <img src="{{ STATIC_URL }}img/home/tinville_mobile.jpg">
                 </noscript>
             </span>
         </div>
