@@ -73,20 +73,28 @@ class ShippingAddressForm(CoreShippingAddressForm):
 
         if {'first_name', 'last_name', 'line1', 'line4', 'state', 'postcode'}.issubset(self.cleaned_data):
 
+            strName=self.cleaned_data['first_name'].strip() + ' ' + self.cleaned_data['last_name'].strip()
+            strStreet1=self.cleaned_data['line1'].strip()
+            strStreet2=self.cleaned_data['line2'].strip()
+            strStreet3=self.cleaned_data['line3'].strip()
+            strCity=self.cleaned_data['line4'].strip().lower()
+            strState=self.cleaned_data['state'].strip().lower()
+            strZip=self.cleaned_data['postcode'].strip()
+
             try:
                 verified_address = easypost.Address.create_and_verify(
-                    name=self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name'],
-                    street1=self.cleaned_data['line1'],
-                    street2=self.cleaned_data['line2'],
-                    street3=self.cleaned_data['line3'],
-                    city=self.cleaned_data['line4'],
-                    state=self.cleaned_data['state'],
-                    zip=self.cleaned_data['postcode'],
+                    name=strName,
+                    street1=strStreet1,
+                    street2=strStreet2,
+                    street3=strStreet3,
+                    city=strCity,
+                    state=strState,
+                    zip=strZip,
                     country='US')
-                if(self.cleaned_data['state'].lower() != verified_address.state.lower()):
-                    raise forms.ValidationError(_('Invalid state: %s') % self.cleaned_data['state'])
-                if(self.cleaned_data['line4'].lower() != verified_address.city.lower()):
-                    raise forms.ValidationError(_('Invalid city: %s') % self.cleaned_data['line4'])
+                if(strState != verified_address.state.lower()):
+                    raise forms.ValidationError(_('Invalid state: %s') % strState)
+                if(strCity != verified_address.city.lower()):
+                    raise forms.ValidationError(_('Invalid city: %s') % strCity)
             except Exception, Argument:
                 logger.info( "custom_oscar.apps.checkout.forms.ShippingAddressForm.clean(): failed to verify address")
                 raise forms.ValidationError(_('Please enter a valid address. %s') % Argument.message )
