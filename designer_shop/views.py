@@ -261,7 +261,7 @@ def get_sort_order(filteredobjects, sortfilter):
     elif sortfilter == 'price-asc':
         return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax)
     elif sortfilter == 'price-dsc':
-        return sorted(filteredobjects, key=lambda i: sum(), reverse=True)
+        return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax, reverse=True)
     elif sortfilter == 'pop-asc':
         return sorted(filteredobjects, key=lambda i: sum([j.stats.score if has_stats(j) else 0 for j in get_list_or_empty(Product, parent=i.id)]))
     elif sortfilter == 'pop-dsc':
