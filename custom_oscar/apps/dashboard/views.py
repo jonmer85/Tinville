@@ -13,7 +13,6 @@ from custom_oscar.apps.customer.views import _get_shipping_address_pk_that_is_sh
 from custom_oscar.apps.dashboard.orders.views import queryset_orders_for_user
 from common.utils import get_list_or_empty
 
-
 ConditionalOffer = get_model('offer', 'ConditionalOffer')
 Voucher = get_model('voucher', 'Voucher')
 Basket = get_model('basket', 'Basket')
@@ -23,6 +22,7 @@ Order = get_model('order', 'Order')
 Line = get_model('order', 'Line')
 Partner = get_model('partner', 'Partner')
 User = get_user_model()
+
 
 def get_total_product_count(user):
     if user.is_staff:
@@ -135,6 +135,18 @@ class IndexView(CoreIndexView):
 
         total_lines_last_day = Line.objects.filter(
             order__in=orders_last_day).count()
+
+        # total_open_baskets = self.get_open_baskets()
+        #
+        # # {'lines__stockrecord__partner_id': self.request.user.id}
+        # inner_qs = self.get_open_baskets()
+        # entries = Entry.objects.filter(blog__name__in=inner_qs)
+        #
+        # for basket in total_open_baskets:
+        #     # lines__stockrecord__partner==self.request.user
+        #     for line in basket.lines.all():
+        #         sdsd = 2
+        # # total_filtered_baskets_users
 
         stats = {
             'total_orders_last_day': orders_last_day.count(),

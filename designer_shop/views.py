@@ -33,6 +33,7 @@ from user.forms import BetaAccessForm
 from user.models import TinvilleUser
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation,convert_to_currency
 from django.views.generic import ListView
+from oscar.apps.analytics.scores import Calculator
 import logging
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
@@ -121,7 +122,7 @@ def shopper(request, slug):
         else:
             return HttpResponseRedirect(reverse('under_construction'))
 
-    if not check_access_code(request) and not settings.DISABLE_BETA_ACCESS_CHECK:
+    if not settings.DISABLE_BETA_ACCESS_CHECK and not check_access_code(request):
         if request.user.is_anonymous() or not request.user.is_seller:
             return HttpResponseRedirect('%s?shop=%s' % (reverse('beta_access'), slug))
 
@@ -262,16 +263,22 @@ def get_sort_order(filteredobjects, sortfilter):
         return filteredobjects.order_by('date_created')
     elif sortfilter == 'price-asc':
         return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax)
-
     elif sortfilter == 'price-dsc':
         return sorted(filteredobjects, key=lambda i: i.min_child_price_excl_tax, reverse=True)
     elif sortfilter == 'pop-asc':
-        return filteredobjects.order_by('?')
+        return sorted(filteredobjects, key=lambda i: sum([j.stats.score if has_stats(j) else 0 for j in get_list_or_empty(Product, parent=i.id)]))
     elif sortfilter == 'pop-dsc':
-        return filteredobjects.order_by('?')
+        return sorted(filteredobjects, key=lambda i: sum([j.stats.score if has_stats(j) else 0 for j in get_list_or_empty(Product, parent=i.id)]), reverse=True)
     else:
         return filteredobjects.order_by('?')
 
+
+def has_stats(product):
+    try:
+        product.stats
+    except:
+        return False
+    return True
 
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
