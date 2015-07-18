@@ -54,7 +54,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^$', include('Tinville.favicon_urls')),
+    url(r'', include('Tinville.favicon_urls')),
 )
 
 urlpatterns += patterns('',
@@ -76,6 +76,7 @@ urlpatterns += patterns('',
     url(r'^ajax_login$', ajax_login,
         {'template_name': 'login_form.html', 'authentication_form': LoginForm},
         name='ajax_logins'),
+    url(r'^landing/gag-threads', TemplateView.as_view(template_name='landing_pages/gag-threads.html'), name='gag-threads'),
     url(r'^login/$', AccountAuthView.as_view(), name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
