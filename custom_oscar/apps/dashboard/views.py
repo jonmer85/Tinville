@@ -57,9 +57,9 @@ def get_dashboard_notifications(request, orders):
 class IndexView(CoreIndexView):
     def get_template_names(self):
         if self.request.user.is_staff:
-            return ['templates/dashboard/index.html', ]
+            return ['dashboard/index.html', ]
         else:
-            return ['templates/dashboard/index_nonstaff.html', 'templates/dashboard/index.html']
+            return ['dashboard/index_nonstaff.html', 'dashboard/index.html']
 
     def get_context_data(self, **kwargs):
         ctx = TemplateView.get_context_data(self, **kwargs)

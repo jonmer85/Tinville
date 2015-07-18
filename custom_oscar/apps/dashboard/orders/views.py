@@ -48,7 +48,7 @@ def queryset_orders_for_user(user):
         return Order.objects.filter(id__in=orderlines).distinct().filter(number__contains="-")
 
 class OrderListView(CoreOrderListView):
-    template_name = 'templates/dashboard/orders/order_list.html'
+    template_name = 'dashboard/orders/order_list.html'
 
     def dispatch(self, request, *args, **kwargs):
         # base_queryset is equal to all orders the user is allowed to access
@@ -61,7 +61,7 @@ class OrderListView(CoreOrderListView):
 
 
 class OrderDetailView(CoreOrderDetailView):
-    template_name = 'templates/dashboard/orders/order_detail.html'
+    template_name = 'dashboard/orders/order_detail.html'
     easypost.api_key = settings.EASYPOST_API_KEY
     order_actions = ('save_note', 'delete_note', 'change_order_status',
                      'create_order_payment_event', 'calculate_shipping_cost')
@@ -361,10 +361,10 @@ def is_number(s):
         return False
 
 class LineDetailView(CoreLineDetailView):
-    template_name = 'templates/dashboard/orders/line_detail.html'
+    template_name = 'dashboard/orders/line_detail.html'
 
 class OrderStatsView(CoreOrderStatsView):
-    template_name = 'templates/dashboard/orders/statistics.html'
+    template_name = 'dashboard/orders/statistics.html'
 
     def get_stats(self, filters):
         orders = queryset_orders_for_user(self.request.user).filter(**filters)

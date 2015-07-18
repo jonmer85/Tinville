@@ -1,9 +1,11 @@
+import urlparse
 from crispy_forms.layout import Layout, Field, Div, HTML
 from django.conf import settings
 from decimal import Decimal as D, ROUND_FLOOR
 import string
 from django.core.exceptions import ValidationError, SuspiciousOperation
 import re
+from django.core.urlresolvers import resolve
 from designer_shop.models import Shop
 
 def convert_to_currency(orignal_amount):
@@ -71,6 +73,12 @@ def CroppedFieldLayout(croppedField, preview):
                 css_class='img-container', style="margin-top: 5px; margin-bottom: 10px"
             )
         )
+
+def is_url_taken_no_shop_check(url):
+    if resolve(url).view_name != 'designer_shop.views.shopper':
+        return True
+    return False
+
 
 def ExtractDesignerIdFromOrderId(orderId):
     shopIdMatch = re.search('^([0-9]+)', orderId)

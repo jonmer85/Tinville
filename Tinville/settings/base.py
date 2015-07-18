@@ -136,7 +136,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
-    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
@@ -213,6 +213,7 @@ INSTALLED_APPS = [
                                   'custom_oscar.apps.checkout',
                                   'custom_oscar.apps.dashboard',
                                   'custom_oscar.apps.dashboard.orders',
+                                  'custom_oscar.apps.dashboard.pages',
                                   'custom_oscar.apps.order'])
 
 
