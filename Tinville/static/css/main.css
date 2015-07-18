@@ -231,7 +231,14 @@ body
     white-space: nowrap;
 
 }
-
+.logEmail a:link,
+.logEmail a:visited,
+.logEmail a:hover,
+.logEmail a:active
+{
+    color           : #F46430;
+    text-decoration : none;
+}
 .menuEmail {
     display: block;
     clear: both;
@@ -242,6 +249,15 @@ body
     position: relative;
     padding: 15px;
 }
+.menuEmail a:link,
+.menuEmail a:visited,
+.menuEmail a:hover,
+.menuEmail a:active
+{
+    color           : #F46430;
+    text-decoration : none;
+}
+
 #navLogout
 {
     font-size    : 2em;
