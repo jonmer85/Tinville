@@ -33,10 +33,12 @@ from user.forms import BetaAccessForm
 from user.models import TinvilleUser
 from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspicious_operation,convert_to_currency
 from django.views.generic import ListView
-
+import logging
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 ProductImage = get_model('catalogue', 'ProductImage')
+
+logger = logging.getLogger(__name__)
 
 
 class ShopListView(ListView):
@@ -57,7 +59,7 @@ class IsShopOwnerDecorator(object):
     def authenticate(self, request, shop_slug, item_slug):
         if request.user.is_authenticated():
             shop = get_object_or_404(Shop, slug__iexact=shop_slug)
-            if request.user.id == shop.user_id:
+            if request.user.id == shop.user_id or request.user.is_staff:
                 response = self.view_func(request, shop_slug) \
                     if not item_slug else self.view_func(request, shop_slug, item_slug)
                 return response
@@ -221,12 +223,15 @@ def get_filtered_products(shop=None, post=None, filter=None):
         context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
     return context
 
-def get_category_products(shop=None, genderfilter=None, itemtypefilter=None):
+def get_category_products(shop=None, genderfilter=None, itemtypefilter=None, sortfilter='date-asc'):
+    if genderfilter is None:
+        genderfilter = "View All"
     if itemtypefilter is None:
         itemtypefilter = "View All Types"
     if shop is None and filter is not None:
-        filteredProductList = Product.objects.filter(
-            Q(shop = Shop.objects.filter(user__is_approved = True), parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter))
+        filteredProductList = get_sort_order(Product.objects.filter(
+            Q(shop = Shop.objects.filter(user__is_approved = True), parent__isnull=True) & get_valid_categories_for_filter(genderfilter, itemtypefilter)),
+                                             sortfilter)
         context = filteredProductList
     else:
         context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
@@ -677,8 +682,11 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                             return renderShopEditor(request, shop, item=item)
                         else:
                             raise IntegrityError("Image error")
-                except IntegrityError:
+                except IntegrityError as e:
                     form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
+                    messages.error(request, "There was a problem uploading your image(s). Please try a different image(s).")
+                    logger.warning("Invalid image formset - Exception: %s" % str(e))
+                    image_formset = ProductImageFormSet(instance=item if item else None)
             else:
                 form.data['sizeVariation'] = SIZE_TYPES_AND_EMPTY[0]
                 image_formset = ProductImageFormSet(instance=item if item else None)

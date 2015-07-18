@@ -10,7 +10,7 @@ from selenium.common.exceptions import *
 from django.core.exceptions import ObjectDoesNotExist
 
 @step(u'I access the registration page')
-def access_registration_url(step):
+def access_registration_url(step,type):
     world.browser.get(lettuce.django.get_server().url(type))
 
 @step(u'I access the home page')
@@ -19,17 +19,17 @@ def access_home_url(step):
 
 @step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password, type='/register/customer')
+    form = fill_in_user_form(email=email, password=password, customer=True)
     submit_form_and_activate_user(form)
 
 @step(u'(?:When|And) I register but not activate a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_but_not_activate_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password, type='/register/designer')
+    form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form, expectSuccess=True, activateUser=False)
 
 @step(u'(?:When|And) I try to again register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
-    form = fill_in_user_form(email=email, password=password, type='/register/customer')
+    form = fill_in_user_form(email=email, password=password)
     submit_form_and_activate_user(form, False)
 
 @step(u'(?:When|And) I register for a shop named "([^"]*)"')
@@ -137,7 +137,7 @@ def then_i_should_not_see_validation_errors(step):
 
 @step(u'Then I should get a validation error on email address')
 def then_i_should_get_a_validation_error_on_email_address(step):
-    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register/customer'))
+    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register/designer'))
     assert_class_exists('has-error')
 
 @step(u'I should be logged in')

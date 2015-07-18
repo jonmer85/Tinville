@@ -67,7 +67,7 @@ def error_not_debit_card(step, error):
     if error.startswith('"') and error.endswith('"'):
         error = error[1:-1] #subracting first and last characters in string -quotes in this case
     wait_for_element_with_css_selector_to_be_displayed('#messagesModal')
-    assert_selector_contains_text("#messagesModal .alert-error", error)
+    assert_selector_contains_text("#messagesModal .alert-danger", error)
 
 @step("I should see the follow form error '(.*)'")
 def should_see_form_error(step, error):
@@ -77,8 +77,8 @@ def should_see_form_error(step, error):
 @step("Expiration month and year validation '(.*)'")
 def expiration_month_year(step, error):
     wait_for_element_with_css_selector_to_be_displayed('#parsley-id-7947')
-    assert_selector_contains_text("#parsley-id-7947 .alert-error", error)
+    assert_selector_contains_text("#parsley-id-7947 .alert-danger", error)
 
 @step("Payment Info wrong month,year,cvc failure")
 def when_i_enter_the_following_information_with_wrong_month_year_cvc_information(step,failure):
-    assert_selector_contains_text("#messagesModal .alert-error", failure)
+    assert_selector_contains_text("#messagesModal .alert-danger", failure)

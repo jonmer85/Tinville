@@ -18,7 +18,6 @@ from django.contrib.auth import views as auth_views
 from oscar.views.decorators import login_forbidden
 from django.core.urlresolvers import reverse_lazy
 from rollyourown.seo.admin import register_seo_admin
-
 from oscar.app import application
 
 admin.autodiscover()
@@ -55,8 +54,17 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
+    url(r'^$', include('Tinville.favicon_urls')),
+)
+
+urlpatterns += patterns('',
     url(r'^$', 'Tinville.views.home_gallery', name='home'),
-    url(r'^shop$', 'Tinville.views.shop_gallery', name='shop'),
+    url(r'^shop/$', 'Tinville.views.shop_gallery', name='shop'),
+    url(r'^men/$', 'Tinville.views.men_home', name='men'),
+    url(r'^women/$', 'Tinville.views.women_home', name='women'),
+    url(r'^shop/getTypes/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_types'),
+    url(r'^men/getTypes/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_types'),
+    url(r'^women/getTypes/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_types'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^robots\.txt$', include('robots.urls')),

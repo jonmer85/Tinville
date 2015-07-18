@@ -3,19 +3,14 @@
 {% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
 {% load bleach_tags %}
 {% load currency_filters %}
-{#{% block head %}#}
-{#    {{ block.super }}#}
-{##}
-{#    {% block meta %}#}
-{##}
-{#        {{ block.super }}#}
-{#        {% block meta_title %}{{ item.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}#}
-{#        {% block meta_description %}{{ item.description|striptags | truncatechars:160 }}{% endblock meta_description %}#}
-{#    {% endblock meta %}#}
-{#{% endblock head %}#}
-{% block css %}
-    {{ block.super }}
-{% endblock css %}
+
+    {% block meta_title %}{{ item.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
+    {% block meta_description %}{{ item.description|striptags | truncatechars:160 }}{% endblock meta_description %}
+
+    {% block css %}
+        {{ block.super }}
+    {% endblock css %}
+
 
 {% block content %}
     {{ block.super }}
@@ -146,7 +141,7 @@
                                         <div class="sharingiscaring col-xs-12">
                                             <div class="shareMeTitle">Share This Item</div>
                                             <div class="socialMediaLinks">
-                                                <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.get_full_path }}" target="_blank" class="facebooklogo">
+                                                <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="facebooklogo">
                                                     <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
                                                 </a>
                                                 <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
@@ -187,8 +182,196 @@
 {% endblock javascript_library %}
 
 {% block uncompressable_js %}
+{{ block.super }}
 <!-- Please call pinit.js only once per page -->
 <script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+<script>
+
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+
+    refreshvariants();
+
+    var myresponse;
+    function refreshvariants() {
+        myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
+            var colorlist = [];
+            colorlist.push('<option value=""><i>Choose a Color</i></option>');
+            $.each(data.variants, function(key)
+            {
+                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
+            });
+            var currentcolor = $('#itemColorSelection').val();
+            $('#itemColorSelection').html(colorlist.join(''));
+            $('#itemColorSelection').val(currentcolor);
+            updateQuantityPrice();
+        });
+    }
+    setInterval(refreshvariants, 60000);
+    $("#itemSizeSelection").change(function() {
+        $('option[value=""]').attr('disabled', true);
+        $("#id_AddToCart").text("Add to bag");
+    });
+
+    $("#itemColorSelection").change(function() {
+        $('option[value=""]').attr('disabled', true);
+        $("#id_AddToCart").text("Add to bag");
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var sizelist = [];
+            if (key === $("#itemColorSelection").val())
+            {
+                var currentsize = ""
+                sizelist.push('<option value=""><i>Choose a Size</i></option>');
+                $.each(val, function() {
+                    if (this.quantity <= 0)
+                    {
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>')
+                    }
+                    else
+                    {
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>');
+                    }
+                    if (this.size === $('#itemSizeSelection').val() && this.quantity !== 0)
+                    {
+                        currentsize = $('#itemSizeSelection').val();
+                    }
+                });
+                $('#itemSizeSelection').html(sizelist.join(''));
+                $('#itemSizeSelection').val(currentsize);
+                return false;
+            }
+        });
+    });
+    var validateFront = function () {
+          if (true === $('#itemDetailForm').parsley().isValid()) {
+            $('.parsley-errors-list').remove();
+
+          }
+          else{
+              $('.parsley-errors-list').addClass("filled bootstrapError help-block");
+          }
+
+        };
+    var updateQuantityPrice = function() {
+         validateFront();
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var variantprice = ""
+            var variantquantity = ""
+            var numberquantity = ""
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    if (this.size === $("#itemSizeSelection").val())
+                    {
+{#                        variantprice = '$' + this.price#}
+                        variantquantity = this.quantity + " remaining"
+                        numberquantity = this.quantity
+                    }
+                });
+                if (variantprice === "")
+                {
+{#                    TODO: Add this back when we had indiviudal pricing#}
+{#                    variantprice = 'From $' + myresponse.responseJSON.minprice;#}
+                      variantprice = '$' + myresponse.responseJSON.minprice;
+                }
+                if (numberquantity === "")
+                {
+                    numberquantity = "1"
+                }
+                $('.itemPrice').text(variantprice);
+                $('.itemStockQuantity').text(variantquantity);
+                $('#buyQuantity').attr('max', numberquantity)
+
+                return false
+            }
+            if (variantprice === "")
+            {
+                {#     TODO: Add this back when we had indiviudal pricing #}
+                {#  variantprice = 'From $' + myresponse.responseJSON.minprice;#}
+                variantprice = '$' + myresponse.responseJSON.minprice;
+                $('.itemPrice').text(variantprice);
+
+            }
+        });
+    }
+
+    $("#itemSizeSelection").change(updateQuantityPrice);
+
+    $("#itemColorSelection").change(updateQuantityPrice);
+
+{#    $(".otherImage").click(function (){#}
+{#        var src = $(this).attr("src");#}
+{#        $("#itemSelectedImage img").attr("src", src);#}
+{#    });#}
+
+
+
+{#    Adding the shooping cart stuff#}
+    $(document).ready(function(){
+
+
+
+        $.listen('parsley:field:validate', function () {
+             validateFront();
+        });
+
+
+    $("#id_AddToCart").click(function(e){
+        var l = Ladda.create( document.querySelector( '#id_AddToCart' ) );
+
+
+        $('#itemDetailForm').parsley().validate();
+        if (false === $('#itemDetailForm').parsley().isValid()) {
+            $('.parsley-errors-list').addClass("filled bootstrapError help-block");
+        }
+        else{
+            l.start();
+            $('.parsley-errors-list').remove();
+            e.preventDefault();
+            var self = $(this)
+            var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
+            var sizeFilter = (document.getElementById("itemSizeSelection").selectedIndex === 0) ? '' : ($("#itemSizeSelection option:selected").text());
+            var colorFilter = (document.getElementById("itemColorSelection").selectedIndex === 0) ? '' : ($("#itemColorSelection option:selected").text());
+            var qtyFilter = $("#buyQuantity").val()
+
+            var ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        sizeFilter: sizeFilter,
+                        colorFilter: colorFilter,
+                        qtyFilter: qtyFilter
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.msg == ''){
+
+                            data.image = "{{ MEDIA_URL }}" + data.image
+                            AddCartItem(data)
+                            cartCount();
+                            $("#id_AddToCart").text("");
+                            var txt1 = "<i id='okButton' class='glyphicon glyphicon-ok'></i>";
+                            var txt2 = "  Added to bag";  // Create text with jQuery
+                            $("#id_AddToCart").append(txt1, txt2);
+                        }
+                        else {
+                            $('#messageId').html(data.msg)
+                            $('#messageModal').modal('show');
+                        }
+
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                        var msg = $.parseJSON(data.responseText)['errors']
+                        $('#messageId').html(msg)
+                        $('#messageModal').modal('show');
+                    }
+                });
+                l.stop();
+            }
+    });
+ });
+
+</script>
 {% endblock uncompressable_js %}
 
 
@@ -418,199 +601,6 @@ $( function()
 		});
 
 	});
-
-
-
-
-
-
-
-
-    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-    $(".shopColor").css("color", "{{ shop.color }}");
-    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
-
-    refreshvariants();
-
-    var myresponse;
-    function refreshvariants() {
-        myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
-            var colorlist = [];
-            colorlist.push('<option value=""><i>Choose a Color</i></option>');
-            $.each(data.variants, function(key)
-            {
-                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
-            });
-            var currentcolor = $('#itemColorSelection').val();
-            $('#itemColorSelection').html(colorlist.join(''));
-            $('#itemColorSelection').val(currentcolor);
-            updateQuantityPrice();
-        });
-    }
-    setInterval(refreshvariants, 60000);
-    $("#itemSizeSelection").change(function() {
-        $('option[value=""]').attr('disabled', true);
-        $("#id_AddToCart").text("Add to bag");
-    });
-
-    $("#itemColorSelection").change(function() {
-        $('option[value=""]').attr('disabled', true);
-        $("#id_AddToCart").text("Add to bag");
-        $.each(myresponse.responseJSON.variants, function(key, val) {
-            var sizelist = [];
-            if (key === $("#itemColorSelection").val())
-            {
-                var currentsize = ""
-                sizelist.push('<option value=""><i>Choose a Size</i></option>');
-                $.each(val, function() {
-                    if (this.quantity <= 0)
-                    {
-                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>')
-                    }
-                    else
-                    {
-                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>');
-                    }
-                    if (this.size === $('#itemSizeSelection').val() && this.quantity !== 0)
-                    {
-                        currentsize = $('#itemSizeSelection').val();
-                    }
-                });
-                $('#itemSizeSelection').html(sizelist.join(''));
-                $('#itemSizeSelection').val(currentsize);
-                return false;
-            }
-        });
-    });
-    var validateFront = function () {
-          if (true === $('#itemDetailForm').parsley().isValid()) {
-            $('.parsley-errors-list').remove();
-
-          }
-          else{
-              $('.parsley-errors-list').addClass("filled bootstrapError help-block");
-          }
-
-        };
-    var updateQuantityPrice = function() {
-         validateFront();
-        $.each(myresponse.responseJSON.variants, function(key, val) {
-            var variantprice = ""
-            var variantquantity = ""
-            var numberquantity = ""
-            if (key === $("#itemColorSelection").val())
-            {
-                $.each(val, function() {
-                    if (this.size === $("#itemSizeSelection").val())
-                    {
-{#                        variantprice = '$' + this.price#}
-                        variantquantity = this.quantity + " remaining"
-                        numberquantity = this.quantity
-                    }
-                });
-                if (variantprice === "")
-                {
-{#                    TODO: Add this back when we had indiviudal pricing#}
-{#                    variantprice = 'From $' + myresponse.responseJSON.minprice;#}
-                      variantprice = '$' + myresponse.responseJSON.minprice;
-                }
-                if (numberquantity === "")
-                {
-                    numberquantity = "1"
-                }
-                $('.itemPrice').text(variantprice);
-                $('.itemStockQuantity').text(variantquantity);
-                $('#buyQuantity').attr('max', numberquantity)
-
-                return false
-            }
-            if (variantprice === "")
-            {
-                {#     TODO: Add this back when we had indiviudal pricing #}
-                {#  variantprice = 'From $' + myresponse.responseJSON.minprice;#}
-                variantprice = '$' + myresponse.responseJSON.minprice;
-                $('.itemPrice').text(variantprice);
-
-            }
-        });
-    }
-
-    $("#itemSizeSelection").change(updateQuantityPrice);
-
-    $("#itemColorSelection").change(updateQuantityPrice);
-
-{#    $(".otherImage").click(function (){#}
-{#        var src = $(this).attr("src");#}
-{#        $("#itemSelectedImage img").attr("src", src);#}
-{#    });#}
-
-
-
-{#    Adding the shooping cart stuff#}
-    $(document).ready(function(){
-
-
-
-        $.listen('parsley:field:validate', function () {
-             validateFront();
-        });
-
-
-    $("#id_AddToCart").click(function(e){
-        var l = Ladda.create( document.querySelector( '#id_AddToCart' ) );
-
-
-        $('#itemDetailForm').parsley().validate();
-        if (false === $('#itemDetailForm').parsley().isValid()) {
-            $('.parsley-errors-list').addClass("filled bootstrapError help-block");
-        }
-        else{
-            l.start();
-            $('.parsley-errors-list').remove();
-            e.preventDefault();
-            var self = $(this)
-            var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
-            var sizeFilter = (document.getElementById("itemSizeSelection").selectedIndex === 0) ? '' : ($("#itemSizeSelection option:selected").text());
-            var colorFilter = (document.getElementById("itemColorSelection").selectedIndex === 0) ? '' : ($("#itemColorSelection option:selected").text());
-            var qtyFilter = $("#buyQuantity").val()
-
-            var ajax_req = $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {
-                        sizeFilter: sizeFilter,
-                        colorFilter: colorFilter,
-                        qtyFilter: qtyFilter
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        if (data.msg == ''){
-
-                            data.image = "{{ MEDIA_URL }}" + data.image
-                            AddCartItem(data)
-                            cartCount();
-                            $("#id_AddToCart").text("");
-                            var txt1 = "<i id='okButton' class='glyphicon glyphicon-ok'></i>";
-                            var txt2 = "  Added to bag";  // Create text with jQuery
-                            $("#id_AddToCart").append(txt1, txt2);
-                        }
-                        else {
-                            $('#messageId').html(data.msg)
-                            $('#messageModal').modal('show');
-                        }
-
-                    },
-                    error: function(data, textStatus, jqXHR) {
-                        var msg = $.parseJSON(data.responseText)['errors']
-                        $('#messageId').html(msg)
-                        $('#messageModal').modal('show');
-                    }
-                });
-                l.stop();
-            }
-    });
- });
-
-
 
     </script>
 

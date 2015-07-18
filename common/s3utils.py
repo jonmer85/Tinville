@@ -1,4 +1,6 @@
-from storages.backends.s3boto import S3BotoStorage
+from django.core.files.storage import get_storage_class
+from storages.backends.s3boto import S3BotoStorage, FILE_OVERWRITE
+
 
 class StaticS3BotoStorage(S3BotoStorage):
     """
@@ -19,3 +21,9 @@ class MediaS3BotoStorage(S3BotoStorage):
         kwargs['location'] = 'media'
         kwargs['querystring_auth'] = False
         super(MediaS3BotoStorage, self).__init__(*args, **kwargs)
+
+class CompressorS3BotoStorage(StaticS3BotoStorage):
+
+    def get_available_name(self, name):
+        name = self._clean_name(name)
+        return name
