@@ -54,7 +54,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^$', include('Tinville.favicon_urls')),
+    url(r'', include('Tinville.favicon_urls')),
 )
 
 urlpatterns += patterns('',
