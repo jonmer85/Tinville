@@ -69,3 +69,27 @@ def the_shop_address_badge_is_shown(step):
     wait_for_element_with_css_selector_to_be_displayed('.label-primary')
     assert_selector_contains_text('.label-primary', 'Default shop shipping address')
 
+
+@step(u'I Add a new address that is prepended with white space')
+def i_add_a_new_address_that_is_prepended_with_white_space(step):
+    wait_for_element_with_css_selector_to_be_clickable("a[href='/accounts/addresses/add/']").click()
+    wait_for_element_with_name_to_be_displayed('first_name').send_keys('Joe')
+    wait_for_element_with_name_to_be_displayed('last_name').send_keys('Schmoe')
+    wait_for_element_with_name_to_be_displayed('line1').send_keys(' 33 Otterson Rd')
+    wait_for_element_with_name_to_be_displayed('line4').send_keys(' Londonderry')
+    wait_for_element_with_name_to_be_displayed('state').send_keys(' NH')
+    wait_for_element_with_name_to_be_displayed('postcode').send_keys(' 03053')
+    wait_for_element_with_css_selector_to_be_clickable("button[type='submit']").click()
+    wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()
+
+@step(u'I Add a new address that is appended with white space')
+def i_add_a_new_address_that_is_appended_with_white_space(step):
+    wait_for_element_with_css_selector_to_be_clickable("a[href='/accounts/addresses/add/']").click()
+    wait_for_element_with_name_to_be_displayed('first_name').send_keys('Joe ')
+    wait_for_element_with_name_to_be_displayed('last_name').send_keys('Schmoe ')
+    wait_for_element_with_name_to_be_displayed('line1').send_keys('33 Otterson Rd ')
+    wait_for_element_with_name_to_be_displayed('line4').send_keys('Londonderry ')
+    wait_for_element_with_name_to_be_displayed('state').send_keys('NH ')
+    wait_for_element_with_name_to_be_displayed('postcode').send_keys('03053 ')
+    wait_for_element_with_css_selector_to_be_clickable("button[type='submit']").click()
+    wait_for_element_with_css_selector_to_be_clickable("#messagesModal .close").click()

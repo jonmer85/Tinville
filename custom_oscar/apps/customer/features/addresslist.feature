@@ -27,6 +27,19 @@ Feature: Custom Address List Page
     Then I should not see any default address types
     And I should see all available shopper address types as options to be added to the address
 
+  @tommy
+  Scenario: Add an Address that is prepended with white space
+    Given I access the addresses page as a new shopper
+    When I Add a new address that is prepended with white space
+    Then I should not see any default address types
+
+  @tommy
+  Scenario: Add an Address that is appended with white space
+    Given I access the addresses page as a new shopper
+    When I Add a new address that is appended with white space
+    Then I should not see any default address types
+
+
 #  Scenario: Add an Address and mark as billing address
 #
 #  Scenario: Add an Address, mark as shipping address, create a new address,
