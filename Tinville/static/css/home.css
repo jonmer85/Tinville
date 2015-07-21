@@ -25,15 +25,6 @@
         border-bottom: 3px solid #F46430;
         /*border-top: 3px solid #F46430;*/
     }
-/*#thumbnail-preview-indicators .slides .slide-1 {*/
-  /*background-image: url({{ STATIC_URL }}img/banner-xl.jpg);*/
-/*}*/
-#thumbnail-preview-indicators .slides .slide-2 {
-  background-image: url(https://s3.amazonaws.com/ooomf-com-files/tU3ptNgGSP6U2fE67Gvy_SYDNEY-162.jpg);
-}
-#thumbnail-preview-indicators .slides .slide-3 {
-  background-image: url(https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg);
-}
 #thumbnail-preview-indicators .carousel-inner .item .carousel-caption {
   top: 20%;
   bottom: inherit;
@@ -109,9 +100,24 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.allBlock a:link,
+.allBlock a:visited,
+.allBlock a:hover,
+.allBlock a:active
+{
+    color           : #CBD3D5;
+    text-decoration : none;
+}
 
+.centerHomeIcon {
+    margin-top: 60px;
+}
 @media (max-width: 767px) {
     .mobileSignUp {
         margin-top: 20px !important;
     }
+    .centerHomeIcon {
+        margin-top: 0px;
+    }
 }
+

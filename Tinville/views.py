@@ -16,8 +16,8 @@ def home_gallery(request):
     page_template = "designer_shop/all_gallery.html"
     menproducts = get_category_products(genderfilter="Men")
     womenproducts = get_category_products(genderfilter="Women")
-    menproducts = menproducts.order_by('?')
-    womenproducts = womenproducts.order_by('?')
+    menproducts = menproducts.order_by('?')[:5]
+    womenproducts = womenproducts.order_by('?')[:5]
 
     context = {
         'homemode': True,
@@ -28,23 +28,28 @@ def home_gallery(request):
         template = page_template
     return render_to_response(template, context, context_instance=RequestContext(request))
 
+def gender_home(request, gender):
+    template = "homepage/" + gender + "_home.html"
 
-def shop_gallery(request):
-    template = "homepage/all_home.html"
     page_template = "designer_shop/all_gallery.html"
+
+    if gender is None or gender == "all":
+        gender = None
 
     if request.method == 'GET':
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(post=request.GET, filter=True)
             shopCategoryNames = get_types(request=request,shop_slug=None,group_by=request.GET['genderfilter'])
-            return render(request, 'homepage/all_home.html', {
+            context = {
                 'homemode': True,
                 'products': products,
                 'shopProductCount': len(products),
                 'shopcategories': shopCategoryNames
-            })
+            }
 
-    products = get_filtered_products().order_by('?')
+            return template, context
+
+    products = get_category_products(genderfilter=gender)
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
     context = {
         'homemode': True,
@@ -55,4 +60,23 @@ def shop_gallery(request):
     }
     if request.is_ajax():
         template = page_template
+
+    return template, context
+
+def men_home(request):
+    template, context = gender_home(request,'men')
+    if request.method == 'GET':
+        return render(request,template,context)
+    else:
+        return render_to_response(template, context, context_instance=RequestContext(request))
+
+
+def women_home(request):
+    template, context = gender_home(request,'women')
     return render_to_response(template, context, context_instance=RequestContext(request))
+
+def shop_gallery(request):
+    template, context = gender_home(request,'all')
+    return render_to_response(template, context, context_instance=RequestContext(request))
+
+

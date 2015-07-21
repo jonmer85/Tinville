@@ -1,1 +1,9 @@
 {% extends "homepage/all_home.html" %}
+{% block javascript %}
+    {{ block.super }}
+        <script>
+            $("#filterGender").val("Women");
+            updateItemView(true);
+        </script>
+
+{% endblock %}

@@ -189,9 +189,21 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
         ('2', 'Business/Corporation'),
     )
 
+    PAYMENT_CHOICES = (
+        ('1', 'Debit Card'),
+        ('2', 'Bank Account')
+    )
+
     recipient_type = forms.ChoiceField(choices=RECIPIENT_CHOICES)
+    payment_choice = forms.ChoiceField(choices=PAYMENT_CHOICES)
     tax_id = forms.CharField(max_length=11)
     full_legal_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'autofocus': 'autofocus'}))
+    bank_account_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'data-stripe': 'number',
+                                                                'pattern': '\d*', 'autocomplete': 'off',
+                                                                'data-parsley-accountNum': 'data-parsley-accountNum'}))
+    routing_number = forms.CharField(required=False, widget=forms.TextInput(attrs={'data-stripe': 'number',
+                                                                'pattern': '\d*', 'autocomplete': 'off',
+                                                                'data-parsley-routingNum': 'data-parsley-routingNum'}))
 
     def __init__(self, *args, **kwargs):
         super(PaymentInfoFormWithFullName, self).__init__(*args, **kwargs)
@@ -201,7 +213,20 @@ class PaymentInfoFormWithFullName(PaymentInfoForm):
                 Field('recipient_type'),
                 Field('full_legal_name',  placeholder="Full Legal Name", css_class='input-group'),
                 Field('tax_id',  placeholder="Tax ID (SSN or EIN if business/corporation)", css_class='input-group'),
-                PaymentInfoForm.base_payment_layout,
+                Field('payment_choice'),
+                Div(
+                    Div(
+                        PaymentInfoForm.base_payment_layout,
+                        css_class='hidden',
+                        css_id="debitCard"
+                    ),
+                    Div(
+                        Field('bank_account_number', placeholder="Bank Account Number"),
+                        Field('routing_number', placeholder="Routing Number"),
+                        css_class="hidden",
+                        css_id="bankAccount"
+                    ),
+                ),
                 Submit('payment-info', 'Submit', css_class='btn btn-primary col-xs-12', style='margin-top: 10px')
             )
         )
