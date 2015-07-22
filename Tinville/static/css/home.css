@@ -21,7 +21,6 @@
     #thumbnail-preview-indicators .slides .slide-1,
     #thumbnail-preview-indicators .slides .slide-2,
     #thumbnail-preview-indicators .slides .slide-3 {
-        height: 500px;
         border-bottom: 3px solid #F46430;
         /*border-top: 3px solid #F46430;*/
     }
@@ -65,15 +64,6 @@
        left: 50%;
        margin-top: -50px;
        margin-left: -25px;
-    }
-}
-@media (max-width: 767px) {
-    #thumbnail-preview-indicators,
-    #thumbnail-preview-indicators .slides,
-    #thumbnail-preview-indicators .slides .slide-1,
-    #thumbnail-preview-indicators .slides .slide-2,
-    #thumbnail-preview-indicators .slides .slide-3 {
-      height: 212px;
     }
 }
 
