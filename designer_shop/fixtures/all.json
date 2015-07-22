@@ -1449,6 +1449,16 @@
         }
     },
     {
+        "model": "catalogue.ProductAttribute",
+        "pk": 6,
+        "fields": {
+            "product_class": 1,
+			"name": "one_size",
+            "code": "one_size",
+            "type": "boolean"
+        }
+    },
+    {
         "model": "catalogue.Category",
         "pk": 1,
         "fields": {

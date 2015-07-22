@@ -265,7 +265,6 @@
         "</div>";
 
 
-
         function sizeDimensionTemplate(required) {
             var sizeDimensionTemplate = "" +
             "<div id='sizeDimensionSelectionTemplate' class='accordion-group sizeDimensionSelectionTemplate'>" +
@@ -309,6 +308,21 @@
         }
 
 
+        function oneSizeTemplate(required) {
+            var oneSizeTemplate = "" +
+            "<div id='oneSizeSelectionTemplate' class='accordion-group oneSizeSelectionTemplate'>" +
+                "<div class='accordion-heading'><div id='div_id_oneSizeSelection' class='form-group'>" +
+                    "<div class='controls row'>" +
+                        "<div class='col-xs-12'>" +
+                            "<input class='oneSizeSelection numberinput form-control'" + required + " id='id_oneSizeSelection' name='oneSizeSelection' type='decimal' readonly value='No Size/ One Size Fits All'>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>" + colorQuantityTableHead;
+            return oneSizeTemplate;
+        }
+
+
         const SizeTypeInfo = {
             "1" :
             {
@@ -326,6 +340,12 @@
             {
                 "sizeTemplateClass" : ".sizeNumberSelectionTemplate",
                 "sizeSelectionClass" : ".sizeNumberSelection",
+                "selectedValueType" : '$(this).val()'
+            },
+            "4":
+            {
+                "sizeTemplateClass" : ".oneSizeSelectionTemplate",
+                "sizeSelectionClass" : ".onesizeSelection",
                 "selectedValueType" : '$(this).val()'
             }
         };
@@ -357,7 +377,6 @@
         function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
             //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
             sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
-
 
                 if($(this).closest('.accordion-group').next().length == "0") {
                     addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
@@ -433,6 +452,11 @@
                     sizeTemplateName = "sizeNumberSelectionTemplate";
                     templateName = sizeNumberTemplate(sizeNumRequired);
                     sizeNumRequired="";
+                    break
+                case "oneSize":
+                    sizeTemplateName = "oneSizeSelectionTemplate";
+                    templateName = oneSizeTemplate();
+                    oneSizeRequired = "";
                     break
             }
             $("#sizesFieldSet").append(templateName);
@@ -525,6 +549,9 @@
                     $(".sizeNumberSelectionTemplate").each(function() {
                          $(this).remove();
                     });
+                    $(".oneSizeSelectionTemplate").each(function() {
+                         $(this).remove();
+                    });
                     break;
                 case "sizeDim":
                     $(".sizeSetSelectionTemplate").each(function() {
@@ -533,12 +560,29 @@
                     $(".sizeNumberSelectionTemplate").each(function() {
                          $(this).remove();
                     });
+                    $(".oneSizeSelectionTemplate").each(function() {
+                         $(this).remove();
+                    });
                     break;
                 case "sizeNum":
                     $(".sizeSetSelectionTemplate").each(function() {
                          $(this).remove();
                     });
                     $(".sizeDimensionSelectionTemplate").each(function() {
+                         $(this).remove();
+                    });
+                    $(".oneSizeSelectionTemplate").each(function() {
+                         $(this).remove();
+                    });
+                    break
+                case "oneSize":
+                    $(".sizeSetSelectionTemplate").each(function() {
+                         $(this).remove();
+                    });
+                    $(".sizeDimensionSelectionTemplate").each(function() {
+                         $(this).remove();
+                    });
+                    $(".sizeNumberSelectionTemplate").each(function() {
                          $(this).remove();
                     });
                     break
@@ -579,6 +623,8 @@
                     return "sizeDim";
                 case "3":
                     return "sizeNum";
+                case "4":
+                    return "oneSize";
                 default:
                     return "";
             }
