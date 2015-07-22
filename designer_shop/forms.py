@@ -4,6 +4,7 @@ from decimal import Decimal
 from django import forms
 from django.core.files.base import ContentFile
 from django.forms import inlineformset_factory
+from django.forms.forms import NON_FIELD_ERRORS
 from django_bleach.forms import BleachField
 
 from oscar.core.loading import get_model
@@ -30,7 +31,6 @@ ProductImage = get_model("catalogue", "ProductImage")
 
 @parsleyfy
 class ProductCreationForm(forms.ModelForm):
-
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title", max_length=80)
 
@@ -192,7 +192,6 @@ class ProductCreationForm(forms.ModelForm):
         if is_edit:
             # Remove all variants since they will get recreated below
             Product.objects.filter(parent=canonicalId).delete()
-
 
         for size in sizes:
             if sizeType == SIZE_SET:

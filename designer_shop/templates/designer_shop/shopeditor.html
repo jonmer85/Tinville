@@ -338,8 +338,6 @@
             var selectedValue = $("#id_sizeVariation option:selected");
             var sizesFieldSet = $("#sizesFieldSet");
 
-
-
             sizesFieldSet.removeClass("hidden");
             var sizeType = selectedValue[0].value;
             var sizeTypeString = sizeTypeStringFromNum(sizeType);
@@ -880,6 +878,19 @@
             $(".modal-body").css('max-height', ($(window).height() *.9 - 140) + 'px');
         }
 
+        $(document).on('mousedown','.colorSelect',function(){
+            var colors = []
+            $('[id^=' + this.id.replace(/\d+$/, "") +']').each(function() {
+                colors.push($(this).val())
+            });
+
+            for(i=0; i<colors.length; i++) {
+                if (colors[i] !== '20' && colors[i] !== '19' && colors[i] !== '') {
+                    $('#' + this.id + ' option[value=' + colors[i] + ']').remove()
+                }
+            }
+        });
+
     </script>
 {% endblock %}
 
@@ -903,7 +914,7 @@
                             "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
                                 "<option value='' selected='selected'>Choose a size...</option>" +
                                 "{% for sizeSet in sizeSetOptions %}" +
-                                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                                    "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
                                 "{% endfor %}" +
                             "</select>" +
                         "</div>" +
@@ -954,7 +965,6 @@
             "</tr>";
             return rowColorQuantityTemplate;
         }
-
     </script>
 
 

@@ -35,6 +35,7 @@ from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspi
 from django.views.generic import ListView
 from oscar.apps.analytics.scores import Calculator
 import logging
+from django import forms
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 ProductImage = get_model('catalogue', 'ProductImage')
@@ -675,6 +676,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             else:
                 form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
                                            sizes=sizes, shop=shop)
+            if not _valid_variants(sizes):
+                form.add_error(None, "Duplicate size or color detected, please delete duplicates")
 
             if form.is_valid():
                 try:
@@ -700,6 +703,27 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
         return renderShopEditor(request, shop, item=item)
+
+
+def _valid_variants(variants):
+    if 'sizeSet' in variants[0]:
+        if len([v['sizeSet'] for v in variants]) != len(set(v['sizeSet'] for v in variants)):
+            return False
+
+    if 'sizeNum' in variants[0]:
+        if len([v['sizeNum'] for v in variants]) != len(set(v['sizeNum'] for v in variants)):
+            return False
+
+    if 'sizeX' in variants[0]:
+        if len([v['sizeX'] + 'x' + v['sizeY'] for v in variants]) != len(set(v['sizeX'] + 'x' + v['sizeY'] for v in variants)):
+            return False
+
+    for variant in variants:
+        colors = variant['colorsAndQuantities']
+        if len([c['color'] for c in colors]) != len(set(c['color'] for c in colors)):
+            return False
+
+    return True
 
 
 def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
