@@ -64,7 +64,10 @@ class IndexView(CoreIndexView):
     def get_context_data(self, **kwargs):
         ctx = TemplateView.get_context_data(self, **kwargs)
         ctx.update(self.get_stats())
-        ctx.update({"shop_slug": Shop.objects.get(user=self.request.user).slug})
+        if not self.request.user.is_staff or self.request.user.is_seller:
+            ctx.update({"shop_slug": Shop.objects.get(user=self.request.user).slug})
+        else:
+            ctx.update({"shop_slug": "demo"})
         return ctx
 
     def get_hourly_report(self, hours=24, segments=10):
