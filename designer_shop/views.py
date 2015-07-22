@@ -133,7 +133,7 @@ def shopper(request, slug):
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
             shopcategorynames = get_types(request=request,shop_slug=slug,group_by=request.GET['genderfilter'])
-            return render(request, 'designer_shop/shopper.html', {
+            return render(request, 'designer_shop/shop_items.html', {
                 'shop': shop,
                 'products': products,
                 'shopProductCount': len(products),
