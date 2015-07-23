@@ -660,7 +660,12 @@
 
                 var sizesFieldSet = $("#sizesFieldSet");
                 sizesFieldSet.removeClass("hidden");
-                wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+                if (sizeTypeString != "oneSize"){
+                    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, true);
+                }
+                else {
+                    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, false);
+                }
 
                 $.each(data.variants, function(key, value) {
 
