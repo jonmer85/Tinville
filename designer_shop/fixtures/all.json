@@ -1397,6 +1397,14 @@
         }
     },
     {
+        "model": "catalogue.AttributeOption",
+        "pk": 21,
+        "fields": {
+            "group": 2,
+            "option": "wood"
+        }
+    },
+    {
         "model": "catalogue.ProductAttribute",
         "pk": 1,
         "fields": {
