@@ -171,7 +171,7 @@ def get_filtered_variant(itemId, post):
                                                                                                            attribute_values__attribute_id=2,
                                                                                                           attribute_values__value_float=sizeDim[0]).filter(
             parent=itemId, attribute_values__attribute_id=3, attribute_values__value_float=sizeDim[1])[0]
-    elif sizeFilter=="One size":
+    elif sizeFilter == "One size":
         variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id)[0]
     else:
         try:
