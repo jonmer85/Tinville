@@ -122,6 +122,15 @@ class ProductCreationForm(forms.ModelForm):
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
+                elif "oneSize" in sizes[i] and sizes[i]["oneSize"]:
+                    for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                        self.fields[colorAndQuantity['colorFieldName']] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                        self.fields[colorAndQuantity['quantityFieldName']] \
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
+
 
 
     def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, oneSize=False, color=None, quantity=None):

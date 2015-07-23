@@ -313,8 +313,13 @@
             "<div id='oneSizeSelectionTemplate' class='accordion-group oneSizeSelectionTemplate'>" +
                 "<div class='accordion-heading'><div id='div_id_oneSizeSelection' class='form-group'>" +
                     "<div class='controls row'>" +
-                        "<div class='col-xs-12'>" +
-                            "<input class='oneSizeSelection numberinput form-control'" + required + " id='id_oneSizeSelection' name='oneSizeSelection' type='decimal' readonly value='No Size/ One Size Fits All'>" +
+                        "<div class='col-xs-10'>" +
+                            "<input class='oneSizeSelection form-control' id='id_oneSizeSelection' name='oneSizeSelection' type='text' readonly value='No Size/ One Size Fits All'>" +
+                        "</div>" +
+                        "<div class='col-xs-2'>" +
+                            "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
+                                "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
+                            "</button>" +
                         "</div>" +
                     "</div>" +
                 "</div>" +
@@ -345,7 +350,7 @@
             "4":
             {
                 "sizeTemplateClass" : ".oneSizeSelectionTemplate",
-                "sizeSelectionClass" : ".onesizeSelection",
+                "sizeSelectionClass" : ".oneSizeSelection",
                 "selectedValueType" : '$(this).val()'
             }
         };
@@ -358,8 +363,6 @@
             var selectedValue = $("#id_sizeVariation option:selected");
             var sizesFieldSet = $("#sizesFieldSet");
 
-
-
             sizesFieldSet.removeClass("hidden");
             var sizeType = selectedValue[0].value;
             var sizeTypeString = sizeTypeStringFromNum(sizeType);
@@ -367,31 +370,47 @@
             var sizeSelectionClass = SizeTypeInfo[sizeType]['sizeSelectionClass'];
             var selectedValueType = SizeTypeInfo[sizeType]['selectedValueType'];
 
-
             RemoveWrongSizeTypes(sizeTypeString);
             addNewSizeRow(sizeTypeString);
-            wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType);
+            if (sizeTypeString != "oneSize"){
+                wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, true);
+            }
+            else {
+                wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, false);
+            }
+
             scrollToBottomOfProductCreationForm();
         });
 
-        function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType) {
+        function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, addNewSize) {
             //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
-            sizesFieldSet.on("change keyup", sizeSelectionClass, function(e) {
+            if (addNewSize) {
+                sizesFieldSet.on("change keyup", sizeSelectionClass, function (e) {
 
-                if($(this).closest('.accordion-group').next().length == "0") {
-                    addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
-                }
-
-                var selectedValue = eval(selectedValueType);
-                var sizesFieldSet = $("#sizesFieldSet");
-                if (selectedValue[0].value != "0") {
-                    if($(this).closest('.accordion-group').next().length == "0") {
-                        //Add a new size set row
-                        scrollToBottomOfProductCreationForm();
-                        addNewSizeRow(sizeTypeString);
+                    if ($(this).closest('.accordion-group').next().length == "0") {
+                        addNewColorAndQuantityRow($(this).parents(sizeTemplateClass).attr("id") + "_", $(this).parents(".accordion-group").find("tbody"));
                     }
+
+                    var selectedValue = eval(selectedValueType);
+                    var sizesFieldSet = $("#sizesFieldSet");
+                    if (selectedValue[0].value != "0") {
+                        if ($(this).closest('.accordion-group').next().length == "0") {
+                            //Add a new size set row
+                            scrollToBottomOfProductCreationForm();
+                            addNewSizeRow(sizeTypeString);
+                        }
+                    }
+                });
+            }
+            else {
+                if ($('#oneSizeSelectionTemplate0_id_oneSizeSelection').closest('.accordion-group').next().length == "0") {
+                    addNewColorAndQuantityRow($("#oneSizeSelectionTemplate0_id_oneSizeSelection").parents(sizeTemplateClass).attr("id") + "_", $("#oneSizeSelectionTemplate0_id_oneSizeSelection").parents(".accordion-group").find("tbody"));
                 }
-            });
+                var sizesFieldSet = $("#sizesFieldSet");
+                if ($('#oneSizeSelectionTemplate0_id_oneSizeSelection').closest('.accordion-group').next().length == "0") {
+                    scrollToBottomOfProductCreationForm();
+                }
+            }
             //Color event handling (Add a new color/quantity row for more color/quantity selection)
             sizesFieldSet.on("change", ".row-color", function(e) {
                 var selectedValue = $("option:selected", this);
