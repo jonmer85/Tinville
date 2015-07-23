@@ -1397,6 +1397,14 @@
         }
     },
     {
+        "model": "catalogue.AttributeOption",
+        "pk": 21,
+        "fields": {
+            "group": 2,
+            "option": "wood"
+        }
+    },
+    {
         "model": "catalogue.ProductAttribute",
         "pk": 1,
         "fields": {
@@ -1446,6 +1454,16 @@
             "code": "color",
             "type": "option",
             "option_group": 2
+        }
+    },
+    {
+        "model": "catalogue.ProductAttribute",
+        "pk": 6,
+        "fields": {
+            "product_class": 1,
+			"name": "one_size",
+            "code": "one_size",
+            "type": "boolean"
         }
     },
     {
