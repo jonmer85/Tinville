@@ -654,7 +654,13 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
 
         if request.is_ajax() and 'page' in request.GET:
             template = page_template
-            context = {'products': products}
+            context = {'products': products,
+                       'editmode': True,
+                        'shop': shop,
+                        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None, shop=shop),
+                        'productImageFormSet': productImageFormSet or ProductImageFormSet(instance=item if editItem else None),
+                        'editItemMode': editItem
+                    }
         return render_to_response(template, context, context_instance=RequestContext(request))
     else:
         return redirect('designer_shop.views.shopeditor', shop.slug)
