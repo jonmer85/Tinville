@@ -17,7 +17,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-{#        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">#}
         <link rel="apple-touch-icon" sizes="57x57" href="{{ STATIC_URL }}img/favicon/apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="{{ STATIC_URL }}img/favicon/apple-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}img/favicon/apple-icon-72x72.png">
@@ -679,12 +678,12 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
     <script>
         var setBanners = function () {
             if (checkMode() != 'xs') {
-                var bannerWidth = $("#thumbnail-preview-indicators").width();
-                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 500 / 1779) + 'px');
+                var bannerWidth = $("#carouselId").width();
+                $("#carouselId").css('height', (bannerWidth * 500 / 1779) + 'px');
             }
             else {
-                var bannerWidth = $("#thumbnail-preview-indicators").width();
-                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 642 / 968) + 'px');
+                var bannerWidth = $("#carouselId").width();
+                $("#carouselId").css('height', (bannerWidth * 642 / 968) + 'px');
             }
         }
         var setItemSizes = function () {
