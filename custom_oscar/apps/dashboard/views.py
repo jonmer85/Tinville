@@ -64,7 +64,10 @@ class IndexView(CoreIndexView):
     def get_context_data(self, **kwargs):
         ctx = TemplateView.get_context_data(self, **kwargs)
         ctx.update(self.get_stats())
-        ctx.update({"shop_slug": Shop.objects.get(user=self.request.user).slug})
+        if not self.request.user.is_staff or self.request.user.is_seller:
+            ctx.update({"shop_slug": Shop.objects.get(user=self.request.user).slug})
+        else:
+            ctx.update({"shop_slug": "demo"})
         return ctx
 
     def get_hourly_report(self, hours=24, segments=10):
@@ -178,7 +181,7 @@ class IndexView(CoreIndexView):
 
             'total_customers': orders.values_list('user', flat=True).distinct().count() +
                                orders.values_list('guest_email', flat=True).distinct().count(),
-            'total_open_baskets': self.get_open_baskets().count(),
+            'total_open_baskets': self.aggregate_open_baskets(),
             'total_orders': orders.count(),
             'total_lines': Line.objects.filter(order__in=orders).count(),
             'total_revenue': orders.aggregate(
@@ -192,3 +195,16 @@ class IndexView(CoreIndexView):
         }
         stats.update(get_dashboard_notifications(self.request, orders)["notifications"])
         return stats
+
+    def aggregate_open_baskets(self):
+        total_open_baskets = 0
+        for basket in self.get_open_baskets():
+            is_open = False
+            for line in basket.all_lines():
+                shop = Shop.objects.filter(user_id=self.request.user.id).first()
+                if Product.objects.filter(id=line.product_id, shop_id=shop.id).count() > 0:
+                    is_open = True
+            if is_open:
+                total_open_baskets += 1
+
+        return total_open_baskets

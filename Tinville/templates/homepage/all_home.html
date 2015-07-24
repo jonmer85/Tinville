@@ -64,6 +64,43 @@
                 setItemSizes();
             }
         });
+
+        $(window).load(function() {
+{#            updateItemView(true);#}
+            document.getElementById("filterGender").onchange = function()
+            {
+                localStorage.setItem('filterGender', document.getElementById("filterGender").value);
+            }
+
+            document.getElementById("filterType").onchange = function()
+            {
+                localStorage.setItem('filterType', document.getElementById("filterType").value);
+            }
+
+            document.getElementById("filterSort").onchange = function()
+            {
+                localStorage.setItem('filterSort', document.getElementById("filterSort").value);
+            }
+
+            if (localStorage.getItem('filterGender'))
+            {
+                var genderFilter = localStorage.getItem('filterGender');
+                $("#filterGender").val(genderFilter);
+            }
+
+            if (localStorage.getItem('filterType'))
+            {
+                var typeFilter  = localStorage.getItem('filterType');
+                $("#filterType").val(typeFilter);
+            }
+
+            if (localStorage.getItem('filterSort'))
+            {
+                var sortFilter = localStorage.getItem('filterSort');
+                $("#filterSort").val(sortFilter);
+            }
+    updateItemView(true);
+        });
         </script>
 
     {% endblock %}

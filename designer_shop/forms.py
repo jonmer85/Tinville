@@ -18,7 +18,7 @@ from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
 from image_cropping import ImageCropWidget
 
-from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES, Shop
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, ONE_SIZE, SIZE_TYPES, Shop
 from common.utils import get_or_none
 from common.widgets import AdvancedFileInput, TinvilleImageCropWidget
 
@@ -122,9 +122,18 @@ class ProductCreationForm(forms.ModelForm):
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
+                elif "oneSize" in sizes[i] and sizes[i]["oneSize"]:
+                    for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                        self.fields[colorAndQuantity['colorFieldName']] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                        self.fields[colorAndQuantity['quantityFieldName']] \
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
 
-    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
+
+    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, oneSize=False, color=None, quantity=None):
         variantProduct = copy(canonical)
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
         variantProduct.parent_id = canonicalId
@@ -143,6 +152,8 @@ class ProductCreationForm(forms.ModelForm):
             setattr(variantProduct.attr, 'size_number', sizeNum)
         if color:
             setattr(variantProduct.attr, 'color', color)
+        if oneSize:
+            setattr(variantProduct.attr, 'one_size', True)
         variantProduct.save()
 
         partner = get_partner_from_shop(shop)
@@ -236,6 +247,18 @@ class ProductCreationForm(forms.ModelForm):
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
                             pass
+            elif sizeType == ONE_SIZE:
+                for colorQuantity in size["colorsAndQuantities"]:
+                    if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                        color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                        quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, oneSize=True,
+                                                                   color=color, quantity=quantity)
+                    else:
+                        # Jon M TBD Should we allow no color/quantity?
+                        # For now ignore it
+                        pass
+
         return canonicalProduct
 
     def get_size_variation(self):
