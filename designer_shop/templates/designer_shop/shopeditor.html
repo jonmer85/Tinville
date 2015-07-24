@@ -832,7 +832,7 @@
         });
 
         var currentEditForm = "";
-        $(".overlayEdit, .addItem").click(function(){
+        $(document).on("click",".overlayEdit, .addItem",function(){
             var thisClick = $(this);
             if ($(this).attr('data-navigation') != currentEditForm) {
                 $('#processing-modal').modal();
