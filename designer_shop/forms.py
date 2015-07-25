@@ -204,7 +204,6 @@ class ProductCreationForm(forms.ModelForm):
             # Remove all variants since they will get recreated below
             Product.objects.filter(parent=canonicalId).delete()
 
-
         for size in sizes:
             if sizeType == SIZE_SET:
                 if size["sizeFieldName"] in self.cleaned_data:
@@ -272,6 +271,8 @@ class ProductCreationForm(forms.ModelForm):
                 return SIZE_DIM
             elif hasattr(variant.attr, 'size_number'):
                 return SIZE_NUM
+            elif hasattr(variant.attr, 'one_size'):
+                return ONE_SIZE
         return "0"
 
     def get_value_if_in_edit_mode(self, field_name, default):
@@ -313,8 +314,8 @@ def get_partner_from_shop(shop):
         partner.users.add(shop_owner)
         return partner
 
-class ProductImageForm(forms.ModelForm):
 
+class ProductImageForm(forms.ModelForm):
     helper = FormHelper()
     # helper.form_tag = False
     helper.form_show_labels = False
