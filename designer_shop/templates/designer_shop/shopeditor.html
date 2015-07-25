@@ -356,8 +356,8 @@
         };
 
         function scrollToBottomOfProductCreationForm() {
-                $('#productCreationForm').animate({scrollTop: $('#productCreationForm')[0].scrollHeight}, 500);
-            }
+            $('#productCreationForm').animate({scrollTop: $('#productCreationForm')[0].scrollHeight}, 500);
+        }
 
         $(document).on('change','#id_sizeVariation',function(){
             var selectedValue = $("#id_sizeVariation option:selected");
@@ -382,8 +382,9 @@
             scrollToBottomOfProductCreationForm();
         });
 
-        function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, addNewSize) {
+        function wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, addNewSize, repopulate) {
             //Size selection event handling (Add a color/quantity row, add a new size selector for more size selection)
+            repopulate = repopulate || false
             if (addNewSize) {
                 sizesFieldSet.on("change keyup", sizeSelectionClass, function (e) {
 
@@ -403,12 +404,14 @@
                 });
             }
             else {
-                if ($('#oneSizeSelectionTemplate0_id_oneSizeSelection').closest('.accordion-group').next().length == "0") {
-                    addNewColorAndQuantityRow($("#oneSizeSelectionTemplate0_id_oneSizeSelection").parents(sizeTemplateClass).attr("id") + "_", $("#oneSizeSelectionTemplate0_id_oneSizeSelection").parents(".accordion-group").find("tbody"));
-                }
-                var sizesFieldSet = $("#sizesFieldSet");
-                if ($('#oneSizeSelectionTemplate0_id_oneSizeSelection').closest('.accordion-group').next().length == "0") {
-                    scrollToBottomOfProductCreationForm();
+                if (!repopulate) {
+                    if ($('#oneSizeSelectionTemplate0_id_oneSizeSelection').closest('.accordion-group').next().length == "0") {
+                        addNewColorAndQuantityRow($("#oneSizeSelectionTemplate0_id_oneSizeSelection").parents(sizeTemplateClass).attr("id") + "_", $("#oneSizeSelectionTemplate0_id_oneSizeSelection").parents(".accordion-group").find("tbody"));
+                    }
+                    var sizesFieldSet = $("#sizesFieldSet");
+                    if ($('#oneSizeSelectionTemplate0_id_oneSizeSelection').closest('.accordion-group').next().length == "0") {
+                        scrollToBottomOfProductCreationForm();
+                    }
                 }
             }
             //Color event handling (Add a new color/quantity row for more color/quantity selection)
@@ -439,7 +442,6 @@
         {
             var strRowId = "#" + strRowToClear ;
             var indexToRemove = arColorRows.indexOf(strRowToClear) ;
-
             $(strRowId).remove();
             arColorRows.splice(indexToRemove, 1);
         }
@@ -448,7 +450,6 @@
         {
             var strRowId = "#" + strRowToClear ;
             var indexToRemove = arSizeRows.indexOf(strRowToClear) ;
-
             $(strRowId).remove();
             arSizeRows.splice(indexToRemove, 1);
         }
@@ -515,7 +516,6 @@
         }
 
         function addNewColorAndQuantityRow(prefix, appendTo, required) {
-
             if(typeof(required)==='undefined') required = true;
 
             var rowQtyRequired = "";
@@ -664,11 +664,10 @@
                     wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, true);
                 }
                 else {
-                    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, false);
+                    wireEventHandlersForVariants(sizesFieldSet, sizeTypeString, sizeSelectionClass, sizeTemplateClass, selectedValueType, false, true);
                 }
 
                 $.each(data.variants, function(key, value) {
-
                     var sizeRow = addNewSizeRow(sizeTypeString);
                     populateInitialDataForSizeRow(sizeRow, sizeTypeString, key);
                     var prefix = sizeRow.attr("id") + "_";
@@ -680,7 +679,7 @@
                     });
                     addNewColorAndQuantityRow(prefix, appendTo, false);
                 });
-                addNewSizeRow(sizeTypeString);
+                if (sizeTypeString != "oneSize") {addNewSizeRow(sizeTypeString);}
             });
         }
 
@@ -700,6 +699,9 @@
                     break;
                 case "sizeNum":
                     sizeRow.find('.sizeNumberSelection').val(size);
+                    break;
+                case "oneSize":
+                    sizeRow.find('.oneSizeSelection').val("No size/ One size fits all");
                     break;
             }
         }
@@ -730,17 +732,16 @@
 
         $(function () {
             $.each(jsonDel, function (containerId, isHidden) {
-                        if (isHidden === "false") {
-                            $("#minMaxIcon").removeClass("glyphicon-chevron-down");
-                            $("#minMaxIcon").addClass("glyphicon-chevron-up");
-                            sessionStorage.removeItem("del-state");
-                            return $("#" + containerId).collapse('hide');
-                        }
-                        else {
-                            return $("#" + containerId).collapse('show');
-                        }
-                    }
-            );
+                if (isHidden === "false") {
+                    $("#minMaxIcon").removeClass("glyphicon-chevron-down");
+                    $("#minMaxIcon").addClass("glyphicon-chevron-up");
+                    sessionStorage.removeItem("del-state");
+                    return $("#" + containerId).collapse('hide');
+                }
+                else {
+                    return $("#" + containerId).collapse('show');
+                }
+            });
         });
 
         var json, tabsState;
@@ -762,8 +763,6 @@
         $.each(json, function (containerId, href) {
             return $("#" + containerId + " a[href=" + href + "]").tab('show');
         });
-
-
 
         function getCenterBoxSelection(ratio_width, ratio_height, image_width, image_height) {
 
@@ -843,7 +842,6 @@
 
         function showImageFields() {
             {#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
-
             $('#div_id_images-1-original').addClass('hidden');
             $('#div_id_images-2-original').addClass('hidden');
             $('#div_id_images-3-original').addClass('hidden');
