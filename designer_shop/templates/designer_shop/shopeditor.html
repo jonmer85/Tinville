@@ -963,6 +963,19 @@
             }
         });
 
+        $(document).on('mousedown','.colorSelect',function(){
+            var colors = []
+            $('[id^=' + this.id.replace(/\d+$/, "") +']').each(function() {
+                colors.push($(this).val())
+            });
+
+            for(i=0; i<colors.length; i++) {
+                if (colors[i] !== '') {
+                    $('#' + this.id + ' option[value=' + colors[i] + ']').remove()
+                }
+            }
+        });
+
     </script>
 {% endblock %}
 
