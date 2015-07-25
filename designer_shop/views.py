@@ -25,7 +25,7 @@ from oscar.apps.partner.models import StockRecord as StockRecords
 from oscar.apps.catalogue.models import ProductCategory as Categories
 from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
-from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM
+from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM, ONE_SIZE
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
     LogoUploadForm, ProductImageFormSet, SIZE_TYPES_AND_EMPTY
 from common.utils import get_list_or_empty, get_or_none
@@ -345,6 +345,7 @@ def get_variants(item, group=None):
         sizeY = ""
         sizeNum = ""
         divider = ""
+        oneSize = ""
         quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
         price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
         currency = get_or_none(StockRecords, product_id=variant.id).price_currency
@@ -366,9 +367,12 @@ def get_variants(item, group=None):
         if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
             sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
 
+        if get_or_none(Attributes, product_id=variant.id, attribute_id=6) != None:
+            oneSize = "One Size"
+
         if sizeX != "" and sizeY != "":
             divider = " x "
-        variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+        variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum) + str(oneSize)
         caseFunc = str.capitalize if not isSizeSet else str.upper
 
         if group is None:
@@ -416,6 +420,7 @@ def get_single_variant(variant, group=None):
     sizeY = ""
     sizeNum = ""
     divider = ""
+    oneSize = ""
     quantity = get_or_none(StockRecords, product_id=variant.id).net_stock_level
     price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
     currency = get_or_none(StockRecords, product_id=variant.id).price_currency
@@ -437,9 +442,12 @@ def get_single_variant(variant, group=None):
     if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
         sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
 
+    if get_or_none(Attributes, product_id=variant.id, attribute_id=6) != None:
+        oneSize = "One Size"
+
     if sizeX != "" and sizeY != "":
         divider = " x "
-    variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum)
+    variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum) + str(oneSize)
     caseFunc = str.capitalize if not isSizeSet else str.upper
 
     return str(color).capitalize(), caseFunc(variantsize)
@@ -453,6 +461,8 @@ def get_sizetype(variants):
             return SIZE_DIM
         elif hasattr(variant.attr, 'size_number'):
             return SIZE_NUM
+        elif hasattr(variant.attr, 'one_size'):
+            return ONE_SIZE
         return "0"
 
 
@@ -587,6 +597,26 @@ def get_sizes_colors_and_quantities(sizeType, post):
                 break
         return sizes
 
+    if sizeType == ONE_SIZE:
+        while (True):
+            number = next((n for n in postCopy.keys() if "oneSizeSelectionTemplate" in n and "_oneSizeSelection" in n), None)
+            if number:
+                if postCopy[number]:
+                    sizes.append(
+                        {
+                            "oneSize": True,
+                            "colorsAndQuantities": []
+                        }
+                    )
+                    prefix = number[0:number.find("_")]
+                    _populateColorsAndQuantitiesForSize(numSizes, postCopy, prefix, sizes)
+                    numSizes += 1
+                postCopy.pop(number)
+            else:
+                confirm_at_least_one(numSizes)
+                break
+        return sizes
+
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
@@ -625,7 +655,13 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
 
         if request.is_ajax() and 'page' in request.GET:
             template = page_template
-            context = {'products': products}
+            context = {'products': products,
+                       'editmode': True,
+                        'shop': shop,
+                        'productCreationForm': productCreationForm or ProductCreationForm(instance=item if editItem else None, shop=shop),
+                        'productImageFormSet': productImageFormSet or ProductImageFormSet(instance=item if editItem else None),
+                        'editItemMode': editItem
+                    }
         return render_to_response(template, context, context_instance=RequestContext(request))
     else:
         return redirect('designer_shop.views.shopeditor', shop.slug)
