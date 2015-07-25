@@ -963,15 +963,15 @@
             }
         });
 
-        $(document).on('mousedown','.colorSelect',function(){
-            var colors = []
-            $('[id^=' + this.id.replace(/\d+$/, "") +']').each(function() {
-                colors.push($(this).val())
+        $(document).on('mousedown','.sizeSetSelection',function(){
+            var sizes = []
+            $('[id$=id_sizeSetSelection]').each(function() {
+                sizes.push($(this).val())
             });
 
-            for(i=0; i<colors.length; i++) {
-                if (colors[i] !== '') {
-                    $('#' + this.id + ' option[value=' + colors[i] + ']').remove()
+            for(i=0; i<sizes.length; i++) {
+                if (sizes[i] !== '') {
+                    $('#' + this.id + ' option[value=' + sizes[i] + ']').remove()
                 }
             }
         });
