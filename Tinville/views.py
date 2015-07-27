@@ -49,7 +49,7 @@ def gender_home(request, gender):
 
             return template, context
 
-    products = get_category_products(genderfilter=gender)
+    products = get_category_products()
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
     context = {
         'homemode': True,
