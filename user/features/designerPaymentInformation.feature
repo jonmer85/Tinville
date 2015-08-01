@@ -24,7 +24,6 @@ Feature: Designer Payment Information
     And  the 'cvc' 'password' is displayed
     And  the 'payment-info' 'submit' is displayed
 
-@wipjeff
   Scenario Outline: I should not be able to receive a success message
     Given the payment info form
     When  I fill the form with
