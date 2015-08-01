@@ -236,7 +236,19 @@
             resetEditFormParsley();
             showProductModalIfErrors();
             setMaxModalHeight();
+
+            autoStartTour();
         });
+
+        var autoStartTour = function()
+        {
+            var autoStart = sessionStorage.getItem('alertTour');
+
+            if (autoStart === 'true')
+            {
+                $( "#editorTour" ).click();
+            }
+        }
 
         var changeItemPriceDataTypes = function() {
             document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
