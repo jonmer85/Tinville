@@ -236,7 +236,19 @@
             resetEditFormParsley();
             showProductModalIfErrors();
             setMaxModalHeight();
+
+            autoStartTour();
         });
+
+        var autoStartTour = function()
+        {
+            var autoStart = sessionStorage.getItem('alertTour');
+
+            if (autoStart === 'true')
+            {
+                $( "#editorTour" ).click();
+            }
+        }
 
         var changeItemPriceDataTypes = function() {
             document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
@@ -955,7 +967,7 @@
             });
 
             for(i=0; i<colors.length; i++) {
-                if (colors[i] !== '') {
+                if (colors[i] !== '' && colors[i] !== $(this).val()) {
                     $('#' + this.id + ' option[value=' + colors[i] + ']').remove()
                 }
             }
@@ -968,7 +980,7 @@
             });
 
             for(i=0; i<sizes.length; i++) {
-                if (sizes[i] !== '') {
+                if (sizes[i] !== '' && sizes[i] !== $(this).val()) {
                     $('#' + this.id + ' option[value=' + sizes[i] + ']').remove()
                 }
             }
