@@ -1026,7 +1026,12 @@
                                 "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
                                     "<option value='' selected='selected'>Choose a color...</option>" +
                                     "{% for color in colors %}" +
-                                    "<option value='{{color.id}}'>{{color.option|capfirst}}</option>" +
+                                        "{% if color.parent_id == None %}" +
+                                            "<option class='parent-color' value='{{color.id}}'>{{color.option|capfirst}}</option>" +
+                                            "{% for child in color.child_colors.all %}" +
+                                                "<option class='child-color' value='{{child.id}}'>{{child.option|capfirst}}</option>" +
+                                            "{% endfor %}" +
+                                        "{% endif %}" +
                                     "{% endfor %}" +
                                 "</select>" +
                             "</div>" +

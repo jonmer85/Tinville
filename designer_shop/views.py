@@ -351,7 +351,12 @@ def get_variants(item, group=None):
         currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-            color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=6).value_as_text
+            if secondary_color:
+                color = primary_color + "/" + secondary_color
+            else:
+                color = primary_color
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
@@ -435,7 +440,12 @@ def get_single_variant(variant, group=None):
     currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-        color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=6).value_as_text
+            if secondary_color:
+                color = primary_color + "/" + secondary_color
+            else:
+                color = primary_color
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
         sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
