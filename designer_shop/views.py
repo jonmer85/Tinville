@@ -352,9 +352,9 @@ def get_variants(item, group=None):
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
             primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
-            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=6).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
             if secondary_color:
-                color = primary_color + "/" + secondary_color
+                color = str(primary_color) + "/" + str(secondary_color.value_as_text)
             else:
                 color = primary_color
 
@@ -441,9 +441,9 @@ def get_single_variant(variant, group=None):
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
             primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
-            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=6).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
             if secondary_color:
-                color = primary_color + "/" + secondary_color
+                color = str(primary_color) + "/" + str(secondary_color.value_as_text)
             else:
                 color = primary_color
 

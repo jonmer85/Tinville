@@ -1039,10 +1039,12 @@
                                     "<option value='' selected='selected'>Choose a color...</option>" +
                                     "{% for color in colors %}" +
                                         "{% if color.parent_id == None %}" +
-                                            "<option class='parent-color' value='{{color.id}}'>{{color.option|capfirst}}</option>" +
-                                            "{% for child in color.child_colors.all %}" +
-                                                "<option class='child-color' value='{{child.id}}'>{{child.option|capfirst}}</option>" +
-                                            "{% endfor %}" +
+                                            "<optgroup label='{{color.option|capfirst}}'>" +
+                                                "<option class='parent-color' value='{{color.id}}'>{{color.option|capfirst}}</option>" +
+                                                "{% for child in color.child_colors.all %}" +
+                                                    "<option class='child-color' value='{{child.id}}'>{{child.option|capfirst}}</option>" +
+                                                "{% endfor %}" +
+                                            "</optgroup>" +
                                         "{% endif %}" +
                                     "{% endfor %}" +
                                 "</select>" +
