@@ -494,7 +494,7 @@ def confirm_at_least_one(i):
 def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
     j = 0
     while (True):
-        color = next((c for c in postCopy.keys() if prefix in c
+        color = next((c for c in postCopy.keys() if prefix + '_' in c
                       and "_colorSelection" in c), None)
         colorRowNum = None
         if color:
@@ -502,7 +502,7 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
             if m is not None:
                 colorRowNum = m.group()
 
-            quantity = next((q for q in postCopy.keys() if prefix in q
+            quantity = next((q for q in postCopy.keys() if prefix + '_' in q
                              and "_quantityField" in q and q.endswith(colorRowNum)), None)
 
         if color is not None and quantity is not None:
