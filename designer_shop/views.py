@@ -756,11 +756,13 @@ def _valid_variants(variants):
             return False
 
     if 'sizeNum' in variants[0]:
-        if len([v['sizeNum'] for v in variants]) != len(set(v['sizeNum'] for v in variants)):
+        if len([v['sizeNum'].rstrip('0').rstrip('.') if '.' in v['sizeNum'] else v['sizeNum'] for v in variants]) != \
+                len(set(v['sizeNum'].rstrip('0').rstrip('.') if '.' in v['sizeNum'] else v['sizeNum'] for v in variants)):
             return False
 
     if 'sizeX' in variants[0]:
-        if len([v['sizeX'] + 'x' + v['sizeY'] for v in variants]) != len(set(v['sizeX'] + 'x' + v['sizeY'] for v in variants)):
+        if len([v['sizeX'].rstrip('0').rstrip('.') if '.' in v['sizeX'] else v['sizeX'] + 'x' + v['sizeY'].rstrip('0').rstrip('.') if '.' in v['sizeY'] else v['sizeY'] for v in variants]) != \
+                len(set(v['sizeX'].rstrip('0').rstrip('.') if '.' in v['sizeX'] else v['sizeX'] + 'x' + v['sizeY'].rstrip('0').rstrip('.') if '.' in v['sizeY'] else v['sizeY'] for v in variants)):
             return False
 
     for variant in variants:
