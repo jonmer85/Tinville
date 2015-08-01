@@ -35,6 +35,7 @@ from common.utils import get_list_or_empty, get_or_none, get_dict_value_or_suspi
 from django.views.generic import ListView
 from oscar.apps.analytics.scores import Calculator
 import logging
+from django import forms
 
 AttributeOption = get_model('catalogue', 'AttributeOption')
 ProductImage = get_model('catalogue', 'ProductImage')
@@ -330,6 +331,7 @@ def get_categoryName(request, shop_slug=None, group_by=None):
 
 def get_variants(item, group=None):
     variants = get_list_or_empty(Product, parent=item.id)
+    sizeType = get_sizetype(variants)
 
     if group is None:
         colorsizequantitydict = []
@@ -339,7 +341,6 @@ def get_variants(item, group=None):
     for variant in variants:
         color = ""
         sizeSet = ""
-        isSizeSet = False
         sizeX = ""
         sizeY = ""
         sizeNum = ""
@@ -355,7 +356,6 @@ def get_variants(item, group=None):
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
             sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
-            isSizeSet = True
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
             sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
@@ -372,10 +372,10 @@ def get_variants(item, group=None):
         if sizeX != "" and sizeY != "":
             divider = " x "
         variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum) + str(oneSize)
-        caseFunc = str.capitalize if not isSizeSet else str.upper
+        caseFunc = str.capitalize if sizeType != SIZE_SET else str.upper
 
         if group is None:
-            if isSizeSet == True:
+            if sizeType == SIZE_SET:
                 quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
@@ -383,7 +383,7 @@ def get_variants(item, group=None):
                                 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
-            if isSizeSet == True:
+            if sizeType == SIZE_SET:
                 groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
@@ -393,15 +393,25 @@ def get_variants(item, group=None):
             groupdict.pop(group)
             quantitysize = groupdict
             colorsizequantitydict[mysort].append(quantitysize)
+
             if str(group) == 'color':
-                if isSizeSet == True:
+                if sizeType == SIZE_SET:
                     colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('sizeorder'))
+                elif sizeType == SIZE_NUM:
+                    colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=lambda x: float(x.get('size')))
+                elif sizeType == SIZE_DIM:
+                    colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=lambda x: (float(x.get('size').split('x')[0]), float(x.get('size').split('x')[1])))
                 else:
                     colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('size'))
             elif group == 'size':
                 colorsizequantitydict[mysort] = sorted(colorsizequantitydict[mysort], key=itemgetter('color'))
 
-    addsizetype = {'sizetype': get_sizetype(variants), 'variants': colorsizequantitydict,
+    if sizeType == SIZE_NUM and group == 'size':
+        colorsizequantitydict = collections.OrderedDict(sorted(colorsizequantitydict.items(), key=lambda x: float(x[0])))
+    if sizeType == SIZE_DIM and group == 'size':
+        colorsizequantitydict = collections.OrderedDict(sorted(colorsizequantitydict.items(), key=lambda x: (float(x[0].split('x')[0]), float(x[0].split('x')[1]))))
+
+    addsizetype = {'sizetype': sizeType, 'variants': colorsizequantitydict,
                    'minprice': get_min_price(item)}
     return json.dumps(addsizetype)
 
@@ -484,7 +494,7 @@ def confirm_at_least_one(i):
 def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
     j = 0
     while (True):
-        color = next((c for c in postCopy.keys() if prefix in c
+        color = next((c for c in postCopy.keys() if prefix + '_' in c
                       and "_colorSelection" in c), None)
         colorRowNum = None
         if color:
@@ -492,7 +502,7 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
             if m is not None:
                 colorRowNum = m.group()
 
-            quantity = next((q for q in postCopy.keys() if prefix in q
+            quantity = next((q for q in postCopy.keys() if prefix + '_' in q
                              and "_quantityField" in q and q.endswith(colorRowNum)), None)
 
         if color is not None and quantity is not None:
@@ -711,6 +721,8 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             else:
                 form = ProductCreationForm(request.POST, request.FILES, instance=item if item else None,
                                            sizes=sizes, shop=shop)
+            if not _valid_variants(sizes):
+                form.add_error(None, "Duplicate size or color detected, please delete duplicates")
 
             if form.is_valid():
                 try:
@@ -736,6 +748,27 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
             return renderShopEditor(request, shop, productCreationForm=form, item=item, productImageFormSet=image_formset)
     else:
         return renderShopEditor(request, shop, item=item)
+
+
+def _valid_variants(variants):
+    if 'sizeSet' in variants[0]:
+        if len([v['sizeSet'] for v in variants]) != len(set(v['sizeSet'] for v in variants)):
+            return False
+
+    if 'sizeNum' in variants[0]:
+        if len([v['sizeNum'] for v in variants]) != len(set(v['sizeNum'] for v in variants)):
+            return False
+
+    if 'sizeX' in variants[0]:
+        if len([v['sizeX'] + 'x' + v['sizeY'] for v in variants]) != len(set(v['sizeX'] + 'x' + v['sizeY'] for v in variants)):
+            return False
+
+    for variant in variants:
+        colors = variant['colorsAndQuantities']
+        if len([c['color'] for c in colors]) != len(set(c['color'] for c in colors)):
+            return False
+
+    return True
 
 
 def _replaceCroppedFile(form, file_field, file_name, cropped_field_name):
