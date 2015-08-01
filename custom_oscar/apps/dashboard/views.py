@@ -197,14 +197,17 @@ class IndexView(CoreIndexView):
         return stats
 
     def aggregate_open_baskets(self):
-        total_open_baskets = 0
-        for basket in self.get_open_baskets():
-            is_open = False
-            for line in basket.all_lines():
-                shop = Shop.objects.filter(user_id=self.request.user.id).first()
-                if Product.objects.filter(id=line.product_id, shop_id=shop.id).count() > 0:
-                    is_open = True
-            if is_open:
-                total_open_baskets += 1
+        if self.request.user.is_staff:
+            return self.get_open_baskets().count()
+        else:
+            total_open_baskets = 0
+            for basket in self.get_open_baskets():
+                is_open = False
+                for line in basket.all_lines():
+                    shop = Shop.objects.filter(user_id=self.request.user.id).first()
+                    if Product.objects.filter(id=line.product_id, shop_id=shop.id).count() > 0:
+                        is_open = True
+                if is_open:
+                    total_open_baskets += 1
 
-        return total_open_baskets
+            return total_open_baskets

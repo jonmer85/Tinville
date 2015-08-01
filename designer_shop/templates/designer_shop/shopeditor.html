@@ -297,7 +297,7 @@
                             "<input class='sizeNumberSelection numberinput form-control'" + required + " id='id_sizeNumberSelection' name='sizeNumberSelection' type='decimal' placeholder = 'Type a size'>" +
                         "</div>" +
                         "<div class='col-xs-2'>" +
-                            "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
+                            "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick='clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
                                 "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
                             "</button>" +
                         "</div>" +
@@ -317,7 +317,7 @@
                             "<input class='oneSizeSelection form-control' id='id_oneSizeSelection' name='oneSizeSelection' type='text' readonly value='No Size/ One Size Fits All'>" +
                         "</div>" +
                         "<div class='col-xs-2'>" +
-                            "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick=''clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
+                            "<button id='id_clearSizes' value='Clear' class='shoppingcartBtn' onclick='clearSizeRow(\"sizeNumberSelectionTemplateTEMPLATENUM\")'>" +
                                 "<img src='{{ STATIC_URL }}img/delete.png' width='20' height='20'/>" +
                             "</button>" +
                         "</div>" +
@@ -948,6 +948,32 @@
             $(".modal-body").css('max-height', ($(window).height() *.9 - 140) + 'px');
         }
 
+        $(document).on('mousedown','.colorSelect',function(){
+            var colors = []
+            $('[id^=' + this.id.replace(/\d+$/, "") +']').each(function() {
+                colors.push($(this).val())
+            });
+
+            for(i=0; i<colors.length; i++) {
+                if (colors[i] !== '' && colors[i] !== $(this).val()) {
+                    $('#' + this.id + ' option[value=' + colors[i] + ']').remove()
+                }
+            }
+        });
+
+        $(document).on('mousedown','.sizeSetSelection',function(){
+            var sizes = []
+            $('[id$=id_sizeSetSelection]').each(function() {
+                sizes.push($(this).val())
+            });
+
+            for(i=0; i<sizes.length; i++) {
+                if (sizes[i] !== '' && sizes[i] !== $(this).val()) {
+                    $('#' + this.id + ' option[value=' + sizes[i] + ']').remove()
+                }
+            }
+        });
+
     </script>
 {% endblock %}
 
@@ -971,7 +997,7 @@
                             "<select class='sizeSetSelection select form-control' id='id_sizeSetSelection' name='sizeSetSelection' " + required + ">" +
                                 "<option value='' selected='selected'>Choose a size...</option>" +
                                 "{% for sizeSet in sizeSetOptions %}" +
-                                "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
+                                    "<option value='{{sizeSet.id}}'>{{sizeSet.option|upper}}</option>" +
                                 "{% endfor %}" +
                             "</select>" +
                         "</div>" +
@@ -1022,7 +1048,6 @@
             "</tr>";
             return rowColorQuantityTemplate;
         }
-
     </script>
 
 
