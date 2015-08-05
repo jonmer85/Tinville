@@ -5,6 +5,7 @@
     <script src="//tinville-dev.s3.amazonaws.com/static/js/tiny_mce/tiny_mce.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/farbtastic.css" />
     <link href="{{ STATIC_URL }}css/cropper.css" rel="stylesheet">
+
 {% endblock css %}
 {% block uncompressable_css %}
     {{ aboutBoxForm.media }}
@@ -151,6 +152,8 @@
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/vendor/cropper.js"></script>
     <script src="{{ STATIC_URL }}js/vendor/farbtastic.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-multiselect.css">
 
 {% endblock javascript_library %}
 
@@ -261,8 +264,8 @@
         </div>";
 
         var colorQuantityTableHead = "" +
-        "<div class='accordion-body collapse collapse-colors-quantity col-xs-12' style='padding-right: 0; padding-left: 6px; '>" +
-            "<div class='accordion-inner table-responsive'>" +
+        "<div class='accordion-body collapse collapse-colors-quantity col-xs-12' style='padding-right: 0; padding-left: 6px;'>" +
+            "<div class='accordion-inner table-responsive' style='overflow: visible;'>" +
                 "<table class='table'>" +
                     "<thead>" +
                         "<tr>" +
@@ -567,6 +570,14 @@
                 var newName = $th.attr('name').replace(/\w+$/, function(str) { return prefix + str + counter; });
                 $th.attr('name', newName);
             });
+            $('#' + $newColorQuantityRow.find('select')[0].id).multiselect(
+                {
+                    nonSelectedText: 'Choose a Color...',
+                    buttonWidth: '100%',
+                    maxHeight: 200,
+                    enableCaseInsensitiveFiltering: true
+                }
+            );
             return $newColorQuantityRow;
         }
 
@@ -688,6 +699,7 @@
 
                         var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
                         populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
+                        $('#' + $(colorQuantityRow).find('select').attr('id')).multiselect('refresh')
                     });
                     addNewColorAndQuantityRow(prefix, appendTo, false);
                 });
@@ -1035,11 +1047,11 @@
                     "<div class='row-color >" +
                         "<div id='div_id_colorSelection' class='form-group'>" +
                             "<div class='controls'>" +
-                                "<select class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
-                                    "<option value='' selected='selected'>Choose a color...</option>" +
+                                "<select multiple class='select form-control colorSelect'" + required + " id='id_colorSelection' name='colorSelection' placeholder='Choose a color'>" +
+{#                                    "<option value='' selected='selected'>Choose a color...</option>" +#}
                                     "{% for color in colors %}" +
                                         "{% if color.parent_id == None %}" +
-                                            "<optgroup label='{{color.option|capfirst}}'>" +
+                                            "<optgroup label='{{color.option|capfirst}}s'>" +
                                                 "<option class='parent-color' value='{{color.id}}'>{{color.option|capfirst}}</option>" +
                                                 "{% for child in color.child_colors.all %}" +
                                                     "<option class='child-color' value='{{child.id}}'>{{child.option|capfirst}}</option>" +

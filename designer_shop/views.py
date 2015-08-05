@@ -354,9 +354,9 @@ def get_variants(item, group=None):
             primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
             secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
             if secondary_color:
-                color = str(primary_color) + "/" + str(secondary_color.value_as_text)
+                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
             else:
-                color = primary_color
+                color = str(primary_color).capitalize()
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
@@ -381,18 +381,18 @@ def get_variants(item, group=None):
 
         if group is None:
             if sizeType == SIZE_SET:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                quantitysize = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                quantitysize = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
             if sizeType == SIZE_SET:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                groupdict = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                groupdict = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
@@ -443,7 +443,7 @@ def get_single_variant(variant, group=None):
             primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
             secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
             if secondary_color:
-                color = str(primary_color) + "/" + str(secondary_color.value_as_text)
+                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
             else:
                 color = primary_color
 
