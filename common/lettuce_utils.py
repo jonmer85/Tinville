@@ -360,4 +360,3 @@ def my_user_has_correct_permissions():
     user.save()
     world.browser.get(lettuce.django.get_server().url('/'))
     sign_in("demo@user.com", "tinville")
-

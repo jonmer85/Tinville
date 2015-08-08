@@ -53,3 +53,5 @@ CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 BROKER_BACKEND = 'memory'
 
 LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", True)
+
+LETTUCE_TEST_SERVER = 'common.lettuce_extensions.DefaultSecureServer'

@@ -9,7 +9,7 @@ from selenium.common.exceptions import *
 
 @step(u'Goto Demo page first')
 def goto_Demo_page_first(step):
-    world.browser.get(lettuce.django.get_server().url('/Demo'))
+    world.browser.get(lettuce.django.get_server(address='tinville-dev.herokuapp.com').url('/Demo'))
 
 @step(u'When I click the Tinville Tag')
 def When_I_click_the_Tinville_Tag(step):
