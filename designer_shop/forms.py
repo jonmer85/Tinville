@@ -62,6 +62,8 @@ class ProductCreationForm(forms.ModelForm):
                 ),
                 Fieldset('Images',
                          HTML("""<p>Select up to 5 images for this item. Image size recommendations are 400x400</p>"""),
+                         HTML("""<input type="file" id="multiImage" multiple="multiple" accept="image/*" />"""),
+                         HTML("""<div id="gallery"></div>"""),
                          HTML('{% load crispy_forms_tags %}{% crispy productImageFormSet %}'),
                 ),
                 Fieldset('Sizes and Colors',
@@ -360,6 +362,7 @@ class ProductImageFormSet(BaseProductImageFormSet):
 
     def __init__(self, *args, **kwargs):
         super(ProductImageFormSet, self).__init__(*args, **kwargs)
+
         for form in self.forms:
             form.fields["original"].label = ""
             form.fields["cropping"].label = ""

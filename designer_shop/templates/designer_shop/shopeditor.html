@@ -810,6 +810,60 @@
             readURL(this, 'id_aboutImgCropping-image', 155, 155);
         });
 
+        $(document).on("change", "#multiImage", function(){
+            if($("#multiImage")[0].files.length > 5)
+             {
+                   alert("You can select only 5 images");
+             }
+             else
+             {
+                $( "#gallery" ).empty();
+                var files = this.files;
+                for(var i=0; i<files.length; i++){
+                    previewImage(this.files[i], 'id_images-' + i, 400, 400);
+                }
+             }
+        });
+
+      function previewImage(file, cropping_img, ratio_width, ratio_height) {
+        var galleryId = "gallery";
+
+        var gallery = document.getElementById(galleryId);
+        var imageType = /image.*/;
+
+        if (!file.type.match(imageType)) {
+            throw "File Type must be an image";
+        }
+
+        var thumb = document.createElement("div");
+        thumb.classList.add('thumbnail');
+
+        var img = document.createElement("img");
+        img.id = cropping_img;
+        img.file = file;
+        thumb.appendChild(img);
+        gallery.appendChild(thumb);
+
+        // Using FileReader to display the image content
+        var reader = new FileReader();
+
+        // TODO: reimplement jcrop
+
+        reader.onload = (function(aImg) { return function(e) {
+        aImg.src = e.target.result;
+        jcrop[cropping_img].setImage(reader.result, function () {
+this.setOptions({
+aspectRatio: ratio_width / ratio_height,
+setSelect: getCenterBoxSelection(ratio_width, ratio_height, aImg.width, aImg.height),
+trueSize: [aImg.width, aImg.height]
+});
+})
+
+        };
+        })(img);
+        reader.readAsDataURL(file);
+       }
+
         $(document).on("change","#id_images-0-original",function(){
             {#        $('#product_image_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
             readURL(this, 'id_images-0-cropping-image', 400, 400);
@@ -838,7 +892,6 @@
         $(document).on("change","#id_images-4-original",function(){
             readURL(this, 'id_images-4-cropping-image', 400, 400);
         });
-
 
         function showImageFields() {
             {#        $('#product_image1_preview ').parent().prev('.docs-toolbar').removeClass('hidden');#}
