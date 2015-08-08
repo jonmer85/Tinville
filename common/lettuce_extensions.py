@@ -1,4 +1,6 @@
 import urlparse
+from django.conf import settings
+import lettuce
 from lettuce.django.server import ThreadedServer, DefaultServer
 
 
@@ -55,3 +57,6 @@ class DefaultSecureServer(DefaultServer):
         #     base_url += ':%d' % self.port
 
         return urlparse.urljoin(base_url, url)
+
+def get_server():
+    return lettuce.django.get_server(address=settings.TEST_SERVER_ADDRESS)

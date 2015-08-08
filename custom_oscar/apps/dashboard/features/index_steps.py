@@ -6,7 +6,7 @@ import lettuce.django
 
 @step("I am on the dashboard index page")
 def i_am_on_the_dashboard_index_page(step):
-    world.browser.get(lettuce.django.get_server().url('/dashboard'))
+    world.browser.get(get_server().url('/dashboard'))
 
 
 @step("I should see the '(.*)' table")
@@ -78,12 +78,12 @@ def I_should_not_see_the_dashboard_page(step):
 
 @step("I go to the url '(.*)'")
 def i_go_to_url(step, url):
-    world.browser.get(lettuce.django.get_server().url(url))
+    world.browser.get(get_server().url(url))
 
 
 @step("I am logged in as a non-designer customer")
 def i_am_logged_in_as_a_non_designer_customer(step):
-    world.browser.get(lettuce.django.get_server().url('/'))
+    world.browser.get(get_server().url('/'))
     sign_in("democust@user.com", "tinville")
 
 

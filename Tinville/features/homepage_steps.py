@@ -1,3 +1,4 @@
+from common.lettuce_extensions import get_server
 from common.lettuce_utils import *
 import cssselect
 from lettuce import step
@@ -9,7 +10,7 @@ from selenium.common.exceptions import *
 
 @step(u'Goto Demo page first')
 def goto_Demo_page_first(step):
-    world.browser.get(lettuce.django.get_server(address='tinville-dev.herokuapp.com').url('/Demo'))
+    world.browser.get(get_server().url('/Demo'))
 
 @step(u'When I click the Tinville Tag')
 def When_I_click_the_Tinville_Tag(step):

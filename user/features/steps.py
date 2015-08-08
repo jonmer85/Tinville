@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from common.lettuce_extensions import get_server
 from common.lettuce_utils import *
 import cssselect
 from django.conf import settings
@@ -11,11 +12,11 @@ from django.core.exceptions import ObjectDoesNotExist
 
 @step(u'I access the registration page')
 def access_registration_url(step):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+    world.browser.get(get_server().url('/register'))
 
 @step(u'I access the home page')
 def access_home_url(step):
-    world.browser.get(lettuce.django.get_server().url('/'))
+    world.browser.get(get_server().url('/'))
 
 @step(u'(?:When|And) I register for a shopper account with email "([^"]*)" and password "([^"]*)"')
 def when_i_register_for_a_shopper_account_with_email_and_password(step, email, password):
@@ -90,17 +91,17 @@ def then_i_should_be_redirected_to_the_home_page(step):
 
 @step(u'(?:Then|And) I can visit my shop at "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
-    absoluteUrl = lettuce.django.get_server().url(url)
+    absoluteUrl = get_server().url(url)
     world.browser.get(absoluteUrl)
     assert_page_exist(absoluteUrl)
 
 @step(u'(?:Then|And) I can visit my shop for the first time at "([^"]*)"')
 def then_i_can_visit_my_shop_for_the_first_time(step, url):
-    absoluteUrl = lettuce.django.get_server().url(url)
+    absoluteUrl = get_server().url(url)
     world.browser.get(absoluteUrl)
     if not settings.DISABLE_BETA_ACCESS_CHECK:
         redirect = '/access_code?shop=' + url
-        wait_for_browser_to_have_url(lettuce.django.get_server().url(redirect))
+        wait_for_browser_to_have_url(get_server().url(redirect))
         user = TinvilleUser.objects.get(email="joe@schmoe.com")
         form = fill_in_access_form(access_code=user.access_code)
         form.submit()
@@ -108,7 +109,7 @@ def then_i_can_visit_my_shop_for_the_first_time(step, url):
 
 @step(u'(?:Then|And) I can visit my shop again at "([^"]*)"')
 def then_i_can_visit_my_shop_again(step, url):
-    absoluteUrl = lettuce.django.get_server().url(url)
+    absoluteUrl = get_server().url(url)
     world.browser.get(absoluteUrl)
     wait_for_browser_to_have_url(absoluteUrl+"/")
     assert_page_exist(absoluteUrl)
@@ -137,7 +138,7 @@ def then_i_should_not_see_validation_errors(step):
 
 @step(u'Then I should get a validation error on email address')
 def then_i_should_get_a_validation_error_on_email_address(step):
-    assert_equals(world.browser.current_url, lettuce.django.get_server().url('/register/designer'))
+    assert_equals(world.browser.current_url, get_server().url('/register/designer'))
     assert_class_exists('has-error')
 
 @step(u'I should be logged in')
@@ -150,7 +151,7 @@ def then_i_should_be_logged_in(step):
 
 @step(u'Visit and confirm the flatpages "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
-    absoluteUrl = lettuce.django.get_server().url(url)
+    absoluteUrl = get_server().url(url)
     world.browser.get(absoluteUrl)
     assert_page_exist(url)
 

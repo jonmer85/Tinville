@@ -16,5 +16,5 @@ def my_user_has_correct_permissions(step):
                 codename='dashboard_access', content_type__app_label='partner')
     user.user_permissions.add(dashboard_access_perm)
     user.save()
-    world.browser.get(lettuce.django.get_server().url('/'))
+    world.browser.get(get_server().url('/'))
     sign_in("demo@user.com", "tinville")

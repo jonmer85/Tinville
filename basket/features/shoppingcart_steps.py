@@ -1,3 +1,4 @@
+from common.lettuce_extensions import get_server
 from lettuce import step
 from django.core.management import call_command
 import lettuce.django
@@ -13,12 +14,12 @@ from common.lettuce_utils import *
 
 @step(u'Given a desktop shopper')
 def Given_desktop_shopper(step):
-    world.browser.get(lettuce.django.get_server().url())
+    world.browser.get(get_server().url())
     change_viewport_md()
 
 @step(u'Given a mobile shopper')
 def Given_mobile_shopper(step):
-    world.browser.get(lettuce.django.get_server().url())
+    world.browser.get(get_server().url())
     change_viewport_xs()
 
 @step(u'When I click the Desktop Shopping cart button')
@@ -42,7 +43,7 @@ def Then_Shopping_Cart_Closes(step):
 
 @step(u'When I add an item to my cart')
 def When_add_item_to_cart(step):
-    world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))
+    world.browser.get(get_server().url("/Demo/TestSizeSetItem"))
     Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("SM")
     wait_for_element_with_css_selector_to_exist("#id_AddToCart")
@@ -59,7 +60,7 @@ def And_check_added_to_bag(step):
 
 @step(u'Then add another item is still in my cart')
 def add_and_still_in_my_cart(step):
-    world.browser.get(lettuce.django.get_server().url("/Demo/TestSizeSetItem"))
+    world.browser.get(get_server().url("/Demo/TestSizeSetItem"))
     Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
     Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
     wait_for_element_with_css_selector_to_exist("#id_AddToCart")
@@ -94,7 +95,7 @@ def when_i_register_for_a_shopper_account(step):
     submit_form_and_activate_user(form)
 
 def fill_in_user_form(email, password):
-    world.browser.get(lettuce.django.get_server().url('/register'))
+    world.browser.get(get_server().url('/register'))
     world.user_info = {
         "email": email,
         "password": password,

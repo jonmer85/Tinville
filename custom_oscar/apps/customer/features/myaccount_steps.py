@@ -14,7 +14,7 @@ def i_click_the_user_Icon(step):
 
 @step("I should see the 'My Account' page")
 def i_see_the_my_account_page(step):
-    wait_for_browser_to_have_url(lettuce.django.get_server().url('/accounts/orders/'))
+    wait_for_browser_to_have_url(get_server().url('/accounts/orders/'))
     wait_for_element_with_css_selector_to_be_displayed('div.slidingContent2 > div:nth-child(1) > h1')
     assert_selector_contains_text('div.slidingContent2 > div:nth-child(1) > h1', 'My Account')
 

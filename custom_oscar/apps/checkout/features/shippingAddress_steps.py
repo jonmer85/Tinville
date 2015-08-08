@@ -2,7 +2,7 @@
 #
 # @step(u'Given the shipping address page')
 # def given_the_shipping_address_page(step):
-#     world.browser.get(lettuce.django.get_server().url('/shipping-address'))
+#     world.browser.get(get_server().url('/shipping-address'))
 #     assert world.browser.find_element_by_class_name('form-stacked well')
 #
 # @step(u'When the form is displayed')
@@ -79,7 +79,7 @@
 # def and_the_invalid_address_is_submitted(step):
 #     world.browser.find_element_by_class_name("id_SubmitAboutContent").click()
 #     wait_for_ajax_to_complete()
-#     assert world.browser.get(lettuce.django.get_server().url('/payment-details'))
+#     assert world.browser.get(get_server().url('/payment-details'))
 #
 #
 #

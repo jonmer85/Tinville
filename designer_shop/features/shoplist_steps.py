@@ -9,7 +9,7 @@ from selenium.common.exceptions import *
 
 @step(u'(?:Then|And) I can visit my shop at "([^"]*)"')
 def then_i_can_visit_my_shop(step, url):
-    absoluteUrl = lettuce.django.get_server().url(url)
+    absoluteUrl = get_server().url(url)
     world.browser.get(absoluteUrl)
     assert_page_exist(url)
 

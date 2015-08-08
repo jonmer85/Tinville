@@ -3,7 +3,7 @@ from common.lettuce_utils import *
 
 @step("a designer is logged in")
 def designer_is_logged_in(step):
-    world.browser.get(lettuce.django.get_server().url())
+    world.browser.get(get_server().url())
     if len(world.browser.find_elements_by_css_selector('#clickedLogin-lg')) == 0:
         sign_in('Demo@user.com', 'tinville')
 

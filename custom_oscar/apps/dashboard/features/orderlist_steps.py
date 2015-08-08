@@ -5,7 +5,7 @@ import lettuce.django
 
 @step("I am on the dashboard index page")
 def i_am_on_the_dashboard_index_page(step):
-    world.browser.get(lettuce.django.get_server().url('/dashboard'))
+    world.browser.get(get_server().url('/dashboard'))
 
 @step("I click on the 'orders' link")
 def i_click_on_the_link(step):
@@ -14,7 +14,7 @@ def i_click_on_the_link(step):
 
 @step("I am on the dashboard order list page")
 def i_am_on_the_dashboard_order_list_page(step):
-    world.browser.get(lettuce.django.get_server().url('/dashboard/orders'))
+    world.browser.get(get_server().url('/dashboard/orders'))
 
 @step("I click on the '(.*)' filter")
 def i_click_on_the_filter(step, filter):

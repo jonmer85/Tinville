@@ -17,11 +17,11 @@ from common.lettuce_utils import *
 # Scenario: Adding an item to the empty shopping bag
 @step(u'Demo page')
 def demo_page(step):
-     world.browser.get(lettuce.django.get_server().url("/demo/testsizesetitem"))
+     world.browser.get(get_server().url("/demo/testsizesetitem"))
 
 @step(u'Then I go to the checkout page')
 def then_I_go_to_the_checkout_page(step):
-    world.browser.get(lettuce.django.get_server().url("/cartdetail"))
+    world.browser.get(get_server().url("/cartdetail"))
 
 @step(u'The shopping bag is empty')
 def the_shopping_bag_is_empty(step):
@@ -204,7 +204,7 @@ def when_I_click_on_checkout_button(step):
 # Scenario: Trying to click on Add to Bag without choosing any item
 #@step(u'Main Demo page with a shopping bag that is empty')
 #def main_demo_page_with_a_empty_shopping_bag(step):
-#    world.browser.get(lettuce.django.get_server().url("/demo/testsizesetitem"))
+#    world.browser.get(get_server().url("/demo/testsizesetitem"))
 #   assert_number_of_selectors(".shoppingcartitem[id^=lineId]", 0)
 
 
