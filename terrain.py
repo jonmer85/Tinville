@@ -43,13 +43,13 @@ def clean_database(scenario):
         subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
                     ' ; (heroku run ./lettuce_tests_heroku flush --no-initial-data --noinput --app tinville-lettuce)', shell=True)
         subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput)', shell=True)
+                    ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce)', shell=True)
         subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput)', shell=True)
+                    ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce)', shell=True)
         subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku loaddata all.json --noinput)', shell=True)
+                    ' ; (heroku run ./lettuce_tests_heroku loaddata all.json --noinput --app tinville-lettuce)', shell=True)
         subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku loaddata initial_data2.json)', shell=True)
+                    ' ; (heroku run ./lettuce_tests_heroku loaddata initial_data2.json --noinput --app tinville-lettuce)', shell=True)
         # call_command('loaddata', 'all.json', verbosity=0)
         # call_command('loaddata', 'initial_data2.json', verbosity=0)
     else:
