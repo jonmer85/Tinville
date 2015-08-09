@@ -170,6 +170,10 @@ class ProductCreationForm(forms.ModelForm):
             setattr(variantProduct.attr, 'color', primary_color)
         if secondary_color:
             setattr(variantProduct.attr, 'secondary_color', secondary_color)
+        elif hasattr(variantProduct.attr, 'secondary_color'):
+            # Since we create a copy every time of the most recent creted object, we need to make sure
+            # to delete this if it is not included or else it will be added to every single color item
+            del(variantProduct.attr.secondary_color)
         if oneSize:
             setattr(variantProduct.attr, 'one_size', True)
         variantProduct.save()
@@ -208,7 +212,6 @@ class ProductCreationForm(forms.ModelForm):
             canonicalProduct.upc = None
         canonicalProduct.shop = shop
         canonicalProduct.structure = Product.PARENT
-
         canonicalProduct.save()
         canonicalId = canonicalProduct.id
 
@@ -232,7 +235,7 @@ class ProductCreationForm(forms.ModelForm):
                             secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                             quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
-                                                                       primary_color=primary_color, secondary_color= secondary_color if secondary_color else None, quantity=quantity)
+                                                                       primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                         else:
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
@@ -248,7 +251,7 @@ class ProductCreationForm(forms.ModelForm):
                             secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                             quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX, "y": sizeDimY},
-                                                                             primary_color=primary_color, secondary_color= secondary_color if secondary_color else None, quantity=quantity)
+                                                                             primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                         else:
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
@@ -262,7 +265,7 @@ class ProductCreationForm(forms.ModelForm):
                             secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                             quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
-                                                                       primary_color=primary_color, secondary_color= secondary_color if secondary_color else None, quantity=quantity)
+                                                                       primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                         else:
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
@@ -274,7 +277,7 @@ class ProductCreationForm(forms.ModelForm):
                         secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                         quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                         self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, oneSize=True,
-                                                                   primary_color=primary_color, secondary_color= secondary_color if secondary_color else None, quantity=quantity)
+                                                                   primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                     else:
                         # Jon M TBD Should we allow no color/quantity?
                         # For now ignore it
