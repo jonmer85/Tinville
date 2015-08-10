@@ -1496,19 +1496,6 @@
         "model": "catalogue.Category",
         "pk": 3,
         "fields": {
-            "path": "0003",
-            "depth": 1,
-            "numchild": 2,
-            "name": "Unisex",
-            "slug": "unisex",
-            "full_name": "Unisex"
-
-        }
-    },
-    {
-        "model": "catalogue.Category",
-        "pk": 4,
-        "fields": {
             "path": "00010001",
             "depth": 2,
             "numchild": 1,
@@ -1520,7 +1507,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 5,
+        "pk": 4,
         "fields": {
             "path": "00010002",
             "depth": 2,
@@ -1533,7 +1520,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 6,
+        "pk": 5,
         "fields": {
             "path": "000100010001",
             "depth": 3,
@@ -1546,7 +1533,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 7,
+        "pk": 6,
         "fields": {
             "path": "000100010002",
             "depth": 3,
@@ -1559,7 +1546,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 8,
+        "pk": 7,
         "fields": {
             "path": "000100010003",
             "depth": 3,
@@ -1572,7 +1559,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 9,
+        "pk": 8,
         "fields": {
             "path": "000100010004",
             "depth": 3,
@@ -1585,7 +1572,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 10,
+        "pk": 9,
         "fields": {
             "path": "000100010005",
             "depth": 3,
@@ -1598,20 +1585,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 11,
-        "fields": {
-            "path": "000100010006",
-            "depth": 3,
-            "numchild": 0,
-            "name": "Coats",
-            "slug": "women/clothing/coats",
-            "full_name": "Women > Clothing > Coats"
-
-        }
-    },
-    {
-        "model": "catalogue.Category",
-        "pk": 12,
+        "pk": 10,
         "fields": {
             "path": "000100010007",
             "depth": 3,
@@ -1624,7 +1598,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 13,
+        "pk": 11,
         "fields": {
             "path": "000100010008",
             "depth": 3,
@@ -1637,7 +1611,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 14,
+        "pk": 12,
         "fields": {
             "path": "000100010010",
             "depth": 3,
@@ -1650,7 +1624,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 15,
+        "pk": 13,
         "fields": {
             "path": "000100010011",
             "depth": 3,
@@ -1663,7 +1637,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 16,
+        "pk": 14,
         "fields": {
             "path": "000100020001",
             "depth": 3,
@@ -1676,7 +1650,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 17,
+        "pk": 15,
         "fields": {
             "path": "000100020002",
             "depth": 3,
@@ -1689,7 +1663,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 18,
+        "pk": 16,
         "fields": {
             "path": "00020001",
             "depth": 2,
@@ -1702,7 +1676,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 19,
+        "pk": 17,
         "fields": {
             "path": "00020002",
             "depth": 2,
@@ -1715,7 +1689,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 20,
+        "pk": 18,
         "fields": {
             "path": "000200010001",
             "depth": 3,
@@ -1728,7 +1702,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 21,
+        "pk": 19,
         "fields": {
             "path": "000200010002",
             "depth": 3,
@@ -1741,7 +1715,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 22,
+        "pk": 20,
         "fields": {
             "path": "000200010003",
             "depth": 3,
@@ -1754,7 +1728,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 23,
+        "pk": 21,
         "fields": {
             "path": "000200010004",
             "depth": 3,
@@ -1767,7 +1741,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 24,
+        "pk": 22,
         "fields": {
             "path": "000200010005",
             "depth": 3,
@@ -1780,7 +1754,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 25,
+        "pk": 23,
         "fields": {
             "path": "000200010006",
             "depth": 3,
@@ -1793,7 +1767,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 26,
+        "pk": 24,
         "fields": {
             "path": "000200010007",
             "depth": 3,
@@ -1806,7 +1780,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 27,
+        "pk": 25,
         "fields": {
             "path": "000200010008",
             "depth": 3,
@@ -1819,7 +1793,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 28,
+        "pk": 26,
         "fields": {
             "path": "000200010009",
             "depth": 3,
@@ -1832,7 +1806,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 29,
+        "pk": 27,
         "fields": {
             "path": "000200010010",
             "depth": 3,
@@ -1845,7 +1819,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 30,
+        "pk": 28,
         "fields": {
             "path": "000200020001",
             "depth": 3,
@@ -1858,7 +1832,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 31,
+        "pk": 29,
         "fields": {
             "path": "000200020002",
             "depth": 3,
@@ -1871,7 +1845,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 32,
+        "pk": 30,
         "fields": {
             "path": "000200020003",
             "depth": 3,
@@ -1884,11 +1858,11 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 33,
+        "pk": 31,
         "fields": {
             "path": "00010003",
             "depth": 2,
-            "numchild": 0,
+            "numchild": 1,
             "name": "Accessories",
             "slug": "Women/accessories",
             "full_name": "Women > Accessories"
@@ -1897,11 +1871,11 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 34,
+        "pk": 32,
         "fields": {
             "path": "00020003",
             "depth": 2,
-            "numchild": 0,
+            "numchild": 1,
             "name": "Accessories",
             "slug": "Men/accessories",
             "full_name": "Men > Accessories"
@@ -1910,7 +1884,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 35,
+        "pk": 33,
         "fields": {
             "path": "000200030001",
             "depth": 3,
@@ -1923,7 +1897,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 36,
+        "pk": 34,
         "fields": {
             "path": "000200030002",
             "depth": 3,
@@ -1936,7 +1910,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 37,
+        "pk": 35,
         "fields": {
             "path": "000200030003",
             "depth": 3,
@@ -1948,7 +1922,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 38,
+        "pk": 36,
         "fields": {
             "path": "000200030004",
             "depth": 3,
@@ -1960,7 +1934,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 39,
+        "pk": 37,
         "fields": {
             "path": "000100030001",
             "depth": 3,
@@ -1972,7 +1946,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 40,
+        "pk": 38,
         "fields": {
             "path": "000100030002",
             "depth": 3,
@@ -1984,7 +1958,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 41,
+        "pk": 39,
         "fields": {
             "path": "000100030003",
             "depth": 3,
@@ -1996,7 +1970,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 42,
+        "pk": 40,
         "fields": {
             "path": "000100030004",
             "depth": 3,
@@ -2008,7 +1982,7 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 43,
+        "pk": 41,
         "fields": {
             "path": "000100010009",
             "depth": 3,
@@ -2021,20 +1995,20 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 44,
+        "pk": 42,
         "fields": {
-            "path": "000300030001",
+            "path": "000100010006",
             "depth": 3,
             "numchild": 0,
-            "name": "Bags",
-            "slug": "Unisex/accessories/bags",
-            "full_name": "Unisex > Accessories > Bags"
+            "name": "Coats",
+            "slug": "women/clothing/coats",
+            "full_name": "Women > Clothing > Coats"
 
         }
     },
     {
         "model": "catalogue.Category",
-        "pk": 45,
+        "pk": 43,
         "fields": {
             "path": "000200010011",
             "depth": 3,
@@ -2042,6 +2016,71 @@
             "name": "Shirt",
             "slug": "Men/clothing/shirt",
             "full_name": "Men > Clothing > Shirt"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 44,
+        "fields": {
+            "path": "0003",
+            "depth": 1,
+            "numchild": 2,
+            "name": "Unisex",
+            "slug": "unisex",
+            "full_name": "Unisex"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 45,
+        "fields": {
+            "path": "00030001",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Clothing",
+            "slug": "Unisex/clothing",
+            "full_name": "Unisex > Clothing"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 46,
+        "fields": {
+            "path": "00030002",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Footwear",
+            "slug": "Unisex/footwear",
+            "full_name": "Unisex > Footwear"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 47,
+        "fields": {
+            "path": "00030003",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Accessories",
+            "slug": "Unisex/accessories",
+            "full_name": "Unisex > Accessories"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 48,
+        "fields": {
+            "path": "000300030001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Bag",
+            "slug": "Unisex/accessories/bag",
+            "full_name": "Unisex > Accessories > Bag"
 
         }
     },
