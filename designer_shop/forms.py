@@ -122,7 +122,6 @@ class ProductCreationForm(forms.ModelForm):
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
-
     def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
         variantProduct = copy(canonical)
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
@@ -156,7 +155,6 @@ class ProductCreationForm(forms.ModelForm):
 
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
-
 
     def clean_title(self):
         title = self.cleaned_data['title']
@@ -273,7 +271,7 @@ class ProductCreationForm(forms.ModelForm):
         parsley_extras = {
             'price': {
                 'pattern': '^\$?-?0*(?:\d+(?!,)(?:\.\d{1,2})?|(?:\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?))$',
-                'pattern-message': 'Please only enter valid currancy.'
+                'pattern-message': 'Please only enter valid currency.'
             },
         }
 

@@ -154,6 +154,11 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+        //Tommy Leedberg - 8/11/2015 - Removing $ and commas from price
+        $(document).on( "change", "#id_price", function(){
+            $( "#id_price" ).val( $( "#id_price").val().replace( /[$,]/g, '')  ) ;
+        });
+
         $(document).on("change","#id_product_image",function() {
             $("#id_product_image1").removeClass("hidden");
         });
@@ -244,7 +249,6 @@
             $('#id_price').removeAttr('data-parsley-type data-parsley-type-digits-message data-parsley-type-number-message');
 
         };
-
 
         var htmlString = "<div>\
           This is a string.\
