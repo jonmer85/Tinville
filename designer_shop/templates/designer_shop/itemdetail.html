@@ -284,7 +284,11 @@
                     if (this.size === $("#itemSizeSelection").val())
                     {
 {#                        variantprice = '$' + this.price#}
-                        variantquantity = this.quantity + " remaining"
+                        if (this.quantity <= 5) {
+                            variantquantity = this.quantity + " remaining";
+                        } else {
+                            variantquantity = "";
+                        }
                         numberquantity = this.quantity
                     }
                 });
