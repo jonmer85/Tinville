@@ -437,7 +437,7 @@
                 var currentPanel;
                 editorPanelHeight = .85;
                 maxHeight = $(window).height()*editorPanelHeight;
-                if (selectedValue[0].value != 0) {
+                if (selectedValue.length > 0 && selectedValue[0].value != 0) {
                     var colorsAndQuantitiesTable = $(".table", $(this).parents(".accordion-group")[0]);
                     if($(this).closest('.rowColorQuantityTemplate').next().length == "0") {
                         addNewColorAndQuantityRow(colorsAndQuantitiesTable.parents(sizeTemplateClass).attr("id") + "_", colorsAndQuantitiesTable, false);
@@ -574,36 +574,31 @@
             colorOrders[$newColorQuantityRow.find('select')[0].id] = 0
             $('#' + $newColorQuantityRow.find('select')[0].id).multiselect(
                 {
-                    nonSelectedText: 'Choose a Color...',
+                    noneSelectedText: 'Choose a Color...',
                     buttonWidth: '100%',
                     maxHeight: 200,
                     enableCaseInsensitiveFiltering: true,
+                    buttonText: function(options, select) {
+                        var labels = [];
+
+                        if (options.length === 0) {
+                            return 'Choose a Color...';
+                        }
+
+                        var primary_color = "";
+                        var secondary_color = "";
+                        if ($('#' + $newColorQuantityRow.find('select')[0].id.replace('_id_', '_id_pc_')).is('[data-color]')){
+                            primary_color = $('#' + $newColorQuantityRow.find('select')[0].id.replace('_id_', '_id_pc_')).attr('data-color');
+                        }
+
+                        if ($('#' + $newColorQuantityRow.find('select')[0].id.replace('_id_', '_id_sc_')).is('[data-color]')) {
+                            secondary_color = "/" + $('#' + $newColorQuantityRow.find('select')[0].id.replace('_id_', '_id_sc_')).attr('data-color');
+                        }
+
+                        return primary_color + secondary_color;
+                    },
                     onChange: function(option, checked) {
-                        // Get selected options.
-{#                        var selectedOptions = $('#' + $newColorQuantityRow.find('select')[0].id + ' option:selected');#}
-{##}
-{#                        if (selectedOptions.length >= 2) {#}
-{#                            // Disable all other checkboxes.#}
-{#                            var nonSelectedOptions = $('#' + $newColorQuantityRow.find('select')[0].id + ' option').filter(function () {#}
-{#                                return !$(this).is(':selected');#}
-{#                            });#}
-{##}
-{#                            var dropdown = $('#' + $newColorQuantityRow.find('select')[0].id).siblings('.multiselect-container');#}
-{#                            nonSelectedOptions.each(function () {#}
-{#                                var input = $('input[value="' + $(this).val() + '"]');#}
-{#                                input.prop('disabled', true);#}
-{#                                input.parent('li').addClass('disabled');#}
-{#                            });#}
-{##}
-{#                        } else {#}
-{#                            // Enable all checkboxes.#}
-{#                            var dropdown = $('#' + $newColorQuantityRow.find('select')[0].id).siblings('.multiselect-container');#}
-{#                            $('#' + $newColorQuantityRow.find('select')[0].id + ' option').each(function() {#}
-{#                                var input = $('input[value="' + $(this).val() + '"]');#}
-{#                                input.prop('disabled', false);#}
-{#                                input.parent('li').addClass('disabled');#}
-{#                            });#}
-{#                        }#}
+                        checkMaxColors('#' + $newColorQuantityRow.find('select')[0].id)
 
                         if (checked) {
                             colorOrders[$newColorQuantityRow.find('select')[0].id]++;
@@ -614,7 +609,7 @@
 
                         var selected = [];
                         $('#' + $newColorQuantityRow.find('select')[0].id + ' option:selected').each(function() {
-                            selected.push([$(this).val(), $(this).data('order')]);
+                            selected.push([$(this).val(), $(this).data('order'), $(this).html()]);
                         });
 
                         selected.sort(function(a, b) {
@@ -627,20 +622,53 @@
                         if (selected.length === 0) {
                             $(primary_id).removeAttr('value');
                             $(secondary_id).removeAttr('value');
+                            $(secondary_id).removeAttr('data-color');
+                            $(primary_id).removeAttr('data-color');
                         }
                         if (selected.length > 0)
                         {
                             $(primary_id).val(selected[0][0]);
+                            $(primary_id).attr('data-color', selected[0][2]);
                             $(secondary_id).removeAttr('value');
+                            $(secondary_id).removeAttr('data-color');
                         }
 
                         if (selected.length > 1)
                         {
                             $(secondary_id).val(selected[1][0]);
+                            $(secondary_id).attr('data-color', selected[1][2]);
                         }
+                        $('#' + $newColorQuantityRow.find('select')[0].id).multiselect('refresh');
                     }
                 });
             return $newColorQuantityRow;
+        }
+
+        function checkMaxColors(selectId) {
+            // Get selected options.
+            var selectedOptions = $(selectId + ' option:selected');
+            if (selectedOptions.length >= 2) {
+                // Disable all other checkboxes.
+                var nonSelectedOptions = $(selectId + ' option').filter(function () {
+                    return !$(this).is(':selected');
+                });
+
+                var dropdown = $(selectId).siblings('.multiselect-container');
+                nonSelectedOptions.each(function () {
+                    var input = $(selectId + ' + div.btn-group input[value="' + $(this).val() + '"]');
+                    input.prop('disabled', true);
+                    input.parent('li').addClass('disabled');
+                });
+
+            } else {
+                // Enable all checkboxes.
+                var dropdown = $(selectId).siblings('.multiselect-container');
+                $(selectId + ' option').each(function () {
+                    var input = $(selectId + ' + div.btn-group input[value="' + $(this).val() + '"]');
+                    input.prop('disabled', false);
+                    input.parent('li').addClass('disabled');
+                });
+            }
         }
 
         function RemoveWrongSizeTypes(newSizeType) {
@@ -759,7 +787,8 @@
                     $.each(value, function (key, value) {
                         var colorQuantityRow = addNewColorAndQuantityRow(prefix, appendTo);
                         populateInitialDataForColorAndQuantityRow(colorQuantityRow, value.color, value.quantity);
-                        $('#' + $(colorQuantityRow).find('select').attr('id')).multiselect('refresh')
+                        $('#' + $(colorQuantityRow).find('select').attr('id')).multiselect('refresh');
+                        checkMaxColors('#' + $(colorQuantityRow).find('select').attr('id'));
                     });
                     addNewColorAndQuantityRow(prefix, appendTo, false);
                 });
@@ -807,11 +836,13 @@
                 if($(this).text() == pc) {
                     $(this).attr('selected', 'selected');
                     $(primary_id).val($(this).val());
+                    $(primary_id).attr('data-color', pc)
                 }
 
                 if($(this).text() == sc) {
                     $(this).attr('selected', 'selected');
                     $(secondary_id).val($(this).val());
+                    $(secondary_id).attr('data-color', sc);
                 }
             });
             colorQuantityRow.find('.quantityField').val(quantity);
