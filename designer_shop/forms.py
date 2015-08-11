@@ -171,7 +171,7 @@ class ProductCreationForm(forms.ModelForm):
         if secondary_color:
             setattr(variantProduct.attr, 'secondary_color', secondary_color)
         elif hasattr(variantProduct.attr, 'secondary_color'):
-            # Since we create a copy every time of the most recent created variantt, we need to make sure
+            # Since we create a copy every time of the most recent created variant, we need to make sure
             # to delete this if it is not included or else it will be added to every single color variant going forward
             del(variantProduct.attr.secondary_color)
         if oneSize:
