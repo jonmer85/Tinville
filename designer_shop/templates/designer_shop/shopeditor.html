@@ -598,8 +598,6 @@
                         return primary_color + secondary_color;
                     },
                     onChange: function(option, checked) {
-                        checkMaxColors('#' + $newColorQuantityRow.find('select')[0].id)
-
                         if (checked) {
                             colorOrders[$newColorQuantityRow.find('select')[0].id]++;
                             $(option).data('order', colorOrders[$newColorQuantityRow.find('select')[0].id]);
@@ -639,6 +637,7 @@
                             $(secondary_id).attr('data-color', selected[1][2]);
                         }
                         $('#' + $newColorQuantityRow.find('select')[0].id).multiselect('refresh');
+                        checkMaxColors('#' + $newColorQuantityRow.find('select')[0].id)
                     }
                 });
             return $newColorQuantityRow;
