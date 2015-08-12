@@ -60,9 +60,11 @@ class Shop(models.Model):
 SIZE_SET = "1"
 SIZE_DIM = "2"
 SIZE_NUM = "3"
+ONE_SIZE = "4"
 
 SIZE_TYPES = [
     (SIZE_SET, "Set (eg. Small, Medium, Large)"),
     (SIZE_DIM, "Dimensions (eg. Length X Width)"),
-    (SIZE_NUM, "Number (eg. Dress size)")
+    (SIZE_NUM, "Number (eg. Dress size)"),
+    (ONE_SIZE, "No Size/ One Size Fits All")
 ]

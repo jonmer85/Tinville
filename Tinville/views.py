@@ -39,6 +39,7 @@ def gender_home(request, gender):
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(post=request.GET, filter=True)
             shopCategoryNames = get_types(request=request,shop_slug=None,group_by=request.GET['genderfilter'])
+            template = 'designer_shop/shop_items.html'
             context = {
                 'homemode': True,
                 'products': products,
@@ -48,7 +49,7 @@ def gender_home(request, gender):
 
             return template, context
 
-    products = get_category_products(genderfilter=gender)
+    products = get_category_products()
     shopCategories, shopCategoryNames = get_filter_lists().categorylist()
     context = {
         'homemode': True,
@@ -72,10 +73,16 @@ def men_home(request):
 
 def women_home(request):
     template, context = gender_home(request,'women')
-    return render_to_response(template, context, context_instance=RequestContext(request))
+    if request.method == 'GET':
+        return render(request,template,context)
+    else:
+        return render_to_response(template, context, context_instance=RequestContext(request))
 
 def shop_gallery(request):
     template, context = gender_home(request,'all')
-    return render_to_response(template, context, context_instance=RequestContext(request))
+    if request.method == 'GET':
+        return render(request,template,context)
+    else:
+        return render_to_response(template, context, context_instance=RequestContext(request))
 
 
