@@ -78,8 +78,6 @@
 
     function showDesigner() {
         $("#shopper").removeClass("borderHighlight");
-{#        $('#shopper img').attr("src","{{ STATIC_URL }}img/register_glyphs/customer.svg");#}
-{#        $('#designer img').attr("src","{{ STATIC_URL }}img/register_glyphs/designer_over.svg");#}
         $("#designerSVG").addClass("hidden");
         $("#designerOverSVG").removeClass("hidden");
         $("#customerOverSVG").addClass("hidden");
@@ -91,8 +89,6 @@
     function showShopper() {
         $("#designer").removeClass("borderHighlight");
         $("#shopper").addClass("borderHighlight");
-{#        $('#shopper img').attr("src","{{ STATIC_URL }}img/register_glyphs/customer_over.svg");#}
-{#        $('#designer img').attr("src","{{ STATIC_URL }}img/register_glyphs/designer.svg");#}
         $("#designerSVG").removeClass("hidden");
         $("#designerOverSVG").addClass("hidden");
         $("#customerOverSVG").removeClass("hidden");
