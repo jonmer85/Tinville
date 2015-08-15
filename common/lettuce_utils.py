@@ -1,4 +1,5 @@
 from common.factories import create_order, create_basket_with_products
+from common.lettuce_extensions import get_server
 from designer_shop.forms import Product
 from designer_shop.models import Shop
 from django.contrib.auth.models import Permission
