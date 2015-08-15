@@ -39,17 +39,22 @@ def add_context_to_scenario(scenario):
 @before.each_scenario
 def clean_database(scenario):
     if settings.LETTUCE_RUN_ON_HEROKU:
+        pass
         # call_command('flush', noinitialdata=True, interactive=False, verbosity=0)
-        subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku flush --no-initial-data --noinput --app tinville-lettuce)', shell=True)
-        subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce)', shell=True)
-        subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce)', shell=True)
-        subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku loaddata all.json --noinput --app tinville-lettuce)', shell=True)
-        subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
-                    ' ; (heroku run ./lettuce_tests_heroku loaddata initial_data2.json --noinput --app tinville-lettuce)', shell=True)
+        execute('heroku run ./lettuce_tests_heroku flush --no-initial-data --noinput --app tinville-lettuce')
+        execute('heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce')
+        execute('heroku run ./lettuce_tests_heroku loaddata all.json --app tinville-lettuce')
+        execute('heroku run ./lettuce_tests_heroku loaddata initial_data2.json --app tinville-lettuce')
+        # print subprocess.check_output('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
+        #             ' ; (heroku run ./lettuce_tests_heroku flush --no-initial-data --noinput --app tinville-lettuce)', shell=True)
+        # subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
+        #             ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce)', shell=True)
+        # subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
+        #             ' ; (heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce)', shell=True)
+        # subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
+        #             ' ; (heroku run ./lettuce_tests_heroku loaddata all.json --noinput --app tinville-lettuce)', shell=True)
+        # subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
+        #             ' ; (heroku run ./lettuce_tests_heroku loaddata initial_data2.json --noinput --app tinville-lettuce)', shell=True)
         # call_command('loaddata', 'all.json', verbosity=0)
         # call_command('loaddata', 'initial_data2.json', verbosity=0)
     else:
@@ -62,6 +67,14 @@ def clean_database(scenario):
     demo_user = TinvilleUser.objects.get(email='demo@user.com')
     demo_user.is_approved = True
     demo_user.save()
+
+
+def execute(command):
+    with open('test.log', 'w') as f:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+        for c in iter(lambda: process.stdout.read(1), ''):
+            sys.stdout.write(c)
+            f.write(c)
 
 
 @before.each_scenario
