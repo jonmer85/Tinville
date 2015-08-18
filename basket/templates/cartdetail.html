@@ -4,7 +4,8 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}css/checkout/styles.css" />
 {% endblock css %}
 {% block content %}
-    <div class="container checkOutTop" >
+    <div id="loadingDiv" class="fa fa-spinner fa-spin center-block col-xs-12" style="text-align: center; font-size: 4em;"></div>
+    <div class="container checkOutTop hidden" >
         <div style="padding-top: 50px"></div>
             <table class="table table-hover table-condensed">
                 <thead>
@@ -64,10 +65,13 @@
                             $('#messageModal').modal('show');
                         }
                     });
+                    $('.checkOutTop').removeClass('hidden');
+                    $('#loadingDiv').addClass('hidden');
                 },
                 error: function(data, textStatus, jqXHR) {
                 }
             });
+
         }
 
         function LoadCheckoutCartDiv(cartItem)

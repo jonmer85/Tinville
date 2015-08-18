@@ -2,39 +2,39 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block body_class %}{{ block.super }} register{% endblock %}
+{#{% block meta_title %}Sign Up for Tinville Today{% endblock meta_title %}#}
 {% block css %}
 {% endblock css %}
 {% block content %}
         <div class="" id="registrationBackground" style="background-image: url('{{ STATIC_URL }}img/register.jpg');background-position: center">
-            <div class="container">
+            <div id="regContainer" class="hidden container">
                 <div class="row" style="margin-top: 50px">
-                    <div class="well col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-4 col-md-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
+                    <div class="well col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4" style="box-shadow: 1px 1px 10px 1px #A29DA0;" >
                         <form id="registrationForm" class="userRegistrationForm" action="/register/designer" method="post">
                             <div class="row" style="border-radius: 8px;">
 {#                                <button id="shopper" type="button" class="shopperClass btn col-xs-offset-2 col-xs-4 borderHighlight img-responsive" style="background-image: url('{{ STATIC_URL }}img/register_glyphs/customer.svg');">#}
-                                {% if customer %}
+
                                     <button id="shopper" type="button" class=" btn col-xs-offset-2 col-xs-4  img-responsive">
-                                            <img class="shopperClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg">
-                                                <div style="color: #515151;">Customer</div>
-                                            </img>
+                                        <div id="customerOverSVG" class="">
+                                            <img class="shopperClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg"/>
+                                            <div style="color: #515151;">Customer</div>
+                                        </div>
+                                        <div id="customerSVG" class="hidden">
+                                            <img class="shopperClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/customer.svg"/>
+                                            <div style="color: #515151;">Customer</div>
+                                        </div>
                                     </button>
                                     <button id="designer" type="button" class="btn col-xs-4 borderHighlight" style="">
-                                        <img class="designerClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/designer.svg">
+                                        <div id="designerSVG" class="">
+                                            <img class="designerClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/designer.svg"></img>
                                             <div style="color: #515151;">Designer</div>
-                                        </img>
-                                    </button>
-                                {% else %}
-                                    <button id="shopper" type="button" class=" btn col-xs-offset-2 col-xs-4 borderHighlight img-responsive">
-                                            <img class="shopperClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/customer.svg">
-                                                <div style="color: #515151;">Customer</div>
-                                            </img>
-                                    </button>
-                                    <button id="designer" type="button" class="btn col-xs-4" style="">
-                                        <img class="designerClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg">
+                                        </div>
+                                        <div id="designerOverSVG" class="hidden">
+                                            <img class=" designerClass img-responsive" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg">
                                             <div style="color: #515151;">Designer</div>
-                                        </img>
+                                        </div>
                                     </button>
-                                {% endif %}
+
                             </div>
 
                             {% load crispy_forms_tags %}
@@ -73,13 +73,15 @@
             {% else %}
                 showDesigner();
             {% endif %}
-
+            $("#regContainer").removeClass("hidden");
 		});
 
     function showDesigner() {
         $("#shopper").removeClass("borderHighlight");
-        $('#shopper img').attr("src","{{ STATIC_URL }}img/register_glyphs/customer.svg");
-        $('#designer img').attr("src","{{ STATIC_URL }}img/register_glyphs/designer_over.svg");
+        $("#designerSVG").addClass("hidden");
+        $("#designerOverSVG").removeClass("hidden");
+        $("#customerOverSVG").addClass("hidden");
+        $("#customerSVG").removeClass("hidden");
         $("#designer").addClass("borderHighlight");
         $("#shop_fields").slideDown();
     }
@@ -87,8 +89,11 @@
     function showShopper() {
         $("#designer").removeClass("borderHighlight");
         $("#shopper").addClass("borderHighlight");
-        $('#shopper img').attr("src","{{ STATIC_URL }}img/register_glyphs/customer_over.svg");
-        $('#designer img').attr("src","{{ STATIC_URL }}img/register_glyphs/designer.svg");
+        $("#designerSVG").removeClass("hidden");
+        $("#designerOverSVG").addClass("hidden");
+        $("#customerOverSVG").removeClass("hidden");
+        $("#customerSVG").addClass("hidden");
+
         $("#shop_fields").slideUp();
     }
 	</script>
