@@ -6,7 +6,7 @@
 {% block meta_description %}{{ shop.aboutContent | bleach | truncatechars:160 }}{% endblock meta_description %}
 {% block og_title %}{{ shop.name }} on Tinville{% endblock og_title %}
 {% block og_description %}{{ shop.aboutContent | bleach | truncatechars:160 }}{% endblock og_description %}
-{% block og_image %}{{ shop.mobileBanner }}{% endblock og_image %}
+{% block og_image %}{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}{% endblock og_image %}
 {% block css %}
     {{ block.super }}
 {% endblock css %}
