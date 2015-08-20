@@ -45,7 +45,7 @@ class ProductCreationForm(forms.ModelForm):
 
         self.fields['price'] \
             = forms.DecimalField(decimal_places=2, max_digits=12, localize=True, initial=self.get_value_if_in_edit_mode('price', None),
-                                 )
+                                 min_value=Decimal('0.01'))
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
