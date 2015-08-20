@@ -47,7 +47,7 @@ Feature: Designer Payment Information
   | Merve T         | 30569309025904   | 000000000       | 1220            | 123 | "This card doesn't appear to be a US debit card."                 |
   | Merve T         | 38520000023237   | 000000000       | 1220            | 123 | "This card doesn't appear to be a US debit card."                 |
   | Merve T         | 3530111333300000 | 000000000       | 1220            | 123 | "This card doesn't appear to be a US debit card."                 |
-  | Merve T         | 3566002020360505 | 000000000       | 1220            | 123 | "This card doesn't appear to be a US debit card."                 |
+  | Merve T         | 3566002020360505 | 000000000       | 1220            | 123 | "This card doesn't appear to be a Visa or MasterCard debit card." |
   | Merve           | 4000056655665556 | 000000000       | 1220            | 123 | "Name must contain first name and last name."                     |
   | Merve T         | -4000000000000002| 000000000       | 1220            | 123 | "This card doesn't appear to be a debit card."                    |
 

@@ -16,14 +16,15 @@
                 <div class="panel-body">
                     <div class="alert alert-warning" role="alert">We require your Tax ID (Social Security Number or EIN if you are a legal business/corporation) in order to verify your identity for payment purposes. We never store this data, but we use it once to verify your identity to comply with federal laws. </div>
                     {% if last4 %}
-                        {% if payment_type = 'card' %}
+                        {% if payment_type == 'card' %}
                             <h4>Your current card on file is XXXX-XXXX-XXXX-<mark>{{ last4 }}</mark>.</h4>
                             <h5>Entering information below will overwrite this payment method.</h5>
                         {% endif %}
-                        {% if payment_type = 'bank_account' %}
+                        {% if payment_type == 'bank_account' %}
                             <h4>Your current bank account on file is XXXXXXXX<mark>{{ last4 }}</mark>.</h4>
                             <h5>Entering information below will overwrite this payment method.</h5>
-                        {% else %}
+                        {% endif %}
+                        {% if payment_type == 'error' %}
                             <h4>There is a problem with your payment info, please enter a new one below</h4>
                         {% endif %}
                     {% endif %}

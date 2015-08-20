@@ -9,6 +9,7 @@ url(r'^android-icon-72x72.png$', RedirectView.as_view(url=STATIC_URL + 'img/favi
 url(r'^android-icon-96x96.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/android-icon-96x96.png')),
 url(r'^android-icon-144x144.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/android-icon-144x144.png')),
 url(r'^android-icon-192x192.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/android-icon-192x192.png')),
+url(r'^apple-touch-icon.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/apple-icon.png')),
 url(r'^apple-icon.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/apple-icon.png')),
 url(r'^apple-icon-57x57.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/apple-icon-57x57.png')),
 url(r'^apple-icon-60x60.png$', RedirectView.as_view(url=STATIC_URL + 'img/favicon/apple-icon-60x60.png')),

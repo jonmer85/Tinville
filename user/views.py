@@ -39,12 +39,12 @@ class DesignerPaymentInfoView(FormView):
         if user.account_token:
             stripe.api_key = settings.STRIPE_SECRET_KEY
             try:
-                recipient = stripe.Token.retrieve(user.recipient_id)
+                recipient = stripe.Recipient.retrieve(user.recipient_id)
                 if user.account_token.startswith('ba_'):
-                    context['last4'] = recipient.active_account.id
+                    context['last4'] = recipient.active_account.last4
                     context['payment_type'] = 'bank_account'
                 else:
-                    context['last4'] = recipient.cards.data[0]
+                    context['last4'] = recipient.cards.data[0].last4
                     context['payment_type'] = 'card'
             except:
                     context['last4'] = "0000"
