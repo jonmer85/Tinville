@@ -1595,19 +1595,6 @@
     },
     {
         "model": "catalogue.Category",
-        "pk": 9,
-        "fields": {
-            "path": "000100010006",
-            "depth": 3,
-            "numchild": 0,
-            "name": "Coats",
-            "slug": "women/clothing/coats",
-            "full_name": "Women > Clothing > Coats"
-
-        }
-    },
-    {
-        "model": "catalogue.Category",
         "pk": 10,
         "fields": {
             "path": "000100010007",
@@ -1885,7 +1872,7 @@
         "fields": {
             "path": "00010003",
             "depth": 2,
-            "numchild": 0,
+            "numchild": 1,
             "name": "Accessories",
             "slug": "Women/accessories",
             "full_name": "Women > Accessories"
@@ -1898,7 +1885,7 @@
         "fields": {
             "path": "00020003",
             "depth": 2,
-            "numchild": 0,
+            "numchild": 1,
             "name": "Accessories",
             "slug": "Men/accessories",
             "full_name": "Men > Accessories"
@@ -2013,6 +2000,97 @@
             "name": "Skirts",
             "slug": "women/clothing/skirts",
             "full_name": "Women > Clothing > Skirts"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 42,
+        "fields": {
+            "path": "000100010006",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Coats",
+            "slug": "women/clothing/coats",
+            "full_name": "Women > Clothing > Coats"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 43,
+        "fields": {
+            "path": "000200010011",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Shirt",
+            "slug": "Men/clothing/shirt",
+            "full_name": "Men > Clothing > Shirt"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 44,
+        "fields": {
+            "path": "0003",
+            "depth": 1,
+            "numchild": 2,
+            "name": "Unisex",
+            "slug": "unisex",
+            "full_name": "Unisex"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 45,
+        "fields": {
+            "path": "00030001",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Clothing",
+            "slug": "Unisex/clothing",
+            "full_name": "Unisex > Clothing"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 46,
+        "fields": {
+            "path": "00030002",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Footwear",
+            "slug": "Unisex/footwear",
+            "full_name": "Unisex > Footwear"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 47,
+        "fields": {
+            "path": "00030003",
+            "depth": 2,
+            "numchild": 1,
+            "name": "Accessories",
+            "slug": "Unisex/accessories",
+            "full_name": "Unisex > Accessories"
+
+        }
+    },
+    {
+        "model": "catalogue.Category",
+        "pk": 48,
+        "fields": {
+            "path": "000300030001",
+            "depth": 3,
+            "numchild": 0,
+            "name": "Bags",
+            "slug": "Unisex/accessories/bags",
+            "full_name": "Unisex > Accessories > Bags"
 
         }
     },
