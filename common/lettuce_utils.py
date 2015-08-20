@@ -17,6 +17,23 @@ from selenium.common.exceptions import NoSuchElementException, WebDriverExceptio
 from lxml import html
 from user.models import TinvilleUser
 
+class BSMultiSelect:
+    def __init__(self, webelement):
+        self.oid = webelement.get_attribute('id')
+        self.id = "$('#" + self.oid + "')"
+
+    def select_by_visible_text(self, color):
+        world.browser.execute_script(self.id + ".multiselect('deselectAll')")
+        msb = world.browser.find_element_by_css_selector("#" + self.oid + " + div>.multiselect")
+        msb.click()
+        for c in color.split(','):
+            vs = world.browser.find_elements_by_css_selector('#' + self.oid + " + div.btn-group .multiselect-container label.checkbox")
+            v = [i for i in vs if c in i.get_attribute('innerHTML').split('>')[1]]
+            v[0].click()
+
+    def get_selected_text(self):
+        return world.browser.find_element_by_css_selector(id + '+ div.btn-group .multiselect-selected-text').text
+
 
 def wait_for_ajax_to_complete():
     WebDriverWait(world.browser, 10).until(ajax_complete,  "Timeout waiting for page to load")
