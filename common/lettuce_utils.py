@@ -1,3 +1,4 @@
+from selenium.webdriver.support.select import Select
 from common.factories import create_order, create_basket_with_products
 from common.lettuce_extensions import get_server
 from designer_shop.forms import Product
@@ -213,6 +214,19 @@ def wait_for_element_with_partial_link_text_to_be_displayed(link_text, root=worl
 def wait_for_element_with_link_text_to_be_clickable(link_text, root=world.browser):
     WebDriverWait(root, 30).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
     return world.browser.find_element_by_link_text(link_text)
+
+def wait_for_select_value_to_exist_and_select(select_box, value, root=world.browser):
+    WebDriverWait(root, 30).until(lambda s:
+                                  returns_no_exception(lambda: Select(world.browser.find_element_by_id(select_box)).select_by_value(value)))
+
+
+def returns_no_exception(method):
+    try:
+        method()
+        return True
+    except:
+        return False
+
 
 def assert_element_with_link_text_does_not_exist(link_text):
     try:

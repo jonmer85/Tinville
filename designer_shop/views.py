@@ -7,6 +7,7 @@ from django.db import transaction, IntegrityError
 from django.http import HttpResponseRedirect
 from operator import itemgetter
 from functools import wraps
+from django.views.decorators.csrf import ensure_csrf_cookie
 from custom_oscar.apps.catalogue.models import Product
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
@@ -169,6 +170,7 @@ def check_access_code(request):
     return False
 
 
+@ensure_csrf_cookie
 def itemdetail(request, shop_slug, item_slug=None):
     shop = get_object_or_404(Shop, slug__iexact=shop_slug)
 

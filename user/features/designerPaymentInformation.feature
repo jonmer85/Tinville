@@ -25,7 +25,6 @@ Feature: Designer Payment Information
     And  the 'payment-info' 'submit' is displayed
 
 
-  @jon
   Scenario Outline: I should not be able to receive a success message
     Given the payment info form
     When  I fill the form with
@@ -64,7 +63,6 @@ Feature: Designer Payment Information
     | Merve T         | 4000056655665556 | 000000000   | 1315             | 123 |  (instead, is Invalid date)                                                |
     | Merve T         | 4000056655665556 | 000000000   | 1270             | 123 | Your card's expiration year is invalid.                                    |
 
-  @jon
   Scenario Outline: CVC error check
     Given the payment info form
     When I fill the form with
