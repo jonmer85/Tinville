@@ -296,7 +296,7 @@ class ProductCreationForm(forms.ModelForm):
         # fields = ['title', 'description', 'product_class']
         parsley_extras = {
             'price': {
-                'pattern': '^\$?-?0*(?:\d+(?!,)(?:\.\d{1,2})?|(?:\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?))$',
+                'pattern': '^\$?0*(?:\d+(?!,)(?:\.\d{1,2})?|(?:\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?))$',
                 'pattern-message': 'Please only enter valid currency.'
             },
         }
@@ -319,7 +319,6 @@ class ProductImageForm(forms.ModelForm):
     helper = FormHelper()
     # helper.form_tag = False
     helper.form_show_labels = False
-
 
     class Meta:
         model = ProductImage
