@@ -34,7 +34,7 @@ def gender_home(request, gender):
 
     if gender is None or gender == "all":
         gender = None
-
+    homepage = request.META.get('HTTP_REFERER')
     if request.method == 'GET':
         if request.GET.__contains__('genderfilter'):
             products = get_filtered_products(post=request.GET, filter=True)
@@ -44,7 +44,8 @@ def gender_home(request, gender):
                 'homemode': True,
                 'products': products,
                 'shopProductCount': len(products),
-                'shopcategories': shopCategoryNames
+                'shopcategories': shopCategoryNames,
+                'homepage': homepage
             }
 
             return template, context
@@ -56,7 +57,8 @@ def gender_home(request, gender):
         'products': products,
         'shopcategories': shopCategoryNames,
         'shopgenders': get_filter_lists().genderlist(),
-        'shopProductCount' : len(products)
+        'shopProductCount' : len(products),
+        'homepage': homepage
     }
     if request.is_ajax():
         template = page_template

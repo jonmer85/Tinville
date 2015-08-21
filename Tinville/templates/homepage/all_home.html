@@ -66,7 +66,8 @@
         });
 
         $(window).load(function() {
-
+{#            updateItemView(true);#}
+            var from = document.referrer;
             document.getElementById("filterGender").onchange = function()
             {
                 localStorage.setItem('filterGender', document.getElementById("filterGender").value);
@@ -81,25 +82,24 @@
             {
                 localStorage.setItem('filterSort', document.getElementById("filterSort").value);
             }
-
-            if (localStorage.getItem('filterGender'))
+            if (from !== "{{ homepage }}")
             {
-                var genderFilter = localStorage.getItem('filterGender');
-                $("#filterGender").val(genderFilter);
-            }
+                if (localStorage.getItem('filterGender')) {
+                    var genderFilter = localStorage.getItem('filterGender');
+                    $("#filterGender").val(genderFilter);
+                }
 
-            if (localStorage.getItem('filterType'))
-            {
-                var typeFilter  = localStorage.getItem('filterType');
-                $("#filterType").val(typeFilter);
-            }
+                if (localStorage.getItem('filterType')) {
+                    var typeFilter = localStorage.getItem('filterType');
+                    $("#filterType").val(typeFilter);
+                }
 
-            if (localStorage.getItem('filterSort'))
-            {
-                var sortFilter = localStorage.getItem('filterSort');
-                $("#filterSort").val(sortFilter);
+                if (localStorage.getItem('filterSort')) {
+                    var sortFilter = localStorage.getItem('filterSort');
+                    $("#filterSort").val(sortFilter);
+                }
+                updateItemView(true);
             }
-    updateItemView(true);
         });
         </script>
 
