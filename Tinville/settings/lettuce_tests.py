@@ -54,7 +54,7 @@ BROKER_BACKEND = 'memory'
 
 LOCAL_STATIC_SERVE = env("LOCAL_STATIC_SERVE", True)
 
-LETTUCE_TEST_SERVER = env('LETTUCE_TEST_SERVER', 'common.lettuce_extensions.DefaultServer')
+LETTUCE_TEST_SERVER = env('LETTUCE_TEST_SERVER', 'lettuce.django.server.DefaultServer')
 
 TEST_SERVER_ADDRESS = env('TEST_SERVER_ADDRESS', '0.0.0.0')
 

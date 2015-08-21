@@ -64,7 +64,7 @@ def clean_database(scenario):
         call_command('loaddata', 'initial_data2.json', settings='Tinville.settings.lettuce_tests_heroku')
     else:
         call_command('flush', noinitialdata=True, interactive=False)
-        call_command('collectmedia')
+        call_command('collectmedia', interactive=False)
         # subprocess.call('. ' + sys.executable.replace('python2.7', 'activate') + '; cd ' + PROJECT_DIR[:-8] +
         #             ' ; (./lettuce_tests collectmedia --noinput -v 0 > /dev/null)', shell=True)
         call_command('loaddata', 'all.json', verbosity=0)
