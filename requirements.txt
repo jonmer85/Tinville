@@ -84,3 +84,7 @@ sure==1.2.3
 testtools==0.9.34
 wsgiref==0.1.2
 simplejson==3.5.0
+django-filer==0.9.12
+django-flatpages-filer==0.1.0
+django-markitup==2.2.2
+django-markdown==0.8.4
