@@ -44,8 +44,8 @@ def Then_Shopping_Cart_Closes(step):
 @step(u'When I add an item to my cart')
 def When_add_item_to_cart(step):
     world.browser.get(get_server().url("/Demo/TestSizeSetItem"))
-    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
-    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("SM")
+    wait_for_select_value_to_exist_and_select("itemColorSelection", "Blue")
+    wait_for_select_value_to_exist_and_select("itemSizeSelection", "SM")
     wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
 
