@@ -13,6 +13,7 @@ from oscar.core.loading import get_model
 from django.contrib.auth.views import login as auth_view_login
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response
+from common.utils import get_list_or_empty
 
 
 Partner = get_model('partner', 'Partner')
@@ -135,9 +136,12 @@ class AddressDeleteView(CoreAddressDeleteView):
 
 def _get_shipping_address_pk_that_is_shop_shipping_address(request):
     addresses = UserAddress._default_manager.filter(user=request.user)
-    partners = get_list_or_404(Partner, users__pk=request.user.pk)
+    if request.user.is_staff:
+        partners = get_list_or_empty(Partner, users__pk=request.user.pk)
+    else:
+        partners = get_list_or_404(Partner, users__pk=request.user.pk)
 
-    if partners is not None:
+    if partners and partners is not None:
         partner_address = partners[0].primary_address
         if partner_address is not None:
             for address in addresses:

@@ -204,7 +204,14 @@
             });
             var currentcolor = $('#itemColorSelection').val();
             $('#itemColorSelection').html(colorlist.join(''));
-            $('#itemColorSelection').val(currentcolor);
+
+            if (Object.keys(data.variants).length !== 1) {
+                $('#itemColorSelection').val(currentcolor);
+            }
+            else {
+                $('#itemColorSelection').val(Object.keys(data.variants)[0]);
+                getSizes();
+            }
             updateQuantityPrice();
         });
     }
@@ -215,6 +222,10 @@
     });
 
     $("#itemColorSelection").change(function() {
+        getSizes();
+    });
+
+    function getSizes () {
         $('option[value=""]').attr('disabled', true);
         $("#id_AddToCart").text("Add to bag");
         $.each(myresponse.responseJSON.variants, function(key, val) {
@@ -238,11 +249,18 @@
                     }
                 });
                 $('#itemSizeSelection').html(sizelist.join(''));
-                $('#itemSizeSelection').val(currentsize);
+
+                if (val.length !== 1) {
+                    $('#itemSizeSelection').val(currentsize);
+                }
+                else {
+                   $('#itemSizeSelection').val(val[0].size);
+                }
                 return false;
             }
         });
-    });
+    }
+
     var validateFront = function () {
           if (true === $('#itemDetailForm').parsley().isValid()) {
             $('.parsley-errors-list').remove();
@@ -253,6 +271,7 @@
           }
 
         };
+
     var updateQuantityPrice = function() {
          validateFront();
         $.each(myresponse.responseJSON.variants, function(key, val) {
@@ -309,16 +328,13 @@
 
 {#    Adding the shooping cart stuff#}
     $(document).ready(function(){
-
-
-
         $.listen('parsley:field:validate', function () {
              validateFront();
         });
 
 
-    $("#id_AddToCart").click(function(e){
-        var l = Ladda.create( document.querySelector( '#id_AddToCart' ) );
+        $("#id_AddToCart").click(function(e){
+            var l = Ladda.create( document.querySelector( '#id_AddToCart' ) );
 
 
         $('#itemDetailForm').parsley().validate();

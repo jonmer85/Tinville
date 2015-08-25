@@ -16,23 +16,35 @@
 
             <span data-picture class="banner">
                 {% if shop.mobileBanner %}
-                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}">
-                        {% if editmode %}
+                    {% if editmode %}
+                        <span class="editIconContainer" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}">
                             <button id= type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
-                        {% endif %}
+                        </span>
+                    {% else %}
+                        <a href="{{ shop.get_absolute_url }}">
+                            <span class="editIconContainer" data-src="{% cropped_thumbnail shop "mobileBannerCropping" scale=1 %}">
+                        </a>
+                    {% endif %}
+                {% else %}
+                    {% if editmode %}
+                        <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}">
+                            <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
+                        </span>
+                    {% else %}
+                        <a href="{{ shop.get_absolute_url }}">
+                            <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}">
+                        </a>
+                    {% endif %}
+                {% endif %}
+                {% if editmode %}
+                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)">
+                        <button id="xlBannerUploadButton" type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
                     </span>
                 {% else %}
-                    <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}">
-                        {% if editmode %}
-                            <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
-                        {% endif %}
-                    </span>
+                    <a href="{{ shop.get_absolute_url }}">
+                        <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)">
+                    </a>
                 {% endif %}
-                <span class="editIconContainer" data-src="{% cropped_thumbnail shop "bannerCropping" scale=1 %}" data-media="(min-width: 768px)">
-                {% if editmode %}
-                    <button id="xlBannerUploadButton" type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o bannerUploadEditButton" data-toggle="modal" data-target="#bannerUploadModal"></button>
-                {% endif %}
-                </span>
             </span>
 
       {% else %}

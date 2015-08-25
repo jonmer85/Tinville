@@ -4,6 +4,7 @@ from decimal import Decimal
 from django import forms
 from django.core.files.base import ContentFile
 from django.forms import inlineformset_factory
+from django.forms.forms import NON_FIELD_ERRORS
 from django_bleach.forms import BleachField
 
 from oscar.core.loading import get_model
@@ -18,7 +19,7 @@ from django.core.validators import RegexValidator
 from parsley.decorators import parsleyfy
 from image_cropping import ImageCropWidget
 
-from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, SIZE_TYPES, Shop
+from .models import SIZE_DIM, SIZE_NUM, SIZE_SET, ONE_SIZE, SIZE_TYPES, Shop
 from common.utils import get_or_none
 from common.widgets import AdvancedFileInput, TinvilleImageCropWidget
 
@@ -30,7 +31,6 @@ ProductImage = get_model("catalogue", "ProductImage")
 
 @parsleyfy
 class ProductCreationForm(forms.ModelForm):
-
     price = forms.DecimalField(decimal_places=2, max_digits=12)
     title = forms.CharField(label="title", max_length=80)
 
@@ -56,7 +56,8 @@ class ProductCreationForm(forms.ModelForm):
                          Field('title', placeholder='Title'),
                          Field('description', placeholder='Description', style="padding-bottom: 10px"),
                          Field('category', placeholder='Choose a Category'),
-                         HTML("<b>Include shipping costs into the price</b>"),
+                         HTML('<b>Include shipping costs into the price</b><a data-toggle="modal" data-target="#shipping_estimation" '
+                              'class="pull-right" style="cursor: pointer;">Weight Based Shipping Price Guide</a>'),
                          Field('price', placeholder='Price')
                 ),
                 Fieldset('Images',
@@ -121,9 +122,18 @@ class ProductCreationForm(forms.ModelForm):
                                                  initial=sizes[i]["colorsAndQuantities"][j]["color"])
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
+                elif "oneSize" in sizes[i] and sizes[i]["oneSize"]:
+                    for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
+                        self.fields[colorAndQuantity['colorFieldName']] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                        self.fields[colorAndQuantity['quantityFieldName']] \
+                        = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
 
-    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, color=None, quantity=None):
+
+    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, oneSize=False, color=None, quantity=None):
         variantProduct = copy(canonical)
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
         variantProduct.parent_id = canonicalId
@@ -142,6 +152,8 @@ class ProductCreationForm(forms.ModelForm):
             setattr(variantProduct.attr, 'size_number', sizeNum)
         if color:
             setattr(variantProduct.attr, 'color', color)
+        if oneSize:
+            setattr(variantProduct.attr, 'one_size', True)
         variantProduct.save()
 
         partner = get_partner_from_shop(shop)
@@ -192,7 +204,6 @@ class ProductCreationForm(forms.ModelForm):
             # Remove all variants since they will get recreated below
             Product.objects.filter(parent=canonicalId).delete()
 
-
         for size in sizes:
             if sizeType == SIZE_SET:
                 if size["sizeFieldName"] in self.cleaned_data:
@@ -235,6 +246,18 @@ class ProductCreationForm(forms.ModelForm):
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
                             pass
+            elif sizeType == ONE_SIZE:
+                for colorQuantity in size["colorsAndQuantities"]:
+                    if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                        color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                        quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
+                        self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, oneSize=True,
+                                                                   color=color, quantity=quantity)
+                    else:
+                        # Jon M TBD Should we allow no color/quantity?
+                        # For now ignore it
+                        pass
+
         return canonicalProduct
 
     def get_size_variation(self):
@@ -248,6 +271,8 @@ class ProductCreationForm(forms.ModelForm):
                 return SIZE_DIM
             elif hasattr(variant.attr, 'size_number'):
                 return SIZE_NUM
+            elif hasattr(variant.attr, 'one_size'):
+                return ONE_SIZE
         return "0"
 
     def get_value_if_in_edit_mode(self, field_name, default):
@@ -289,8 +314,8 @@ def get_partner_from_shop(shop):
         partner.users.add(shop_owner)
         return partner
 
-class ProductImageForm(forms.ModelForm):
 
+class ProductImageForm(forms.ModelForm):
     helper = FormHelper()
     # helper.form_tag = False
     helper.form_show_labels = False

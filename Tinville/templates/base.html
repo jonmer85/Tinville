@@ -12,12 +12,28 @@
 {% block head %}
     {% block meta %}
         {% get_metadata %}
-        <title>{% block meta_title %}{% endblock meta_title%}</title>
+        <title>{% block meta_title %}Tinville{% endblock meta_title%}</title>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="author" content="{% block meta_author %}{% endblock meta_author%}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
+        <link rel="apple-touch-icon" sizes="57x57" href="{{ STATIC_URL }}img/favicon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="{{ STATIC_URL }}img/favicon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}img/favicon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ STATIC_URL }}img/favicon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}img/favicon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="{{ STATIC_URL }}img/favicon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="{{ STATIC_URL }}img/favicon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="{{ STATIC_URL }}img/favicon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ STATIC_URL }}img/favicon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="{{ STATIC_URL }}img/favicon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ STATIC_URL }}img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="{{ STATIC_URL }}img/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ STATIC_URL }}img/favicon/favicon-16x16.png">
+        <link rel="manifest" href="{{ STATIC_URL }}img/favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="{{ STATIC_URL }}img/favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
         <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
     {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
@@ -43,6 +59,27 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ladda.min.css" />
     {% endcompress %}
     {% block css %}{% endblock %}
+
+    <!-- Facebook Conversion Code for Leads - Tinville -->
+<script>(function() {
+var _fbq = window._fbq || (window._fbq = []);
+if (!_fbq.loaded) {
+var fbds = document.createElement('script');
+fbds.async = true;
+fbds.src = '//connect.facebook.net/en_US/fbds.js';
+var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(fbds, s);
+_fbq.loaded = true;
+}
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6027363388025&amp;cd[value]=0.00&amp;cd[currency]=USD&amp;noscript=1" /></noscript>
+<!-- Start of tinville Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","tinville.zendesk.com");/*]]>*/</script>
+<!-- End of tinville Zendesk Widget script -->
+
 {% endblock head %}
 </head>
 
@@ -121,7 +158,7 @@
                                 <li><a id="logout-xs" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                                 <li class="divider"></li>
                                 {%  if user.is_seller %}
-                                    <li class="tinvilleOrange logEmail">{{ user.email }}</li>
+                                    <li class="tinvilleOrange logEmail"><a href="/{{ shopUrl }}">{{ shopUrl }}</a></li>
                                 {% else %}
                                     <li class="tinvilleOrange logEmail">{{ user.email }}</li>
                                 {% endif %}
@@ -144,7 +181,7 @@
                 <a class="hidden-xs" href="{% url 'shop' %}">SHOP</a>
             </li>
             <li class="">
-                <a class="hidden-xs" href="/shoplist/">DISCOVER</a>
+                <a class="hidden-xs" href="/shoplist/">BRANDS</a>
             </li>
             <li class="hidden">
                 <a href="http://blog.tinville.com"  class="visible-xs list-group-item slideMenuText">
@@ -158,7 +195,7 @@
             {% if user.is_authenticated %}
                 <li class="hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle">
                     {%  if user.is_seller %}
-                        <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
+                        <div class="menuEmail tinvilleOrange" href="" ><a href="/{{ shopUrl }}">{{ shopUrl }}</a></div>
                      {% else %}
                         <div class="menuEmail tinvilleOrange" href="" >{{ user.email }}</div>
                      {% endif %}
@@ -187,7 +224,7 @@
                         <li><a id="logout-lg" href="/logout" >Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
                         <li class="hidden-md hidden-lg divider"></li>
                          {%  if user.is_seller %}
-                            <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
+                            <li class="tinvilleOrange hidden-md hidden-lg logEmail"><a href="/{{ shopUrl }}">{{ shopUrl }}</a></li>
                          {% else %}
                              <li class="tinvilleOrange hidden-md hidden-lg logEmail">{{ user.email }}</li>
                          {% endif %}
@@ -234,7 +271,7 @@
                         Shop
                     </a>
                     <a href="/shoplist/"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
-                        Discover
+                        Brands
                     </a>
                     <a href="{% url 'home_about' %}"  class="tinvilleDrayGray" style="display: inline; padding-left: 10px;">
                         About Us
@@ -641,12 +678,12 @@
     <script>
         var setBanners = function () {
             if (checkMode() != 'xs') {
-                var bannerWidth = $("#thumbnail-preview-indicators").width();
-                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 500 / 1779) + 'px');
+                var bannerWidth = $("#carouselId").width();
+                $("#carouselId").css('height', (bannerWidth * 500 / 1779) + 'px');
             }
             else {
-                var bannerWidth = $("#thumbnail-preview-indicators").width();
-                $("#thumbnail-preview-indicators").css('height', (bannerWidth * 642 / 968) + 'px');
+                var bannerWidth = $("#carouselId").width();
+                $("#carouselId").css('height', (bannerWidth * 642 / 968) + 'px');
             }
         }
         var setItemSizes = function () {
