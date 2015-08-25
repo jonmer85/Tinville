@@ -158,7 +158,7 @@
     {{ block.super }}
     <script>
         //Tommy Leedberg - 8/11/2015 - Removing $ and commas from price
-        $(document).on( "change", "#id_price", function(){
+        $(document).on( "click", "#id_SubmitAddEditItem", function(){
             $( "#id_price" ).val( $( "#id_price").val().replace( /[$,]/g, '')  ) ;
         });
 
