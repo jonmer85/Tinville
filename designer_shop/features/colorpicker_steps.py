@@ -25,7 +25,7 @@ def and_a_color_is_submitted(step,color):
     wait_for_element_with_id_to_be_displayed("id_color").clear()
     color_picker.find_element_by_name("color").send_keys(color)
     wait_for_element_with_id_to_be_clickable("colorModalFooterSubmit").click()
-    # wait_for_ajax_to_complete()
+    wait_for_ajax_to_complete()
 
 @step(u'The selected color is applied to the components of the shop "([^"]*)"')
 def the_selected_color_is_applied_to_the_components_of_the_shop(step, color):

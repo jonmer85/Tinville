@@ -61,8 +61,8 @@ def And_check_added_to_bag(step):
 @step(u'Then add another item is still in my cart')
 def add_and_still_in_my_cart(step):
     world.browser.get(get_server().url("/Demo/TestSizeSetItem"))
-    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value("Blue")
-    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value("XS")
+    wait_for_select_value_to_exist_and_select("itemColorSelection", "Blue")
+    wait_for_select_value_to_exist_and_select("itemSizeSelection", "XS")
     wait_for_element_with_css_selector_to_exist("#id_AddToCart")
     wait_for_element_with_css_selector_to_be_clickable("#id_AddToCart").click()
     wait_for_javascript_to_complete()

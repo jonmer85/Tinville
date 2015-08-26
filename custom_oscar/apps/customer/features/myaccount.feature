@@ -3,6 +3,7 @@ Feature: My Account Page
   I would like the ability to manage information such as order history, my addresses, and email history
   So that I can go back and reference information and actions I have made on Tinville
 
+  @jon
   Scenario: My Account Page Link and General Layout
     Given I have some basic order data
     When I click the user Icon

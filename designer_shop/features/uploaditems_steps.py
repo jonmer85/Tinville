@@ -5,8 +5,9 @@ import time
 from common.lettuce_utils import *
 from selenium.webdriver.support.ui import Select
 
+from common.lettuce_extensions import get_server
+
 from Tinville.settings.base import MEDIA_ROOT
-from lettuce.django import get_server
 
 
 @step(u'the add item button is pressed')
@@ -120,7 +121,7 @@ def and_i_submit_this_item(step):
 
 @step(u'Then I should see (\d+) product(?s) total')
 def i_should_see_n_products_total(step, total):
-    products = world.browser.find_elements_by_css_selector(".shopItem")
+    products = wait_for_multiple_elements_with_css_selector_to_be_displayed(".shopItem")
     assert len(products) == int(total)
 
 @step(u'my color, quantity, and size selections are')
@@ -190,6 +191,7 @@ def then_product_is_removed(step):
     try:
         world.browser.find_element_by_css_selector("a[href='/demo/testsizesetitem']")
     except NoSuchElementException:
+        reload_media()
         return True
     return False
 

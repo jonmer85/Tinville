@@ -5,6 +5,7 @@ Feature: Add item to the shopping bag
   I would like to add as many as items to my shopping bag
   So that I can checkout and pay for them
 
+  @jon
   Scenario: Adding an item to the empty shopping bag
     Given Demo page
     When The shopping bag is empty
@@ -15,6 +16,7 @@ Feature: Add item to the shopping bag
     And  I click on the checkout button
     Then The checkout form should be displayed
 
+  @jon
   Scenario: Guest Checkout
     Given Demo page
     Then I add an item to my shopping bag
@@ -27,6 +29,7 @@ Feature: Add item to the shopping bag
     Then I enter a valid payment
     Then the thank you page is displayed
 
+  @jon
   Scenario: Registered User Checkout
     Given Demo page
     Then I add an item to my shopping bag

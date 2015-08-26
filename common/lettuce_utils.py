@@ -1,3 +1,6 @@
+import subprocess
+from django.conf import settings
+from django.core.management import call_command
 from selenium.webdriver.support.select import Select
 from common.factories import create_order, create_basket_with_products
 from common.lettuce_extensions import get_server
@@ -17,6 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from lxml import html
+from terrain import execute
 from user.models import TinvilleUser
 
 
@@ -185,6 +189,10 @@ def wait_for_element_with_css_selector_to_be_displayed(css_selector, root=world.
     WebDriverWait(root, 30).until(lambda s: s.find_element_by_css_selector(css_selector).is_displayed())
     return world.browser.find_element_by_css_selector(css_selector)
 
+def wait_for_multiple_elements_with_css_selector_to_be_displayed(css_selector, root=world.browser):
+    WebDriverWait(root, 30).until(lambda s: s.find_element_by_css_selector(css_selector).is_displayed())
+    return world.browser.find_elements_by_css_selector(css_selector)
+
 def wait_for_element_with_css_selector_to_be_clickable(css_selector, root=world.browser):
     WebDriverWait(root, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css_selector)))
     return world.browser.find_element_by_css_selector(css_selector)
@@ -199,10 +207,20 @@ def wait_for_element_with_link_text_to_be_displayed(link_text, root=world.browse
 
 def wait_for_element_with_class_to_be_displayed_no_exception(class_name):
     try:
-        WebDriverWait(world.browser, 30).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
+        WebDriverWait(world.browser, 20).until(lambda s: s.find_element_by_class_name(class_name).is_displayed())
         return True
     except:
         return False
+
+def wait_for_element_with_class_to_exist_no_exception(class_name, delay=0):
+    if delay:
+        time.sleep(delay)
+    try:
+        WebDriverWait(world.browser, 20 - delay).until(lambda s: s.find_element_by_class_name(class_name))
+        return True
+    except:
+        return False
+
 
 def wait_for_element_with_link_text_to_be_displayed(link_text):
     WebDriverWait(world.browser, 30).until(lambda s: s.find_element_by_link_text(link_text).is_displayed())
@@ -250,7 +268,7 @@ def scroll_to_element(element):
 
 # Utilities
 
-def sign_in(email, password):
+def sign_in(email, password, toggle=True):
     change_viewport_lg()
     login_menu = wait_for_element_with_id_to_be_displayed("lg-menuLogin")
     if len(login_menu.find_elements_by_link_text("SIGN IN")) > 0:
@@ -259,11 +277,12 @@ def sign_in(email, password):
         login_menu.find_element_by_name("password").send_keys(password)
         login_menu.find_element_by_name("submit").click()
     else:
-        wait_for_element_with_id_to_exist("clickedLogin-lg")
-        world.browser.find_element_by_id("clickedLogin-lg")
-        wait_for_element_with_css_selector_to_be_displayed("#clickedLogin-lg")
-        wait_for_element_with_id_to_be_clickable("loginIcon-lg").click()
-        wait_for_element_with_id_to_be_clickable("logout-lg").click()
+        if toggle:
+            wait_for_element_with_id_to_exist("clickedLogin-lg")
+            world.browser.find_element_by_id("clickedLogin-lg")
+            wait_for_element_with_css_selector_to_be_displayed("#clickedLogin-lg")
+            wait_for_element_with_id_to_be_clickable("loginIcon-lg").click()
+            wait_for_element_with_id_to_be_clickable("logout-lg").click()
     wait_for_ajax_to_complete()
 
 def go_home_page():
@@ -375,3 +394,9 @@ def my_user_has_correct_permissions():
     user.save()
     world.browser.get(get_server().url('/'))
     sign_in("demo@user.com", "tinville")
+
+def reload_media():
+    if settings.LETTUCE_RUN_ON_HEROKU:
+        execute('heroku run ./lettuce_tests_heroku collectmedia --noinput --app tinville-lettuce')
+    else:
+        call_command('collectmedia', interactive=False)

@@ -4,13 +4,13 @@ from common.lettuce_utils import *
 @step("a designer is logged in")
 def designer_is_logged_in(step):
     world.browser.get(get_server().url())
-    if len(world.browser.find_elements_by_css_selector('#clickedLogin-lg')) == 0:
-        sign_in('Demo@user.com', 'tinville')
+    if wait_for_element_with_class_to_exist_no_exception('loginPopupForm', 10):
+        sign_in('Demo@user.com', 'tinville', toggle=False)
 
 @step("designer clicks on user icon")
 def step_impl(step):
-    assert_selector_does_exist('#clickedLogin-lg') #this verifies if the icon exists
-    world.browser.find_element_by_css_selector('#clickedLogin-lg').click() #clicking on the icon
+    wait_for_element_with_css_selector_to_exist('#clickedLogin-lg')
+    wait_for_element_with_css_selector_to_be_clickable('#clickedLogin-lg').click() #clicking on the icon
 
 @step("drop down menu is displayed")
 def drop_down_menu_displayed(step):

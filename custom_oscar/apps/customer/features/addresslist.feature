@@ -8,12 +8,14 @@ Feature: Custom Address List Page
   Initially, I am only testing the new shop shipping address that Oscar was extended to support
 
 
+  @jon
   Scenario: Add an Address for designer and it should automatically be marked as the shop shipping address
     Given I access the addresses page as a new designer
     When I add a new address
     Then the shop address badge is shown
     And I should see all but shop shipping address available designer address types as options to be added to the address
 
+  @jon
   Scenario: Add an Address and mark as shipping address
     Given I access the addresses page as a new designer
     When I add a new address
