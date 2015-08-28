@@ -169,7 +169,6 @@ class ProductCreationForm(forms.ModelForm):
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
 
-
     def clean_title(self):
         title = self.cleaned_data['title']
         products = Product
@@ -297,7 +296,8 @@ class ProductCreationForm(forms.ModelForm):
         # fields = ['title', 'description', 'product_class']
         parsley_extras = {
             'price': {
-                'min': "0.01",
+                'pattern': '^\$?0*(?:\d+(?!,)(?:\.\d{1,2})?|(?:\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?))$',
+                'pattern-message': 'Please only enter valid currency.'
             },
         }
 
@@ -314,12 +314,11 @@ def get_partner_from_shop(shop):
         partner.users.add(shop_owner)
         return partner
 
-
 class ProductImageForm(forms.ModelForm):
+
     helper = FormHelper()
     # helper.form_tag = False
     helper.form_show_labels = False
-
 
     class Meta:
         model = ProductImage
