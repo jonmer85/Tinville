@@ -8,11 +8,13 @@
     {% if womenproducts %}
         {% paginate womenproducts %}
             {% for product in womenproducts %}
-                {% if forloop.counter <= 5 %}
-                    <div id="witem{{ forloop.counter }}">
-                    {% include "designer_shop/item_gallery.html" %}
-                    </div>
-                {% endif %}
+
+                    {% if forloop.counter <= 4 %}
+                        <div id="witem{{ forloop.counter }}">
+                        {% include "designer_shop/item_gallery.html" %}
+                        </div>
+                    {% endif %}
+
             {% endfor %}
     {% else %}
         <div id="searchShopId" class="searchShop">
