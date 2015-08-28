@@ -680,6 +680,10 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
     <script>
         var setBanners = function () {
+
+            var mainPicIdWidth = $("#mainPicId").width();
+            $("#mainImgId").css('height', (mainPicIdWidth * 441 / 490) + 'px');
+
             if (checkMode() != 'xs') {
                 var bannerWidth = $("#carouselId").width();
                 $("#carouselId").css('height', (bannerWidth * 500 / 1779) + 'px');
