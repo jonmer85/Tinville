@@ -25,7 +25,7 @@ from user.models import TinvilleUser
 
 
 def wait_for_ajax_to_complete():
-    WebDriverWait(world.browser, 10).until(ajax_complete,  "Timeout waiting for page to load")
+    WebDriverWait(world.browser, 30).until(ajax_complete,  "Timeout waiting for page to load")
 
 def wait_for_javascript_to_complete():
     wait_for_ajax_to_complete()
