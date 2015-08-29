@@ -5,7 +5,7 @@
 {% block css %}
 {{ block.super }}
   <link rel="stylesheet" media="all" href="{{ STATIC_URL }}css/checkout/styles.css"/>
-  <link rel="stylesheet" media="print" href="{{ STATIC_URL }}css/checkout//print.css" type="text/css">
+  <link rel="stylesheet" media="print" href="{{ STATIC_URL }}css/checkout/print.css" type="text/css">
 {% endblock css %}
 
 {% block title %}
@@ -121,7 +121,7 @@
                         <div class="col-md-2 align-right">
                             <p class="price_color">
                                 {% if show_tax_separately %}
-                                   <h class="visible-xs mobileTotals">{% trans "Total: &nbsp;" %}</h> {{ line.line_price_before_discounts_excl_tax|currency:order.currency }}
+                                    <h class="visible-xs mobileTotals">{% trans "Total: &nbsp;" %}</h> {{ line.line_price_before_discounts_excl_tax|currency:order.currency }}
                                 {% else %}
                                     <h class="visible-xs mobileTotals">{% trans "Total: &nbsp;" %}</h>{{ line.line_price_before_discounts_incl_tax|currency:order.currency }}
                                 {% endif %}
@@ -266,7 +266,7 @@
                 <div class="sub-header">
                     <h2>{% trans "Tracking your order" %}</h2>
                 </div>
-                <p>{% trans "You can track the status of your order" as track_status_label %}
+                <p class = "noprint">{% trans "You can track the status of your order" as track_status_label %}
                     <a href="{% url 'customer:anon-order' order_number=order.number hash=order.verification_hash %}">{{ track_status_label }}</a>.
                 </p>
             {% endif %}
