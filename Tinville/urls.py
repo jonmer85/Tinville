@@ -51,6 +51,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
 (r'^dowser/', include('django_dowser.urls')),
+ url(r'^markitup/', include('markitup.urls'))
 )
 
 urlpatterns += patterns('',
