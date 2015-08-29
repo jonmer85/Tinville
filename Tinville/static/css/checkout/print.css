@@ -1,16 +1,30 @@
 #pncButtons {display: none;}
 .navbar  {visibility: hidden;}
 
-.checkOutTop body .container div .mobileMomentumScroll
-{
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    float:none;
-}
+/*.checkOutTop body .container div .mobileMomentumScroll*/
+/*{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*margin: 0;*/
+    /*float:none;*/
+/*}*/
 
 .mobileMomentumScroll {
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll !important;
     overflow: visible !important;
+}
+
+.footerRow, .sub-header, .noprint
+{
+    display: none;
+}
+
+.container, #container2, #content
+{
+    width: 100%; margin: 0; float: none;
+}
+
+a:link:after, a:visited:after {
+    content: "";
 }
