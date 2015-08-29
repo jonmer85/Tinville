@@ -157,6 +157,11 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+        //Tommy Leedberg - 8/11/2015 - Removing $ and commas from price
+        $(document).on( "click", "#id_SubmitAddEditItem", function(){
+            $( "#id_price" ).val( $( "#id_price").val().replace( /[$,]/g, '')  ) ;
+        });
+
         $(document).on("change","#id_product_image",function() {
             $("#id_product_image1").removeClass("hidden");
         });
@@ -214,7 +219,6 @@
             });
         });
 
-
         var resetEditFormParsley = function () {
             $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
                 // if one of these blocks is not failing do not prevent submission
@@ -251,10 +255,15 @@
         }
 
         var changeItemPriceDataTypes = function() {
-            document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
-            document.getElementById("id_price").attributes["type"].value = "decimal";
-        };
+           // document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+           // document.getElementById("id_price").attributes["type"].value = "decimal";
 
+            //TODO: Need help determining where these are actually set on this field so i can remove them appropriately
+            //TODO: Need to remove currency values, commas, and decimals when form is submitted for back end
+
+            $('#id_price').removeAttr('data-parsley-type data-parsley-type-digits-message data-parsley-type-number-message');
+
+        };
 
         var htmlString = "<div>\
           This is a string.\
