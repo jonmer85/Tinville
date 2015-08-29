@@ -90,6 +90,7 @@
                         <form class="tab-pane row active col-xs-12" id="about" enctype="multipart/form-data" method="post">
                              {% load crispy_forms_tags %}
                              {% crispy aboutBoxForm %}
+                            <div id="loadingDiv" class="fa fa-spinner fa-spin center-block col-xs-12" style="text-align: center; font-size: 4em;"></div>
                         </form>
                     </div>
                 </div>
@@ -218,6 +219,18 @@
                 }
             });
         });
+
+        //Processign Wheel Login//
+        $(document).ready(function(){
+            $('#loadingDiv').addClass('hidden');
+            $('#about').removeClass('hidden');
+        });
+
+        $("#aboutModalFooterSubmit").click(function(){
+            $('#loadingDiv').removeClass('hidden');
+            $('#about').addClass('hidden');
+        });
+        //**********************//
 
         var resetEditFormParsley = function () {
             $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
