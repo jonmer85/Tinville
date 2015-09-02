@@ -91,6 +91,7 @@
                         <form class="tab-pane row active col-xs-12" id="about" enctype="multipart/form-data" method="post">
                              {% load crispy_forms_tags %}
                              {% crispy aboutBoxForm %}
+                            <div id="loadingDiv" class="fa fa-spinner fa-spin center-block col-xs-12" style="text-align: center; font-size: 4em;"></div>
                         </form>
                     </div>
                 </div>
@@ -160,6 +161,11 @@
 {% block javascript %}
     {{ block.super }}
     <script>
+        //Tommy Leedberg - 8/11/2015 - Removing $ and commas from price
+        $(document).on( "click", "#id_SubmitAddEditItem", function(){
+            $( "#id_price" ).val( $( "#id_price").val().replace( /[$,]/g, '')  ) ;
+        });
+
         $(document).on("change","#id_product_image",function() {
             $("#id_product_image1").removeClass("hidden");
         });
@@ -217,6 +223,17 @@
             });
         });
 
+        //Processign Wheel Login//
+        $(document).ready(function(){
+            $('#loadingDiv').addClass('hidden');
+            $('#about').removeClass('hidden');
+        });
+
+        $("#aboutModalFooterSubmit").click(function(){
+            $('#loadingDiv').removeClass('hidden');
+            $('#about').addClass('hidden');
+        });
+        //**********************//
 
         var resetEditFormParsley = function () {
             $('#addOrEditItem').parsley().subscribe('parsley:form:validate', function (formInstance) {
@@ -254,10 +271,15 @@
         }
 
         var changeItemPriceDataTypes = function() {
-            document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
-            document.getElementById("id_price").attributes["type"].value = "decimal";
-        };
+           // document.getElementById("id_price").attributes["data-parsley-type"] = "decimal";
+           // document.getElementById("id_price").attributes["type"].value = "decimal";
 
+            //TODO: Need help determining where these are actually set on this field so i can remove them appropriately
+            //TODO: Need to remove currency values, commas, and decimals when form is submitted for back end
+
+            $('#id_price').removeAttr('data-parsley-type data-parsley-type-digits-message data-parsley-type-number-message');
+
+        };
 
         var htmlString = "<div>\
           This is a string.\
