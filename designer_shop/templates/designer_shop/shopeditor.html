@@ -660,6 +660,12 @@
                         }
                         $('#' + $newColorQuantityRow.find('select')[0].id).multiselect('refresh');
                         checkMaxColors('#' + $newColorQuantityRow.find('select')[0].id)
+                    },
+                    onDropdownShown: function(event) {
+                        if($('#productCreationModal .modal-footer').offset().top-$newColorQuantityRow.find('.multiselect-container').offset().top > 0)
+                        {
+                            scrollToBottomOfProductCreationForm();
+                        }
                     }
                 });
             return $newColorQuantityRow;
