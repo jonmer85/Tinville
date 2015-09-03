@@ -180,7 +180,7 @@ def there_should_be_an_error(step, error_msg):
 
 @step(u'When I click the delete button for the product')
 def when_I_click_delete_button_product(step):
-    wait_for_element_with_id_to_be_clickable("testsizesetitem").click()
+    wait_for_element_with_id_to_be_clickable("testitem1").click()
 
 @step(u'And I click ok on the confirmation')
 def and_I_click_ok_confirmation(step):
@@ -189,7 +189,7 @@ def and_I_click_ok_confirmation(step):
 @step(u'Then the product is removed')
 def then_product_is_removed(step):
     try:
-        world.browser.find_element_by_css_selector("a[href='/demo/testsizesetitem']")
+        world.browser.find_element_by_css_selector("a[href='/demo/TestItem1']")
     except NoSuchElementException:
         reload_media()
         return True
