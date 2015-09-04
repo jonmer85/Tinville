@@ -11,6 +11,12 @@ sub vcl_recv {
         remove req.http.Cookie;
     }
 
+    # don't cache ajax requests
+
+    if(req.http.X-Requested-With == "XMLHttpRequest") {
+        return (pass);
+    }
+
     # normalize accept-encoding to account for different browsers
     # see: https://www.varnish-cache.org/trac/wiki/VCLExampleNormalizeAcceptEncoding
     if (req.http.Accept-Encoding) {

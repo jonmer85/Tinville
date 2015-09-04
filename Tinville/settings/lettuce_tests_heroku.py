@@ -54,8 +54,8 @@ COMPRESS_OFFLINE_CONTEXT = {
 
 SSLIFY_DISABLE = False
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE', False)
+CSRF_COOKIE_SECURE = env('CSRF_COOKIE_SECURE', False)
 
 redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6959'))
 CACHES = {
