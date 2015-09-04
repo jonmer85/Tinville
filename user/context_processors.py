@@ -9,6 +9,9 @@ def include_login_form(request):
 def get_user_shop(request):
     if(hasattr(request.user, 'is_seller') and request.user.is_seller):
         shop = Shop.objects.get(user=request.user)
-        return {'shopUrl' : shop.slug}
+        return {
+            'shopUrl' : shop.slug,
+            'shopName': shop.name
+        }
     else:
         return {}
