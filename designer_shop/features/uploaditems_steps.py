@@ -39,8 +39,7 @@ def and_i_fill_in_the_general_add_item_fields(step):
 
 def select_colors_and_quantities(sizePrefix, step):
     for (counter, colorQuantity) in enumerate(step.hashes):
-        # base = world.browser.find_element_by_css_selector("#" + sizePrefix + "colorSelection" + unicode(counter))
-        BSMultiSelect(wait_for_element_with_css_selector_to_exist("#" + sizePrefix + "colorSelection" + unicode(counter))).select_by_visible_text(colorQuantity["Color"])
+        BSMultiSelect(wait_for_element_with_css_selector_to_exist("#" + sizePrefix + "colorSelection" + unicode(counter))).select_by_visible_text(colorQuantity["Color"].replace('/', ','))
         clear_and_send_keys(wait_for_element_with_id_to_be_clickable(sizePrefix + "quantityField" + unicode(counter)), colorQuantity["Quantity"])
 
 
