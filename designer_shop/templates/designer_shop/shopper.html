@@ -21,6 +21,7 @@
                 <div class="visible-xs shopMenuBar editIconContainer">
                     <a class="navbar-brand shopMenuActiveColor shopTitleColor" id="shopTabLinkXS" data-toggle="tab" href="#shopTab">Shop</a>
                     <a class="navbar-brand shopTitleColor" id="aboutTabAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
+                    <a class="navbar-brand shopTitleColor" id="returnPolicyTabAnchorXS" href="#returnPolicyTab"  role="tab" data-toggle="tab">Return Policy</a>
                     {% if editmode %}
                         <a type="button" id="colorAddProfileBtn" class="btn btn-primary btn-xs fa fa-pencil-square-o" data-toggle="modal" data-target="#colorPickerModal" style="font-size: 14pt;"></a>
                     {% endif %}
@@ -34,6 +35,7 @@
                     {% endif %}
 					<li class="shopTabLink active"><a class="shopTitleColor" id="shopTabAnchor" data-toggle="tab" href="#shopTab">Shop</a></li>
 					<li id="aboutTabLink"><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab" role="tab" data-toggle="tab">About</a></li>
+                    <li id="returnPolicyTabLink"><a class="shopTitleColor" id="returnPolicyTabAnchor" href="#returnPolicyTab" role="tab" data-toggle="tab">Return Policy</a></li>
                     {% if editmode %}
                         <button type="button" id="colorAddProfileBtn" class="btn btn-primary btn-xs fa fa-pencil-square-o colorPickerEditButton" data-toggle="modal" data-target="#colorPickerModal"></button>
                     {% endif %}
@@ -76,6 +78,29 @@
                 </div>
             </div>
         </div>
+        <div class=" tab-pane" id="returnPolicyTab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-2 aboutContent editIconContainer" style="padding-top: 20px">
+                        {% if shop.returnPolicy %}
+                            {% if editmode %}
+                                <button type="button" class="btn btn-primary btn-xs fa fa-pencil-square-o aboutBoxEditButton" data-toggle="modal" data-target="#returnPolicyModal"></button>
+                            {% endif %}
+                        {% else %}
+                            {% if editmode %}
+                                <button id="returnPolicyAddBtn" type="button" class="btn btn-primary btn editButton fa fa-pencil-square-o" data-toggle="modal" data-target="#returnPolicyModal">
+                                    Add Your Return Policy
+                                </button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-8 returnPolicyContent">
+                        {{ shop.returnPolicy | bleach }}
+                        <div id="returnPolicyHighlight"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="hiddenShopperField"></div>
 
@@ -89,17 +114,21 @@
         $(function(){
             var tabType = "{{ tab }}";
             $("#aboutHighlight").toggle();
-            if(tabType !== null && tabType == 'about')
+            if(tabType !== null && (tabType == 'about' || tabType == 'returnPolicy'))
             {
                 $("#aboutTabAnchor").click();
                 $("#aboutTabAnchorXS").click();
+                $("#returnPolicyTabAnchor").click();
+                $("#returnPolicyTabAnchorXS").click();
                 $("#minMaxIcon").click();
                 setTimeout(function () {
                             $("#aboutHighlight").toggle("highlight");
+                            $("#returnPolicyHighlight").toggle("highlight");
                         }, 1000
                 );
                 setTimeout(function () {
                             $("#aboutHighlight").toggle("highlight");
+                            $("#returnPolicyHighlight").toggle("highlight");
                         }, 8000
                 );
             }
@@ -109,10 +138,12 @@
         $("#shopTabLinkXS").click(function(){
         $("#shopTabLinkXS").addClass("shopMenuActiveColor");
         $("#aboutTabAnchorXS").removeClass("shopMenuActiveColor");
+        $("#returnPolicyTabAnchorXS").removeClass("shopMenuActiveColor");
     });
     $("#aboutTabAnchorXS").click(function(){
         $("#shopTabLinkXS").removeClass("shopMenuActiveColor");
         $("#aboutTabAnchorXS").addClass("shopMenuActiveColor");
+{#        $("#returnPolicyTabAnchorXS").addClass("shopMenuActiveColor");#}
     });
 
 

@@ -89,14 +89,38 @@
                 <div class="modal-body">
                     <div class="row">
                         <form class="tab-pane row active col-xs-12" id="about" enctype="multipart/form-data" method="post">
-                             {% load crispy_forms_tags %}
-                             {% crispy aboutBoxForm %}
-                            <div id="loadingDiv" class="fa fa-spinner fa-spin center-block col-xs-12" style="text-align: center; font-size: 4em;"></div>
+                            {% load crispy_forms_tags %}
+                            {% crispy aboutBoxForm %}
+                            <div class="loadingDiv fa fa-spinner fa-spin center-block col-xs-12" style="text-align: center; font-size: 4em;"></div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button id="aboutModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitAboutContent').click()">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="returnPolicyModal" tabindex="-1" role="dialog" aria-labelledby="returnPolicyModalLabel" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="returnPolicyModalLabel">Edit Your Return Policy</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form class="tab-pane row active col-xs-12" id="returnPolicy" enctype="multipart/form-data" method="post">
+                            {% load crispy_forms_tags %}
+                            {% crispy returnPolicyForm %}
+                            <div class="loadingDiv fa fa-spinner fa-spin center-block col-xs-12" style="text-align: center; font-size: 4em;"></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="returnPolicyModalFooterSubmit" type="button" class="btn btn-primary tinvilleButton" onclick="$('#id_SubmitReturnPolicy').click()">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -225,13 +249,19 @@
 
         //Processign Wheel Login//
         $(document).ready(function(){
-            $('#loadingDiv').addClass('hidden');
+            $('.loadingDiv').addClass('hidden');
             $('#about').removeClass('hidden');
+            $('#returnPolicy').removeClass('hidden');
         });
 
         $("#aboutModalFooterSubmit").click(function(){
-            $('#loadingDiv').removeClass('hidden');
+            $('.loadingDiv').removeClass('hidden');
             $('#about').addClass('hidden');
+        });
+
+        $("#returnPolicyModalFooterSubmit").click(function(){
+            $('.loadingDiv').removeClass('hidden');
+            $('#returnPolicy').addClass('hidden');
         });
         //**********************//
 
