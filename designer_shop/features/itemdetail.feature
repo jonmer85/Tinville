@@ -13,17 +13,18 @@ Feature: Item Detail
   Scenario: Visible the Item Detail page
       Given I am on an item detail page
       Then I can see the following elements
-          | Class              |
-          | shopItemDetail     |
-          | itemTitle          |
-          | itemPrice          |
-          | itemColorSelection |
-          | itemSizeSelection  |
-          | itemBuyQuantity    |
-          | addToCart          |
-          | itemDescription    |
-          | sharingiscaring    |
-          | selectedImage      |
+          | Class               |
+          | shopItemDetail      |
+          | itemTitle           |
+          | itemPrice           |
+          | itemColorSelection  |
+          | itemSizeSelection   |
+          | itemBuyQuantity     |
+          | addToCart           |
+          | itemDescription     |
+          | sharingiscaring     |
+          | selectedImage       |
+          | returnPolicySection |
 
 
   Scenario: Default Values
