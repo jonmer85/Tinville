@@ -62,6 +62,16 @@ sub vcl_fetch {
     return (deliver);
   }
 
+  #if ( beresp.status == 301 || beresp.status == 302) {
+  # Check if we're redirecting to a different site
+  #if ( beresp.http.Location != server.hostname ) {
+    # Rewrite HTTP Location header to cache it and pass redirection to client
+  #  set beresp.http.x-Varnish-Redirect = "https://" bereq.url "/";
+  #  set beresp.http.Location = regsub(beresp.http.Location, "^https://[^/]+/", beresp.http.x-varnish-redirect);
+
+  #  }
+  #}
+
   if (beresp.http.Expires || beresp.http.Surrogate-Control ~ "max-age" || beresp.http.Cache-Control ~"(s-maxage|max-age)") {
     # keep the ttl here
   } else {
