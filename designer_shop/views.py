@@ -351,7 +351,12 @@ def get_variants(item, group=None):
         currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-            color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
+            if secondary_color:
+                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
+            else:
+                color = str(primary_color).capitalize()
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
@@ -376,18 +381,18 @@ def get_variants(item, group=None):
 
         if group is None:
             if sizeType == SIZE_SET:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                quantitysize = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                quantitysize = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
             if sizeType == SIZE_SET:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                groupdict = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                groupdict = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
@@ -435,7 +440,12 @@ def get_single_variant(variant, group=None):
     currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-        color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
+            if secondary_color:
+                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
+            else:
+                color = primary_color
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
         sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
@@ -494,23 +504,28 @@ def confirm_at_least_one(i):
 def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
     j = 0
     while (True):
-        color = next((c for c in postCopy.keys() if prefix + '_' in c
+        primary_color = next((c for c in postCopy.keys() if prefix + '_pc' in c
                       and "_colorSelection" in c), None)
+
+
         colorRowNum = None
-        if color:
-            m = re.search(r'\d+$', color)
+        if primary_color:
+            m = re.search(r'\d+$', primary_color)
             if m is not None:
                 colorRowNum = m.group()
 
             quantity = next((q for q in postCopy.keys() if prefix + '_' in q
                              and "_quantityField" in q and q.endswith(colorRowNum)), None)
+            secondary_color = next((c for c in postCopy.keys() if prefix + '_sc' in c
+                            and "_colorSelection" in c and c.endswith(colorRowNum)), None)
 
-        if color is not None and quantity is not None:
-            if postCopy[color] and postCopy[quantity]:
+        if primary_color is not None and quantity is not None:
+            if postCopy[primary_color] and postCopy[quantity]:
                 sizes[i]["colorsAndQuantities"].append(
                     {
-                        "color": postCopy[color],
-                        "colorFieldName": color,
+                        "primary_color": postCopy[primary_color],
+                        "secondary_color": postCopy[secondary_color] if secondary_color is not None else None,
+                        "colorFieldName": primary_color.replace('_pc_', '_'),
                         "quantity": postCopy[quantity],
                         "quantityFieldName": quantity
                     }
@@ -519,7 +534,13 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
             confirm_at_least_one(j)
             break
         j += 1
-        postCopy.pop(color)
+        postCopy.pop(primary_color)
+        if secondary_color is not None:
+            postCopy.pop(secondary_color)
+
+        #We need to remove original select field as well
+        if primary_color.replace('_pc_', '_') in postCopy:
+            postCopy.pop(primary_color.replace('_pc_', '_'))
         postCopy.pop(quantity)
 
 
@@ -767,7 +788,7 @@ def _valid_variants(variants):
 
     for variant in variants:
         colors = variant['colorsAndQuantities']
-        if len([c['color'] for c in colors]) != len(set(c['color'] for c in colors)):
+        if len([str(c['primary_color']) + '/' + str(c['secondary_color']) for c in colors]) != len(set(str(c['primary_color']) + '/' + str(c['secondary_color']) for c in colors)):
             return False
 
     return True
