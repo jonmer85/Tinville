@@ -3,7 +3,6 @@ Feature: Designer Shop Return Policy Selection
   As a designer
   I want to have a text selection that allows me to add and modify text
 
-  @wipjeff
   Scenario: Return Policy Editor
     Given the demo shop editor
     When the return policy edit button is pressed
