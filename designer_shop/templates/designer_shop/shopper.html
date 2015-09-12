@@ -94,7 +94,7 @@
                             {% endif %}
                         {% endif %}
                     </div>
-                    <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-8 returnPolicyContent">
+                    <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-8 returnPolicyContent" style="padding-top: 20px">
                         {{ shop.returnPolicy | bleach }}
                         <div id="returnPolicyHighlight"></div>
                     </div>
@@ -114,12 +114,12 @@
         $(function(){
             var tabType = "{{ tab }}";
             $("#aboutHighlight").toggle();
-            if(tabType !== null && (tabType == 'about' || tabType == 'returnPolicy'))
+            if(tabType !== null && tabType == 'about')
             {
                 $("#aboutTabAnchor").click();
                 $("#aboutTabAnchorXS").click();
                 $("#returnPolicyTabAnchor").click();
-                $("#returnPolicyTabAnchorXS").click();
+{#                $("#returnPolicyTabAnchorXS").click();#}
                 $("#minMaxIcon").click();
                 setTimeout(function () {
                             $("#aboutHighlight").toggle("highlight");
@@ -138,7 +138,7 @@
         $("#shopTabLinkXS").click(function(){
         $("#shopTabLinkXS").addClass("shopMenuActiveColor");
         $("#aboutTabAnchorXS").removeClass("shopMenuActiveColor");
-        $("#returnPolicyTabAnchorXS").removeClass("shopMenuActiveColor");
+{#        $("#returnPolicyTabAnchorXS").removeClass("shopMenuActiveColor");#}
     });
     $("#aboutTabAnchorXS").click(function(){
         $("#shopTabLinkXS").removeClass("shopMenuActiveColor");
