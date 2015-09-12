@@ -49,7 +49,7 @@ def and_every_item_should_have_a_price(step):
 
 @step(u'Given the demo shop$')
 def given_the_demo_shop(step):
-    world.browser.get(get_server().url('/Demo'))
+    world.browser.get(get_server().url('/Demo/'))
     if not settings.DISABLE_BETA_ACCESS_CHECK:
         wait_for_browser_to_have_url(get_server().url('/access_code?shop=Demo'))
         user = TinvilleUser.objects.get(email="demo@user.com")
@@ -64,7 +64,7 @@ def given_a_shop_editor(step):
 @step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
-    world.browser.get(get_server().url('/Demo/edit'))
+    world.browser.get(get_server().url('/Demo/edit/'))
     assert_id_exists('shopEditor')
 
 @step(u'Then there should be 1 icon displayed for control')
@@ -98,7 +98,7 @@ def given_demo_shop_editor(step):
     world.browser.get(get_server().url('/'))
     sign_in("demo@user.com", "tinville")
 
-    world.browser.get(get_server().url('/Demo/edit'))
+    world.browser.get(get_server().url('/Demo/edit/'))
     wait_for_element_with_css_selector_to_exist('.bannerUploadEditButton')
     wait_for_element_with_class_to_be_displayed('colorPickerEditButton')
     wait_for_element_with_class_to_be_displayed('addItem')

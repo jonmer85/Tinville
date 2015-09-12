@@ -32,7 +32,7 @@ def and_the_shop_is_not_approved(step):
 
 @step(u'Given the demo shop$')
 def given_the_demo_shop(step):
-    world.browser.get(get_server().url('/Demo'))
+    world.browser.get(get_server().url('/Demo/'))
     wait_for_browser_to_have_url(get_server().url('/access_code?shop=Demo'))
     user = TinvilleUser.objects.get(email="demo@user.com")
     form = fill_in_access_form(access_code=user.access_code)
@@ -52,7 +52,7 @@ def then_i_can_visit_my_new_shop(step, url):
 
 @step(u'Then I can visit the demo shop$')
 def then_i_can_visit_the_demo_shop(step):
-    world.browser.get(get_server().url('/Demo'))
+    world.browser.get(get_server().url('/Demo/'))
     if not settings.DISABLE_BETA_ACCESS_CHECK:
         wait_for_browser_to_have_url(get_server().url('/access_code?shop=Demo'))
         user = TinvilleUser.objects.get(email="demo@user.com")

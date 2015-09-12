@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 @step(u'I access the registration page')
 def access_registration_url(step):
-    world.browser.get(get_server().url('/register'))
+    world.browser.get(get_server().url('/register/'))
 
 @step(u'I access the home page')
 def access_home_url(step):
@@ -138,7 +138,7 @@ def then_i_should_not_see_validation_errors(step):
 
 @step(u'Then I should get a validation error on email address')
 def then_i_should_get_a_validation_error_on_email_address(step):
-    assert_equals(world.browser.current_url, get_server().url('/register/designer'))
+    assert_equals(world.browser.current_url, get_server().url('/register/designer/'))
     assert_class_exists('has-error')
 
 @step(u'I should be logged in')

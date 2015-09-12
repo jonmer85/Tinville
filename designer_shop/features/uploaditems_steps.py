@@ -164,7 +164,7 @@ def i_click_the_edit_button_on_the_basic_size_set_product(self):
 def i_change_the_default_image_of_the_size_set_product(step):
     world.browser.find_element_by_css_selector("a[href='/demo/testsizesetitem']").click()
     world.browser.originalImageURL = wait_for_element_with_css_selector_to_exist("#itemSelectedImageLink").get_attribute("href")
-    world.browser.get(get_server().url('/Demo/edit'))
+    world.browser.get(get_server().url('/Demo/edit/'))
 
 @step(u'my primary image is different from the original')
 def my_primary_image_is_visible_and_different_from_original(step):

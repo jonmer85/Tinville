@@ -95,7 +95,7 @@ def when_i_register_for_a_shopper_account(step):
     submit_form_and_activate_user(form)
 
 def fill_in_user_form(email, password):
-    world.browser.get(get_server().url('/register'))
+    world.browser.get(get_server().url('/register/'))
     world.user_info = {
         "email": email,
         "password": password,

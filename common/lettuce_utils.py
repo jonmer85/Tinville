@@ -289,7 +289,7 @@ def go_home_page():
     assert_equals(world.browser.current_url, get_server().url('/'))
 
 def register_a_designer_account(email, password, shop_name):
-    world.browser.get(get_server().url('/register'))
+    world.browser.get(get_server().url('/register/'))
     form = wait_for_element_with_id_to_exist("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
@@ -300,7 +300,7 @@ def register_a_designer_account(email, password, shop_name):
     activate_user(email)
 
 def register_a_shopper_account(email, password):
-    world.browser.get(get_server().url('/register'))
+    world.browser.get(get_server().url('/register/'))
     form = wait_for_element_with_id_to_exist("registrationForm")
     form.find_element_by_name("email").send_keys(email)
     form.find_element_by_name("password").send_keys(password)
@@ -347,9 +347,9 @@ def fill_in_user_form(email, password, customer=True):
     return form
 
 def access_registration_url(step):
-    world.browser.get(get_server().url('/register/customer'))
+    world.browser.get(get_server().url('/register/customer/'))
 def access_registration_designer_url(step):
-    world.browser.get(get_server().url('/register/designer'))
+    world.browser.get(get_server().url('/register/designer/'))
 
 def submit_form_and_activate_user(form, expectSuccess=True, activateUser=True):
     form.submit()

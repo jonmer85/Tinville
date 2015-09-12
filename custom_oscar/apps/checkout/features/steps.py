@@ -21,7 +21,7 @@ def given_the_shipping_address_page(step):
 @step(u'Then the designer can open a shop editor')
 def the_designer_can_open_a_shop_editor(step):
     sign_in('Demo@user.com', 'tinville')
-    world.browser.get(get_server().url('/Demo/edit'))
+    world.browser.get(get_server().url('/Demo/edit/'))
     assert_id_exists('shopEditor')
 
 @step(u'Then there should be 1 icon displayed for control')
@@ -49,7 +49,7 @@ def give_demo_shop_editor(step):
     world.browser.get(get_server().url('/'))
     sign_in("demo@user.com", "tinville")
 
-    world.browser.get(get_server().url('/Demo/edit'))
+    world.browser.get(get_server().url('/Demo/edit/'))
     wait_for_element_with_id_to_be_displayed('shopEditor')
 
 @step(u'Then there should be 1 icon displayed for size control')

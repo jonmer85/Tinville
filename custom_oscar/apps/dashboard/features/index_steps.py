@@ -6,7 +6,7 @@ import lettuce.django
 
 @step("I am on the dashboard index page")
 def i_am_on_the_dashboard_index_page(step):
-    world.browser.get(get_server().url('/dashboard'))
+    world.browser.get(get_server().url('/dashboard/'))
 
 
 @step("I should see the '(.*)' table")
