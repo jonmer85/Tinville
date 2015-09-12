@@ -24,6 +24,9 @@ DATABASE_POOL_ARGS = {
     'recycle': 300
 }
 
+MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
+MIDDLEWARE_CLASSES.remove('django.middleware.csrf.CsrfViewMiddleware')
+
 DEFAULT_FILE_STORAGE = 'common.s3utils.MediaS3BotoStorage'
 STATICFILES_STORAGE = 'common.s3utils.StaticS3BotoStorage'
 THUMBNAIL_DEFAULT_STORAGE = 'common.s3utils.MediaS3BotoStorage'
