@@ -167,9 +167,9 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                       SIGN UP
                 </a>
                 <ul class="dropdown-menu" style="right: 0; top: 50px;">
-                    <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                    <li><a href="/register/customer/">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
                     <li class="divider"></li>
-                    <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                    <li><a href="/register/designer/">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
                 </ul>
 
             </li>
@@ -210,9 +210,9 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                                   Sign Up
                             </a>
                             <ul class="dropdown-menu" style="right: 0; top: 46px;">
-                                <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
+                                <li><a href="/register/customer/">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
                                 <li class="divider"></li>
-                                <li><a href="/register/designer">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
+                                <li><a href="/register/designer/">as a Designer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/designer_over.svg" style="width: 26px"></img></a></li>
                               </ul>
 
 {#                        </li>#}
@@ -255,10 +255,10 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
             <nav class="footer-nav col-sm-offset-2 col-sm-2">
                 <dl class="list-unstyled">
                     {% if user.is_authenticated %}
-                        <li class="mainFooterListItem"><a href="/logout">Sign Out</a></li>
+                        <li class="mainFooterListItem"><a href="/logout/">Sign Out</a></li>
                     {% else %}
                         <li class="mainFooterListItem"><a target="_top" id="goToTopOfPage" href="#lg-menuLogin" data-toggle="dropdown" data-target="#lg-menuLogin">Sign In</a></li>
-                        <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
+                        <li class="mainFooterListItem"><a href="/register/customer/">Register</a></li>
                     {% endif %}
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
 {#                    <li class="mainFooterListItem"><a href="#">Help</a></li>#}
@@ -311,10 +311,10 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                 <dl class="list-unstyled listPadding">
                     <li class="mainFooterListItem">
                         {% if user.is_authenticated %}
-                            <a href="/logout">Sign Out</a>
+                            <a href="/logout/">Sign Out</a>
                         {% else %}
                             <li class="mainFooterListItem"><a target="_top" id="goToTopOfPageXS" href="#xs-menuLogin" data-toggle="dropdown" data-target="#xs-menuLogin">Sign In</a></li>
-                            <li class="mainFooterListItem"><a href="/register/customer">Register</a></li>
+                            <li class="mainFooterListItem"><a href="/register/customer/">Register</a></li>
                         {% endif %}
                     </li>
 {#                    <li class="mainFooterListItem"><a href="#">View Cart</a></li>#}
@@ -502,19 +502,19 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                                   "<div id='userNotifications-xs' class='userNotifications hidden'></div>" +
                               "</a>" +
                               "<ul class='dropdown-menu' style='left: -115px; width: 200px; top: 40px;'>" +
-                              "<li><a href='/accounts'>My Account <span class='glyphicon glyphicon-cog pull-right'></span></a></li>" +
+                              "<li><a href='/accounts/'>My Account <span class='glyphicon glyphicon-cog pull-right'></span></a></li>" +
                               "<li class='divider'></li>";
 
                         if(is_seller) {
                             userMobile +=
-                                    "<li><a href='/" +  shop + "/edit'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
+                                    "<li><a href='/" +  shop + "/edit/'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
                                     "<li class='divider'></li>";
                         }
                         if(is_seller || is_staff ) {
                             userMobile +=
-                                    "<li><a href='/accounts/payment_info'>My Payment Info <span class='glyphicon glyphicon-usd pull-right'></span></a></li>" +
+                                    "<li><a href='/accounts/payment_info/'>My Payment Info <span class='glyphicon glyphicon-usd pull-right'></span></a></li>" +
                                     "<li class='divider'></li>" +
-                                    "<li><a href='/dashboard'>Dashboard <span class='glyphicon glyphicon-dashboard pull-right'></span><span class='dashboardNotifications pull-right'></span></a></li>" +
+                                    "<li><a href='/dashboard/'>Dashboard <span class='glyphicon glyphicon-dashboard pull-right'></span><span class='dashboardNotifications pull-right'></span></a></li>" +
                                     "<li class='divider'></li>"
                         }
                         userMobile +=
@@ -534,22 +534,22 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                                         "<div id='userNotifications-lg' class='userNotifications hidden'></div>" +
                                     "</a>" +
                                     "<ul class='dropdown-menu' style='right: 0;'>" +
-                                        "<li><a href='/accounts'>My Account <span class='glyphicon glyphicon-cog pull-right'></span></a></li>" +
+                                        "<li><a href='/accounts/'>My Account <span class='glyphicon glyphicon-cog pull-right'></span></a></li>" +
                                         "<li class='divider'></li>";
                         if(is_seller) {
                             userNonMobile +=
-                                        "<li><a href='/" + shop + "/edit'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
+                                        "<li><a href='/" + shop + "/edit/'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
                                         "<li class='divider'></li>";
                         }
                         if(is_seller || is_staff) {
                             userNonMobile +=
-                                        "<li><a href='/accounts/payment_info'>My Payment Info <span class='glyphicon glyphicon-usd pull-right'></span></a></li>" +
+                                        "<li><a href='/accounts/payment_info/'>My Payment Info <span class='glyphicon glyphicon-usd pull-right'></span></a></li>" +
                                         "<li class='divider'></li>" +
-                                        "<li><a href='/dashboard'>Dashboard <span class='glyphicon glyphicon-dashboard pull-right'></span><span class='dashboardNotifications pull-right'></span></a></li>" +
+                                        "<li><a href='/dashboard/'>Dashboard <span class='glyphicon glyphicon-dashboard pull-right'></span><span class='dashboardNotifications pull-right'></span></a></li>" +
                                         "<li class='divider'></li>";
                         }
                         userNonMobile +=
-                                        "<li><a id='logout-lg' href='/logout' >Sign Out<span class='glyphicon glyphicon-log-out pull-right'></span></a></li>" +
+                                        "<li><a id='logout-lg' href='/logout/' >Sign Out<span class='glyphicon glyphicon-log-out pull-right'></span></a></li>" +
                                         "<li class='hidden-md hidden-lg divider'></li>" +
                                         "<li class='tinvilleOrange hidden-md hidden-lg logEmail'>" + username + "</li>" +
                                     "</ul>" +
