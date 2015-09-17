@@ -144,7 +144,6 @@ the content for this basic editor should include the following fields:
     | Blue/Green | 8.5  | 5        |
     And my primary image item3_1 and secondary image item3_2 are visible
 
-  @wipjeff
   Scenario: Edit Basic Item on Demo Shop using size sets
 	Given the demo shop editor
     And I plan to change the default image of the size set product
