@@ -1,4 +1,3 @@
-@wipjeff
 Feature: Upload Item Editor
 
 As a designer, I would like the ability to upload an item to sell, including primary picture.
@@ -145,6 +144,7 @@ the content for this basic editor should include the following fields:
     | Blue/Green | 8.5  | 5        |
     And my primary image item3_1 and secondary image item3_2 are visible
 
+  @wipjeff
   Scenario: Edit Basic Item on Demo Shop using size sets
 	Given the demo shop editor
     And I plan to change the default image of the size set product
@@ -159,7 +159,7 @@ the content for this basic editor should include the following fields:
     And I submit this item
     Then I should see a confirmation message stating that the item was updated
 	Then I should see 3 product total
-    When I click on the "TestSizeSetItem" item
+    When I click on the "NewTestSizeSet" item
     Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |
