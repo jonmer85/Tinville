@@ -7,4 +7,4 @@ class URLTest(TestCase):
         self.assertEqual('designer_shop.views.shopper', resolve('/bar/').view_name)
 
     def test_register(self):
-        self.assertEqual('user.views.register', resolve('/register').view_name)
+        self.assertEqual('user.views.register', resolve('/register/').view_name)
