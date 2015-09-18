@@ -44,6 +44,9 @@ sub vcl_fetch {
     set beresp.http.Fastly-Restarts = req.restarts;
   }
 
+  if ( beresp.status == 301 || beresp.status == 302) {
+     set beresp.http.Location = regsub(beresp.http.location, "^https://[^/]+/", "https://tinville-lettuce2.herokuapp.com.global.prod.fastly.net/");
+  }
 
   if (beresp.http.Set-Cookie) {
     set req.http.Fastly-Cachetype = "SETCOOKIE";
@@ -60,13 +63,6 @@ sub vcl_fetch {
     set beresp.ttl = 1s;
     set beresp.grace = 5s;
     return (deliver);
-  }
-
-  if ( beresp.status == 301 || beresp.status == 302) {
-  # Check if we're redirecting to a different site
-    if ( beresp.http.location != server.hostname ) {
-     set beresp.http.Location = regsub(beresp.http.location, "^https://[^/]+/", "https://tinville-lettuce2.herokuapp.com.global.prod.fastly.net/");
-   }
   }
 
   if (beresp.http.Expires || beresp.http.Surrogate-Control ~ "max-age" || beresp.http.Cache-Control ~"(s-maxage|max-age)") {
