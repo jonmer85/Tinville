@@ -18,7 +18,7 @@ def given_I_have_at_least_some_items_in_the_shop(step, amount):
 
 @step(u'I click on the "(.*)" item')
 def when_i_click_on_the_item(step, itemname):
-    theitem = world.browser.find_element_by_css_selector("a[href='/demo/" + slugify(itemname) +"']")
+    theitem = wait_for_element_with_css_selector_to_be_displayed("a[href='/demo/" + slugify(itemname) +"']")
     step.scenario.context['itemurl'] = theitem.get_attribute("href")
     theitem.click()
 

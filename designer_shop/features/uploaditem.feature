@@ -158,7 +158,7 @@ the content for this basic editor should include the following fields:
     And I submit this item
     Then I should see a confirmation message stating that the item was updated
 	Then I should see 3 product total
-    When I click on the "TestSizeSetItem" item
+    When I click on the "NewTestSizeSet" item
     Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |

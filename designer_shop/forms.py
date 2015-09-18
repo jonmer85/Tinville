@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.forms import inlineformset_factory
 from django.forms.forms import NON_FIELD_ERRORS
 from django_bleach.forms import BleachField
-
+from django.template.defaultfilters import slugify
 from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -209,8 +209,10 @@ class ProductCreationForm(forms.ModelForm):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
+
         canonicalProduct.shop = shop
         canonicalProduct.structure = Product.PARENT
+        canonicalProduct.slug = slugify(canonicalProduct.title.lower())
         canonicalProduct.save()
         canonicalId = canonicalProduct.id
 
