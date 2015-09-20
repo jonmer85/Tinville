@@ -108,7 +108,7 @@ def then_the_thank_you_page_is_displayed(step):
 
 @step(u'(?:When|And) I sign in')
 def and_i_sign_in(step):
-    form = world.browser.find_element_by_id("signInOption")
+    form = wait_for_element_with_id_to_exist("signInOption")
     form.find_element_by_name("username").send_keys('demo@user.com')
     form.find_element_by_name("password").send_keys('tinville')
     wait_for_element_with_id_to_exist('returningButton')

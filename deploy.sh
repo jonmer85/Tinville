@@ -9,12 +9,12 @@ if [ $BRANCH = 'develop' ]; then
   heroku run ./qatest compress --force --app tinville-testing
   heroku maintenance:off --app tinville-testing
 
-  heroku maintenance:on --app tinville-dev
-  git push -f git@heroku.com:tinville-dev.git develop:master
-  heroku run ./initDataNoInput dev --app tinville-dev
-  heroku run ./dev collectstatic --noinput --app tinville-dev
-  heroku run ./dev compress --force --app tinville-dev
-  heroku maintenance:off --app tinville-dev
+  # heroku maintenance:on --app tinville-dev
+  # git push -f git@heroku.com:tinville-dev.git develop:master
+  # heroku run ./initDataNoInput dev --app tinville-dev
+  # heroku run ./dev collectstatic --noinput --app tinville-dev
+  # heroku run ./dev compress --force --app tinville-dev
+  # heroku maintenance:off --app tinville-dev
 else
   if [ $BRANCH = 'master' ]; then 
     heroku maintenance:on --app tinville-beta

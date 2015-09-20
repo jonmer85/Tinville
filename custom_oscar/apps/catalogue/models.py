@@ -1,7 +1,7 @@
 from django.db import models
 from easy_thumbnails.files import get_thumbnailer
 
-from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductImage
+from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductImage, AbstractAttributeOption
 
 from image_cropping import ImageRatioField
 
@@ -48,5 +48,10 @@ class ProductImage(AbstractProductImage):
         thumbnailer = get_thumbnailer(self.original)
         thumbnailer.delete_thumbnails()
         super(ProductImage, self).delete(*args, **kwargs)
+
+class AttributeOption(AbstractAttributeOption):
+    parent = models.ForeignKey(
+        'self', null=True, blank=True, related_name='child_colors',
+        verbose_name=("Parent attribute"))
 
 from oscar.apps.catalogue.models import *

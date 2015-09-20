@@ -1,4 +1,4 @@
-{% extends 'templates/dashboard/layout.html' %}
+{% extends 'dashboard/layout.html' %}
 {% load url from future %}
 {% load currency_filters %}
 {% load sorting_tags %}
@@ -154,7 +154,7 @@
                     </tr>
                     {% endfor %}
                 </table>
-                {% include "templates/dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
+                {% include "dashboard/orders/partials/bulk_edit_form.html" with status=active_status %}
                 {% include "pagination.html" %}
             </form>
 

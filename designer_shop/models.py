@@ -39,6 +39,7 @@ class Shop(models.Model):
     # size is "width x height"
     aboutImgCropping = ImageRatioField('aboutImg', '155x155', box_max_width=200)
     aboutContent = BleachField()
+    returnPolicy = BleachField(verbose_name="Return policy", blank=True, null=True)
     color = models.CharField(default='#5B595A', max_length=7,
         validators=[RegexValidator(
             regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',

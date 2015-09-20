@@ -20,19 +20,21 @@ the content for this basic editor should include the following fields:
     | Red   | 7         |
     | Blue  | 2         |
 	And I choose the size LG with row number 2 and I fill the following quantities and colors
-    | Color | Quantity  |
-    | Green | 3         |
-    | Blue  | 5         |
+    | Color      | Quantity  |
+    | Green      | 3         |
+    | Blue       | 5         |
+    | Blue/Green | 5         |
     And I submit this item
     Then I should see a confirmation message stating that the item was created
 	Then I should see 4 product total
     When I click on the "TestItem1" item
     Then my color, quantity, and size selections are
-    | Color  | Size  | Quantity |
-    | Red    | SM    | 7        |
-    | Blue   | SM    | 2        |
-    | Blue   | LG    | 5        |
-    | Green  | LG    | 3        |
+    | Color      | Size  | Quantity |
+    | Red        | SM    | 7        |
+    | Blue       | SM    | 2        |
+    | Blue       | LG    | 5        |
+    | Green      | LG    | 3        |
+    | Blue/Green | LG    | 5        |
     And my primary image item1_1 and secondary image item1_2 are visible
 
   Scenario: Create Basic Item on Demo Shop with existing item name raises error
@@ -43,9 +45,9 @@ the content for this basic editor should include the following fields:
     | Title           | Description                     | Category                 | Price | Image1             | Image2             | SizeVariation |
     | TestSizeSetItem | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item1_1.jpg | images/item1_2.jpg | 1
 	And I choose the size SM with row number 1 and I fill the following quantities and colors
-    | Color | Quantity  |
-    | Red   | 7         |
-    | Blue  | 2         |
+    | Color      | Quantity  |
+    | Red        | 7         |
+    | Blue       | 2         |
 	And I choose the size LG with row number 2 and I fill the following quantities and colors
     | Color | Quantity  |
     | Green | 3         |
@@ -67,19 +69,21 @@ the content for this basic editor should include the following fields:
     | Red   | 7         |
     | Blue  | 2         |
 	And I choose the size LG with row number 2 and I fill the following quantities and colors
-    | Color | Quantity  |
-    | Green | 3         |
-    | Blue  | 5         |
+    | Color      | Quantity  |
+    | Green      | 3         |
+    | Blue       | 5         |
+    | Blue/Green | 5         |
     And I submit this item
     Then I should see a confirmation message stating that the item was created
 	Then I should see 4 product total
     When I click on the "TestItem1" item
     Then my color, quantity, and size selections are
-    | Color  | Size  | Quantity |
-    | Red    | SM    | 7        |
-    | Blue   | SM    | 2        |
-    | Blue   | LG    | 5        |
-    | Green  | LG    | 3        |
+    | Color      | Size  | Quantity |
+    | Red        | SM    | 7        |
+    | Blue       | SM    | 2        |
+    | Blue       | LG    | 5        |
+    | Green      | LG    | 3        |
+    | Blue/Green | LG    | 5        |
     And my primary image item1_1 and secondary image item1_2 are visible
 
   Scenario: Create Basic Item on Demo Shop using size dimensions
@@ -90,9 +94,10 @@ the content for this basic editor should include the following fields:
     | Title     | Description                     | Category                 | Price | Image1             | Image2              | SizeVariation |
     | TestItem1 | <h1>Test Item Description</h1>  | Men > Clothing > Jackets | 10.00 | images/item2_1.jpg | images/item2_2.jpg  |  2            |
 	And I choose the sizeX 32 and the sizeY 34 with row number 1 and I fill the following quantities and colors
-    | Color | Quantity  |
-    | Red   | 10        |
-    | Blue  | 3         |
+    | Color      | Quantity  |
+    | Red        | 10        |
+    | Blue       | 3         |
+    | Blue/Green | 5         |
 	And I choose the sizeX 28.5 and the sizeY 34.7 with row number 2 and I fill the following quantities and colors
     | Color | Quantity  |
     | Green | 5         |
@@ -102,11 +107,12 @@ the content for this basic editor should include the following fields:
 	Then I should see 4 product total
     When I click on the "TestItem1" item
     Then my color, quantity, and size selections are
-    | Color  | Size           | Quantity |
-    | Red    | 32.0 x 34.0    | 10       |
-    | Blue   | 32.0 x 34.0    | 3        |
-    | Blue   | 28.5 x 34.7    | 1        |
-    | Green  | 28.5 x 34.7    | 5        |
+    | Color      | Size           | Quantity |
+    | Red        | 32.0 x 34.0    | 10       |
+    | Blue       | 32.0 x 34.0    | 3        |
+    | Blue/Green | 32.0 x 34.0    | 5        |
+    | Blue       | 28.5 x 34.7    | 1        |
+    | Green      | 28.5 x 34.7    | 5        |
     And my primary image item2_1 and secondary image item2_2 are visible
 
   Scenario: Create Basic Item on Demo Shop using size number
@@ -121,19 +127,21 @@ the content for this basic editor should include the following fields:
     | Red   | 10        |
     | Blue  | 3         |
 	And I choose the sizenumber 8.5 with row number 2 and I fill the following quantities and colors
-    | Color | Quantity  |
-    | Green | 5         |
-    | Blue  | 1         |
+    | Color      | Quantity  |
+    | Green      | 5         |
+    | Blue       | 1         |
+    | Blue/Green | 5         |
     And I submit this item
     Then I should see a confirmation message stating that the item was created
 	Then I should see 4 product total
     When I click on the "TestItem1" item
     Then my color, quantity, and size selections are
-    | Color  | Size | Quantity |
-    | Red    | 5.0  | 10       |
-    | Blue   | 5.0  | 3        |
-    | Blue   | 8.5  | 1        |
-    | Green  | 8.5  | 5        |
+    | Color      | Size | Quantity |
+    | Red        | 5.0  | 10       |
+    | Blue       | 5.0  | 3        |
+    | Blue       | 8.5  | 1        |
+    | Green      | 8.5  | 5        |
+    | Blue/Green | 8.5  | 5        |
     And my primary image item3_1 and secondary image item3_2 are visible
 
   Scenario: Edit Basic Item on Demo Shop using size sets
@@ -150,7 +158,7 @@ the content for this basic editor should include the following fields:
     And I submit this item
     Then I should see a confirmation message stating that the item was updated
 	Then I should see 3 product total
-    When I click on the "TestSizeSetItem" item
+    When I click on the "NewTestSizeSet" item
     Then my color, quantity, and size selections are
     | Color  | Size  | Quantity |
     | Red    | XXS   | 10       |

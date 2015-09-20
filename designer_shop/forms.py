@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.forms import inlineformset_factory
 from django.forms.forms import NON_FIELD_ERRORS
 from django_bleach.forms import BleachField
-
+from django.template.defaultfilters import slugify
 from oscar.core.loading import get_model
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -91,11 +91,15 @@ class ProductCreationForm(forms.ModelForm):
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=1), empty_label="Choose a size...", required=True, initial=sizes[i]["sizeSet"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        if colorAndQuantity['color'] and colorAndQuantity['quantity']:
-                            self.fields[colorAndQuantity['colorFieldName']] \
+                        if colorAndQuantity['primary_color'] and colorAndQuantity['quantity']:
+                            self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')] \
                             = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                           objects.filter(group=2), empty_label="Choose a color...",
-                                                     initial=sizes[i]["colorsAndQuantities"][j]["color"], required=False)
+                                                     initial=sizes[i]["colorsAndQuantities"][j]["primary_color"], required=False)
+                            self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')] \
+                            = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                          objects.filter(group=2), empty_label="Choose a color...",
+                                                     initial=sizes[i]["colorsAndQuantities"][j]["secondary_color"], required=False)
                             self.fields[colorAndQuantity['quantityFieldName']] \
                             = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], required=False, min_value=0)
 
@@ -105,10 +109,14 @@ class ProductCreationForm(forms.ModelForm):
                     self.fields[sizes[i]["sizeFieldNameY"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeY"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields[colorAndQuantity['colorFieldName']] \
+                        self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
-                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["primary_color"], required=False)
+                        self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["secondary_color"], required=False)
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
@@ -116,24 +124,32 @@ class ProductCreationForm(forms.ModelForm):
                     self.fields[sizes[i]["sizeFieldName"]] \
                         = forms.DecimalField(initial=sizes[i]["sizeNum"])
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields[colorAndQuantity['colorFieldName']] \
+                        self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
-                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["primary_color"], required=False)
+                        self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["secondary_color"], required=False)
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
                 elif "oneSize" in sizes[i] and sizes[i]["oneSize"]:
                     for j, colorAndQuantity in enumerate(sizes[i]["colorsAndQuantities"]):
-                        self.fields[colorAndQuantity['colorFieldName']] \
+                        self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')] \
                         = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
                                                       objects.filter(group=2), empty_label="Choose a color...",
-                                                 initial=sizes[i]["colorsAndQuantities"][j]["color"])
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["primary_color"], required=False)
+                        self.fields[colorAndQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')] \
+                        = forms.ModelChoiceField(queryset=get_model('catalogue', 'AttributeOption').
+                                                      objects.filter(group=2), empty_label="Choose a color...",
+                                                 initial=sizes[i]["colorsAndQuantities"][j]["secondary_color"], required=False)
                         self.fields[colorAndQuantity['quantityFieldName']] \
                         = forms.IntegerField(initial=sizes[i]["colorsAndQuantities"][j]["quantity"], min_value=0)
 
 
 
-    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, oneSize=False, color=None, quantity=None):
+    def create_variant_product_from_canonical(self, canonical, canonicalId, shop, sizeSet=None, sizeDim=None, sizeNum=None, oneSize=False, primary_color=None, secondary_color=None, quantity=None):
         variantProduct = copy(canonical)
         #IMPORTANT: The setting of the canonical id to the parent_id has to come before the clearing since it is the same reference!!!
         variantProduct.parent_id = canonicalId
@@ -150,8 +166,14 @@ class ProductCreationForm(forms.ModelForm):
             setattr(variantProduct.attr, 'size_dimension_y', sizeDim['y'])
         if sizeNum:
             setattr(variantProduct.attr, 'size_number', sizeNum)
-        if color:
-            setattr(variantProduct.attr, 'color', color)
+        if primary_color:
+            setattr(variantProduct.attr, 'color', primary_color)
+        if secondary_color:
+            setattr(variantProduct.attr, 'secondary_color', secondary_color)
+        elif hasattr(variantProduct.attr, 'secondary_color'):
+            # Since we create a copy every time of the most recent created variant, we need to make sure
+            # to delete this if it is not included or else it will be added to every single color variant going forward
+            del(variantProduct.attr.secondary_color)
         if oneSize:
             setattr(variantProduct.attr, 'one_size', True)
         variantProduct.save()
@@ -168,7 +190,6 @@ class ProductCreationForm(forms.ModelForm):
 
         stockRecord.partner_sku = uuid.uuid4()
         stockRecord.save()
-
 
     def clean_title(self):
         title = self.cleaned_data['title']
@@ -188,9 +209,10 @@ class ProductCreationForm(forms.ModelForm):
         canonicalProduct = super(ProductCreationForm, self).save(commit=False)
         if not canonicalProduct.upc:
             canonicalProduct.upc = None
+
         canonicalProduct.shop = shop
         canonicalProduct.structure = Product.PARENT
-
+        canonicalProduct.slug = slugify(canonicalProduct.title.lower())
         canonicalProduct.save()
         canonicalId = canonicalProduct.id
 
@@ -209,11 +231,12 @@ class ProductCreationForm(forms.ModelForm):
                 if size["sizeFieldName"] in self.cleaned_data:
                     sizeSet = self.cleaned_data[size["sizeFieldName"]]
                     for colorQuantity in size["colorsAndQuantities"]:
-                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
-                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                        if colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection') in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            primary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')]
+                            secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                             quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeSet=sizeSet,
-                                                                       color=color, quantity=quantity)
+                                                                       primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                         else:
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
@@ -224,11 +247,12 @@ class ProductCreationForm(forms.ModelForm):
                     sizeDimX = self.cleaned_data[size["sizeFieldNameX"]]
                     sizeDimY = self.cleaned_data[size["sizeFieldNameY"]]
                     for colorQuantity in size["colorsAndQuantities"]:
-                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
-                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                        if colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection') in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            primary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')]
+                            secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                             quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
-                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX,
-                                                                            "y": sizeDimY}, color=color, quantity=quantity)
+                            self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeDim={"x": sizeDimX, "y": sizeDimY},
+                                                                             primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                         else:
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
@@ -237,22 +261,24 @@ class ProductCreationForm(forms.ModelForm):
                 if size["sizeFieldName"] in self.cleaned_data:
                     sizeNum = self.cleaned_data[size["sizeFieldName"]]
                     for colorQuantity in size["colorsAndQuantities"]:
-                        if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
-                            color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                        if colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection') in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                            primary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')]
+                            secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                             quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                             self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, sizeNum=sizeNum,
-                                                                       color=color, quantity=quantity)
+                                                                       primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                         else:
                             # Jon M TBD Should we allow no color/quantity?
                             # For now ignore it
                             pass
             elif sizeType == ONE_SIZE:
                 for colorQuantity in size["colorsAndQuantities"]:
-                    if colorQuantity["colorFieldName"] in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
-                        color = self.cleaned_data[colorQuantity["colorFieldName"]]
+                    if colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection') in self.cleaned_data and colorQuantity["quantityFieldName"] in self.cleaned_data:
+                        primary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_pc_colorSelection')]
+                        secondary_color = self.cleaned_data[colorQuantity["colorFieldName"].replace('_colorSelection', '_sc_colorSelection')]
                         quantity = self.cleaned_data[colorQuantity["quantityFieldName"]]
                         self.create_variant_product_from_canonical(canonicalProduct, canonicalId, shop, oneSize=True,
-                                                                   color=color, quantity=quantity)
+                                                                   primary_color=primary_color, secondary_color=secondary_color, quantity=quantity)
                     else:
                         # Jon M TBD Should we allow no color/quantity?
                         # For now ignore it
@@ -297,7 +323,8 @@ class ProductCreationForm(forms.ModelForm):
         # fields = ['title', 'description', 'product_class']
         parsley_extras = {
             'price': {
-                'min': "0.01",
+                'pattern': '^\$?0*(?:\d+(?!,)(?:\.\d{1,2})?|(?:\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?))$',
+                'pattern-message': 'Please only enter valid currency.'
             },
         }
 
@@ -314,12 +341,11 @@ def get_partner_from_shop(shop):
         partner.users.add(shop_owner)
         return partner
 
-
 class ProductImageForm(forms.ModelForm):
+
     helper = FormHelper()
     # helper.form_tag = False
     helper.form_show_labels = False
-
 
     class Meta:
         model = ProductImage
@@ -363,6 +389,33 @@ class ProductImageFormSet(BaseProductImageFormSet):
         for form in self.forms:
             form.fields["original"].label = ""
             form.fields["cropping"].label = ""
+
+class ReturnPolicyForm(forms.ModelForm):
+
+    # aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    # aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    # aboutImgCropped = forms.CharField(required=False)
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+    helper.layout = Layout(
+        Div(
+            # AccordionGroup('About',
+             Field('returnPolicy', placeholder="Enter Text Here"),
+            # ),
+            Submit('returnPolicyForm', 'Submit', css_class='tinvilleButton hidden', css_id='id_SubmitReturnPolicy'),
+            css_class="container col-xs-12"
+        ))
+
+    def __init__(self, *args, **kwargs):
+        super(ReturnPolicyForm, self).__init__(*args, **kwargs)
+
+        self.fields['returnPolicy'].widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 })
+
+
+    class Meta:
+        model = Shop
+        fields = ['returnPolicy']
 
 class AboutBoxForm(forms.ModelForm):
 

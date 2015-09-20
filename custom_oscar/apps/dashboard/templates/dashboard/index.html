@@ -1,4 +1,4 @@
-{% extends 'templates/dashboard/layout.html' %}
+{% extends 'dashboard/layout.html' %}
 {% load currency_filters %}
 {% load i18n %}
 
@@ -43,6 +43,10 @@
                     {% trans "Setup Shop Shipping Address" %}
                 </label>
             {% endif %}
+            <label class="label label-default btn alert-danger-important" onclick="takeTour('{{ shop_slug }}')">
+                <span><i class="glyphicon glyphicon-exclamation-sign"></i></span>
+                {% trans "Shop Editor Tour" %}
+            </label>
         </aside>
     </div>
 </div>
@@ -235,6 +239,13 @@
         var navigateTo = function(url) {
             window.location.assign(url);
             return false;
+        }
+
+        var takeTour = function(shopSlug)
+        {
+            sessionStorage.setItem('alertTour', true);
+            var href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/" + shopSlug + "/edit/"
+            window.location=href;
         }
     </script>
 {% endblock javascript %}

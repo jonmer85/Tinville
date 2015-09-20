@@ -9,7 +9,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.db import models
 from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
-from oscar.apps.catalogue.models import AttributeOption
+from custom_oscar.apps.catalogue.models import AttributeOption
+# from oscar.apps.catalogue.models import AttributeOption
 from oscar.apps.partner.models import StockRecord as StockRecords
 from django.core.urlresolvers import reverse
 from django.db.models import Q
