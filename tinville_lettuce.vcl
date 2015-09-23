@@ -5,17 +5,11 @@ sub vcl_recv {
       return(pass);
     }
 
-
-    # unless sessionid/csrftoken is in the request, don't pass ANY cookies (referral_source, utm, etc)
-    if (req.request == "GET" && (req.url ~ "^/static" || (req.http.cookie !~ "sessionid" && req.http.cookie !~ "csrftoken"))) {
-        remove req.http.Cookie;
-    }
-
     # don't cache ajax requests
-
     if(req.http.X-Requested-With == "XMLHttpRequest") {
         return (pass);
     }
+
 
     # normalize accept-encoding to account for different browsers
     # see: https://www.varnish-cache.org/trac/wiki/VCLExampleNormalizeAcceptEncoding
@@ -28,6 +22,17 @@ sub vcl_recv {
       # unknown algorithm
         remove req.http.Accept-Encoding;
       }
+    }
+
+
+    # pages that we always cache (even if user is logged in)
+    if (req.request == "GET" && (req.url == "/" || req.url == "/shoplist/" || req.url == "/about/")) {
+        return (lookup);
+    }
+
+    # don't cache anything user specific (unless it is explicitly added to this list)
+    if (req.http.cookie ~ "sessionid" || req.http.cookie ~ "csrftoken") {
+        return (pass);
     }
 
     return(lookup);
