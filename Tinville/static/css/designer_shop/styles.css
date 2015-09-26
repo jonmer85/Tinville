@@ -734,3 +734,7 @@
 .addItem {
     cursor: pointer;
 }
+
+.parent-color {font-weight: bold}
+
+.child-color {padding-left: 25px}

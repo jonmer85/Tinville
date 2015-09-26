@@ -138,6 +138,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="returnPolicySection col-xs-12">
+                                            <div class="shareMeTitle">Return Policy</div>
+                                            <div>
+                                                {{ shop.returnPolicy | bleach }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="sharingiscaring col-xs-12">
                                             <div class="shareMeTitle">Share This Item</div>
                                             <div class="socialMediaLinks">
@@ -284,7 +292,11 @@
                     if (this.size === $("#itemSizeSelection").val())
                     {
 {#                        variantprice = '$' + this.price#}
-                        variantquantity = this.quantity + " remaining"
+                        if (this.quantity <= 10) {
+                            variantquantity = this.quantity + " remaining";
+                        } else {
+                            variantquantity = "";
+                        }
                         numberquantity = this.quantity
                     }
                 });

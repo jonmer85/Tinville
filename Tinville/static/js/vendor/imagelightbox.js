@@ -4,7 +4,6 @@
 	Available for use under the MIT License
 */
 
-
 ;( function( $, window, document, undefined )
 {
 	'use strict';

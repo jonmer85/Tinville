@@ -22,25 +22,39 @@
     {% block content %}
         {{ block.super }}
 
-
-        <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
-          <!-- Indicators -->
-          <div id="carouselId" class="carousel-inner" >
-            <div class="item slides active">
-              <a href="/shop/"  class="slide-1">
-                      <span data-picture class="banner">
-                            <span data-src="{{ STATIC_URL }}img/home/tinville_mobile.jpg"></span>
-                            <span data-src="{{ STATIC_URL }}img/home/tinville_banner.jpg" data-media="(min-width: 768px)"></span>
-                            <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-                            <noscript>
-                                <img src="{{ STATIC_URL }}img/home/tinville_mobile.jpg">
-                            </noscript>
-                        </span>
-              </a>
+        <div class="container" style="padding-top: 10px">
+            <div class="row">
+                <div id="mainPicId" class="nopadleft col-xs-12 col-sm-6" style="padding-right: 5px">
+                    <img id="mainImgId" class="img-responsive" src="{{ STATIC_URL }}img/home/final_one.jpg">
+                </div>
+                <div class="hidden-xs col-xs-6">
+                    <div class="row">
+                        <div class="col-xs-4 nopadding" style="padding-left: 5px">
+                            <img class="img-responsive" src="{{ STATIC_URL }}img/home/shop.png">
+                        </div>
+                        <div class="col-xs-4 nopadding">
+                            <a class="" href="https://www.tinville.com/the-garwood-watch/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/watch.png"></a>
+                        </div>
+                        <div class="col-xs-4 nopadding">
+                            <img class="img-responsive" src="{{ STATIC_URL }}img/home/inspire.png">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 nopadding" style="padding-left: 5px">
+                            <a class="" href="https://www.tinville.com/something-strong/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/bag.png"></a>
+                        </div>
+                        <div class="col-xs-4 nopadding">
+                            <img class="img-responsive" src="{{ STATIC_URL }}img/home/wear.png">
+                        </div>
+                        <div class="col-xs-4 nopadding">
+                            <a class="" href="https://www.tinville.com/vlado-footwear/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/shoes.png"></a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="item slides">
               <div class="slide-2">
-                  <a href="/elevn-clothing-co/"  class="slide-1">
+                  <a href="/elevn-clothing-co"  class="slide-1">
                       <span data-picture class="banner">
                             <span data-src="{{ STATIC_URL }}img/home/elevn_mobile.jpg"></span>
                             <span data-src="{{ STATIC_URL }}img/home/elevn.png" data-media="(min-width: 768px)"></span>
@@ -54,7 +68,7 @@
             </div>
             <div class="item slides">
               <div class="slide-3">
-                  <a href="/deadstox/"  class="slide-1">
+                  <a href="/deadstox"  class="slide-1">
                       <span data-picture class="banner">
                             <span data-src="{{ STATIC_URL }}img/home/Dstx_mobile.jpg"></span>
                             <span data-src="{{ STATIC_URL }}img/home/Dstx.jpg" data-media="(min-width: 768px)"></span>
@@ -72,32 +86,40 @@
       </div>
 {#        <div style="height: 6px; background-color: #e7e7e7;"></div>#}
 
-        <div class="container" style="margin-top: 20px;" >
+
+        </div>
+
+
+
+
+        <div class="container"  >
             <div class="row">
 
-                <div class="col-xs-12 col-sm-offset-2 col-sm-4">
-                    <a class="" href="/shoplist/"><img class="img-responsive" src="{{ STATIC_URL }}img/discover_home.jpg"></a>
+                <div  class="nopadding col-xs-12 col-sm-6" style="padding-right: 0px">
+                    <a class="" href="https://www.tinville.com/venley/"><img id="ad1ID" class="img-responsive" src="{{ STATIC_URL }}img/home/ad1.png"></img></a>
                 </div>
-{#                <div class="col-xs-12 col-sm-4 mobileSignUp" >#}
-{#                    <img class="img-responsive" src="{{ STATIC_URL }}img/free.svg" style="height: 300px" />#}
-{#                </div>#}
-                <div class="col-xs-12 col-sm-4 mobileSignUp ">
-                    <a class="" href="/register/customer"><img class="img-responsive " src="{{ STATIC_URL }}img/sign_up_home.jpg"></a>
+               <div  class="nopadding col-xs-12 col-sm-6" style="padding-left: 0px">
+                    <a class="" href="https://www.tinville.com/elevn-clothing-co/"><img id="ad2ID" class="img-responsive" src="{{ STATIC_URL }}img/home/ad2.png"></img></a>
                 </div>
-
 
 
             </div>
         </div>
 
         <div class="container" style="padding-bottom: 50px;">
-            <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'women' %}">WOMEN</a></div>
-            <div class="container mobileThumbCol">
-                {% include "homepage/womenItems.html" %}
-            </div>
-            <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'men' %}">MEN</a></div>
-            <div class="container mobileThumbCol">
-                {% include "homepage/menItems.html" %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'women' %}">WOMEN</a></div>
+                    <div class=" mobileThumbCol">
+                        {% include "homepage/womenItems.html" %}
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'men' %}">MEN</a></div>
+                    <div class=" mobileThumbCol">
+                        {% include "homepage/menItems.html" %}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -117,6 +139,20 @@
     {% block javascript %}
         {{ block.super }}
         <script>
+        $( document ).ready(function() {
+{#            $("#itemID").removeClass("col-xs-6");#}
+            var text = "";
+            var i;
+            for (i = 0; i <= 4; i++) {
+                text = i + " #itemID";
+                $("#witem" + text).removeClass("snicka ");
+                $("#witem" + text).removeClass("col-sm-3");
+                $("#mitem" + text).removeClass("snicka ");
+                $("#mitem" + text).removeClass("col-sm-3");
+
+            }
+
+        });
     {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
         </script>
         <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>

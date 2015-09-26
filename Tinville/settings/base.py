@@ -44,6 +44,7 @@ TIME_ZONE = 'America/New_York'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+# This assumes the first Site in the database will be used!!
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -136,7 +137,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
-    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
@@ -206,13 +207,18 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'robots',
     'rollyourown.seo',
-    'django_dowser'
+    'django_dowser',
+    'filer',
+    'mptt',
+    'flatpages_filer',
+    'markitup'
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
                                   'custom_oscar.apps.checkout',
                                   'custom_oscar.apps.dashboard',
                                   'custom_oscar.apps.dashboard.orders',
+                                  'custom_oscar.apps.dashboard.pages',
                                   'custom_oscar.apps.order'])
 
 
@@ -566,3 +572,7 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+MARKITUP_SET = 'markitup/sets/markdown'
+MARKITUP_SKIN = 'markitup/skins/markitup'
+MARKITUP_FILTER = ('markdown.markdown', {'safe_mode': True})

@@ -1467,6 +1467,17 @@
         }
     },
     {
+        "model": "catalogue.ProductAttribute",
+        "pk": 7,
+        "fields": {
+            "product_class": 1,
+			"name": "secondary_color",
+            "code": "secondary_color",
+            "type": "option",
+            "option_group": 2
+        }
+    },
+    {
         "model": "catalogue.Category",
         "pk": 1,
         "fields": {
@@ -1541,7 +1552,6 @@
             "name": "Dresses",
             "slug": "women/clothing/dresses",
             "full_name": "Women > Clothing > Dresses"
-
         }
     },
     {

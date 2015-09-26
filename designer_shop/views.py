@@ -28,7 +28,7 @@ from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM, ONE_SIZE
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
-    LogoUploadForm, ProductImageFormSet, SIZE_TYPES_AND_EMPTY
+    LogoUploadForm, ProductImageFormSet, ReturnPolicyForm, SIZE_TYPES_AND_EMPTY
 from common.utils import get_list_or_empty, get_or_none
 from user.forms import BetaAccessForm
 from user.models import TinvilleUser
@@ -227,6 +227,7 @@ def get_filtered_products(shop=None, post=None, filter=None):
         context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
     return context
 
+
 def get_category_products(shop=None, genderfilter=None, itemtypefilter=None, sortfilter='date-asc'):
     if genderfilter is None:
         genderfilter = "View All"
@@ -283,6 +284,7 @@ def has_stats(product):
         return False
     return True
 
+
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
     return processShopEditorForms(request, shop_slug)
@@ -291,6 +293,7 @@ def shopeditor(request, shop_slug):
 @IsShopOwnerDecoratorUsingItem
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
+
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
@@ -310,6 +313,7 @@ def get_types(request, shop_slug=None, group_by=None):
     shopCategoryNames = get_categoryName(request=request, shop_slug=shop_slug, group_by=group_by)
     types = {'shopCategoryNames': shopCategoryNames}
     return HttpResponse(json.dumps(types), content_type='application/json')
+
 
 def get_categoryName(request, shop_slug=None, group_by=None):
     shopCategoryNames = []
@@ -353,7 +357,12 @@ def get_variants(item, group=None):
         currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-            color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
+            if secondary_color:
+                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
+            else:
+                color = str(primary_color).capitalize()
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
@@ -378,18 +387,18 @@ def get_variants(item, group=None):
 
         if group is None:
             if sizeType == SIZE_SET:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                quantitysize = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                quantitysize = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                quantitysize = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                                 'price': price, 'currency': currency}
             colorsizequantitydict.append(quantitysize)
         else:
             if sizeType == SIZE_SET:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                groupdict = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency, 'sizeorder': sizeSetNum}
             else:
-                groupdict = {'color': str(color).capitalize(), 'size': caseFunc(variantsize), 'quantity': quantity,
+                groupdict = {'color': color, 'size': caseFunc(variantsize), 'quantity': quantity,
                              'price': price, 'currency': currency}
             mysort = groupdict[group]
             groupdict.pop(group)
@@ -437,7 +446,12 @@ def get_single_variant(variant, group=None):
     currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-        color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
+            if secondary_color:
+                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
+            else:
+                color = primary_color
 
     if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
         sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
@@ -496,23 +510,28 @@ def confirm_at_least_one(i):
 def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
     j = 0
     while (True):
-        color = next((c for c in postCopy.keys() if prefix + '_' in c
+        primary_color = next((c for c in postCopy.keys() if prefix + '_pc' in c
                       and "_colorSelection" in c), None)
+
+
         colorRowNum = None
-        if color:
-            m = re.search(r'\d+$', color)
+        if primary_color:
+            m = re.search(r'\d+$', primary_color)
             if m is not None:
                 colorRowNum = m.group()
 
             quantity = next((q for q in postCopy.keys() if prefix + '_' in q
                              and "_quantityField" in q and q.endswith(colorRowNum)), None)
+            secondary_color = next((c for c in postCopy.keys() if prefix + '_sc' in c
+                            and "_colorSelection" in c and c.endswith(colorRowNum)), None)
 
-        if color is not None and quantity is not None:
-            if postCopy[color] and postCopy[quantity]:
+        if primary_color is not None and quantity is not None:
+            if postCopy[primary_color] and postCopy[quantity]:
                 sizes[i]["colorsAndQuantities"].append(
                     {
-                        "color": postCopy[color],
-                        "colorFieldName": color,
+                        "primary_color": postCopy[primary_color],
+                        "secondary_color": postCopy[secondary_color] if secondary_color is not None else None,
+                        "colorFieldName": primary_color.replace('_pc_', '_'),
                         "quantity": postCopy[quantity],
                         "quantityFieldName": quantity
                     }
@@ -521,7 +540,13 @@ def _populateColorsAndQuantitiesForSize(i, postCopy, prefix, sizes):
             confirm_at_least_one(j)
             break
         j += 1
-        postCopy.pop(color)
+        postCopy.pop(primary_color)
+        if secondary_color is not None:
+            postCopy.pop(secondary_color)
+
+        #We need to remove original select field as well
+        if primary_color.replace('_pc_', '_') in postCopy:
+            postCopy.pop(primary_color.replace('_pc_', '_'))
         postCopy.pop(quantity)
 
 
@@ -631,7 +656,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                     bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
+                     returnPolicyForm=None, bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
     editItem = item is not None
     products = get_filtered_products(shop)
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
@@ -655,6 +680,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                                                       "color": shop.color
                                                                                   }),
             'aboutBoxForm': aboutForm or AboutBoxForm(instance=shop),
+            'returnPolicyForm': returnPolicyForm or ReturnPolicyForm(instance=shop),
             'colors': AttributeOption.objects.filter(group=2),
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
             'shopcategories': shopCategoryNames,
@@ -707,6 +733,12 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 form.save()
                 return renderShopEditor(request, shop, tab='about')
             return renderShopEditor(request, shop, aboutForm=form)
+        elif request.POST.__contains__('returnPolicyForm'):
+            form = ReturnPolicyForm(request.POST, instance=shop)
+            if form.is_valid():
+                form.save()
+                return renderShopEditor(request, shop, tab='returnPolicy')
+            return renderShopEditor(request, shop, returnPolicyForm=form)
         elif request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
             return render(request, 'designer_shop/shop_items.html', {
@@ -769,7 +801,7 @@ def _valid_variants(variants):
 
     for variant in variants:
         colors = variant['colorsAndQuantities']
-        if len([c['color'] for c in colors]) != len(set(c['color'] for c in colors)):
+        if len([str(c['primary_color']) + '/' + str(c['secondary_color']) for c in colors]) != len(set(str(c['primary_color']) + '/' + str(c['secondary_color']) for c in colors)):
             return False
 
     return True

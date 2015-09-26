@@ -37,6 +37,9 @@
         <meta name="blitz" content="mu-380141e8-e0248a09-2c383353-805d8630" />
         <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/tinyTin_logo.png">
         <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
+        <meta property="og:image" content="{% block og_image%}{% endblock og_image%}" />
+        <meta property="og:title" content="{% block og_title%}{% endblock og_title%}" />
+        <meta property="og:description" content="{% block og_description%}{% endblock og_description%}"/>
     {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -704,6 +707,13 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
     <script>
         var setBanners = function () {
+
+            var mainPicIdWidth = $("#mainPicId").width();
+            $("#mainImgId").css('height', (mainPicIdWidth * 441 / 585) + 'px');
+            var adIdWidth = $("#ad1ID").width();
+            $("#ad1ID").css('height', (adIdWidth * 220 / 556) + 'px');
+            $("#ad2ID").css('height', (adIdWidth * 220 / 556) + 'px');
+
             if (checkMode() != 'xs') {
                 var bannerWidth = $("#carouselId").width();
                 $("#carouselId").css('height', (bannerWidth * 500 / 1779) + 'px');
