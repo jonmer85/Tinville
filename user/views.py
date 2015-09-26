@@ -277,6 +277,7 @@ def load_user_info(request):
         if request.user.is_seller:
             user_info['is_seller'] = True
             user_info['shop_slug'] = Shop.objects.get(user=request.user).slug
+            user_info['shop_name'] = Shop.objects.get(user=request.user).name
     return HttpResponse(json.dumps(user_info), content_type='application/json')
 
 

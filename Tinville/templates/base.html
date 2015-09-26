@@ -477,7 +477,7 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                 dataType: 'json',
                 success: function (data, textStatus, jqXHR) {
                     var username = null;
-                    var shop = null;
+                    var shop_slug = null;
                     var is_seller = false;
                     var is_staff = false;
 
@@ -486,7 +486,10 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                             username = item;
                         }
                         else if (index == "shop_slug") {
-                            shop = item;
+                            shop_slug = item;
+                        }
+                        else if (index == "shop_name") {
+                            shop_name = item;
                         }
                         else if (index == "is_seller" ) {
                             is_seller = item;
@@ -510,7 +513,7 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
                         if(is_seller) {
                             userMobile +=
-                                    "<li><a href='/" +  shop + "/edit/'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
+                                    "<li><a href='/" +  shop_slug + "/edit/'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
                                     "<li class='divider'></li>";
                         }
                         if(is_seller || is_staff ) {
@@ -523,13 +526,18 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                         userMobile +=
                                 "<li><a id='logout-xs' href='/logout' >Sign Out<span class='glyphicon glyphicon-log-out pull-right'></span></a></li>" +
                                     "<li class='divider'></li>" +
-                                    "<li class='tinvilleOrange logEmail'>" + username + "</li>" +
-                                  "</ul>" +
+                                "</ul>" +
                             "</li>";
 
                         var userNonMobile =
-                                "<li class='hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle'>" +
-                                    "<div class='menuEmail tinvilleOrange' href='' >" + username + "</div>" +
+                                "<li class='hidden-xs hidden-sm dropdown yamm-fw mobileDropBtnStyle'>";
+                        if(is_seller) {
+                            userNonMobile += "<div class='menuEmail tinvilleOrange'><a href='/" + shop_slug + "'>" + shop_slug + "</a></div>";
+                        }
+                        else {
+                            userNonMobile += "<div class='menuEmail tinvilleOrange' href='' >" + username + "</div>";
+                        }
+                            userNonMobile +=
                                 "</li>" +
                                 "<li class='hidden-xs dropdown navbarLinkS' id='lg-menuLogin' >" +
                                     "<a id='loginIcon-lg' href='#' class='dropdown-toggle' data-toggle='dropdown' style='padding-bottom: 0px'>" +
@@ -541,7 +549,7 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                                         "<li class='divider'></li>";
                         if(is_seller) {
                             userNonMobile +=
-                                        "<li><a href='/" + shop + "/edit/'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
+                                        "<li><a href='/" + shop_slug + "/edit/'>Edit Shop <span class='glyphicon glyphicon-pencil pull-right'></span></a></li>" +
                                         "<li class='divider'></li>";
                         }
                         if(is_seller || is_staff) {
@@ -554,7 +562,6 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                         userNonMobile +=
                                         "<li><a id='logout-lg' href='/logout/' >Sign Out<span class='glyphicon glyphicon-log-out pull-right'></span></a></li>" +
                                         "<li class='hidden-md hidden-lg divider'></li>" +
-                                        "<li class='tinvilleOrange hidden-md hidden-lg logEmail'>" + username + "</li>" +
                                     "</ul>" +
                                 "</li>";
 
