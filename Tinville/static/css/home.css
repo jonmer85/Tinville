@@ -89,6 +89,7 @@
     border-bottom: 1px solid darkgray;
     margin-top: 20px;
     margin-bottom: 20px;
+    text-align: center;
 }
 .allBlock a:link,
 .allBlock a:visited,
@@ -109,6 +110,13 @@
     .centerHomeIcon {
         margin-top: 0px;
     }
+    .nopadleft {
+        padding-left: 0px;
+    }
+    .nopadright {
+        padding-right: 0px;
+    }
+
 }
 
 .nopadding {
@@ -124,3 +132,4 @@
     padding-top: 15px;
     padding-bottom: 35px;
 }
+

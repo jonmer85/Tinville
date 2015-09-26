@@ -390,6 +390,33 @@ class ProductImageFormSet(BaseProductImageFormSet):
             form.fields["original"].label = ""
             form.fields["cropping"].label = ""
 
+class ReturnPolicyForm(forms.ModelForm):
+
+    # aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))
+    # aboutImg = forms.ImageField(required=False, max_length=255, widget=AdvancedFileInput)
+    # aboutImgCropped = forms.CharField(required=False)
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+    helper.layout = Layout(
+        Div(
+            # AccordionGroup('About',
+             Field('returnPolicy', placeholder="Enter Text Here"),
+            # ),
+            Submit('returnPolicyForm', 'Submit', css_class='tinvilleButton hidden', css_id='id_SubmitReturnPolicy'),
+            css_class="container col-xs-12"
+        ))
+
+    def __init__(self, *args, **kwargs):
+        super(ReturnPolicyForm, self).__init__(*args, **kwargs)
+
+        self.fields['returnPolicy'].widget = TinyMCE( attrs = { 'cols': 50, 'rows': 30 })
+
+
+    class Meta:
+        model = Shop
+        fields = ['returnPolicy']
+
 class AboutBoxForm(forms.ModelForm):
 
     # aboutContent = BleachField(widget=TinyMCE( attrs = { 'cols': 50, 'rows': 30 }))

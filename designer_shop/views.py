@@ -27,7 +27,7 @@ from oscar.apps.catalogue.models import Category as Category
 from oscar.core.loading import get_model
 from designer_shop.models import Shop, SIZE_SET, SIZE_NUM, SIZE_DIM, ONE_SIZE
 from designer_shop.forms import ProductCreationForm, AboutBoxForm, DesignerShopColorPicker, BannerUploadForm, \
-    LogoUploadForm, ProductImageFormSet, SIZE_TYPES_AND_EMPTY
+    LogoUploadForm, ProductImageFormSet, ReturnPolicyForm, SIZE_TYPES_AND_EMPTY
 from common.utils import get_list_or_empty, get_or_none
 from user.forms import BetaAccessForm
 from user.models import TinvilleUser
@@ -225,6 +225,7 @@ def get_filtered_products(shop=None, post=None, filter=None):
         context = Product.objects.filter(structure="parent").filter(shop = Shop.objects.filter(user__is_approved = True))
     return context
 
+
 def get_category_products(shop=None, genderfilter=None, itemtypefilter=None, sortfilter='date-asc'):
     if genderfilter is None:
         genderfilter = "View All"
@@ -281,6 +282,7 @@ def has_stats(product):
         return False
     return True
 
+
 @IsShopOwnerDecorator
 def shopeditor(request, shop_slug):
     return processShopEditorForms(request, shop_slug)
@@ -289,6 +291,7 @@ def shopeditor(request, shop_slug):
 @IsShopOwnerDecoratorUsingItem
 def shopeditor_with_item(request, shop_slug, item_slug):
     return processShopEditorForms(request, shop_slug, item_slug)
+
 
 @IsShopOwnerDecorator
 def ajax_color(request, slug):
@@ -308,6 +311,7 @@ def get_types(request, shop_slug=None, group_by=None):
     shopCategoryNames = get_categoryName(request=request, shop_slug=shop_slug, group_by=group_by)
     types = {'shopCategoryNames': shopCategoryNames}
     return HttpResponse(json.dumps(types), content_type='application/json')
+
 
 def get_categoryName(request, shop_slug=None, group_by=None):
     shopCategoryNames = []
@@ -650,7 +654,7 @@ def get_sizes_colors_and_quantities(sizeType, post):
 
 #private method no Auth
 def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, colorPickerForm=None, logoUploadForm=None,
-                     bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
+                     returnPolicyForm=None, bannerUploadForm=None, item=None, tab=None, productImageFormSet=None):
     editItem = item is not None
     products = get_filtered_products(shop)
     shopCategories, shopCategoryNames = get_filter_lists(shop).categorylist()
@@ -674,6 +678,7 @@ def renderShopEditor(request, shop, productCreationForm=None, aboutForm=None, co
                                                                                       "color": shop.color
                                                                                   }),
             'aboutBoxForm': aboutForm or AboutBoxForm(instance=shop),
+            'returnPolicyForm': returnPolicyForm or ReturnPolicyForm(instance=shop),
             'colors': AttributeOption.objects.filter(group=2),
             'sizeSetOptions': AttributeOption.objects.filter(group=1),
             'shopcategories': shopCategoryNames,
@@ -726,6 +731,12 @@ def processShopEditorForms(request, shop_slug, item_slug=None):
                 form.save()
                 return renderShopEditor(request, shop, tab='about')
             return renderShopEditor(request, shop, aboutForm=form)
+        elif request.POST.__contains__('returnPolicyForm'):
+            form = ReturnPolicyForm(request.POST, instance=shop)
+            if form.is_valid():
+                form.save()
+                return renderShopEditor(request, shop, tab='returnPolicy')
+            return renderShopEditor(request, shop, returnPolicyForm=form)
         elif request.GET.__contains__('genderfilter'):
             products = get_filtered_products(shop, request.GET, True)
             return render(request, 'designer_shop/shop_items.html', {
