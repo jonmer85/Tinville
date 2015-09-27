@@ -8,6 +8,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Div
 from oscar.core.loading import get_model
 from django.conf import settings
+from parsley.decorators import parsleyfy
 import easypost
 
 import logging
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 Country = get_model('address', 'Country')
 
+@parsleyfy
 class UserAddressForm(CoreUserAddressForm):
     def __init__(self, *args, **kwargs):
         super(UserAddressForm, self).__init__(*args, **kwargs)
@@ -76,7 +78,7 @@ class UserAddressForm(CoreUserAddressForm):
             Field('line2', placeholder="Second Line of Address"),
             Field('line3', placeholder="Third Line of Address"),
             Field('line4', placeholder="City"),
-            Field('state', placeholder="State"),
+            Field('state', placeholder="State", maxlength="2"),
             Field('postcode', placeholder="Zip code"),
             # Field('country', placeholder="Country"),
             Field('phone_number', placeholder="Phone Number"),

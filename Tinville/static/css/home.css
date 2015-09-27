@@ -123,3 +123,13 @@
     padding: 0px;
 }
 
+#promotional-text {
+    text-align: center;
+    color: #E7E5E6;
+    background-color: #5B595A;
+    font-size: 1.3em;
+    height: 20px;
+    padding-top: 15px;
+    padding-bottom: 35px;
+}
+
