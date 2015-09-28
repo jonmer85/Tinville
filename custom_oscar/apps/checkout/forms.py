@@ -42,7 +42,7 @@ class GatewayFormGuest(CoreGatewayForm):
         Field('username', placeholder="Email"),
         Hidden('form2', 'submitted-form'))
 
-
+@parsleyfy
 class ShippingAddressForm(CoreShippingAddressForm):
     helper = FormHelper()
     helper.form_show_labels = False
@@ -50,7 +50,8 @@ class ShippingAddressForm(CoreShippingAddressForm):
     last_name = forms.CharField(label='Last Name', error_messages={'required': 'Please enter your last.'})
     line1 = forms.CharField(label='Address', error_messages={'required': 'Please enter an address.'})
     line4 = forms.CharField(label='City', error_messages={'required': 'Please enter a city.'})
-    state = forms.CharField(label='Zip Code', error_messages={'required': 'Please enter a state.'})
+    state = forms.CharField(label='State', max_length='2', error_messages={'required': 'Please enter a state.',
+                'maxlength': 'Please use the abbreviated version of the state name.'})
     postcode = forms.CharField(label='Zip Code', error_messages={'required': 'Please enter a United States zip code.'})
 
     helper.layout = Layout(
