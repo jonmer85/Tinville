@@ -1,6 +1,6 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from easy_thumbnails.files import get_thumbnailer
-
 from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductImage, AbstractAttributeOption
 
 from image_cropping import ImageRatioField
@@ -13,9 +13,11 @@ class Product(AbstractProduct):
     @models.permalink
     def get_absolute_url(self):
         u"""Return a product's absolute url"""
-        return ('designer_shop.views.itemdetail', (), {
-            'shop_slug': self.slug,
-            'item_slug': self.shop.slug})
+        # return ('designer_shop.views.itemdetail', (), {
+        #     'shop_slug': self.slug,
+        #     'item_slug': self.shop.slug})
+        return ('detail', (),
+                       {'item_slug': self.slug, 'shop_slug': self.shop.slug})
 
     def primary_image(self):
         """
