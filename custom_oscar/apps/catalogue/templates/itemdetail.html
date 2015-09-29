@@ -1,0 +1,638 @@
+{% extends "designer_shop/shopperbase.html" %}
+{% load smart_load %}
+{% load thumbnail from sorl.thumbnail as sorl_thumbnail %}
+{% load bleach_tags %}
+{% load currency_filters %}
+
+    {% block meta_title %}{{ product.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
+    {% block meta_description %}{{ product.description|striptags | truncatechars:160 }}{% endblock meta_description %}
+
+    {% block css %}
+        {{ block.super }}
+    {% endblock css %}
+
+
+{% block content %}
+    {{ block.super }}
+
+
+    <div class="navbar2 navbar-default shopBackgroundColor">
+        <div class="container">
+            <div class="navbar-header">
+				<a class="navbar-brand shopTitleColor" href="{{ product.shop.get_absolute_url }}">{{ product.shop.name }}</a>
+                <div class="visible-xs shopMenuBar">
+                    <a class="navbar-brand shopMenuActiveColor shopTitleColor" id="itemTabLinkXS" data-toggle="tab" href="#itemTab">Item</a>
+                    <a class="navbar-brand shopTitleColor" id="aboutTabItemAnchorXS" href="#aboutTab"  role="tab" data-toggle="tab">About</a>
+                </div>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="hidden-xs collapse navbar-collapse" id="">
+				<ul class="nav navbar-nav">
+					<li class="itemTabLink active" ><a class="shopTitleColor" data-toggle="tab" href="#itemTab">Item</a></li>
+					<li id="aboutTabLink"><a class="shopTitleColor" id="aboutTabAnchor" href="#aboutTab"  role="tab" data-toggle="tab">About</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+        </div>
+    </div>
+
+<!-- Tab panes -->
+    <div class="tab-content ">
+        <div class=" tab-pane active" id="itemTab">
+            <div class="container">
+                <form id="itemDetailForm" data-parsley-validate>
+                    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Item</h4>
+                                </div>
+                                <div id="messageId" class="modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shopItemDetail">
+                        <div id="itemTitle" class="itemTitle visible-xs">
+                            {{ product.title }}
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="row">
+                                    <div class="itemSelectedImage col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-9 ">
+                                        {% if product.primary_image and product.primary_image.original.url %}
+                                            {% with image=product.primary_image %}
+                                                {% load cropping %}
+                                                <div class="center-block" style="max-width: 400px; max-height: 400px">
+                                                    <a id="itemSelectedImageLink" href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                        <img id="itemSelectedImage"  src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="img-responsive selectedImage" style="width: 100%; height: auto;"/>
+                                                    </a>
+                                                </div>
+                                            {% endwith %}
+                                        {% else %}
+                                                -
+                                        {% endif %}
+                                    </div>
+                                    <div class="otherItemImages col-xs-12 col-md-2">
+                                         <div class="">
+                                            {% for image in product.images.all %}
+                                                {% if not image.is_primary %}
+                                                    <div class="col-xs-3 col-md-12 otherImage">
+                                                        <a href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                            <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="img-responsive center-block"/>
+                                                        </a>
+                                                    </div>
+
+                                                {% endif %}
+                                            {% endfor %}
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="itemPrice center visible-xs col-xs-12">
+                                From {{ product.min_variant_price_excl_tax|currency }}
+                            </div>
+                            <div class="col-xs-12 col-sm-6" id="idItemDetail">
+                                <div>
+                                    <div class="itemTitle hidden-xs">
+                                        {{ product.title }}
+                                    </div>
+                                    <div class="itemPrice hidden-xs">
+                                        From {{ product.min_variant_price_excl_tax|currency }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
+                                            <select id="itemColorSelection" class="form-control selectpicker" required>
+                                                <option value=""><i>Choose a Color</i></option>
+                                                <option value=""><i>Colors Loading...</i></option>
+                                            </select>
+                                        </div>
+                                        <div class="itemSizeSelection itemDetailBox itemDetailBoxSize col-xs-6 col-sm-5">
+                                            <select id="itemSizeSelection" class="form-control selectpicker" required>
+                                                <option value=""><i>Choose a Size</i></option>
+                                                <option value=""><i>Please select a color first</i></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemBuyQuantity itemDetailBox col-xs-2">
+                                            <label for="buyQuantity">Quantity:</label>
+                                            <input type="number" min="1" max="1" pattern="\d*" class="form-control" id="buyQuantity" value="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemStockQuantity col-xs-12"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="addToCart col-xs-12">
+                                            <a name="addItemToCart" class="btn btn-primary tinvilleButton pull-right ladda-button" data-style="expand-left" id="id_AddToCart"><i id="okButton" class="glyphicon "></i> Add to Bag</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="itemDescription col-xs-12">
+                                            {{ product.description | bleach }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="returnPolicySection col-xs-12">
+                                            <div class="shareMeTitle">Return Policy</div>
+                                            <div>
+                                                {{ product.shop.returnPolicy | bleach }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="sharingiscaring col-xs-12">
+                                            <div class="shareMeTitle">Share This Item</div>
+                                            <div class="socialMediaLinks">
+                                                <a id="facebookLink" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="facebooklogo">
+                                                    <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
+                                                </a>
+                                                <a id="twitterLink" href="https://twitter.com/share" target="_blank" class="twitterlogo">
+                                                    <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
+                                                </a>
+                                                <a href="//www.pinterest.com/pin/create/button/"  target="_blank" class="pull-right pinterestlogo" data-pin-do="buttonBookmark"  data-pin-shape="round" data-pin-height="32"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class=" tab-pane" id="aboutTab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-2 aboutContent" style="padding-top: 20px">
+                        {% if product.shop.aboutImg %}
+                            <img class="full-screen" src="{{product.shop.aboutImg.url}}"  />
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 aboutContent">
+                        {{ product.shop.aboutContent | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content%}
+
+{% block javascript_library %}
+  {{ block.super }}
+
+
+{% endblock javascript_library %}
+
+{% block uncompressable_js %}
+{{ block.super }}
+<!-- Please call pinit.js only once per page -->
+<script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+<script>
+
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    $(".shopColor").css("color", "{{ shop.color }}");
+    $(".shopBackgroundColor").css("background-color", "{{ shop.color }}");
+
+    refreshvariants();
+
+    var myresponse;
+    function refreshvariants() {
+        myresponse = $.getJSON( "{{ request.get_full_path }}getVariants/color", function(data) {
+            var colorlist = [];
+            colorlist.push('<option value=""><i>Choose a Color</i></option>');
+            $.each(data.variants, function(key)
+            {
+                colorlist.push('<option value="'+ key +'">'+ key +'</option>');
+            });
+            var currentcolor = $('#itemColorSelection').val();
+            $('#itemColorSelection').html(colorlist.join(''));
+
+            if (Object.keys(data.variants).length !== 1) {
+                $('#itemColorSelection').val(currentcolor);
+            }
+            else {
+                $('#itemColorSelection').val(Object.keys(data.variants)[0]);
+                getSizes();
+            }
+            updateQuantityPrice();
+        });
+    }
+    setInterval(refreshvariants, 60000);
+    $("#itemSizeSelection").change(function() {
+        $('option[value=""]').attr('disabled', true);
+        $("#id_AddToCart").text("Add to bag");
+    });
+
+    $("#itemColorSelection").change(function() {
+        getSizes();
+    });
+
+    function getSizes () {
+        $('option[value=""]').attr('disabled', true);
+        $("#id_AddToCart").text("Add to bag");
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var sizelist = [];
+            if (key === $("#itemColorSelection").val())
+            {
+                var currentsize = ""
+                sizelist.push('<option value=""><i>Choose a Size</i></option>');
+                $.each(val, function() {
+                    if (this.quantity <= 0)
+                    {
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>')
+                    }
+                    else
+                    {
+                        sizelist.push('<option value="' + this.size + '">'+ this.size +'</option>');
+                    }
+                    if (this.size === $('#itemSizeSelection').val() && this.quantity !== 0)
+                    {
+                        currentsize = $('#itemSizeSelection').val();
+                    }
+                });
+                $('#itemSizeSelection').html(sizelist.join(''));
+
+                if (val.length !== 1) {
+                    $('#itemSizeSelection').val(currentsize);
+                }
+                else {
+                   $('#itemSizeSelection').val(val[0].size);
+                }
+                return false;
+            }
+        });
+    }
+
+    var validateFront = function () {
+          if (true === $('#itemDetailForm').parsley().isValid()) {
+            $('.parsley-errors-list').remove();
+
+          }
+          else{
+              $('.parsley-errors-list').addClass("filled bootstrapError help-block");
+          }
+
+        };
+
+    var updateQuantityPrice = function() {
+         validateFront();
+        $.each(myresponse.responseJSON.variants, function(key, val) {
+            var variantprice = ""
+            var variantquantity = ""
+            var numberquantity = ""
+            if (key === $("#itemColorSelection").val())
+            {
+                $.each(val, function() {
+                    if (this.size === $("#itemSizeSelection").val())
+                    {
+{#                        variantprice = '$' + this.price#}
+                        if (this.quantity <= 10) {
+                            variantquantity = this.quantity + " remaining";
+                        } else {
+                            variantquantity = "";
+                        }
+                        numberquantity = this.quantity
+                    }
+                });
+                if (variantprice === "")
+                {
+{#                    TODO: Add this back when we had indiviudal pricing#}
+{#                    variantprice = 'From $' + myresponse.responseJSON.minprice;#}
+                      variantprice = '$' + myresponse.responseJSON.minprice;
+                }
+                if (numberquantity === "")
+                {
+                    numberquantity = "1"
+                }
+                $('.itemPrice').text(variantprice);
+                $('.itemStockQuantity').text(variantquantity);
+                $('#buyQuantity').attr('max', numberquantity)
+
+                return false
+            }
+            if (variantprice === "")
+            {
+                {#     TODO: Add this back when we had indiviudal pricing #}
+                {#  variantprice = 'From $' + myresponse.responseJSON.minprice;#}
+                variantprice = '$' + myresponse.responseJSON.minprice;
+                $('.itemPrice').text(variantprice);
+
+            }
+        });
+    }
+
+    $("#itemSizeSelection").change(updateQuantityPrice);
+
+    $("#itemColorSelection").change(updateQuantityPrice);
+
+{#    $(".otherImage").click(function (){#}
+{#        var src = $(this).attr("src");#}
+{#        $("#itemSelectedImage img").attr("src", src);#}
+{#    });#}
+
+
+
+{#    Adding the shooping cart stuff#}
+    $(document).ready(function(){
+        $.listen('parsley:field:validate', function () {
+             validateFront();
+        });
+
+
+        $("#id_AddToCart").click(function(e){
+            var l = Ladda.create( document.querySelector( '#id_AddToCart' ) );
+
+
+        $('#itemDetailForm').parsley().validate();
+        if (false === $('#itemDetailForm').parsley().isValid()) {
+            $('.parsley-errors-list').addClass("filled bootstrapError help-block");
+        }
+        else{
+            l.start();
+            $('.parsley-errors-list').remove();
+            e.preventDefault();
+            var self = $(this)
+            var url = "{{ shop.get_absolute_url }}{{ product.slug }}/add_item_to_cart"
+            var sizeFilter = (document.getElementById("itemSizeSelection").selectedIndex === 0) ? '' : ($("#itemSizeSelection option:selected").text());
+            var colorFilter = (document.getElementById("itemColorSelection").selectedIndex === 0) ? '' : ($("#itemColorSelection option:selected").text());
+            var qtyFilter = $("#buyQuantity").val()
+
+            var ajax_req = $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        sizeFilter: sizeFilter,
+                        colorFilter: colorFilter,
+                        qtyFilter: qtyFilter
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.msg == ''){
+
+                            data.image = "{{ MEDIA_URL }}" + data.image
+                            AddCartItem(data)
+                            cartCount();
+                            $("#id_AddToCart").text("");
+                            var txt1 = "<i id='okButton' class='glyphicon glyphicon-ok'></i>";
+                            var txt2 = "  Added to bag";  // Create text with jQuery
+                            $("#id_AddToCart").append(txt1, txt2);
+                        }
+                        else {
+                            $('#messageId').html(data.msg)
+                            $('#messageModal').modal('show');
+                        }
+
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                        var msg = $.parseJSON(data.responseText)['errors']
+                        $('#messageId').html(msg)
+                        $('#messageModal').modal('show');
+                    }
+                });
+                l.stop();
+            }
+    });
+ });
+
+</script>
+{% endblock uncompressable_js %}
+
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+    $("#itemTabLinkXS").click(function(){
+        $("#itemTabLinkXS").addClass("shopMenuActiveColor");
+        $("#aboutTabItemAnchorXS").removeClass("shopMenuActiveColor");
+    });
+    $("#aboutTabItemAnchorXS").click(function(){
+        $("#itemTabLinkXS").removeClass("shopMenuActiveColor");
+        $("#aboutTabItemAnchorXS").addClass("shopMenuActiveColor");
+    });
+
+
+$( function()
+	{
+			// ACTIVITY INDICATOR
+
+		var activityIndicatorOn = function()
+			{
+				$( '<div id="imagelightbox-loading"><div></div></div>' ).appendTo( 'body' );
+			},
+			activityIndicatorOff = function()
+			{
+				$( '#imagelightbox-loading' ).remove();
+			},
+
+
+			// OVERLAY
+
+			overlayOn = function()
+			{
+				$( '<div id="imagelightbox-overlay"></div>' ).appendTo( 'body' );
+			},
+			overlayOff = function()
+			{
+				$( '#imagelightbox-overlay' ).remove();
+			},
+
+
+			// CLOSE BUTTON
+
+			closeButtonOn = function( instance )
+			{
+				$( '<button type="button" id="imagelightbox-close" title="Close"></button>' ).appendTo( 'body' ).on( 'click touchend', function(){ $( this ).remove(); instance.quitImageLightbox(); return false; });
+			},
+			closeButtonOff = function()
+			{
+				$( '#imagelightbox-close' ).remove();
+			},
+
+
+			// CAPTION
+
+			captionOn = function()
+			{
+				var description = $( 'a[href="' + $( '#imagelightbox' ).attr( 'src' ) + '"] img' ).attr( 'alt' );
+				if( description.length > 0 )
+					$( '<div id="imagelightbox-caption">' + description + '</div>' ).appendTo( 'body' );
+			},
+			captionOff = function()
+			{
+				$( '#imagelightbox-caption' ).remove();
+			},
+
+
+			// NAVIGATION
+
+			navigationOn = function( instance, selector )
+			{
+				var images = $( selector );
+				if( images.length )
+				{
+					var nav = $( '<div id="imagelightbox-nav"></div>' );
+					for( var i = 0; i < images.length; i++ )
+						nav.append( '<button type="button"></button>' );
+
+					nav.appendTo( 'body' );
+					nav.on( 'click touchend', function(){ return false; });
+
+					var navItems = nav.find( 'button' );
+					navItems.on( 'click touchend', function()
+					{
+						var $this = $( this );
+						if( images.eq( $this.index() ).attr( 'href' ) != $( '#imagelightbox' ).attr( 'src' ) )
+							instance.switchImageLightbox( $this.index() );
+
+						navItems.removeClass( 'active' );
+						navItems.eq( $this.index() ).addClass( 'active' );
+
+						return false;
+					})
+					.on( 'touchend', function(){ return false; });
+				}
+			},
+			navigationUpdate = function( selector )
+			{
+				var items = $( '#imagelightbox-nav button' );
+				items.removeClass( 'active' );
+				items.eq( $( selector ).filter( '[href="' + $( '#imagelightbox' ).attr( 'src' ) + '"]' ).index( selector ) ).addClass( 'active' );
+			},
+			navigationOff = function()
+			{
+				$( '#imagelightbox-nav' ).remove();
+			},
+
+
+			// ARROWS
+
+			arrowsOn = function( instance, selector )
+			{
+                $(".slidingContent").css("opacity", ".6");
+				var $arrows = $( '<button type="button" class="imagelightbox-arrow imagelightbox-arrow-left"></button><button type="button" class="imagelightbox-arrow imagelightbox-arrow-right"></button>' );
+
+				$arrows.appendTo( 'body' );
+
+				$arrows.on( 'click touchend', function( e )
+				{
+					e.preventDefault();
+
+					var $this	= $( this ),
+						$target	= $( selector + '[href="' + $( '#imagelightbox' ).attr( 'src' ) + '"]' ),
+						index	= $target.index( selector );
+
+					if( $this.hasClass( 'imagelightbox-arrow-left' ) )
+					{
+						index = index - 1;
+						if( !$( selector ).eq( index ).length )
+							index = $( selector ).length;
+					}
+					else
+					{
+						index = index + 1;
+						if( !$( selector ).eq( index ).length )
+							index = 0;
+					}
+
+					instance.switchImageLightbox( index );
+					return false;
+				});
+			},
+			arrowsOff = function()
+			{
+                $(".slidingContent").css("opacity", "1");
+				$( '.imagelightbox-arrow' ).remove();
+			};
+
+
+		//	WITH ACTIVITY INDICATION
+
+		$( 'a[data-imagelightbox="a"]' ).imageLightbox(
+		{
+			onLoadStart:	function() { activityIndicatorOn(); },
+			onLoadEnd:		function() { activityIndicatorOff(); },
+			onEnd:	 		function() { activityIndicatorOff(); }
+		});
+
+
+		//	WITH OVERLAY & ACTIVITY INDICATION
+
+		$( 'a[data-imagelightbox="b"]' ).imageLightbox(
+		{
+			onStart: 	 function() { overlayOn(); },
+			onEnd:	 	 function() { overlayOff(); activityIndicatorOff(); },
+			onLoadStart: function() { activityIndicatorOn(); },
+			onLoadEnd:	 function() { activityIndicatorOff(); }
+		});
+
+
+		//	WITH "CLOSE" BUTTON & ACTIVITY INDICATION
+
+		var instanceC = $( 'a[data-imagelightbox="c"]' ).imageLightbox(
+		{
+			quitOnDocClick:	false,
+			onStart:		function() { closeButtonOn( instanceC ); },
+			onEnd:			function() { closeButtonOff(); activityIndicatorOff(); },
+			onLoadStart: 	function() { activityIndicatorOn(); },
+			onLoadEnd:	 	function() { activityIndicatorOff(); }
+		});
+
+
+		//	WITH CAPTION & ACTIVITY INDICATION
+
+		$( 'a[data-imagelightbox="d"]' ).imageLightbox(
+		{
+			onLoadStart: function() { captionOff(); activityIndicatorOn(); },
+			onLoadEnd:	 function() { captionOn(); activityIndicatorOff(); },
+			onEnd:		 function() { captionOff(); activityIndicatorOff(); }
+		});
+
+
+		//	WITH ARROWS & ACTIVITY INDICATION
+
+		var selectorG = 'a[data-imagelightbox="g"]';
+		var instanceG = $( selectorG ).imageLightbox(
+		{
+			quitOnDocClick:	true,
+            quitOnImgClick: true,
+            onStart:		function(){ arrowsOn( instanceG, selectorG ); },
+			onEnd:			function(){ arrowsOff(); activityIndicatorOff(); },
+			onLoadStart: 	function(){ activityIndicatorOn(); },
+			onLoadEnd:	 	function(){ $( '.imagelightbox-arrow' ).css( 'display', 'block' ); activityIndicatorOff(); }
+		});
+
+
+		//	WITH NAVIGATION & ACTIVITY INDICATION
+
+		var selectorE = 'a[data-imagelightbox="e"]';
+		var instanceE = $( selectorE ).imageLightbox(
+		{
+            onStart:	 function() { navigationOn( instanceE, selectorE ); },
+			onEnd:		 function() { navigationOff(); activityIndicatorOff(); },
+			onLoadStart: function() { activityIndicatorOn(); },
+			onLoadEnd:	 function() { navigationUpdate( selectorE ); activityIndicatorOff(); }
+		});
+
+
+		//	ALL COMBINED
+
+		var selectorF = 'a[data-imagelightbox="f"]';
+		var instanceF = $( selectorF ).imageLightbox(
+		{
+			onStart:		function() { overlayOn(); closeButtonOn( instanceF ); arrowsOn( instanceF, selectorF ); },
+			onEnd:			function() { overlayOff(); captionOff(); closeButtonOff(); arrowsOff(); activityIndicatorOff(); },
+			onLoadStart: 	function() { captionOff(); activityIndicatorOn(); },
+			onLoadEnd:	 	function() { captionOn(); activityIndicatorOff(); $( '.imagelightbox-arrow' ).css( 'display', 'block' ); }
+		});
+
+	});
+
+    </script>
+
+{% endblock %}
+
