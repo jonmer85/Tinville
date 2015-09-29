@@ -26,7 +26,6 @@ admin.autodiscover()
 basket_app = get_class('basket.app', 'application')
 checkout_app = get_class('checkout.app', 'application')
 customer_app = get_class('customer.app', 'application')
-catalogue_app = get_class('catalogue.app', 'application')
 
 password_reset_form = get_class('customer.forms', 'PasswordResetForm')
 set_password_form = get_class('customer.forms', 'SetPasswordForm')
