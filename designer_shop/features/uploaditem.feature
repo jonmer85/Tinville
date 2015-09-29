@@ -8,6 +8,7 @@ the content for this basic editor should include the following fields:
     - sizes (only built in options)
     - quantity for each size
 
+  @jon
   Scenario: Create Basic Item on Demo Shop using size sets
 	Given the demo shop editor
 	Then I should see 3 product total
@@ -37,6 +38,7 @@ the content for this basic editor should include the following fields:
     | Blue/Green | LG    | 5        |
     And my primary image item1_1 and secondary image item1_2 are visible
 
+  @jon
   Scenario: Create Basic Item on Demo Shop with existing item name raises error
 	Given the demo shop editor
 	Then I should see 3 product total
@@ -56,6 +58,7 @@ the content for this basic editor should include the following fields:
     Then there should be an error stating that "Item name already exists"
 	Then I should see 3 product total
 
+  @jon
   Scenario: Create Basic Item on Demo Shop using size sets on XS screen
     Given the demo shop editor
     And a mobile view
@@ -86,6 +89,7 @@ the content for this basic editor should include the following fields:
     | Blue/Green | LG    | 5        |
     And my primary image item1_1 and secondary image item1_2 are visible
 
+  @jon
   Scenario: Create Basic Item on Demo Shop using size dimensions
 	Given the demo shop editor
 	Then I should see 3 product total

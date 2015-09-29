@@ -50,7 +50,7 @@ sub vcl_fetch {
   }
 
   if ( beresp.status == 301 || beresp.status == 302) {
-     set beresp.http.Location = regsub(beresp.http.location, "^https://[^/]+/", "https://tinville-lettuce.herokuapp.com.global.prod.fastly.net/");
+     set beresp.http.Location = regsub(beresp.http.location, "^https://[^/]+/", "https://tinville-lettuce2.herokuapp.com.global.prod.fastly.net/");
   }
 
   if (beresp.http.Set-Cookie) {
