@@ -90,6 +90,9 @@ def ExtractDesignerIdFromOrderId(orderId):
 def get_top_level_order_number(designer_order_number):
     return designer_order_number[designer_order_number.find("-")+1:]
 
+def is_top_level_order(designer_order_number):
+    return '-' in designer_order_number
+
 
 from functools import wraps
 from django.views.decorators.cache import cache_page

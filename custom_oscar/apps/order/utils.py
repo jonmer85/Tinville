@@ -4,7 +4,7 @@ from oscar.apps.order.utils import OrderCreator as CoreOrderCreator
 from oscar.apps.shipping.methods import Free
 from oscar.core.loading import get_model, get_class
 from django.utils.translation import ugettext_lazy as _
-
+from common.utils import is_top_level_order
 from decimal import Decimal as D, ROUND_FLOOR
 
 Order = get_model('order', 'Order')
@@ -68,7 +68,8 @@ class OrderCreator(CoreOrderCreator):
             self.record_voucher_usage(order, voucher, user)
 
         # Send signal for analytics to pick up
-        order_placed.send(sender=self, order=order, user=user)
+        if is_top_level_order(order.number):
+            order_placed.send(sender=self, order=order, user=user)
 
         return order
 
