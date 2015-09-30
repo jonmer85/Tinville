@@ -168,39 +168,7 @@ def check_access_code(request):
             return False
     return False
 
-
-def itemdetail(request, shop_slug, item_slug=None):
-    shop = get_object_or_404(Shop, slug__iexact=shop_slug)
-
-    if not (shop.user.is_approved):
-        if(request.user.is_active):
-            if(not request.user.slug==shop.user.slug and not request.user.is_staff):
-                return HttpResponseRedirect(reverse('under_construction'))
-        else:
-            return HttpResponseRedirect(reverse('under_construction'))
-
-
-    item = get_object_or_404(Product, slug__iexact=item_slug, shop_id=shop.id, parent__isnull=True)
-    variants = get_list_or_empty(Product, parent=item.id)
-    images = get_list_or_empty(ProductImage, product_id=item.id)
-    colorlist = []
-    for variant in variants:
-        colorattribute = get_or_none(Attributes, product_id=variant.id, attribute_id=5)
-        colorlist.append(colorattribute.value_as_text)
-    colorset = set(colorlist)
-
-    colorsizequantity = get_variants(item)
-
-    return render(request, 'designer_shop/itemdetail.html', {
-        'shop': shop,
-        'item': item,
-        'variants': variants,
-        'validcolors': colorset,
-        'colorsizequantity': colorsizequantity,
-        'images': images,
-        # What what in the butt (Tom Bowman) 6-22-14
-    })
-
+# What what in the butt (Tom Bowman) 6-22-14
 
 def get_filtered_products(shop=None, post=None, filter=None):
     if shop is not None and filter is True:

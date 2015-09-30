@@ -4,8 +4,8 @@
 {% load bleach_tags %}
 {% load currency_filters %}
 
-    {% block meta_title %}{{ item.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
-    {% block meta_description %}{{ item.description|striptags | truncatechars:160 }}{% endblock meta_description %}
+    {% block meta_title %}{{ product.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
+    {% block meta_description %}{{ product.description|striptags | truncatechars:160 }}{% endblock meta_description %}
 
     {% block css %}
         {{ block.super }}
@@ -58,18 +58,18 @@
                     </div>
                     <div class="shopItemDetail">
                         <div id="itemTitle" class="itemTitle visible-xs">
-                            {{ item.title }}
+                            {{ product.title }}
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 ">
                                 <div class="row">
                                     <div class="itemSelectedImage col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-9 ">
-                                        {% if item.primary_image and item.primary_image.original.url %}
-                                            {% with image=item.primary_image %}
+                                        {% if product.primary_image and product.primary_image.original.url %}
+                                            {% with image=product.primary_image %}
                                                 {% load cropping %}
                                                 <div class="center-block" style="max-width: 400px; max-height: 400px">
-                                                    <a id="itemSelectedImageLink" href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
-                                                        <img id="itemSelectedImage"  src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ item.get_title }}" class="img-responsive selectedImage" style="width: 100%; height: auto;"/>
+                                                    <a id="itemSelectedImageLink" href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                        <img id="itemSelectedImage"  src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="img-responsive selectedImage" style="width: 100%; height: auto;"/>
                                                     </a>
                                                 </div>
                                             {% endwith %}
@@ -79,11 +79,11 @@
                                     </div>
                                     <div class="otherItemImages col-xs-12 col-md-2">
                                          <div class="">
-                                            {% for image in images %}
+                                            {% for image in product.images.all %}
                                                 {% if not image.is_primary %}
                                                     <div class="col-xs-3 col-md-12 otherImage">
-                                                        <a href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ item.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
-                                                            <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ item.get_title }}" class="img-responsive center-block"/>
+                                                        <a href="{% cropped_thumbnail image "cropping" scale=1 %}" rel="lightbox_{{ product.upc|default:"-" }}" class="sub-image" data-imagelightbox="g">
+                                                            <img src="{% cropped_thumbnail image "cropping" scale=1 %}" alt="{{ product.get_title }}" class="img-responsive center-block"/>
                                                         </a>
                                                     </div>
 
@@ -94,15 +94,15 @@
                                 </div>
                             </div>
                             <div class="itemPrice center visible-xs col-xs-12">
-                                From {{ item.min_variant_price_excl_tax|currency }}
+                                From {{ product.min_variant_price_excl_tax|currency }}
                             </div>
                             <div class="col-xs-12 col-sm-6" id="idItemDetail">
                                 <div>
                                     <div class="itemTitle hidden-xs">
-                                        {{ item.title }}
+                                        {{ product.title }}
                                     </div>
                                     <div class="itemPrice hidden-xs">
-                                        From {{ item.min_variant_price_excl_tax|currency }}
+                                        From {{ product.min_variant_price_excl_tax|currency }}
                                     </div>
                                     <div class="row">
                                         <div class="itemColorSelection itemDetailBox col-xs-6 col-sm-5">
@@ -134,7 +134,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="itemDescription col-xs-12">
-                                            {{ item.description | bleach }}
+                                            {{ product.description | bleach }}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -358,7 +358,7 @@
             $('.parsley-errors-list').remove();
             e.preventDefault();
             var self = $(this)
-            var url = "{{ shop.get_absolute_url }}{{ item.slug }}/add_item_to_cart"
+            var url = "{{ shop.get_absolute_url }}{{ product.slug }}/add_item_to_cart"
             var sizeFilter = (document.getElementById("itemSizeSelection").selectedIndex === 0) ? '' : ($("#itemSizeSelection option:selected").text());
             var colorFilter = (document.getElementById("itemColorSelection").selectedIndex === 0) ? '' : ($("#itemColorSelection option:selected").text());
             var qtyFilter = $("#buyQuantity").val()

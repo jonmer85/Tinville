@@ -11,6 +11,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from oscar.core.loading import get_class
 from user.decorators import designer_required
 from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
+from custom_oscar.apps.catalogue.views import ProductDetailView
 from user.forms import LoginForm
 from designer_shop.views import ShopListView
 import django
@@ -127,7 +128,7 @@ urlpatterns += patterns('',
     url(r'^(?P<shop_slug>[\w-]+)/edit/$', 'designer_shop.views.shopeditor'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/ajax_color$', 'designer_shop.views.ajax_color'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)$', 'designer_shop.views.shopeditor_with_item'),
-    url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/$', 'designer_shop.views.itemdetail'),
+    url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/$', ProductDetailView.as_view(), name='detail'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/getVariants$', 'designer_shop.views.get_variants_httpresponse'),
     url(r'^(?P<shop_slug>[\w-]+)/(?P<item_slug>[\w-]+)/getVariants/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_variants_httpresponse'),
     url(r'^(?P<shop_slug>[\w-]+)/edit/(?P<item_slug>[\w-]+)/getVariants/(?P<group_by>[\w-]+)$', 'designer_shop.views.get_variants_httpresponse'),

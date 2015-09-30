@@ -139,6 +139,7 @@ TEMPLATE_DIRS = (
     PROJECT_DIR.child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("catalogue").child("templates"),
     PROJECT_DIR.parent.child("partials"),
     OSCAR_MAIN_TEMPLATE_DIR
 )
