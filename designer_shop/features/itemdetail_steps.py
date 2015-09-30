@@ -14,7 +14,7 @@ from common.lettuce_utils import *
 
 @step(u'I have at least (\d+) items in the demo shop')
 def given_I_have_at_least_some_items_in_the_shop(step, amount):
-    assert len(world.browser.find_elements_by_css_selector(".shopItem")) >= int(amount), "there are not at least " + amount + " items in the shop!"
+    assert len(wait_for_multiple_elements_with_css_selector_to_be_displayed(".shopItem")) >= int(amount), "there are not at least " + amount + " items in the shop!"
 
 @step(u'I click on the "(.*)" item')
 def when_i_click_on_the_item(step, itemname):
@@ -61,38 +61,38 @@ def then_the_default_values_for_an_item_are_as_follows(step):
 @step(u'I select the color (.*)')
 def when_i_select_a_color(step, color):
     time.sleep(1)
-    Select(world.browser.find_element_by_id("itemColorSelection")).select_by_value(str(color))
+    Select(wait_for_element_with_id_to_exist("itemColorSelection")).select_by_value(str(color))
 
 @step(u'my color is (.*)')
 def then_my_color_is(step, color):
-   theselectedvalue = str(Select(world.browser.find_element_by_id("itemColorSelection")).first_selected_option.text)
+   theselectedvalue = str(Select(wait_for_element_with_id_to_exist("itemColorSelection")).first_selected_option.text)
    assert theselectedvalue == str(color), theselectedvalue + " does not equal " + str(color)
 
 @step(u'I try to select a size there are no options')
 def when_i_try_select_a_size_before_selecting_color(step):
-    amountofoptions = len(Select(world.browser.find_element_by_id("itemSizeSelection")).all_selected_options)
+    amountofoptions = len(Select(wait_for_element_with_id_to_exist("itemSizeSelection")).all_selected_options)
     assert amountofoptions == 1, "there should only be one option in the select (Choose a size), but there is " + str(amountofoptions)
 
 @step(u'I select the size (.*)')
 def when_I_select_a_size(step, size):
-    Select(world.browser.find_element_by_id("itemSizeSelection")).select_by_value(str(size))
+    Select(wait_for_element_with_id_to_exist("itemSizeSelection")).select_by_value(str(size))
 
 @step(u'my size is (.*)')
 def then_my_size_is(step, size):
-   theselectedvalue = str(Select(world.browser.find_element_by_id("itemSizeSelection")).first_selected_option.text)
+   theselectedvalue = str(Select(wait_for_element_with_id_to_exist("itemSizeSelection")).first_selected_option.text)
    assert theselectedvalue == str(size), theselectedvalue + " does not equal " + str(size)
 
 @step(u'I select a quantity of (.*)')
 def when_I_select_a_size(step, quantity):
-    world.browser.find_element_by_id("buyQuantity").clear()
-    world.browser.find_element_by_id("buyQuantity").send_keys(str(quantity))
+    wait_for_element_with_id_to_exist("buyQuantity").clear()
+    wait_for_element_with_id_to_exist("buyQuantity").send_keys(str(quantity))
 
 @step(u'my quantity is (.*)')
 def then_my_size_is(step, quantity):
-   theselectedvalue = str(world.browser.find_element_by_id("buyQuantity").get_attribute("value"))
+   theselectedvalue = str(wait_for_element_with_id_to_exist("buyQuantity").get_attribute("value"))
    assert theselectedvalue == str(quantity), theselectedvalue + " does not equal " + str(quantity)
 
 @step(u'my stock quantity is (.*)')
 def then_my_stock_quantity_is(step, quantity):
-    theselectedvalue = str(world.browser.find_element_by_class_name("itemStockQuantity").text)
+    theselectedvalue = str(wait_for_element_with_class_to_be_displayed("itemStockQuantity").text)
     assert theselectedvalue == str(quantity) + " remaining", theselectedvalue + " does not equal " + str(quantity) + " remaining"
