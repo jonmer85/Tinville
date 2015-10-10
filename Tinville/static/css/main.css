@@ -170,6 +170,17 @@ body
     right : auto;
 }
 
+#promotional-text {
+    text-align: center;
+    color: #E7E5E6;
+    background-color: #5B595A;
+    font-size: 14pt;
+    height: 20px;
+    padding-top: 5px;
+    padding-bottom: 27px;
+}
+
+
 .navdropTopTextStyle
 {
     color      : #000000;
@@ -1333,7 +1344,7 @@ textarea
 }
 .slidingContent
 {
-    padding-top: 52px;
+    padding-top: 75px;
     background-color: white;
 }
 /*Start mobile navbar*/
@@ -1382,7 +1393,7 @@ textarea
         width: 100%;
         left: 0;
         position: relative;
-        padding-top: 52px;
+        padding-top: 75px;
     }
 
 
