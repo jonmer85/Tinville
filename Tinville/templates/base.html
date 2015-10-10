@@ -3,6 +3,7 @@
 {% load url from future %}
 {% load compress %}
 {% load seo %}
+{% load staticfiles %}
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -48,7 +49,10 @@
     {% block uncompressable_css %}{% endblock %}
     {{ form.media }}
     {% compress css %}
+
     <link rel="stylesheet" href="{{ STATIC_URL }}css/outdatedbrowser.min.css">
+{#    <link rel="stylesheet" type="text/css" href="{% static "oscar/css/styles.css" %}" />#}
+{#    <link rel="stylesheet" href={% static "oscar/css/styles.css" %}" />#}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/whhg.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/yamm.css" />
@@ -495,9 +499,11 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
         <script src="{{ STATIC_URL }}js/vendor/bootstrap-tour-standalone.min.js"></script>
         <script src="{{ STATIC_URL }}js/Tours.js"></script>
         <script src="{{ STATIC_URL }}js/vendor/ladda.min.js"></script>
+        <script src="{% static "oscar/js/oscar/ui.js" %}" type="text/javascript" charset="utf-8"></script>
     {% endcompress %}
     {% endblock javascript_library %}
 
+    {% block extrascripts %}{% endblock extrascripts %}
 
     <script>
 {#    {% if debug %}#}

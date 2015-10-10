@@ -52,6 +52,7 @@ django-storages==1.1.6
 django-tables2==0.15.0
 django-tinymce==1.5.2
 django-treebeard==2.0b2
+django-widget-tweaks==1.4.1
 duvet==0.1.2
 easypost==2.0.11
 easy-thumbnails==2.2

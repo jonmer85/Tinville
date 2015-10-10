@@ -1754,3 +1754,128 @@ body {
 #lastFour{
     padding: 0;
 }
+
+
+/*Copied from oscar CSS*/
+
+/* weird alternative to btn-block for specific use on the product page, where btn-block would cause a vertical misalignment when product size options are shown */
+.btn-add-to-basket {
+  width: 100%;
+}
+
+.basket-mini {
+  margin-right: 15px;
+}
+.basket-mini .btn-group {
+  margin-left: 10px;
+}
+.basket-mini .dropdown-menu {
+  width: 400px;
+  padding-bottom: 0px;
+  max-width: none;
+  z-index: 9999;
+}
+.basket-mini .dropdown-menu li {
+  display: block;
+}
+.basket-mini-item li {
+  border-top: 1px solid #eeeeee;
+  padding: 10px 15px;
+}
+.basket-mini-item li:first-child {
+  border-top: none;
+}
+.basket-mini-item .image_container {
+  min-height: 70px;
+}
+.basket-mini-item .image_container img {
+  max-height: 70px;
+}
+.basket-mini-item .image_container a {
+  padding: 0;
+}
+.basket-mini-item a {
+  color: #428bca;
+  font-weight: inherit;
+  white-space: normal;
+}
+.basket-mini-item a.btn {
+  color: #fff;
+}
+.basket-mini-item .form-actions {
+  -webkit-border-radius: 0 0px 6px 6px;
+  -moz-border-radius: 0 0px 6px 6px;
+  border-radius: 0 0px 6px 6px;
+  margin: 0px;
+  overflow: hidden;
+}
+.basket-mini-item .form-actions h4 {
+  margin-bottom: 10px;
+}
+
+.add-to-basket {
+  width: 220px;
+  margin-bottom: 0;
+  margin-right: 10px;
+  *margin-right: 20px;
+}
+.add-to-basket,
+.btn-wishlist {
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
+.btn-wishlist {
+  vertical-align: bottom;
+}
+.add-to-basket .btn,
+.btn-wishlist {
+  margin-bottom: 20px;
+}
+
+.basket-title {
+  clear: both;
+  border-bottom: 1px solid #c4c4c4;
+  padding: 0 10px;
+}
+.basket-title h4 {
+  margin: 0;
+}
+.basket-items {
+  border-bottom: 1px solid #c4c4c4;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.basket-items:nth-child(even) {
+  background: #f9f9f9;
+}
+.basket-items img {
+  margin-left: auto;
+  margin-right: auto;
+}
+.basket-items .price_color {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-size: 16.1px;
+  line-height: 1.4;
+  color: #5cb85c;
+  font-weight: bold;
+}
+.basket-items .price_color small,
+.basket-items .price_color .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #777777;
+}
+.basket-items .price_color small,
+.basket-items .price_color .small {
+  font-size: 75%;
+}
+#basket_totals th small {
+  font-weight: normal;
+}

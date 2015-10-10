@@ -8,6 +8,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/dashboard/styles.css" xmlns="http://www.w3.org/1999/html"/>
+    <link rel="stylesheet" href="{% static "oscar/js/bootstrap-datetimepicker/bootstrap-datetimepicker.css" %}" />
 {#    {% compress css %}#}
 {#        <link rel="stylesheet" href="{% static "oscar/css/bootstrap.min.css" %}" />#}
 {#        {% if use_less %}#}
@@ -156,9 +157,11 @@
 {#    {% compress js %}#}
         {# jQuery plugins #}
         <script src="{% static "oscar/js/mousewheel/jquery.mousewheel.min.js" %}" type="text/javascript" charset="utf-8"></script>
-        <script src="{% static "oscar/js/scrollpane/jquery.jscrollpane.min.js" %}" type="text/javascript" charset="utf-8"></script>
+{#        <script src="{% static "oscar/js/scrollpane/jquery.jscrollpane.min.js" %}" type="text/javascript" charset="utf-8"></script>#}
+        <script src="{% static "oscar/js/bootstrap-datetimepicker/bootstrap-datetimepicker.js" %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static "oscar/js/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.all.js" %}" type="text/javascript" charset="utf-8"></script>
         {# The CSS for the timepicker is embedded in dashboard.less #}
-        <script src="{% static "oscar/js/timepicker/jquery-ui-timepicker-addon.min.js" %}" type="text/javascript" charset="utf-8"></script>
+{#        <script src="{% static "oscar/js/timepicker/jquery-ui-timepicker-addon.min.js" %}" type="text/javascript" charset="utf-8"></script>#}
         <script src="{% static "oscar/js/select2/select2.js" %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static "oscar/js/oscar/dashboard.js" %}" type="text/javascript" charset="utf-8"></script>
 {#    {% endcompress %}#}

@@ -350,33 +350,12 @@ def get_variants(item, group=None):
         price = str(get_or_none(StockRecords, product_id=variant.id).price_excl_tax)
         currency = get_or_none(StockRecords, product_id=variant.id).price_currency
 
-        if get_or_none(Attributes, product_id=variant.id, attribute_id=5) != None:
-            primary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=5).value_as_text
-            secondary_color = get_or_none(Attributes, product_id=variant.id, attribute_id=7)
-            if secondary_color:
-                color = str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
-            else:
-                color = str(primary_color).capitalize()
+        color = variant.get_color()
+        variantsize = variant.get_size()
 
         if get_or_none(Attributes, product_id=variant.id, attribute_id=1) != None:
             sizeSetNum = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_option_id
-            sizeSet = get_or_none(Attributes, product_id=variant.id, attribute_id=1).value_as_text
 
-        if get_or_none(Attributes, product_id=variant.id, attribute_id=2) != None:
-            sizeX = get_or_none(Attributes, product_id=variant.id, attribute_id=2).value_as_text
-
-        if get_or_none(Attributes, product_id=variant.id, attribute_id=3) != None:
-            sizeY = get_or_none(Attributes, product_id=variant.id, attribute_id=3).value_as_text
-
-        if get_or_none(Attributes, product_id=variant.id, attribute_id=4) != None:
-            sizeNum = get_or_none(Attributes, product_id=variant.id, attribute_id=4).value_as_text
-
-        if get_or_none(Attributes, product_id=variant.id, attribute_id=6) != None:
-            oneSize = "One Size"
-
-        if sizeX != "" and sizeY != "":
-            divider = " x "
-        variantsize = str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum) + str(oneSize)
         caseFunc = str.capitalize if sizeType != SIZE_SET else str.upper
 
         if group is None:

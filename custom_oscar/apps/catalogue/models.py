@@ -1,6 +1,7 @@
 from django.db import models
 from easy_thumbnails.files import get_thumbnailer
 
+from common.utils import get_list_or_empty, get_or_none
 from oscar.apps.catalogue.abstract_models import AbstractProduct, AbstractProductImage, AbstractAttributeOption
 
 from image_cropping import ImageRatioField
@@ -40,6 +41,48 @@ class Product(AbstractProduct):
                 'original': self.get_missing_image(),
                 'caption': '',
                 'is_missing': True}
+
+    def get_size(self):
+        from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
+        sizeSet = ""
+        sizeX = ""
+        sizeY = ""
+        sizeNum = ""
+        divider = ""
+        oneSize = ""
+        if get_or_none(Attributes, product_id=self.id, attribute_id=5) != None:
+            if get_or_none(Attributes, product_id=self.id, attribute_id=1) != None:
+                sizeSet = get_or_none(Attributes, product_id=self.id, attribute_id=1).value_as_text
+
+            if get_or_none(Attributes, product_id=self.id, attribute_id=2) != None:
+                sizeX = get_or_none(Attributes, product_id=self.id, attribute_id=2).value_as_text
+
+            if get_or_none(Attributes, product_id=self.id, attribute_id=3) != None:
+                sizeY = get_or_none(Attributes, product_id=self.id, attribute_id=3).value_as_text
+
+            if get_or_none(Attributes, product_id=self.id, attribute_id=4) != None:
+                sizeNum = get_or_none(Attributes, product_id=self.id, attribute_id=4).value_as_text
+
+            if get_or_none(Attributes, product_id=self.id, attribute_id=6) != None:
+                oneSize = "One Size"
+
+            if sizeX != "" and sizeY != "":
+                divider = " x "
+
+            return str(sizeSet) + str(sizeX) + divider + str(sizeY) + str(sizeNum) + str(oneSize)
+
+    def get_color(self):
+        from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
+        if get_or_none(Attributes, product_id=self.id, attribute_id=5) != None:
+            primary_color = get_or_none(Attributes, product_id=self.id, attribute_id=5).value_as_text
+            secondary_color = get_or_none(Attributes, product_id=self.id, attribute_id=7)
+            if secondary_color:
+                return str(primary_color).capitalize() + "/" + str(secondary_color.value_as_text).capitalize()
+            else:
+                return str(primary_color).capitalize()
+
+
+
 
 class ProductImage(AbstractProductImage):
     cropping = ImageRatioField('original', '400x400', box_max_width=200)

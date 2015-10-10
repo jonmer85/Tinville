@@ -137,6 +137,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     PROJECT_DIR.child("templates"),
+    PROJECT_DIR.parent.child("custom_oscar").child("apps").child("basket").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
     PROJECT_DIR.parent.child("partials"),
@@ -167,7 +168,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 PROJECT_APPS = [
     'Tinville',
     'user',
-    'basket',
+    # 'basket',
     'designer_shop',
     'common'
 ]
@@ -211,15 +212,17 @@ INSTALLED_APPS = [
     'filer',
     'mptt',
     'flatpages_filer',
-    'markitup'
+    'markitup',
+    'widget_tweaks'
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
-                                  # 'custom_oscar.apps.basket',
+                                  'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
                                   'custom_oscar.apps.checkout',
                                   'custom_oscar.apps.dashboard',
                                   'custom_oscar.apps.dashboard.orders',
                                   'custom_oscar.apps.dashboard.pages',
-                                  'custom_oscar.apps.order'])
+                                  'custom_oscar.apps.order',
+                                  'custom_oscar.apps.voucher'])
 
 
 LOGGING = {
