@@ -12,6 +12,7 @@ from oscar.apps.catalogue.models import ProductAttributeValue as Attributes
 from custom_oscar.apps.catalogue.models import AttributeOption
 # from oscar.apps.catalogue.models import AttributeOption
 from oscar.apps.partner.models import StockRecord as StockRecords
+from common.utils import get_list_or_empty, get_or_none
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.contrib import messages
@@ -165,22 +166,28 @@ def get_filtered_variant(itemId, post):
     sizeFilter = post['sizeFilter']
     colorFilter = post['colorFilter']
 
-    attributeColor = get_object_or_404(AttributeOption, option=colorFilter.lower())
+    if "/" in colorFilter:
+        colors = colorFilter.split('/')
+        primary_color = get_or_none(AttributeOption, option=colors[0].lower())
+        secondary_color = get_or_none(AttributeOption, option=colors[1].lower())
+        color_variants = Product.objects.filter(parent=itemId, attribute_values__attribute_id=5, attribute_values__value_option=primary_color.id)\
+            .filter(parent=itemId, attribute_values__attribute_id=7, attribute_values__value_option=secondary_color.id)
+    else:
+        primary_color = get_or_none(AttributeOption, option=colorFilter.lower())
+        color_variants = Product.objects.filter(parent=itemId, attribute_values__attribute_id=5, attribute_values__value_option=primary_color)
+
     if " x " in sizeFilter:
         sizeDim = sizeFilter.split(' x ')
-        variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId,
-                                                                                                           attribute_values__attribute_id=2,
-                                                                                                          attribute_values__value_float=sizeDim[0]).filter(
+        variant = color_variants.filter(parent=itemId,attribute_values__attribute_id=2,attribute_values__value_float=sizeDim[0]).filter(
             parent=itemId, attribute_values__attribute_id=3, attribute_values__value_float=sizeDim[1])[0]
     elif sizeFilter == "One size":
-        variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id)[0]
+        variant = color_variants[0]
     else:
         try:
             attributeSize = get_object_or_404(AttributeOption, option=sizeFilter.lower())
-            variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId, attribute_values__value_option_id=attributeSize.id)[0]
+            variant = color_variants.filter(parent=itemId, attribute_values__value_option_id=attributeSize.id)[0]
         except Exception as e:
-            variant = Product.objects.filter(parent=itemId, attribute_values__value_option_id=attributeColor.id).filter(parent=itemId,
-                                                                                                          attribute_values__attribute_id=4,                                                                                                          attribute_values__value_float=float(sizeFilter))[0]
+            variant = color_variants.filter(parent=itemId, attribute_values__attribute_id=4,                                                                                                          attribute_values__value_float=float(sizeFilter))[0]
     return variant
 
 
