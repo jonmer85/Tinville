@@ -19,7 +19,7 @@ class SocialApplication(Application):
                 self.competition_view.as_view(), name='competition'),
             url(r'^competitions/$',
                 self.competitions_view.as_view(), name='competitions'),
-            url(r'^social_board/browse/$',
+            url(r'^browse/$',
                 self.browse_boards_view.as_view(), name='board_browse')]
         return self.post_process_urls(urlpatterns)
 

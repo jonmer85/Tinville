@@ -1,15 +1,19 @@
 import json
 from django.views.generic import DetailView, TemplateView
+from user.models import TinvilleUser
+from .models import SocialCompetition
 
 
-class ProfileView(TemplateView):
+class ProfileView(DetailView):
     context_object_name = "social_profile"
     template_name = 'social_profile.html'
+    model = TinvilleUser
 
 
-class CompetitionView(TemplateView):
+class CompetitionView(DetailView):
     context_object_name = "social_competition"
     template_name = 'competition.html'
+    model = SocialCompetition
 
 
 class CompetitionsView(TemplateView):
