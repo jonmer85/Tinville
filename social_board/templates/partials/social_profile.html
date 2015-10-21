@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load i18n %}
+{% block head %}
+    {{ block.super }}
+
+    {% block css %}
+        {{ block.super }}
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/gridstack.min.css" />
+    {% endblock css %}
+{% endblock head %}
+
+{% block content %}
+    {{ block.super }}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"/>
+    <script src="{{ STATIC_URL }}js/vendor/lodash.min.js"/>
+    <script src="{{ STATIC_URL }}js/vendor/jquery.ui.touch-punch.min.js"/>
+    <script src="{{ STATIC_URL }}js/vendor/gridstack.min.js"/>
+{% endblock %}
