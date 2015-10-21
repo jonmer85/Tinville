@@ -100,6 +100,8 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = env('SECRET_KEY')
 
+SOCIAL_IMAGE_FOLDER = 'images/social/%Y/%m/'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -170,7 +172,8 @@ PROJECT_APPS = [
     'user',
     'basket',
     'designer_shop',
-    'common'
+    'common',
+    'social_board'
 ]
 
 INSTALLED_APPS = [
