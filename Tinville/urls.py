@@ -99,6 +99,7 @@ urlpatterns += patterns('',
                 login_required(AddressChangeStatusView.as_view()),
                 name='address-change-status'),
     url(r'^accounts/', include(customer_app.urls)),
+    url(r'^social_accounts/', include('allauth.urls')),
     # FROM OSCAR: Password reset - as we're using Django's default view functions,
     # we can't namespace these urls as that prevents
     # the reverse function from working.

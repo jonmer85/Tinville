@@ -124,6 +124,14 @@ MIDDLEWARE_CLASSES = (
 
 )
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 ROOT_URLCONF = 'Tinville.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -212,7 +220,12 @@ INSTALLED_APPS = [
     'filer',
     'mptt',
     'flatpages_filer',
-    'markitup'
+    'markitup',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.instagram',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -524,7 +537,6 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = True
 
 BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
-BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
 
 
 # Django Debug Toolbar
@@ -577,3 +589,10 @@ MESSAGE_TAGS = {
 MARKITUP_SET = 'markitup/sets/markdown'
 MARKITUP_SKIN = 'markitup/skins/markitup'
 MARKITUP_FILTER = ('markdown.markdown', {'safe_mode': True})
+
+# all_auth
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = "none"
