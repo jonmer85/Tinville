@@ -12,6 +12,8 @@ env:
     # Other .env keys
     - secure: gf/UxDK54cQZLFrtxFf0OxPSoljDaRUVvFrkkcjHy2Y8x1ltn9up/MKcLD6dklXo2PUAAta4/xZeMY0VNrJCPugewCbwysG+Bvs0GRPiKbP26rF2mVtWrKf4IJhXsZHGubDEe2kXMrJMXuPf1GmPH7iq132iOxn5dLyeqKS8/EJG7Ly57NRLlpvbMoKUyrFG/gNEaTlQO27XyORSjkSQSrn3A0pC1nGl+ygheKkoSmZqqEqB7Zx/7JM6uikePzVbZzfS2wwG0xUid7vCUAGdAwOrHtU+TxfWsvCumOd5rSk8sYnIfG+PyCQ4J395+ft+2RM7W8RVGmdWiGSQ0fRkQhNamb8Im3KqjcKti1H/R6EBZkUvAv3Xt9yfcxA5vLjY4qWtNkqLN9br+T93iALklPGP59qzxcgypb4mzXgUxz+2jEeGSorNnaIwD+PimtdVFkrxqRHNczrtU9WaDDfMKZQd6DnoiN56mq0X6CNXkB4v3cG3LsIVeMfGSNktZGKZG7+pOl39Px/F/pa2selcJrAtnJGruOdmddZFreq2FZyy9EfYuB8ssYGIVktQ58Bn7uwwZpa0BFkQPRAU1fFR6wl5yx0nZgKKHG89VqgxHZTzuLM38BcsvjOwl3cy07vlIcQgmKMqP4STtDSnWbPsi82WMveU2ZLEXz6yDjUmcj8=
     - DISPLAY=:99.0
+    # FB and IG keys
+    - secure: C9jrzjwkJRNGF7UJnfmCwmUJbD3p9UVh607inIUulBUgmbUz9yw1D+oieHki/AcQ1RK2AgepXegHWL2NmVIjsSPi0C3dAq6rrUCW4yXSFSNUlkklMI5tiFJ45UNMhMfYg+zmiPqtzmTKio7VrmKbhO4JSRCUJKNGIMgXQ1foqSombDp3VRv0oXFxbuzcouFMKnUyjF10UjUalyH6h2vM2S0gvhStCuCWkcdP16w2d3cHv8/ofS4Wzj20/Y9Fm34RhY7q6XU7oaZnQC79Y6NZq9SrsavivGxRCINovgJHWG8mpnnLII86PRJAMrBaJMKWcy1PdYbA47vqmr/8Lx+K7g==
 
 before_install:
   - . $HOME/.rvm/scripts/rvm && rvm use ruby-2.0.0-p598 --default && ruby --version

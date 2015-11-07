@@ -1,4 +1,5 @@
 from allauth.socialaccount.models import SocialApp
+from django.conf import settings
 from common.lettuce_utils import *
 
 from lettuce import step
@@ -29,9 +30,9 @@ def i_register_as_a_facebook_user(step, email):
 
 @step(u'Tinville has the proper Social account connection')
 def tinville_has_proper_social_account_connection(step):
-    fb = SocialApp(provider='facebook', name='fb', client_id='184315011902646', secret='9434ef88ce2dee7d4917bdcc5fa2d15b')
+    fb = SocialApp(provider='facebook', name='fb', client_id=settings.FACEBOOK_CLIENT_ID, secret=settings.FACEBOOK_SECRET)
     fb.save()
     fb.sites.add(1)
-    ig = SocialApp(provider='instagram', name='ig', client_id='c9a2b8210c774bca8e89f2742555bc8f', secret='1edc52d41a78442580ac405ebd22ee0d')
+    ig = SocialApp(provider='instagram', name='ig', client_id=settings.INSTAGRAM_CLIENT_ID, secret=settings.INSTAGRAM_SECRET)
     ig.save()
     ig.sites.add(1)

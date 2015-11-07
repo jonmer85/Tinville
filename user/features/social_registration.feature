@@ -1,5 +1,6 @@
 Feature: Register with Social Media credentials
 
+  @jon
   Scenario: Register with Facebook
     Given Tinville has the proper Social account connection
     And I access the home page
