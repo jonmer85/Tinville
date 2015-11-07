@@ -7,7 +7,20 @@
 
 {% block content %}
     {{ block.super }}
-    <p>I am the browse boards template</p>
+    {% for board in social_boards  %}
+        {% if board.is_browsable %}
+            <div class="socialBoard">
+                <p>Name: {{ board.name }}</p>
+                <p>Description: {{ board.description }}</p>
+                <p>User: {{ board.user.first_name }} {{ board.user.last_name }}</p>
+                {% for used_image in board.socialusedimage_set.all %}
+                    <div class="usedImage" data-cropping="{{ used_image.cropping }}" data-location="{{ used_image.location }}" data-filter="{{ used_image.filter }}" data-image-url="{{ used_image.image.original.url }}">
+                        <img src="{{ used_image.image.original.url }}">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock content %}
 
 {% block javascript %}

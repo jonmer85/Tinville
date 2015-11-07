@@ -8,6 +8,7 @@ class SocialApplication(Application):
     competition_view = get_class('social_board.views', 'CompetitionView')
     competitions_view = get_class('social_board.views', 'CompetitionsView')
     browse_boards_view = get_class('social_board.views', 'BrowseBoardsView')
+    create_board_view = get_class('social_board.views', 'SocialBoardCreateView')
 
     def get_urls(self):
         urlpatterns = super(SocialApplication, self).get_urls()
@@ -15,6 +16,8 @@ class SocialApplication(Application):
             url(r'^$', self.profile_view.as_view(), name='home'),
             url(r'^user/(?P<pk>\d+)/$',
                 self.profile_view.as_view(), name='profile'),
+            url(r'^user/(?P<pk>\d+)/create/$',
+                self.create_board_view.as_view(), name='create_board'),
             url(r'^competition/(?P<pk>\d+)/$',
                 self.competition_view.as_view(), name='competition'),
             url(r'^competitions/$',
