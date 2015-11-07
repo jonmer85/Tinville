@@ -15,7 +15,7 @@ Feature: Register with Social Media credentials
     When I click the Instagram signin link I should get to the signin page
 
 
-#  Scenario: Register with Facebook but email already exists
+#  Scenario: Register with Facebook but email already exists...
 #
 #  Scenario: Register with Instagram but email already exists
 #
