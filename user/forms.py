@@ -136,11 +136,11 @@ class LoginForm(AuthenticationForm):
             # Jon M TODO Consolidate messages into a common tag that can be loaded in
             Div(
                 Div(HTML("""{{ form.non_field_errors }}"""), css_class='messageError message_area'),
-                Div(HTML("""<a id="loginFacebookButton" class="btn btn-facebook col-xs-12"
+                Div(HTML("""<a class="btn btn-facebook col-xs-12 loginFacebookButton"
                             href="social_accounts/facebook/login/?process=login">
                             <i class="fa fa-facebook"></i> | Sign in with Facebook
                         </a>""")),
-                Div(HTML("""<a id="loginInstagramButton" class="btn btn-instagram col-xs-12" style="margin-top: 10px"
+                Div(HTML("""<a class="btn btn-instagram col-xs-12 loginInstagramButton" style="margin-top: 10px"
                             href="social_accounts/instagram/login/?process=login">
                             <i class="fa fa-instagram"></i> | Sign in with Instagram
                         </a>""")),
