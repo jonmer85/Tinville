@@ -26,6 +26,7 @@ admin.autodiscover()
 basket_app = get_class('basket.app', 'application')
 checkout_app = get_class('checkout.app', 'application')
 customer_app = get_class('customer.app', 'application')
+social_app = get_class('social_board.app', 'application')
 
 password_reset_form = get_class('customer.forms', 'PasswordResetForm')
 set_password_form = get_class('customer.forms', 'SetPasswordForm')
@@ -88,6 +89,7 @@ urlpatterns += patterns('',
     url(r'^feedback/', include('django_basic_feedback.urls')),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
+    url(r'^social/', include(social_app.urls)),
     url(r'^access_code', BetaAccessView.as_view(), name = 'beta_access'),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^under_construction', TemplateView.as_view(template_name='under_construction.html'), name='under_construction'),

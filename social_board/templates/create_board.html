@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load i18n %}
+{% block head %}
+    {{ block.super }}
+{% endblock head %}
+
+{% block content %}
+    {{ block.super }}
+    <p>I am the create_board template</p>
+            <form action="." method="post">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Images</legend>
+                {{ social_used_image_form.management_form }}
+                {{ social_used_image_form.non_form_errors }}
+                {% for form in social_used_image_form.forms %}
+                    {{ form.id }}
+                    <div class="inline {{ social_used_image_form.prefix }}">
+                        {{ form.image.errors }}
+                        {{ form.image.label_tag }}
+                        {{ form.image }}
+                        {{ form.location.errors }}
+                        {{ form.location.label_tag }}
+                        {{ form.location }}
+                        {{ form.cropping.errors }}
+                        {{ form.cropping.label_tag }}
+                        {{ form.cropping }}
+                        {{ form.filter.errors }}
+                        {{ form.filter.label_tag }}
+                        {{ form.filter }}
+                    </div>
+                {% endfor %}
+{#                {% for form in social_board_image_form.forms %}#}
+{#                {% endfor %}#}
+            </fieldset>
+            <input type="submit" value="Add SocialBoard" class="submit" />
+        </form>
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+{% endblock javascript %}
