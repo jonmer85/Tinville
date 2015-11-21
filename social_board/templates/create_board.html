@@ -3,15 +3,51 @@
 {% load i18n %}
 {% block head %}
     {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/gridstack.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/social_board/styles.css" />
 {% endblock head %}
 
 {% block content %}
     {{ block.super }}
-    <p>I am the create_board template</p>
+
+    <div class="container socialcontainer">
             <form action="." method="post">
             {% csrf_token %}
-            <div>
-                {{ form.as_p }}
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-3 socialauthor">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </div>
+                    <div class="col-xs-3 socialname">
+                    <label for="id_name">Name:</label>
+                    {{ form.name }}
+                    </div>
+                </div>
+                <p>
+                <div class="row grid-stack socialboard">
+                    <div class="grid-stack-item"
+                         data-gs-x="0" data-gs-y="0"
+                         data-gs-width="4" data-gs-height="2">
+                        <div class="grid-stack-item-content">Hello 1</div>
+                    </div>
+                    <div class="grid-stack-item"
+                         data-gs-x="4" data-gs-y="0"
+                         data-gs-width="4" data-gs-height="4">
+                        <div class="grid-stack-item-content">Hello 2</div>
+                    </div>
+                </div>
+                </p>
+                <div class="row">
+                    <div class="col-xs-6 socialdescription">
+                    <label for="id_name">Description:</label> <br>
+                    {{ form.description }}
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="id_is_browsable">Is Browsable:</label>
+                    {{ form.is_browsable }}
+                </div>
             </div>
             <fieldset>
                 <legend>Images</legend>
@@ -37,10 +73,22 @@
 {#                {% for form in social_board_image_form.forms %}#}
 {#                {% endfor %}#}
             </fieldset>
-            <input type="submit" value="Add SocialBoard" class="submit" />
+            <input type="submit" value="Add Social Board" class="submit" />
         </form>
+    </div>
 {% endblock content %}
 
 {% block javascript %}
     {{ block.super }}
+    <script src="{{ STATIC_URL }}js/vendor/lodash.min.js"></script>
+    <script src="{{ STATIC_URL }}js/vendor/gridstack.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var options = {
+                cell_height: 80,
+                vertical_margin: 10
+            };
+            $('.grid-stack').gridstack(options);
+        });
+    </script>
 {% endblock javascript %}
