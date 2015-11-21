@@ -34,3 +34,12 @@
     width: 300px;
     height: 250px;
 }
+
+.socialitemcontent {
+    border-style: solid;
+    border-color: #ff0000 #0000ff;
+}
+
+.socialpadding {
+    padding: 5px;
+}
