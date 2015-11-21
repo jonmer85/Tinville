@@ -77,3 +77,6 @@ CACHES = {
         }
     }
 }
+
+DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
