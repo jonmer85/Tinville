@@ -4,7 +4,7 @@ from django.views import generic
 from oscar.apps.customer.app import CustomerApplication as CoreCustomerApplication
 
 from .views import AddressUpdateView, AddressCreateView, AddressListView, AddressChangeStatusView, AccountAuthView, \
-    OrderHistoryView
+    OrderHistoryView, PromoterStatusView
 
 
 class CustomerApplication(CoreCustomerApplication):
@@ -56,6 +56,11 @@ class CustomerApplication(CoreCustomerApplication):
             url(r'^orders/(?P<order_number>[\w-]*)/(?P<line_id>\d+)$',
                 login_required(self.order_line_view.as_view()),
                 name='order-line'),
+
+            # Promote
+            url(r'^promoter/$',
+                login_required(PromoterStatusView.as_view()),
+                name='promoter'),
 
             # Address book
             url(r'^addresses/$',

@@ -1,0 +1,132 @@
+{% extends "customer/baseaccountpage.html" %}
+
+{% load i18n %}
+
+{% block tabcontent %}
+
+
+
+    <div class="container">
+        <div class="row">
+            <h2 class="col-xs-offset-3 col-xs-8">Become a Promoter and Share our Profits</h2>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                    <li class="active"><a href="#step-1">
+                        <h4 class="list-group-item-heading">Step 1</h4>
+                        <p class="list-group-item-text">How does it work?</p>
+                    </a></li>
+                    <li class="disabled"><a href="#step-2">
+                        <h4 class="list-group-item-heading">Step 2</h4>
+                        <p class="list-group-item-text">Second step description</p>
+                    </a></li>
+                    <li class="disabled"><a href="#step-3">
+                        <h4 class="list-group-item-heading">Step 3</h4>
+                        <p class="list-group-item-text">Third step description</p>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row setup-content" id="step-1">
+            <div class="col-xs-12">
+                <div class="col-md-12 well text-center">
+                    <h2> How it Works</h2>
+                    <h4>
+                    You will generate a promo code that is unique to you. This promo code will be included every time you
+                    share a shop, item, or any other page from Tinville.
+                    <h4/>
+                    <h4>
+                    When someone follows your shared link, Tinville will automatically detect that you referred the customer
+                    and will pay you 5% of any items purchased by that user.
+                    </h4>
+
+                    <button id="activate-step-2" class="btn btn-primary btn-lg">Sign me up!</button>
+                </div>
+            </div>
+        </div>
+        <div class="row setup-content" id="step-2">
+            <div class="col-xs-12">
+                <div class="col-md-12 well">
+                    <h1 class="text-center"> STEP 2</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row setup-content" id="step-3">
+            <div class="col-xs-12">
+                <div class="col-md-12 well">
+                    <h1 class="text-center"> STEP 3</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block javascript %}
+
+    <script>
+        $(document).ready(function() {
+
+            var navListItems = $('ul.setup-panel li a'),
+                allWells = $('.setup-content');
+
+            allWells.hide();
+
+            navListItems.click(function(e)
+            {
+                e.preventDefault();
+                var $target = $($(this).attr('href')),
+                    $item = $(this).closest('li');
+
+                if (!$item.hasClass('disabled')) {
+                    navListItems.closest('li').removeClass('active');
+                    $item.addClass('active');
+                    allWells.hide();
+                    $target.show();
+                }
+            });
+
+            $('ul.setup-panel li.active a').trigger('click');
+
+            // DEMO ONLY //
+            $('#activate-step-2').on('click', function(e) {
+                $('ul.setup-panel li:eq(1)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+                $(this).remove();
+            })
+        });
+    </script>
+    {% endblock javascript %}
+
+
+
+
+{#    <table class="table table-striped table-bordered">#}
+{#        <tbody>#}
+{#            <tr>#}
+{#                <th>{% trans 'Name' %}</th>#}
+{#                <td>{{ request.user.get_full_name|default:'-' }}</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <th>{% trans 'Email address' %}</th>#}
+{#                <td>{{ user.email }}</td>#}
+{#            </tr>#}
+{#            {% block profile_fields %}#}
+{#                {% for field in profile_fields %}#}
+{#                    <tr>#}
+{#                        <th>{{ field.name }}</th>`#}
+{#                        <td>{{ field.value|default:"-" }}</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            {% endblock %}#}
+{#            <tr>#}
+{#                <th>{% trans 'Date registered' %}</th>#}
+{#                <td>{{ user.date_joined }}</td>#}
+{#            </tr>#}
+{#        </tbody>#}
+{#    </table>#}
+
+{#    <a href="{% url 'customer:change-password' %}" class="btn btn-primary">{% trans 'Change password' %}</a>#}
+{#    <a href="{% url 'customer:profile-update' %}" class="btn btn-primary">{% trans 'Edit profile' %}</a>#}
+{#    <a id="delete_profile" href="{% url 'customer:profile-delete' %}" class="btn btn-danger">{% trans 'Delete profile' %}</a>#}
+
+{% endblock %}
