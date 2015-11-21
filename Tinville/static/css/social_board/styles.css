@@ -1,6 +1,6 @@
 .socialname {
     border-radius: 25px;
-    background: #73AD21;
+    background: #e7e5e6;
     padding: 10px;
     width: 200px;
     height: 50px;
@@ -8,10 +8,12 @@
 
 .socialauthor {
     border-radius: 25px;
-    background: #73AD21;
+    background: #f46430;
+    color: white;
     padding: 10px;
     width: 100px;
     height: 50px;
+    text-align: center;
 }
 
 .socialcontainer {
@@ -21,7 +23,8 @@
 
 .socialdescription {
     border-radius: 25px;
-    background: #73AD21;
+    background: #5B595A;
+    color: #e7e5e6;
     padding: 10px;
     width: 300px;
     height: 250px;
@@ -29,15 +32,14 @@
 
 .socialboard {
     border-radius: 25px;
-    background: #73AD21;
+    background: #9c6f3e ;
     padding: 10px;
     width: 300px;
     height: 250px;
 }
 
 .socialitemcontent {
-    border-style: solid;
-    border-color: #ff0000 #0000ff;
+    border: solid #e7e5e6;
 }
 
 .socialpadding {
