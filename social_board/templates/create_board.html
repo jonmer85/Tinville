@@ -5,6 +5,7 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/gridstack.min.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/social_board/styles.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.guillotine.css" />
 {% endblock head %}
 
 {% block content %}
@@ -26,8 +27,30 @@
                 </div>
 
                 <div class="row grid-stack socialboard">
-                <div id="1" class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="1" data-gs-height="1"><div class="grid-stack-item-content socialitemcontent"><img alt="hello1" class="img-responsive"></div></div>
-                <div id="2" class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="1" data-gs-height="1"><div class="grid-stack-item-content socialitemcontent"><img alt="hello2" class="img-responsive"></div></div>
+                <div id="1" class="grid-stack-item">
+                    <div class="grid-stack-item-content socialitemcontent">
+                        <div id="img1-parent" style="width: 80%;">
+                            <img id="img1" alt="hello1" class="img-responsive">
+                            <input type="file" id="item1-file">
+                            <button id="img1-rotate-left-btn" type="button">Rotate Left</button>
+                            <button id="img1-rotate-right-btn" type="button">Rotate Right</button>
+                            <button id="img1-zoom-in-btn" type="button">Zoom in</button>
+                            <button id="img1-zoom-out-btn" type="button">Zoom out</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="2" class="grid-stack-item">
+                    <div class="grid-stack-item-content socialitemcontent">
+                        <div id="img2-parent" style="width: 80%;">
+                            <img id="img2" alt="hello2" class="img-responsive">
+                            <input type="file" id="item2-file">
+                            <button id="img2-rotate-left-btn" type="button">Rotate Left</button>
+                            <button id="img2-rotate-right-btn" type="button">Rotate Right</button>
+                            <button id="img2-zoom-in-btn" type="button">Zoom in</button>
+                            <button id="img2-zoom-out-btn" type="button">Zoom out</button>
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <div class="row socialpadding">
@@ -74,6 +97,7 @@
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/vendor/lodash.min.js"></script>
     <script src="{{ STATIC_URL }}js/vendor/gridstack.min.js"></script>
+    <script src="{{ STATIC_URL }}js/vendor/jquery.guillotine.min.js"></script>
     <script type="text/javascript">
         $(function () {
             var options = {
@@ -81,6 +105,86 @@
                 vertical_margin: 10
             };
             $('.grid-stack').gridstack(options);
+            ImageLoader("item1-file", "img1", '#img1-rotate-left-btn', '#img1-rotate-right-btn', '#img1-zoom-in-btn', '#img1-zoom-out-btn');
+            ImageLoader("item2-file", "img2", '#img2-rotate-left-btn', '#img2-rotate-right-btn', '#img2-zoom-in-btn', '#img2-zoom-out-btn');
+            $('#img1-rotate-left-btn').hide();
+            $('#img1-rotate-right-btn').hide();
+            $('#img1-zoom-in-btn').hide();
+            $('#img1-zoom-out-btn').hide();
+
+            $('#img2-rotate-left-btn').hide();
+            $('#img2-rotate-right-btn').hide();
+            $('#img2-zoom-in-btn').hide();
+            $('#img2-zoom-out-btn').hide();
         });
+
+        function ImageLoader(itemTag, imageTag, rotateLeftId, rotateRightId, zoomInId, zoomOutId) {
+            var item = document.getElementById(itemTag);
+            var file;
+            item.addEventListener("change", function (event) {
+                file = item.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var dataUri = event.target.result,
+                            img = document.getElementById(imageTag);
+
+                    img.src = dataUri;
+                };
+
+                reader.onerror = function (event) {
+                    console.error("File could not be read! Code " + event.target.error.code);
+                };
+
+                reader.readAsDataURL(file);
+                $(rotateLeftId).show();
+                $(rotateRightId).show();
+                $(zoomInId).show();
+                $(zoomOutId).show();
+
+                var picture = $('#' + imageTag);
+                picture.guillotine({width: 400, height: 300});
+            }, false);
+        }
+        
+        $('#img1-rotate-left-btn').click(function(){
+            var picture = $('#img1');
+            picture.guillotine('rotateLeft');
+        });
+
+        $('#img1-rotate-right-btn').click(function(){
+            var picture = $('#img1');
+            picture.guillotine('rotateRight');
+        });
+
+        $('#img1-zoom-in-btn').click(function(){
+            var picture = $('#img1');
+            picture.guillotine('zoomIn');
+        });
+
+        $('#img1-zoom-out-btn').click(function(){
+            var picture = $('#img1');
+            picture.guillotine('zoomOut');
+        });
+
+        $('#img2-rotate-left-btn').click(function(){
+            var picture = $('#img2');
+            picture.guillotine('rotateLeft');
+        });
+
+        $('#img2-rotate-right-btn').click(function(){
+            var picture = $('#img2');
+            picture.guillotine('rotateRight');
+        });
+
+        $('#img2-zoom-in-btn').click(function(){
+            var picture = $('#img2');
+            picture.guillotine('zoomIn');
+        });
+
+        $('#img2-zoom-out-btn').click(function(){
+            var picture = $('#img2');
+            picture.guillotine('zoomOut');
+        });
+
     </script>
 {% endblock javascript %}

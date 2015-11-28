@@ -33,12 +33,13 @@
     border-radius: 25px;
     background: #9c6f3e ;
     padding: 10px;
-    width: 300px;
+    width: 80%;
     height: 250px;
 }
 
 .socialitemcontent {
     border: solid #e7e5e6;
+    width: 30%;
 }
 
 .socialpadding {
