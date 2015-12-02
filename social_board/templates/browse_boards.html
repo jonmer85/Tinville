@@ -1,28 +1,60 @@
 <!DOCTYPE html>
 {% extends "base.html" %}
 {% load i18n %}
+{% load comments %}
+{% load likes_inclusion_tags %}
+{% load endless %}
 {% block head %}
     {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}fluent_comments/css/ajaxcomments.css" />
 {% endblock head %}
 
 {% block content %}
     {{ block.super }}
+    <div class="container">
     {% for board in social_boards  %}
         {% if board.is_browsable %}
-            <div class="socialBoard">
-                <p>Name: {{ board.name }}</p>
-                <p>Description: {{ board.description }}</p>
-                <p>User: {{ board.user.first_name }} {{ board.user.last_name }}</p>
-                {% for used_image in board.socialusedimage_set.all %}
-                    <div class="usedImage" data-cropping="{{ used_image.cropping }}" data-location="{{ used_image.location }}" data-filter="{{ used_image.filter }}" data-image-url="{{ used_image.image.original.url }}">
-                        <img src="{{ used_image.image.original.url }}">
-                    </div>
-                {% endfor %}
+            <div class="socialBoard col-xs-12">
+                <div>
+                    <p>Name: {{ board.name }}</p>
+                    <p>Description: {{ board.description }}</p>
+                    <p>User: {{ board.user.first_name }} {{ board.user.last_name }}</p>
+                        <div>
+                        {% for used_image in board.socialusedimage_set.all %}
+                            <span class="usedImage" data-cropping="{{ used_image.cropping }}" data-location="{{ used_image.location }}" data-filter="{{ used_image.filter }}" data-image-url="{{ used_image.image.original.url }}">
+                                <img src="{{ used_image.image.original.url }}">
+                            </span>
+                        {% endfor %}
+                        </div>
+                </div>
+                <span class="voteForMe"></span>
+                <div class="col-xs-12 container">
+                    {% if user.is_authenticated %}
+                        {% render_comment_form for board %}
+                    {% endif %}
+                </div>
+                <div>
+{#                     {% get_comment_list for board as comment_list %}#}
+{#                     {% paginate 10 comment_list %}#}
+{#                     {% for comment in comment_list %}#}
+{#                         <div>{{ comment.comment }}</div>#}
+{#                    {% endfor %}#}
+{#                    {% show_more "<div class='col-xs-12'><div class='well col-xs-12 col-md-4 col-md-offset-4' style='text-align: center;'>Show me more items!</div></div>" %}#}
+                     {% render_comment_list for board %}
+                     {% likes board template="likes/inclusion_tags/likes_socialboard.html" %}
+                </div>
             </div>
         {% endif %}
     {% endfor %}
+    </div>
 {% endblock content %}
 
 {% block javascript %}
     {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}fluent_comments/js/ajaxcomments.js"></script>
+    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}likes/includes/likes.js"></script>
+    <script>
+        $.endlessPaginate();
+    </script>
 {% endblock javascript %}

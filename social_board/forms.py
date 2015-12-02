@@ -25,14 +25,11 @@ class SocialUsedImageForm(forms.ModelForm):
 
 
 BaseSocialUsedImageFormSet = inlineformset_factory(
-    SocialBoard, SocialUsedImage, form=SocialUsedImageForm, fields=('cropping', 'location', 'image'), min_num=1, max_num=4)
+    SocialBoard, SocialUsedImage, form=SocialUsedImageForm, fields=('cropping', 'location', 'filter', 'image'), min_num=1, max_num=4)
 
 class SocialUsedImageFormSet(BaseSocialUsedImageFormSet):
     def __init__(self, *args, **kwargs):
         super(SocialUsedImageFormSet, self).__init__(*args, **kwargs)
-
-
-
 
 
 class SocialInteractionForm(forms.ModelForm):

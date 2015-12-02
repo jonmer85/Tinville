@@ -1754,3 +1754,13 @@ body {
 #lastFour{
     padding: 0;
 }
+
+a.love {
+    color: #f46430;
+    font-size: 2em;
+    text-decoration: none;
+}
+
+a.love:hover {
+
+}

@@ -115,7 +115,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
@@ -123,7 +122,8 @@ MIDDLEWARE_CLASSES = (
     'minidetector.Middleware',
     # The below clickjacking middleware must be last in the list.
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'likes.middleware.SecretBallotUserIpUseragentMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'Tinville.urls'
@@ -142,8 +142,9 @@ TEMPLATE_DIRS = (
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("dashboard").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("customer").child("templates"),
     PROJECT_DIR.parent.child("custom_oscar").child("apps").child("catalogue").child("templates"),
+    PROJECT_DIR.parent.child("likes"),
     PROJECT_DIR.parent.child("partials"),
-    OSCAR_MAIN_TEMPLATE_DIR
+    OSCAR_MAIN_TEMPLATE_DIR,
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -173,7 +174,7 @@ PROJECT_APPS = [
     'basket',
     'designer_shop',
     'common',
-    'social_board'
+    'social_board',
 ]
 
 INSTALLED_APPS = [
@@ -215,7 +216,11 @@ INSTALLED_APPS = [
     'filer',
     'mptt',
     'flatpages_filer',
-    'markitup'
+    'markitup',
+    'fluent_comments',
+    'django_comments',
+    'secretballot',
+    'likes',
 ] + PROJECT_APPS + get_core_apps(['custom_oscar.apps.catalogue',
                                   # 'custom_oscar.apps.basket',
                                   'custom_oscar.apps.customer',
@@ -225,6 +230,8 @@ INSTALLED_APPS = [
                                   'custom_oscar.apps.dashboard.pages',
                                   'custom_oscar.apps.order'])
 
+COMMENTS_APP = 'fluent_comments'
+FLUENT_COMMENTS_EXCLUDE_FIELDS = ('name', 'email', 'url')
 
 LOGGING = {
     'version': 1,
@@ -527,8 +534,6 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = True
 
 BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
-BLEACH_DEFAULT_WIDGET = 'tinymce.widgets.TinyMCE'
-
 
 # Django Debug Toolbar
 def show_toolbar(request):

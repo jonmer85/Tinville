@@ -52,6 +52,8 @@ class TinvilleUser(AbstractUser):
 
     objects = TinvilleUserManager()
 
+    USERNAME_FIELD = 'email'
+
     def generate_activation_information(self):
 
          # Build the activation key for their account
@@ -102,6 +104,10 @@ class TinvilleUser(AbstractUser):
                      " this link within 7 days:\n\n%s" % (scheme+"://"+base_url+confirmation_url)
 
         send_mail(email_subject, email_body, EMAIL_HOST_USER, [self.email])
+
+    @property
+    def username(self):
+        return self.email
 
 
 class DesignerPayout(models.Model):

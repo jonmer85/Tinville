@@ -1,10 +1,18 @@
 import json
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import DetailView, TemplateView, FormView, CreateView, ListView
 from django.views.generic.edit import FormMixin
 from django.db import transaction
+from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
 from user.models import TinvilleUser
 from .models import SocialCompetition,SocialBoard
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from .forms import *
+from .utils import can_vote
+from django.template import RequestContext
+from likes.signals import can_vote_test
 
 
 class ProfileView(DetailView):
@@ -24,15 +32,15 @@ class CompetitionsView(TemplateView):
     template_name = 'competitions.html'
 
 
-class BrowseBoardsView(FormMixin, TemplateView):
+class BrowseBoardsView(TemplateView):
     context_object_name = "browse_boards"
     template_name = 'browse_boards.html'
-    form_class = SocialInteractionForm
+
+    can_vote_test.connect(can_vote)
 
     def get_context_data(self, **kwargs):
         context = super(BrowseBoardsView, self).get_context_data(**kwargs)
-        context['social_boards'] = SocialBoard.objects.filter(user=self.request.user)
-        context['form'] = self.get_form(SocialInteractionForm)
+        context['social_boards'] = SocialBoard.objects.all()
         return context
 
 
@@ -94,73 +102,10 @@ class SocialBoardCreateView(CreateView):
                                   social_used_image_form=social_used_image_form))
 
 
-class SocialInteractionView(FormView):
-    context_object_name = "social_board_create"
-    template_name = "view_board.html"
-    form_class = SocialInteractionForm
-    success_url = '/social'
-
-    def get(self, request, *args, **kwargs):
-        """
-        Handles GET requests and instantiates blank versions of the form
-        and its inline formsets.
-        """
-        self.object = None
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        social_comment_form = SocialUsedImageFormSet(instance=request.social_board)
-        social_vote_form = SocialVoteFormset(instance=request.social_board)
-        return self.render_to_response(
-            self.get_context_data(form=form,
-                                  social_comment_form=social_comment_form,
-                                  social_vote_form=social_vote_form))
-
-    def post(self, request, *args, **kwargs):
-        """
-        Handles POST requests, instantiating a form instance and its inline
-        formsets with the passed POST variables and then checking them for
-        validity.
-        """
-        self.object = None
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        social_used_image_form = SocialUsedImageFormSet(self.request.POST)
-        if (form.is_valid() and social_used_image_form.is_valid()):
-            return self.form_valid(request, form, social_used_image_form)
-        else:
-            return self.form_invalid(form, social_used_image_form)
-
-    def form_valid(self, request, form, social_used_image_form):
-        """
-        Called if all forms are valid. Creates a Recipe instance along with
-        associated Ingredients and Instructions and then redirects to a
-        success page.
-        """
-        social_board = form.save(commit=False)
-        social_board.user = request.user
-        self.object = social_board.save()
-        social_used_image_form.instance = self.object
-        social_used_image_form.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def form_invalid(self, form, social_used_image_form):
-        """
-        Called if a form is invalid. Re-renders the context data with the
-        data-filled forms and errors.
-        """
-        return self.render_to_response(
-            self.get_context_data(form=form,
-                                  social_used_image_form=social_used_image_form))
-
-
-
-
 # class AddToCompetitionView(FormView):
 #
 # class RemoveFromCompetitionView(FormView):
 #
-# class SocialVoteView(FormView):
-#
 # class SocialFollowView(FormView):
-
+#
 # class DeleteSocialBoardView(FormView)

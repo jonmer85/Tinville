@@ -46,10 +46,10 @@ urlpatterns = patterns('django.contrib.flatpages.views',
     # url(r'^terms/$', 'flatpage', kwargs={'url': '/terms/'}, name='home_terms'),
 )
 
-import debug_toolbar
-urlpatterns += patterns('',
-    url(r'^__debug__/', include(debug_toolbar.urls)),
-)
+# import debug_toolbar
+# urlpatterns += patterns('',
+#     url(r'^__debug__/', include(debug_toolbar.urls)),
+# )
 
 urlpatterns += patterns('',
 (r'^dowser/', include('django_dowser.urls')),
@@ -90,6 +90,8 @@ urlpatterns += patterns('',
     url(r'^cart/', include(basket_app.urls)),
     url(r'^checkout/', include(checkout_app.urls)),
     url(r'^social/', include(social_app.urls)),
+    url(r'^comments/', include('fluent_comments.urls')),
+    url(r'^likes/', include('likes.urls')),
     url(r'^access_code', BetaAccessView.as_view(), name = 'beta_access'),
     url(r'^cart/', include(basket_app.urls)),
     url(r'^under_construction', TemplateView.as_view(template_name='under_construction.html'), name='under_construction'),

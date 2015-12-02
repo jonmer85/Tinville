@@ -1,6 +1,8 @@
 from django.db import models
-from image_cropping import ImageRatioField
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+import secretballot
 
 
 class SocialBoard(models.Model):
@@ -10,6 +12,8 @@ class SocialBoard(models.Model):
     description = models.TextField('Description', blank=True)
     is_deleted = models.BooleanField("Is Deleted", default=False)
     is_browsable = models.BooleanField("Is Browsable", default=True)
+
+secretballot.enable_voting_on(SocialBoard)
 
 
 class SocialBoardImage(models.Model):
@@ -30,11 +34,11 @@ class SocialUsedImage(models.Model):
 
 
 class SocialVote(models.Model):
+    # content_type = generic.GenericForeignKey(ContentType)
     user = models.ForeignKey('user.TinvilleUser', verbose_name="User")
-    board = models.ForeignKey('social_board.SocialBoard', verbose_name="Social Board")
-    competition = models.ForeignKey('social_board.SocialCompetition', verbose_name="Social Competition", blank=True, null=True)
     date_created = models.DateTimeField("Date Created", auto_now_add=True)
-    is_vote = models.BooleanField("Is Stale", default=False)
+    date_modified = models.DateTimeField("Date Modified", auto_now_add=True)
+    is_vote = models.BooleanField("Is Like", default=False)
 
 
 class SocialFollow(models.Model):

@@ -1,0 +1,41 @@
+{% load i18n %}
+
+{#{% if import_js %}#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}likes/includes/likes.js"></script>#}
+{#{% endif %}#}
+
+{% if likes_enabled %}
+    {% if likes_context %}
+        <div class="likes">
+            {{ likes_context.content_obj.vote_total }}
+            <span>
+                {% if user.is_authenticated %}
+                    {% if likes_context.user_vote > 0 %}
+                        <a class="liker glyphicon glyphicon-heart love" href="{% url "like" content_type likes_context.content_obj.id 0 %}" rel="nofollow"></a>
+                    {% else %}
+                        <a class="liker glyphicon glyphicon-heart-empty love" href="{% url "like" content_type likes_context.content_obj.id +1 %}" rel="nofollow"></a>
+                    {% endif %}
+                {% else %}
+                    {% trans "Likes" %}
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <div class="likes">
+        {{ content_obj.vote_total }}
+
+        <span>
+            {% if user.is_authenticated %}
+                {% if user_vote > 0 %}
+                    <a class="liker glyphicon glyphicon-heart love" href="{% url "like" content_type content_obj.id 0 %}" rel="nofollow"></a>
+                {% else %}
+                    <a class="liker glyphicon glyphicon-heart-empty love" href="{% url "like" content_type content_obj.id +1 %}" rel="nofollow"></a>
+                {% endif %}
+            {% else %}
+                {% trans "Likes" %}
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+
+{% endif %}
