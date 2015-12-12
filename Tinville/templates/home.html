@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load purchase_info_tags %}
 {% load cropping %}
+{% load endless %}
+
 {% block head %}
     {{ block.super }}
 {#    {% block meta %}#}
@@ -22,62 +25,63 @@
     {% block content %}
         {{ block.super }}
 
-        <div class="container">
 
-        <div class="container" style="padding-top: 10px">
-            <div class="row">
-                <div id="mainPicId" class="nopadleft col-xs-12 col-sm-6" style="padding-right: 5px">
-                    <img id="mainImgId" class="img-responsive" src="{{ STATIC_URL }}img/home/final_one.jpg">
-                </div>
-                <div class="hidden-xs col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-4 nopadding" style="padding-left: 5px">
-                            <a href="/shop">
-                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/shop.png">
-                            </a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a class="" href="https://www.tinville.com/the-garwood-watch/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/watch.png"></a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a href="/about">
-                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/inspire.png">
-                            </a>
-                        </div>
+
+        <div class="" style="padding-top: 7px">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+{#                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>#}
+                  </ol>
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                      <img src="{{ STATIC_URL }}img/banner-xl.jpg" alt="">
+                      <div class="carousel-caption">
+                        The social fashion network
+                      </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-4 nopadding" style="padding-left: 5px">
-                            <a class="" href="https://www.tinville.com/something-strong/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/bag.png"></a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a href="/shoplist">
-                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/wear.png">
-                            </a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a class="" href="https://www.tinville.com/vlado-footwear/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/shoes.png"></a>
-                        </div>
+                    <div class="item">
+                      <img src="{{ STATIC_URL }}img/home/promoterBanner.jpg" alt="">
+                      <div class="carousel-caption">
+                        The social fashion network
+                      </div>
                     </div>
-                </div>
+                  </div>
+
+                  <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+            </div>
+
+        </div>
+
+
+        <div class="container">
+            <div id="owl-socialBoard" class="owl-carouselSB">
+                {% if menproducts %}
+                    {% for product in menproducts %}
+                        <div id="mitemSB{{ forloop.counter }}">
+                        <div class="thumbnail  " >
+                            {% include "designer_shop/item_gallery.html" %}
+                        </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div id="searchShopId" class="searchShop">
+                            No item found with current filter selection
+                    </div>
+                {% endif %}
             </div>
         </div>
-{##}
-{##}
-{##}
-{##}
-{#        <div class="container"  >#}
-{#            <div class="row">#}
-{##}
-{#                <div class="col-xs-12 col-sm-6" style="padding-right: 0px">#}
-{#                    <a class="" href="/shoplist/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/ad1.png"></a>#}
-{#                </div>#}
-{#               <div class="col-xs-12 col-sm-6" style="padding-left: 0px">#}
-{#                    <a class="" href="/shoplist/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/ad2.png"></a>#}
-{#                </div>#}
-{##}
-{##}
-{#            </div>#}
-{#        </div>#}
 
         <div class="container" style="padding-bottom: 50px;">
             <div class="row">
@@ -113,6 +117,7 @@
         {{ block.super }}
         <script>
         $( document ).ready(function() {
+            $("#owl-socialBoard").owlCarousel();
 {#            $("#itemID").removeClass("col-xs-6");#}
             var text = "";
             var i;
