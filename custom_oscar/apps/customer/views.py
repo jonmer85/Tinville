@@ -1,7 +1,7 @@
 import json
 from django.template.context import RequestContext
-from django.views.generic import TemplateView
-from custom_oscar.apps.customer.forms import UserAddressForm
+from django.views.generic import TemplateView, FormView
+from custom_oscar.apps.customer.forms import UserAddressForm, GeneratePromoCodeForm
 from django.shortcuts import get_list_or_404, get_object_or_404, redirect
 from oscar.apps.customer.views import AddressUpdateView as CoreAddressUpdateView, OrderHistoryView as CoreOrderHistoryView
 from oscar.apps.customer.views import AddressCreateView as CoreAddressCreateView
@@ -183,8 +183,17 @@ class OrderHistoryView(CoreOrderHistoryView):
             qs = qs.filter(**self.form.get_filters())
         return qs
 
-class PromoterStatusView(TemplateView):
+class PromoterStatusView(FormView):
     template_name = 'promoter.html'
+    form_class = GeneratePromoCodeForm
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated and not self.request.user.access_code:
+            # No access code means they are generating a code now
+            self.request.user.generate_access_code()
+        return super(PromoterStatusView, self).form_valid(form)
+
+
     # def get_queryset(self):
     #     qs = self.model._default_manager.filter(user=self.request.user).exclude(number__contains="-")
     #     if self.form.is_bound and self.form.is_valid():

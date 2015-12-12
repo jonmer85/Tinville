@@ -1,11 +1,12 @@
 from crispy_forms import helper
 from crispy_forms.bootstrap import AppendedText
 from django import forms
+from django.forms import Form
 from django.utils.translation import ugettext_lazy as _
 
 from oscar.apps.address.forms import UserAddressForm as CoreUserAddressForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Div
+from crispy_forms.layout import Layout, Field, Div, Submit
 from oscar.core.loading import get_model
 from django.conf import settings
 from parsley.decorators import parsleyfy
@@ -83,4 +84,13 @@ class UserAddressForm(CoreUserAddressForm):
             # Field('country', placeholder="Country"),
             Field('phone_number', placeholder="Phone Number"),
         css_class="container col-xs-12 col-sm-offset-3 col-sm-6"
+        ))
+
+class GeneratePromoCodeForm(Form):
+    helper = FormHelper()
+    helper.form_show_labels = False
+
+    helper.layout = Layout(
+        Div(
+            Submit('submit', 'Generate my promo code!', css_class='btn btn-primary btn-lg')
         ))
