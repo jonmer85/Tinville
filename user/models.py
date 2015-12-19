@@ -48,7 +48,7 @@ class TinvilleUser(AbstractUser):
     full_legal_name = models.CharField(max_length=255)
     recipient_id = models.CharField(max_length=255)
     customer_id = models.CharField(max_length=255)
-    access_code = models.CharField(max_length=5)
+    promoter_code = models.CharField(max_length=5)
 
     objects = TinvilleUserManager()
 
@@ -60,17 +60,17 @@ class TinvilleUser(AbstractUser):
         self.key_expires = datetime.datetime.utcnow().replace(tzinfo=utc) + datetime.timedelta(7)  # Give 7 days to confirm
         self.save()
 
-    def generate_access_code(self):
-         # Generates random access code for shop
-        access_code_candidate = None
+    def generate_promoter_code(self):
+         # Generates random promoter code for shop
+        promoter_code_candidate = None
         while True:
-            access_code_candidate = get_random_string(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+            promoter_code_candidate = get_random_string(24, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
             try:
-                TinvilleUser.objects.get(access_code = access_code_candidate)
+                TinvilleUser.objects.get(promoter_code=promoter_code_candidate)
                 pass
             except ObjectDoesNotExist:
                 break
-        self.access_code = access_code_candidate
+        self.promoter_code = promoter_code_candidate
         self.save()
 
     def delete(self, *args, **kwargs):

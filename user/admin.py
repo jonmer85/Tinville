@@ -21,11 +21,11 @@ class TinvilleUserAdmin(UserAdmin):
                     'is_approved',
                     'is_staff',
                     'is_superuser',
-                    'access_code'
+                    'promoter_code'
                     )
     list_filter = ('is_approved', 'is_admin', 'is_superuser', 'is_seller')
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'is_seller', 'access_code')}),
+        (None, {'fields': ('email', 'password', 'is_seller', 'promoter_code')}),
         ('Permissions', {'fields': ('is_approved', 'is_superuser', 'is_admin', 'is_active', 'is_staff')}),
         # ('Important dates', {'fields': ('last_login',)}),
     )

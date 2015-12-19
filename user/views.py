@@ -127,7 +127,7 @@ def register(request,type=None):
 
             # Create a Partner model if this is a designer
             if user.is_seller:
-                user.generate_access_code()
+                user.generate_promoter_code()
                 partner = Partner(name=user.email, code=user.slug)
                 partner.save()
                 partner.users.add(user)
@@ -226,7 +226,7 @@ def load_user_notifications_count(request):
 class BetaAccessView(FormView):
     template_name = 'beta_access.html'
     form_class = BetaAccessForm
-    access_code = None
+    promoter_code = None
 
     def get_context_data(self, **kwargs):
         context = super(BetaAccessView, self).get_context_data(**kwargs)
@@ -241,12 +241,12 @@ class BetaAccessView(FormView):
             return reverse(reverse(''))
 
     def form_valid(self, form):
-        form.cleaned_data['access_code']
-        self.access_code = form.cleaned_data['access_code']
+        form.cleaned_data['promoter_code']
+        self.promoter_code = form.cleaned_data['promoter_code']
         return super(BetaAccessView,self).form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         response = super(BetaAccessView, self).dispatch(request, *args, **kwargs)
-        if self.access_code is not None:
-            response.set_cookie(key='beta_access',value = self.access_code, max_age = 365 * 24 * 60 * 60)#set cookie here
+        if self.promoter_code is not None:
+            response.set_cookie(key='beta_access',value = self.promoter_code, max_age = 365 * 24 * 60 * 60)#set cookie here
         return response
