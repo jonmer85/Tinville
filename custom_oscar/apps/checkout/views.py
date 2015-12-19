@@ -202,6 +202,12 @@ class PaymentDetailsView(CorePaymentDetailsView):
 
         return method
 
+    def get_promoter(self):
+        if 'promoter' in self.request.session:
+            return self.request.session['promoter']
+        else:
+            return None
+
     def submit(self, user, basket, shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, billing_address, order_total, payment_kwargs=None, order_kwargs=None):
         """
@@ -237,6 +243,7 @@ class PaymentDetailsView(CorePaymentDetailsView):
         # completing payment on a 3rd party site.  Also, store a reference to
         # the basket in the session so that we know which basket to thaw if we
         # get an unsuccessful payment response when redirecting to a 3rd party
+        # site.
         # site.
         self.freeze_basket(basket)
         self.checkout_session.set_submitted_basket(basket)
@@ -399,7 +406,6 @@ class PaymentDetailsView(CorePaymentDetailsView):
         return str(order_num)
 
 
-
     def handle_order_placement(self, order_number, user, basket,
                                shipping_address, shipping_method,
                                shipping_charge, order_total,
@@ -416,6 +422,8 @@ class PaymentDetailsView(CorePaymentDetailsView):
             shipping_address=shipping_address, shipping_method=shipping_method,
             shipping_charge=shipping_charge, order_total=order_total,
             billing_address=billing_address, **kwargs)
+        order.promoter = self.get_promoter()
+        order.save()
         return order
 
 

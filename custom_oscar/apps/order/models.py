@@ -17,6 +17,8 @@ class Order(AbstractOrder):
     def estimated_designer_cut(self):
         return get_designer_payout_amount(self.total_excl_tax - self.shipping_excl_tax)
 
+    promoter = models.ForeignKey('user.TinvilleUser', verbose_name="Promoter", blank=True, null=True)
+
 
 class ShippingEvent(AbstractShippingEvent):
     group = models.IntegerField(null=True)

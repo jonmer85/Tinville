@@ -88,3 +88,5 @@ def shop_gallery(request):
         return render_to_response(template, context, context_instance=RequestContext(request))
 
 
+
+

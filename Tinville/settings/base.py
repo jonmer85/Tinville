@@ -121,8 +121,11 @@ MIDDLEWARE_CLASSES = (
     'minidetector.Middleware',
     # The below clickjacking middleware must be last in the list.
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middleware.PromoterMiddleware',
 
 )
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
