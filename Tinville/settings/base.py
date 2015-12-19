@@ -121,8 +121,11 @@ MIDDLEWARE_CLASSES = (
     'minidetector.Middleware',
     # The below clickjacking middleware must be last in the list.
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middleware.PromoterMiddleware',
 
 )
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -509,6 +512,7 @@ CELERYBEAT_SCHEDULE = {
 }
 
 TINVILLE_ORDER_SALES_CUT = Decimal(0.20)  # Tinville takes 20% of designer sales
+TINVILLE_PROMOTER_SALES_CUT = Decimal(0.03) # Tinville pays our 3% of sales to promoters
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {

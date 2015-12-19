@@ -119,6 +119,14 @@ class DesignerPayout(models.Model):
     # that was used for this event.
     reference = models.CharField("Reference", max_length=128, blank=True)
 
+class PromoterPayout(models.Model):
+    promoter = models.ForeignKey('TinvilleUser')
+    datetime = models.DateTimeField(auto_now=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=12)
+    # The reference should refer to the transaction ID of the payment gateway
+    # that was used for this event.
+    reference = models.CharField("Reference", max_length=128, blank=True)
+
 class UserPaymentMethod(models.Model):
     user = models.ForeignKey('TinvilleUser')
     card_token = models.CharField(max_length=255)

@@ -36,9 +36,12 @@ def get_dict_value_or_suspicious_operation(dict, key):
         raise SuspiciousOperation('No key %s in %s' % (key, dict))
 
 def get_designer_payout_amount(original_amount):
-    # We take 10% of sales.
+    # We take 20% of sales.
     return (original_amount -
             (original_amount * settings.TINVILLE_ORDER_SALES_CUT).quantize(D('0.01'), rounding=ROUND_FLOOR))
+
+def get_promoter_payout_amount(original_amount):
+    return(original_amount * settings.TINVILLE_PROMOTER_SALES_CUT).quantize(D('0.01'), rounding=ROUND_FLOOR)
 
 def isNoneOrEmptyOrWhitespace (validateString):
     if validateString:
