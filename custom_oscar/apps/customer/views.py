@@ -187,10 +187,13 @@ class PromoterStatusView(FormView):
     template_name = 'promoter.html'
     form_class = GeneratePromoCodeForm
 
+    def get_success_url(self):
+        return "/accounts/promoter/"
+
     def form_valid(self, form):
-        if self.request.user.is_authenticated and not self.request.user.access_code:
-            # No access code means they are generating a code now
-            self.request.user.generate_access_code()
+        if self.request.user.is_authenticated and not self.request.user.promoter_code:
+            # No promoter code means they are generating a code now
+            self.request.user.generate_promoter_code()
         return super(PromoterStatusView, self).form_valid(form)
 
 
