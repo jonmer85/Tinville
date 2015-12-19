@@ -12,7 +12,7 @@
             "is_approved": false,
             "key_expires": "2020-02-02",
             "user_permissions": [166],
-            "access_code": "ABC12"
+            "promoter_code": "ABC123456789123456789"
         }
     },
     {
@@ -27,7 +27,7 @@
             "is_seller": false,
             "is_approved": false,
             "key_expires": "2020-02-02",
-            "access_code": "ABC13"
+            "promoter_code": "ABC123456789123456780"
         }
     },
     {
