@@ -13,17 +13,17 @@
         <div class="row form-group">
             <div class="col-xs-12">
                 <ul class="nav nav-pills nav-justified thumbnail setup-panel">
-                    <li class="active"><a href="#step-1">
+                    <li id="tab-step-1" class="active"><a href="#step-1">
                         <h4 class="list-group-item-heading">Step 1</h4>
                         <p class="list-group-item-text">How does it work?</p>
                     </a></li>
-                    <li class="disabled"><a href="#step-2">
+                    <li id="tab-step-2" class="disabled"><a href="#step-2">
                         <h4 class="list-group-item-heading">Step 2</h4>
                         <p class="list-group-item-text">Generate my promo code</p>
                     </a></li>
-                    <li class="disabled"><a href="#step-3">
+                    <li id="tab-step-3" class="disabled"><a href="#step-3">
                         <h4 class="list-group-item-heading">Step 3</h4>
-                        <p class="list-group-item-text">Third step description</p>
+                        <p class="list-group-item-text">Congratulations!</p>
                     </a></li>
                 </ul>
             </div>
@@ -38,7 +38,7 @@
                     </h4>
                     <h4>
                     When someone follows your shared link, Tinville will automatically detect that you referred the customer
-                    and will pay you 5% of any items purchased by that user.
+                    and will pay you 3% of any items purchased by that user.
                     </h4>
 
                     <button id="activate-step-2" class="btn btn-primary btn-lg">Sign me up!</button>
@@ -56,8 +56,9 @@
         <div class="row setup-content" id="step-3">
             <div class="col-xs-12">
                 <div class="col-md-12 well">
-                    <h1 class="text-center"> STEP 3</h1>
-                    {% if not user.is_promoter %}
+                    <h2 class="text-center">Congratulations!</h2>
+                    <p>You are now able to promote Tinville using the following links.</p>
+                    {% if user.is_promoter %}
                         <p>{{ user.promoter_code }}</p>
                     {% endif %}
                 </div>
@@ -70,28 +71,37 @@
     <script>
         $(document).ready(function() {
 
-            var navListItems = $('ul.setup-panel li a'),
-                allWells = $('.setup-content');
+            var navListItems = $('ul.setup-panel li a');
+            var setupContent = $('.setup-content');
 
-            allWells.hide();
+            setupContent.hide();
+
+            {% if user.is_promoter %}
+                if($('#tab-step-1').hasClass('active')) {
+                    $('#tab-step-1').removeClass('active');
+                    $('#tab-step-1').addClass('disabled');
+                    $('#tab-step-3').addClass('active');
+                    $('#step-3').show();
+                }
+            {% endif %}
 
             navListItems.click(function(e)
             {
                 e.preventDefault();
-                var $target = $($(this).attr('href')),
-                    $item = $(this).closest('li');
+                var $target = $($(this).attr('href'));
+                var $item = $(this).closest('li');
 
                 if (!$item.hasClass('disabled')) {
                     navListItems.closest('li').removeClass('active');
                     $item.addClass('active');
-                    allWells.hide();
+                    setupContent.hide();
                     $target.show();
                 }
             });
 
             $('ul.setup-panel li.active a').trigger('click');
 
-            $('#activate-step-2').on('click', function(e) {
+            $('#activate-step-2').on('click', function() {
                 $('ul.setup-panel li:eq(1)').removeClass('disabled');
                 $('ul.setup-panel li a[href="#step-2"]').trigger('click');
                 $(this).remove();
