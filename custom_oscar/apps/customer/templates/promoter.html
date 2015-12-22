@@ -78,8 +78,7 @@
 
             {% if user.is_promoter %}
                 if($('#tab-step-1').hasClass('active')) {
-                    $('#tab-step-1').removeClass('active');
-                    $('#tab-step-1').addClass('disabled');
+                    $('#tab-step-1').removeClass('active').addClass('disabled');
                     $('#tab-step-3').addClass('active');
                     $('#step-3').show();
                 }
