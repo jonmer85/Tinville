@@ -423,6 +423,29 @@ class PayoutTests(TestCase):
 
         self.assert_proper_stripe_records(promoter_payout)
 
+    def test_promoter_designer_payout_on_one_full_order(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
+        shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
+
+        pay_promoters()
+        pay_designers()
+
+        promoter_payment_event = self.assert_proper_promoter_payment_events(
+            total_payment_events=3, payment_event_group=in_transit_event.group, payout_total=0.29)
+
+        promoter_payout = self.assert_proper_promoter_payout_records(
+            total_payout_records=1, payment_event_ref=promoter_payment_event.reference, payout_total=0.29)
+
+        self.assert_proper_stripe_records(promoter_payout)
+
+        designer_payment_event = self.assert_proper_designer_payment_events(
+            total_payment_events=3, payment_event_group=in_transit_event.group, payout_total=5.60)
+
+        designer_payout = self.assert_proper_designer_payout_records(
+            total_payout_records=1, payment_event_ref=designer_payment_event.reference, payout_total=5.60)
+
+        self.assert_proper_stripe_records(designer_payout)
+
     def test_promoter_payout_on_one_full_order_bank_account(self):
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
         shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
@@ -609,4 +632,5 @@ class PayoutTests(TestCase):
             total_payout_records=2, payment_event_ref=promoter_payment_event.reference, payout_total=0.29)
 
         self.assert_proper_stripe_records(promoter_payout)
+
 
