@@ -73,6 +73,13 @@ class TinvilleUser(AbstractUser):
         self.promoter_code = promoter_code_candidate
         self.save()
 
+    @property
+    def is_promoter(self):
+        if not self.promoter_code:
+            return True
+        else:
+            return False
+
     def delete(self, *args, **kwargs):
         Partner = get_model("partner", "Partner")
         if self.is_seller:

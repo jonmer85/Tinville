@@ -127,7 +127,6 @@ def register(request,type=None):
 
             # Create a Partner model if this is a designer
             if user.is_seller:
-                user.generate_promoter_code()
                 partner = Partner(name=user.email, code=user.slug)
                 partner.save()
                 partner.users.add(user)
