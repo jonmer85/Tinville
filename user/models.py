@@ -75,7 +75,7 @@ class TinvilleUser(AbstractUser):
 
     @property
     def is_promoter(self):
-        if not self.promoter_code:
+        if self.promoter_code:
             return True
         else:
             return False
