@@ -2167,6 +2167,14 @@
         }
     },
     {
+        "pk": 4,
+        "model": "order.paymenteventtype",
+        "fields": {
+            "code": "paid_promoter",
+            "name": "Paid Promoter"
+        }
+    },
+    {
         "pk": 1,
         "model": "customer.communicationeventtype",
         "fields": {

@@ -20,7 +20,7 @@ class PackageStatusTest(TestCase):
     def setUp(self):
         self.user = TinvilleUser.objects.create(email="tony.stark@StarkIndustries.com")
         self.shop = Shop.objects.create(name='StarkIndustries', user=self.user)
-        self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
 
         self.shipped_event = self.order.shipping_events.create(
             event_type=ShippingEventType.objects.get(code="shipped"), group=0, tracking_code='EZ4000000004', reference='foo')
