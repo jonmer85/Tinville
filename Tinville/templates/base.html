@@ -148,7 +148,7 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                                     <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
                                     <li class="divider"></li>
                                 {% endif %}
-                                {% if user.is_seller or user.is_staff %}
+                                {% if user.is_seller or user.is_promoter or user.is_staff %}
                                     <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                                     <li class="divider"></li>
                                 {% endif %}
@@ -214,7 +214,7 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                             <li><a href="/{{ shopUrl }}/edit">Edit Shop <span class="glyphicon glyphicon-pencil pull-right"></span></a></li>
                             <li class="divider"></li>
                         {% endif %}
-                        {% if user.is_seller or user.is_staff %}
+                        {% if user.is_seller or user.is_staff or user.is_promoter %}
                             <li><a href="/accounts/payment_info">My Payment Info <span class="glyphicon glyphicon-usd pull-right"></span></a></li>
                             <li class="divider"></li>
                         {% endif %}

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic.base import RedirectView, TemplateView
 from oscar.core.loading import get_class
-from user.decorators import designer_required
+from user.decorators import designer_required, designer_promoter_required
 from user.views import ajax_login, register, DesignerPaymentInfoView, BetaAccessView
 from custom_oscar.apps.catalogue.views import ProductDetailView
 from user.forms import LoginForm
@@ -93,7 +93,7 @@ urlpatterns += patterns('',
     url(r'^under_construction', TemplateView.as_view(template_name='under_construction.html'), name='under_construction'),
     url(r'^shoplist', ShopListView.as_view(template_name='shoplist.html'), name='shoplist'),
     url(r'^accounts/register', 'user.views.register', name='register'),
-    url(r'^accounts/payment_info', designer_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),
+    url(r'^accounts/payment_info', designer_promoter_required(DesignerPaymentInfoView.as_view()), name='designer-payment-info'),
     url(r'^accounts/addresses/(?P<pk>\d+)/'
                 r'(?P<action>default_for_(billing|shipping|shop))/$',
                 login_required(AddressChangeStatusView.as_view()),
