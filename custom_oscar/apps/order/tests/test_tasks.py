@@ -390,7 +390,7 @@ class PayoutTests(TestCase):
 
     def test_no_promoters_to_pay(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
@@ -401,7 +401,7 @@ class PayoutTests(TestCase):
 
     def test_no_promoter_payout_if_shipped_but_not_in_transit(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -420,7 +420,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_payout_on_one_full_order(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -438,7 +438,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_designer_payout_on_one_full_order(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -465,7 +465,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_payout_on_one_full_order_bank_account(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -496,7 +496,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_no_payout_if_shipping_not_paid(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -510,7 +510,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_no_payout_if_payment_already_made(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.test_promoter_payout_on_one_full_order()
@@ -525,7 +525,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_no_payout_due_to_no_stripe_recipient_id_for_promoter(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.user.recipient_id = ''
@@ -542,7 +542,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_payout_of_partial_order_full_line_item(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         # Create an order with two line items, but only ship one
@@ -590,7 +590,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_payout_of_partial_order_partial_quantity_line_item(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         # Create an order with two line items, but ship only the partial quantities of both
@@ -639,7 +639,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_payout_of_multiple_orders(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -660,7 +660,7 @@ class PayoutTests(TestCase):
 
     def test_promoter_multiple_payouts_if_orders_between_pay_periods(self):
         # To force payout, set this value over 10
-        self.user.promoter_balance = Decimal(11.00)
+        self.user.promoter_balance = settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT + Decimal(1.00)
         self.user.save()
 
         self.test_promoter_payout_on_one_full_order()
