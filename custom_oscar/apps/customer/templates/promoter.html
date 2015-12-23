@@ -60,6 +60,7 @@
                     <p>You are now able to promote Tinville using the following links.</p>
                     {% if user.is_promoter %}
                         <p>{{ user.promoter_code }}</p>
+                        <button onclick="PromoteClick('{{ user.promoter_code }}')">Promote</button>
                     {% endif %}
                 </div>
             </div>
@@ -104,8 +105,52 @@
                 $('ul.setup-panel li:eq(1)').removeClass('disabled');
                 $('ul.setup-panel li a[href="#step-2"]').trigger('click');
                 $(this).remove();
-            })
+            });
         });
+
+        function PromoteClick(promoterCode)
+        {
+            var currentLocation = window.location;
+            var currentQuery = currentLocation.params();
+            currentQuery.promoter = promoterCode;
+            currentLocation.params(currentQuery);
+            console.log(currentLocation);
+        };
+
+        location.params = function(params) {
+            var obj = {}, i, parts, len, key, value;
+
+            if (typeof params === 'string') {
+                value = location.search.match(new RegExp('[?&]' + params + '=?([^&]*)[&#$]?'));
+                return value ? value[1] : undefined;
+            }
+
+            var _params = location.search.substr(1).split('&');
+
+            for (i = 0, len = _params.length; i < len; i++) {
+                parts = _params[i].split('=');
+                if (! parts[0]) {continue;}
+                obj[parts[0]] = parts[1] || true;
+            }
+
+            if (typeof params !== 'object') {return obj;}
+
+            for (key in params) {
+                value = params[key];
+                if (typeof value === 'undefined') {
+                    delete obj[key];
+                } else {
+                    obj[key] = value;
+                }
+            }
+
+            parts = [];
+            for (key in obj) {
+                parts.push(key + (obj[key] === true ? '' : '=' + obj[key]));
+            }
+
+            location.search = parts.join('&');
+        };
     </script>
     {% endblock javascript %}
 
