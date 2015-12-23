@@ -119,6 +119,9 @@ class EventHandler(processing.EventHandler):
                                                                         tracking_code=shipping_event.tracking_code,
                                                                         notes=" ")
                 shipping_event_intransit.save()
+                # In order to facilitate promoter payout with a certain threshold, we need to always add the current amount to the promoter
+
+
                 for line in shipping_event.lines.all():
                     shipping_event_intransit.line_quantities.create(line=line, quantity=line.quantity)
 
@@ -150,5 +153,15 @@ class EventHandler(processing.EventHandler):
         if messages and messages['body']:
             dispatcher = Dispatcher(logger)
             dispatcher.dispatch_order_messages(order, messages, event_type)
+
+    def _update_promoter_payout_amount(self, in_transit_event):
+        if in_transit_event.order.promoter:
+            amount_to_add = 0.00
+            for line, quantity in zip(in_transit_event.lines.all(), in_transit_event.line_quantities.all()):
+                amount_to_add += line.unit_price_excl_tax * quantity.quantity
+            promoter = in_transit_event.order.promoter
+            promoter.promoter_balance += amount_to_add
+            promoter.save()
+
 
 

@@ -49,6 +49,7 @@ class TinvilleUser(AbstractUser):
     recipient_id = models.CharField(max_length=255)
     customer_id = models.CharField(max_length=255)
     promoter_code = models.CharField(max_length=5)
+    promoter_balance = models.DecimalField(decimal_places=2, max_digits=12, null=True, blank=True)
 
     objects = TinvilleUserManager()
 
@@ -71,6 +72,7 @@ class TinvilleUser(AbstractUser):
             except ObjectDoesNotExist:
                 break
         self.promoter_code = promoter_code_candidate
+        self.promoter_balance = Decimal(0.00)
         self.save()
 
     @property
