@@ -182,6 +182,7 @@ class PayoutTests(TestCase):
         self.assertEqual(self.user.recipient_id, stripe_transfer.recipient)
 
     def test_designer_payout_on_one_full_order(self):
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
         shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
 
@@ -388,6 +389,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(designer_payout)
 
     def test_no_promoters_to_pay(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop)
 
         pay_promoters()
@@ -395,6 +400,10 @@ class PayoutTests(TestCase):
                       "No payments should exist since there were no shipping events from any promoter")
 
     def test_no_promoter_payout_if_shipped_but_not_in_transit(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
 
         # Event marked as shipped, but not in transit, no payment made
@@ -410,6 +419,10 @@ class PayoutTests(TestCase):
                       "No payments should exist since there were no 'in transit' events from any promoter")
 
     def test_promoter_payout_on_one_full_order(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
         shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
 
@@ -424,6 +437,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(promoter_payout)
 
     def test_promoter_designer_payout_on_one_full_order(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
         shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
 
@@ -447,6 +464,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(designer_payout)
 
     def test_promoter_payout_on_one_full_order_bank_account(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
         shipped_event, in_transit_event = self.create_basic_shipping_and_payment_events()
         rp = stripe.Recipient.retrieve(self.user.recipient_id)
@@ -474,6 +495,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(promoter_payout)
 
     def test_promoter_no_payout_if_shipping_not_paid(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
         self.create_shipping_events()
         self.assertEqual(len(PaymentEvent.objects.all()), 0, "0 payments should exist since shipping not paid")
@@ -484,6 +509,10 @@ class PayoutTests(TestCase):
         self.assertEqual(len(PromoterPayout.objects.all()), 0, "promoter payout should not be recorded for this period")
 
     def test_promoter_no_payout_if_payment_already_made(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.test_promoter_payout_on_one_full_order()
 
         self.assertEqual(len(PaymentEvent.objects.all()), 2)
@@ -495,6 +524,10 @@ class PayoutTests(TestCase):
         self.assertEqual(len(PromoterPayout.objects.all()), 1, "No new payouts should exist")
 
     def test_promoter_no_payout_due_to_no_stripe_recipient_id_for_promoter(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.user.recipient_id = ''
         self.user.save()
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
@@ -508,6 +541,9 @@ class PayoutTests(TestCase):
         self.assertEquals(len(PromoterPayout.objects.all()), 0)
 
     def test_promoter_payout_of_partial_order_full_line_item(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
 
         # Create an order with two line items, but only ship one
         products = [
@@ -553,6 +589,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(promoter_payout2)
 
     def test_promoter_payout_of_partial_order_partial_quantity_line_item(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         # Create an order with two line items, but ship only the partial quantities of both
         products = [
             create_product(title="Graphic T", product_class="Shirts", price=20.00,
@@ -598,6 +638,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(promoter_payout2)
 
     def test_promoter_payout_of_multiple_orders(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
         self.order = create_order(number="2-10002", user=self.user, shop=self.shop, promoter=self.user)
         self.order = create_order(number="2-10003", user=self.user, shop=self.shop, promoter=self.user)
@@ -615,6 +659,10 @@ class PayoutTests(TestCase):
         self.assert_proper_stripe_records(promoter_payout)
 
     def test_promoter_multiple_payouts_if_orders_between_pay_periods(self):
+        # To force payout, set this value over 10
+        self.user.promoter_balance = Decimal(11.00)
+        self.user.save()
+
         self.test_promoter_payout_on_one_full_order()
         self.assertEqual(len(PaymentEvent.objects.all()), 2)
         self.assertEqual(len(PromoterPayout.objects.all()), 1, "1 payout should exist for first payout")
@@ -632,5 +680,16 @@ class PayoutTests(TestCase):
             total_payout_records=2, payment_event_ref=promoter_payment_event.reference, payout_total=0.29)
 
         self.assert_proper_stripe_records(promoter_payout)
+
+    def test_promoter_no_pay_not_enough_balance(self):
+        self.order = create_order(number="2-10001", user=self.user, shop=self.shop, promoter=self.user)
+        self.create_basic_shipping_and_payment_events()
+
+        pay_promoters()
+
+        # Only shipping payment event is there...
+        self.assertEqual(len(PaymentEvent.objects.all()), 1,
+              "No payments should exist since there was not enough cash to pay out (requires > $10)" + " but there was " + str(len(PaymentEvent.objects.all())))
+
 
 

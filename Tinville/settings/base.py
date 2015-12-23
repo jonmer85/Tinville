@@ -513,6 +513,7 @@ CELERYBEAT_SCHEDULE = {
 
 TINVILLE_ORDER_SALES_CUT = Decimal(0.20)  # Tinville takes 20% of designer sales
 TINVILLE_PROMOTER_SALES_CUT = Decimal(0.03)  # Tinville pays our 3% of sales to promoters
+TINVILLE_PROMOTER_MINIMUM_PAYOUT = Decimal(10.00)  # Tinville pays out only after $10 in promotion sales have been made
 
 # Sentry Logging parameters
 RAVEN_CONFIG = {

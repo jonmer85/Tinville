@@ -138,73 +138,74 @@ def pay_promoters():
         payments_by_promoter[promoter].append(payment)
 
     for promoter in payments_by_promoter.keys():
-        try:
-            with transaction.atomic():
-                amount_to_payout = Decimal(0.0)
+        if promoter.promoter_balance >= settings.TINVILLE_PROMOTER_MINIMUM_PAYOUT:
+            try:
+                with transaction.atomic():
+                    amount_to_payout = Decimal(0.0)
 
-                # Create a Promoter Payout record to mark the total amount paid
-                payout = PromoterPayout.objects.create(promoter=promoter, amount=0.00)
+                    # Create a Promoter Payout record to mark the total amount paid
+                    payout = PromoterPayout.objects.create(promoter=promoter, amount=0.00)
 
-                for in_transit_event in payments_by_promoter[promoter]:
-                    amount_to_pay_for_shipping_event = Decimal(0.0)
-                    for line, quantity in zip(in_transit_event.lines.all(), in_transit_event.line_quantities.all()):
-                        amount_to_pay_for_shipping_event += line.unit_price_excl_tax * quantity.quantity
+                    for in_transit_event in payments_by_promoter[promoter]:
+                        amount_to_pay_for_shipping_event = Decimal(0.0)
+                        for line, quantity in zip(in_transit_event.lines.all(), in_transit_event.line_quantities.all()):
+                            amount_to_pay_for_shipping_event += line.unit_price_excl_tax * quantity.quantity
 
-                    # Get the "Shipped" event that caused the payment event, it should have the same group id as our
-                    # "In transit" event
-                    shipped_event = \
-                        ShippingEvent.objects.get(Q(group=in_transit_event.group) &
-                                                  Q(event_type=ShippingEventType.objects.get(code="shipped")))
+                        # Get the "Shipped" event that caused the payment event, it should have the same group id as our
+                        # "In transit" event
+                        shipped_event = \
+                            ShippingEvent.objects.get(Q(group=in_transit_event.group) &
+                                                      Q(event_type=ShippingEventType.objects.get(code="shipped")))
 
-                    shipping_payment_event = \
-                        PaymentEvent.objects.get(Q(shipping_event=shipped_event.id) &
-                                                 Q(event_type=PaymentEventType.objects.get(code="paid_shipping")))
+                        shipping_payment_event = \
+                            PaymentEvent.objects.get(Q(shipping_event=shipped_event.id) &
+                                                     Q(event_type=PaymentEventType.objects.get(code="paid_shipping")))
 
-                    # Get 3%
-                    amount_to_pay_for_shipping_event = get_promoter_payout_amount(amount_to_pay_for_shipping_event)
+                        # Get 3%
+                        amount_to_pay_for_shipping_event = get_promoter_payout_amount(amount_to_pay_for_shipping_event)
 
-                    amount_to_payout += amount_to_pay_for_shipping_event
+                        amount_to_payout += amount_to_pay_for_shipping_event
 
-                    # Now create a payment event to mark that the promoter has been paid for these shipping events
-                    paid_promoter_event = in_transit_event.order.payment_events.create(
-                        amount=amount_to_pay_for_shipping_event, group=shipping_payment_event.group,
-                        event_type=PaymentEventType.objects.get(code="paid_promoter"), reference=payout.id,
-                        shipping_event=in_transit_event)
-                    for line in in_transit_event.order.lines.all():
-                        paid_promoter_event.line_quantities.create(
-                            line=line, quantity=line.quantity)
+                        # Now create a payment event to mark that the promoter has been paid for these shipping events
+                        paid_promoter_event = in_transit_event.order.payment_events.create(
+                            amount=amount_to_pay_for_shipping_event, group=shipping_payment_event.group,
+                            event_type=PaymentEventType.objects.get(code="paid_promoter"), reference=payout.id,
+                            shipping_event=in_transit_event)
+                        for line in in_transit_event.order.lines.all():
+                            paid_promoter_event.line_quantities.create(
+                                line=line, quantity=line.quantity)
 
-                # Transfer the amount to promoter's Stripe account
-                stripe.api_key = settings.STRIPE_SECRET_KEY
+                    # Transfer the amount to promoter's Stripe account
+                    stripe.api_key = settings.STRIPE_SECRET_KEY
 
-                if promoter.account_token.startswith('ba_'):
-                    result = stripe.Transfer.create(
-                      amount=int(amount_to_payout * 100),  # Amount expected in cents
-                      currency="usd",
-                      recipient=promoter.recipient_id,
-                      description="Payout to promoter %s " % promoter,
-                      bank_account=promoter.account_token
-                    )
-                    logger.debug(result)
-                    # And save the payout record with the stripe reference
-                    payout.reference = result.id
-                    payout.amount = amount_to_payout
-                    payout.save()
-                else:
-                    result = stripe.Transfer.create(
-                      amount=int(amount_to_payout * 100),  # Amount expected in cents
-                      currency="usd",
-                      recipient=promoter.recipient_id,
-                      description="Payout to promoter %s " % promoter,
-                      card=promoter.account_token
-                    )
-                    logger.debug(result)
-                    # And save the payout record with the stripe reference
-                    payout.reference = result.id
-                    payout.amount = amount_to_payout
-                    payout.save()
+                    if promoter.account_token.startswith('ba_'):
+                        result = stripe.Transfer.create(
+                          amount=int(amount_to_payout * 100),  # Amount expected in cents
+                          currency="usd",
+                          recipient=promoter.recipient_id,
+                          description="Payout to promoter %s " % promoter,
+                          bank_account=promoter.account_token
+                        )
+                        logger.debug(result)
+                        # And save the payout record with the stripe reference
+                        payout.reference = result.id
+                        payout.amount = amount_to_payout
+                        payout.save()
+                    else:
+                        result = stripe.Transfer.create(
+                          amount=int(amount_to_payout * 100),  # Amount expected in cents
+                          currency="usd",
+                          recipient=promoter.recipient_id,
+                          description="Payout to promoter %s " % promoter,
+                          card=promoter.account_token
+                        )
+                        logger.debug(result)
+                        # And save the payout record with the stripe reference
+                        payout.reference = result.id
+                        payout.amount = amount_to_payout
+                        payout.save()
 
-        except Exception as e:
-            logger.error(
-                "Unhandled exception while paying promoter (%s) payment (%s)",
-                promoter, e, exc_info=True)
+            except Exception as e:
+                logger.error(
+                    "Unhandled exception while paying promoter (%s) payment (%s)",
+                    promoter, e, exc_info=True)
