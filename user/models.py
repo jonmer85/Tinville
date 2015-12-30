@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 import random
 import hashlib
 from django.db import models
