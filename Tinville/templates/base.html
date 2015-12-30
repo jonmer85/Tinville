@@ -447,6 +447,15 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
         <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
     </div>
 
+    <div>
+        {% if user.is_promoter %}
+            <button id="twitter-promote-btn" onclick="PromoteTwitterClick('{{ user.promoter_code }}')">Promote Twitter</button>
+            <a id="twitter-promote"></a>
+            <button id="facebook-promote-btn" onclick="PromoteFacebookClick('{{ user.promoter_code }}')">Promote Facebook</button>
+            <a id="facebook-promote"></a>
+        {% endif %}
+    </div>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script id="message_template" type="text/x-handlebars-template">

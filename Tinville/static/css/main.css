@@ -1754,3 +1754,17 @@ body {
 #lastFour{
     padding: 0;
 }
+
+#twitter-promote-btn {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 50px;
+}
+
+#facebook-promote-btn {
+    position: fixed;
+    bottom: 10px;
+    left: 50px;
+    width: 50px;
+}
