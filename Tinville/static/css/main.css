@@ -1757,7 +1757,7 @@ body {
 
 #twitter-promote-btn {
     position: fixed;
-    bottom: 10px;
+    bottom: 0;
     left: 0;
     width: 50px;
 }
@@ -1765,6 +1765,6 @@ body {
 #facebook-promote-btn {
     position: fixed;
     bottom: 10px;
-    left: 50px;
+    left: 100px;
     width: 50px;
 }

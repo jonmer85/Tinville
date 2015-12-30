@@ -378,14 +378,13 @@ function RemoveCartItem(itemId)
             var currentQuery = currentLocation.params();
             currentQuery.promoter = promoterCode;
             currentLocation.params(currentQuery);
-            console.log(currentLocation);
         }
 
         function PromoteTwitterClick(promoterCode)
         {
             PromoteClick(promoterCode);
             var twitterText = "Tinville";
-            var twitterHref = "http://twitter.com/share?text=" + twitterText + "&url=" + window.location;
+            var twitterHref = "https://twitter.com/intent/tweet?text=" + twitterText + "&url=" + window.location;
             $("#twitter-promote").attr('href',twitterHref);
             $("#twitter-promote")[0].click();
         }

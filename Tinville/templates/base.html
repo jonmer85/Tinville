@@ -449,11 +449,9 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
     <div>
         {% if user.is_promoter %}
-            <button id="twitter-promote-btn" onclick="PromoteTwitterClick('{{ user.promoter_code }}')">Tweet</button>
-            <a id="twitter-promote"></a>
 
-            <div id="facebook-promote-btn" onclick="PromoteFacebookClick('{{ user.promoter_code }}')" class="fb-share-button">
-            </div>
+            <div id="twitter-promote-btn"><a id="twitter-promote" class="twitterlogo" onclick="PromoteTwitterClick('{{ user.promoter_code }}')"><i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i></a></div>
+            <a id="facebook-promote-btn" onclick="PromoteFacebookClick('{{ user.promoter_code }}')" class="fb-share-button"></a>
         {% endif %}
     </div>
 
@@ -477,7 +475,6 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
         {% endverbatim %}
     </script>
 
-    <!-- Load Facebook SDK for JavaScript -->
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
