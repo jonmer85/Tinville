@@ -57,9 +57,10 @@
             <div class="col-xs-12">
                 <div class="col-md-12 well">
                     <h2 class="text-center">Congratulations!</h2>
-                    <p>You are now able to promote Tinville using the following links.</p>
+                    <p>Promote Tinville using the Twitter or Facebook promote links on the bottom left side of any page.</p>
                     {% if user.is_promoter %}
-                        <p>{{ user.promoter_code }}</p>
+                        <p>Your promoter code is: {{ user.promoter_code }}</p>
+                        <p>Current promoter balance: ${{ user.promoter_balance }}</p>
                     {% endif %}
                 </div>
             </div>

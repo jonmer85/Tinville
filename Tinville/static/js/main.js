@@ -394,8 +394,7 @@ function RemoveCartItem(itemId)
         {
             PromoteClick(promoterCode);
             var facebookHref = "http://www.facebook.com/sharer.php?u=" + window.location;
-            $("#facebook-promote").attr('href',facebookHref);
-            $("#facebook-promote")[0].click();
+            $("#facebook-promote-btn").attr('data-href',facebookHref);
         }
 
         location.params = function(params) {
