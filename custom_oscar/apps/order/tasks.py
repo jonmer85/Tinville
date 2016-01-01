@@ -205,6 +205,10 @@ def pay_promoters():
                         payout.amount = amount_to_payout
                         payout.save()
 
+                    # if we pay the promoter, reset their estimated balance
+                    promoter.promoter_balance = 0.00
+                    promoter.save()
+
             except Exception as e:
                 logger.error(
                     "Unhandled exception while paying promoter (%s) payment (%s)",
