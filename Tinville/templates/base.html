@@ -449,9 +449,12 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
     <div>
         {% if user.is_promoter %}
-
-            <div id="twitter-promote-btn"><a id="twitter-promote" class="twitterlogo" onclick="PromoteTwitterClick('{{ user.promoter_code }}')"><i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i></a></div>
-            <a id="facebook-promote-btn" onclick="PromoteFacebookClick('{{ user.promoter_code }}')" class="fb-share-button"></a>
+            <a id="facebook-promote-btn" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="facebooklogo">
+                <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
+            </a>
+            <a id="twitter-promote-btn" href="https://twitter.com/intent/tweet?text=Tinville&url={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="twitterlogo">
+                <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
+            </a>
         {% endif %}
     </div>
 
@@ -474,15 +477,6 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
         </div>
         {% endverbatim %}
     </script>
-
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
 
     {% block javascript_library %}
     {% compress js %}
