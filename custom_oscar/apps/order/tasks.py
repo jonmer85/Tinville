@@ -206,7 +206,7 @@ def pay_promoters():
                         payout.save()
 
                     # if we pay the promoter, reset their estimated balance
-                    promoter.promoter_balance = 0.00
+                    promoter.promoter_balance = Decimal(0.00)
                     promoter.save()
 
             except Exception as e:

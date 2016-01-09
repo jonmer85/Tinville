@@ -4,68 +4,64 @@
 
 {% block tabcontent %}
 
+    {% if user.is_promoter %}
+        {% include "partials/alreadypromoter.html" %}
 
-
-    <div class="container">
-        <div class="row">
-            <h2 class="col-xs-offset-3 col-xs-8">Become a Promoter and Share our Profits</h2>
-        </div>
-        <div class="row form-group">
-            <div class="col-xs-12">
-                <ul class="nav nav-pills nav-justified thumbnail setup-panel">
-                    <li id="tab-step-1" class="active"><a href="#step-1">
-                        <h4 class="list-group-item-heading">Step 1</h4>
-                        <p class="list-group-item-text">How does it work?</p>
-                    </a></li>
-                    <li id="tab-step-2" class="disabled"><a href="#step-2">
-                        <h4 class="list-group-item-heading">Step 2</h4>
-                        <p class="list-group-item-text">Generate my promo code</p>
-                    </a></li>
-                    <li id="tab-step-3" class="disabled"><a href="#step-3">
-                        <h4 class="list-group-item-heading">Step 3</h4>
-                        <p class="list-group-item-text">Congratulations!</p>
-                    </a></li>
-                </ul>
+    {% else %}
+        <div class="container">
+            <div class="row">
+                <h2 class="col-xs-offset-3 col-xs-8">Become a Promoter and Share our Profits</h2>
             </div>
-        </div>
-        <div class="row setup-content" id="step-1">
-            <div class="col-xs-12">
-                <div class="col-md-12 well text-center">
-                    <h2> How it Works</h2>
-                    <h4>
-                    You will generate a promo code that is unique to you. This promo code will be included every time you
-                    share a shop, item, or any other page from Tinville.
-                    </h4>
-                    <h4>
-                    When someone follows your shared link, Tinville will automatically detect that you referred the customer
-                    and will pay you 3% of any items purchased by that user.
-                    </h4>
-
-                    <button id="activate-step-2" class="btn btn-primary btn-lg">Sign me up!</button>
+            <div class="row form-group">
+                <div class="col-xs-12">
+                    <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                        <li id="tab-step-1" class="active"><a href="#step-1">
+                            <h4 class="list-group-item-heading">Step 1</h4>
+                            <p class="list-group-item-text">How does it work?</p>
+                        </a></li>
+                        <li id="tab-step-2" class="disabled"><a href="#step-2">
+                            <h4 class="list-group-item-heading">Step 2</h4>
+                            <p class="list-group-item-text">Generate my promo code</p>
+                        </a></li>
+                        <li id="tab-step-3" class="disabled"><a href="#step-3">
+                            <h4 class="list-group-item-heading">Step 3</h4>
+                            <p class="list-group-item-text">Congratulations!</p>
+                        </a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="row setup-content" id="step-2">
-            <div class="col-xs-12">
-                <div class="col-md-12 well text-center">
-                    {% load crispy_forms_tags %}
-                    {% crispy form %}
+            <div class="row setup-content" id="step-1">
+                <div class="col-xs-12">
+                    <div class="col-md-12 well text-center">
+                        <h2> How it Works</h2>
+                        <h4>
+                        You will generate a promo code that is unique to you. This promo code will be included every time you
+                        share a shop, item, or any other page from Tinville.
+                        </h4>
+                        <h4>
+                        When someone follows your shared link, Tinville will automatically detect that you referred the customer
+                        and will pay you 3% of any items purchased by that user.
+                        </h4>
+
+                        <button id="activate-step-2" class="btn btn-primary btn-lg">Sign me up!</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row setup-content" id="step-3">
-            <div class="col-xs-12">
-                <div class="col-md-12 well">
-                    <h2 class="text-center">Congratulations!</h2>
-                    <p>Promote Tinville using the Twitter or Facebook promote links on the bottom left side of any page.</p>
-                    {% if user.is_promoter %}
-                        <p>Your promoter code is: {{ user.promoter_code }}</p>
-                        <p>Current promoter balance: ${{ user.promoter_balance }}</p>
-                    {% endif %}
+            <div class="row setup-content" id="step-2">
+                <div class="col-xs-12">
+                    <div class="col-md-12 well text-center">
+                        {% load crispy_forms_tags %}
+                        {% crispy form %}
+                    </div>
                 </div>
             </div>
+            <div class="row setup-content" id="step-3">
+                {% include "partials/alreadypromoter.html" %}
+            </div>
         </div>
-    </div>
+    {% endif %}
+
+
 
     {% block javascript %}
 
