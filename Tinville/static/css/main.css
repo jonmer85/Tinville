@@ -1755,16 +1755,14 @@ body {
     padding: 0;
 }
 
-#twitter-promote-btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-}
-
-#facebook-promote-btn {
+#promote-toolbox {
     position: fixed;
     bottom: 10px;
-    left: 100px;
-    width: 50px;
+    left: 20px;
+}
+
+#promote-toolbox.well {
+    background: #e7e5e6;
+    margin-bottom: 0px;
+    border-color: #e7e5e6;
 }

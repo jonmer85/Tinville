@@ -447,16 +447,22 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
         <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
     </div>
 
-    <div>
+
         {% if user.is_promoter %}
-            <a id="facebook-promote-btn" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="facebooklogo">
-                <i class="fa fa-facebook sociallogo" style="font-size: xx-large;"></i>
-            </a>
-            <a id="twitter-promote-btn" href="https://twitter.com/intent/tweet?text=Tinville&url={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="twitterlogo">
-                <i class="fa fa-twitter sociallogo" style="font-size: xx-large;"></i>
-            </a>
+            <div id="promote-toolbox" class="well well-sm">
+                <span>
+                    <a id="facebook-promote-btn" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="facebooklogo">
+                        <i class="fa fa-facebook" style="font-size: xx-large;"></i>
+                    </a>
+                </span>
+                <span>
+                    <a id="twitter-promote-btn" href="https://twitter.com/intent/tweet?text=Tinville&url={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="twitterlogo">
+                        <i class="fa fa-twitter" style="font-size: xx-large;"></i>
+                    </a>
+                </span>
+            </div>
         {% endif %}
-    </div>
+
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
