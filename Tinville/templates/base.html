@@ -450,16 +450,19 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
         {% if user.is_promoter %}
             <div id="promote-toolbox" class="well well-sm">
-                <span>
-                    <a id="facebook-promote-btn" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="facebooklogo">
-                        <i class="fa fa-facebook" style="font-size: xx-large;"></i>
-                    </a>
-                </span>
-                <span>
-                    <a id="twitter-promote-btn" href="https://twitter.com/intent/tweet?text=Tinville&url={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="twitterlogo">
-                        <i class="fa fa-twitter" style="font-size: xx-large;"></i>
-                    </a>
-                </span>
+                <div><b>Promote this Page:</b></div>
+                <div class="center-block" style="text-align: center">
+                    <span>
+                        <a id="facebook-promote-btn" href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="facebooklogo">
+                            <i class="fa fa-facebook" style="font-size: xx-large;"></i>
+                        </a>
+                    </span>
+                    <span>
+                        <a id="twitter-promote-btn" href="https://twitter.com/intent/tweet?text={{ TODOME }}&url={{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" target="_blank" class="twitterlogo">
+                            <i class="fa fa-twitter" style="font-size: xx-large;"></i>
+                        </a>
+                    </span>
+                </div>
             </div>
         {% endif %}
 
