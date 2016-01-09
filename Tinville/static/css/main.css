@@ -1766,3 +1766,8 @@ body {
     margin-bottom: 0px;
     border-color: #e7e5e6;
 }
+
+.facebook-share iframe
+{
+    margin-top: -4px;
+}
