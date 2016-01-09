@@ -6,6 +6,12 @@
 
     {% block meta_title %}{{ product.title }} by {{ shop.name }} on Tinville{% endblock meta_title %}
     {% block meta_description %}{{ product.description|striptags | truncatechars:160 }}{% endblock meta_description %}
+    {% if product.primary_image %}
+        {% load cropping %}
+        {% block og_image%}{% cropped_thumbnail product.primary_image "cropping" scale=1 %}{% endblock og_image%}
+    {% endif %}
+    {% block og_title%}{{ product.title }} by {{ shop.name }} on Tinville{% endblock og_title%}
+    {% block og_description%}{{ product.description|striptags | truncatechars:160 }}{% endblock og_description%}
 
     {% block css %}
         {{ block.super }}

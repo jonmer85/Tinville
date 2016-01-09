@@ -35,8 +35,9 @@
         <meta name="msapplication-TileImage" content="{{ STATIC_URL }}img/favicon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <meta name="description" content="{% block meta_description %}{% endblock meta_description%}"/>
+        <meta property="og:site-name" content="Tinville" />
         <meta property="og:image" content="{% block og_image%}{% endblock og_image%}" />
-        <meta property="og:title" content="{% block og_title%}{% endblock og_title%}" />
+        <meta property="og:title" content="{% block og_title%}Tinville{% endblock og_title%}" />
         <meta property="og:description" content="{% block og_description%}{% endblock og_description%}"/>
     {% endblock meta %}
     <link href="{{ STATIC_URL }}css/bootstrap-tour-standalone.min.css" rel="stylesheet">
@@ -450,7 +451,7 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
         {% if user.is_promoter %}
             <div id="promote-toolbox" class="well well-sm">
-                <div style="text-align: center"><b>Promote this Page:</b></div>
+                <div style="text-align: center" class="itemDescription"><b>Promote this Page:</b></div>
                 <div class="center-block" style="text-align: center">
                     <span class="facebook-share">
                         <a class="fb-share-button" data-href="{{ request.build_absolute_uri }}?promoter={{ user.promoter_code }}" data-layout="button"></a>
