@@ -289,8 +289,6 @@ function AddCartItem(cartItem)
         LoadCartItemDiv(cartItem);
         aggregateTotal();
     }
-
-
 }
 
 function RemoveCartItem(itemId)
