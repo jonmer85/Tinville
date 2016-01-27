@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ['tinville-testing.herokuapp.com']
 
 import dj_database_url
 DATABASES = {'default': dj_database_url.config(default=env('DATABASE_URL'))}
-# DATABASES['default']['ENGINE'] = 'django_postgrespool'
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 SOUTH_DATABASE_ADAPTERS = {
     'default': 'south.db.postgresql_psycopg2'

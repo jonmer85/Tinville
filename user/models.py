@@ -49,7 +49,7 @@ class TinvilleUser(AbstractUser):
     full_legal_name = models.CharField(max_length=255)
     recipient_id = models.CharField(max_length=255)
     customer_id = models.CharField(max_length=255)
-    promoter_code = models.CharField(max_length=5)
+    promoter_code = models.CharField(max_length=32)
     promoter_balance = models.DecimalField(decimal_places=2, max_digits=12, default=Decimal(0.00), blank=True)
 
     objects = TinvilleUserManager()
