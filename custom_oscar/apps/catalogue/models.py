@@ -13,9 +13,6 @@ class Product(AbstractProduct):
     @models.permalink
     def get_absolute_url(self):
         u"""Return a product's absolute url"""
-        # return ('designer_shop.views.itemdetail', (), {
-        #     'shop_slug': self.slug,
-        #     'item_slug': self.shop.slug})
         return ('detail', (),
                        {'item_slug': self.slug, 'shop_slug': self.shop.slug})
 
