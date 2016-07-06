@@ -239,9 +239,9 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
             {% else %}
                 <li class="hidden-xs dropdown navbarLinkS"  >
 {#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">
-                          SIGN UP
-                    </a>
+{#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 0px">#}
+{#                          SIGN UP#}
+{#                    </a>#}
                     <ul class="dropdown-menu" style="right: 0; top: 50px;">
                         <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
                         <li class="divider"></li>
@@ -283,9 +283,9 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
                     {% if not user.is_authenticated %}
 {#                        <li class="dropdown navbarLinkS"  >#}
         {#                    <a class="hidden-xs" href="/register">SIGN UP</a>#}
-                            <a  href="#" class="dropdown-toggle tinvilleDrayGray" data-toggle="dropdown" style="display: inline; padding-left: 10px;">
-                                  Sign Up
-                            </a>
+{#                            <a  href="#" class="dropdown-toggle tinvilleDrayGray" data-toggle="dropdown" style="display: inline; padding-left: 10px;">#}
+{#                                  Sign Up#}
+{#                            </a>#}
                             <ul class="dropdown-menu" style="right: 0; top: 46px;">
                                 <li><a href="/register/customer">as a Customer <img class="pull-right" src="{{ STATIC_URL }}img/register_glyphs/customer_over.svg" style="width: 26px"></img></a></li>
                                 <li class="divider"></li>
@@ -718,11 +718,11 @@ window._fbq.push(['track', '6027363388025', {'value':'0.00','currency':'USD'}]);
 
             if (checkMode() != 'xs') {
                 var bannerWidth = $("#carouselId").width();
-                $("#carouselId").css('height', (bannerWidth * 500 / 1779) + 'px');
+                $("#carouselPic").css('height', (bannerWidth * 500 / 1779) + 'px');
             }
             else {
                 var bannerWidth = $("#carouselId").width();
-                $("#carouselId").css('height', (bannerWidth * 642 / 968) + 'px');
+                $("#carouselPic").css('height', (bannerWidth * 642 / 968) + 'px');
             }
         }
         var setItemSizes = function () {

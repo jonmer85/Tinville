@@ -22,45 +22,48 @@
     {% block content %}
         {{ block.super }}
         <div id="promotional-text">FREE NATIONWIDE SHIPPING ON ALL ORDERS</div>
-        <div class="container">
 
-        <div class="container" style="padding-top: 10px">
-            <div class="row">
-                <div id="mainPicId" class="nopadleft col-xs-12 col-sm-6" style="padding-right: 5px">
-                    <img id="mainImgId" class="img-responsive" src="{{ STATIC_URL }}img/home/final_one.jpg">
+{#        <div id="carouselId" class="" style="padding-top: 10px">#}
+
+{#            <div class="row">#}
+                <div id="carouselId" class="hidden-xs">
+                    <img id="carouselPic" class="" src="{{ STATIC_URL }}img/home/tinville_banner.jpg"/>
                 </div>
-                <div class="hidden-xs col-xs-6">
-                    <div class="row">
-                        <div class="col-xs-4 nopadding" style="padding-left: 5px">
-                            <a href="/shop">
-                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/shop.png">
-                            </a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a class="" href="https://www.tinville.com/the-garwood-watch/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/watch.png"></a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a href="/about">
-                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/inspire.png">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-4 nopadding" style="padding-left: 5px">
-                            <a class="" href="https://www.tinville.com/something-strong/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/bag.png"></a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a href="/shoplist">
-                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/wear.png">
-                            </a>
-                        </div>
-                        <div class="col-xs-4 nopadding">
-                            <a class="" href="https://www.tinville.com/vlado-footwear/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/shoes.png"></a>
-                        </div>
-                    </div>
+                <div id="carouselId" class="hidden-sm hidden-md hidden-lg">
+                    <img id="carouselPic" class="" src="{{ STATIC_URL }}img/home/tinville_mobile.jpg">
                 </div>
-            </div>
-        </div>
+{#                <div class="hidden-xs col-xs-6">#}
+{#                    <div class="row">#}
+{#                        <div class="col-xs-4 nopadding" style="padding-left: 5px">#}
+{#                            <a href="/shop">#}
+{#                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/shop.png">#}
+{#                            </a>#}
+{#                        </div>#}
+{#                        <div class="col-xs-4 nopadding">#}
+{#                            <a class="" href="https://www.tinville.com/the-garwood-watch/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/watch.png"></a>#}
+{#                        </div>#}
+{#                        <div class="col-xs-4 nopadding">#}
+{#                            <a href="/about">#}
+{#                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/inspire.png">#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="row">#}
+{#                        <div class="col-xs-4 nopadding" style="padding-left: 5px">#}
+{#                            <a class="" href="https://www.tinville.com/something-strong/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/bag.png"></a>#}
+{#                        </div>#}
+{#                        <div class="col-xs-4 nopadding">#}
+{#                            <a href="/shoplist">#}
+{#                                <img class="img-responsive" src="{{ STATIC_URL }}img/home/wear.png">#}
+{#                            </a>#}
+{#                        </div>#}
+{#                        <div class="col-xs-4 nopadding">#}
+{#                            <a class="" href="https://www.tinville.com/vlado-footwear/"><img class="img-responsive" src="{{ STATIC_URL }}img/home/shoes.png"></a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
 {##}
 {##}
 {##}
@@ -81,16 +84,16 @@
 
         <div class="container" style="padding-bottom: 50px;">
             <div class="row">
-                <div class="col-xs-12 col-sm-6">
-                    <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'women' %}">WOMEN</a></div>
+{#                <div class="col-xs-12 col-sm-6">#}
+{#                    <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'women' %}">WOMEN</a></div>#}
+{#                    <div class=" mobileThumbCol">#}
+{#                        {% include "homepage/womenItems.html" %}#}
+{#                    </div>#}
+{#                </div>#}
+                <div class="col-xs-12">
+                    <div class="allBlock " ><a class="tinvilleOrange" ">T-Shirts</a></div>
                     <div class=" mobileThumbCol">
-                        {% include "homepage/womenItems.html" %}
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="allBlock " ><a class="tinvilleOrange" href="{% url 'men' %}">MEN</a></div>
-                    <div class=" mobileThumbCol">
-                        {% include "homepage/menItems.html" %}
+                        {% include "homepage/tshirt_home.html" %}
                     </div>
                 </div>
             </div>
@@ -116,14 +119,14 @@
 {#            $("#itemID").removeClass("col-xs-6");#}
             var text = "";
             var i;
-            for (i = 0; i <= 4; i++) {
-                text = i + " #itemID";
-                $("#witem" + text).removeClass("snicka ");
-                $("#witem" + text).removeClass("col-sm-3");
-                $("#mitem" + text).removeClass("snicka ");
-                $("#mitem" + text).removeClass("col-sm-3");
-
-            }
+{#            for (i = 0; i <= 4; i++) {#}
+{#                text = i + " #itemID";#}
+{#                $("#witem" + text).removeClass("snicka ");#}
+{#                $("#witem" + text).removeClass("col-sm-3");#}
+{#                $("#mitem" + text).removeClass("snicka ");#}
+{#                $("#mitem" + text).removeClass("col-sm-3");#}
+{##}
+{#            }#}
 
         });
     {#        $("#thumbnail-preview-indicators .slides .slide-1 ").css("background-image", "url({{ STATIC_URL }}img/banner-xl.png)");#}
